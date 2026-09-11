@@ -5,10 +5,10 @@
 ## Current
 
 - Lifecycle: `Discovery`
-- Plan: `RPF-00 = Partial`；local bootstrap 与 Source of Truth 修订已完成并通过本地验证，远端交付未完成。
+- Plan: `RPF-00 = Complete`；local bootstrap、Source of Truth 修订及首次远端交付已完成。
 - Branch: `main`；原始 bootstrap baseline 为 `efb0101`，保留其历史。
 - Product / published version: 无。
-- Last verified: 2026-09-11；本地仓库干净基线、Git Credential Manager 账户及 GitHub API 身份已核对。
+- Last verified: 2026-09-11；Decision identity/正文继承、文档链接、secret/ignore 基础检查、GitHub identity/visibility 和普通 push 已验证。
 
 ## Major capabilities and technical shape
 
@@ -20,8 +20,9 @@
 
 - 用户已确认 GitHub identity：`MyKr-YSteinsK/runproof`，`Public`。
 - Git Credential Manager 与 GitHub API 已验证账户 `MyKr-YSteinsK`；无需依赖 gh CLI。
-- 目标仓库经认证查询尚不存在；origin/main upstream 与 push 尚未建立。
-- 默认交付政策为 `push-only`，当前远端交付尚未完成。具体授权与执行规则见 AGENTS。
+- Remote: `origin` → https://github.com/MyKr-YSteinsK/runproof.git；GitHub 已验证为 Public，默认分支 `main`。
+- Upstream: `main` → `origin/main`；已普通 push 并验证 ahead/behind=`0/0`、worktree clean。最终快照提交的同步状态由交付时实时 Git 核验。
+- Delivery model: `push-only`；无部署触发。具体授权与执行规则见 AGENTS。
 
 ## Known limitations / risks
 
@@ -31,11 +32,11 @@
 
 ## Active work
 
-完成 RPF-00 的远端创建/接入和普通 push；根据实际交付结果更新快照。
+无进行中的产品实现任务；RPF-00 bootstrap 边界已完成。
 
 ## Next likely boundary
 
-RPF-00 交付后，由 Architect 确定一个最小 Investigation/Spike，优先用代表性有状态 Tool 操作解锁 DeepSeek Agent Contract 及相关环境/故障边界；不预占下一 Plan 编号，不直接搭建完整产品。
+由 Architect 确定一个最小 Investigation/Spike，优先用代表性有状态 Tool 操作解锁 DeepSeek Agent Contract 及相关环境/故障边界；不预占下一 Plan 编号，不直接搭建完整产品。
 
 ## Update rule
 
