@@ -9,6 +9,7 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 - [PROJECT_BRIEF](docs/project/PROJECT_BRIEF.md)：稳定产品意图、v1 Reliability/UX 合同与边界。
 - [DECISIONS](docs/project/DECISIONS.md)：继承 Bootstrap canonical D-001～D-012 的有效决定。
 - [AGENTS](AGENTS.md)：仓库执行、安全和 Git/delivery 规则。
+- RPF-02 已取得 Docker provider 的 Prototype-level minimum Environment 证据；不代表 production-grade isolation/HA，也不把 Docker 固化为产品身份。
 
 ## 核心方向
 

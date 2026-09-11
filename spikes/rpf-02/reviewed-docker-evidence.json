@@ -1,0 +1,474 @@
+{
+  "plan": "RPF-02",
+  "status": "Complete",
+  "started_at": "2026-09-11T11:57:36.890Z",
+  "ended_at": "2026-09-11T11:57:54.191Z",
+  "source_sha256": "81d0f6552ddf5d679f74e2952017099a2f5f8b4f22cc22ed861874cbbf015d07",
+  "provider": {
+    "kind": "docker",
+    "context": "desktop-linux",
+    "daemon_ready": true,
+    "client_version": "29.6.1",
+    "server_version": "29.6.1",
+    "info_server_version": "29.6.1",
+    "os_type": "linux",
+    "storage_driver": "overlayfs",
+    "image": {
+      "reference": "alpine:3.22",
+      "id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+      "repo_digests": [
+        "alpine@sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce"
+      ]
+    }
+  },
+  "seed": {
+    "seed_id": "rpf-02-release-simulation-seed",
+    "seed_revision": "seed-2026-09-11-v1",
+    "state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "digest": "11c9abd46d286cc8e126e07a5cc6425c1dfec6a24be9911fd6d258c1244c73be"
+  },
+  "environment_contract": {
+    "fields": [
+      "environment_id",
+      "seed_id",
+      "seed_revision",
+      "provenance",
+      "lifecycle_state",
+      "readiness",
+      "verified_initial_state",
+      "observable_state",
+      "operation_receipt",
+      "mutable_state_ownership",
+      "cleanup_state",
+      "quarantine_state"
+    ],
+    "default_execution_semantics": "fresh-per-run",
+    "persistent_state": "explicit opt-in only; ownership and lifecycle must be recorded",
+    "hard_rule": "No formal Agent Run before readiness and initial-state verification; Environment/Platform failure is not Agent FAIL."
+  },
+  "fresh_per_run": {
+    "outcome": "PASS",
+    "source": "ENVIRONMENT",
+    "provider": "docker",
+    "seed": {
+      "seed_id": "rpf-02-release-simulation-seed",
+      "seed_revision": "seed-2026-09-11-v1"
+    },
+    "simultaneous_instances": {
+      "readiness": {
+        "a": {
+          "ok": true,
+          "readiness": "READY"
+        },
+        "b": {
+          "ok": true,
+          "readiness": "READY"
+        }
+      },
+      "initial_state_verification": {
+        "a": {
+          "ok": true,
+          "verified": true,
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        "b": {
+          "ok": true,
+          "verified": true,
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        }
+      },
+      "identity_distinct": true,
+      "provenance_explicit": true,
+      "mutated_environment": "docker-fresh-a-6166d870-fddc-4ba5-9330-ab245698349a",
+      "untouched_environment": "docker-fresh-b-1124be6a-8128-42cd-b8b8-2287be6808b9",
+      "a_actual_state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "docker-a-change-001"
+      },
+      "b_actual_state": {
+        "release": "release-v1",
+        "revision": 0,
+        "mutation_count": 0,
+        "operation_id": null
+      },
+      "b_unaffected": true,
+      "writable_layer": {
+        "state_owner": "container-writable-layer",
+        "mount_count_a": 0,
+        "mount_count_b": 0,
+        "a_diff": {
+          "paths": [
+            "A /runproof",
+            "A /runproof/ready",
+            "A /runproof/state"
+          ],
+          "contains_state_path": true
+        }
+      }
+    },
+    "cleanup": {
+      "a": {
+        "requested": true,
+        "removed": true,
+        "contract": {
+          "environment_id": "docker-fresh-a-6166d870-fddc-4ba5-9330-ab245698349a",
+          "seed_id": "rpf-02-release-simulation-seed",
+          "seed_revision": "seed-2026-09-11-v1",
+          "provenance": {
+            "provider": "docker",
+            "context": "desktop-linux",
+            "image_ref": "alpine:3.22",
+            "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+            "container_id": "24def9e4bc14ea0f5437e8448b56a92042301e84d3ddcfa03699b6897def0ccb",
+            "container_name": "rpf02-fresh-a-9de3774a",
+            "state_owner": "container-writable-layer",
+            "mounts": []
+          },
+          "lifecycle_state": "CLEANED",
+          "readiness": "READY",
+          "verified_initial_state": true,
+          "observable_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "docker-a-change-001"
+          },
+          "operation_receipt": {
+            "operation_id": "docker-a-change-001",
+            "status": "APPLIED"
+          },
+          "mutable_state_ownership": "container-writable-layer",
+          "cleanup_state": "CLEANED",
+          "quarantine_state": null
+        }
+      },
+      "b": {
+        "requested": true,
+        "removed": true,
+        "contract": {
+          "environment_id": "docker-fresh-b-1124be6a-8128-42cd-b8b8-2287be6808b9",
+          "seed_id": "rpf-02-release-simulation-seed",
+          "seed_revision": "seed-2026-09-11-v1",
+          "provenance": {
+            "provider": "docker",
+            "context": "desktop-linux",
+            "image_ref": "alpine:3.22",
+            "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+            "container_id": "9386557eb143f28efd870a5b00864c46b290e4cd8d02099def4c2360e8febd08",
+            "container_name": "rpf02-fresh-b-6357683a",
+            "state_owner": "container-writable-layer",
+            "mounts": []
+          },
+          "lifecycle_state": "CLEANED",
+          "readiness": "READY",
+          "verified_initial_state": true,
+          "observable_state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          },
+          "operation_receipt": null,
+          "mutable_state_ownership": "container-writable-layer",
+          "cleanup_state": "CLEANED",
+          "quarantine_state": null
+        }
+      },
+      "recreated": {
+        "requested": true,
+        "removed": true,
+        "contract": {
+          "environment_id": "docker-fresh-recreated-20ffa6ca-d89e-431e-a4e3-9fadc4691805",
+          "seed_id": "rpf-02-release-simulation-seed",
+          "seed_revision": "seed-2026-09-11-v1",
+          "provenance": {
+            "provider": "docker",
+            "context": "desktop-linux",
+            "image_ref": "alpine:3.22",
+            "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+            "container_id": "191192bd8a39356bc83a6d13ff2f4c8f3fb85d88798adf1a3073fbbc529f3d66",
+            "container_name": "rpf02-fresh-recreated-5fdf3447",
+            "state_owner": "container-writable-layer",
+            "mounts": []
+          },
+          "lifecycle_state": "CLEANED",
+          "readiness": "READY",
+          "verified_initial_state": true,
+          "observable_state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          },
+          "operation_receipt": null,
+          "mutable_state_ownership": "container-writable-layer",
+          "cleanup_state": "CLEANED",
+          "quarantine_state": null
+        }
+      }
+    },
+    "recreate": {
+      "new_environment_id": "docker-fresh-recreated-20ffa6ca-d89e-431e-a4e3-9fadc4691805",
+      "new_container_id": "191192bd8a39356bc83a6d13ff2f4c8f3fb85d88798adf1a3073fbbc529f3d66",
+      "identity_distinct_from_a_and_b": true,
+      "readiness": {
+        "ok": true,
+        "readiness": "READY"
+      },
+      "initial_state_verification": {
+        "ok": true,
+        "verified": true,
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      },
+      "state": {
+        "release": "release-v1",
+        "revision": 0,
+        "mutation_count": 0,
+        "operation_id": null
+      },
+      "no_contamination": true
+    },
+    "contracts": {
+      "a": {
+        "environment_id": "docker-fresh-a-6166d870-fddc-4ba5-9330-ab245698349a",
+        "seed_id": "rpf-02-release-simulation-seed",
+        "seed_revision": "seed-2026-09-11-v1",
+        "provenance": {
+          "provider": "docker",
+          "context": "desktop-linux",
+          "image_ref": "alpine:3.22",
+          "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+          "container_id": "24def9e4bc14ea0f5437e8448b56a92042301e84d3ddcfa03699b6897def0ccb",
+          "container_name": "rpf02-fresh-a-9de3774a",
+          "state_owner": "container-writable-layer",
+          "mounts": []
+        },
+        "lifecycle_state": "CLEANED",
+        "readiness": "READY",
+        "verified_initial_state": true,
+        "observable_state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "docker-a-change-001"
+        },
+        "operation_receipt": {
+          "operation_id": "docker-a-change-001",
+          "status": "APPLIED"
+        },
+        "mutable_state_ownership": "container-writable-layer",
+        "cleanup_state": "CLEANED",
+        "quarantine_state": null
+      },
+      "b": {
+        "environment_id": "docker-fresh-b-1124be6a-8128-42cd-b8b8-2287be6808b9",
+        "seed_id": "rpf-02-release-simulation-seed",
+        "seed_revision": "seed-2026-09-11-v1",
+        "provenance": {
+          "provider": "docker",
+          "context": "desktop-linux",
+          "image_ref": "alpine:3.22",
+          "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+          "container_id": "9386557eb143f28efd870a5b00864c46b290e4cd8d02099def4c2360e8febd08",
+          "container_name": "rpf02-fresh-b-6357683a",
+          "state_owner": "container-writable-layer",
+          "mounts": []
+        },
+        "lifecycle_state": "CLEANED",
+        "readiness": "READY",
+        "verified_initial_state": true,
+        "observable_state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        },
+        "operation_receipt": null,
+        "mutable_state_ownership": "container-writable-layer",
+        "cleanup_state": "CLEANED",
+        "quarantine_state": null
+      },
+      "recreated": {
+        "environment_id": "docker-fresh-recreated-20ffa6ca-d89e-431e-a4e3-9fadc4691805",
+        "seed_id": "rpf-02-release-simulation-seed",
+        "seed_revision": "seed-2026-09-11-v1",
+        "provenance": {
+          "provider": "docker",
+          "context": "desktop-linux",
+          "image_ref": "alpine:3.22",
+          "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+          "container_id": "191192bd8a39356bc83a6d13ff2f4c8f3fb85d88798adf1a3073fbbc529f3d66",
+          "container_name": "rpf02-fresh-recreated-5fdf3447",
+          "state_owner": "container-writable-layer",
+          "mounts": []
+        },
+        "lifecycle_state": "CLEANED",
+        "readiness": "READY",
+        "verified_initial_state": true,
+        "observable_state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        },
+        "operation_receipt": null,
+        "mutable_state_ownership": "container-writable-layer",
+        "cleanup_state": "CLEANED",
+        "quarantine_state": null
+      }
+    }
+  },
+  "persistent_shared_state_counterexample": {
+    "outcome": "PASS",
+    "source": "ENVIRONMENT",
+    "volume": {
+      "name": "rpf02-persist-1a035d48",
+      "driver": "local",
+      "scope": "local",
+      "owner": "rpf02-probe",
+      "lifecycle": "create -> attach to C/D -> remove after verification",
+      "mountpoint": "[DOCKER_VOLUME_MOUNTPOINT]",
+      "labels": {
+        "plan": "rpf-02",
+        "owner": "probe"
+      }
+    },
+    "first_container": {
+      "readiness": {
+        "ok": true,
+        "readiness": "READY"
+      },
+      "initial_state_verification": {
+        "ok": true,
+        "verified": true,
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      },
+      "mutation": {
+        "ok": true,
+        "state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "docker-a-change-001"
+        },
+        "receipt": {
+          "operation_id": "docker-a-change-001",
+          "status": "APPLIED"
+        }
+      },
+      "actual_state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "docker-a-change-001"
+      },
+      "cleanup": {
+        "requested": true,
+        "removed": true
+      }
+    },
+    "second_container": {
+      "environment_id": "docker-persistent-d-305321b1-e528-49a8-9496-0f1d97b3aa85",
+      "container_id": "45a623903dde619d71fa4828b4ed7c9e3fb37ab769183683a42315ecb3fe1584",
+      "readiness": {
+        "ok": true,
+        "readiness": "READY"
+      },
+      "observed_state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "docker-a-change-001"
+      },
+      "initial_state_verification": {
+        "ok": false,
+        "verified": false,
+        "code": "INITIAL_STATE_MISMATCH",
+        "observed": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "docker-a-change-001"
+        }
+      },
+      "persistent_state_continues": true,
+      "blocked_before_agent": true,
+      "quarantine": {
+        "status": "QUARANTINED",
+        "reason": "persistent_state_requires_explicit_reset",
+        "source": "ENVIRONMENT",
+        "at": "2026-09-11T11:57:50.976Z"
+      },
+      "ready_reentry_allowed": false,
+      "cleanup_attempt": {
+        "ok": false,
+        "code": "QUARANTINED"
+      }
+    },
+    "conclusion": {
+      "new_container_is_not_automatically_fresh": true,
+      "reason": "The same named volume preserved the mutated state across container deletion and recreation.",
+      "volume_removed": true
+    }
+  },
+  "cleanup_quarantine": {
+    "outcome": "PASS",
+    "source": "ENVIRONMENT",
+    "mode": "synthetic_unproven_cleanup_harness",
+    "real_provider_container_created": true,
+    "readiness_before_quarantine": {
+      "ok": true,
+      "readiness": "READY"
+    },
+    "cleanup_observation": "UNVERIFIED",
+    "cleanup_attempt": {
+      "ok": false,
+      "code": "QUARANTINED"
+    },
+    "quarantine": {
+      "status": "QUARANTINED",
+      "reason": "cleanup_unverified_by_controlled_harness",
+      "source": "ENVIRONMENT",
+      "at": "2026-09-11T11:57:53.797Z"
+    },
+    "lifecycle_state": "QUARANTINED",
+    "ready_reentry_allowed": false,
+    "formal_run_started": false,
+    "agent_quality_eligible": false,
+    "note": "No daemon crash was induced; force cleanup is used after the proof so the host is left clean."
+  },
+  "decision": {
+    "recommendation": "fresh-per-run-semantics",
+    "docker_is_provider_evidence_not_product_identity": true,
+    "reuse_and_reset": "future optimization candidate only after provider-level reset/ownership/quarantine evidence",
+    "tu002": "Prototype-level minimum Environment contract evidenced; production-grade isolation/high availability is not claimed"
+  },
+  "decisions_updated": false
+}

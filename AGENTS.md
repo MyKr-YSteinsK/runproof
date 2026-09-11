@@ -21,10 +21,10 @@
 
 - RPF-01 disposable probe 使用 Node.js 24 内置 API，无第三方依赖；不代表正式 Runtime 的语言决定。
 - 本地合同测试：`node --test spikes/rpf-01/probe.test.mjs`；固定证据离线校验：`node spikes/rpf-01/verify-evidence.mjs`。两者都不调用 Provider，前者检查拒绝/故障路径，后者核对实际样本与源码身份。
-- RPF-02 环境生命周期测试：`node --test spikes/rpf-02/probe.test.mjs`；固定证据离线校验：`node spikes/rpf-02/verify-evidence.mjs`；参考实验：`node spikes/rpf-02/probe.mjs --run`。这些命令不调用 Provider；实验仅使用独立临时根目录与 Node worker，不把 Docker 不可用时的结果冒充正式隔离证明。
+- RPF-02 host reference：`node --test spikes/rpf-02/probe.test.mjs`、`node spikes/rpf-02/verify-evidence.mjs`、`node spikes/rpf-02/probe.mjs --run`；真实 Docker provider：`node --test spikes/rpf-02/docker-probe.test.mjs`、`node spikes/rpf-02/docker-probe.mjs --run`、`node spikes/rpf-02/verify-docker-evidence.mjs`。Docker probe 只使用现有 daemon/image，创建带 `rpf02` 前缀的临时 container/volume 并验证 cleanup；Docker 证据证明 Prototype-level contract，不等于 production-grade isolation/HA。
 - 真实实验：`node spikes/rpf-01/probe.mjs --live`，仅在当前任务授权 API 调用与费用时运行，从进程环境读取 `DEEPSEEK_API_KEY`，绝不打印 key 或私有 continuation。
 - 临时输出仅在忽略的 `.local/rpf-01/`；`spikes/rpf-01/reviewed-evidence.json` 是经过脱敏审查的验收固定样本，允许提交，不能自动以新实验覆盖。修改 probe 后需区分旧证据与新源码身份。
-- RPF-02 临时输出仅在忽略的 `.local/rpf-02/`；`spikes/rpf-02/reviewed-evidence.json` 是经过脱敏审查的 host-reference 固定样本，允许提交，不能自动以新实验覆盖。修改 probe 后需重新生成并审查样本的 `source_sha256`，同时保留 `Partial` 与 Docker daemon 不可用边界。
+- RPF-02 临时输出仅在忽略的 `.local/rpf-02/`；`spikes/rpf-02/reviewed-evidence.json` 是历史 host-reference 固定样本，`spikes/rpf-02/reviewed-docker-evidence.json` 是真实 Docker provider 脱敏固定样本，允许提交，不能自动以新实验覆盖。修改任一 probe 后需重新生成并审查对应样本的 `source_sha256`；Docker 是当前证据 provider，不是永久产品身份。
 - 无正式产品 typecheck/lint/build 命令；文档仍按语义/链接、Git diff/history/status 和 secret/ignore 边界验证。
 - 真实产品命令引入后，按脚本实际语义更新本节，注明 build 已包含的检查以避免重复；不创建空洞 CI。
 - 当前 runtime/CI/deployment/version 状态仅见 CURRENT_STATE。

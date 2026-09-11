@@ -1,0 +1,36 @@
+// Offline validation for the reviewed real-provider RPF-02 snapshot.
+import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import { IMAGE, SEED } from './docker-probe.mjs';
+
+const evidence = JSON.parse(await readFile(new URL('./reviewed-docker-evidence.json', import.meta.url), 'utf8'));
+assert.equal(evidence.plan, 'RPF-02');
+assert.equal(evidence.status, 'Complete');
+assert.equal(evidence.provider.kind, 'docker');
+assert.equal(evidence.provider.daemon_ready, true);
+assert.equal(evidence.provider.context, 'desktop-linux');
+assert.equal(evidence.provider.image.reference, IMAGE);
+assert.match(evidence.provider.server_version, /^\d+\.\d+\.\d+$/);
+assert.equal(evidence.fresh_per_run.outcome, 'PASS');
+assert.equal(evidence.fresh_per_run.simultaneous_instances.b_unaffected, true);
+assert.equal(evidence.fresh_per_run.simultaneous_instances.writable_layer.mount_count_a, 0);
+assert.equal(evidence.fresh_per_run.simultaneous_instances.writable_layer.mount_count_b, 0);
+assert.equal(evidence.fresh_per_run.simultaneous_instances.writable_layer.a_diff.contains_state_path, true);
+assert.equal(evidence.fresh_per_run.recreate.no_contamination, true);
+assert.equal(evidence.persistent_shared_state_counterexample.conclusion.new_container_is_not_automatically_fresh, true);
+assert.equal(evidence.persistent_shared_state_counterexample.second_container.persistent_state_continues, true);
+assert.equal(evidence.persistent_shared_state_counterexample.second_container.blocked_before_agent, true);
+assert.equal(evidence.persistent_shared_state_counterexample.conclusion.volume_removed, true);
+assert.equal(evidence.cleanup_quarantine.lifecycle_state, 'QUARANTINED');
+assert.equal(evidence.cleanup_quarantine.ready_reentry_allowed, false);
+assert.equal(evidence.cleanup_quarantine.agent_quality_eligible, false);
+assert.equal(evidence.environment_contract.default_execution_semantics, 'fresh-per-run');
+assert.equal(evidence.environment_contract.persistent_state, 'explicit opt-in only; ownership and lifecycle must be recorded');
+assert.deepEqual(evidence.seed.state, SEED.state);
+const source = await readFile(new URL('./docker-probe.mjs', import.meta.url));
+const hashes = [source, source.toString('utf8').replaceAll('\r\n', '\n')].map((value) => createHash('sha256').update(value).digest('hex'));
+assert.ok(hashes.includes(evidence.source_sha256));
+assert.doesNotMatch(JSON.stringify(evidence), /(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)/);
+console.log('PASS: RPF-02 reviewed Docker evidence proves daemon readiness, fresh writable-layer isolation, persistent-state counterexample, cross-instance isolation, cleanup, quarantine, and contract identity');
