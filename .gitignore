@@ -7,3 +7,6 @@
 /.secrets/
 /secrets/
 /credentials/
+
+# Disposable probe outputs (reviewed evidence is curated separately)
+/.local/

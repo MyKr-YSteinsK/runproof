@@ -1,0 +1,1020 @@
+{
+  "plan": "RPF-01",
+  "schema": "disposable-probe-evidence-v1",
+  "started_at": "2026-09-11T11:17:23.975Z",
+  "api_surface": "https://api.deepseek.com/chat/completions",
+  "requested_model": "deepseek-flash",
+  "docs_reported_version": "DeepSeek-V4.1-Flash (documentation claim, not immutable returned version)",
+  "node": "v24.16.0",
+  "source_sha256": "0314f1df22442ad30766436c5f2f655ac7bd85997475be1c94ee01b5058e4c0c",
+  "pricing": {
+    "id": "deepseek-flash-CNY-2026-09-11",
+    "checked_at": "2026-09-11",
+    "source": "https://api-docs.deepseek.com/zh-cn/quick_start/pricing/",
+    "per_million": {
+      "off_peak": {
+        "hit": 0.02,
+        "miss": 1,
+        "output": 4
+      },
+      "peak": {
+        "hit": 0.04,
+        "miss": 2,
+        "output": 8
+      }
+    },
+    "caveat": "Derived estimate, not invoice; tariff inferred from client time in Asia/Shanghai."
+  },
+  "limits": {
+    "calls": 24,
+    "tokens_observed_before_next_call": 30000,
+    "output_tokens_per_call": 2048,
+    "steps_per_loop": 6,
+    "request_timeout_seconds": 45,
+    "overall_minutes": 8,
+    "automatic_retries": 0
+  },
+  "runs": [
+    {
+      "name": "non-thinking-normal",
+      "source": "LIVE_PROVIDER_LOCAL_SIMULATION",
+      "mode": "non-thinking",
+      "fault_planned": false,
+      "outcome": "PASS",
+      "call_sequences": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "events": [
+        {
+          "kind": "initial_state_verified",
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "read_state",
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "read_state",
+          "result": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "state_changed",
+          "validated_arguments": {
+            "operation_id": "change-001",
+            "expected_revision": 0,
+            "release": "release-v2"
+          },
+          "before": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          },
+          "after": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "apply_change",
+          "result": {
+            "status": "APPLIED",
+            "state": {
+              "release": "release-v2",
+              "revision": 1,
+              "mutation_count": 1,
+              "operation_id": "change-001"
+            }
+          }
+        },
+        {
+          "kind": "read_state",
+          "state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "read_state",
+          "result": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        }
+      ],
+      "final_state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "verification": {
+        "layer": "Verified Result",
+        "checks": {
+          "target_state": true,
+          "exactly_one_mutation": true,
+          "observed_readback": true,
+          "no_unresolved_outcome": true,
+          "no_blind_retry_attempt": true,
+          "fault_reconciled": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "name": "non-thinking-lost-response",
+      "source": "LIVE_PROVIDER_LOCAL_SIMULATION",
+      "mode": "non-thinking",
+      "fault_planned": true,
+      "outcome": "PASS",
+      "call_sequences": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "events": [
+        {
+          "kind": "initial_state_verified",
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "read_state",
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "read_state",
+          "result": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "state_changed",
+          "validated_arguments": {
+            "operation_id": "change-001",
+            "expected_revision": 0,
+            "release": "release-v2"
+          },
+          "before": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          },
+          "after": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "fault",
+          "planned": true,
+          "triggered": true,
+          "observed": true,
+          "fault": "side_effect_success_response_lost"
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "apply_change",
+          "result": {
+            "status": "UNKNOWN_OUTCOME",
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "reconciled",
+          "operation_id": "change-001",
+          "state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "reconcile",
+          "result": {
+            "status": "APPLIED",
+            "operation_id": "change-001",
+            "state": {
+              "release": "release-v2",
+              "revision": 1,
+              "mutation_count": 1,
+              "operation_id": "change-001"
+            }
+          }
+        },
+        {
+          "kind": "read_state",
+          "state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "read_state",
+          "result": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        }
+      ],
+      "final_state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "verification": {
+        "layer": "Verified Result",
+        "checks": {
+          "target_state": true,
+          "exactly_one_mutation": true,
+          "observed_readback": true,
+          "no_unresolved_outcome": true,
+          "no_blind_retry_attempt": true,
+          "fault_reconciled": true
+        },
+        "passed": true
+      }
+    },
+    {
+      "name": "thinking-normal",
+      "source": "LIVE_PROVIDER_LOCAL_SIMULATION",
+      "mode": "thinking",
+      "fault_planned": false,
+      "outcome": "PASS",
+      "call_sequences": [
+        10,
+        11,
+        12,
+        13
+      ],
+      "events": [
+        {
+          "kind": "initial_state_verified",
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "read_state",
+          "state": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "read_state",
+          "result": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          }
+        },
+        {
+          "kind": "state_changed",
+          "validated_arguments": {
+            "operation_id": "change-001",
+            "expected_revision": 0,
+            "release": "release-v2"
+          },
+          "before": {
+            "release": "release-v1",
+            "revision": 0,
+            "mutation_count": 0,
+            "operation_id": null
+          },
+          "after": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "apply_change",
+          "result": {
+            "status": "APPLIED",
+            "state": {
+              "release": "release-v2",
+              "revision": 1,
+              "mutation_count": 1,
+              "operation_id": "change-001"
+            }
+          }
+        },
+        {
+          "kind": "read_state",
+          "state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "kind": "tool_result_to_agent",
+          "tool_name": "read_state",
+          "result": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        }
+      ],
+      "final_state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "verification": {
+        "layer": "Verified Result",
+        "checks": {
+          "target_state": true,
+          "exactly_one_mutation": true,
+          "observed_readback": true,
+          "no_unresolved_outcome": true,
+          "no_blind_retry_attempt": true,
+          "fault_reconciled": true
+        },
+        "passed": true
+      }
+    }
+  ],
+  "real_error_probe": {
+    "domain": "PROVIDER",
+    "code": "REQUEST_FORMAT",
+    "outcome": "ERROR",
+    "verified": true
+  },
+  "json_probe": {
+    "source": "LIVE_FORMATTING_ONLY",
+    "verified": true,
+    "validated": {
+      "verified": true,
+      "revision": 1
+    }
+  },
+  "calls": [
+    {
+      "layer": "Observed Fact",
+      "sequence": 1,
+      "label": "non-thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:23.978Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "f23d840e-adaf-4583-9b61-d54a56e20b6e",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125443,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 560,
+        "completion_tokens": 29,
+        "total_tokens": 589,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 176,
+        "cached_tokens": 384
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_C3lDltXuQrLVd9Dxqr8l8732",
+          "name": "read_state",
+          "validated_arguments": {}
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:24.566Z",
+      "latency_ms": 587,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00029968,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 2,
+      "label": "non-thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:24.566Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "be822601-9366-49c8-8be6-58dbf382caa1",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125443,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 623,
+        "completion_tokens": 87,
+        "total_tokens": 710,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 239,
+        "cached_tokens": 384
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_OruLSbgwr2lFX4SYEheq9747",
+          "name": "apply_change",
+          "validated_arguments": {
+            "operation_id": "change-001",
+            "expected_revision": 0,
+            "release": "release-v2"
+          }
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:25.617Z",
+      "latency_ms": 1051,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00059468,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 3,
+      "label": "non-thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:25.617Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "32db7a0a-679a-408f-beb2-0e57d0718744",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125444,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 754,
+        "completion_tokens": 30,
+        "total_tokens": 784,
+        "prompt_cache_hit_tokens": 512,
+        "prompt_cache_miss_tokens": 242,
+        "cached_tokens": 512
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_kwFpFfoZoFZNyD1ADjqP9557",
+          "name": "read_state",
+          "validated_arguments": {}
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:26.384Z",
+      "latency_ms": 767,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00037224,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 4,
+      "label": "non-thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:26.384Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "25d47e30-85d6-4663-84e8-1fe696460dfa",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125445,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 821,
+        "completion_tokens": 80,
+        "total_tokens": 901,
+        "prompt_cache_hit_tokens": 640,
+        "prompt_cache_miss_tokens": 181,
+        "cached_tokens": 640
+      },
+      "continuation_received": false,
+      "tool_calls": [],
+      "ended_at": "2026-09-11T11:17:27.386Z",
+      "latency_ms": 1002,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.0005138,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 5,
+      "label": "non-thinking-lost-response",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:27.386Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "5193a24f-0e16-4732-829e-86748f46ec3f",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125446,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 560,
+        "completion_tokens": 29,
+        "total_tokens": 589,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 176,
+        "cached_tokens": 384
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_SR25oqQjkmTEaIW5tgW67031",
+          "name": "read_state",
+          "validated_arguments": {}
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:28.380Z",
+      "latency_ms": 994,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00029968,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 6,
+      "label": "non-thinking-lost-response",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:28.380Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "7bbbe2d8-45c1-4196-8110-6cd21220a438",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125447,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 623,
+        "completion_tokens": 86,
+        "total_tokens": 709,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 239,
+        "cached_tokens": 384
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_EmlXk5cbIFJp68uGuW0N4811",
+          "name": "apply_change",
+          "validated_arguments": {
+            "operation_id": "change-001",
+            "expected_revision": 0,
+            "release": "release-v2"
+          }
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:29.420Z",
+      "latency_ms": 1040,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00059068,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 7,
+      "label": "non-thinking-lost-response",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:29.420Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "84bfe257-308b-4002-9795-89ff993a6f77",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125448,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 736,
+        "completion_tokens": 52,
+        "total_tokens": 788,
+        "prompt_cache_hit_tokens": 512,
+        "prompt_cache_miss_tokens": 224,
+        "cached_tokens": 512
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_SeD4mfkOursA4MvBlKVY0507",
+          "name": "reconcile",
+          "validated_arguments": {
+            "operation_id": "change-001"
+          }
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:30.098Z",
+      "latency_ms": 678,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00044224,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 8,
+      "label": "non-thinking-lost-response",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:30.098Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "51d70d7f-ecdf-4ef4-a1c1-5518e0153bb4",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125449,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 839,
+        "completion_tokens": 34,
+        "total_tokens": 873,
+        "prompt_cache_hit_tokens": 640,
+        "prompt_cache_miss_tokens": 199,
+        "cached_tokens": 640
+      },
+      "continuation_received": false,
+      "tool_calls": [
+        {
+          "id": "call_00_cWZaqyXj3TUgegOJibXS7378",
+          "name": "read_state",
+          "validated_arguments": {}
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:30.622Z",
+      "latency_ms": 524,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.0003478,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 9,
+      "label": "non-thinking-lost-response",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:30.622Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "a034db29-07e0-4452-8820-2e601223f7b2",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125449,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 910,
+        "completion_tokens": 88,
+        "total_tokens": 998,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 142,
+        "cached_tokens": 768
+      },
+      "continuation_received": false,
+      "tool_calls": [],
+      "ended_at": "2026-09-11T11:17:31.355Z",
+      "latency_ms": 733,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00050936,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 10,
+      "label": "thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "thinking",
+      "started_at": "2026-09-11T11:17:31.356Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "3b412d16-d0d5-4d1b-bf6c-ec050aee7d2a",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125450,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 585,
+        "completion_tokens": 34,
+        "total_tokens": 619,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 201,
+        "reasoning_tokens": 0,
+        "cached_tokens": 384
+      },
+      "continuation_received": true,
+      "tool_calls": [
+        {
+          "id": "call_00_ET_xbLKNeY3pw3cziZ2OWFi7109",
+          "name": "read_state",
+          "validated_arguments": {}
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:31.879Z",
+      "latency_ms": 523,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00034468,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 11,
+      "label": "thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "thinking",
+      "started_at": "2026-09-11T11:17:31.879Z",
+      "continuation_messages_sent": 1,
+      "http_status": 200,
+      "response_id": "9197a5fa-00f3-4421-8216-5d8ee8d86bc6",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125451,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 653,
+        "completion_tokens": 90,
+        "total_tokens": 743,
+        "prompt_cache_hit_tokens": 512,
+        "prompt_cache_miss_tokens": 141,
+        "reasoning_tokens": 13,
+        "cached_tokens": 512
+      },
+      "continuation_received": true,
+      "tool_calls": [
+        {
+          "id": "call_00_BhSggghFjQbSxf3ykwVF8724",
+          "name": "apply_change",
+          "validated_arguments": {
+            "operation_id": "change-001",
+            "expected_revision": 0,
+            "release": "release-v2"
+          }
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:32.535Z",
+      "latency_ms": 656,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.00051124,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 12,
+      "label": "thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "thinking",
+      "started_at": "2026-09-11T11:17:32.535Z",
+      "continuation_messages_sent": 2,
+      "http_status": 200,
+      "response_id": "4c71289b-0bcf-4865-9d76-90fdb55b5ea5",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125451,
+      "finish_reason": "tool_calls",
+      "usage": {
+        "prompt_tokens": 787,
+        "completion_tokens": 32,
+        "total_tokens": 819,
+        "prompt_cache_hit_tokens": 640,
+        "prompt_cache_miss_tokens": 147,
+        "reasoning_tokens": 10,
+        "cached_tokens": 640
+      },
+      "continuation_received": true,
+      "tool_calls": [
+        {
+          "id": "call_00_sqpM5QWSs80M3hE5Cbiu5230",
+          "name": "read_state",
+          "validated_arguments": {}
+        }
+      ],
+      "ended_at": "2026-09-11T11:17:33.750Z",
+      "latency_ms": 1214,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.0002878,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 13,
+      "label": "thinking-normal",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "thinking",
+      "started_at": "2026-09-11T11:17:33.750Z",
+      "continuation_messages_sent": 3,
+      "http_status": 200,
+      "response_id": "f175969c-31d7-438a-8cdc-4dcbc7eadaea",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125452,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 856,
+        "completion_tokens": 76,
+        "total_tokens": 932,
+        "prompt_cache_hit_tokens": 640,
+        "prompt_cache_miss_tokens": 216,
+        "reasoning_tokens": 0,
+        "cached_tokens": 640
+      },
+      "continuation_received": true,
+      "tool_calls": [],
+      "ended_at": "2026-09-11T11:17:35.064Z",
+      "latency_ms": 1314,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.0005328,
+        "tariff": "off_peak"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 14,
+      "label": "invalid-max-tokens",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:35.064Z",
+      "continuation_messages_sent": 0,
+      "http_status": 400,
+      "failure": {
+        "domain": "PROVIDER",
+        "outcome": "ERROR",
+        "code": "REQUEST_FORMAT",
+        "retry_candidate": false,
+        "automatic_retry": false
+      },
+      "error_type": "invalid_request_error",
+      "error_code": "invalid_request_error",
+      "ended_at": "2026-09-11T11:17:35.144Z",
+      "latency_ms": 80,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": null,
+        "reason": "MISSING_OR_INCONSISTENT_USAGE"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 15,
+      "label": "json-output",
+      "provider": "deepseek",
+      "requested_model": "deepseek-flash",
+      "mode": "non-thinking",
+      "started_at": "2026-09-11T11:17:35.144Z",
+      "continuation_messages_sent": 0,
+      "http_status": 200,
+      "response_id": "9e838e8e-19ff-4b78-99f5-f90724be88d7",
+      "returned_model": "deepseek-flash",
+      "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+      "provider_created": 1789125454,
+      "finish_reason": "stop",
+      "usage": {
+        "prompt_tokens": 59,
+        "completion_tokens": 10,
+        "total_tokens": 69,
+        "prompt_cache_hit_tokens": 0,
+        "prompt_cache_miss_tokens": 59,
+        "cached_tokens": 0
+      },
+      "continuation_received": false,
+      "tool_calls": [],
+      "ended_at": "2026-09-11T11:17:35.752Z",
+      "latency_ms": 608,
+      "cost": {
+        "layer": "Derived Value",
+        "pricing_id": "deepseek-flash-CNY-2026-09-11",
+        "currency": "CNY",
+        "estimate": 0.000099,
+        "tariff": "off_peak"
+      }
+    }
+  ],
+  "ended_at": "2026-09-11T11:17:35.752Z",
+  "complete": true
+}
