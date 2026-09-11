@@ -1,0 +1,250 @@
+"""End-to-end normal and response-lost execution for the first product slice."""
+
+from __future__ import annotations
+
+import copy
+import json
+import os
+import time
+import uuid
+from pathlib import Path
+from typing import Any
+
+from .agent import ToolExecutor
+from .deepseek_provider import DeepSeekProvider
+from .docker_environment import DockerEnvironment, provider_snapshot
+from .evidence import runtime_source_sha256, timestamp
+from .models import RuntimeFailure
+from .scenario import SCENARIO, system_prompt
+from .verifier import VERIFIER_ID, VERIFIER_VERSION, verify_run
+
+
+MAX_AGENT_STEPS = 6
+MAX_PROVIDER_CALLS = 12
+REQUEST_TIMEOUT_SECONDS = 45
+OVERALL_TIMEOUT_SECONDS = 8 * 60
+
+
+def _event(trajectory: list[dict[str, Any]], event_type: str, **values: Any) -> None:
+    trajectory.append({"layer": "Observed Fact", "sequence": len(trajectory) + 1, "event_type": event_type, **values})
+
+
+def _outcome(status: str, source: str, formal_run_started: bool, reason: str | None = None) -> dict[str, Any]:
+    value: dict[str, Any] = {
+        "status": status,
+        "source": source,
+        "agent_quality_eligible": status == "PASS",
+        "formal_run_started": formal_run_started,
+    }
+    if reason:
+        value["reason"] = reason
+    return value
+
+
+def run_slice(fault_profile: str = "none", api_key: str | None = None, model: str | None = None) -> dict[str, Any]:
+    if fault_profile not in {"none", "response-lost"}:
+        raise RuntimeFailure("HARNESS", "UNKNOWN_FAULT_PROFILE")
+    run_id = f"run-{uuid.uuid4()}"
+    evaluation_id = f"evaluation-{uuid.uuid4()}"
+    started_at = timestamp()
+    started_clock = time.monotonic()
+    trajectory: list[dict[str, Any]] = []
+    environment: DockerEnvironment | None = None
+    provider: DeepSeekProvider | None = None
+    executor: ToolExecutor | None = None
+    initial_state: dict[str, Any] | None = None
+    actual_state: dict[str, Any] | None = None
+    verification: dict[str, Any] | None = None
+    formal_run_started = False
+    completed = False
+    terminal_error: RuntimeFailure | None = None
+    agent_failure: RuntimeFailure | None = None
+
+    artifact: dict[str, Any] = {
+        "schema_version": "rpf-run-evidence-v1",
+        "artifact_kind": "Run Evidence",
+        "run": {
+            "run_id": run_id,
+            "evaluation_id": evaluation_id,
+            "started_at": started_at,
+            "agent": {
+                "agent_id": "production-change-agent",
+                "agent_version": "1.0.0",
+                "mode": "non-thinking",
+                "prompt_id": "production-change-agent-system-v1",
+            },
+            "scenario": {"scenario_id": SCENARIO["scenario_id"], "scenario_version": SCENARIO["scenario_version"]},
+            "verifier": {"verifier_id": VERIFIER_ID, "verifier_version": VERIFIER_VERSION},
+            "runtime": {"runtime_version": "rpf-03.v1", "source_sha256": None},
+        },
+        "provider": None,
+        "environment": None,
+        "scenario": SCENARIO,
+        "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": fault_profile == "response-lost",
+            "triggered": False,
+            "observed": False,
+            "reconciled": False,
+        },
+        "trajectory": trajectory,
+        "verification": None,
+        "outcome": None,
+        "runtime_budget": {
+            "max_agent_steps": MAX_AGENT_STEPS,
+            "max_provider_calls": MAX_PROVIDER_CALLS,
+            "request_timeout_seconds": REQUEST_TIMEOUT_SECONDS,
+            "overall_timeout_seconds": OVERALL_TIMEOUT_SECONDS,
+            "max_output_tokens_per_request": 1024,
+            "automatic_provider_retries": 0,
+            "automatic_tool_retries": 0,
+        },
+    }
+
+    try:
+        provider_info = provider_snapshot()
+        artifact["provider"] = {
+            **provider_info,
+            "requested_model": model or os.environ.get("RPF_MODEL", "deepseek-flash"),
+            "mode": "non-thinking",
+        }
+        provider = DeepSeekProvider(api_key or os.environ.get("DEEPSEEK_API_KEY", ""), model=model, max_calls=MAX_PROVIDER_CALLS)
+        environment = DockerEnvironment(provider_info, "agent-run")
+        environment.provision()
+        artifact["environment"] = environment.snapshot()
+        _event(
+            trajectory,
+            "environment_provisioned",
+            environment_id=environment.contract["environment_id"],
+            seed_id=environment.contract["seed_id"],
+            seed_revision=environment.contract["seed_revision"],
+            provenance=environment.contract["provenance"],
+        )
+
+        readiness = environment.readiness()
+        _event(trajectory, "readiness", result=readiness)
+        if not readiness.get("ok"):
+            raise RuntimeFailure("ENVIRONMENT", readiness.get("code", "READINESS_FAILED"))
+        initial = environment.verify_initial()
+        _event(trajectory, "initial_state_verification", result=initial)
+        if not initial.get("ok"):
+            raise RuntimeFailure("ENVIRONMENT", initial.get("code", "INITIAL_STATE_MISMATCH"), "INVALID")
+        initial_state = copy.deepcopy(initial["state"])
+        formal_run_started = True
+        executor = ToolExecutor(environment, fault_profile)
+        messages: list[dict[str, Any]] = [
+            {"role": "system", "content": system_prompt()},
+            {"role": "user", "content": "Perform the authorized change and verify it."},
+        ]
+        seen_call_ids: set[str] = set()
+
+        for step in range(1, MAX_AGENT_STEPS + 1):
+            if time.monotonic() - started_clock > OVERALL_TIMEOUT_SECONDS:
+                raise RuntimeFailure("HARNESS", "OVERALL_RUN_TIMEOUT")
+            assistant, calls = provider.complete(messages)
+            messages.append(provider.assistant_for_transport(assistant, calls))
+            if not calls:
+                completed = True
+                _event(trajectory, "agent_completion", step=step, content_observed=True, tool_calls=0)
+                break
+            call = calls[0]
+            if call.call_id in seen_call_ids:
+                raise RuntimeFailure("PROVIDER", "DUPLICATE_TOOL_CALL_ID")
+            seen_call_ids.add(call.call_id)
+            _event(
+                trajectory,
+                "agent_tool_intent",
+                step=step,
+                tool_call_id=call.call_id,
+                tool_name=call.name,
+                validated_arguments=call.arguments,
+            )
+            before_events = len(executor.events)
+            try:
+                result = executor.execute(call)
+            except RuntimeFailure as error:
+                trajectory.extend(copy.deepcopy(executor.events[before_events:]))
+                _event(trajectory, "tool_execution_failure", step=step, domain=error.domain, code=error.code, outcome=error.outcome)
+                if error.domain == "AGENT":
+                    agent_failure = error
+                    break
+                raise
+            trajectory.extend(copy.deepcopy(executor.events[before_events:]))
+            messages.append({"role": "tool", "tool_call_id": call.call_id, "content": json.dumps(result, separators=(",", ":"))})
+        else:
+            raise RuntimeFailure("AGENT", "STEP_BUDGET")
+
+        if not completed and agent_failure is None:
+            raise RuntimeFailure("AGENT", "STEP_BUDGET")
+        actual_state = environment.read_state()
+        _event(trajectory, "actual_state_verification", state=actual_state)
+        executor_snapshot = executor.snapshot()
+        verification = verify_run(
+            initial_state,
+            actual_state,
+            initial_verified=True,
+            mutation_count=executor_snapshot["mutation_count"],
+            readback_observed=executor_snapshot["readback_observed"],
+            unresolved_unknown=executor_snapshot["unresolved_unknown"],
+            blind_retry_attempts=executor_snapshot["blind_retry_attempts"],
+            fault=executor_snapshot["fault"],
+        )
+        artifact["verification"] = verification
+        artifact["fault"] = executor_snapshot["fault"]
+        if agent_failure:
+            terminal_error = agent_failure
+        elif executor_snapshot["unresolved_unknown"]:
+            terminal_error = RuntimeFailure("ENVIRONMENT", "UNKNOWN_OUTCOME_UNRESOLVED", "INCONCLUSIVE")
+        elif not verification["passed"]:
+            terminal_error = RuntimeFailure("AGENT", "REQUIRED_OUTCOME_NOT_VERIFIED")
+    except RuntimeFailure as error:
+        terminal_error = error
+        if environment and actual_state is None:
+            try:
+                actual_state = environment.read_state()
+                _event(trajectory, "actual_state_observed_after_failure", state=actual_state)
+            except RuntimeFailure:
+                pass
+    finally:
+        if environment:
+            cleanup = environment.cleanup()
+            _event(trajectory, "cleanup", result=cleanup)
+            if not cleanup.get("ok") and not (cleanup.get("code") == "QUARANTINED" and terminal_error is not None):
+                terminal_error = RuntimeFailure("ENVIRONMENT", cleanup.get("code", "CLEANUP_FAILED"))
+            artifact["environment"] = environment.snapshot()
+        if provider:
+            artifact["provider"] = {**(artifact["provider"] or {}), **provider.evidence()}
+        artifact["run"]["runtime"]["source_sha256"] = runtime_source_sha256()
+        artifact["run"]["ended_at"] = timestamp()
+        artifact["duration_ms"] = round((time.monotonic() - started_clock) * 1000)
+
+    if verification is None and actual_state is not None and initial_state is not None and executor is not None:
+        snapshot = executor.snapshot()
+        verification = verify_run(
+            initial_state,
+            actual_state,
+            initial_verified=True,
+            mutation_count=snapshot["mutation_count"],
+            readback_observed=snapshot["readback_observed"],
+            unresolved_unknown=snapshot["unresolved_unknown"],
+            blind_retry_attempts=snapshot["blind_retry_attempts"],
+            fault=snapshot["fault"],
+        )
+        artifact["verification"] = verification
+        artifact["fault"] = snapshot["fault"]
+
+    if terminal_error:
+        outcome = _outcome(terminal_error.outcome, terminal_error.domain, formal_run_started, terminal_error.code)
+    elif verification and verification["passed"]:
+        outcome = _outcome("PASS", "DETERMINISTIC_VERIFIER", formal_run_started)
+    else:
+        outcome = _outcome("INCONCLUSIVE", "HARNESS", formal_run_started, "NO_SAFE_TERMINAL_RESULT")
+    artifact["outcome"] = outcome
+    artifact["environment"] = artifact.get("environment")
+    return artifact
+
+
+def write_run_artifact(artifact: dict[str, Any], output_dir: Path, secret: str = "") -> Path:
+    from .evidence import write_artifact
+
+    return write_artifact(artifact, output_dir, secret)

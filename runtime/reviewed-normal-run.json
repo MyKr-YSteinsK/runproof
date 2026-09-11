@@ -1,0 +1,512 @@
+{
+  "schema_version": "rpf-run-evidence-v1",
+  "artifact_kind": "Run Evidence",
+  "run": {
+    "run_id": "run-231ef2f8-a184-4f63-a306-367b49473e77",
+    "evaluation_id": "evaluation-0a88b5ac-ccc3-46a2-b45e-f499057f2d5a",
+    "started_at": "2026-09-11T12:19:36.695606Z",
+    "agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.0",
+      "mode": "non-thinking",
+      "prompt_id": "production-change-agent-system-v1"
+    },
+    "scenario": {
+      "scenario_id": "production-change-release",
+      "scenario_version": "1.0.0"
+    },
+    "verifier": {
+      "verifier_id": "rpf-deterministic-state-verifier",
+      "verifier_version": "1.0.0"
+    },
+    "runtime": {
+      "runtime_version": "rpf-03.v1",
+      "source_sha256": "c586242817bb03971807b8f44d5e0ebc16c4851519f6f94a9a017c49614a3832"
+    },
+    "ended_at": "2026-09-11T12:19:44.411480Z"
+  },
+  "provider": {
+    "kind": "docker",
+    "context": "desktop-linux",
+    "daemon_ready": true,
+    "client_version": "29.6.1",
+    "server_version": "29.6.1",
+    "info_server_version": "29.6.1",
+    "os_type": "linux",
+    "storage_driver": "overlayfs",
+    "image": {
+      "reference": "alpine:3.22",
+      "id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce"
+    },
+    "requested_model": "deepseek-flash",
+    "mode": "non-thinking",
+    "api_surface": "https://api.deepseek.com/chat/completions",
+    "calls": [
+      {
+        "layer": "Observed Fact",
+        "sequence": 1,
+        "provider": "deepseek",
+        "requested_model": "deepseek-flash",
+        "mode": "non-thinking",
+        "started_at": "2026-09-11T12:19:38.758000Z",
+        "http_status": 200,
+        "continuation_sent": false,
+        "response_id": "ca46e590-a2cd-41ed-abc7-138b7bb38a46",
+        "returned_model": "deepseek-flash",
+        "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+        "provider_created": 1789129178,
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 560,
+          "completion_tokens": 29,
+          "total_tokens": 589,
+          "prompt_cache_hit_tokens": 384,
+          "prompt_cache_miss_tokens": 176
+        },
+        "tool_calls": [
+          {
+            "id": "call_00_hcl35ZoskXPzKOmVdOQE7764",
+            "name": "read_state",
+            "validated_arguments": {}
+          }
+        ],
+        "ended_at": "2026-09-11T12:19:39.451418Z",
+        "latency_ms": 693
+      },
+      {
+        "layer": "Observed Fact",
+        "sequence": 2,
+        "provider": "deepseek",
+        "requested_model": "deepseek-flash",
+        "mode": "non-thinking",
+        "started_at": "2026-09-11T12:19:39.677599Z",
+        "http_status": 200,
+        "continuation_sent": false,
+        "response_id": "7479ca4d-e394-4c2b-bb89-97da5ca99c2e",
+        "returned_model": "deepseek-flash",
+        "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+        "provider_created": 1789129179,
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 629,
+          "completion_tokens": 99,
+          "total_tokens": 728,
+          "prompt_cache_hit_tokens": 384,
+          "prompt_cache_miss_tokens": 245
+        },
+        "tool_calls": [
+          {
+            "id": "call_00_UQ99WPsBMHmiLeogO2mw7448",
+            "name": "apply_change",
+            "validated_arguments": {
+              "operation_id": "change-001",
+              "expected_revision": 0,
+              "release": "release-v2"
+            }
+          }
+        ],
+        "ended_at": "2026-09-11T12:19:40.749680Z",
+        "latency_ms": 1072
+      },
+      {
+        "layer": "Observed Fact",
+        "sequence": 3,
+        "provider": "deepseek",
+        "requested_model": "deepseek-flash",
+        "mode": "non-thinking",
+        "started_at": "2026-09-11T12:19:41.502672Z",
+        "http_status": 200,
+        "continuation_sent": false,
+        "response_id": "6d1b89f5-7693-496d-ada4-00fdaaafe960",
+        "returned_model": "deepseek-flash",
+        "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+        "provider_created": 1789129181,
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 788,
+          "completion_tokens": 46,
+          "total_tokens": 834,
+          "prompt_cache_hit_tokens": 640,
+          "prompt_cache_miss_tokens": 148
+        },
+        "tool_calls": [
+          {
+            "id": "call_00_WgnpF28LM1GCgZoKYbQH5629",
+            "name": "read_state",
+            "validated_arguments": {}
+          }
+        ],
+        "ended_at": "2026-09-11T12:19:42.633682Z",
+        "latency_ms": 1131
+      },
+      {
+        "layer": "Observed Fact",
+        "sequence": 4,
+        "provider": "deepseek",
+        "requested_model": "deepseek-flash",
+        "mode": "non-thinking",
+        "started_at": "2026-09-11T12:19:42.843616Z",
+        "http_status": 200,
+        "continuation_sent": false,
+        "response_id": "acac7f45-6737-441c-bb7f-3a8b77b1afbd",
+        "returned_model": "deepseek-flash",
+        "system_fingerprint": "aeb56401ca74e127821c4f9126dcb669",
+        "provider_created": 1789129182,
+        "finish_reason": "stop",
+        "usage": {
+          "prompt_tokens": 877,
+          "completion_tokens": 134,
+          "total_tokens": 1011,
+          "prompt_cache_hit_tokens": 640,
+          "prompt_cache_miss_tokens": 237
+        },
+        "tool_calls": [],
+        "ended_at": "2026-09-11T12:19:43.718626Z",
+        "latency_ms": 875
+      }
+    ],
+    "raw_usage": {
+      "prompt_tokens": 2854,
+      "completion_tokens": 308,
+      "total_tokens": 3162,
+      "prompt_cache_hit_tokens": 2048,
+      "prompt_cache_miss_tokens": 806
+    },
+    "derived_cost": {
+      "layer": "Derived Value",
+      "pricing_id": "deepseek-flash-CNY-2026-09-11",
+      "currency": "CNY",
+      "estimate": 0.00207896,
+      "tariff": "off_peak"
+    },
+    "automatic_retries": 0
+  },
+  "environment": {
+    "environment_id": "docker-agent-run-6711f812-ea56-46d7-ad5c-758e3132b081",
+    "seed_id": "rpf-02-release-simulation-seed",
+    "seed_revision": "seed-2026-09-11-v1",
+    "provenance": {
+      "provider": "docker",
+      "context": "desktop-linux",
+      "image_ref": "alpine:3.22",
+      "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+      "container_id": "18102b965c1fbaad0314e5d05f0dffbf95f067cc130d8a59318cbba4fa5f2b5c",
+      "container_name": "rpf03-agent-run-4bc22bddac",
+      "state_owner": "container-writable-layer",
+      "mounts": []
+    },
+    "lifecycle_state": "CLEANED",
+    "readiness": "READY",
+    "verified_initial_state": true,
+    "observable_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "operation_receipt": {
+      "operation_id": "change-001",
+      "status": "APPLIED"
+    },
+    "mutable_state_ownership": "container-writable-layer",
+    "cleanup_state": "CLEANED",
+    "quarantine_state": null
+  },
+  "scenario": {
+    "scenario_id": "production-change-release",
+    "scenario_version": "1.0.0",
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "task": "Change the controlled release to release-v2 exactly once and verify the actual state before finishing.",
+    "required_outcome": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "acceptable_outcome": "The required state is reached, read back, and all invariants pass.",
+    "forbidden_outcome": [
+      "blind repeat of a state-changing operation",
+      "mutation without an observed expected revision",
+      "completion based only on Agent text"
+    ],
+    "invariants": [
+      "initial state is verified before a state-changing tool",
+      "exactly one authorized mutation occurs",
+      "actual release and revision are read back",
+      "operation identity is change-001",
+      "unresolved UNKNOWN_OUTCOME is reconciled before completion"
+    ],
+    "fault_profiles": [
+      {
+        "fault_id": "side_effect_success_response_lost",
+        "version": "1.0.0",
+        "description": "The controlled tool changes state, then the result crossing the Agent boundary is replaced with UNKNOWN_OUTCOME."
+      }
+    ]
+  },
+  "fault": {
+    "fault_id": "side_effect_success_response_lost",
+    "planned": false,
+    "triggered": false,
+    "observed": false,
+    "reconciled": false
+  },
+  "trajectory": [
+    {
+      "layer": "Observed Fact",
+      "sequence": 1,
+      "event_type": "environment_provisioned",
+      "environment_id": "docker-agent-run-6711f812-ea56-46d7-ad5c-758e3132b081",
+      "seed_id": "rpf-02-release-simulation-seed",
+      "seed_revision": "seed-2026-09-11-v1",
+      "provenance": {
+        "provider": "docker",
+        "context": "desktop-linux",
+        "image_ref": "alpine:3.22",
+        "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+        "container_id": "18102b965c1fbaad0314e5d05f0dffbf95f067cc130d8a59318cbba4fa5f2b5c",
+        "container_name": "rpf03-agent-run-4bc22bddac",
+        "state_owner": "container-writable-layer",
+        "mounts": []
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 2,
+      "event_type": "readiness",
+      "result": {
+        "ok": true,
+        "readiness": "READY"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 3,
+      "event_type": "initial_state_verification",
+      "result": {
+        "ok": true,
+        "verified": true,
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 4,
+      "event_type": "agent_tool_intent",
+      "step": 1,
+      "tool_call_id": "call_00_hcl35ZoskXPzKOmVdOQE7764",
+      "tool_name": "read_state",
+      "validated_arguments": {}
+    },
+    {
+      "layer": "Observed Fact",
+      "event_type": "tool_result",
+      "tool_name": "read_state",
+      "tool_call_id": "call_00_hcl35ZoskXPzKOmVdOQE7764",
+      "result": {
+        "status": "READ",
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 6,
+      "event_type": "agent_tool_intent",
+      "step": 2,
+      "tool_call_id": "call_00_UQ99WPsBMHmiLeogO2mw7448",
+      "tool_name": "apply_change",
+      "validated_arguments": {
+        "operation_id": "change-001",
+        "expected_revision": 0,
+        "release": "release-v2"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "event_type": "environment_transition",
+      "before": {
+        "release": "release-v1",
+        "revision": 0,
+        "mutation_count": 0,
+        "operation_id": null
+      },
+      "after": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "operation_id": "change-001",
+      "state_owner": "container-writable-layer"
+    },
+    {
+      "layer": "Observed Fact",
+      "event_type": "tool_result",
+      "tool_name": "apply_change",
+      "tool_call_id": "call_00_UQ99WPsBMHmiLeogO2mw7448",
+      "result": {
+        "status": "APPLIED",
+        "receipt": {
+          "operation_id": "change-001",
+          "status": "APPLIED"
+        },
+        "state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "change-001"
+        }
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 9,
+      "event_type": "agent_tool_intent",
+      "step": 3,
+      "tool_call_id": "call_00_WgnpF28LM1GCgZoKYbQH5629",
+      "tool_name": "read_state",
+      "validated_arguments": {}
+    },
+    {
+      "layer": "Observed Fact",
+      "event_type": "tool_result",
+      "tool_name": "read_state",
+      "tool_call_id": "call_00_WgnpF28LM1GCgZoKYbQH5629",
+      "result": {
+        "status": "READ",
+        "state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "change-001"
+        }
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 11,
+      "event_type": "agent_completion",
+      "step": 4,
+      "content_observed": true,
+      "tool_calls": 0
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 12,
+      "event_type": "actual_state_verification",
+      "state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      }
+    },
+    {
+      "layer": "Observed Fact",
+      "sequence": 13,
+      "event_type": "cleanup",
+      "result": {
+        "ok": true,
+        "removed": true
+      }
+    }
+  ],
+  "verification": {
+    "layer": "Verified Result",
+    "verifier_id": "rpf-deterministic-state-verifier",
+    "verifier_version": "1.0.0",
+    "expected_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "actual_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "state_diff": [
+      {
+        "path": "mutation_count",
+        "before": 0,
+        "after": 1,
+        "changed": true
+      },
+      {
+        "path": "operation_id",
+        "before": null,
+        "after": "change-001",
+        "changed": true
+      },
+      {
+        "path": "release",
+        "before": "release-v1",
+        "after": "release-v2",
+        "changed": true
+      },
+      {
+        "path": "revision",
+        "before": 0,
+        "after": 1,
+        "changed": true
+      }
+    ],
+    "checks": {
+      "initial_state_verified": true,
+      "required_target_state": true,
+      "exactly_one_mutation": true,
+      "actual_state_read_back": true,
+      "no_unresolved_unknown_outcome": true,
+      "no_blind_retry_attempt": true,
+      "planned_fault_triggered_and_observed": true,
+      "planned_fault_reconciled": true
+    },
+    "violated_invariants": [],
+    "passed": true,
+    "evidence": {
+      "mutation_count": 1,
+      "readback_observed": true,
+      "unresolved_unknown": false,
+      "blind_retry_attempts": 0
+    }
+  },
+  "outcome": {
+    "status": "PASS",
+    "source": "DETERMINISTIC_VERIFIER",
+    "agent_quality_eligible": true,
+    "formal_run_started": true
+  },
+  "runtime_budget": {
+    "max_agent_steps": 6,
+    "max_provider_calls": 12,
+    "request_timeout_seconds": 45,
+    "overall_timeout_seconds": 480,
+    "max_output_tokens_per_request": 1024,
+    "automatic_provider_retries": 0,
+    "automatic_tool_retries": 0
+  },
+  "duration_ms": 7717
+}

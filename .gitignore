@@ -10,3 +10,7 @@
 
 # Disposable probe outputs (reviewed evidence is curated separately)
 /.local/
+
+# Python runtime caches
+__pycache__/
+*.py[cod]

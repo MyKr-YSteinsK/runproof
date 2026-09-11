@@ -22,9 +22,12 @@
 - RPF-01 disposable probe 使用 Node.js 24 内置 API，无第三方依赖；不代表正式 Runtime 的语言决定。
 - 本地合同测试：`node --test spikes/rpf-01/probe.test.mjs`；固定证据离线校验：`node spikes/rpf-01/verify-evidence.mjs`。两者都不调用 Provider，前者检查拒绝/故障路径，后者核对实际样本与源码身份。
 - RPF-02 host reference：`node --test spikes/rpf-02/probe.test.mjs`、`node spikes/rpf-02/verify-evidence.mjs`、`node spikes/rpf-02/probe.mjs --run`；真实 Docker provider：`node --test spikes/rpf-02/docker-probe.test.mjs`、`node spikes/rpf-02/docker-probe.mjs --run`、`node spikes/rpf-02/verify-docker-evidence.mjs`。Docker probe 只使用现有 daemon/image，创建带 `rpf02` 前缀的临时 container/volume 并验证 cleanup；Docker 证据证明 Prototype-level contract，不等于 production-grade isolation/HA。
+- RPF-03 product runtime deterministic tests：`python -m unittest discover -s runtime/tests -p 'test_*.py' -v`；reviewed artifact 离线核验：`python runtime/verify-reviewed-artifacts.py`；live normal：`python -m runtime.runproof_runtime --fault none`；live response-lost：`python -m runtime.runproof_runtime --fault response-lost`。live 命令从 `DEEPSEEK_API_KEY` 读取 secret、使用 Docker Fresh-per-run，并将每次独立 artifact 写入忽略的 `.local/rpf-03/`；不保存 messages、Authorization、private reasoning 或自由模型文本。
 - 真实实验：`node spikes/rpf-01/probe.mjs --live`，仅在当前任务授权 API 调用与费用时运行，从进程环境读取 `DEEPSEEK_API_KEY`，绝不打印 key 或私有 continuation。
 - 临时输出仅在忽略的 `.local/rpf-01/`；`spikes/rpf-01/reviewed-evidence.json` 是经过脱敏审查的验收固定样本，允许提交，不能自动以新实验覆盖。修改 probe 后需区分旧证据与新源码身份。
 - RPF-02 临时输出仅在忽略的 `.local/rpf-02/`；`spikes/rpf-02/reviewed-evidence.json` 是历史 host-reference 固定样本，`spikes/rpf-02/reviewed-docker-evidence.json` 是真实 Docker provider 脱敏固定样本，允许提交，不能自动以新实验覆盖。修改任一 probe 后需重新生成并审查对应样本的 `source_sha256`；Docker 是当前证据 provider，不是永久产品身份。
+- RPF-03 `.local/rpf-03/` 只保存本地 Run artifacts，不提交；runtime source identity 由正式 package 文件 hash 记录。live artifacts 必须经过 secret/private-protocol redaction，历史 Run 不得静默覆盖。
+- RPF-03 `runtime/reviewed-*.json` 是经过审查的固定 live evidence 样本，允许提交；`runtime/verify-reviewed-artifacts.py` 校验 artifact schema、PASS、Docker cleanup、response-lost reconcile、secret/private-protocol 边界与 runtime source hash。修改 `runtime/runproof_runtime/` 后必须重新生成并审查样本，不能让旧样本冒充新源码证据。
 - 无正式产品 typecheck/lint/build 命令；文档仍按语义/链接、Git diff/history/status 和 secret/ignore 边界验证。
 - 真实产品命令引入后，按脚本实际语义更新本节，注明 build 已包含的检查以避免重复；不创建空洞 CI。
 - 当前 runtime/CI/deployment/version 状态仅见 CURRENT_STATE。
