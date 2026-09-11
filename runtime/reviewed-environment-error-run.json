@@ -1,0 +1,265 @@
+{
+  "schema_version": "rpf-run-evidence-v2",
+  "artifact_kind": "Run Evidence",
+  "trajectory_contract": {
+    "version": "rpf-trajectory-event-v1",
+    "ordering": "ascending integer sequence within one run",
+    "identity": "run-scoped event_id; immutable once evidence is written"
+  },
+  "run": {
+    "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+    "evaluation_id": "evaluation-c8db4da8-cd6f-407b-99c3-b5aaadcd9676",
+    "started_at": "2026-09-11T13:13:19.477346Z",
+    "agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.0",
+      "mode": "non-thinking",
+      "prompt_id": "production-change-agent-system-v1",
+      "configuration_id": "production-change-agent-v1"
+    },
+    "scenario": {
+      "scenario_id": "production-change-release",
+      "scenario_version": "1.0.0"
+    },
+    "verifier": {
+      "verifier_id": "rpf-deterministic-state-verifier",
+      "verifier_version": "1.0.0"
+    },
+    "runtime": {
+      "runtime_version": "rpf-05.v1",
+      "source_sha256": "198194adbefbad5b7b7b89e1119fbac2f10af0231001f8dee5b5e916f1f5c715"
+    },
+    "ended_at": "2026-09-11T13:13:21.972241Z"
+  },
+  "llm_provider": {
+    "provider_id": "deepseek",
+    "provider_type": "llm",
+    "requested_model": "deepseek-flash",
+    "mode": "non-thinking",
+    "api_surface": "https://api.deepseek.com/chat/completions",
+    "calls": [],
+    "raw_usage": null,
+    "derived_cost": {
+      "layer": "Derived Value",
+      "pricing_id": "deepseek-flash-CNY-2026-09-11",
+      "currency": "CNY",
+      "estimate": null,
+      "reason": "AGENT_PROFILE_DOES_NOT_INVOKE_PROVIDER"
+    },
+    "automatic_retries": 0,
+    "invocation": "NOT_IN_FAILURE_PATH"
+  },
+  "environment_provider": {
+    "provider_id": "docker",
+    "provider_type": "environment",
+    "provider_implementation": "docker",
+    "kind": "docker",
+    "context": "desktop-linux",
+    "daemon_ready": true,
+    "client_version": "29.6.1",
+    "server_version": "29.6.1",
+    "info_server_version": "29.6.1",
+    "os_type": "linux",
+    "storage_driver": "overlayfs",
+    "image": {
+      "reference": "alpine:3.22",
+      "id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce"
+    }
+  },
+  "environment": {
+    "environment_id": "docker-agent-run-ba8806d2-eb94-4f93-9f0a-aec52975d7cc",
+    "seed_id": "rpf-02-release-simulation-seed",
+    "seed_revision": "seed-2026-09-11-v1",
+    "provenance": {
+      "provider": "docker",
+      "context": "desktop-linux",
+      "image_ref": "alpine:3.22",
+      "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+      "container_id": "849cac5ac0e6ecfe8f252d5521de3c007ac52fedf2d579d1025703b76d12560b",
+      "container_name": "rpf03-agent-run-579dd4c290",
+      "state_owner": "container-writable-layer",
+      "mounts": []
+    },
+    "lifecycle_state": "CLEANED",
+    "readiness": "CONTROLLED_FAILURE",
+    "verified_initial_state": false,
+    "observable_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "operation_receipt": null,
+    "mutable_state_ownership": "container-writable-layer",
+    "cleanup_state": "CLEANED",
+    "quarantine_state": null,
+    "controlled_failure": {
+      "hook_id": "pre-agent-readiness",
+      "source": "ENVIRONMENT",
+      "code": "CONTROLLED_READINESS_FAILURE",
+      "agent_started": false,
+      "state_change_performed": false
+    }
+  },
+  "scenario": {
+    "scenario_id": "production-change-release",
+    "scenario_version": "1.0.0",
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "task": "Change the controlled release to release-v2 exactly once and verify the actual state before finishing.",
+    "required_outcome": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "acceptable_outcome": "The required state is reached, read back, and all invariants pass.",
+    "forbidden_outcome": [
+      "blind repeat of a state-changing operation",
+      "mutation without an observed expected revision",
+      "completion based only on Agent text"
+    ],
+    "invariants": [
+      "initial state is verified before a state-changing tool",
+      "exactly one authorized mutation occurs",
+      "actual release and revision are read back",
+      "operation identity is change-001",
+      "unresolved UNKNOWN_OUTCOME is reconciled before completion"
+    ],
+    "fault_profiles": [
+      {
+        "fault_id": "side_effect_success_response_lost",
+        "version": "1.0.0",
+        "description": "The controlled tool changes state, then the result crossing the Agent boundary is replaced with UNKNOWN_OUTCOME."
+      }
+    ]
+  },
+  "fault": {
+    "fault_id": "side_effect_success_response_lost",
+    "planned": false,
+    "triggered": false,
+    "observed": false,
+    "reconciled": false
+  },
+  "trajectory": [
+    {
+      "event_type": "environment_provisioned",
+      "environment_id": "docker-agent-run-ba8806d2-eb94-4f93-9f0a-aec52975d7cc",
+      "seed_id": "rpf-02-release-simulation-seed",
+      "seed_revision": "seed-2026-09-11-v1",
+      "provenance": {
+        "provider": "docker",
+        "context": "desktop-linux",
+        "image_ref": "alpine:3.22",
+        "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+        "container_id": "849cac5ac0e6ecfe8f252d5521de3c007ac52fedf2d579d1025703b76d12560b",
+        "container_name": "rpf03-agent-run-579dd4c290",
+        "state_owner": "container-writable-layer",
+        "mounts": []
+      },
+      "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:environment_provisioned:001",
+      "sequence": 1,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+        "environment_id": "docker-agent-run-ba8806d2-eb94-4f93-9f0a-aec52975d7cc"
+      }
+    },
+    {
+      "event_type": "readiness",
+      "result": {
+        "ok": false,
+        "code": "CONTROLLED_READINESS_FAILURE",
+        "source": "ENVIRONMENT",
+        "controlled": true,
+        "agent_started": false
+      },
+      "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:readiness:001",
+      "sequence": 2,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+        "environment_id": "docker-agent-run-ba8806d2-eb94-4f93-9f0a-aec52975d7cc"
+      }
+    },
+    {
+      "event_type": "actual_state_observed_after_failure",
+      "state": {
+        "release": "release-v1",
+        "revision": 0,
+        "mutation_count": 0,
+        "operation_id": null
+      },
+      "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:actual_state_observed_after_failure:001",
+      "sequence": 3,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+        "environment_id": "docker-agent-run-ba8806d2-eb94-4f93-9f0a-aec52975d7cc"
+      }
+    },
+    {
+      "event_type": "cleanup",
+      "result": {
+        "ok": true,
+        "removed": true
+      },
+      "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:cleanup:001",
+      "sequence": 4,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+        "environment_id": "docker-agent-run-ba8806d2-eb94-4f93-9f0a-aec52975d7cc"
+      }
+    }
+  ],
+  "verification": null,
+  "outcome": {
+    "status": "ERROR",
+    "source": "ENVIRONMENT",
+    "agent_quality_eligible": false,
+    "formal_run_started": false,
+    "reason": "CONTROLLED_READINESS_FAILURE",
+    "attribution": "Platform/Environment",
+    "agent_started": false
+  },
+  "failure_attribution": {
+    "category": "Platform/Environment",
+    "domain": "ENVIRONMENT",
+    "deterministic": true,
+    "reason_code": "CONTROLLED_READINESS_FAILURE",
+    "agent_started": false,
+    "failing_event_type": "readiness",
+    "failing_event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:readiness:001",
+    "state_change_performed": false,
+    "agent_quality_excluded": true
+  },
+  "health_context": {
+    "provider": {
+      "status": "NOT_IN_FAILURE_PATH",
+      "failure_source": false,
+      "calls_observed": 0
+    },
+    "environment": {
+      "status": "CONTROLLED_FAILURE",
+      "failure_source": true,
+      "readiness": "CONTROLLED_FAILURE",
+      "initial_state_verified": false,
+      "cleanup_state": "CLEANED"
+    }
+  },
+  "runtime_budget": {
+    "max_agent_steps": 6,
+    "max_provider_calls": 12,
+    "request_timeout_seconds": 45,
+    "overall_timeout_seconds": 480,
+    "max_output_tokens_per_request": 1024,
+    "automatic_provider_retries": 0,
+    "automatic_tool_retries": 0
+  },
+  "duration_ms": 2495
+}

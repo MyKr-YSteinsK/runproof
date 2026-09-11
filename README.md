@@ -4,12 +4,12 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 
 ## 仓库入口
 
-仓库包含 bootstrap 文档、[RPF-01 disposable DeepSeek probe](spikes/rpf-01/README.md)、[RPF-02 controlled-environment probe](spikes/rpf-02/README.md)、[RPF-03 product runtime](runtime/README.md) 和 [RPF-04 Evidence Control Plane](web/README.md)。当前生命周期、任务与远端交付事实以 [CURRENT_STATE](docs/project/CURRENT_STATE.md) 为准。
+仓库包含 bootstrap 文档、[RPF-01 disposable DeepSeek probe](spikes/rpf-01/README.md)、[RPF-02 controlled-environment probe](spikes/rpf-02/README.md)、[RPF-03 product runtime](runtime/README.md) 和 [RPF-05 Evidence / Failure Investigation Control Plane](web/README.md)。当前生命周期、任务与远端交付事实以 [CURRENT_STATE](docs/project/CURRENT_STATE.md) 为准。
 
 - [PROJECT_BRIEF](docs/project/PROJECT_BRIEF.md)：稳定产品意图、v1 Reliability/UX 合同与边界。
 - [DECISIONS](docs/project/DECISIONS.md)：继承 Bootstrap canonical D-001～D-012 的有效决定。
 - [AGENTS](AGENTS.md)：仓库执行、安全和 Git/delivery 规则。
-- RPF-02 已取得 Docker provider 的 Prototype-level minimum Environment 证据；RPF-03 已建立首个单 Run reliability vertical slice；RPF-04 已建立首个只读 Evidence / Failure Investigation 控制面。不代表 production-grade isolation/HA，也不把 Docker 固化为产品身份。
+- RPF-02 已取得 Docker provider 的 Prototype-level minimum Environment 证据；RPF-03 已建立首个单 Run reliability vertical slice；RPF-04 收敛了 Run Evidence 合同；RPF-05 已建立真实 Agent FAIL、Platform/Environment ERROR 与 Failure Case 复现闭环及只读调查控制面。不代表 production-grade isolation/HA，也不把 Docker 固化为产品身份。
 
 ## 核心方向
 

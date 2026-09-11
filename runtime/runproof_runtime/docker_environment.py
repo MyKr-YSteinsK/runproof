@@ -145,10 +145,15 @@ def _safe_mounts(raw: list[dict[str, Any]]) -> list[dict[str, Any]]:
 class DockerEnvironment:
     """One fresh container with state owned by its writable layer."""
 
-    def __init__(self, provider: dict[str, Any], role: str) -> None:
+    SUPPORTED_FAILURE_HOOKS = {"pre-agent-readiness"}
+
+    def __init__(self, provider: dict[str, Any], role: str, failure_hook: str | None = None) -> None:
+        if failure_hook not in {None, *self.SUPPORTED_FAILURE_HOOKS}:
+            raise RuntimeFailure("HARNESS", "UNKNOWN_ENVIRONMENT_FAILURE_HOOK")
         token = uuid.uuid4().hex[:10]
         self.provider = provider
         self.role = role
+        self.failure_hook = failure_hook
         self.name = f"rpf03-{role}-{token}"
         self.container_id: str | None = None
         self.contract: dict[str, Any] = {
@@ -164,6 +169,7 @@ class DockerEnvironment:
             "mutable_state_ownership": "container-writable-layer",
             "cleanup_state": "NOT_STARTED",
             "quarantine_state": None,
+            "controlled_failure": None,
         }
 
     def provision(self) -> dict[str, Any]:
@@ -236,6 +242,27 @@ class DockerEnvironment:
     def readiness(self, timeout_seconds: float = 5.0) -> dict[str, Any]:
         if self.contract["lifecycle_state"] == "QUARANTINED":
             return {"ok": False, "code": "QUARANTINED"}
+        if self.failure_hook == "pre-agent-readiness":
+            inspection = self.inspect()
+            if not inspection["running"]:
+                self.quarantine("CONTAINER_NOT_RUNNING")
+                return {"ok": False, "code": "CONTAINER_NOT_RUNNING"}
+            self.contract["lifecycle_state"] = "FAILED_BEFORE_AGENT"
+            self.contract["readiness"] = "CONTROLLED_FAILURE"
+            self.contract["controlled_failure"] = {
+                "hook_id": "pre-agent-readiness",
+                "source": "ENVIRONMENT",
+                "code": "CONTROLLED_READINESS_FAILURE",
+                "agent_started": False,
+                "state_change_performed": False,
+            }
+            return {
+                "ok": False,
+                "code": "CONTROLLED_READINESS_FAILURE",
+                "source": "ENVIRONMENT",
+                "controlled": True,
+                "agent_started": False,
+            }
         deadline = time.monotonic() + timeout_seconds
         while time.monotonic() < deadline:
             inspection = self.inspect()

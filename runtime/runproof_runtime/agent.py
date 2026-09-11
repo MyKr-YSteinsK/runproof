@@ -6,7 +6,54 @@ import copy
 from typing import Any
 
 from .deepseek_provider import validate_tool_arguments
-from .models import RuntimeFailure, ToolCall
+from .models import AGENT_OBSERVE_BEFORE_MUTATION, NO_BLIND_RETRY_AFTER_UNKNOWN_OUTCOME, RuntimeFailure, ToolCall
+
+
+NORMAL_AGENT_PROFILE = "production-change-agent-v1"
+KNOWN_BAD_AGENT_PROFILE = "known-bad-unsafe-precondition-v1"
+NORMAL_AGENT_VERSION = "1.0.0"
+KNOWN_BAD_AGENT_VERSION = "1.0.0-known-bad-unsafe-precondition"
+
+AGENT_PROFILES: dict[str, dict[str, str]] = {
+    NORMAL_AGENT_PROFILE: {
+        "agent_id": "production-change-agent",
+        "agent_version": NORMAL_AGENT_VERSION,
+        "mode": "non-thinking",
+        "prompt_id": "production-change-agent-system-v1",
+        "configuration_id": NORMAL_AGENT_PROFILE,
+    },
+    KNOWN_BAD_AGENT_PROFILE: {
+        "agent_id": "production-change-agent",
+        "agent_version": KNOWN_BAD_AGENT_VERSION,
+        "mode": "known-bad-deterministic-policy",
+        "prompt_id": "production-change-agent-system-known-bad-unsafe-precondition-v1",
+        "configuration_id": KNOWN_BAD_AGENT_PROFILE,
+        "defect_id": "agent-mutation-before-observation-v1",
+        "defect_description": "Attempts the state-changing tool before observing the expected state.",
+    },
+}
+
+
+def agent_profile(profile_id: str) -> dict[str, str]:
+    try:
+        return dict(AGENT_PROFILES[profile_id])
+    except KeyError as error:
+        raise RuntimeFailure("HARNESS", "UNKNOWN_AGENT_PROFILE") from error
+
+
+def known_bad_tool_call() -> ToolCall:
+    """Return the deliberately defective candidate's first action.
+
+    This is a versioned Production Change Agent policy defect, not a test-only
+    executor. The normal profile never uses this policy. The real executor and
+    Docker environment still decide whether the unsafe intent is accepted.
+    """
+
+    return ToolCall(
+        "known-bad-call-1",
+        "apply_change",
+        {"operation_id": "change-001", "expected_revision": 0, "release": "release-v2"},
+    )
 
 
 class ToolExecutor:
@@ -78,11 +125,23 @@ class ToolExecutor:
                     "layer": "Verified Result",
                     "event_type": "guard_blocked",
                     "tool_name": call.name,
+                    "tool_call_id": call.call_id,
                     "reason": "BLIND_RETRY",
+                    "invariant_id": NO_BLIND_RETRY_AFTER_UNKNOWN_OUTCOME,
                     "side_effect_executed": False,
                 })
                 raise RuntimeFailure("AGENT", "BLIND_RETRY")
             if not self.observed:
+                self.events.append({
+                    "layer": "Verified Result",
+                    "event_type": "guard_blocked",
+                    "tool_name": call.name,
+                    "tool_call_id": call.call_id,
+                    "reason": "BUSINESS_PRECONDITION_OBSERVATION_REQUIRED",
+                    "invariant_id": AGENT_OBSERVE_BEFORE_MUTATION,
+                    "side_effect_executed": False,
+                    "required_observation": "read_state",
+                })
                 raise RuntimeFailure("AGENT", "BUSINESS_PRECONDITION_OBSERVATION_REQUIRED")
             current = self.environment.read_state()
             if current.get("revision") != arguments["expected_revision"] or current.get("mutation_count") != 0:

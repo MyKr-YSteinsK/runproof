@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import historicalNormal from "../../../runtime/reviewed-normal-run.json";
-import { normalizeArtifact, reviewedRuns } from "./artifacts";
+import { getFailureCaseForRun, normalizeArtifact, reviewedFailureCases, reviewedRuns } from "./artifacts";
 
 describe("reviewed evidence adapter", () => {
   it("loads only the current v2 reviewed corpus", () => {
-    expect(reviewedRuns).toHaveLength(2);
+    expect(reviewedRuns).toHaveLength(5);
     expect(reviewedRuns.every((run) => run.schemaVersion === "rpf-run-evidence-v2")).toBe(true);
-    expect(reviewedRuns.every((run) => run.outcome.status === "PASS")).toBe(true);
+    expect(reviewedRuns.map((run) => run.outcome.status)).toEqual(["PASS", "PASS", "FAIL", "ERROR", "FAIL"]);
     expect(reviewedRuns.every((run) => run.llmProvider.provider_type === "llm")).toBe(true);
     expect(reviewedRuns.every((run) => run.environmentProvider.provider_type === "environment")).toBe(true);
   });
@@ -29,6 +29,16 @@ describe("reviewed evidence adapter", () => {
     expect(faulted?.outcome.status).toBe("PASS");
     expect(faulted?.fault.triggered).toBe(true);
     expect(faulted?.fault.reconciled).toBe(true);
-    expect(faulted?.verification.evidence.blind_retry_attempts).toBe(0);
+    expect(faulted?.verification?.evidence.blind_retry_attempts).toBe(0);
+  });
+
+  it("loads a validated Failure Case without promoting it to Regression", () => {
+    expect(reviewedFailureCases).toHaveLength(1);
+    const failureCase = reviewedFailureCases[0];
+    expect(failureCase.failureCase.workflowState).toBe("validated");
+    expect(failureCase.failureCase.isRegression).toBe(false);
+    expect(failureCase.failureCase.regressionStatus).toBe("NOT_A_REGRESSION");
+    expect(getFailureCaseForRun(failureCase.sourceRun.runId)?.failureCase.failureCaseId).toBe(failureCase.failureCase.failureCaseId);
+    expect(getFailureCaseForRun(failureCase.reproductionAttempts[0].runId)?.failureCase.failureCaseId).toBe(failureCase.failureCase.failureCaseId);
   });
 });

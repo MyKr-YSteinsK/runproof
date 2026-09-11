@@ -1,3 +1,3 @@
-"""The first product-shaped RunProof reliability vertical slice."""
+"""RunProof's first reviewed failure corpus and reproduction runtime."""
 
-RUNTIME_VERSION = "rpf-04.v1"
+RUNTIME_VERSION = "rpf-05.v1"
