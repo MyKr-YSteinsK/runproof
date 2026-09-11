@@ -4,7 +4,7 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 
 ## 仓库入口
 
-仓库包含 bootstrap 文档和 [RPF-01 disposable DeepSeek probe](spikes/rpf-01/README.md)，尚无正式产品运行时。当前生命周期、任务与远端交付事实以 [CURRENT_STATE](docs/project/CURRENT_STATE.md) 为准；产品能力描述仍是目标合同，probe 不等于产品实现。
+仓库包含 bootstrap 文档、[RPF-01 disposable DeepSeek probe](spikes/rpf-01/README.md) 和 [RPF-02 controlled-environment probe](spikes/rpf-02/README.md)，尚无正式产品运行时。当前生命周期、任务与远端交付事实以 [CURRENT_STATE](docs/project/CURRENT_STATE.md) 为准；产品能力描述仍是目标合同，probe 不等于产品实现。
 
 - [PROJECT_BRIEF](docs/project/PROJECT_BRIEF.md)：稳定产品意图、v1 Reliability/UX 合同与边界。
 - [DECISIONS](docs/project/DECISIONS.md)：继承 Bootstrap canonical D-001～D-012 的有效决定。

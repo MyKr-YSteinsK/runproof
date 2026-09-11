@@ -1,0 +1,649 @@
+{
+  "plan": "RPF-02",
+  "status": "Partial",
+  "started_at": "2026-09-11T11:41:54.190Z",
+  "ended_at": "2026-09-11T11:42:00.656Z",
+  "source_sha256": "e35816de50da03b2003c219593d07ba71ea501f9d20fbd69362c06717c77017c",
+  "host": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.16.0",
+    "cwd": "D:\\CS\\runproof",
+    "temp_root": "[OS_TEMP_ROOT]",
+    "docker": {
+      "client": "Docker version 29.6.1, build 8900f1d",
+      "daemon": "unavailable",
+      "reason": "Docker CLI exists but Docker daemon is unavailable"
+    },
+    "home_available": true
+  },
+  "contract": {
+    "fields": [
+      "environment_id",
+      "seed_id",
+      "seed_revision",
+      "provenance",
+      "lifecycle_state",
+      "readiness",
+      "verified_initial_state",
+      "observable_state",
+      "operation_receipt",
+      "cleanup_state",
+      "quarantine_state"
+    ],
+    "gates": [
+      "provision/acquire",
+      "restore/reset",
+      "readiness",
+      "initial-state verification"
+    ],
+    "hard_rule": "No formal Agent Run before all gates pass; Environment/Platform failure is not Agent FAIL."
+  },
+  "seed": {
+    "seed_id": "rpf-02-release-simulation-seed",
+    "seed_revision": "seed-2026-09-11-v1",
+    "state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "digest": "11c9abd46d286cc8e126e07a5cc6425c1dfec6a24be9911fd6d258c1244c73be"
+  },
+  "candidates": {
+    "fresh": {
+      "model": "fresh-per-run",
+      "run_count": 5,
+      "pass_count": 5,
+      "all_agent_quality_eligible": true,
+      "lifecycle": {
+        "provision_count": 5,
+        "reset_count": 5,
+        "cleanup_count": 5
+      },
+      "phase_latency_ms_avg": {
+        "reset": 84,
+        "readiness": 82.8,
+        "initial_state_verification": 87.2,
+        "mutation": 87.8,
+        "actual_state_verification": 92.4,
+        "cleanup": 1.4
+      },
+      "runs": [
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "fresh-4bb8e343-2618-4426-be3f-473010f1d13b",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 104
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 86
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 105
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 86
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 80
+            },
+            {
+              "phase": "cleanup",
+              "ok": true,
+              "latency_ms": 2
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "fresh-c1930e19-849c-48ad-b7c1-ca21847aab24",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 74
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 71
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 75
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 81
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 103
+            },
+            {
+              "phase": "cleanup",
+              "ok": true,
+              "latency_ms": 1
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "fresh-1c669fd6-85d6-4c6a-b6da-f07ad34eb713",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 81
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 93
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 82
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 105
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 101
+            },
+            {
+              "phase": "cleanup",
+              "ok": true,
+              "latency_ms": 2
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "fresh-6063478f-b7ad-4a7e-a02d-356a45a1506e",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 88
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 76
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 71
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 75
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 76
+            },
+            {
+              "phase": "cleanup",
+              "ok": true,
+              "latency_ms": 1
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "fresh-b4274dd1-9d7c-4e93-bf4f-58617980e8de",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 73
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 88
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 103
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 92
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 102
+            },
+            {
+              "phase": "cleanup",
+              "ok": true,
+              "latency_ms": 1
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        }
+      ],
+      "isolation": {
+        "level": "host-process-private-temp-root",
+        "container_verified": false,
+        "process_boundary": true,
+        "mutable_state_root_per_run": true
+      }
+    },
+    "reuse": {
+      "model": "reuse-and-reset",
+      "run_count": 5,
+      "pass_count": 5,
+      "all_agent_quality_eligible": true,
+      "lifecycle": {
+        "provision_count": 1,
+        "reset_count": 5,
+        "cleanup_count": 1,
+        "final_cleanup": {
+          "ok": true,
+          "latency_ms": 1
+        }
+      },
+      "phase_latency_ms_avg": {
+        "reset": 85.6,
+        "readiness": 79,
+        "initial_state_verification": 75.2,
+        "mutation": 77.8,
+        "actual_state_verification": 82.6
+      },
+      "runs": [
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "reuse-ffae0170-f18b-4799-a383-9cbce32ef458",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 97
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 85
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 75
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 82
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 82
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "reuse-ffae0170-f18b-4799-a383-9cbce32ef458",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 84
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 71
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 75
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 73
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 89
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "reuse-ffae0170-f18b-4799-a383-9cbce32ef458",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 77
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 75
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 70
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 81
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 73
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "reuse-ffae0170-f18b-4799-a383-9cbce32ef458",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 88
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 83
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 80
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 67
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 94
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        },
+        {
+          "outcome": "PASS",
+          "source": "ENVIRONMENT",
+          "agent_quality_eligible": true,
+          "formal_run_started": true,
+          "environment_id": "reuse-ffae0170-f18b-4799-a383-9cbce32ef458",
+          "phases": [
+            {
+              "phase": "reset",
+              "ok": true,
+              "latency_ms": 82
+            },
+            {
+              "phase": "readiness",
+              "ok": true,
+              "latency_ms": 81
+            },
+            {
+              "phase": "initial_state_verification",
+              "ok": true,
+              "latency_ms": 76
+            },
+            {
+              "phase": "mutation",
+              "ok": true,
+              "latency_ms": 86
+            },
+            {
+              "phase": "actual_state_verification",
+              "ok": true,
+              "latency_ms": 75
+            }
+          ],
+          "actual_state": {
+            "release": "release-v2",
+            "revision": 1,
+            "mutation_count": 1,
+            "operation_id": "change-001"
+          }
+        }
+      ],
+      "isolation": {
+        "level": "host-process-private-temp-root",
+        "container_verified": false,
+        "process_boundary": true,
+        "mutable_state_root_per_run": false
+      }
+    }
+  },
+  "isolation": {
+    "independent_instances": true,
+    "mutated_instance": "fresh-06d8b454-e3ca-497a-843b-15c9e1b81eae",
+    "untouched_instance": "fresh-5fabb35a-b80a-445b-a0fa-821cee78f581",
+    "outcome": "PASS"
+  },
+  "contamination": {
+    "run_a": "PASS",
+    "run_b": "INVALID",
+    "blocked_before_agent": true,
+    "quarantine": {
+      "status": "QUARANTINED",
+      "reason": "initial_state_mismatch",
+      "source": "ENVIRONMENT",
+      "at": "2026-09-11T11:41:59.739Z"
+    },
+    "detected": true
+  },
+  "failures": [
+    {
+      "name": "reset_failure",
+      "expected": "ERROR",
+      "outcome": "ERROR",
+      "source": "ENVIRONMENT",
+      "blocked_before_agent": true,
+      "formal_run_started": false,
+      "quarantined": true,
+      "code": "RESET_FAILED",
+      "quarantine": {
+        "status": "QUARANTINED",
+        "reason": "reset:RESET_FAILED",
+        "source": "ENVIRONMENT",
+        "at": "2026-09-11T11:41:59.859Z"
+      }
+    },
+    {
+      "name": "readiness_timeout",
+      "expected": "ERROR",
+      "outcome": "ERROR",
+      "source": "ENVIRONMENT",
+      "blocked_before_agent": true,
+      "formal_run_started": false,
+      "quarantined": true,
+      "code": "WORKER_TIMEOUT",
+      "quarantine": {
+        "status": "QUARANTINED",
+        "reason": "readiness:WORKER_TIMEOUT",
+        "source": "ENVIRONMENT",
+        "at": "2026-09-11T11:42:00.019Z"
+      }
+    },
+    {
+      "name": "initial_state_mismatch",
+      "expected": "INVALID",
+      "outcome": "INVALID",
+      "source": "ENVIRONMENT",
+      "blocked_before_agent": true,
+      "formal_run_started": false,
+      "quarantined": true,
+      "code": "INITIAL_STATE_MISMATCH",
+      "quarantine": {
+        "status": "QUARANTINED",
+        "reason": "initial_state_mismatch",
+        "source": "ENVIRONMENT",
+        "at": "2026-09-11T11:42:00.271Z"
+      }
+    },
+    {
+      "name": "cleanup_failure",
+      "expected": "ERROR",
+      "outcome": "ERROR",
+      "source": "ENVIRONMENT",
+      "blocked_before_agent": false,
+      "formal_run_started": true,
+      "quarantined": true,
+      "code": "CLEANUP_FAILED",
+      "quarantine": {
+        "status": "QUARANTINED",
+        "reason": "cleanup_failed",
+        "source": "ENVIRONMENT",
+        "at": "2026-09-11T11:42:00.655Z"
+      }
+    },
+    {
+      "name": "verifier_invalid",
+      "expected": "INVALID",
+      "outcome": "INVALID",
+      "source": "HARNESS",
+      "blocked_before_agent": true,
+      "formal_run_started": false,
+      "quarantined": false,
+      "code": "VERIFIER_CONTRACT_INVALID",
+      "quarantine": null
+    }
+  ],
+  "resource": {
+    "rss_before_bytes": 39403520,
+    "rss_after_bytes": 47366144,
+    "rss_delta_bytes": 7962624
+  },
+  "conclusion": {
+    "recommendation": "fresh-per-run-semantics",
+    "confidence": "partial",
+    "reason": "Fresh roots make ownership and quarantine simpler; actual container isolation was unavailable on this host, so this probe does not prove formal Prototype isolation.",
+    "container_prerequisite": "Docker CLI present, daemon unavailable",
+    "deferred": [
+      "TU-003 Fault Injection Boundary",
+      "TU-004 Durable Run Execution",
+      "TU-005 Evaluation Job Transport",
+      "TU-008 Agent Integration Contract"
+    ]
+  }
+}
