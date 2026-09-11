@@ -5,7 +5,7 @@
 ## Current
 
 - Lifecycle: `Discovery`
-- Plan: `RPF-00 = Complete`；RPF-01 实验与必要本地验证已完成，代码/证据交付待 commit/push。
+- Plan: `RPF-00 = Complete`；`RPF-01 = Complete`，实验、必要验证与代码/固定证据/结论的远端交付已完成。
 - Branch: `main`。
 - Product / published version: 无。
 - Last verified: 2026-09-11；真实 DeepSeek probe、14 项 synthetic/local 合同测试及固定样本的源码身份/状态重放/usage-cost/secret 边界离线核验通过。
@@ -23,7 +23,7 @@
 - 用户已确认 GitHub identity：`MyKr-YSteinsK/runproof`，`Public`。
 - Git Credential Manager 与 GitHub API 已验证账户 `MyKr-YSteinsK`；无需依赖 gh CLI。
 - Remote: `origin` → https://github.com/MyKr-YSteinsK/runproof.git；GitHub 已验证为 Public，默认分支 `main`。
-- Upstream: `main` → `origin/main`；RPF-00 已交付，RPF-01 提交同步状态在本次交付时核验。
+- Upstream: `main` → `origin/main`；RPF-01 已普通 push，并验证 ahead/behind=`0/0`、worktree clean；最终快照提交仍在交付时核对远端 HEAD。
 - Delivery model: `push-only`；无部署触发。具体授权与执行规则见 AGENTS。
 
 ## Known limitations / risks
@@ -35,7 +35,7 @@
 
 ## Active work
 
-完成 RPF-01 代码、经审查固定证据与结论的 focused commit / 普通 push。
+无进行中的产品实现任务；RPF-01 Spike 已完成，下一边界由 Architect 确定。
 
 ## Next likely boundary
 
