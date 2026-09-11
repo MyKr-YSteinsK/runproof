@@ -1,49 +1,42 @@
 # CURRENT_STATE
 
-> 当前项目真实快照。持续覆盖更新，不追加成长日志；Git/CHANGELOG 保存历史。
+> 当前真实快照；不追加过程日志。稳定目标见 PROJECT_BRIEF，执行政策见 AGENTS。
 
 ## Current
 
-- App/product version: 尚未建立产品版本号；未发布
-- Branch: `main`
-- Lifecycle stage: `Discovery`
-- Current milestone: 仓库接入与初始化（RPF-00）已完成本地 bootstrap
-- Production/published version: 无
-- Last verified: 2026-09-11；本地仓库、工具链、关键文档与 Git 交付状态已核对
+- Lifecycle: `Discovery`
+- Plan: `RPF-00 = Partial`；local bootstrap 与 Source of Truth 修订已完成并通过本地验证，远端交付未完成。
+- Branch: `main`；原始 bootstrap baseline 为 `efb0101`，保留其历史。
+- Product / published version: 无。
+- Last verified: 2026-09-11；本地仓库干净基线、Git Credential Manager 账户及 GitHub API 身份已核对。
 
-## Major capabilities
+## Major capabilities and technical shape
 
-- 已建立本地 Git 仓库与 `main` 主分支。
-- 已建立 README、仓库执行规则与三类 Project State 文档。
-- 已建立基础 secret 防护；没有产品运行时、Agent、Evaluation、Verifier、Release Gate 或 Web UI 实现。
+- 仓库资产仅 README、AGENTS、三类 Project State 与基础 secret ignore；没有产品功能。
+- Runtime / Provider integration / 产品技术栈脚手架：无。
+- CI / deployment workflow / endpoint / release：无。
 
-## Current technical shape
+## Workflow / delivery facts
 
-- Repository: 本地 Git 仓库；HEAD 为 bootstrap baseline commit。
-- Remote / upstream: 未配置；GitHub CLI 未安装，未创建远端。
-- Runtime / services: 未建立；没有 React、Spring Boot、Python、数据库、Queue、容器或 Provider 集成。
-- CI / deployment / release: 不存在；当前 delivery model 为 `push-only`，但尚无可 push 的 upstream。
+- 用户已确认 GitHub identity：`MyKr-YSteinsK/runproof`，`Public`。
+- Git Credential Manager 与 GitHub API 已验证账户 `MyKr-YSteinsK`；无需依赖 gh CLI。
+- 目标仓库经认证查询尚不存在；origin/main upstream 与 push 尚未建立。
+- 默认交付政策为 `push-only`，当前远端交付尚未完成。具体授权与执行规则见 AGENTS。
 
 ## Known limitations / risks
 
-- 尚无可信 GitHub owner/name/visibility 与认证，因此不能安全创建或推送远端。
-- 以下 Technical Unknowns 待最小 Investigation / Spike：DeepSeek Agent Contract、Environment Execution Model、Fault Injection Boundary、Durable Run Execution、Evaluation Job Transport、Replay Semantics、Non-deterministic Evaluation、Agent Integration Contract、Large Trace Visualization。
-- 推荐架构尚未经过运行时、负载、隔离或部署证据验证。
+- 架构推荐未经 Spike 验证；没有产品、CI 或部署证据。
+- 待调查：TU-001 DeepSeek Agent Contract；TU-002 Environment Execution Model；TU-003 Fault Injection Boundary；TU-004 Durable Run Execution；TU-005 Evaluation Job Transport；TU-006 Replay Semantics；TU-007 Non-deterministic Evaluation；TU-008 Agent Integration Contract；TU-009 Large Trace Visualization。
+- TU-010 Failure Minimization 待真实 Failure Corpus 后再调查，不阻塞 v1。
 
 ## Active work
 
-- 当前没有产品实现工作；下一步应由新的 Plan 选择一个最小 Investigation / Spike 解锁架构决策。
+完成 RPF-00 的远端创建/接入和普通 push；根据实际交付结果更新快照。
 
-## Next likely tasks
+## Next likely boundary
 
-1. 选择一个能解锁关键架构决策的最小 Investigation / Spike；优先明确 DeepSeek Agent Contract 或 Environment Execution Model。
-
-## Workflow / delivery facts that are currently material
-
-- coherent change 在必要验证通过后默认 focused commit；已有明确 upstream 时才普通 push。
-- 禁止 force push、擅自 rebase/history rewrite、提交 secrets/private data 或未经授权的 deploy/release/publish。
-- 正式 Plan / Handoff 与 `TASK_RESULT` 默认中文；Optional USER CHECK 仅为非阻塞建议。
+RPF-00 交付后，由 Architect 确定一个最小 Investigation/Spike，优先用代表性有状态 Tool 操作解锁 DeepSeek Agent Contract 及相关环境/故障边界；不预占下一 Plan 编号，不直接搭建完整产品。
 
 ## Update rule
 
-在任务结束（包括 Complete / Partial / Blocked）、暂停或正式交接边界，仅当上述当前事实发生 material change 时更新。区分已验证能力与未验证/部分实现；保持短小的 current snapshot，不追加过程历史。
+在完成、Partial、Blocked 或交接时仅按 material change 更新当前事实；目标不能写成能力，当前限制不能改写成永久 non-goal。最终提交身份与同步状态以实时 Git/远端核验为准，不维护旧 SHA 流水或将 Optional USER CHECK 纳入待办。

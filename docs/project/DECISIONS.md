@@ -1,237 +1,213 @@
 # DECISIONS
 
-> 只记录未来 Planner/Codex 需要知道“为什么不能随便改回去”的长期决定。普通 bug、Task 完成、commit 和临时实现细节不进入本文件。
+> 保存已确认决定的 canonical identity、理由、后果与重新考虑条件；普通任务和实现日志不进入本文件。
 
-## D-001｜主定位为 Agent Reliability & Release Engineering
+## Identity and recording boundary
+
+D-001～D-012 继承 Bootstrap 的同名决定；Accepted 表示接受该决定的原有范围，其中 D-008 仅接受推荐方向，不代表技术栈已实现或成为施工硬约束。
+
+首次导入提交 `efb0101` 曾合并 D-002/D-003，并错误重用后续编号；该提交中的编号仅能连同历史版本理解，不作为当前 alias。本文件恢复原始身份，相关旧引用应按决定语义迁移；后续不复用或静默重编号。原始决定仍有效，因此本次修复不是 Superseded，也不重写 Git 历史。
+
+## D-001｜产品定位采用 Agent Reliability & Release Engineering
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-RunProof 的主定位是 Agent Reliability & Release Engineering Platform，而不是通用 Agent Framework、单一 Agent 产品或普通任务编排器。
-
+项目正式定位为 **RunProof — Agent Reliability & Release Engineering Platform**，不采用普通 Agent Eval Platform 作为主定位。
 ### Why
-
-产品价值在于把 Agent 行为、证据、验证、Failure/Regression 与 Release Gate 连接成可审查的工程闭环。
-
+Eval 只是实现可靠性与发布决策的手段；最终问题是 Candidate Agent Version 是否有足够证据可以发布。
 ### Consequences
-
-- Benefits: 后续功能以可靠性判断和发布决策为中心，避免 scope 漂移。
-- Costs / trade-offs: 通用 Agent 能力与产品功能必须服从可靠性闭环，不能先行泛化。
-
+必须覆盖 Stateful Evaluation、Failure Investigation、Regression 与 Release Gate。
 ### Reconsider when
-
-- 产品目标与主要用户需求被正式重新定义。
+只有真实用户需求证明 Release Engineering 不再是核心价值时重新评估。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-002｜Reference-Agent-first，首个真实 Agent 为 Production Change Agent
+## D-002｜采用 Reference-Agent-first 的通用化路径
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-先以 Production Change Agent 验证平台的 Evaluation、Controlled Environment、Evidence、deterministic verification 与 Release Gate 闭环，再考虑扩展 Agent 类型。
-
+产品定位保持 Generalizable，但 v1 只把 Production Change Agent 做成完整第一垂直切片。
 ### Why
-
-Reference-Agent-first 可以让平台在真实可靠性场景中收敛，同时避免为尚未验证的通用 Agent 抽象提前搭建大骨架。
-
+没有第二种真实 Agent 前，过早抽象会导致 Adapter Hell。
 ### Consequences
-
-- Benefits: Investigation 与 Prototype 有明确真实对象和验收路径。
-- Costs / trade-offs: 早期平台抽象不会覆盖所有 Agent 形态。
-
+避免写死 Change Agent，但不为未知框架建设复杂扩展层。
 ### Reconsider when
-
-- Production Change Agent 无法代表核心可靠性问题，或已有证据证明另一个 Agent 场景应成为首个 reference。
+出现第二个真实、长期使用且共享明显 integration pattern 的 Agent。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-003｜DeepSeek-first 但保持 Provider boundary
+## D-003｜Production Change Agent 为首个 Reference Agent
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-DeepSeek 是 v1 首个真实 LLM Provider；Provider 接口与平台身份分离，不能把 DeepSeek 写成平台固有身份。
-
+v1 Reference Agent 面向发布、Canary/Rollback、配置变更和状态迁移。
 ### Why
-
-需要尽早用真实 Provider 验证 Agent 场景，同时保留未来替换或增加 Provider 的边界。
-
+该领域天然具有长期任务、Tool、副作用、审批、部分成功、UNKNOWN_OUTCOME、恢复与安全边界。
 ### Consequences
-
-- Benefits: 早期验证有具体依赖，平台不会被单一 Provider 永久绑定。
-- Costs / trade-offs: 需要明确 credentials、调用与证据边界，不能把密钥散落在产品数据中。
-
+Simulation Environment 必须支持足够真实的状态和故障模式，但无需复刻完整云平台。
 ### Reconsider when
-
-- 真实 Provider 验证显示 DeepSeek 无法满足 reference scenario，或 Provider boundary 需要新的长期抽象。
+Spike 证明该场景无法形成可信 Stateful Evaluation。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-004｜Evidence-first 与 deterministic verification 优先
+## D-004｜DeepSeek 为首个真实 LLM Provider
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-可靠性判断必须优先依赖可审查证据与 deterministic verification；`Observed Fact`、`Verified Result`、`Inference`、`AI Analysis` 分层保存。
-
+v1 首个且默认真实 LLM Provider 使用 DeepSeek。
 ### Why
-
-仅凭模型分析或表面成功状态不足以支持 Failure、Regression 或 Release Gate；证据分层可以限制误报和不可解释结论。
-
+大量重复 Evaluation 使成本成为实际工程变量。
 ### Consequences
-
-- Benefits: 结论可复核、可审计，发布判断更稳健。
-- Costs / trade-offs: 需要投入证据模型、验证器与可视化，早期实现速度可能较慢。
-
+Provider 层保持可扩展；Token、Latency、Cost 必须可观察。
 ### Reconsider when
-
-- 新证据证明某类可靠性结论无法通过当前 deterministic boundary 表达，且替代方案能维持可审查性。
+DeepSeek 无法满足最低 Tool Calling/Structured Output/稳定性合同，或其他 Provider 明显更优。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-005｜Destructive/live side effect 仅限 Controlled Production Simulation
+## D-005｜关键可靠性判定优先确定性验证
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-v1 的 destructive/live side effect 只能发生在 Controlled Production Simulation Environment；不接入真实生产 destructive credentials。
-
+可由环境状态、显式规则和程序验证的事实，不使用 LLM Judge 作为唯一裁判。
 ### Why
-
-项目处于 Discovery，需要真实风险形态的验证，但尚未具备把 Agent 操作暴露给真实生产的安全与治理证据。
-
+RunProof 用于降低不确定性，不能把核心 PASS/FAIL 交给另一个不确定模型。
 ### Consequences
-
-- Benefits: 可以在受控边界内调查可靠性，不把实验风险带入真实生产。
-- Costs / trade-offs: simulation 与真实生产的差异必须显式记录，不能把 simulation 结果直接等同生产保证。
-
+Verifier、Invariant、Safety Policy、Release Gate 以确定性证据为主。
 ### Reconsider when
-
-- 有新的正式安全、权限、审计、隔离与发布决策证明可以扩大边界。
+仅对本质无法确定性表达的语义目标引入明确标注的不确定评估。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-006｜Desktop Web 为 portfolio-critical Primary Surface
+## D-006｜v1 仅操作 Controlled Production Simulation
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-Desktop Web Control Plane 是 Primary human surface；CLI、Programmatic API、CI 是 automation surfaces，Desktop Web 的视觉与信息架构质量属于正式产品要求。
-
+所有高风险、有副作用 Tool 只操作受控 Simulation Environment。
 ### Why
-
-可靠性证据、Run 历史与 Release Gate 需要面向人的审查与决策；不能把 Web 仅当作内部调试面板。
-
+可重置、可观测、可验证是 Stateful Evaluation 前提，并降低真实生产风险。
 ### Consequences
-
-- Benefits: 后续 UX、信息架构与证据可视化有明确优先级。
-- Costs / trade-offs: UI 质量和可审查性会进入产品验收成本。
-
+Real Production integration 为 FUTURE。
 ### Reconsider when
-
-- 主要用户工作方式或产品交付形态被正式改变。
+核心 Reliability Loop 成熟且出现真实外部系统接入需求。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-007｜推荐 Java Control Plane + Python Agent Runtime，但暂不锁定施工方案
+## D-007｜Desktop Web 是 Portfolio-critical Primary Surface
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-Java/Spring Boot Control Plane 与 Python Agent/Evaluation Runtime 作为推荐架构方向；具体通信、Queue、durable execution、environment execution model 与持久化边界必须在 Investigation / Spike 后决定。
-
+Desktop Web Control Plane 是核心人类交互面；视觉质量、证据可视化、调查效率和功能完整性属于正式验收。
 ### Why
-
-该组合符合当前技术假设，但仓库尚无运行时、CI、部署或真实负载证据，直接脚手架化会把未知误写成事实。
-
+RunProof 核心任务是理解复杂 failure 和 release evidence，纯 CLI/模板化后台无法充分表达。
 ### Consequences
-
-- Benefits: 为后续调查提供方向，同时保留根据证据调整的空间。
-- Costs / trade-offs: 当前不能通过创建空模块获得“架构已完成”的假象。
-
+Timeline、State Diff、Trajectory Diff、Gate Matrix、趋势/分布等必须服务真实工程任务。
 ### Reconsider when
-
-- Spike 证明其他边界、语言或执行模型更符合可靠性、不变量与交付约束。
+无；仅调整具体视觉系统和实现技术。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-008｜运行结果、证据与历史事实不可混淆或静默改写
+## D-008｜采用 Java Control Plane + Python Agent Runtime 的推荐架构
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-Agent `FAIL` 与 Platform `ERROR` 分离；环境起点不可验证时不得正式 Run；`UNKNOWN_OUTCOME` 先 reconcile 再决定 retry；Failure 只有经过重现、验证与稳定化后才能晋升 Regression；Run / Release 历史事实不可静默重写。
-
+推荐 Java/Spring Boot 承担确定性 Control Plane，Python 承担 Agent/Evaluation Runtime。
 ### Why
-
-这些状态边界直接影响重试、回归、发布与审计判断；混淆状态会把基础设施故障误报为 Agent 行为，或把未知结果误报为成功/失败。
-
+Run 生命周期、调度、状态机、权限、Release Policy 与审计属于长期确定性平台状态；LLM Provider、Agent Loop 和 AI Eval 更适合 Python。
 ### Consequences
-
-- Benefits: 失败分类与发布证据保持可解释、可追踪。
-- Costs / trade-offs: 状态模型、reconcile 与历史存储需要更严格的设计。
-
+具体通信、Queue、进程/部署边界仍需 Spike。
 ### Reconsider when
-
-- 新的领域证据要求更细的状态分类，但不能牺牲可追踪历史与证据分层。
+真实仓库或 Spike 证明双运行时复杂度显著超过收益。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
 
-## D-009｜导师研究方向不是项目硬约束
+## D-009｜Agent FAIL 与 Platform ERROR 严格分离
 
 - Status: `Accepted`
-- Date: 2026-09-11
-
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
 ### Decision
-
-导师或外部研究方向可作为调查输入，但不自动成为 RunProof 的产品 scope、架构约束或实现验收条件。
-
+至少区分 `PASS / FAIL / ERROR / INVALID / INCONCLUSIVE / CANCELLED`。
 ### Why
-
-项目需要以自身用户、证据与工程约束作决定，避免把背景研究误写成已确认的产品要求。
-
+平台故障、Provider outage、Environment reset failure 或 Scenario invalid 不能伪装成 Agent regression。
 ### Consequences
-
-- Benefits: 后续决策可以回到真实产品证据和约束。
-- Costs / trade-offs: 研究成果需要经过明确决策才能进入长期状态。
-
+Release Gate 必须考虑证据覆盖率。
 ### Reconsider when
-
-- 研究结果被正式纳入产品决策并形成可验证的约束。
+不取消，只允许细化状态模型。
 
 ### Supersedes
 
-- none
+- none（继承既有决定，不构成产品决策替代）
+
+## D-010｜Evidence 事实与派生分析分层
+
+- Status: `Accepted`
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
+### Decision
+Observed Fact、Verified Result、Inference、AI Analysis 不得混为同一事实层级。
+### Why
+Failure Attribution 和 AI 分析天然具有不确定性。
+### Consequences
+数据模型与 Web UX 都必须表示证据层级。
+### Reconsider when
+无。
+
+### Supersedes
+
+- none（继承既有决定，不构成产品决策替代）
+
+## D-011｜Failure 经验证后才可晋升 Regression
+
+- Status: `Accepted`
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
+### Decision
+Failure 不自动加入永久 Regression Corpus；必须重现、验证和稳定化。
+### Why
+临时 Provider 波动、环境噪声或重复失败会污染长期测试资产。
+### Consequences
+Failure-to-Regression 是独立业务流程。
+### Reconsider when
+无；可以提高自动化，不能取消质量门槛。
+
+### Supersedes
+
+- none（继承既有决定，不构成产品决策替代）
+
+## D-012｜导师研究方向不作为项目硬约束
+
+- Status: `Accepted`
+- Date: 2026-09-11（仓库记录日期；原始批准日期未提供）
+### Decision
+Graph ML、社区算法、联邦学习仅在未来对 Agent Reliability 有显著真实价值时引入。
+### Why
+第一目标是 AI Agent / AI Backend / Production AI 求职价值。
+### Consequences
+科研方向通过独立学习与研究项目推进。
+### Reconsider when
+出现与 RunProof 核心数据/机制高度重合且能显著提高产品或论文价值的研究问题。
+
+### Supersedes
+
+- none（继承既有决定，不构成产品决策替代）
