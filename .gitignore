@@ -14,3 +14,7 @@
 # Python runtime caches
 __pycache__/
 *.py[cod]
+
+# Web dependencies and build output
+node_modules/
+/dist/

@@ -6,8 +6,8 @@ import unittest
 from runtime.runproof_runtime.agent import ToolExecutor
 from runtime.runproof_runtime.deepseek_provider import DeepSeekProvider, validate_tool_arguments
 from runtime.runproof_runtime.evidence import assert_safe_artifact, redact
-from runtime.runproof_runtime.models import INITIAL_STATE, RuntimeFailure, TARGET_STATE, ToolCall, failure_record
-from runtime.runproof_runtime.runner import MAX_AGENT_STEPS, MAX_PROVIDER_CALLS, OVERALL_TIMEOUT_SECONDS
+from runtime.runproof_runtime.models import EVIDENCE_SCHEMA_VERSION, INITIAL_STATE, RuntimeFailure, TARGET_STATE, ToolCall, TRAJECTORY_CONTRACT_VERSION, failure_record
+from runtime.runproof_runtime.runner import MAX_AGENT_STEPS, MAX_PROVIDER_CALLS, OVERALL_TIMEOUT_SECONDS, _normalize_trajectory
 from runtime.runproof_runtime.verifier import verify_run
 
 
@@ -90,6 +90,20 @@ class ContractTests(unittest.TestCase):
             DeepSeekProvider("test-key", max_calls=0).complete([])
         self.assertEqual(error.exception.domain, "HARNESS")
         self.assertEqual(error.exception.code, "REQUEST_STEP_BUDGET")
+
+    def test_v2_event_identity_and_ordering_are_explicit(self):
+        events = [
+            {"layer": "Observed Fact", "event_type": "tool_result", "tool_call_id": "call-1"},
+            {"layer": "Verified Result", "event_type": "reconcile", "operation_id": "change-001"},
+        ]
+        _normalize_trajectory(events, "run-test", "env-test")
+        self.assertEqual(EVIDENCE_SCHEMA_VERSION, "rpf-run-evidence-v2")
+        self.assertEqual(TRAJECTORY_CONTRACT_VERSION, "rpf-trajectory-event-v1")
+        self.assertEqual([event["sequence"] for event in events], [1, 2])
+        self.assertEqual([event["evidence_layer"] for event in events], ["Observed Fact", "Verified Result"])
+        self.assertEqual(len({event["event_id"] for event in events}), 2)
+        self.assertEqual(events[0]["entity_refs"]["tool_call_id"], "call-1")
+        self.assertEqual(events[1]["entity_refs"]["operation_id"], "change-001")
 
 
 if __name__ == "__main__":

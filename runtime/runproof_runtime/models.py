@@ -7,6 +7,8 @@ from typing import Any
 
 
 OUTCOMES = {"PASS", "FAIL", "ERROR", "INVALID", "INCONCLUSIVE", "CANCELLED"}
+EVIDENCE_SCHEMA_VERSION = "rpf-run-evidence-v2"
+TRAJECTORY_CONTRACT_VERSION = "rpf-trajectory-event-v1"
 INITIAL_STATE = {
     "release": "release-v1",
     "revision": 0,

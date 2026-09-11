@@ -28,7 +28,8 @@
 - RPF-02 临时输出仅在忽略的 `.local/rpf-02/`；`spikes/rpf-02/reviewed-evidence.json` 是历史 host-reference 固定样本，`spikes/rpf-02/reviewed-docker-evidence.json` 是真实 Docker provider 脱敏固定样本，允许提交，不能自动以新实验覆盖。修改任一 probe 后需重新生成并审查对应样本的 `source_sha256`；Docker 是当前证据 provider，不是永久产品身份。
 - RPF-03 `.local/rpf-03/` 只保存本地 Run artifacts，不提交；runtime source identity 由正式 package 文件 hash 记录。live artifacts 必须经过 secret/private-protocol redaction，历史 Run 不得静默覆盖。
 - RPF-03 `runtime/reviewed-*.json` 是经过审查的固定 live evidence 样本，允许提交；`runtime/verify-reviewed-artifacts.py` 校验 artifact schema、PASS、Docker cleanup、response-lost reconcile、secret/private-protocol 边界与 runtime source hash。修改 `runtime/runproof_runtime/` 后必须重新生成并审查样本，不能让旧样本冒充新源码证据。
-- 无正式产品 typecheck/lint/build 命令；文档仍按语义/链接、Git diff/history/status 和 secret/ignore 边界验证。
+- RPF-04 Web product commands：`npm test`、`npm run typecheck`、`npm run build`；Web 只从 `runtime/reviewed-*-run-v2.json` 读取 reviewed corpus，不发起 live Run，不保存 secret、Authorization 或 private reasoning。RPF-04 `.local/rpf-04/` 只保存重新生成 v2 artifacts 的本地副本，不提交；固定 v1/v2 样本身份不得静默覆盖。
+- Python runtime 当前无独立 lint/build 命令；文档/Project State 仍按语义/链接、Git diff/history/status 和 secret/ignore 边界验证。
 - 真实产品命令引入后，按脚本实际语义更新本节，注明 build 已包含的检查以避免重复；不创建空洞 CI。
 - 当前 runtime/CI/deployment/version 状态仅见 CURRENT_STATE。
 

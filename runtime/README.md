@@ -26,6 +26,14 @@ live 命令从进程环境读取 `DEEPSEEK_API_KEY`，默认模型为 `deepseek-
 
 Artifact 不保存 request messages、Authorization、secret、private reasoning 或自由模型文本；只保存可观察的 tool intent/result、fault、environment transition、usage、identity 与确定性验证结果。
 
+## Evidence schema evolution
+
+- `rpf-run-evidence-v1`：RPF-03 历史样本，原样保留，只能作为 legacy evidence 读取；其中旧的顶层 `provider` 语义不会被静默重写。
+- `rpf-run-evidence-v2`：RPF-04 当前正式样本。`llm_provider` 只承载 DeepSeek/model/calls/usage/cost；`environment_provider` 只承载 Docker implementation/context/image facts；`environment` 承载 run identity、seed、state ownership、receipt 与 lifecycle contract。
+- `rpf-trajectory-event-v1`：每个 event 都有 run-scoped `event_id`、显式整数 `sequence`、`event_type`、`evidence_layer` 和 `entity_refs`。顺序与 identity 写入 artifact，不依赖数组位置解释。
+
+`reviewed-normal-run.json` 与 `reviewed-response-lost-run.json` 是 v1 历史证据；`reviewed-normal-run-v2.json` 与 `reviewed-response-lost-run-v2.json` 是 RPF-04 重新执行并审查后的 v2 evidence。`verify-reviewed-artifacts.py` 同时验证两代身份边界、源码 hash 和 secret/private-protocol 边界。
+
 仓库内的 `reviewed-normal-run.json` 与 `reviewed-response-lost-run.json` 是两份已审查、脱敏且绑定当前 runtime source hash 的 live evidence 样本；`verify-reviewed-artifacts.py` 只做离线校验，不调用 Provider。新的 live Run 仍写入 `.local/rpf-03/`，不会覆盖这些样本。
 
 ## Scope boundary

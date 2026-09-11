@@ -14,9 +14,10 @@ from .agent import ToolExecutor
 from .deepseek_provider import DeepSeekProvider
 from .docker_environment import DockerEnvironment, provider_snapshot
 from .evidence import runtime_source_sha256, timestamp
-from .models import RuntimeFailure
+from .models import EVIDENCE_SCHEMA_VERSION, RuntimeFailure, TRAJECTORY_CONTRACT_VERSION
 from .scenario import SCENARIO, system_prompt
 from .verifier import VERIFIER_ID, VERIFIER_VERSION, verify_run
+from . import RUNTIME_VERSION
 
 
 MAX_AGENT_STEPS = 6
@@ -26,7 +27,27 @@ OVERALL_TIMEOUT_SECONDS = 8 * 60
 
 
 def _event(trajectory: list[dict[str, Any]], event_type: str, **values: Any) -> None:
-    trajectory.append({"layer": "Observed Fact", "sequence": len(trajectory) + 1, "event_type": event_type, **values})
+    trajectory.append({"layer": "Observed Fact", "event_type": event_type, **values})
+
+
+def _normalize_trajectory(trajectory: list[dict[str, Any]], run_id: str, environment_id: str | None) -> None:
+    """Materialize the event identity/order contract after all event producers finish."""
+
+    occurrences: dict[str, int] = {}
+    for sequence, event in enumerate(trajectory, start=1):
+        event_type = str(event.get("event_type", "unknown"))
+        occurrences[event_type] = occurrences.get(event_type, 0) + 1
+        event["event_id"] = f"{run_id}:event:{event_type}:{occurrences[event_type]:03d}"
+        event["sequence"] = sequence
+        event["evidence_layer"] = event.pop("layer", event.get("evidence_layer", "Observed Fact"))
+        references: dict[str, str] = {"run_id": run_id}
+        if environment_id:
+            references["environment_id"] = environment_id
+        for key in ("tool_call_id", "fault_id", "operation_id", "verifier_id"):
+            value = event.get(key)
+            if isinstance(value, str) and value:
+                references[key] = value
+        event["entity_refs"] = references
 
 
 def _outcome(status: str, source: str, formal_run_started: bool, reason: str | None = None) -> dict[str, Any]:
@@ -61,8 +82,13 @@ def run_slice(fault_profile: str = "none", api_key: str | None = None, model: st
     agent_failure: RuntimeFailure | None = None
 
     artifact: dict[str, Any] = {
-        "schema_version": "rpf-run-evidence-v1",
+        "schema_version": EVIDENCE_SCHEMA_VERSION,
         "artifact_kind": "Run Evidence",
+        "trajectory_contract": {
+            "version": TRAJECTORY_CONTRACT_VERSION,
+            "ordering": "ascending integer sequence within one run",
+            "identity": "run-scoped event_id; immutable once evidence is written",
+        },
         "run": {
             "run_id": run_id,
             "evaluation_id": evaluation_id,
@@ -75,9 +101,10 @@ def run_slice(fault_profile: str = "none", api_key: str | None = None, model: st
             },
             "scenario": {"scenario_id": SCENARIO["scenario_id"], "scenario_version": SCENARIO["scenario_version"]},
             "verifier": {"verifier_id": VERIFIER_ID, "verifier_version": VERIFIER_VERSION},
-            "runtime": {"runtime_version": "rpf-03.v1", "source_sha256": None},
+            "runtime": {"runtime_version": RUNTIME_VERSION, "source_sha256": None},
         },
-        "provider": None,
+        "llm_provider": None,
+        "environment_provider": None,
         "environment": None,
         "scenario": SCENARIO,
         "fault": {
@@ -103,12 +130,14 @@ def run_slice(fault_profile: str = "none", api_key: str | None = None, model: st
 
     try:
         provider_info = provider_snapshot()
-        artifact["provider"] = {
+        artifact["environment_provider"] = {
+            "provider_id": "docker",
+            "provider_type": "environment",
+            "provider_implementation": "docker",
             **provider_info,
-            "requested_model": model or os.environ.get("RPF_MODEL", "deepseek-flash"),
-            "mode": "non-thinking",
         }
         provider = DeepSeekProvider(api_key or os.environ.get("DEEPSEEK_API_KEY", ""), model=model, max_calls=MAX_PROVIDER_CALLS)
+        artifact["llm_provider"] = {"provider_id": "deepseek", "provider_type": "llm", "requested_model": provider.model, "mode": "non-thinking"}
         environment = DockerEnvironment(provider_info, "agent-run")
         environment.provision()
         artifact["environment"] = environment.snapshot()
@@ -213,7 +242,9 @@ def run_slice(fault_profile: str = "none", api_key: str | None = None, model: st
                 terminal_error = RuntimeFailure("ENVIRONMENT", cleanup.get("code", "CLEANUP_FAILED"))
             artifact["environment"] = environment.snapshot()
         if provider:
-            artifact["provider"] = {**(artifact["provider"] or {}), **provider.evidence()}
+            artifact["llm_provider"] = {**(artifact["llm_provider"] or {}), **provider.evidence()}
+        environment_id = artifact["environment"].get("environment_id") if isinstance(artifact.get("environment"), dict) else None
+        _normalize_trajectory(trajectory, run_id, environment_id)
         artifact["run"]["runtime"]["source_sha256"] = runtime_source_sha256()
         artifact["run"]["ended_at"] = timestamp()
         artifact["duration_ms"] = round((time.monotonic() - started_clock) * 1000)

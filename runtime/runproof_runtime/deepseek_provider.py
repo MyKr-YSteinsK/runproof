@@ -256,6 +256,8 @@ class DeepSeekProvider:
     def evidence(self) -> dict[str, Any]:
         usage = aggregate_usage(self.calls)
         return {
+            "provider_id": "deepseek",
+            "provider_type": "llm",
             "requested_model": self.model,
             "mode": "non-thinking",
             "api_surface": API_URL,
