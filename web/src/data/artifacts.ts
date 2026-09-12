@@ -24,6 +24,11 @@ import evaluationCandidateRecoveryRunArtifact from "../../../runtime/reviewed-ev
 import evaluationCandidateRegressionRunArtifact from "../../../runtime/reviewed-evaluation-candidate-regression-run.json";
 import evaluationBaselineRegressionResultArtifact from "../../../runtime/reviewed-evaluation-baseline-regression-result.json";
 import evaluationCandidateRegressionResultArtifact from "../../../runtime/reviewed-evaluation-candidate-regression-result.json";
+import qualityPolicyArtifact from "../../../runtime/reviewed-quality-policy.json";
+import qualityGateBaselineArtifact from "../../../runtime/reviewed-quality-gate-baseline.json";
+import qualityGateCandidateArtifact from "../../../runtime/reviewed-quality-gate-candidate.json";
+import releaseDecisionBaselineArtifact from "../../../runtime/reviewed-release-decision-baseline.json";
+import releaseDecisionCandidateArtifact from "../../../runtime/reviewed-release-decision-candidate.json";
 
 export const ACTIVE_SCHEMA_VERSION = "rpf-run-evidence-v2";
 
@@ -288,6 +293,92 @@ export interface EvaluationComparison {
     validationErrors: string[];
     nonReleaseBoundary: string;
     runtime: JsonRecord;
+  };
+}
+
+export interface QualityPolicy {
+  schemaVersion: string;
+  artifactKind: string;
+  policy: {
+    policyId: string;
+    policyVersion: string;
+    policyIdentity: string;
+    name: string;
+    purpose: string;
+    compatibleSuite: JsonRecord;
+    requiredEvidence: JsonRecord;
+    rules: JsonRecord[];
+    decisionPrecedence: string[];
+    unknownValueSemantics: JsonRecord;
+    sourceIdentity: JsonRecord;
+  };
+}
+
+export interface QualityGateEvaluation {
+  schemaVersion: string;
+  artifactKind: string;
+  gateEvaluation: {
+    gateEvaluationId: string;
+    evaluatedAt: string;
+    status: string;
+    decisionSubject: string;
+    policyRef: JsonRecord | null;
+    suiteRef: JsonRecord | null;
+    agentUnderEvaluation: JsonRecord;
+    candidateAgent: JsonRecord | null;
+    baselineAgent: JsonRecord | null;
+    subjectEvaluationRef: JsonRecord | null;
+    candidateEvaluationRef: JsonRecord | null;
+    baselineEvaluationRef: JsonRecord | null;
+    comparisonRef: JsonRecord | null;
+    regressionRef: JsonRecord | null;
+    decisionStatus: string | null;
+    ruleResults: JsonRecord[];
+    blockingReasons: JsonRecord[];
+    evidenceGapReasons: JsonRecord[];
+    reviewReasons: JsonRecord[];
+    softWarnings: JsonRecord[];
+    coverageFacts: JsonRecord;
+    regressionFacts: JsonRecord;
+    recoveryFacts: JsonRecord;
+    validationErrors: string[];
+    authorizationBoundary: JsonRecord;
+    sourceIdentity: JsonRecord;
+  };
+}
+
+export interface ReleaseDecision {
+  schemaVersion: string;
+  artifactKind: string;
+  releaseDecision: {
+    releaseDecisionId: string;
+    decisionTimestamp: string;
+    decisionStatus: string;
+    decisionSubject: string;
+    evaluatedAgent: JsonRecord;
+    evaluatedAgentVersion: string;
+    candidateAgent: JsonRecord | null;
+    candidateAgentVersion: string | null;
+    baselineAgent: JsonRecord | null;
+    baselineAgentVersion: string | null;
+    policyRef: JsonRecord;
+    suiteRef: JsonRecord;
+    candidateEvaluationRef: JsonRecord;
+    baselineEvaluationRef: JsonRecord | null;
+    comparisonRef: JsonRecord;
+    gateEvaluationRef: JsonRecord;
+    regressionRef: JsonRecord;
+    blockingReasons: JsonRecord[];
+    reviewReasons: JsonRecord[];
+    softWarnings: JsonRecord[];
+    evidenceGapReasons: JsonRecord[];
+    validEvidenceCoverage: JsonRecord;
+    historicalRegression: JsonRecord;
+    recoveryFault: JsonRecord;
+    evidenceRefs: JsonRecord[];
+    authorizationBoundary: JsonRecord;
+    history: JsonRecord;
+    sourceIdentity: JsonRecord;
   };
 }
 
@@ -721,6 +812,106 @@ const normalizeComparison = (raw: unknown): EvaluationComparison => {
   };
 };
 
+const normalizeQualityPolicy = (raw: unknown): QualityPolicy => {
+  const artifact = asObject(raw, "quality policy artifact");
+  const policy = asObject(artifact.policy, "quality policy");
+  return {
+    schemaVersion: asString(artifact.schema_version, "quality policy schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "quality policy artifact_kind"),
+    policy: {
+      policyId: asString(policy.policy_id, "policy.policy_id"),
+      policyVersion: asString(policy.policy_version, "policy.policy_version"),
+      policyIdentity: asString(policy.policy_identity, "policy.policy_identity"),
+      name: asString(policy.name, "policy.name"),
+      purpose: asString(policy.purpose, "policy.purpose"),
+      compatibleSuite: asObject(policy.compatible_suite, "policy.compatible_suite"),
+      requiredEvidence: asObject(policy.required_evidence, "policy.required_evidence"),
+      rules: asArray(policy.rules, "policy.rules").map((value) => asObject(value, "policy rule")),
+      decisionPrecedence: asArray(policy.decision_precedence, "policy.decision_precedence").map((value) => asString(value, "policy precedence")),
+      unknownValueSemantics: asObject(policy.unknown_value_semantics, "policy.unknown_value_semantics"),
+      sourceIdentity: asObject(policy.source_identity, "policy.source_identity"),
+    },
+  };
+};
+
+const normalizeQualityGate = (raw: unknown): QualityGateEvaluation => {
+  const artifact = asObject(raw, "quality gate artifact");
+  const gate = asObject(artifact.gate_evaluation, "quality gate evaluation");
+  const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
+  return {
+    schemaVersion: asString(artifact.schema_version, "quality gate schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "quality gate artifact_kind"),
+    gateEvaluation: {
+      gateEvaluationId: asString(gate.gate_evaluation_id, "gate.gate_evaluation_id"),
+      evaluatedAt: asString(gate.evaluated_at, "gate.evaluated_at"),
+      status: asString(gate.status, "gate.status"),
+      decisionSubject: asString(gate.decision_subject, "gate.decision_subject"),
+      policyRef: optionalObject(gate.policy_ref, "gate.policy_ref"),
+      suiteRef: optionalObject(gate.suite_ref, "gate.suite_ref"),
+      agentUnderEvaluation: asObject(gate.agent_under_evaluation, "gate.agent_under_evaluation"),
+      candidateAgent: optionalObject(gate.candidate_agent, "gate.candidate_agent"),
+      baselineAgent: optionalObject(gate.baseline_agent, "gate.baseline_agent"),
+      subjectEvaluationRef: optionalObject(gate.subject_evaluation_ref, "gate.subject_evaluation_ref"),
+      candidateEvaluationRef: optionalObject(gate.candidate_evaluation_ref, "gate.candidate_evaluation_ref"),
+      baselineEvaluationRef: optionalObject(gate.baseline_evaluation_ref, "gate.baseline_evaluation_ref"),
+      comparisonRef: optionalObject(gate.comparison_ref, "gate.comparison_ref"),
+      regressionRef: optionalObject(gate.regression_ref, "gate.regression_ref"),
+      decisionStatus: typeof gate.decision_status === "string" ? gate.decision_status : null,
+      ruleResults: asArray(gate.rule_results, "gate.rule_results").map((value) => asObject(value, "gate rule result")),
+      blockingReasons: asArray(gate.blocking_reasons, "gate.blocking_reasons").map((value) => asObject(value, "gate blocking reason")),
+      evidenceGapReasons: asArray(gate.evidence_gap_reasons, "gate.evidence_gap_reasons").map((value) => asObject(value, "gate evidence gap")),
+      reviewReasons: asArray(gate.review_reasons, "gate.review_reasons").map((value) => asObject(value, "gate review reason")),
+      softWarnings: asArray(gate.soft_warnings, "gate.soft_warnings").map((value) => asObject(value, "gate soft warning")),
+      coverageFacts: asObject(gate.coverage_facts, "gate.coverage_facts"),
+      regressionFacts: asObject(gate.regression_facts, "gate.regression_facts"),
+      recoveryFacts: asObject(gate.recovery_facts, "gate.recovery_facts"),
+      validationErrors: asArray(gate.validation_errors, "gate.validation_errors").map((value) => asString(value, "gate validation error")),
+      authorizationBoundary: asObject(gate.authorization_boundary, "gate.authorization_boundary"),
+      sourceIdentity: asObject(gate.source_identity, "gate.source_identity"),
+    },
+  };
+};
+
+const normalizeReleaseDecision = (raw: unknown): ReleaseDecision => {
+  const artifact = asObject(raw, "release decision artifact");
+  const decision = asObject(artifact.release_decision, "release decision");
+  const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
+  return {
+    schemaVersion: asString(artifact.schema_version, "release decision schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "release decision artifact_kind"),
+    releaseDecision: {
+      releaseDecisionId: asString(decision.release_decision_id, "decision.release_decision_id"),
+      decisionTimestamp: asString(decision.decision_timestamp, "decision.decision_timestamp"),
+      decisionStatus: asString(decision.decision_status, "decision.decision_status"),
+      decisionSubject: asString(decision.decision_subject, "decision.decision_subject"),
+      evaluatedAgent: asObject(decision.evaluated_agent, "decision.evaluated_agent"),
+      evaluatedAgentVersion: asString(decision.evaluated_agent_version, "decision.evaluated_agent_version"),
+      candidateAgent: optionalObject(decision.candidate_agent, "decision.candidate_agent"),
+      candidateAgentVersion: typeof decision.candidate_agent_version === "string" ? decision.candidate_agent_version : null,
+      baselineAgent: optionalObject(decision.baseline_agent, "decision.baseline_agent"),
+      baselineAgentVersion: typeof decision.baseline_agent_version === "string" ? decision.baseline_agent_version : null,
+      policyRef: asObject(decision.policy_ref, "decision.policy_ref"),
+      suiteRef: asObject(decision.suite_ref, "decision.suite_ref"),
+      candidateEvaluationRef: asObject(decision.candidate_evaluation_ref, "decision.candidate_evaluation_ref"),
+      baselineEvaluationRef: optionalObject(decision.baseline_evaluation_ref, "decision.baseline_evaluation_ref"),
+      comparisonRef: asObject(decision.comparison_ref, "decision.comparison_ref"),
+      gateEvaluationRef: asObject(decision.gate_evaluation_ref, "decision.gate_evaluation_ref"),
+      regressionRef: asObject(decision.regression_ref, "decision.regression_ref"),
+      blockingReasons: asArray(decision.blocking_reasons, "decision.blocking_reasons").map((value) => asObject(value, "decision blocking reason")),
+      reviewReasons: asArray(decision.review_reasons, "decision.review_reasons").map((value) => asObject(value, "decision review reason")),
+      softWarnings: asArray(decision.soft_warnings, "decision.soft_warnings").map((value) => asObject(value, "decision soft warning")),
+      evidenceGapReasons: asArray(decision.evidence_gap_reasons, "decision.evidence_gap_reasons").map((value) => asObject(value, "decision evidence gap")),
+      validEvidenceCoverage: asObject(decision.valid_evidence_coverage, "decision.valid_evidence_coverage"),
+      historicalRegression: asObject(decision.historical_regression, "decision.historical_regression"),
+      recoveryFault: asObject(decision.recovery_fault, "decision.recovery_fault"),
+      evidenceRefs: asArray(decision.evidence_refs, "decision.evidence_refs").map((value) => asObject(value, "decision evidence ref")),
+      authorizationBoundary: asObject(decision.authorization_boundary, "decision.authorization_boundary"),
+      history: asObject(decision.history, "decision.history"),
+      sourceIdentity: asObject(decision.source_identity, "decision.source_identity"),
+    },
+  };
+};
+
 export const reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact)];
 export const reviewedRegressionResults: RegressionExecutionResult[] = [
   normalizeRegressionResult(regressionKnownBadResultArtifact),
@@ -734,6 +925,15 @@ export const reviewedEvaluations: EvaluationResult[] = [
   normalizeEvaluation(evaluationCandidateArtifact),
 ];
 export const reviewedEvaluationComparison: EvaluationComparison = normalizeComparison(evaluationComparisonArtifact);
+export const reviewedQualityPolicy: QualityPolicy = normalizeQualityPolicy(qualityPolicyArtifact);
+export const reviewedQualityGates: QualityGateEvaluation[] = [
+  normalizeQualityGate(qualityGateBaselineArtifact),
+  normalizeQualityGate(qualityGateCandidateArtifact),
+];
+export const reviewedReleaseDecisions: ReleaseDecision[] = [
+  normalizeReleaseDecision(releaseDecisionBaselineArtifact),
+  normalizeReleaseDecision(releaseDecisionCandidateArtifact),
+];
 export const reviewedEvaluationRuns: RunEvidence[] = [
   normalizeArtifact(evaluationBaselineNormalRunArtifact),
   normalizeArtifact(evaluationBaselineRecoveryRunArtifact),
@@ -778,6 +978,10 @@ export const getRegressionForRun = (runId: string): Regression | undefined => {
 export const getEvaluation = (evaluationId: string): EvaluationResult | undefined => reviewedEvaluations.find((item) => item.evaluation.evaluationId === evaluationId);
 
 export const getEvaluationComparison = (comparisonId: string): EvaluationComparison | undefined => reviewedEvaluationComparison.comparison.comparisonId === comparisonId ? reviewedEvaluationComparison : undefined;
+
+export const getQualityGate = (gateEvaluationId: string): QualityGateEvaluation | undefined => reviewedQualityGates.find((item) => item.gateEvaluation.gateEvaluationId === gateEvaluationId);
+
+export const getReleaseDecision = (releaseDecisionId: string): ReleaseDecision | undefined => reviewedReleaseDecisions.find((item) => item.releaseDecision.releaseDecisionId === releaseDecisionId);
 
 export const getUsage = (run: RunEvidence): JsonRecord => asOptionalObject(run.llmProvider.raw_usage, "llm_provider.raw_usage") || {};
 

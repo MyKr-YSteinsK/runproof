@@ -211,3 +211,20 @@ Graph ML、社区算法、联邦学习仅在未来对 Agent Reliability 有显�
 ### Supersedes
 
 - none（继承既有决定，不构成产品决策替代）
+
+## D-013｜Quality Policy precedence 决定 Release Decision
+
+- Status: `Accepted`
+- Date: 2026-09-12
+### Decision
+RunProof 的 Prototype Release Gate 使用独立、versioned Quality Policy；Policy 以 `rpf-minimal-reliability-suite@1.0.0` 为兼容 Suite，确定性聚合 Hard / Soft / Review rules。决策 precedence 固定为：Hard blocker → evidence insufficient → review required → eligible。`ELIGIBLE` 仅表示当前 evidence 在 Policy 下达到资格，不执行发布，也不构成 deploy/release authorization。
+### Why
+Release 判断必须可审计、可复现，并保留 Agent FAIL、Platform/Environment ERROR、证据缺口、未知 usage 与人工 Review 的语义边界；Evaluation/Comparison 本身不应隐含发布结论。
+### Consequences
+Quality Policy、Gate Evaluation 和 Release Decision 独立于 Suite/Evaluation/Comparison/Regression 保存 source identity、stable refs、blocking/review/soft evidence 与 immutable/superseding history。Unknown token/cost/latency 是非阻断 warning，不能被当成零；页面和 CLI 都保持 decision-only，不提供 release/deploy action。
+### Reconsider when
+出现第二个真实产品使用场景、跨 Suite 的 Policy 复用需求，或需要服务端持久化、权限/审批与真实发布集成时，重新评估 Policy registry、审批 authority 和 decision storage 边界。
+
+### Supersedes
+
+- none

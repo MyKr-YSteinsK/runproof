@@ -11,10 +11,12 @@ import {
   getEvaluationComparison,
   getFailureCase,
   getFailureCaseForRun,
+  getQualityGate,
   getRegression,
   getRegressionResultForRun,
   getRegressionForRun,
   getRegressionResults,
+  getReleaseDecision,
   getRun,
   getUsage,
   isAgentFailureRun,
@@ -26,15 +28,19 @@ import {
   reviewedEvaluationComparison,
   reviewedEvaluations,
   reviewedEvaluationSuite,
+  reviewedQualityGates,
+  reviewedQualityPolicy,
+  reviewedReleaseDecisions,
   reviewedRegressions,
   reviewedRegressionCollection,
   Regression,
   RegressionExecutionResult,
+  ReleaseDecision,
   RunEvidence,
   TrajectoryEvent,
 } from "./data/artifacts";
 
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null };
+type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null };
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -79,6 +85,7 @@ function readLocation(): LocationState {
   const regressionMatch = pathname.match(/^\/regressions\/([^/]+)$/);
   const evaluationMatch = pathname.match(/^\/evaluations\/([^/]+)$/);
   const comparisonMatch = pathname.match(/^\/comparisons\/([^/]+)$/);
+  const releaseDecisionMatch = pathname.match(/^\/release-decisions\/([^/]+)$/);
   return {
     pathname,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
@@ -87,6 +94,7 @@ function readLocation(): LocationState {
     regressionId: regressionMatch ? decodeURIComponent(regressionMatch[1]) : null,
     evaluationId: evaluationMatch ? decodeURIComponent(evaluationMatch[1]) : null,
     comparisonId: comparisonMatch ? decodeURIComponent(comparisonMatch[1]) : null,
+    releaseDecisionId: releaseDecisionMatch ? decodeURIComponent(releaseDecisionMatch[1]) : null,
   };
 }
 
@@ -184,7 +192,7 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, failure = false, regression = false, evaluation = false, comparison = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean }) {
+function AppShell({ children, detail = false, failure = false, regression = false, evaluation = false, comparison = false, release = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
@@ -201,7 +209,7 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <span className="workspace-status"><i aria-hidden="true" /> local reviewed corpus</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
-          <a className={!detail && !failure && !regression && !evaluation && !comparison ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={!detail && !failure && !regression && !evaluation && !comparison && !release ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -226,11 +234,16 @@ function AppShell({ children, detail = false, failure = false, regression = fals
             <span>Comparisons</span>
             <span className="nav-count">1</span>
           </a>
+          <a className={release ? "active" : ""} href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}>
+            <span className="nav-glyph">✓</span>
+            <span>Release Decisions</span>
+            <span className="nav-count">{reviewedReleaseDecisions.length}</span>
+          </a>
         </nav>
         <div className="rail-note">
           <span className="section-label">CURRENT SURFACE</span>
           <p>Evidence-first investigation for the first Reliability vertical slice.</p>
-          <span className="schema-chip">v2 evidence · v1 evals · v1 regressions</span>
+          <span className="schema-chip">v2 evidence · v1 evals · v1 gates</span>
         </div>
         <div className="rail-footer">
           <span>Prototype</span>
@@ -243,11 +256,11 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> reviewed data</span>
-            <span className="topbar-revision">RPF-07</span>
+            <span className="topbar-revision">RPF-08</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -256,7 +269,7 @@ function AppShell({ children, detail = false, failure = false, regression = fals
   );
 }
 
-function StatusTag({ status, tone = "neutral" }: { status: string; tone?: "success" | "fault" | "error" | "neutral" }) {
+function StatusTag({ status, tone = "neutral" }: { status: string; tone?: "success" | "fault" | "error" | "neutral" | "review" }) {
   return <span className={`status-tag ${tone}`}><i aria-hidden="true" />{status}</span>;
 }
 
@@ -481,6 +494,10 @@ function comparisonHref(comparisonId: string): string {
   return `/comparisons/${encodeURIComponent(comparisonId)}`;
 }
 
+function releaseDecisionHref(decisionId: string): string {
+  return `/release-decisions/${encodeURIComponent(decisionId)}`;
+}
+
 function formatRate(value: unknown): string {
   return typeof value === "number" ? `${Math.round(value * 100)}%` : "UNKNOWN";
 }
@@ -494,6 +511,14 @@ function evaluationTone(status: string): "success" | "fault" | "error" | "neutra
   if (status === "PASS" || status === "COMPLETE" || status === "IMPROVED") return "success";
   if (status === "FAIL" || status === "REGRESSED") return "fault";
   if (status === "ERROR") return "error";
+  return "neutral";
+}
+
+function releaseTone(status: string): "success" | "fault" | "error" | "neutral" | "review" {
+  if (status === "ELIGIBLE") return "success";
+  if (status === "BLOCKED") return "fault";
+  if (status === "REVIEW_REQUIRED") return "review";
+  if (status === "INCONCLUSIVE") return "error";
   return "neutral";
 }
 
@@ -1158,6 +1183,114 @@ function ComparisonDetail({ comparison }: { comparison: EvaluationComparison }) 
   </AppShell>;
 }
 
+function decisionRef(value: unknown): { label: string; href: string } | null {
+  const outer = objectValue(value);
+  const ref = objectValue(outer?.ref) || outer;
+  if (!ref || typeof ref.kind !== "string") return null;
+  if (ref.kind === "Run Evidence" && typeof ref.run_id === "string") {
+    return { label: `Run ${shortId(ref.run_id, 24)}`, href: runHref(ref.run_id, typeof ref.event_id === "string" ? ref.event_id : null) };
+  }
+  if (ref.kind === "Evaluation Result" && typeof ref.evaluation_id === "string") {
+    return { label: `Evaluation ${shortId(ref.evaluation_id, 24)}`, href: evaluationHref(ref.evaluation_id) };
+  }
+  if (ref.kind === "Evaluation Comparison" && typeof ref.comparison_id === "string") {
+    return { label: `Comparison ${shortId(ref.comparison_id, 24)}`, href: comparisonHref(ref.comparison_id) };
+  }
+  if (ref.kind === "Regression" && typeof ref.regression_id === "string") {
+    return { label: `Regression ${shortId(ref.regression_id, 24)}`, href: regressionHref(ref.regression_id) };
+  }
+  return null;
+}
+
+function DecisionEvidenceRefs({ refs }: { refs: JsonRecord[] }) {
+  if (!refs.length) return <span className="release-empty-note">No linked evidence refs</span>;
+  return <div className="release-evidence-links">{refs.slice(0, 5).map((ref, index) => {
+    const target = decisionRef(ref);
+    const role = typeof ref.role === "string" ? ref.role : typeof valueAt(ref.ref, "role") === "string" ? String(valueAt(ref.ref, "role")) : null;
+    return target ? <a key={`${target.href}-${index}`} href={target.href} onClick={(event) => { event.preventDefault(); navigate(target.href); }}><span>{role ? humanize(role) : target.label}</span><strong>{target.label}</strong></a> : <span className="release-ref-plain" key={`${String(ref.kind)}-${index}`}><span>{role ? humanize(role) : ref.kind ? String(ref.kind) : "Evidence ref"}</span><strong>{shortId(valueAt(ref, "id") || valueAt(ref, "result_id") || valueAt(ref, "event_id"), 30)}</strong></span>;
+  })}</div>;
+}
+
+function ReleaseStatusMessage({ status }: { status: string }) {
+  if (status === "ELIGIBLE") return <><strong>Eligible for release consideration.</strong> The current Candidate satisfies this Policy and evidence snapshot. This is not a release action.</>;
+  if (status === "BLOCKED") return <><strong>Release consideration blocked.</strong> One or more deterministic Hard Gates have a proven violation.</>;
+  if (status === "REVIEW_REQUIRED") return <><strong>Human review required.</strong> Required evidence is sufficient, but a deterministic Review Gate requested a decision.</>;
+  return <><strong>Decision inconclusive.</strong> Critical evidence is missing or invalid, so the Gate fails closed.</>;
+}
+
+function ReleaseDecisionRow({ decision }: { decision: ReleaseDecision }) {
+  const metadata = decision.releaseDecision;
+  const coverage = metadata.validEvidenceCoverage;
+  const regression = objectValue(valueAt(metadata.historicalRegression, "result_counts")) || {};
+  const href = releaseDecisionHref(metadata.releaseDecisionId);
+  return <a className={`release-decision-row ${metadata.decisionStatus.toLowerCase()}`} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
+    <div className="release-row-identity"><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /><strong>{metadata.evaluatedAgentVersion}</strong><span className="mono">{shortId(metadata.releaseDecisionId, 28)}</span></div>
+    <div><strong>{shortId(valueAt(metadata.policyRef, "policy_identity"), 30)}</strong><span>Suite {displayValue(valueAt(metadata.suiteRef, "suite_version"))} · {metadata.decisionSubject} subject</span></div>
+    <div><strong>{formatRate(valueAt(coverage, "coverage_ratio"))}</strong><span>{displayValue(valueAt(coverage, "valid_evidence_item_count"))}/{displayValue(valueAt(coverage, "required_item_count"))} valid evidence</span></div>
+    <div><strong>{metadata.blockingReasons.length} blockers · {metadata.reviewReasons.length} review</strong><span>{metadata.softWarnings.length} soft warning(s) · Regression {displayValue(regression.PASS || 0)} PASS / {displayValue(regression.FAIL || 0)} FAIL</span></div>
+    <div><strong>{formatDate(metadata.decisionTimestamp)} UTC</strong><span>decision-only · no deployment</span></div>
+    <span className="row-arrow" aria-hidden="true">→</span>
+  </a>;
+}
+
+function ReleaseDecisionIndex() {
+  return <AppShell release>
+    <div className="page-header index-header"><div><span className="eyebrow">RELEASE DECISIONS · REVIEWED CORPUS</span><h1>Turn evidence into a bounded decision.</h1><p className="lede">A versioned Quality Policy evaluates the same Suite snapshot and keeps blockers, review requirements, warnings, and authorization boundaries explicit.</p></div><div className="corpus-note"><span className="section-label">ACTIVE POLICY</span><strong>{reviewedQualityPolicy.policy.policyVersion}</strong><span>{reviewedReleaseDecisions.length} reviewed decisions · decision-only</span></div></div>
+    <section className="corpus-boundary release-boundary-note" aria-label="Release Decision boundary"><span className="boundary-mark">✓</span><p><strong>Release boundary.</strong> <span>ELIGIBLE</span> means only that the Candidate meets the selected Policy and evidence snapshot for release consideration. No release was executed and no deployment was authorized.</p></section>
+    <section className="release-decision-list-section" aria-labelledby="release-decision-list-heading"><div className="section-heading"><div><span className="eyebrow">SELECT A DECISION</span><h2 id="release-decision-list-heading">Baseline / Candidate decisions</h2></div><span className="section-count">{reviewedReleaseDecisions.length.toString().padStart(2, "0")} records · same Policy</span></div><div className="release-decision-list"><div className="release-decision-list-head" aria-hidden="true"><span>SUBJECT / STATUS</span><span>POLICY / SUITE</span><span>EVIDENCE COVERAGE</span><span>GATES / REGRESSION</span><span>DECIDED AT</span><span /></div>{reviewedReleaseDecisions.map((decision) => <ReleaseDecisionRow key={decision.releaseDecision.releaseDecisionId} decision={decision} />)}</div></section>
+    <footer className="page-footnote"><span>Source: reviewed Quality Policy + Gate + Release Decision artifacts</span><span>Read-only local adapter · no release/deploy action</span></footer>
+  </AppShell>;
+}
+
+function GateRuleRow({ result }: { result: JsonRecord }) {
+  const status = typeof result.status === "string" ? result.status : "NOT_EVALUATED";
+  const effect = typeof result.effect === "string" ? result.effect : "NONE";
+  const gate = typeof result.rule_gate === "string" ? result.rule_gate : "HARD";
+  const tone = effect === "BLOCK" ? "fault" : effect === "REVIEW" ? "review" : effect === "WARNING" ? "error" : status === "PASS" ? "success" : "neutral";
+  const reasons = Array.isArray(result.reasons) ? result.reasons.map(String) : [];
+  const refs = Array.isArray(result.evidence_refs) ? result.evidence_refs.filter((item): item is JsonRecord => Boolean(item && typeof item === "object" && !Array.isArray(item))) : [];
+  return <div className={`release-rule-row ${gate.toLowerCase()} ${effect.toLowerCase()}`}>
+    <div className="release-rule-label"><span className="rule-gate-label">{gate} GATE</span><strong>{humanize(String(result.rule_id || "rule"))}</strong><small>{humanize(String(result.rule_type || ""))}</small></div>
+    <StatusTag status={status} tone={tone} />
+    <div className="release-rule-reason"><strong>{reasons.length ? reasons.map(humanize).join(" · ") : effect === "NONE" ? "Policy condition satisfied" : effect}</strong><small>{displayValue(result.evaluation_semantics)}</small></div>
+    <DecisionEvidenceRefs refs={refs} />
+  </div>;
+}
+
+function ReleaseReasonsPanel({ title, eyebrow, reasons, tone, empty }: { title: string; eyebrow: string; reasons: JsonRecord[]; tone: "fault" | "review" | "error"; empty: string }) {
+  return <section className={`release-reasons-panel ${tone}`} aria-label={title}><div className="panel-heading"><div><span className="eyebrow">{eyebrow}</span><h2>{title}</h2></div><span className="section-count">{reasons.length} item(s)</span></div>{reasons.length ? <div className="release-reasons-list">{reasons.map((reason, index) => <div className="release-reason-card" key={`${String(reason.rule_id)}-${index}`}><div><strong>{humanize(String(reason.code || reason.rule_id || "Rule"))}</strong><span>{displayValue(reason.reason)}</span></div><DecisionEvidenceRefs refs={Array.isArray(reason.evidence_refs) ? reason.evidence_refs.filter((item): item is JsonRecord => Boolean(item && typeof item === "object" && !Array.isArray(item))) : []} /></div>)}</div> : <p className="release-empty-note">{empty}</p>}</section>;
+}
+
+function ReleaseDecisionDetail({ decision }: { decision: ReleaseDecision }) {
+  const metadata = decision.releaseDecision;
+  const gateId = String(valueAt(metadata.gateEvaluationRef, "gate_evaluation_id") || "");
+  const gate = getQualityGate(gateId);
+  const gateMetadata = gate?.gateEvaluation;
+  const candidateEvaluationId = String(valueAt(metadata.candidateEvaluationRef, "evaluation_id") || "");
+  const baselineEvaluationId = String(valueAt(metadata.baselineEvaluationRef, "evaluation_id") || "");
+  const comparisonId = String(valueAt(metadata.comparisonRef, "comparison_id") || "");
+  const regressionId = String(valueAt(metadata.regressionRef, "regression_id") || "");
+  const otherDecision = reviewedReleaseDecisions.find((item) => item.releaseDecision.releaseDecisionId !== metadata.releaseDecisionId);
+  const coverage = metadata.validEvidenceCoverage;
+  const regressionCounts = objectValue(valueAt(metadata.historicalRegression, "result_counts")) || {};
+  const recovery = metadata.recoveryFault;
+  const policy = reviewedQualityPolicy.policy;
+  return <AppShell detail release>
+    <div className="detail-breadcrumb"><a href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}>Release Decisions</a><span aria-hidden="true">/</span><span>{shortId(metadata.releaseDecisionId, 34)}</span><span className="schema-chip">rpf-release-decision-v1</span></div>
+    <div className="detail-header release-detail-header"><div><span className="eyebrow">{metadata.decisionSubject} · RELEASE DECISION</span><h1>{metadata.evaluatedAgentVersion} is {metadata.decisionStatus}.</h1><p className="detail-subtitle"><ReleaseStatusMessage status={metadata.decisionStatus} /> The decision is tied to one Policy, Suite, Evaluation, Comparison, and Regression evidence snapshot.</p></div><div className="detail-header-status"><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /><span className="status-note">{metadata.decisionSubject} · no release action</span></div></div>
+    <section className="release-identity-grid" aria-label="Release Decision identity"><IdentityField label="Evaluated Agent" value={metadata.evaluatedAgentVersion} note={metadata.decisionSubject} /><IdentityField label="Policy" value={String(valueAt(metadata.policyRef, "policy_identity"))} mono /><IdentityField label="Suite" value={`${displayValue(valueAt(metadata.suiteRef, "suite_id"))}@${displayValue(valueAt(metadata.suiteRef, "suite_version"))}`} mono /><IdentityField label="Evidence coverage" value={formatRate(valueAt(coverage, "coverage_ratio"))} note={`${displayValue(valueAt(coverage, "valid_evidence_item_count"))}/${displayValue(valueAt(coverage, "required_item_count"))} required`} /><IdentityField label="Gate Evaluation" value={gateId} mono note={gateMetadata?.status || "—"} /><IdentityField label="Decision time" value={formatDate(metadata.decisionTimestamp)} mono /></section>
+    <section className={`release-authorization-panel ${metadata.decisionStatus.toLowerCase()}`} aria-label="Release authorization boundary"><span className="boundary-mark">i</span><div><span className="eyebrow">AUTHORIZATION BOUNDARY · EXPLICIT</span><h2><ReleaseStatusMessage status={metadata.decisionStatus} /></h2><p><strong>No release executed / No deployment authorization.</strong> `ELIGIBLE` is a quality decision only. Agent/runtime does not hold Release Authority, and this surface has no deploy action.</p></div></section>
+    <section className="release-policy-panel" aria-labelledby="release-policy-heading"><div className="panel-heading"><div><span className="eyebrow">QUALITY POLICY · VERSIONED SEMANTICS</span><h2 id="release-policy-heading">{policy.name}</h2></div><span className="schema-chip">{policy.policyIdentity}</span></div><p className="classification-copy">{policy.purpose}</p><div className="release-policy-facts"><div><span>Compatible Suite</span><strong>{displayValue(valueAt(policy.compatibleSuite, "suite_id"))}@{displayValue(valueAt(policy.compatibleSuite, "suite_version"))}</strong><small>identity-bound evidence snapshot</small></div><div><span>Required evidence</span><strong>{displayValue(valueAt(policy.requiredEvidence, "required_member_count"))} members · {formatRate(valueAt(policy.requiredEvidence, "minimum_coverage_ratio"))}</strong><small>valid Agent PASS / FAIL only</small></div><div><span>Decision precedence</span><strong>Hard → Evidence → Review → Eligible</strong><small>unknown is never zero</small></div><div><span>Configured rules</span><strong>{policy.rules.length} rules · {policy.rules.filter((rule) => rule.gate === "HARD").length} Hard</strong><small>Soft warnings stay visible</small></div></div></section>
+    <section className="release-gates-section" aria-labelledby="release-gates-heading"><div className="section-heading"><div><span className="eyebrow">DETERMINISTIC GATE EVALUATION</span><h2 id="release-gates-heading">Policy Gates</h2></div><span className="section-count">{gateMetadata?.ruleResults.length || 0} rule results · {gateMetadata?.status || "unavailable"}</span></div>{gateMetadata ? <div className="release-gates-layout"><div className="release-rule-matrix"><div className="release-rule-head"><span>RULE / TYPE</span><span>RESULT</span><span>SEMANTICS / REASON</span><span>EVIDENCE REFS</span></div>{gateMetadata.ruleResults.map((result, index) => <GateRuleRow key={`${String(result.rule_id)}-${index}`} result={result} />)}</div><aside className="release-gate-summary panel"><div className="panel-heading"><div><span className="eyebrow">FINAL PRECEDENCE</span><h2>{metadata.decisionStatus}</h2></div><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /></div><div className="fact-list"><div className="fact-row"><span>Hard blockers</span><strong>{metadata.blockingReasons.length}</strong></div><div className="fact-row"><span>Evidence gaps</span><strong>{metadata.evidenceGapReasons.length}</strong></div><div className="fact-row"><span>Review reasons</span><strong>{metadata.reviewReasons.length}</strong></div><div className="fact-row"><span>Soft warnings</span><strong>{metadata.softWarnings.length}</strong></div></div><p className="release-gate-summary-note">A proven Hard blocker wins over evidence gaps. Evidence gaps fail closed as INCONCLUSIVE. Review is evaluated only after evidence sufficiency.</p></aside></div> : <div className="empty-evidence"><strong>Gate Evaluation unavailable</strong><p>The Release Decision ref does not resolve to the reviewed Gate artifact.</p></div>}</section>
+    <section className="release-reason-grid" aria-label="Release Decision diagnostics"><ReleaseReasonsPanel title="Blocking Evidence" eyebrow="HARD GATE · BLOCKING" reasons={metadata.blockingReasons} tone="fault" empty="No deterministic Hard blocker was proven for this decision." /><ReleaseReasonsPanel title="Review Gates" eyebrow="REVIEW GATE · HUMAN JUDGMENT" reasons={metadata.reviewReasons} tone="review" empty="No Review Gate was triggered in this evidence snapshot." /><ReleaseReasonsPanel title="Soft Warnings" eyebrow="SOFT GATE · NON-BLOCKING" reasons={metadata.softWarnings} tone="error" empty="No non-blocking usage or latency warning was recorded." /></section>
+    <section className="release-signal-grid" aria-label="Release evidence signals"><div className="panel release-signal-panel"><div className="panel-heading"><div><span className="eyebrow">VALID EVIDENCE COVERAGE</span><h2>Can this decision be supported?</h2></div><span className="status-note">Policy required</span></div><div className="release-big-fact"><strong>{formatRate(valueAt(coverage, "coverage_ratio"))}</strong><span>{displayValue(valueAt(coverage, "valid_evidence_item_count"))} valid / {displayValue(valueAt(coverage, "required_item_count"))} required</span></div><p>Coverage is separate from Agent Quality. ERROR, INVALID, INCONCLUSIVE, or CANCELLED cannot silently become PASS.</p></div><div className="panel release-signal-panel"><div className="panel-heading"><div><span className="eyebrow">HISTORICAL REGRESSION</span><h2>Regression must stay green.</h2></div><StatusTag status={displayValue(regressionCounts.FAIL ? "FAIL" : "PASS")} tone={regressionCounts.FAIL ? "fault" : "success"} /></div><div className="release-big-fact"><strong>{displayValue(regressionCounts.PASS || 0)} PASS</strong><span>{displayValue(regressionCounts.FAIL || 0)} FAIL · {displayValue(valueAt(metadata.historicalRegression, "member_count"))} member</span></div><p>{regressionId ? <>The active Regression remains version-linked. <a className="action-link" href={regressionHref(regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(regressionId)); }}>Open Regression →</a></> : "No active Regression ref resolved."}</p></div><div className="panel release-signal-panel"><div className="panel-heading"><div><span className="eyebrow">RECOVERY / FAULT</span><h2>Recovery evidence</h2></div><StatusTag status={displayValue(valueAt(recovery, "recovered_pass_count") === 1 ? "PASS" : "INCONCLUSIVE")} tone={valueAt(recovery, "recovered_pass_count") === 1 ? "success" : "error"} /></div><div className="release-big-fact"><strong>{displayValue(valueAt(recovery, "recovered_pass_count"))} recovered</strong><span>{displayValue(valueAt(recovery, "triggered_fault_count"))}/{displayValue(valueAt(recovery, "planned_fault_count"))} triggered · {displayValue(valueAt(recovery, "reconciled_fault_count"))} reconciled</span></div><p>Fault presence is not failure; a required Recovery PASS needs planned, triggered, observed, and reconciled evidence.</p></div></section>
+    <section className="release-trace-section" aria-labelledby="release-trace-heading"><div className="section-heading"><div><span className="eyebrow">BOUND EVIDENCE SNAPSHOT · DEEP LINKS</span><h2 id="release-trace-heading">Open the source contracts</h2></div><span className="section-count">stable refs · source artifacts immutable</span></div><div className="release-trace-links">{comparisonId && <a href={comparisonHref(comparisonId)} onClick={(event) => { event.preventDefault(); navigate(comparisonHref(comparisonId)); }}><span>Comparison</span><strong>{shortId(comparisonId, 35)}</strong><small>Baseline / Candidate member diff</small></a>}{candidateEvaluationId && <a href={evaluationHref(candidateEvaluationId)} onClick={(event) => { event.preventDefault(); navigate(evaluationHref(candidateEvaluationId)); }}><span>Candidate Evaluation</span><strong>{shortId(candidateEvaluationId, 35)}</strong><small>three-member evidence matrix</small></a>}{baselineEvaluationId && <a href={evaluationHref(baselineEvaluationId)} onClick={(event) => { event.preventDefault(); navigate(evaluationHref(baselineEvaluationId)); }}><span>Baseline Evaluation</span><strong>{shortId(baselineEvaluationId, 35)}</strong><small>known-bad evidence matrix</small></a>}{regressionId && <a href={regressionHref(regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(regressionId)); }}><span>Historical Regression</span><strong>{shortId(regressionId, 35)}</strong><small>active Regression contract</small></a>}</div></section>
+    <section className="release-history-panel" aria-label="Release Decision history"><div className="panel-heading"><div><span className="eyebrow">HISTORICAL FACT · IMMUTABLE</span><h2>Decision history stays additive.</h2></div><span className="schema-chip">immutable: {displayValue(valueAt(metadata.history, "immutable"))}</span></div><p>Later evidence or a new Policy Version must create a new Release Decision. This artifact is never silently overwritten.{metadata.history.supersedes_decision_id ? ` It supersedes ${metadata.history.supersedes_decision_id}.` : ""}</p>{otherDecision && <p className="release-other-decision">Related reviewed decision: <a className="action-link" href={releaseDecisionHref(otherDecision.releaseDecision.releaseDecisionId)} onClick={(event) => { event.preventDefault(); navigate(releaseDecisionHref(otherDecision.releaseDecision.releaseDecisionId)); }}>{otherDecision.releaseDecision.decisionStatus} · {otherDecision.releaseDecision.evaluatedAgentVersion} →</a></p>}</section>
+    <details className="raw-details evaluation-raw"><summary>Expert escape hatch · normalized Release Decision JSON</summary><pre>{JSON.stringify(decision, null, 2)}</pre></details>
+    <footer className="detail-footer"><span>{metadata.releaseDecisionId} · {metadata.decisionStatus} · {policy.policyIdentity}</span><span>Policy/runtime source <span className="mono">{shortId(valueAt(metadata.sourceIdentity, "source_sha256"), 20)}</span> · no release executed</span></footer>
+  </AppShell>;
+}
+
 function FailureIndex() {
   return (
     <AppShell failure>
@@ -1283,6 +1416,8 @@ export default function App() {
   const regression = useMemo(() => location.regressionId ? getRegression(location.regressionId) : undefined, [location.regressionId]);
   const evaluation = useMemo(() => location.evaluationId ? getEvaluation(location.evaluationId) : undefined, [location.evaluationId]);
   const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
+  const releaseDecision = useMemo(() => location.releaseDecisionId ? getReleaseDecision(location.releaseDecisionId) : undefined, [location.releaseDecisionId]);
+  if (releaseDecision) return <ReleaseDecisionDetail decision={releaseDecision} />;
   if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
   if (regression) return <RegressionDetail regression={regression} />;
   if (comparison) return <ComparisonDetail comparison={comparison} />;
@@ -1291,6 +1426,7 @@ export default function App() {
   if (location.pathname === "/regressions") return <RegressionIndex />;
   if (location.pathname === "/evaluations") return <EvaluationIndex />;
   if (location.pathname === "/comparisons") return <ComparisonIndex />;
+  if (location.pathname === "/release-decisions") return <ReleaseDecisionIndex />;
   if (run) return <RunDetail run={run} eventId={location.eventId} />;
   return <RunIndex />;
 }

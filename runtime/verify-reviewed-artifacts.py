@@ -18,6 +18,15 @@ from runproof_runtime.evaluation import (
     validate_evaluation_artifact,
     validate_suite_artifact,
 )
+from runproof_runtime.quality import (
+    QUALITY_GATE_SCHEMA_VERSION,
+    QUALITY_POLICY_IDENTITY,
+    QUALITY_POLICY_SCHEMA_VERSION,
+    RELEASE_DECISION_SCHEMA_VERSION,
+    validate_quality_gate_artifact,
+    validate_quality_policy,
+    validate_release_decision_artifact,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -59,6 +68,11 @@ RPF07_CANDIDATE_RESULT = ROOT / "runtime" / "reviewed-evaluation-candidate.json"
 RPF07_BASELINE_REGRESSION_RESULT = ROOT / "runtime" / "reviewed-evaluation-baseline-regression-result.json"
 RPF07_CANDIDATE_REGRESSION_RESULT = ROOT / "runtime" / "reviewed-evaluation-candidate-regression-result.json"
 RPF07_COMPARISON = ROOT / "runtime" / "reviewed-evaluation-comparison.json"
+RPF08_POLICY = ROOT / "runtime" / "reviewed-quality-policy.json"
+RPF08_BASELINE_GATE = ROOT / "runtime" / "reviewed-quality-gate-baseline.json"
+RPF08_CANDIDATE_GATE = ROOT / "runtime" / "reviewed-quality-gate-candidate.json"
+RPF08_BASELINE_DECISION = ROOT / "runtime" / "reviewed-release-decision-baseline.json"
+RPF08_CANDIDATE_DECISION = ROOT / "runtime" / "reviewed-release-decision-candidate.json"
 HISTORICAL_RPF03_SOURCE_SHA256 = "c586242817bb03971807b8f44d5e0ebc16c4851519f6f94a9a017c49614a3832"
 HISTORICAL_RPF04_SOURCE_SHA256 = "b1235b9128dfe42bcf553ba1f28452c4a08c0af0b5c293c9163a24c7a2b7c127"
 HISTORICAL_RPF05_SOURCE_SHA256 = "198194adbefbad5b7b7b89e1119fbac2f10af0231001f8dee5b5e916f1f5c715"
@@ -66,6 +80,7 @@ HISTORICAL_RPF05_RUNTIME_VERSION = "rpf-05.v1"
 HISTORICAL_RPF06_SOURCE_SHA256 = "a8f5cbebc475463c392fda85a38e97fecdeb34af80ddf73f73099d43e61f3360"
 HISTORICAL_RPF06_RUNTIME_VERSION = "rpf-06.v1"
 CURRENT_RPF07_RUNTIME_VERSION = "rpf-07.v1"
+HISTORICAL_RPF07_SOURCE_SHA256 = "c607e5e38015c99fedcbba3efbcdc20834953f2fec7543313ead3ce0211d3adf"
 SECRET_VALUE = re.compile(
     r"(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)"
 )
@@ -450,7 +465,7 @@ def assert_rpf07_suite(path: Path, regression: dict[str, Any], source_hash: str)
     assert metadata["suite_version"] == EVALUATION_SUITE_VERSION
     assert metadata["source_identity"] == {
         "runtime_version": CURRENT_RPF07_RUNTIME_VERSION,
-        "source_sha256": source_hash,
+        "source_sha256": HISTORICAL_RPF07_SOURCE_SHA256,
         "builder": "rpf-evaluation-suite-builder-v1",
     }
     assert {item["category"] for item in metadata["members"]} == {
@@ -473,7 +488,7 @@ def assert_rpf07_run(path: Path, source_hash: str, profile_id: str, expected_sta
     artifact = json.loads(path.read_text(encoding="utf-8"))
     assert artifact["schema_version"] == "rpf-run-evidence-v2"
     assert artifact["run"]["runtime"]["runtime_version"] == CURRENT_RPF07_RUNTIME_VERSION
-    assert artifact["run"]["runtime"]["source_sha256"] == source_hash
+    assert artifact["run"]["runtime"]["source_sha256"] in {HISTORICAL_RPF07_SOURCE_SHA256, source_hash}
     assert artifact["run"]["evaluation_id"] == evaluation_id
     assert artifact["environment_provider"]["provider_implementation"] == "docker"
     assert artifact["environment"]["lifecycle_state"] == "CLEANED"
@@ -525,7 +540,7 @@ def assert_rpf07_evaluation(path: Path, suite: dict[str, Any], regression: dict[
     assert metadata["evaluation_status"] == "COMPLETE"
     assert metadata["agent"]["configuration_id"] == expected_profile
     assert metadata["runtime"]["runtime_version"] == CURRENT_RPF07_RUNTIME_VERSION
-    assert metadata["runtime"]["source_sha256"] == source_hash
+    assert metadata["runtime"]["source_sha256"] in {HISTORICAL_RPF07_SOURCE_SHA256, source_hash}
     # Keep this comparison explicit: the Evaluation stores a stable Suite ref,
     # not the full Suite definition or an Evaluation-specific identity.
     assert metadata["suite_ref"] == {
@@ -573,7 +588,7 @@ def assert_rpf07_comparison(path: Path, baseline: dict[str, Any], candidate: dic
     metadata = comparison["comparison"]
     assert metadata["status"] == "COMPLETE"
     assert metadata["runtime"]["runtime_version"] == CURRENT_RPF07_RUNTIME_VERSION
-    assert metadata["runtime"]["source_sha256"] == source_hash
+    assert metadata["runtime"]["source_sha256"] in {HISTORICAL_RPF07_SOURCE_SHA256, source_hash}
     assert metadata["suite_ref"] == {
         "kind": "Evaluation Suite",
         "suite_id": suite["suite"]["suite_id"],
@@ -598,6 +613,74 @@ def assert_rpf07_comparison(path: Path, baseline: dict[str, Any], candidate: dic
         assert forbidden not in encoded
     assert_private_boundary(comparison)
     return comparison
+
+
+def assert_rpf08_policy(path: Path, suite: dict[str, Any], source_hash: str) -> dict[str, Any]:
+    policy = json.loads(path.read_text(encoding="utf-8"))
+    assert policy["schema_version"] == QUALITY_POLICY_SCHEMA_VERSION
+    assert policy["artifact_kind"] == "Quality Policy"
+    assert not validate_quality_policy(policy, suite)
+    metadata = policy["policy"]
+    assert metadata["policy_identity"] == QUALITY_POLICY_IDENTITY
+    assert metadata["compatible_suite"]["suite_id"] == suite["suite"]["suite_id"]
+    assert metadata["compatible_suite"]["suite_version"] == suite["suite"]["suite_version"]
+    assert metadata["compatible_suite"]["member_contract_digest"] == suite["suite"]["member_contract_digest"]
+    assert {rule["gate"] for rule in metadata["rules"]} == {"HARD", "SOFT"}
+    assert metadata["decision_precedence"] == ["HARD_BLOCKER", "EVIDENCE_INSUFFICIENT", "REVIEW_REQUIRED", "ELIGIBLE"]
+    assert metadata["unknown_value_semantics"] == {
+        "reported_tokens": "WARNING_NOT_ZERO",
+        "derived_cost": "WARNING_NOT_ZERO",
+        "latency": "WARNING_NOT_ZERO",
+    }
+    assert metadata["source_identity"]["runtime_version"] == "rpf-08.v1"
+    assert metadata["source_identity"]["source_sha256"] == source_hash
+    assert_private_boundary(policy)
+    return policy
+
+
+def assert_rpf08_gate(path: Path, policy: dict[str, Any], suite: dict[str, Any], expected_status: str, source_hash: str) -> dict[str, Any]:
+    gate = json.loads(path.read_text(encoding="utf-8"))
+    assert gate["schema_version"] == QUALITY_GATE_SCHEMA_VERSION
+    assert gate["artifact_kind"] == "Quality Gate Evaluation"
+    assert not validate_quality_gate_artifact(gate)
+    metadata = gate["gate_evaluation"]
+    assert metadata["status"] == "COMPLETE"
+    assert metadata["decision_status"] == expected_status
+    assert metadata["policy_ref"]["policy_identity"] == policy["policy"]["policy_identity"]
+    assert metadata["suite_ref"] == {
+        "kind": "Evaluation Suite",
+        "suite_id": suite["suite"]["suite_id"],
+        "suite_version": suite["suite"]["suite_version"],
+        "member_contract_digest": suite["suite"]["member_contract_digest"],
+    }
+    assert metadata["authorization_boundary"] == {
+        "release_executed": False,
+        "deployment_authorized": False,
+        "release_action": "DECISION_ONLY",
+    }
+    assert metadata["source_identity"]["runtime_version"] == "rpf-08.v1"
+    assert metadata["source_identity"]["source_sha256"] == source_hash
+    assert metadata["rule_results"]
+    assert_private_boundary(gate)
+    return gate
+
+
+def assert_rpf08_decision(path: Path, expected_status: str, expected_evaluated_version: str, source_hash: str) -> dict[str, Any]:
+    decision = json.loads(path.read_text(encoding="utf-8"))
+    assert decision["schema_version"] == RELEASE_DECISION_SCHEMA_VERSION
+    assert decision["artifact_kind"] == "Release Decision"
+    assert not validate_release_decision_artifact(decision)
+    metadata = decision["release_decision"]
+    assert metadata["decision_status"] == expected_status
+    assert metadata["evaluated_agent_version"] == expected_evaluated_version
+    assert metadata["authorization_boundary"]["release_executed"] is False
+    assert metadata["authorization_boundary"]["deployment_authorized"] is False
+    assert metadata["authorization_boundary"]["release_action"] == "DECISION_ONLY"
+    assert metadata["history"]["immutable"] is True
+    assert metadata["source_identity"]["runtime_version"] == "rpf-08.v1"
+    assert metadata["source_identity"]["source_sha256"] == source_hash
+    assert_private_boundary(decision)
+    return decision
 
 
 def main() -> None:
@@ -666,7 +749,14 @@ def main() -> None:
         candidate["evaluation"]["evaluation_id"],
     )
     assert_rpf07_comparison(RPF07_COMPARISON, baseline, candidate, suite, source_hash)
-    print(f"PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison; source={source_hash}")
+    policy = assert_rpf08_policy(RPF08_POLICY, suite, source_hash)
+    assert_rpf08_gate(RPF08_BASELINE_GATE, policy, suite, "BLOCKED", source_hash)
+    assert_rpf08_gate(RPF08_CANDIDATE_GATE, policy, suite, "ELIGIBLE", source_hash)
+    baseline_decision = assert_rpf08_decision(RPF08_BASELINE_DECISION, "BLOCKED", "1.0.0-known-bad-unsafe-precondition", source_hash)
+    candidate_decision = assert_rpf08_decision(RPF08_CANDIDATE_DECISION, "ELIGIBLE", "1.0.1-observe-before-mutation-fix", source_hash)
+    assert {item["code"] for item in baseline_decision["release_decision"]["blocking_reasons"]} >= {"REQUIRED_MEMBER_AGENT_FAIL", "HISTORICAL_REGRESSION_FAIL"}
+    assert candidate_decision["release_decision"]["soft_warnings"]
+    print(f"PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison + 1 Policy/2 Gates/2 Decisions; source={source_hash}")
 
 
 if __name__ == "__main__":

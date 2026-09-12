@@ -1,0 +1,120 @@
+{
+  "schema_version": "rpf-quality-policy-v1",
+  "artifact_kind": "Quality Policy",
+  "policy": {
+    "policy_id": "rpf-minimal-release-policy",
+    "policy_version": "1.0.0",
+    "policy_identity": "rpf-minimal-release-policy@1.0.0",
+    "name": "Minimum Stateful Reliability Release Policy",
+    "purpose": "Decide whether the current Candidate evidence is eligible for release consideration without executing release.",
+    "compatible_suite": {
+      "kind": "Evaluation Suite",
+      "suite_id": "rpf-minimal-reliability-suite",
+      "suite_version": "1.0.0",
+      "member_contract_digest": "a79c168415891919e7f06d89fe9d9776d6e21c4fb9e1b407c6445205e3550803"
+    },
+    "required_evidence": {
+      "required_member_ids": [
+        "normal-functional",
+        "response-lost-recovery",
+        "historical-regression"
+      ],
+      "required_member_count": 3,
+      "minimum_coverage_ratio": 1.0,
+      "valid_item_results": [
+        "PASS",
+        "FAIL"
+      ],
+      "required_historical_regression": "PASS",
+      "required_recovery_status": "RECOVERED"
+    },
+    "rules": [
+      {
+        "rule_id": "required-evidence-coverage",
+        "rule_type": "REQUIRED_EVIDENCE_COVERAGE",
+        "gate": "HARD",
+        "severity": "REQUIRED_EVIDENCE",
+        "input_selector": "candidate.evaluation.summary.valid_evidence_coverage",
+        "evaluation_semantics": "coverage_ratio >= minimum_coverage_ratio and every required member has valid Agent PASS/FAIL evidence",
+        "missing_evidence_semantics": "INCONCLUSIVE",
+        "description": "Required evidence coverage must meet the policy threshold."
+      },
+      {
+        "rule_id": "required-member-agent-fail",
+        "rule_type": "NO_AGENT_FAIL_REQUIRED_MEMBERS",
+        "gate": "HARD",
+        "severity": "BLOCKER",
+        "input_selector": "candidate.evaluation.member_results",
+        "evaluation_semantics": "No required member may contain a proven Agent FAIL.",
+        "missing_evidence_semantics": "INCONCLUSIVE",
+        "description": "A deterministic Agent failure blocks release consideration."
+      },
+      {
+        "rule_id": "historical-regression-pass",
+        "rule_type": "HISTORICAL_REGRESSION_PASS",
+        "gate": "HARD",
+        "severity": "BLOCKER",
+        "input_selector": "candidate.evaluation.summary.regression",
+        "evaluation_semantics": "The active Historical Regression member and its Regression oracle must PASS.",
+        "missing_evidence_semantics": "INCONCLUSIVE",
+        "description": "The active Historical Regression must remain green."
+      },
+      {
+        "rule_id": "recovery-pass",
+        "rule_type": "RECOVERY_PASS",
+        "gate": "HARD",
+        "severity": "BLOCKER",
+        "input_selector": "candidate.evaluation.summary.fault_recovery",
+        "evaluation_semantics": "The required Recovery/Fault member must PASS after planned/triggered/observed/reconciled evidence.",
+        "missing_evidence_semantics": "INCONCLUSIVE",
+        "description": "Recovery evidence must prove the planned Fault crossed and was reconciled."
+      },
+      {
+        "rule_id": "valid-evidence-contract",
+        "rule_type": "VALID_EVIDENCE_CONTRACT",
+        "gate": "HARD",
+        "severity": "REQUIRED_EVIDENCE",
+        "input_selector": "candidate.evaluation.member_results",
+        "evaluation_semantics": "Every required member has a valid evidence contract and stable Run reference.",
+        "missing_evidence_semantics": "INCONCLUSIVE",
+        "description": "Invalid evidence cannot be used as Release Evidence."
+      },
+      {
+        "rule_id": "compatible-identities",
+        "rule_type": "COMPATIBLE_IDENTITIES",
+        "gate": "HARD",
+        "severity": "REQUIRED_IDENTITY",
+        "input_selector": "policy/suite/evaluation/comparison/regression identities",
+        "evaluation_semantics": "All referenced identity and version contracts must match the selected snapshot.",
+        "missing_evidence_semantics": "INVALID_POLICY_OR_EVIDENCE",
+        "description": "A Release Decision may only use an explicitly compatible evidence snapshot."
+      },
+      {
+        "rule_id": "unknown-usage-warning",
+        "rule_type": "UNKNOWN_USAGE_WARNING",
+        "gate": "SOFT",
+        "severity": "WARNING",
+        "input_selector": "candidate.evaluation.summary.cost_token_latency",
+        "evaluation_semantics": "Unknown token/cost/latency remains visible as a warning and is never coerced to zero.",
+        "missing_evidence_semantics": "WARNING_NOT_ZERO",
+        "description": "Provider usage gaps are non-blocking warnings under this Prototype policy."
+      }
+    ],
+    "decision_precedence": [
+      "HARD_BLOCKER",
+      "EVIDENCE_INSUFFICIENT",
+      "REVIEW_REQUIRED",
+      "ELIGIBLE"
+    ],
+    "unknown_value_semantics": {
+      "reported_tokens": "WARNING_NOT_ZERO",
+      "derived_cost": "WARNING_NOT_ZERO",
+      "latency": "WARNING_NOT_ZERO"
+    },
+    "source_identity": {
+      "runtime_version": "rpf-08.v1",
+      "source_sha256": "d6313e5849b2662d9badafa7be25d568e84ab6cc4912c9587495a5f9427bfd69",
+      "builder": "rpf-quality-policy-builder-v1"
+    }
+  }
+}

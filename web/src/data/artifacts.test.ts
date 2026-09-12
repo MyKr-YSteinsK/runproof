@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import historicalNormal from "../../../runtime/reviewed-normal-run.json";
-import { getEvaluation, getEvaluationComparison, getFailureCaseForRun, getRegression, getRegressionResultForRun, getRegressionResults, getRun, normalizeArtifact, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedRegressionCollection, reviewedRegressions, reviewedRuns } from "./artifacts";
+import { getEvaluation, getEvaluationComparison, getFailureCaseForRun, getQualityGate, getRegression, getRegressionResultForRun, getRegressionResults, getReleaseDecision, getRun, normalizeArtifact, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedQualityGates, reviewedQualityPolicy, reviewedRegressionCollection, reviewedRegressions, reviewedReleaseDecisions, reviewedRuns } from "./artifacts";
 
 describe("reviewed evidence adapter", () => {
   it("loads only the current v2 reviewed corpus", () => {
@@ -70,5 +70,18 @@ describe("reviewed evidence adapter", () => {
     expect(reviewedEvaluationComparison.comparison.perMemberComparison.map((item) => item.classification)).toEqual(["IMPROVED", "IMPROVED", "IMPROVED"]);
     const candidateRegressionRun = reviewedEvaluationRuns[5];
     expect(getRegressionResultForRun(candidateRegressionRun.run.runId)?.result.regressionResult).toBe("PASS");
+  });
+
+  it("loads the versioned Quality Policy, Gate results, and immutable decisions", () => {
+    expect(reviewedQualityPolicy.policy.policyIdentity).toBe("rpf-minimal-release-policy@1.0.0");
+    expect(reviewedQualityPolicy.policy.decisionPrecedence).toEqual(["HARD_BLOCKER", "EVIDENCE_INSUFFICIENT", "REVIEW_REQUIRED", "ELIGIBLE"]);
+    expect(reviewedQualityGates).toHaveLength(2);
+    expect(reviewedQualityGates.map((item) => item.gateEvaluation.decisionStatus)).toEqual(["BLOCKED", "ELIGIBLE"]);
+    expect(reviewedQualityGates.every((item) => item.gateEvaluation.authorizationBoundary.release_executed === false)).toBe(true);
+    expect(reviewedReleaseDecisions).toHaveLength(2);
+    expect(reviewedReleaseDecisions.map((item) => item.releaseDecision.decisionStatus)).toEqual(["BLOCKED", "ELIGIBLE"]);
+    expect(reviewedReleaseDecisions.every((item) => item.releaseDecision.authorizationBoundary.deployment_authorized === false)).toBe(true);
+    expect(getQualityGate("gate-evaluation-rpf08-candidate")?.gateEvaluation.decisionStatus).toBe("ELIGIBLE");
+    expect(getReleaseDecision("release-decision-rpf08-baseline")?.releaseDecision.decisionStatus).toBe("BLOCKED");
   });
 });

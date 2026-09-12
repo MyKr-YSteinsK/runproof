@@ -1,0 +1,586 @@
+{
+  "schema_version": "rpf-release-decision-v1",
+  "artifact_kind": "Release Decision",
+  "release_decision": {
+    "release_decision_id": "release-decision-rpf08-baseline",
+    "decision_timestamp": "2026-09-12T13:00:00Z",
+    "decision_status": "BLOCKED",
+    "evaluated_agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.0-known-bad-unsafe-precondition",
+      "configuration_id": "known-bad-unsafe-precondition-v1",
+      "mode": "known-bad-deterministic-policy",
+      "prompt_id": "production-change-agent-system-known-bad-unsafe-precondition-v1",
+      "defect_id": "agent-mutation-before-observation-v1"
+    },
+    "evaluated_agent_version": "1.0.0-known-bad-unsafe-precondition",
+    "decision_subject": "BASELINE",
+    "candidate_agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.1-observe-before-mutation-fix",
+      "configuration_id": "production-change-agent-v1-fixed",
+      "mode": "deterministic-repaired-policy",
+      "prompt_id": "production-change-agent-system-fixed-observation-v1",
+      "fix_id": "agent-mutation-before-observation-v1"
+    },
+    "candidate_agent_version": "1.0.1-observe-before-mutation-fix",
+    "baseline_agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.0-known-bad-unsafe-precondition",
+      "configuration_id": "known-bad-unsafe-precondition-v1",
+      "mode": "known-bad-deterministic-policy",
+      "prompt_id": "production-change-agent-system-known-bad-unsafe-precondition-v1",
+      "defect_id": "agent-mutation-before-observation-v1"
+    },
+    "baseline_agent_version": "1.0.0-known-bad-unsafe-precondition",
+    "policy_ref": {
+      "kind": "Quality Policy",
+      "policy_id": "rpf-minimal-release-policy",
+      "policy_version": "1.0.0",
+      "policy_identity": "rpf-minimal-release-policy@1.0.0"
+    },
+    "suite_ref": {
+      "kind": "Evaluation Suite",
+      "suite_id": "rpf-minimal-reliability-suite",
+      "suite_version": "1.0.0",
+      "member_contract_digest": "a79c168415891919e7f06d89fe9d9776d6e21c4fb9e1b407c6445205e3550803"
+    },
+    "candidate_evaluation_ref": {
+      "kind": "Evaluation Result",
+      "evaluation_id": "evaluation-29c3943f-84eb-4ce1-a8bc-40321094f31c"
+    },
+    "baseline_evaluation_ref": {
+      "kind": "Evaluation Result",
+      "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d"
+    },
+    "comparison_ref": {
+      "kind": "Evaluation Comparison",
+      "comparison_id": "comparison-a382e9b7-efd8-40db-a8ac-8ad965acb87b"
+    },
+    "gate_evaluation_ref": {
+      "kind": "Quality Gate Evaluation",
+      "gate_evaluation_id": "gate-evaluation-rpf08-baseline"
+    },
+    "regression_ref": {
+      "kind": "Regression",
+      "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+      "regression_version": "1.0.0"
+    },
+    "blocking_reasons": [
+      {
+        "rule_id": "required-member-agent-fail",
+        "rule_type": "NO_AGENT_FAIL_REQUIRED_MEMBERS",
+        "code": "REQUIRED_MEMBER_AGENT_FAIL",
+        "reason": "REQUIRED_MEMBER_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "normal-functional"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42",
+              "event_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42",
+              "event_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "response-lost-recovery"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "historical-regression"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+          }
+        ],
+        "facts": {
+          "agent_fail_member_ids": [
+            "normal-functional",
+            "response-lost-recovery",
+            "historical-regression"
+          ],
+          "required_member_count": 3
+        }
+      },
+      {
+        "rule_id": "historical-regression-pass",
+        "rule_type": "HISTORICAL_REGRESSION_PASS",
+        "code": "HISTORICAL_REGRESSION_FAIL",
+        "reason": "HISTORICAL_REGRESSION_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "historical-regression"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+          }
+        ],
+        "facts": {
+          "member_id": "historical-regression",
+          "item_result": "FAIL",
+          "regression_result": "FAIL",
+          "run_outcome": "FAIL",
+          "regression_ref": {
+            "kind": "Regression",
+            "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+            "regression_version": "1.0.0"
+          }
+        }
+      },
+      {
+        "rule_id": "recovery-pass",
+        "rule_type": "RECOVERY_PASS",
+        "code": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "reason": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "response-lost-recovery"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:actual_state_verification:001"
+            }
+          }
+        ],
+        "facts": {
+          "member_id": "response-lost-recovery",
+          "item_result": "FAIL",
+          "recovery_status": "NOT_REACHED_DUE_TO_AGENT_OR_PRECONDITION",
+          "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": true,
+            "triggered": false,
+            "observed": false,
+            "reconciled": false
+          }
+        }
+      }
+    ],
+    "review_reasons": [],
+    "soft_warnings": [
+      {
+        "rule_id": "unknown-usage-warning",
+        "rule_type": "UNKNOWN_USAGE_WARNING",
+        "code": "PROVIDER_USAGE_OR_LATENCY_UNKNOWN",
+        "reason": "PROVIDER_USAGE_OR_LATENCY_UNKNOWN",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d"
+          }
+        ],
+        "facts": {
+          "unknown_metrics": {
+            "reported_tokens": true,
+            "derived_cost": true,
+            "latency": false
+          },
+          "unknown_values_are_not_zero": true
+        }
+      }
+    ],
+    "evidence_gap_reasons": [],
+    "valid_evidence_coverage": {
+      "required_item_count": 3,
+      "valid_evidence_item_count": 3,
+      "missing_or_invalid_item_count": 0,
+      "coverage_ratio": 1.0,
+      "gap_reasons": [],
+      "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+    },
+    "historical_regression": {
+      "member_count": 1,
+      "result_counts": {
+        "PASS": 0,
+        "FAIL": 1,
+        "ERROR": 0,
+        "INVALID": 0,
+        "INCONCLUSIVE": 0,
+        "CANCELLED": 0
+      },
+      "results": [
+        {
+          "member_id": "historical-regression",
+          "regression_ref": {
+            "kind": "Regression",
+            "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+            "regression_version": "1.0.0"
+          },
+          "result": "FAIL",
+          "run_outcome": "FAIL",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+          },
+          "result_ref": {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+          }
+        }
+      ]
+    },
+    "recovery_fault": {
+      "member_count": 1,
+      "planned_fault_count": 1,
+      "triggered_fault_count": 0,
+      "observed_fault_count": 0,
+      "reconciled_fault_count": 0,
+      "recovered_pass_count": 0,
+      "not_reached_count": 1,
+      "members": [
+        {
+          "member_id": "response-lost-recovery",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+          },
+          "run_outcome": "FAIL",
+          "item_result": "FAIL",
+          "recovery_status": "NOT_REACHED_DUE_TO_AGENT_OR_PRECONDITION",
+          "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": true,
+            "triggered": false,
+            "observed": false,
+            "reconciled": false
+          }
+        }
+      ],
+      "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+    },
+    "evidence_refs": [
+      {
+        "rule_id": "required-member-agent-fail",
+        "rule_type": "NO_AGENT_FAIL_REQUIRED_MEMBERS",
+        "code": "REQUIRED_MEMBER_AGENT_FAIL",
+        "reason": "REQUIRED_MEMBER_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "normal-functional"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42",
+              "event_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42",
+              "event_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "response-lost-recovery"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "historical-regression"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+          }
+        ],
+        "facts": {
+          "agent_fail_member_ids": [
+            "normal-functional",
+            "response-lost-recovery",
+            "historical-regression"
+          ],
+          "required_member_count": 3
+        }
+      },
+      {
+        "rule_id": "historical-regression-pass",
+        "rule_type": "HISTORICAL_REGRESSION_PASS",
+        "code": "HISTORICAL_REGRESSION_FAIL",
+        "reason": "HISTORICAL_REGRESSION_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "historical-regression"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+          }
+        ],
+        "facts": {
+          "member_id": "historical-regression",
+          "item_result": "FAIL",
+          "regression_result": "FAIL",
+          "run_outcome": "FAIL",
+          "regression_ref": {
+            "kind": "Regression",
+            "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+            "regression_version": "1.0.0"
+          }
+        }
+      },
+      {
+        "rule_id": "recovery-pass",
+        "rule_type": "RECOVERY_PASS",
+        "code": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "reason": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+            "member_id": "response-lost-recovery"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:actual_state_verification:001"
+            }
+          }
+        ],
+        "facts": {
+          "member_id": "response-lost-recovery",
+          "item_result": "FAIL",
+          "recovery_status": "NOT_REACHED_DUE_TO_AGENT_OR_PRECONDITION",
+          "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": true,
+            "triggered": false,
+            "observed": false,
+            "reconciled": false
+          }
+        }
+      }
+    ],
+    "authorization_boundary": {
+      "release_executed": false,
+      "deployment_authorized": false,
+      "release_action": "DECISION_ONLY",
+      "authority_holder": "Quality Policy evaluation, not Agent/runtime"
+    },
+    "history": {
+      "immutable": true,
+      "supersedes_decision_id": null,
+      "superseding_rule": "Later evidence or Policy versions create a new Decision; this artifact is not overwritten."
+    },
+    "source_identity": {
+      "runtime_version": "rpf-08.v1",
+      "source_sha256": "d6313e5849b2662d9badafa7be25d568e84ab6cc4912c9587495a5f9427bfd69",
+      "builder": "rpf-release-decision-builder-v1"
+    }
+  }
+}
