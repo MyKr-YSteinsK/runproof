@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import historicalNormal from "../../../runtime/reviewed-normal-run.json";
-import { getFailureCaseForRun, getRegression, getRegressionResults, normalizeArtifact, reviewedFailureCases, reviewedRegressionCollection, reviewedRegressions, reviewedRuns } from "./artifacts";
+import { getEvaluation, getEvaluationComparison, getFailureCaseForRun, getRegression, getRegressionResultForRun, getRegressionResults, getRun, normalizeArtifact, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedRegressionCollection, reviewedRegressions, reviewedRuns } from "./artifacts";
 
 describe("reviewed evidence adapter", () => {
   it("loads only the current v2 reviewed corpus", () => {
@@ -52,5 +52,23 @@ describe("reviewed evidence adapter", () => {
     expect(getRegression(regression.regression.regressionId)?.regression.category).toBe("Historical Regression");
     expect(reviewedRegressionCollection.members.map((member) => member.regressionId)).toContain(regression.regression.regressionId);
     expect(getRegressionResults(regression.regression.regressionId).map((item) => [item.result.runOutcome, item.result.regressionResult])).toEqual([["FAIL", "FAIL"], ["PASS", "PASS"]]);
+  });
+
+  it("loads the versioned Evaluation Suite and links independent member evidence", () => {
+    expect(reviewedEvaluationSuite.suite.suiteId).toBe("rpf-minimal-reliability-suite");
+    expect(reviewedEvaluationSuite.suite.suiteVersion).toBe("1.0.0");
+    expect(reviewedEvaluationSuite.suite.members).toHaveLength(3);
+    expect(reviewedEvaluationSuite.suite.members.map((member) => member.category)).toEqual(["Normal / Functional", "Recovery / Fault", "Historical Regression"]);
+    expect(reviewedEvaluations.map((item) => item.evaluation.agent.agent_version)).toEqual(["1.0.0-known-bad-unsafe-precondition", "1.0.1-observe-before-mutation-fix"]);
+    expect(reviewedEvaluationRuns).toHaveLength(6);
+    expect(reviewedEvaluationRuns.every((run) => /^run-[0-9a-f-]+$/.test(run.run.runId))).toBe(true);
+    expect(reviewedEvaluationRuns.every((run) => getRun(run.run.runId) === run)).toBe(true);
+    expect(reviewedEvaluationRuns.filter((run) => run.fault.reconciled).length).toBe(1);
+    expect(getEvaluation(reviewedEvaluations[0].evaluation.evaluationId)).toBe(reviewedEvaluations[0]);
+    expect(getEvaluationComparison(reviewedEvaluationComparison.comparison.comparisonId)).toBe(reviewedEvaluationComparison);
+    expect(reviewedEvaluationComparison.comparison.aggregate?.summary).toBe("CANDIDATE_IMPROVED");
+    expect(reviewedEvaluationComparison.comparison.perMemberComparison.map((item) => item.classification)).toEqual(["IMPROVED", "IMPROVED", "IMPROVED"]);
+    const candidateRegressionRun = reviewedEvaluationRuns[5];
+    expect(getRegressionResultForRun(candidateRegressionRun.run.runId)?.result.regressionResult).toBe("PASS");
   });
 });

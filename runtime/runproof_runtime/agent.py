@@ -67,10 +67,10 @@ def known_bad_tool_call() -> ToolCall:
     )
 
 
-def fixed_candidate_tool_calls() -> list[ToolCall]:
+def fixed_candidate_tool_calls(fault: str = "none") -> list[ToolCall]:
     """Return the repaired version's explicit observe, mutate, and read-back plan."""
 
-    return [
+    calls = [
         ToolCall("fixed-candidate-read-1", "read_state", {}),
         ToolCall(
             "fixed-candidate-change-1",
@@ -79,6 +79,9 @@ def fixed_candidate_tool_calls() -> list[ToolCall]:
         ),
         ToolCall("fixed-candidate-read-2", "read_state", {}),
     ]
+    if fault == "response-lost":
+        calls.insert(2, ToolCall("fixed-candidate-reconcile-1", "reconcile", {"operation_id": "change-001"}))
+    return calls
 
 
 class ToolExecutor:

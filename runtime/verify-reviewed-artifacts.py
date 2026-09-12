@@ -8,6 +8,17 @@ import re
 from pathlib import Path
 from typing import Any
 
+from runproof_runtime.evaluation import (
+    EVALUATION_COMPARISON_SCHEMA_VERSION,
+    EVALUATION_RESULT_SCHEMA_VERSION,
+    EVALUATION_SUITE_ID,
+    EVALUATION_SUITE_SCHEMA_VERSION,
+    EVALUATION_SUITE_VERSION,
+    validate_comparison_artifact,
+    validate_evaluation_artifact,
+    validate_suite_artifact,
+)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 PACKAGE = ROOT / "runtime" / "runproof_runtime"
@@ -32,11 +43,29 @@ RPF06_PROMOTION_GATE = ROOT / "runtime" / "reviewed-regression-promotion-gate.js
 RPF06_PROMOTED_FAILURE_CASE = ROOT / "runtime" / "reviewed-failure-case-promoted.json"
 RPF06_KNOWN_BAD_RESULT = ROOT / "runtime" / "reviewed-regression-known-bad-result.json"
 RPF06_FIXED_RESULT = ROOT / "runtime" / "reviewed-regression-fixed-candidate-result.json"
+RPF07_SUITE = ROOT / "runtime" / "reviewed-evaluation-suite.json"
+RPF07_BASELINE_RUNS = (
+    ROOT / "runtime" / "reviewed-evaluation-baseline-normal-run.json",
+    ROOT / "runtime" / "reviewed-evaluation-baseline-recovery-run.json",
+    ROOT / "runtime" / "reviewed-evaluation-baseline-regression-run.json",
+)
+RPF07_CANDIDATE_RUNS = (
+    ROOT / "runtime" / "reviewed-evaluation-candidate-normal-run.json",
+    ROOT / "runtime" / "reviewed-evaluation-candidate-recovery-run.json",
+    ROOT / "runtime" / "reviewed-evaluation-candidate-regression-run.json",
+)
+RPF07_BASELINE_RESULT = ROOT / "runtime" / "reviewed-evaluation-baseline.json"
+RPF07_CANDIDATE_RESULT = ROOT / "runtime" / "reviewed-evaluation-candidate.json"
+RPF07_BASELINE_REGRESSION_RESULT = ROOT / "runtime" / "reviewed-evaluation-baseline-regression-result.json"
+RPF07_CANDIDATE_REGRESSION_RESULT = ROOT / "runtime" / "reviewed-evaluation-candidate-regression-result.json"
+RPF07_COMPARISON = ROOT / "runtime" / "reviewed-evaluation-comparison.json"
 HISTORICAL_RPF03_SOURCE_SHA256 = "c586242817bb03971807b8f44d5e0ebc16c4851519f6f94a9a017c49614a3832"
 HISTORICAL_RPF04_SOURCE_SHA256 = "b1235b9128dfe42bcf553ba1f28452c4a08c0af0b5c293c9163a24c7a2b7c127"
 HISTORICAL_RPF05_SOURCE_SHA256 = "198194adbefbad5b7b7b89e1119fbac2f10af0231001f8dee5b5e916f1f5c715"
 HISTORICAL_RPF05_RUNTIME_VERSION = "rpf-05.v1"
-CURRENT_RPF06_RUNTIME_VERSION = "rpf-06.v1"
+HISTORICAL_RPF06_SOURCE_SHA256 = "a8f5cbebc475463c392fda85a38e97fecdeb34af80ddf73f73099d43e61f3360"
+HISTORICAL_RPF06_RUNTIME_VERSION = "rpf-06.v1"
+CURRENT_RPF07_RUNTIME_VERSION = "rpf-07.v1"
 SECRET_VALUE = re.compile(
     r"(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)"
 )
@@ -278,8 +307,8 @@ def assert_failure_case(path: Path, fail: dict[str, Any], reproduction: dict[str
 def assert_rpf06_run(path: Path, source_hash: str, profile_id: str, expected_status: str) -> dict[str, Any]:
     artifact = json.loads(path.read_text(encoding="utf-8"))
     assert artifact["schema_version"] == "rpf-run-evidence-v2"
-    assert artifact["run"]["runtime"]["runtime_version"] == CURRENT_RPF06_RUNTIME_VERSION
-    assert artifact["run"]["runtime"]["source_sha256"] == source_hash
+    assert artifact["run"]["runtime"]["runtime_version"] == HISTORICAL_RPF06_RUNTIME_VERSION
+    assert artifact["run"]["runtime"]["source_sha256"] == HISTORICAL_RPF06_SOURCE_SHA256
     assert artifact["environment_provider"]["provider_implementation"] == "docker"
     assert artifact["environment"]["lifecycle_state"] == "CLEANED"
     assert artifact["environment"]["cleanup_state"] == "CLEANED"
@@ -330,7 +359,7 @@ def assert_regression(path: Path, case: dict[str, Any], gate_document: dict[str,
     regression = json.loads(path.read_text(encoding="utf-8"))
     assert regression["schema_version"] == "rpf-regression-v1"
     assert regression["artifact_kind"] == "Regression"
-    assert regression["regression_runtime"]["runtime_version"] == CURRENT_RPF06_RUNTIME_VERSION
+    assert regression["regression_runtime"]["runtime_version"] == HISTORICAL_RPF06_RUNTIME_VERSION
     metadata = regression["regression"]
     assert metadata["regression_version"] == "1.0.0"
     assert metadata["lifecycle_status"] == "ACTIVE"
@@ -411,6 +440,166 @@ def assert_promoted_failure_case(path: Path, original: dict[str, Any], regressio
     assert_private_boundary(promoted)
 
 
+def assert_rpf07_suite(path: Path, regression: dict[str, Any], source_hash: str) -> dict[str, Any]:
+    suite = json.loads(path.read_text(encoding="utf-8"))
+    assert suite["schema_version"] == EVALUATION_SUITE_SCHEMA_VERSION
+    assert suite["artifact_kind"] == "Evaluation Suite"
+    assert not validate_suite_artifact(suite, regression)
+    metadata = suite["suite"]
+    assert metadata["suite_id"] == EVALUATION_SUITE_ID
+    assert metadata["suite_version"] == EVALUATION_SUITE_VERSION
+    assert metadata["source_identity"] == {
+        "runtime_version": CURRENT_RPF07_RUNTIME_VERSION,
+        "source_sha256": source_hash,
+        "builder": "rpf-evaluation-suite-builder-v1",
+    }
+    assert {item["category"] for item in metadata["members"]} == {
+        "Normal / Functional",
+        "Recovery / Fault",
+        "Historical Regression",
+    }
+    assert metadata["execution_policy"]["isolation"] == "fresh-per-member"
+    assert metadata["execution_policy"]["parallelism"] == "sequential"
+    assert metadata["members"][2]["regression_ref"] == {
+        "kind": "Regression",
+        "regression_id": regression["regression"]["regression_id"],
+        "regression_version": regression["regression"]["regression_version"],
+    }
+    assert_private_boundary(suite)
+    return suite
+
+
+def assert_rpf07_run(path: Path, source_hash: str, profile_id: str, expected_status: str, evaluation_id: str, expected_fault: bool) -> dict[str, Any]:
+    artifact = json.loads(path.read_text(encoding="utf-8"))
+    assert artifact["schema_version"] == "rpf-run-evidence-v2"
+    assert artifact["run"]["runtime"]["runtime_version"] == CURRENT_RPF07_RUNTIME_VERSION
+    assert artifact["run"]["runtime"]["source_sha256"] == source_hash
+    assert artifact["run"]["evaluation_id"] == evaluation_id
+    assert artifact["environment_provider"]["provider_implementation"] == "docker"
+    assert artifact["environment"]["lifecycle_state"] == "CLEANED"
+    assert artifact["environment"]["cleanup_state"] == "CLEANED"
+    assert artifact["environment"]["provenance"]["mounts"] == []
+    assert artifact["run"]["agent"]["configuration_id"] == profile_id
+    assert artifact["outcome"]["status"] == expected_status
+    assert_event_contract(artifact)
+    assert_private_boundary(artifact)
+    fault = artifact["fault"]
+    assert fault["planned"] is expected_fault
+    if expected_status == "PASS":
+        assert artifact["outcome"]["source"] == "DETERMINISTIC_VERIFIER"
+        assert artifact["verification"]["passed"] is True
+        assert artifact["verification"]["evidence"]["mutation_count"] == 1
+    elif expected_status == "FAIL":
+        assert artifact["outcome"]["source"] == "AGENT"
+        assert artifact["outcome"]["attribution"] == "Agent"
+        assert artifact["verification"]["passed"] is False
+        assert artifact["verification"]["evidence"]["mutation_count"] == 0
+    else:
+        raise AssertionError(f"unexpected RPF-07 reviewed status: {expected_status}")
+    if expected_fault and expected_status == "PASS":
+        assert fault["triggered"] is True
+        assert fault["observed"] is True
+        assert fault["reconciled"] is True
+        event_types = [item["event_type"] for item in artifact["trajectory"]]
+        assert "fault" in event_types and "reconcile" in event_types
+    assert artifact["health_context"]["provider"]["failure_source"] is False
+    assert artifact["health_context"]["environment"]["failure_source"] is False
+    return artifact
+
+
+def assert_rpf07_regression_result(path: Path, regression: dict[str, Any], run: dict[str, Any], profile_id: str, expected_result: str, evaluation_id: str) -> dict[str, Any]:
+    result = assert_regression_result(path, regression, run, profile_id, expected_result, expected_result)
+    metadata = result["result"]
+    assert metadata.get("evaluation_ref") == {"kind": "Evaluation Result", "evaluation_id": evaluation_id}
+    assert metadata.get("suite_member_ref", {}).get("member_id") == "historical-regression"
+    return result
+
+
+def assert_rpf07_evaluation(path: Path, suite: dict[str, Any], regression: dict[str, Any], source_hash: str, expected_profile: str, expected_evaluation_id: str, runs: list[dict[str, Any]], result_path: Path, expected_item_results: list[str]) -> dict[str, Any]:
+    evaluation = json.loads(path.read_text(encoding="utf-8"))
+    assert evaluation["schema_version"] == EVALUATION_RESULT_SCHEMA_VERSION
+    assert evaluation["artifact_kind"] == "Evaluation Result"
+    assert not validate_evaluation_artifact(evaluation)
+    metadata = evaluation["evaluation"]
+    assert metadata["evaluation_id"] == expected_evaluation_id
+    assert metadata["evaluation_status"] == "COMPLETE"
+    assert metadata["agent"]["configuration_id"] == expected_profile
+    assert metadata["runtime"]["runtime_version"] == CURRENT_RPF07_RUNTIME_VERSION
+    assert metadata["runtime"]["source_sha256"] == source_hash
+    # Keep this comparison explicit: the Evaluation stores a stable Suite ref,
+    # not the full Suite definition or an Evaluation-specific identity.
+    assert metadata["suite_ref"] == {
+        "kind": "Evaluation Suite",
+        "suite_id": suite["suite"]["suite_id"],
+        "suite_version": suite["suite"]["suite_version"],
+        "member_contract_digest": suite["suite"]["member_contract_digest"],
+    }
+    items = metadata["member_results"]
+    assert [item["item_result"] for item in items] == expected_item_results
+    assert [item["run_ref"]["run_id"] for item in items] == [run["run"]["run_id"] for run in runs]
+    assert len({item["run_ref"]["run_id"] for item in items}) == len(items)
+    assert len({run["environment"]["environment_id"] for run in runs}) == len(runs)
+    regression_item = items[2]
+    result_document = json.loads(result_path.read_text(encoding="utf-8"))
+    assert regression_item["regression_result_ref"]["result_id"] == result_document["result"]["result_id"]
+    assert metadata["summary"]["valid_evidence_coverage"]["coverage_ratio"] == 1.0
+    if expected_profile == "known-bad-unsafe-precondition-v1":
+        assert metadata["summary"]["agent_quality"] == {
+            **metadata["summary"]["agent_quality"],
+            "pass_count": 0,
+            "fail_count": 3,
+            "denominator": 3,
+            "success_rate": 0.0,
+            "failure_rate": 1.0,
+        }
+    else:
+        assert metadata["summary"]["agent_quality"]["pass_count"] == 3
+        assert metadata["summary"]["agent_quality"]["fail_count"] == 0
+        assert metadata["summary"]["agent_quality"]["denominator"] == 3
+        assert metadata["summary"]["agent_quality"]["success_rate"] == 1.0
+    metrics = metadata["summary"]["cost_token_latency"]
+    assert metrics["reported_token_usage_sum"] is None
+    assert metrics["derived_cost_sum"] is None
+    assert metrics["unknown_cost_count"] == 3
+    assert_private_boundary(evaluation)
+    return evaluation
+
+
+def assert_rpf07_comparison(path: Path, baseline: dict[str, Any], candidate: dict[str, Any], suite: dict[str, Any], source_hash: str) -> dict[str, Any]:
+    comparison = json.loads(path.read_text(encoding="utf-8"))
+    assert comparison["schema_version"] == EVALUATION_COMPARISON_SCHEMA_VERSION
+    assert comparison["artifact_kind"] == "Evaluation Comparison"
+    assert not validate_comparison_artifact(comparison)
+    metadata = comparison["comparison"]
+    assert metadata["status"] == "COMPLETE"
+    assert metadata["runtime"]["runtime_version"] == CURRENT_RPF07_RUNTIME_VERSION
+    assert metadata["runtime"]["source_sha256"] == source_hash
+    assert metadata["suite_ref"] == {
+        "kind": "Evaluation Suite",
+        "suite_id": suite["suite"]["suite_id"],
+        "suite_version": suite["suite"]["suite_version"],
+        "member_contract_digest": suite["suite"]["member_contract_digest"],
+    }
+    assert metadata["baseline"]["evaluation_id"] == baseline["evaluation"]["evaluation_id"]
+    assert metadata["candidate"]["evaluation_id"] == candidate["evaluation"]["evaluation_id"]
+    assert [item["classification"] for item in metadata["per_member_comparison"]] == ["IMPROVED", "IMPROVED", "IMPROVED"]
+    assert metadata["aggregate"]["summary"] == "CANDIDATE_IMPROVED"
+    assert metadata["aggregate"]["agent_quality"]["success_rate_delta"]["delta"] == 1.0
+    assert metadata["aggregate"]["valid_evidence_coverage"]["coverage_ratio_delta"]["delta"] == 0.0
+    regression_delta = metadata["aggregate"]["regression"]["historical_regression_member_deltas"][0]
+    assert regression_delta["baseline_result"] == "FAIL"
+    assert regression_delta["candidate_result"] == "PASS"
+    assert regression_delta["regression_ref"]["regression_version"] == "1.0.0"
+    assert metadata["aggregate"]["cost_token_latency"]["derived_cost"]["status"] == "UNKNOWN"
+    assert metadata["aggregate"]["cost_token_latency"]["derived_cost"]["delta"] is None
+    assert metadata["non_release_boundary"] == "COMPARISON_ONLY_NO_RELEASE_DECISION"
+    encoded = json.dumps(comparison, ensure_ascii=False)
+    for forbidden in ("ELIGIBLE", "BLOCKED", "REVIEW REQUIRED", '"release_decision"'):
+        assert forbidden not in encoded
+    assert_private_boundary(comparison)
+    return comparison
+
+
 def main() -> None:
     source_hash = runtime_source_sha256()
     assert_legacy_artifact(LEGACY_ARTIFACTS[0], expected_fault=False)
@@ -435,7 +624,49 @@ def main() -> None:
     assert stability_one["run"]["run_id"] != stability_two["run"]["run_id"]
     assert stability_one["environment"]["environment_id"] != stability_two["environment"]["environment_id"]
     assert stability_two["run"]["run_id"] != fixed_candidate["run"]["run_id"]
-    print(f"PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-06 artifacts; source={source_hash}")
+    suite = assert_rpf07_suite(RPF07_SUITE, regression, source_hash)
+    baseline_document = json.loads(RPF07_BASELINE_RESULT.read_text(encoding="utf-8"))
+    candidate_document = json.loads(RPF07_CANDIDATE_RESULT.read_text(encoding="utf-8"))
+    baseline = assert_rpf07_evaluation(
+        RPF07_BASELINE_RESULT,
+        suite,
+        regression,
+        source_hash,
+        "known-bad-unsafe-precondition-v1",
+        baseline_document["evaluation"]["evaluation_id"],
+        [json.loads(path.read_text(encoding="utf-8")) for path in RPF07_BASELINE_RUNS],
+        RPF07_BASELINE_REGRESSION_RESULT,
+        ["FAIL", "FAIL", "FAIL"],
+    )
+    candidate = assert_rpf07_evaluation(
+        RPF07_CANDIDATE_RESULT,
+        suite,
+        regression,
+        source_hash,
+        "production-change-agent-v1-fixed",
+        candidate_document["evaluation"]["evaluation_id"],
+        [json.loads(path.read_text(encoding="utf-8")) for path in RPF07_CANDIDATE_RUNS],
+        RPF07_CANDIDATE_REGRESSION_RESULT,
+        ["PASS", "PASS", "PASS"],
+    )
+    assert_rpf07_regression_result(
+        RPF07_BASELINE_REGRESSION_RESULT,
+        regression,
+        json.loads(RPF07_BASELINE_RUNS[2].read_text(encoding="utf-8")),
+        "known-bad-unsafe-precondition-v1",
+        "FAIL",
+        baseline["evaluation"]["evaluation_id"],
+    )
+    assert_rpf07_regression_result(
+        RPF07_CANDIDATE_REGRESSION_RESULT,
+        regression,
+        json.loads(RPF07_CANDIDATE_RUNS[2].read_text(encoding="utf-8")),
+        "production-change-agent-v1-fixed",
+        "PASS",
+        candidate["evaluation"]["evaluation_id"],
+    )
+    assert_rpf07_comparison(RPF07_COMPARISON, baseline, candidate, suite, source_hash)
+    print(f"PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison; source={source_hash}")
 
 
 if __name__ == "__main__":

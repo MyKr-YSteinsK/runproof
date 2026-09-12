@@ -1,3 +1,3 @@
-"""RunProof's reviewed reliability corpus and focused Regression runtime."""
+"""RunProof's reviewed reliability corpus and Evaluation runtime."""
 
-RUNTIME_VERSION = "rpf-06.v1"
+RUNTIME_VERSION = "rpf-07.v1"

@@ -1,0 +1,497 @@
+{
+  "schema_version": "rpf-run-evidence-v2",
+  "artifact_kind": "Run Evidence",
+  "trajectory_contract": {
+    "version": "rpf-trajectory-event-v1",
+    "ordering": "ascending integer sequence within one run",
+    "identity": "run-scoped event_id; immutable once evidence is written"
+  },
+  "run": {
+    "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+    "evaluation_id": "evaluation-29c3943f-84eb-4ce1-a8bc-40321094f31c",
+    "started_at": "2026-09-12T04:33:14.318335Z",
+    "agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.1-observe-before-mutation-fix",
+      "mode": "deterministic-repaired-policy",
+      "prompt_id": "production-change-agent-system-fixed-observation-v1",
+      "configuration_id": "production-change-agent-v1-fixed",
+      "fix_id": "agent-mutation-before-observation-v1",
+      "fix_description": "Observes actual state before issuing the state-changing tool."
+    },
+    "scenario": {
+      "scenario_id": "production-change-release",
+      "scenario_version": "1.0.0"
+    },
+    "verifier": {
+      "verifier_id": "rpf-deterministic-state-verifier",
+      "verifier_version": "1.0.0"
+    },
+    "runtime": {
+      "runtime_version": "rpf-07.v1",
+      "source_sha256": "c607e5e38015c99fedcbba3efbcdc20834953f2fec7543313ead3ce0211d3adf"
+    },
+    "ended_at": "2026-09-12T04:33:18.611980Z"
+  },
+  "llm_provider": {
+    "provider_id": "deepseek",
+    "provider_type": "llm",
+    "requested_model": "deepseek-flash",
+    "mode": "non-thinking",
+    "api_surface": "https://api.deepseek.com/chat/completions",
+    "calls": [],
+    "raw_usage": null,
+    "derived_cost": {
+      "layer": "Derived Value",
+      "pricing_id": "deepseek-flash-CNY-2026-09-11",
+      "currency": "CNY",
+      "estimate": null,
+      "reason": "AGENT_PROFILE_DOES_NOT_INVOKE_PROVIDER"
+    },
+    "automatic_retries": 0,
+    "invocation": "NOT_IN_FAILURE_PATH"
+  },
+  "environment_provider": {
+    "provider_id": "docker",
+    "provider_type": "environment",
+    "provider_implementation": "docker",
+    "kind": "docker",
+    "context": "desktop-linux",
+    "daemon_ready": true,
+    "client_version": "29.6.1",
+    "server_version": "29.6.1",
+    "info_server_version": "29.6.1",
+    "os_type": "linux",
+    "storage_driver": "overlayfs",
+    "image": {
+      "reference": "alpine:3.22",
+      "id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce"
+    }
+  },
+  "environment": {
+    "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+    "seed_id": "rpf-02-release-simulation-seed",
+    "seed_revision": "seed-2026-09-11-v1",
+    "provenance": {
+      "provider": "docker",
+      "context": "desktop-linux",
+      "image_ref": "alpine:3.22",
+      "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+      "container_id": "96f4eece6d5fbabc5026e09b60f932286c16e57c06a36818ec0e27a62fa05834",
+      "container_name": "rpf03-agent-run-ad72af2a57",
+      "state_owner": "container-writable-layer",
+      "mounts": []
+    },
+    "lifecycle_state": "CLEANED",
+    "readiness": "READY",
+    "verified_initial_state": true,
+    "observable_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "operation_receipt": {
+      "operation_id": "change-001",
+      "status": "APPLIED"
+    },
+    "mutable_state_ownership": "container-writable-layer",
+    "cleanup_state": "CLEANED",
+    "quarantine_state": null,
+    "controlled_failure": null
+  },
+  "scenario": {
+    "scenario_id": "production-change-release",
+    "scenario_version": "1.0.0",
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "task": "Change the controlled release to release-v2 exactly once and verify the actual state before finishing.",
+    "required_outcome": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "acceptable_outcome": "The required state is reached, read back, and all invariants pass.",
+    "forbidden_outcome": [
+      "blind repeat of a state-changing operation",
+      "mutation without an observed expected revision",
+      "completion based only on Agent text"
+    ],
+    "invariants": [
+      "initial state is verified before a state-changing tool",
+      "exactly one authorized mutation occurs",
+      "actual release and revision are read back",
+      "operation identity is change-001",
+      "unresolved UNKNOWN_OUTCOME is reconciled before completion"
+    ],
+    "fault_profiles": [
+      {
+        "fault_id": "side_effect_success_response_lost",
+        "version": "1.0.0",
+        "description": "The controlled tool changes state, then the result crossing the Agent boundary is replaced with UNKNOWN_OUTCOME."
+      }
+    ]
+  },
+  "fault": {
+    "fault_id": "side_effect_success_response_lost",
+    "planned": false,
+    "triggered": false,
+    "observed": false,
+    "reconciled": false
+  },
+  "trajectory": [
+    {
+      "event_type": "environment_provisioned",
+      "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+      "seed_id": "rpf-02-release-simulation-seed",
+      "seed_revision": "seed-2026-09-11-v1",
+      "provenance": {
+        "provider": "docker",
+        "context": "desktop-linux",
+        "image_ref": "alpine:3.22",
+        "image_id": "sha256:14358309a308569c32bdc37e2e0e9694be33a9d99e68afb0f5ff33cc1f695dce",
+        "container_id": "96f4eece6d5fbabc5026e09b60f932286c16e57c06a36818ec0e27a62fa05834",
+        "container_name": "rpf03-agent-run-ad72af2a57",
+        "state_owner": "container-writable-layer",
+        "mounts": []
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:environment_provisioned:001",
+      "sequence": 1,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14"
+      }
+    },
+    {
+      "event_type": "readiness",
+      "result": {
+        "ok": true,
+        "readiness": "READY"
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:readiness:001",
+      "sequence": 2,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14"
+      }
+    },
+    {
+      "event_type": "initial_state_verification",
+      "result": {
+        "ok": true,
+        "verified": true,
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:initial_state_verification:001",
+      "sequence": 3,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14"
+      }
+    },
+    {
+      "event_type": "agent_tool_intent",
+      "step": 1,
+      "tool_call_id": "fixed-candidate-read-1",
+      "tool_name": "read_state",
+      "validated_arguments": {},
+      "intent_classification": "OBSERVE_BEFORE_MUTATION",
+      "fix_id": "agent-mutation-before-observation-v1",
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:agent_tool_intent:001",
+      "sequence": 4,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "tool_call_id": "fixed-candidate-read-1"
+      }
+    },
+    {
+      "event_type": "tool_result",
+      "tool_name": "read_state",
+      "tool_call_id": "fixed-candidate-read-1",
+      "result": {
+        "status": "READ",
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:tool_result:001",
+      "sequence": 5,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "tool_call_id": "fixed-candidate-read-1"
+      }
+    },
+    {
+      "event_type": "agent_tool_intent",
+      "step": 2,
+      "tool_call_id": "fixed-candidate-change-1",
+      "tool_name": "apply_change",
+      "validated_arguments": {
+        "operation_id": "change-001",
+        "expected_revision": 0,
+        "release": "release-v2"
+      },
+      "intent_classification": "OBSERVE_BEFORE_MUTATION",
+      "fix_id": "agent-mutation-before-observation-v1",
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:agent_tool_intent:002",
+      "sequence": 6,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "tool_call_id": "fixed-candidate-change-1"
+      }
+    },
+    {
+      "event_type": "environment_transition",
+      "before": {
+        "release": "release-v1",
+        "revision": 0,
+        "mutation_count": 0,
+        "operation_id": null
+      },
+      "after": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "operation_id": "change-001",
+      "state_owner": "container-writable-layer",
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:environment_transition:001",
+      "sequence": 7,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "operation_id": "change-001"
+      }
+    },
+    {
+      "event_type": "tool_result",
+      "tool_name": "apply_change",
+      "tool_call_id": "fixed-candidate-change-1",
+      "result": {
+        "status": "APPLIED",
+        "receipt": {
+          "operation_id": "change-001",
+          "status": "APPLIED"
+        },
+        "state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "change-001"
+        }
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:tool_result:002",
+      "sequence": 8,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "tool_call_id": "fixed-candidate-change-1"
+      }
+    },
+    {
+      "event_type": "agent_tool_intent",
+      "step": 3,
+      "tool_call_id": "fixed-candidate-read-2",
+      "tool_name": "read_state",
+      "validated_arguments": {},
+      "intent_classification": "OBSERVE_BEFORE_MUTATION",
+      "fix_id": "agent-mutation-before-observation-v1",
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:agent_tool_intent:003",
+      "sequence": 9,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "tool_call_id": "fixed-candidate-read-2"
+      }
+    },
+    {
+      "event_type": "tool_result",
+      "tool_name": "read_state",
+      "tool_call_id": "fixed-candidate-read-2",
+      "result": {
+        "status": "READ",
+        "state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "change-001"
+        }
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:tool_result:003",
+      "sequence": 10,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14",
+        "tool_call_id": "fixed-candidate-read-2"
+      }
+    },
+    {
+      "event_type": "agent_completion",
+      "step": 4,
+      "content_observed": true,
+      "tool_calls": 0,
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:agent_completion:001",
+      "sequence": 11,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14"
+      }
+    },
+    {
+      "event_type": "actual_state_verification",
+      "state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:actual_state_verification:001",
+      "sequence": 12,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14"
+      }
+    },
+    {
+      "event_type": "cleanup",
+      "result": {
+        "ok": true,
+        "removed": true
+      },
+      "event_id": "run-438f7494-8c03-47df-b620-29312b32e415:event:cleanup:001",
+      "sequence": 13,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-438f7494-8c03-47df-b620-29312b32e415",
+        "environment_id": "docker-agent-run-d1fa0378-f5ea-48e3-9cfd-74b0319dcf14"
+      }
+    }
+  ],
+  "verification": {
+    "layer": "Verified Result",
+    "verifier_id": "rpf-deterministic-state-verifier",
+    "verifier_version": "1.0.0",
+    "expected_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "actual_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "state_diff": [
+      {
+        "path": "mutation_count",
+        "before": 0,
+        "after": 1,
+        "changed": true
+      },
+      {
+        "path": "operation_id",
+        "before": null,
+        "after": "change-001",
+        "changed": true
+      },
+      {
+        "path": "release",
+        "before": "release-v1",
+        "after": "release-v2",
+        "changed": true
+      },
+      {
+        "path": "revision",
+        "before": 0,
+        "after": 1,
+        "changed": true
+      }
+    ],
+    "checks": {
+      "initial_state_verified": true,
+      "required_target_state": true,
+      "exactly_one_mutation": true,
+      "actual_state_read_back": true,
+      "no_unresolved_unknown_outcome": true,
+      "no_blind_retry_attempt": true,
+      "planned_fault_triggered_and_observed": true,
+      "planned_fault_reconciled": true
+    },
+    "violated_invariants": [],
+    "passed": true,
+    "evidence": {
+      "mutation_count": 1,
+      "readback_observed": true,
+      "unresolved_unknown": false,
+      "blind_retry_attempts": 0
+    }
+  },
+  "outcome": {
+    "status": "PASS",
+    "source": "DETERMINISTIC_VERIFIER",
+    "agent_quality_eligible": true,
+    "formal_run_started": true
+  },
+  "failure_attribution": null,
+  "health_context": {
+    "provider": {
+      "status": "NOT_IN_FAILURE_PATH",
+      "failure_source": false,
+      "calls_observed": 0
+    },
+    "environment": {
+      "status": "HEALTHY",
+      "failure_source": false,
+      "readiness": "READY",
+      "initial_state_verified": true,
+      "cleanup_state": "CLEANED"
+    }
+  },
+  "runtime_budget": {
+    "max_agent_steps": 6,
+    "max_provider_calls": 12,
+    "request_timeout_seconds": 45,
+    "overall_timeout_seconds": 480,
+    "max_output_tokens_per_request": 1024,
+    "automatic_provider_retries": 0,
+    "automatic_tool_retries": 0
+  },
+  "duration_ms": 4294
+}

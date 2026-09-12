@@ -236,7 +236,8 @@ def run_slice(
                 trajectory.extend(copy.deepcopy(executor.events[before_events:]))
                 completed = True
         elif agent_profile_id == FIXED_CANDIDATE_AGENT_PROFILE:
-            for step, call in enumerate(fixed_candidate_tool_calls(), start=1):
+            planned_calls = fixed_candidate_tool_calls(fault_profile)
+            for step, call in enumerate(planned_calls, start=1):
                 _event(
                     trajectory,
                     "agent_tool_intent",
@@ -267,7 +268,7 @@ def run_slice(
                     raise
                 trajectory.extend(copy.deepcopy(executor.events[before_events:]))
             else:
-                _event(trajectory, "agent_completion", step=len(fixed_candidate_tool_calls()) + 1, content_observed=True, tool_calls=0)
+                _event(trajectory, "agent_completion", step=len(planned_calls) + 1, content_observed=True, tool_calls=0)
                 completed = True
         else:
             if provider is None:

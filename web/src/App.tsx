@@ -1,8 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import {
   EvidenceLayer,
+  EvaluationComparison,
+  EvaluationComparisonMember,
+  EvaluationMemberResult,
+  EvaluationResult,
   FailureCase,
   getDerivedCost,
+  getEvaluation,
+  getEvaluationComparison,
   getFailureCase,
   getFailureCaseForRun,
   getRegression,
@@ -17,6 +23,9 @@ import {
   JsonRecord,
   reviewedRuns,
   reviewedFailureCases,
+  reviewedEvaluationComparison,
+  reviewedEvaluations,
+  reviewedEvaluationSuite,
   reviewedRegressions,
   reviewedRegressionCollection,
   Regression,
@@ -25,7 +34,7 @@ import {
   TrajectoryEvent,
 } from "./data/artifacts";
 
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null };
+type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null };
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -68,12 +77,16 @@ function readLocation(): LocationState {
   const runMatch = pathname.match(/^\/runs\/([^/]+)$/);
   const failureMatch = pathname.match(/^\/failures\/([^/]+)$/);
   const regressionMatch = pathname.match(/^\/regressions\/([^/]+)$/);
+  const evaluationMatch = pathname.match(/^\/evaluations\/([^/]+)$/);
+  const comparisonMatch = pathname.match(/^\/comparisons\/([^/]+)$/);
   return {
     pathname,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
     eventId: new URLSearchParams(window.location.search).get("event"),
     failureCaseId: failureMatch ? decodeURIComponent(failureMatch[1]) : null,
     regressionId: regressionMatch ? decodeURIComponent(regressionMatch[1]) : null,
+    evaluationId: evaluationMatch ? decodeURIComponent(evaluationMatch[1]) : null,
+    comparisonId: comparisonMatch ? decodeURIComponent(comparisonMatch[1]) : null,
   };
 }
 
@@ -171,7 +184,7 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, failure = false, regression = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean }) {
+function AppShell({ children, detail = false, failure = false, regression = false, evaluation = false, comparison = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
@@ -188,7 +201,7 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <span className="workspace-status"><i aria-hidden="true" /> local reviewed corpus</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
-          <a className={!detail && !failure && !regression ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={!detail && !failure && !regression && !evaluation && !comparison ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -203,11 +216,21 @@ function AppShell({ children, detail = false, failure = false, regression = fals
             <span>Regressions</span>
             <span className="nav-count">{reviewedRegressions.length}</span>
           </a>
+          <a className={evaluation ? "active" : ""} href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}>
+            <span className="nav-glyph">◎</span>
+            <span>Evaluations</span>
+            <span className="nav-count">{reviewedEvaluations.length}</span>
+          </a>
+          <a className={comparison ? "active" : ""} href={`/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`} onClick={(event) => { event.preventDefault(); navigate(`/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`); }}>
+            <span className="nav-glyph">⇄</span>
+            <span>Comparisons</span>
+            <span className="nav-count">1</span>
+          </a>
         </nav>
         <div className="rail-note">
           <span className="section-label">CURRENT SURFACE</span>
           <p>Evidence-first investigation for the first Reliability vertical slice.</p>
-          <span className="schema-chip">v2 evidence · v1 cases · v1 regressions</span>
+          <span className="schema-chip">v2 evidence · v1 evals · v1 regressions</span>
         </div>
         <div className="rail-footer">
           <span>Prototype</span>
@@ -220,11 +243,11 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> reviewed data</span>
-            <span className="topbar-revision">RPF-06</span>
+            <span className="topbar-revision">RPF-07</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -448,6 +471,30 @@ function failureHref(failureCaseId: string): string {
 
 function regressionHref(regressionId: string): string {
   return `/regressions/${encodeURIComponent(regressionId)}`;
+}
+
+function evaluationHref(evaluationId: string): string {
+  return `/evaluations/${encodeURIComponent(evaluationId)}`;
+}
+
+function comparisonHref(comparisonId: string): string {
+  return `/comparisons/${encodeURIComponent(comparisonId)}`;
+}
+
+function formatRate(value: unknown): string {
+  return typeof value === "number" ? `${Math.round(value * 100)}%` : "UNKNOWN";
+}
+
+function formatMetric(value: unknown, suffix = ""): string {
+  if (typeof value !== "number" || !Number.isFinite(value)) return "UNKNOWN";
+  return `${value.toLocaleString("en-US")}${suffix}`;
+}
+
+function evaluationTone(status: string): "success" | "fault" | "error" | "neutral" {
+  if (status === "PASS" || status === "COMPLETE" || status === "IMPROVED") return "success";
+  if (status === "FAIL" || status === "REGRESSED") return "fault";
+  if (status === "ERROR") return "error";
+  return "neutral";
 }
 
 function resultTone(result: string): "success" | "fault" | "error" | "neutral" {
@@ -847,6 +894,270 @@ function RegressionDetail({ regression }: { regression: Regression }) {
   );
 }
 
+function EvaluationLabel({ evaluation }: { evaluation: EvaluationResult }): string {
+  const version = displayValue(evaluation.evaluation.agent.agent_version);
+  if (version === "1.0.0-known-bad-unsafe-precondition") return "BASELINE";
+  if (version === "1.0.1-observe-before-mutation-fix") return "CANDIDATE";
+  return "EVALUATION";
+}
+
+function ProgressMeter({ value, label, note }: { value: unknown; label: string; note: string }) {
+  const numeric = typeof value === "number" && Number.isFinite(value) ? Math.max(0, Math.min(1, value)) : 0;
+  return (
+    <div className="progress-meter">
+      <div className="metric-heading"><span>{label}</span><strong>{formatRate(value)}</strong></div>
+      <div className="progress-track" aria-hidden="true"><span style={{ width: `${numeric * 100}%` }} /></div>
+      <small>{note}</small>
+    </div>
+  );
+}
+
+function OutcomeDistribution({ counts, label = "OUTCOME DISTRIBUTION" }: { counts: Record<string, number>; label?: string }) {
+  const statuses = ["PASS", "FAIL", "ERROR", "INVALID", "INCONCLUSIVE", "CANCELLED"];
+  return (
+    <div className="distribution-block" aria-label={label}>
+      <span className="field-label">{label}</span>
+      <div className="distribution-list">
+        {statuses.map((status) => <div className={`distribution-item ${status.toLowerCase()}`} key={status}><strong>{counts[status] || 0}</strong><span>{status}</span></div>)}
+      </div>
+    </div>
+  );
+}
+
+function EvaluationIndex() {
+  const comparison = reviewedEvaluationComparison.comparison;
+  return (
+    <AppShell evaluation>
+      <div className="page-header index-header">
+        <div>
+          <span className="eyebrow">EVALUATIONS · REVIEWED CORPUS</span>
+          <h1>Run the same Suite. Compare the evidence.</h1>
+          <p className="lede">A versioned, three-member reliability evaluation keeps quality, evidence coverage, recovery, and performance visible in one read-only control plane.</p>
+        </div>
+        <div className="corpus-note">
+          <span className="section-label">ACTIVE SUITE</span>
+          <strong>{reviewedEvaluationSuite.suite.suiteVersion}</strong>
+          <span>{reviewedEvaluationSuite.suite.members.length} required members · sequential</span>
+        </div>
+      </div>
+      <section className="corpus-boundary evaluation-boundary-note" aria-label="Evaluation boundary">
+        <span className="boundary-mark">◎</span>
+        <p><strong>Evidence boundary.</strong> Evaluation aggregates Run and Regression refs without rewriting them. Agent Quality counts only valid Agent <strong>PASS / FAIL</strong> evidence; coverage remains a separate required-member measure. This surface produces no Release Decision.</p>
+      </section>
+      <a className="comparison-entry" href={comparisonHref(comparison.comparisonId)} onClick={(event) => { event.preventDefault(); navigate(comparisonHref(comparison.comparisonId)); }}>
+        <span className="comparison-entry-mark">⇄</span>
+        <span><strong>Baseline vs Candidate comparison</strong><small>Same Suite v{displayValue(valueAt(comparison.suiteRef, "suite_version"))} · {displayValue(comparison.aggregate?.summary)} · evidence-backed, not Release</small></span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <section className="evaluation-list-section" aria-labelledby="evaluation-list-heading">
+        <div className="section-heading">
+          <div><span className="eyebrow">SELECT AN EVALUATION</span><h2 id="evaluation-list-heading">Independent Suite results</h2></div>
+          <span className="section-count">{reviewedEvaluations.length.toString().padStart(2, "0")} records</span>
+        </div>
+        <div className="evaluation-list">
+          <div className="evaluation-list-head" aria-hidden="true"><span>VERSION / STATUS</span><span>SUITE / MEMBERS</span><span>QUALITY / COVERAGE</span><span>REGRESSION / RUNTIME</span><span /></div>
+          {reviewedEvaluations.map((evaluation) => <EvaluationRow key={evaluation.evaluation.evaluationId} evaluation={evaluation} />)}
+        </div>
+      </section>
+      <footer className="page-footnote"><span>Source: reviewed Suite + independent Evaluation artifacts</span><span>Read-only local adapter · no execute or release action</span></footer>
+    </AppShell>
+  );
+}
+
+function EvaluationRow({ evaluation }: { evaluation: EvaluationResult }) {
+  const metadata = evaluation.evaluation;
+  const coverage = objectValue(valueAt(metadata.summary, "valid_evidence_coverage")) || {};
+  const quality = objectValue(valueAt(metadata.summary, "agent_quality")) || {};
+  const regression = objectValue(valueAt(metadata.summary, "regression")) || {};
+  const regressionCounts = objectValue(valueAt(regression, "result_counts")) || {};
+  const href = evaluationHref(metadata.evaluationId);
+  return (
+    <a className="evaluation-row" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
+      <div className="evaluation-row-identity">
+        <span className="evaluation-kind">{EvaluationLabel({ evaluation })}</span>
+        <strong>{displayValue(metadata.agent.agent_version)}</strong>
+        <span className="mono">{shortId(metadata.evaluationId, 28)}</span>
+        <StatusTag status={metadata.evaluationStatus} tone="success" />
+      </div>
+      <div className="evaluation-row-suite">
+        <strong>{displayValue(valueAt(metadata.suiteRef, "suite_id"))}@{displayValue(valueAt(metadata.suiteRef, "suite_version"))}</strong>
+        <span>{metadata.memberResults.length} required members <em>·</em> {Object.entries(metadata.outcomeCounts).filter(([, count]) => count > 0).map(([status, count]) => `${count} ${status}`).join(" · ")}</span>
+        <span className="row-member-hint">{metadata.memberResults.map((item) => item.itemResult).join("  /  ")}</span>
+      </div>
+      <div className="evaluation-row-quality">
+        <div><span>Agent Quality</span><strong>{formatRate(quality.success_rate)}</strong><small>{displayValue(quality.pass_count)} pass · {displayValue(quality.fail_count)} fail / {displayValue(quality.denominator)}</small></div>
+        <div><span>Valid Evidence</span><strong>{formatRate(coverage.coverage_ratio)}</strong><small>{displayValue(coverage.valid_evidence_item_count)}/{displayValue(coverage.required_item_count)} required</small></div>
+      </div>
+      <div className="evaluation-row-runtime">
+        <div><span>Historical Regression</span><strong>{displayValue(regressionCounts.PASS || 0)} PASS <em>·</em> {displayValue(regressionCounts.FAIL || 0)} FAIL</strong></div>
+        <div><span>Observed runtime</span><strong>{formatDuration(metadata.durationMs)}</strong><small>{formatDate(metadata.startedAt)} UTC</small></div>
+      </div>
+      <span className="row-arrow" aria-hidden="true">→</span>
+    </a>
+  );
+}
+
+function EvaluationContext({ evaluation }: { evaluation: EvaluationResult }) {
+  const metadata = evaluation.evaluation;
+  const coverage = objectValue(valueAt(metadata.summary, "valid_evidence_coverage")) || {};
+  const quality = objectValue(valueAt(metadata.summary, "agent_quality")) || {};
+  const agentVersion = displayValue(metadata.agent.agent_version);
+  return (
+    <section className="evaluation-context-panel" aria-label="Evaluation quality and evidence context">
+      <div className="evaluation-context-heading"><div><span className="eyebrow">AGGREGATE SEMANTICS · SEPARATE MEASURES</span><h2>Quality is not coverage</h2></div><span className="boundary-chip">NO RELEASE DECISION</span></div>
+      <p className="classification-copy">{EvaluationLabel({ evaluation })} <span className="mono">{agentVersion}</span> has a quality rate over valid Agent evidence. Required-member coverage shows whether the Suite produced enough evidence to support that rate; excluded outcomes remain visible below.</p>
+      <div className="evaluation-progress-grid">
+        <ProgressMeter value={quality.success_rate} label="Agent Quality" note={`${displayValue(quality.pass_count)} PASS · ${displayValue(quality.fail_count)} FAIL · denominator ${displayValue(quality.denominator)}`} />
+        <ProgressMeter value={coverage.coverage_ratio} label="Valid Evidence Coverage" note={`${displayValue(coverage.valid_evidence_item_count)} valid / ${displayValue(coverage.required_item_count)} required · ${displayValue(coverage.missing_or_invalid_item_count)} gap`} />
+      </div>
+      <div className="evaluation-rule-row"><span>Quality denominator</span><strong>PASS / FAIL only</strong><span>Coverage rule</span><strong>Required member with valid Agent judgment</strong></div>
+    </section>
+  );
+}
+
+function EvaluationMatrix({ evaluation }: { evaluation: EvaluationResult }) {
+  return (
+    <section className="evaluation-matrix-section" aria-labelledby="evaluation-matrix-heading">
+      <div className="section-heading"><div><span className="eyebrow">SUITE MEMBERS · STABLE REFS</span><h2 id="evaluation-matrix-heading">Evidence matrix</h2></div><span className="section-count">{evaluation.evaluation.memberResults.length} members · fresh environments</span></div>
+      <div className="evaluation-matrix" role="table" aria-label="Evaluation member evidence matrix">
+        <div className="evaluation-matrix-head" role="row" aria-hidden="true"><span>MEMBER / CATEGORY</span><span>OUTCOME / ATTRIBUTION</span><span>EVIDENCE</span><span>LATENCY / USAGE</span><span>LINKS</span></div>
+        {evaluation.evaluation.memberResults.map((item) => {
+          const run = runRef(item.runRef);
+          const runLink = run ? runHref(run.runId, run.eventId) : null;
+          const regressionId = typeof valueAt(item.regressionRef, "regression_id") === "string" ? String(valueAt(item.regressionRef, "regression_id")) : null;
+          const regressionLink = regressionId ? regressionHref(regressionId) : null;
+          const usage = item.usage;
+          const cost = usage.derived_cost;
+          return <div className="evaluation-matrix-row" role="row" key={item.memberId}>
+            <div className="matrix-member"><strong>{item.memberId}</strong><span>{item.category} <em>·</em> {item.required ? "required" : "optional"}</span><small>{displayValue(valueAt(item.scenarioRef, "scenario_id"))}@{displayValue(valueAt(item.scenarioRef, "scenario_version"))}</small></div>
+            <div className="matrix-outcome"><StatusTag status={item.itemResult} tone={evaluationTone(item.itemResult)} /><strong>{item.attribution}</strong><span>Run {item.runOutcome}{item.recoveryStatus ? ` · ${humanize(item.recoveryStatus)}` : ""}</span></div>
+            <div className={`matrix-evidence ${item.validQualityEvidence ? "valid" : "gap"}`}><strong>{item.validEvidenceStatus === "VALID" ? "VALID EVIDENCE" : "EVIDENCE GAP"}</strong><span>{item.validQualityEvidence ? "Counts in Agent Quality" : item.evidenceGapReasons.map(humanize).join(" · ")}</span>{item.regressionResultRef && <small>Regression result linked</small>}</div>
+            <div className="matrix-usage"><strong>{formatDuration(item.durationMs)}</strong><span>{formatMetric(usage.reported_tokens, " tok")}</span><small>{cost === null || cost === undefined ? "cost UNKNOWN" : `¥${formatMetric(cost)}`}</small></div>
+            <div className="matrix-links">{runLink && <a href={runLink} onClick={(event) => { event.preventDefault(); navigate(runLink); }}>Open Run →</a>}{regressionLink && <a href={regressionLink} onClick={(event) => { event.preventDefault(); navigate(regressionLink); }}>Open Regression →</a>}{!runLink && <span>Run ref only</span>}</div>
+          </div>;
+        })}
+      </div>
+      <p className="matrix-note"><strong>Run outcome and item result stay separate.</strong> Historical Regression uses its versioned Regression oracle; Recovery exposes whether the planned Fault was actually triggered and reconciled. Raw Run Evidence remains the drill-down source.</p>
+    </section>
+  );
+}
+
+function EvaluationDetail({ evaluation }: { evaluation: EvaluationResult }) {
+  const metadata = evaluation.evaluation;
+  const coverage = objectValue(valueAt(metadata.summary, "valid_evidence_coverage")) || {};
+  const quality = objectValue(valueAt(metadata.summary, "agent_quality")) || {};
+  const metrics = objectValue(valueAt(metadata.summary, "cost_token_latency")) || {};
+  const latency = objectValue(valueAt(metrics, "latency")) || {};
+  const regressionSummary = objectValue(valueAt(metadata.summary, "regression")) || {};
+  const faultSummary = objectValue(valueAt(metadata.summary, "fault_recovery")) || {};
+  const comparison = reviewedEvaluationComparison.comparison;
+  const comparisonLink = comparisonHref(comparison.comparisonId);
+  return (
+    <AppShell detail evaluation>
+      <div className="detail-breadcrumb"><a href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}>Evaluations</a><span aria-hidden="true">/</span><span>{shortId(metadata.evaluationId, 34)}</span><span className="schema-chip">rpf-evaluation-result-v1</span></div>
+      <div className="detail-header evaluation-detail-header">
+        <div><span className="eyebrow">{EvaluationLabel({ evaluation })} · EVALUATION DETAIL</span><h1>{displayValue(metadata.agent.agent_version)} across {displayValue(valueAt(metadata.suiteRef, "suite_version"))}.</h1><p className="detail-subtitle">{displayValue(valueAt(metadata.summary, "agent_quality") ? "Agent Quality, Recovery, Regression, and evidence coverage remain separate views of the same independent member Runs." : "Evidence aggregate")}</p></div>
+        <div className="detail-header-status"><StatusTag status={metadata.evaluationStatus} tone="success" /><span className="status-note">{metadata.memberResults.length} members · read-only reviewed result</span></div>
+      </div>
+      <section className="identity-strip evaluation-identity-strip" aria-label="Evaluation context identity">
+        <IdentityField label="Agent Version" value={displayValue(metadata.agent.agent_version)} note={displayValue(metadata.agent.configuration_id)} />
+        <IdentityField label="Evaluation" value={metadata.evaluationId} mono note={metadata.evaluationStatus} />
+        <IdentityField label="Suite" value={`${displayValue(valueAt(metadata.suiteRef, "suite_id"))}@${displayValue(valueAt(metadata.suiteRef, "suite_version"))}`} mono note={shortId(valueAt(metadata.suiteRef, "member_contract_digest"), 18)} />
+        <IdentityField label="Quality" value={formatRate(quality.success_rate)} note={`${displayValue(quality.pass_count)} pass · ${displayValue(quality.fail_count)} fail`} />
+        <IdentityField label="Coverage" value={formatRate(coverage.coverage_ratio)} note={`${displayValue(coverage.valid_evidence_item_count)}/${displayValue(coverage.required_item_count)} required`} />
+        <IdentityField label="Observed runtime" value={formatDuration(metadata.durationMs)} mono note={`${formatDate(metadata.startedAt)} UTC`} />
+      </section>
+      <EvaluationContext evaluation={evaluation} />
+      <section className="evaluation-facts-grid" aria-label="Evaluation distributions and summary">
+        <div className="panel evaluation-fact-panel"><div className="panel-heading"><div><span className="eyebrow">DISTRIBUTION</span><h2>Item outcomes</h2></div><span className="ordering-note">Run / item counts</span></div><OutcomeDistribution counts={metadata.outcomeCounts} /><div className="fact-list compact-fact-list"><div className="fact-row"><span>Run outcomes</span><strong>{Object.entries(metadata.runOutcomeCounts).filter(([, count]) => count > 0).map(([status, count]) => `${count} ${status}`).join(" · ")}</strong></div><div className="fact-row"><span>Evidence gaps</span><strong>{displayValue(coverage.missing_or_invalid_item_count)}</strong></div></div></div>
+        <div className="panel evaluation-fact-panel"><div className="panel-heading"><div><span className="eyebrow">FAULT / REGRESSION</span><h2>Reliability signals</h2></div><span className="ordering-note">Contract-specific</span></div><div className="fact-list evaluation-fact-list"><div className="fact-row"><span>Historical Regression</span><strong>{displayValue(valueAt(regressionSummary, "result_counts"))}</strong></div><div className="fact-row"><span>Fault triggered</span><strong>{displayValue(faultSummary.triggered_fault_count)} / {displayValue(faultSummary.planned_fault_count)}</strong></div><div className="fact-row"><span>Fault reconciled</span><strong>{displayValue(faultSummary.reconciled_fault_count)} · recovered PASS {displayValue(faultSummary.recovered_pass_count)}</strong></div><div className="fact-row"><span>Incompleteness</span><strong>{metadata.incompleteOrUnknown.length ? `${metadata.incompleteOrUnknown.length} member gap(s)` : "None"}</strong></div></div></div>
+      </section>
+      <EvaluationMatrix evaluation={evaluation} />
+      <section className="evaluation-performance-panel panel" aria-label="Cost token and latency aggregate"><div className="panel-heading"><div><span className="eyebrow">PERFORMANCE · RAW VS DERIVED</span><h2>Usage and observed latency</h2></div><span className="ordering-note">No Provider invoice inferred</span></div><div className="performance-grid"><div><span>Reported tokens</span><strong>{formatMetric(metrics.reported_token_usage_sum)}</strong><small>{displayValue(metrics.reported_token_usage_item_count)} item(s) reported · {displayValue(metrics.missing_usage_count)} missing</small></div><div><span>Derived cost</span><strong>{metrics.derived_cost_sum === null || metrics.derived_cost_sum === undefined ? "UNKNOWN" : `¥${formatMetric(metrics.derived_cost_sum)}`}</strong><small>{displayValue(metrics.unknown_cost_count)} unknown · missing is not zero</small></div><div><span>Total observed runtime</span><strong>{formatMetric(latency.total_observed_runtime_ms, " ms")}</strong><small>sum of member Run duration</small></div><div><span>Average item latency</span><strong>{formatMetric(latency.average_item_latency_ms, " ms")}</strong><small>{displayValue(latency.known_item_count)} known · derived from Run duration</small></div></div></section>
+      {metadata.incompleteOrUnknown.length > 0 && <section className="evaluation-gap-panel" aria-label="Evaluation evidence gaps"><div className="boundary-mark">!</div><div><span className="eyebrow">EVIDENCE GAPS · VISIBLE</span><h2>Some members cannot support Agent Quality</h2>{metadata.incompleteOrUnknown.map((gap) => <div className="evaluation-gap-row" key={String(gap.member_id)}><strong>{displayValue(gap.member_id)}</strong><span>{displayValue(gap.category)}</span><small>{displayValue(gap.reasons)}</small></div>)}</div></section>}
+      <section className="evaluation-actions" aria-label="Evaluation navigation"><div><span className="eyebrow">COMPARE CONTEXT</span><h2>Keep the version context continuous.</h2><p>Open the side-by-side Comparison to inspect this Evaluation against the other Agent Version under the same Suite contract.</p></div><a className="primary-action" href={comparisonLink} onClick={(event) => { event.preventDefault(); navigate(comparisonLink); }}>Open Baseline / Candidate comparison →</a></section>
+      <details className="raw-details evaluation-raw"><summary>Expert escape hatch · normalized Evaluation JSON</summary><pre>{JSON.stringify(evaluation, null, 2)}</pre></details>
+      <footer className="detail-footer"><span>{metadata.evaluationId} · {displayValue(valueAt(metadata.suiteRef, "suite_id"))}@{displayValue(valueAt(metadata.suiteRef, "suite_version"))}</span><span>Runtime {displayValue(metadata.runtime.runtime_version)} · source <span className="mono">{shortId(metadata.runtime.source_sha256, 20)}</span></span></footer>
+    </AppShell>
+  );
+}
+
+function ComparisonMetric({ label, baseline, candidate, delta, note, tone = "neutral" }: { label: string; baseline: string; candidate: string; delta: string; note: string; tone?: "success" | "fault" | "neutral" }) {
+  return <div className={`comparison-metric ${tone}`}><span>{label}</span><div><strong>{baseline}</strong><i aria-hidden="true">→</i><strong>{candidate}</strong></div><em>{delta}</em><small>{note}</small></div>;
+}
+
+function ComparisonMemberRow({ item }: { item: EvaluationComparisonMember }) {
+  const baselineRun = runRef(item.baseline.runRef);
+  const candidateRun = runRef(item.candidate.runRef);
+  const baselineLink = baselineRun ? runHref(baselineRun.runId, baselineRun.eventId) : null;
+  const candidateLink = candidateRun ? runHref(candidateRun.runId, candidateRun.eventId) : null;
+  const regressionId = typeof valueAt(item.regressionRef, "regression_id") === "string" ? String(valueAt(item.regressionRef, "regression_id")) : null;
+  const regressionLink = regressionId ? regressionHref(regressionId) : null;
+  return <div className={`comparison-member-row ${item.classification.toLowerCase()}`}>
+    <div className="comparison-member-name"><strong>{item.memberId}</strong><span>{item.category}</span><small>{item.required ? "required" : "optional"}</small></div>
+    <div className="comparison-side baseline-side"><span className="side-label">BASELINE</span><StatusTag status={item.baseline.itemResult} tone={evaluationTone(item.baseline.itemResult)} /><strong>{item.baseline.attribution}</strong><small>{item.baseline.validEvidenceStatus === "VALID" ? "valid evidence" : "evidence gap"}</small>{baselineLink && <a href={baselineLink} onClick={(event) => { event.preventDefault(); navigate(baselineLink); }}>Open Run →</a>}</div>
+    <div className="comparison-delta"><StatusTag status={item.classification} tone={evaluationTone(item.classification)} /><small>{item.reasons.map(humanize).join(" · ")}</small></div>
+    <div className="comparison-side candidate-side"><span className="side-label">CANDIDATE</span><StatusTag status={item.candidate.itemResult} tone={evaluationTone(item.candidate.itemResult)} /><strong>{item.candidate.attribution}</strong><small>{item.candidate.validEvidenceStatus === "VALID" ? "valid evidence" : "evidence gap"}</small>{candidateLink && <a href={candidateLink} onClick={(event) => { event.preventDefault(); navigate(candidateLink); }}>Open Run →</a>}</div>
+    <div className="comparison-member-links">{regressionLink && <a href={regressionLink} onClick={(event) => { event.preventDefault(); navigate(regressionLink); }}>Regression contract →</a>}<span>{displayValue(valueAt(item.scenarioRef, "scenario_id"))}@{displayValue(valueAt(item.scenarioRef, "scenario_version"))}</span></div>
+  </div>;
+}
+
+function ComparisonIndex() {
+  const comparison = reviewedEvaluationComparison.comparison;
+  return <AppShell comparison><div className="page-header index-header"><div><span className="eyebrow">COMPARISONS · REVIEWED CORPUS</span><h1>See what changed between versions.</h1><p className="lede">A single side-by-side surface keeps member outcomes, evidence sufficiency, regression behavior, and observed cost/latency in the same context.</p></div><div className="corpus-note"><span className="section-label">ACTIVE COMPARISON</span><strong>{displayValue(comparison.aggregate?.summary)}</strong><span>same Suite · no Release Decision</span></div></div><section className="corpus-boundary comparison-boundary-note" aria-label="Comparison boundary"><span className="boundary-mark">⇄</span><p><strong>Comparison boundary.</strong> This result is descriptive evidence about two Agent Versions. It never emits <strong>ELIGIBLE</strong>, <strong>BLOCKED</strong>, or deploy authorization.</p></section><a className="comparison-card" href={comparisonHref(comparison.comparisonId)} onClick={(event) => { event.preventDefault(); navigate(comparisonHref(comparison.comparisonId)); }}><span className="comparison-entry-mark">⇄</span><span><strong>{shortId(comparison.comparisonId, 33)}</strong><small>{displayValue(valueAt(comparison.suiteRef, "suite_id"))}@{displayValue(valueAt(comparison.suiteRef, "suite_version"))} · open side-by-side result</small></span><StatusTag status={displayValue(comparison.aggregate?.summary)} tone={evaluationTone(String(comparison.aggregate?.summary || ""))} /><span className="row-arrow" aria-hidden="true">→</span></a></AppShell>;
+}
+
+function ComparisonDetail({ comparison }: { comparison: EvaluationComparison }) {
+  const metadata = comparison.comparison;
+  const aggregate = metadata.aggregate || {};
+  const quality = objectValue(valueAt(aggregate, "agent_quality")) || {};
+  const coverage = objectValue(valueAt(aggregate, "valid_evidence_coverage")) || {};
+  const performance = objectValue(valueAt(aggregate, "cost_token_latency")) || {};
+  const regression = objectValue(valueAt(aggregate, "regression")) || {};
+  const recovery = objectValue(valueAt(aggregate, "fault_recovery")) || {};
+  const regressionDeltas = Array.isArray(valueAt(regression, "historical_regression_member_deltas")) ? valueAt(regression, "historical_regression_member_deltas") as unknown[] : [];
+  const regressionDelta = objectValue(regressionDeltas[0]) || {};
+  const regressionRef = objectValue(valueAt(regressionDelta, "regression_ref")) || {};
+  const regressionId = String(valueAt(regressionRef, "regression_id") || "");
+  const baselineAgent = objectValue(valueAt(metadata.baseline, "agent")) || {};
+  const candidateAgent = objectValue(valueAt(metadata.candidate, "agent")) || {};
+  const baselineQuality = objectValue(valueAt(quality, "baseline")) || {};
+  const candidateQuality = objectValue(valueAt(quality, "candidate")) || {};
+  const baselineCoverage = objectValue(valueAt(coverage, "baseline")) || {};
+  const candidateCoverage = objectValue(valueAt(coverage, "candidate")) || {};
+  const qualityDelta = objectValue(valueAt(quality, "success_rate_delta")) || {};
+  const coverageDelta = objectValue(valueAt(coverage, "coverage_ratio_delta")) || {};
+  const runtimeDelta = objectValue(valueAt(performance, "total_observed_runtime_ms")) || {};
+  const costDelta = objectValue(valueAt(performance, "derived_cost")) || {};
+  const tokenDelta = objectValue(valueAt(performance, "reported_tokens")) || {};
+  const runtimeDeltaValue = typeof runtimeDelta.delta === "number" ? runtimeDelta.delta : null;
+  const baselineEvaluationId = String(valueAt(metadata.baseline, "evaluation_id") || "");
+  const candidateEvaluationId = String(valueAt(metadata.candidate, "evaluation_id") || "");
+  return <AppShell detail comparison>
+    <div className="detail-breadcrumb"><a href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}>Evaluations</a><span aria-hidden="true">/</span><span>{shortId(metadata.comparisonId, 34)}</span><span className="schema-chip">rpf-evaluation-comparison-v1</span></div>
+    <div className="detail-header comparison-detail-header"><div><span className="eyebrow">BASELINE ↔ CANDIDATE · COMPARISON</span><h1>{displayValue(aggregate.summary)} across the same Suite.</h1><p className="detail-subtitle">The comparison describes member-level evidence changes between two independent Evaluations. It is not a Quality Policy result or Release Decision.</p></div><div className="detail-header-status"><StatusTag status={metadata.status} tone="success" /><span className="status-note">{displayValue(aggregate.summary)} · no release action</span></div></div>
+    <section className="comparison-identity-strip" aria-label="Comparison identity"><div><span>BASELINE AGENT VERSION</span><strong>{displayValue(baselineAgent.agent_version)}</strong><small>{shortId(baselineEvaluationId, 31)}</small></div><div className="comparison-identity-arrow" aria-hidden="true">→</div><div className="candidate-identity"><span>CANDIDATE AGENT VERSION</span><strong>{displayValue(candidateAgent.agent_version)}</strong><small>{shortId(candidateEvaluationId, 31)}</small></div><div><span>SAME SUITE</span><strong>{displayValue(valueAt(metadata.suiteRef, "suite_id"))}</strong><small>version {displayValue(valueAt(metadata.suiteRef, "suite_version"))}</small></div></section>
+    <section className="comparison-boundary-panel" aria-label="Comparison result boundary"><span className="boundary-mark">i</span><p><strong>Descriptive comparison only.</strong> Candidate improves the three observed members with full valid evidence coverage in this reviewed corpus. That statement does not grant <strong>ELIGIBLE</strong>, <strong>BLOCKED</strong>, or deployment authority.</p></section>
+    <section className="comparison-metrics-section" aria-labelledby="comparison-metrics-heading"><div className="section-heading"><div><span className="eyebrow">AGGREGATE DELTAS · THREE LENSES</span><h2 id="comparison-metrics-heading">Quality, evidence, and observed cost</h2></div><span className="section-count">same members · independent Runs</span></div><div className="comparison-metrics-grid"><ComparisonMetric label="Agent Quality" baseline={formatRate(baselineQuality.success_rate)} candidate={formatRate(candidateQuality.success_rate)} delta={`+${formatRate(qualityDelta.delta)}`} note={`${displayValue(baselineQuality.denominator)} → ${displayValue(candidateQuality.denominator)} valid quality items`} tone="success" /><ComparisonMetric label="Valid Evidence Coverage" baseline={formatRate(baselineCoverage.coverage_ratio)} candidate={formatRate(candidateCoverage.coverage_ratio)} delta={`${coverageDelta.delta === 0 ? "unchanged" : formatRate(coverageDelta.delta)}`} note={`${displayValue(candidateCoverage.valid_evidence_item_count)}/${displayValue(candidateCoverage.required_item_count)} Candidate required`} tone="neutral" /><ComparisonMetric label="Observed Runtime" baseline={formatMetric(valueAt(runtimeDelta, "baseline"), " ms")} candidate={formatMetric(valueAt(runtimeDelta, "candidate"), " ms")} delta={runtimeDeltaValue === null ? "UNKNOWN" : `${runtimeDeltaValue >= 0 ? "+" : ""}${formatMetric(runtimeDeltaValue, " ms")}`} note="derived from independent member Run durations" tone="neutral" /><ComparisonMetric label="Reported Tokens" baseline={formatMetric(valueAt(tokenDelta, "baseline"))} candidate={formatMetric(valueAt(tokenDelta, "candidate"))} delta={tokenDelta.status === "UNKNOWN" ? "UNKNOWN" : formatMetric(tokenDelta.delta)} note="missing Provider usage is not zero" tone="neutral" /><ComparisonMetric label="Derived Cost" baseline={costDelta.status === "UNKNOWN" ? "UNKNOWN" : `¥${formatMetric(valueAt(costDelta, "baseline"))}`} candidate={costDelta.status === "UNKNOWN" ? "UNKNOWN" : `¥${formatMetric(valueAt(costDelta, "candidate"))}`} delta={costDelta.status === "UNKNOWN" ? "UNKNOWN" : `¥${formatMetric(costDelta.delta)}`} note="not a Provider invoice" tone="neutral" /></div></section>
+     <section className="comparison-reliability-grid" aria-label="Regression and Recovery comparisons">
+       <div className="panel comparison-signal-panel">
+         <div className="panel-heading"><div><span className="eyebrow">HISTORICAL REGRESSION</span><h2>Regression behavior</h2></div><span className="ordering-note">contract-linked</span></div>
+         <div className="comparison-signal-content"><div><span>Baseline</span><StatusTag status={displayValue(valueAt(regressionDelta, "baseline_result"))} tone="fault" /></div><span className="comparison-signal-arrow">→</span><div><span>Candidate</span><StatusTag status={displayValue(valueAt(regressionDelta, "candidate_result"))} tone="success" /></div></div>
+         <p>Existing Regression <a href={regressionHref(regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(regressionId)); }}>{shortId(regressionId, 32)}</a> stayed version-linked; Baseline FAIL → Candidate PASS is one member improvement.</p>
+       </div>
+       <div className="panel comparison-signal-panel">
+         <div className="panel-heading"><div><span className="eyebrow">RECOVERY / FAULT</span><h2>Response-lost recovery</h2></div><span className="ordering-note">fault evidence visible</span></div>
+         <div className="comparison-recovery-grid"><div><span>Baseline recovered PASS</span><strong>{displayValue(valueAt(valueAt(recovery, "recovered_pass_delta"), "baseline"))}</strong><small>{displayValue(valueAt(valueAt(recovery, "baseline"), "not_reached_count"))} not reached</small></div><div><span>Candidate recovered PASS</span><strong>{displayValue(valueAt(valueAt(recovery, "recovered_pass_delta"), "candidate"))}</strong><small>{displayValue(valueAt(valueAt(recovery, "candidate"), "reconciled_fault_count"))} reconciled</small></div></div>
+         <p>Recovery is counted from observed planned/triggered/observed/reconciled facts. Fault presence itself is never a FAIL.</p>
+       </div>
+     </section>
+    <section className="comparison-matrix-section" aria-labelledby="comparison-matrix-heading"><div className="section-heading"><div><span className="eyebrow">MEMBER DIFF · FIRST-CLASS</span><h2 id="comparison-matrix-heading">Baseline / Candidate evidence matrix</h2></div><span className="section-count">{metadata.perMemberComparison.length} member comparisons</span></div><div className="comparison-member-list">{metadata.perMemberComparison.map((item) => <ComparisonMemberRow key={item.memberId} item={item} />)}</div><p className="matrix-note"><strong>INCOMPARABLE is explicit.</strong> An ERROR, INVALID, INCONCLUSIVE, CANCELLED, or missing required item can never be rendered as Candidate improvement. Open the linked Run for the underlying timeline.</p></section>
+    <section className="comparison-navigation-panel" aria-label="Evaluation navigation"><div><span className="eyebrow">SOURCE EVALUATIONS</span><h2>Open either full Evaluation.</h2><p>Both artifacts use the same Suite/member contract and retain their own independent Run IDs and Environment IDs.</p></div><div className="comparison-navigation-links"><a href={evaluationHref(baselineEvaluationId)} onClick={(event) => { event.preventDefault(); navigate(evaluationHref(baselineEvaluationId)); }}>Open Baseline Evaluation →</a><a href={evaluationHref(candidateEvaluationId)} onClick={(event) => { event.preventDefault(); navigate(evaluationHref(candidateEvaluationId)); }}>Open Candidate Evaluation →</a></div></section>
+    <details className="raw-details evaluation-raw"><summary>Expert escape hatch · normalized Comparison JSON</summary><pre>{JSON.stringify(comparison, null, 2)}</pre></details>
+    <footer className="detail-footer"><span>{metadata.comparisonId} · {displayValue(valueAt(metadata.suiteRef, "suite_id"))}@{displayValue(valueAt(metadata.suiteRef, "suite_version"))}</span><span>Runtime {displayValue(metadata.runtime.runtime_version)} · source <span className="mono">{shortId(metadata.runtime.source_sha256, 20)}</span></span></footer>
+  </AppShell>;
+}
+
 function FailureIndex() {
   return (
     <AppShell failure>
@@ -970,10 +1281,16 @@ export default function App() {
   const run = useMemo(() => location.runId ? getRun(location.runId) : undefined, [location.runId]);
   const failureCase = useMemo(() => location.failureCaseId ? getFailureCase(location.failureCaseId) : undefined, [location.failureCaseId]);
   const regression = useMemo(() => location.regressionId ? getRegression(location.regressionId) : undefined, [location.regressionId]);
+  const evaluation = useMemo(() => location.evaluationId ? getEvaluation(location.evaluationId) : undefined, [location.evaluationId]);
+  const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
   if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
   if (regression) return <RegressionDetail regression={regression} />;
+  if (comparison) return <ComparisonDetail comparison={comparison} />;
+  if (evaluation) return <EvaluationDetail evaluation={evaluation} />;
   if (location.pathname === "/failures") return <FailureIndex />;
   if (location.pathname === "/regressions") return <RegressionIndex />;
+  if (location.pathname === "/evaluations") return <EvaluationIndex />;
+  if (location.pathname === "/comparisons") return <ComparisonIndex />;
   if (run) return <RunDetail run={run} eventId={location.eventId} />;
   return <RunIndex />;
 }

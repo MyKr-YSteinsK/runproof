@@ -1,0 +1,354 @@
+{
+  "schema_version": "rpf-evaluation-result-v1",
+  "artifact_kind": "Evaluation Result",
+  "evaluation": {
+    "evaluation_id": "evaluation-f7189d6a-1946-4310-842d-d130ccb0e84d",
+    "evaluation_status": "COMPLETE",
+    "started_at": "2026-09-12T04:32:55.799020Z",
+    "ended_at": "2026-09-12T04:33:05.124841Z",
+    "duration_ms": 9310,
+    "suite_ref": {
+      "kind": "Evaluation Suite",
+      "suite_id": "rpf-minimal-reliability-suite",
+      "suite_version": "1.0.0",
+      "member_contract_digest": "a79c168415891919e7f06d89fe9d9776d6e21c4fb9e1b407c6445205e3550803"
+    },
+    "suite_member_ids": [
+      "normal-functional",
+      "response-lost-recovery",
+      "historical-regression"
+    ],
+    "agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.0-known-bad-unsafe-precondition",
+      "configuration_id": "known-bad-unsafe-precondition-v1",
+      "mode": "known-bad-deterministic-policy",
+      "prompt_id": "production-change-agent-system-known-bad-unsafe-precondition-v1",
+      "defect_id": "agent-mutation-before-observation-v1"
+    },
+    "member_results": [
+      {
+        "member_id": "normal-functional",
+        "category": "Normal / Functional",
+        "required": true,
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "production-change-release",
+          "scenario_version": "1.0.0"
+        },
+        "regression_ref": null,
+        "oracle_id": "rpf-deterministic-state-verifier@1.0.0",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42"
+        },
+        "environment_id": "docker-agent-run-0a58e994-04b8-4889-b49d-46bfbe082253",
+        "run_outcome": "FAIL",
+        "item_result": "FAIL",
+        "attribution": "Agent",
+        "valid_quality_evidence": true,
+        "valid_evidence_status": "VALID",
+        "evidence_gap_reasons": [],
+        "duration_ms": 3146,
+        "usage": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": "CNY",
+          "cost_basis": "provider-reported usage + derived pricing estimate",
+          "cost_is_invoice": false
+        },
+        "fault": {
+          "fault_id": "side_effect_success_response_lost",
+          "planned": false,
+          "triggered": false,
+          "observed": false,
+          "reconciled": false
+        },
+        "recovery_status": null,
+        "evidence_refs": [
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42",
+              "event_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42",
+              "event_id": "run-d6208f09-c5ea-4bdc-bb2d-0b86beaa9d42:event:actual_state_verification:001"
+            }
+          }
+        ],
+        "member_contract_digest": "45c09bdf05f9b0151fd46a55d4d73d14cffa55f1e07c1ccafd1afe21250a7866"
+      },
+      {
+        "member_id": "response-lost-recovery",
+        "category": "Recovery / Fault",
+        "required": true,
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "production-change-release",
+          "scenario_version": "1.0.0"
+        },
+        "regression_ref": null,
+        "oracle_id": "rpf-response-lost-reconcile@1.0.0",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+        },
+        "environment_id": "docker-agent-run-a081c4c1-78bb-4235-acd6-4aec02383d8b",
+        "run_outcome": "FAIL",
+        "item_result": "FAIL",
+        "attribution": "Agent",
+        "valid_quality_evidence": true,
+        "valid_evidence_status": "VALID",
+        "evidence_gap_reasons": [],
+        "duration_ms": 3058,
+        "usage": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": "CNY",
+          "cost_basis": "provider-reported usage + derived pricing estimate",
+          "cost_is_invoice": false
+        },
+        "fault": {
+          "fault_id": "side_effect_success_response_lost",
+          "planned": true,
+          "triggered": false,
+          "observed": false,
+          "reconciled": false
+        },
+        "recovery_status": "NOT_REACHED_DUE_TO_AGENT_OR_PRECONDITION",
+        "evidence_refs": [
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f",
+              "event_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f:event:actual_state_verification:001"
+            }
+          }
+        ],
+        "member_contract_digest": "cdeed95a3a97db68f245e7113de3bdf05c8facd3083fdc87cf4c6c4e5fef46df"
+      },
+      {
+        "member_id": "historical-regression",
+        "category": "Historical Regression",
+        "required": true,
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "production-change-release",
+          "scenario_version": "1.0.0"
+        },
+        "regression_ref": {
+          "kind": "Regression",
+          "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+          "regression_version": "1.0.0"
+        },
+        "oracle_id": "rpf-regression-oracle@rpf-regression-result-v1",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+        },
+        "environment_id": "docker-agent-run-a15c874e-ef9c-4af7-9fed-877f96a53dbd",
+        "run_outcome": "FAIL",
+        "item_result": "FAIL",
+        "attribution": "Agent",
+        "valid_quality_evidence": true,
+        "valid_evidence_status": "VALID",
+        "evidence_gap_reasons": [],
+        "duration_ms": 3106,
+        "usage": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": "CNY",
+          "cost_basis": "provider-reported usage + derived pricing estimate",
+          "cost_is_invoice": false
+        },
+        "fault": {
+          "fault_id": "side_effect_success_response_lost",
+          "planned": false,
+          "triggered": false,
+          "observed": false,
+          "reconciled": false
+        },
+        "recovery_status": null,
+        "evidence_refs": [
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:guard_blocked:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684",
+              "event_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+            }
+          }
+        ],
+        "regression_result_ref": {
+          "kind": "Regression Execution Result",
+          "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+        },
+        "regression_result": "FAIL",
+        "member_contract_digest": "fc6d4ae9b650c19b42ef3ada473679906e37b92d3bab25139c59d94aef833c40"
+      }
+    ],
+    "outcome_counts": {
+      "PASS": 0,
+      "FAIL": 3,
+      "ERROR": 0,
+      "INVALID": 0,
+      "INCONCLUSIVE": 0,
+      "CANCELLED": 0
+    },
+    "run_outcome_counts": {
+      "PASS": 0,
+      "FAIL": 3,
+      "ERROR": 0,
+      "INVALID": 0,
+      "INCONCLUSIVE": 0,
+      "CANCELLED": 0
+    },
+    "summary": {
+      "valid_evidence_coverage": {
+        "required_item_count": 3,
+        "valid_evidence_item_count": 3,
+        "missing_or_invalid_item_count": 0,
+        "coverage_ratio": 1.0,
+        "gap_reasons": [],
+        "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+      },
+      "agent_quality": {
+        "pass_count": 0,
+        "fail_count": 3,
+        "denominator": 3,
+        "success_rate": 0.0,
+        "failure_rate": 1.0,
+        "quality_evidence_rule": "Only valid Agent PASS/FAIL evidence enters this denominator; ERROR/INVALID/INCONCLUSIVE/CANCELLED are excluded.",
+        "excluded_outcome_counts": {
+          "ERROR": 0,
+          "INVALID": 0,
+          "INCONCLUSIVE": 0,
+          "CANCELLED": 0
+        }
+      },
+      "regression": {
+        "member_count": 1,
+        "result_counts": {
+          "PASS": 0,
+          "FAIL": 1,
+          "ERROR": 0,
+          "INVALID": 0,
+          "INCONCLUSIVE": 0,
+          "CANCELLED": 0
+        },
+        "results": [
+          {
+            "member_id": "historical-regression",
+            "regression_ref": {
+              "kind": "Regression",
+              "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+              "regression_version": "1.0.0"
+            },
+            "result": "FAIL",
+            "run_outcome": "FAIL",
+            "run_ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-6cac3f85-c175-4777-b4d2-fdcda76dc684"
+            },
+            "result_ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-b64df348-2470-43b3-9ffc-7b735ec6248d"
+            }
+          }
+        ]
+      },
+      "fault_recovery": {
+        "member_count": 1,
+        "planned_fault_count": 1,
+        "triggered_fault_count": 0,
+        "observed_fault_count": 0,
+        "reconciled_fault_count": 0,
+        "recovered_pass_count": 0,
+        "not_reached_count": 1,
+        "members": [
+          {
+            "member_id": "response-lost-recovery",
+            "run_ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-5972fc5f-cc94-469d-896b-f98762f5ae4f"
+            },
+            "run_outcome": "FAIL",
+            "item_result": "FAIL",
+            "recovery_status": "NOT_REACHED_DUE_TO_AGENT_OR_PRECONDITION",
+            "fault": {
+              "fault_id": "side_effect_success_response_lost",
+              "planned": true,
+              "triggered": false,
+              "observed": false,
+              "reconciled": false
+            }
+          }
+        ],
+        "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+      },
+      "cost_token_latency": {
+        "reported_token_usage_sum": null,
+        "reported_token_usage_item_count": 0,
+        "missing_usage_count": 3,
+        "derived_cost_sum": null,
+        "derived_cost_item_count": 0,
+        "unknown_cost_count": 3,
+        "currency": "CNY",
+        "cost_basis": "derived from Provider-reported usage and pricing metadata only",
+        "cost_is_provider_invoice": false,
+        "latency": {
+          "per_item_ms": {
+            "normal-functional": 3146,
+            "response-lost-recovery": 3058,
+            "historical-regression": 3106
+          },
+          "known_item_count": 3,
+          "unknown_item_count": 0,
+          "total_observed_runtime_ms": 9310,
+          "average_item_latency_ms": 3103.333,
+          "max_item_latency_ms": 3146,
+          "min_item_latency_ms": 3058
+        },
+        "unknown_values_are_not_zero": true
+      }
+    },
+    "incomplete_or_unknown": [],
+    "non_release_boundary": "COMPARISON_ONLY_NO_RELEASE_DECISION",
+    "runtime": {
+      "runtime_version": "rpf-07.v1",
+      "source_sha256": "c607e5e38015c99fedcbba3efbcdc20834953f2fec7543313ead3ce0211d3adf",
+      "execution_mode": "local-sequential-fresh-per-member"
+    }
+  }
+}

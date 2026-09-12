@@ -12,6 +12,18 @@ import regressionArtifact from "../../../runtime/reviewed-regression.json";
 import regressionCollectionArtifact from "../../../runtime/reviewed-regression-collection.json";
 import regressionKnownBadResultArtifact from "../../../runtime/reviewed-regression-known-bad-result.json";
 import regressionFixedCandidateResultArtifact from "../../../runtime/reviewed-regression-fixed-candidate-result.json";
+import evaluationSuiteArtifact from "../../../runtime/reviewed-evaluation-suite.json";
+import evaluationBaselineArtifact from "../../../runtime/reviewed-evaluation-baseline.json";
+import evaluationCandidateArtifact from "../../../runtime/reviewed-evaluation-candidate.json";
+import evaluationComparisonArtifact from "../../../runtime/reviewed-evaluation-comparison.json";
+import evaluationBaselineNormalRunArtifact from "../../../runtime/reviewed-evaluation-baseline-normal-run.json";
+import evaluationBaselineRecoveryRunArtifact from "../../../runtime/reviewed-evaluation-baseline-recovery-run.json";
+import evaluationBaselineRegressionRunArtifact from "../../../runtime/reviewed-evaluation-baseline-regression-run.json";
+import evaluationCandidateNormalRunArtifact from "../../../runtime/reviewed-evaluation-candidate-normal-run.json";
+import evaluationCandidateRecoveryRunArtifact from "../../../runtime/reviewed-evaluation-candidate-recovery-run.json";
+import evaluationCandidateRegressionRunArtifact from "../../../runtime/reviewed-evaluation-candidate-regression-run.json";
+import evaluationBaselineRegressionResultArtifact from "../../../runtime/reviewed-evaluation-baseline-regression-result.json";
+import evaluationCandidateRegressionResultArtifact from "../../../runtime/reviewed-evaluation-candidate-regression-result.json";
 
 export const ACTIVE_SCHEMA_VERSION = "rpf-run-evidence-v2";
 
@@ -165,6 +177,120 @@ export interface RegressionCollection {
   members: Array<JsonRecord & { regressionId: string; regressionVersion: string; status: string; category: string; stableSignature: string }>;
 }
 
+export interface EvaluationSuiteMember {
+  memberId: string;
+  stableRef: JsonRecord;
+  category: string;
+  required: boolean;
+  description: string;
+  scenarioRef: JsonRecord;
+  regressionRef: JsonRecord | null;
+  execution: JsonRecord;
+  expectedEvidence: JsonRecord;
+}
+
+export interface EvaluationSuite {
+  schemaVersion: string;
+  artifactKind: string;
+  suite: {
+    suiteId: string;
+    suiteVersion: string;
+    suiteIdentity: string;
+    name: string;
+    purpose: string;
+    agentDomain: string;
+    members: EvaluationSuiteMember[];
+    memberContractDigest: string;
+    executionPolicy: JsonRecord;
+    sourceIdentity: JsonRecord;
+  };
+}
+
+export interface EvaluationMemberResult {
+  memberId: string;
+  category: string;
+  required: boolean;
+  scenarioRef: JsonRecord;
+  regressionRef: JsonRecord | null;
+  oracleId: string;
+  runRef: JsonRecord;
+  environmentId: string | null;
+  runOutcome: string;
+  itemResult: string;
+  attribution: string;
+  validQualityEvidence: boolean;
+  validEvidenceStatus: string;
+  evidenceGapReasons: string[];
+  durationMs: number | null;
+  usage: JsonRecord;
+  fault: JsonRecord;
+  recoveryStatus: string | null;
+  evidenceRefs: JsonRecord[];
+  regressionResultRef?: JsonRecord;
+  regressionResult?: string;
+}
+
+export interface EvaluationResult {
+  schemaVersion: string;
+  artifactKind: string;
+  evaluation: {
+    evaluationId: string;
+    evaluationStatus: string;
+    startedAt: string;
+    endedAt: string;
+    durationMs: number | null;
+    suiteRef: JsonRecord;
+    suiteMemberIds: string[];
+    agent: JsonRecord;
+    memberResults: EvaluationMemberResult[];
+    outcomeCounts: Record<string, number>;
+    runOutcomeCounts: Record<string, number>;
+    summary: JsonRecord;
+    incompleteOrUnknown: JsonRecord[];
+    nonReleaseBoundary: string;
+    runtime: JsonRecord;
+  };
+}
+
+export interface ComparisonSide {
+  itemResult: string;
+  runOutcome: string;
+  attribution: string;
+  validEvidenceStatus: string;
+  runRef: JsonRecord;
+  resultRef: JsonRecord | null;
+  evidenceGapReasons: string[];
+}
+
+export interface EvaluationComparisonMember {
+  memberId: string;
+  category: string;
+  required: boolean;
+  scenarioRef: JsonRecord;
+  regressionRef: JsonRecord | null;
+  baseline: ComparisonSide;
+  candidate: ComparisonSide;
+  classification: string;
+  reasons: string[];
+}
+
+export interface EvaluationComparison {
+  schemaVersion: string;
+  artifactKind: string;
+  comparison: {
+    comparisonId: string;
+    status: string;
+    suiteRef: JsonRecord | null;
+    baseline: JsonRecord;
+    candidate: JsonRecord;
+    perMemberComparison: EvaluationComparisonMember[];
+    aggregate: JsonRecord | null;
+    validationErrors: string[];
+    nonReleaseBoundary: string;
+    runtime: JsonRecord;
+  };
+}
+
 const asObject = (value: unknown, label: string): JsonRecord => {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error(`Malformed evidence: ${label}`);
@@ -203,6 +329,11 @@ const asArray = (value: unknown, label: string): unknown[] => {
 const asOptionalObject = (value: unknown, label: string): JsonRecord | null => {
   if (value === null || value === undefined) return null;
   return asObject(value, label);
+};
+
+const asOptionalNumber = (value: unknown, label: string): number | null => {
+  if (value === null || value === undefined) return null;
+  return asNumber(value, label);
 };
 
 const normalizeEvent = (raw: unknown): TrajectoryEvent => {
@@ -453,6 +584,143 @@ const normalizeRegressionCollection = (raw: unknown): RegressionCollection => {
   };
 };
 
+const normalizeEvaluationSuite = (raw: unknown): EvaluationSuite => {
+  const artifact = asObject(raw, "evaluation suite artifact");
+  const suite = asObject(artifact.suite, "evaluation suite");
+  const members = asArray(suite.members, "evaluation suite.members").map((rawMember) => {
+    const member = asObject(rawMember, "evaluation suite member");
+    return {
+      memberId: asString(member.member_id, "evaluation member_id"),
+      stableRef: asObject(member.stable_ref, "evaluation member stable_ref"),
+      category: asString(member.category, "evaluation member category"),
+      required: asBoolean(member.required, "evaluation member required"),
+      description: asString(member.description, "evaluation member description"),
+      scenarioRef: asObject(member.scenario_ref, "evaluation member scenario_ref"),
+      regressionRef: asOptionalObject(member.regression_ref, "evaluation member regression_ref"),
+      execution: asObject(member.execution, "evaluation member execution"),
+      expectedEvidence: asObject(member.expected_evidence, "evaluation member expected_evidence"),
+    };
+  });
+  return {
+    schemaVersion: asString(artifact.schema_version, "evaluation suite schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "evaluation suite artifact_kind"),
+    suite: {
+      suiteId: asString(suite.suite_id, "suite.suite_id"),
+      suiteVersion: asString(suite.suite_version, "suite.suite_version"),
+      suiteIdentity: asString(suite.suite_identity, "suite.suite_identity"),
+      name: asString(suite.name, "suite.name"),
+      purpose: asString(suite.purpose, "suite.purpose"),
+      agentDomain: asString(suite.agent_domain, "suite.agent_domain"),
+      members,
+      memberContractDigest: asString(suite.member_contract_digest, "suite.member_contract_digest"),
+      executionPolicy: asObject(suite.execution_policy, "suite.execution_policy"),
+      sourceIdentity: asObject(suite.source_identity, "suite.source_identity"),
+    },
+  };
+};
+
+const normalizeEvaluationMember = (raw: unknown): EvaluationMemberResult => {
+  const item = asObject(raw, "evaluation member result");
+  return {
+    memberId: asString(item.member_id, "evaluation item.member_id"),
+    category: asString(item.category, "evaluation item.category"),
+    required: asBoolean(item.required, "evaluation item.required"),
+    scenarioRef: asObject(item.scenario_ref, "evaluation item.scenario_ref"),
+    regressionRef: asOptionalObject(item.regression_ref, "evaluation item.regression_ref"),
+    oracleId: asString(item.oracle_id, "evaluation item.oracle_id"),
+    runRef: asObject(item.run_ref, "evaluation item.run_ref"),
+    environmentId: typeof item.environment_id === "string" ? item.environment_id : null,
+    runOutcome: asString(item.run_outcome, "evaluation item.run_outcome"),
+    itemResult: asString(item.item_result, "evaluation item.item_result"),
+    attribution: asString(item.attribution, "evaluation item.attribution"),
+    validQualityEvidence: asBoolean(item.valid_quality_evidence, "evaluation item.valid_quality_evidence"),
+    validEvidenceStatus: asString(item.valid_evidence_status, "evaluation item.valid_evidence_status"),
+    evidenceGapReasons: asArray(item.evidence_gap_reasons, "evaluation item.evidence_gap_reasons").map((value) => asString(value, "evaluation gap reason")),
+    durationMs: asOptionalNumber(item.duration_ms, "evaluation item.duration_ms"),
+    usage: asObject(item.usage, "evaluation item.usage"),
+    fault: asObject(item.fault, "evaluation item.fault"),
+    recoveryStatus: typeof item.recovery_status === "string" ? item.recovery_status : null,
+    evidenceRefs: asArray(item.evidence_refs, "evaluation item.evidence_refs").map((value) => asObject(value, "evaluation item evidence ref")),
+    ...(item.regression_result_ref ? { regressionResultRef: asObject(item.regression_result_ref, "evaluation item.regression_result_ref") } : {}),
+    ...(typeof item.regression_result === "string" ? { regressionResult: item.regression_result } : {}),
+  };
+};
+
+const normalizeEvaluation = (raw: unknown): EvaluationResult => {
+  const artifact = asObject(raw, "evaluation result artifact");
+  const evaluation = asObject(artifact.evaluation, "evaluation result");
+  return {
+    schemaVersion: asString(artifact.schema_version, "evaluation result schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "evaluation result artifact_kind"),
+    evaluation: {
+      evaluationId: asString(evaluation.evaluation_id, "evaluation.evaluation_id"),
+      evaluationStatus: asString(evaluation.evaluation_status, "evaluation.evaluation_status"),
+      startedAt: asString(evaluation.started_at, "evaluation.started_at"),
+      endedAt: asString(evaluation.ended_at, "evaluation.ended_at"),
+      durationMs: asOptionalNumber(evaluation.duration_ms, "evaluation.duration_ms"),
+      suiteRef: asObject(evaluation.suite_ref, "evaluation.suite_ref"),
+      suiteMemberIds: asArray(evaluation.suite_member_ids, "evaluation.suite_member_ids").map((value) => asString(value, "evaluation suite member id")),
+      agent: asObject(evaluation.agent, "evaluation.agent"),
+      memberResults: asArray(evaluation.member_results, "evaluation.member_results").map(normalizeEvaluationMember),
+      outcomeCounts: asObject(evaluation.outcome_counts, "evaluation.outcome_counts") as Record<string, number>,
+      runOutcomeCounts: asObject(evaluation.run_outcome_counts, "evaluation.run_outcome_counts") as Record<string, number>,
+      summary: asObject(evaluation.summary, "evaluation.summary"),
+      incompleteOrUnknown: asArray(evaluation.incomplete_or_unknown, "evaluation.incomplete_or_unknown").map((value) => asObject(value, "evaluation incomplete item")),
+      nonReleaseBoundary: asString(evaluation.non_release_boundary, "evaluation.non_release_boundary"),
+      runtime: asObject(evaluation.runtime, "evaluation.runtime"),
+    },
+  };
+};
+
+const normalizeComparisonSide = (raw: unknown): ComparisonSide => {
+  const side = asObject(raw, "comparison side");
+  return {
+    itemResult: asString(side.item_result, "comparison side.item_result"),
+    runOutcome: asString(side.run_outcome, "comparison side.run_outcome"),
+    attribution: asString(side.attribution, "comparison side.attribution"),
+    validEvidenceStatus: asString(side.valid_evidence_status, "comparison side.valid_evidence_status"),
+    runRef: asObject(side.run_ref, "comparison side.run_ref"),
+    resultRef: asOptionalObject(side.result_ref, "comparison side.result_ref"),
+    evidenceGapReasons: asArray(side.evidence_gap_reasons, "comparison side.evidence_gap_reasons").map((value) => asString(value, "comparison gap reason")),
+  };
+};
+
+const normalizeComparisonMember = (raw: unknown): EvaluationComparisonMember => {
+  const item = asObject(raw, "comparison member");
+  return {
+    memberId: asString(item.member_id, "comparison member.member_id"),
+    category: asString(item.category, "comparison member.category"),
+    required: asBoolean(item.required, "comparison member.required"),
+    scenarioRef: asObject(item.scenario_ref, "comparison member.scenario_ref"),
+    regressionRef: asOptionalObject(item.regression_ref, "comparison member.regression_ref"),
+    baseline: normalizeComparisonSide(item.baseline),
+    candidate: normalizeComparisonSide(item.candidate),
+    classification: asString(item.classification, "comparison member.classification"),
+    reasons: asArray(item.reasons, "comparison member.reasons").map((value) => asString(value, "comparison member reason")),
+  };
+};
+
+const normalizeComparison = (raw: unknown): EvaluationComparison => {
+  const artifact = asObject(raw, "evaluation comparison artifact");
+  const comparison = asObject(artifact.comparison, "evaluation comparison");
+  return {
+    schemaVersion: asString(artifact.schema_version, "evaluation comparison schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "evaluation comparison artifact_kind"),
+    comparison: {
+      comparisonId: asString(comparison.comparison_id, "comparison.comparison_id"),
+      status: asString(comparison.status, "comparison.status"),
+      suiteRef: asOptionalObject(comparison.suite_ref, "comparison.suite_ref"),
+      baseline: asObject(comparison.baseline, "comparison.baseline"),
+      candidate: asObject(comparison.candidate, "comparison.candidate"),
+      perMemberComparison: asArray(comparison.per_member_comparison, "comparison.per_member_comparison").map(normalizeComparisonMember),
+      aggregate: asOptionalObject(comparison.aggregate, "comparison.aggregate"),
+      validationErrors: asArray(comparison.validation_errors, "comparison.validation_errors").map((value) => asString(value, "comparison validation error")),
+      nonReleaseBoundary: asString(comparison.non_release_boundary, "comparison.non_release_boundary"),
+      runtime: asObject(comparison.runtime, "comparison.runtime"),
+    },
+  };
+};
+
 export const reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact)];
 export const reviewedRegressionResults: RegressionExecutionResult[] = [
   normalizeRegressionResult(regressionKnownBadResultArtifact),
@@ -460,7 +728,29 @@ export const reviewedRegressionResults: RegressionExecutionResult[] = [
 ];
 export const reviewedRegressionCollection: RegressionCollection = normalizeRegressionCollection(regressionCollectionArtifact);
 
-export const getRun = (runId: string): RunEvidence | undefined => reviewedRuns.find((run) => run.run.runId === runId);
+export const reviewedEvaluationSuite: EvaluationSuite = normalizeEvaluationSuite(evaluationSuiteArtifact);
+export const reviewedEvaluations: EvaluationResult[] = [
+  normalizeEvaluation(evaluationBaselineArtifact),
+  normalizeEvaluation(evaluationCandidateArtifact),
+];
+export const reviewedEvaluationComparison: EvaluationComparison = normalizeComparison(evaluationComparisonArtifact);
+export const reviewedEvaluationRuns: RunEvidence[] = [
+  normalizeArtifact(evaluationBaselineNormalRunArtifact),
+  normalizeArtifact(evaluationBaselineRecoveryRunArtifact),
+  normalizeArtifact(evaluationBaselineRegressionRunArtifact),
+  normalizeArtifact(evaluationCandidateNormalRunArtifact),
+  normalizeArtifact(evaluationCandidateRecoveryRunArtifact),
+  normalizeArtifact(evaluationCandidateRegressionRunArtifact),
+];
+export const reviewedEvaluationRegressionResults: RegressionExecutionResult[] = [
+  normalizeRegressionResult(evaluationBaselineRegressionResultArtifact),
+  normalizeRegressionResult(evaluationCandidateRegressionResultArtifact),
+];
+
+const allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
+const allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
+
+export const getRun = (runId: string): RunEvidence | undefined => allReviewedRuns.find((run) => run.run.runId === runId);
 
 export const isFaultedRun = (run: RunEvidence): boolean => run.fault.planned && run.fault.triggered;
 
@@ -478,12 +768,16 @@ export const getRegressionResult = (resultId: string): RegressionExecutionResult
 
 export const getRegressionResults = (regressionId: string): RegressionExecutionResult[] => reviewedRegressionResults.filter((item) => item.result.regressionId === regressionId);
 
-export const getRegressionResultForRun = (runId: string): RegressionExecutionResult | undefined => reviewedRegressionResults.find((item) => item.result.runRef.run_id === runId);
+export const getRegressionResultForRun = (runId: string): RegressionExecutionResult | undefined => allRegressionResults.find((item) => item.result.runRef.run_id === runId);
 
 export const getRegressionForRun = (runId: string): Regression | undefined => {
   const result = getRegressionResultForRun(runId);
   return result ? getRegression(result.result.regressionId) : undefined;
 };
+
+export const getEvaluation = (evaluationId: string): EvaluationResult | undefined => reviewedEvaluations.find((item) => item.evaluation.evaluationId === evaluationId);
+
+export const getEvaluationComparison = (comparisonId: string): EvaluationComparison | undefined => reviewedEvaluationComparison.comparison.comparisonId === comparisonId ? reviewedEvaluationComparison : undefined;
 
 export const getUsage = (run: RunEvidence): JsonRecord => asOptionalObject(run.llmProvider.raw_usage, "llm_provider.raw_usage") || {};
 
