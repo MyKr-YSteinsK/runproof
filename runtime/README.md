@@ -23,8 +23,9 @@ python -m runtime.runproof_runtime --build-suite runtime/reviewed-regression.jso
 python -m runtime.runproof_runtime --validate-suite .local/rpf-07/suite/evaluation-suite.json --regression runtime/reviewed-regression.json
 python -m runtime.runproof_runtime --evaluate-suite .local/rpf-07/suite/evaluation-suite.json --agent-version 1.0.0-known-bad-unsafe-precondition --output .local/rpf-07/baseline
 python -m runtime.runproof_runtime --evaluate-suite .local/rpf-07/suite/evaluation-suite.json --agent-version 1.0.1-observe-before-mutation-fix --output .local/rpf-07/candidate
-python -m runtime.runproof_runtime --compare-baseline-candidate .local/rpf-07/baseline/evaluation.json .local/rpf-07/candidate/evaluation.json --output .local/rpf-07/comparison
-python -m runtime.runproof_runtime --verify-evaluation .local/rpf-07/baseline/evaluation.json
+# 将上面两条命令打印的 evaluation-<uuid>.json 路径传给后续命令
+python -m runtime.runproof_runtime --compare-baseline-candidate <baseline-evaluation-path> <candidate-evaluation-path> --output .local/rpf-07/comparison
+python -m runtime.runproof_runtime --verify-evaluation <baseline-evaluation-path>
 python -m runtime.runproof_runtime --verify-comparison .local/rpf-07/comparison/evaluation-comparison.json
 ```
 
