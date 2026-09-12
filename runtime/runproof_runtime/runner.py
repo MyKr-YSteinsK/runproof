@@ -1,4 +1,4 @@
-"""End-to-end normal and response-lost execution for the first product slice."""
+"""End-to-end execution for the RPF-03/RPF-05/RPF-06 reliability slices."""
 
 from __future__ import annotations
 
@@ -10,7 +10,7 @@ import uuid
 from pathlib import Path
 from typing import Any
 
-from .agent import KNOWN_BAD_AGENT_PROFILE, ToolExecutor, agent_profile, known_bad_tool_call
+from .agent import FIXED_CANDIDATE_AGENT_PROFILE, KNOWN_BAD_AGENT_PROFILE, ToolExecutor, agent_profile, fixed_candidate_tool_calls, known_bad_tool_call
 from .deepseek_provider import API_URL, DEFAULT_MODEL, DeepSeekProvider, derived_cost
 from .docker_environment import DockerEnvironment, provider_snapshot
 from .evidence import runtime_source_sha256, timestamp
@@ -175,7 +175,7 @@ def run_slice(
             "provider_implementation": "docker",
             **provider_info,
         }
-        if agent_profile_id != KNOWN_BAD_AGENT_PROFILE and environment_failure is None:
+        if agent_profile_id not in {KNOWN_BAD_AGENT_PROFILE, FIXED_CANDIDATE_AGENT_PROFILE} and environment_failure is None:
             provider = DeepSeekProvider(api_key or os.environ.get("DEEPSEEK_API_KEY", ""), model=model, max_calls=MAX_PROVIDER_CALLS)
             artifact["llm_provider"] = {"provider_id": "deepseek", "provider_type": "llm", "requested_model": provider.model, "mode": "non-thinking"}
         environment = DockerEnvironment(provider_info, "agent-run", failure_hook=environment_failure)
@@ -234,6 +234,40 @@ def run_slice(
                     raise
             else:
                 trajectory.extend(copy.deepcopy(executor.events[before_events:]))
+                completed = True
+        elif agent_profile_id == FIXED_CANDIDATE_AGENT_PROFILE:
+            for step, call in enumerate(fixed_candidate_tool_calls(), start=1):
+                _event(
+                    trajectory,
+                    "agent_tool_intent",
+                    step=step,
+                    tool_call_id=call.call_id,
+                    tool_name=call.name,
+                    validated_arguments=call.arguments,
+                    intent_classification="OBSERVE_BEFORE_MUTATION",
+                    fix_id=profile["fix_id"],
+                )
+                before_events = len(executor.events)
+                try:
+                    executor.execute(call)
+                except RuntimeFailure as error:
+                    trajectory.extend(copy.deepcopy(executor.events[before_events:]))
+                    _event(
+                        trajectory,
+                        "tool_execution_failure",
+                        step=step,
+                        tool_call_id=call.call_id,
+                        domain=error.domain,
+                        code=error.code,
+                        outcome=error.outcome,
+                    )
+                    if error.domain == "AGENT":
+                        agent_failure = error
+                        break
+                    raise
+                trajectory.extend(copy.deepcopy(executor.events[before_events:]))
+            else:
+                _event(trajectory, "agent_completion", step=len(fixed_candidate_tool_calls()) + 1, content_observed=True, tool_calls=0)
                 completed = True
         else:
             if provider is None:
@@ -369,6 +403,24 @@ def run_slice(
     else:
         outcome = _outcome("INCONCLUSIVE", "HARNESS", formal_run_started, "NO_SAFE_TERMINAL_RESULT")
     artifact["outcome"] = outcome
+
+    if artifact["health_context"] is None and isinstance(artifact.get("environment"), dict):
+        environment_snapshot = artifact["environment"]
+        provider_snapshot_value = artifact.get("llm_provider") or {}
+        artifact["health_context"] = {
+            "provider": {
+                "status": "HEALTHY" if provider_snapshot_value.get("calls") else "NOT_IN_FAILURE_PATH",
+                "failure_source": False,
+                "calls_observed": len(provider_snapshot_value.get("calls", [])),
+            },
+            "environment": {
+                "status": "HEALTHY",
+                "failure_source": False,
+                "readiness": environment_snapshot.get("readiness"),
+                "initial_state_verified": environment_snapshot.get("verified_initial_state") is True,
+                "cleanup_state": environment_snapshot.get("cleanup_state"),
+            },
+        }
 
     if terminal_error and terminal_error.domain == "AGENT":
         intent = _event_of_type(trajectory, "agent_tool_intent")

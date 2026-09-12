@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 import historicalNormal from "../../../runtime/reviewed-normal-run.json";
-import { getFailureCaseForRun, normalizeArtifact, reviewedFailureCases, reviewedRuns } from "./artifacts";
+import { getFailureCaseForRun, getRegression, getRegressionResults, normalizeArtifact, reviewedFailureCases, reviewedRegressionCollection, reviewedRegressions, reviewedRuns } from "./artifacts";
 
 describe("reviewed evidence adapter", () => {
   it("loads only the current v2 reviewed corpus", () => {
-    expect(reviewedRuns).toHaveLength(5);
+    expect(reviewedRuns).toHaveLength(8);
     expect(reviewedRuns.every((run) => run.schemaVersion === "rpf-run-evidence-v2")).toBe(true);
-    expect(reviewedRuns.map((run) => run.outcome.status)).toEqual(["PASS", "PASS", "FAIL", "ERROR", "FAIL"]);
+    expect(reviewedRuns.map((run) => run.outcome.status)).toEqual(["PASS", "PASS", "FAIL", "ERROR", "FAIL", "FAIL", "FAIL", "PASS"]);
     expect(reviewedRuns.every((run) => run.llmProvider.provider_type === "llm")).toBe(true);
     expect(reviewedRuns.every((run) => run.environmentProvider.provider_type === "environment")).toBe(true);
   });
@@ -32,13 +32,25 @@ describe("reviewed evidence adapter", () => {
     expect(faulted?.verification?.evidence.blind_retry_attempts).toBe(0);
   });
 
-  it("loads a validated Failure Case without promoting it to Regression", () => {
+  it("keeps the validated Failure Case and additive Regression promotion link", () => {
     expect(reviewedFailureCases).toHaveLength(1);
     const failureCase = reviewedFailureCases[0];
     expect(failureCase.failureCase.workflowState).toBe("validated");
     expect(failureCase.failureCase.isRegression).toBe(false);
-    expect(failureCase.failureCase.regressionStatus).toBe("NOT_A_REGRESSION");
+    expect(failureCase.failureCase.currentStatus).toBe("promoted");
+    expect(failureCase.failureCase.regressionStatus).toBe("PROMOTED_TO_REGRESSION");
+    expect(failureCase.promotion?.status).toBe("PROMOTED");
     expect(getFailureCaseForRun(failureCase.sourceRun.runId)?.failureCase.failureCaseId).toBe(failureCase.failureCase.failureCaseId);
     expect(getFailureCaseForRun(failureCase.reproductionAttempts[0].runId)?.failureCase.failureCaseId).toBe(failureCase.failureCase.failureCaseId);
+  });
+
+  it("loads one stable Historical Regression with separated focused results", () => {
+    expect(reviewedRegressions).toHaveLength(1);
+    const regression = reviewedRegressions[0];
+    expect(regression.regression.regressionVersion).toBe("1.0.0");
+    expect(regression.regression.regressionId).not.toContain("run-");
+    expect(getRegression(regression.regression.regressionId)?.regression.category).toBe("Historical Regression");
+    expect(reviewedRegressionCollection.members.map((member) => member.regressionId)).toContain(regression.regression.regressionId);
+    expect(getRegressionResults(regression.regression.regressionId).map((item) => [item.result.runOutcome, item.result.regressionResult])).toEqual([["FAIL", "FAIL"], ["PASS", "PASS"]]);
   });
 });

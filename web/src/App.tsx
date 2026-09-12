@@ -5,6 +5,10 @@ import {
   getDerivedCost,
   getFailureCase,
   getFailureCaseForRun,
+  getRegression,
+  getRegressionResultForRun,
+  getRegressionForRun,
+  getRegressionResults,
   getRun,
   getUsage,
   isAgentFailureRun,
@@ -13,11 +17,15 @@ import {
   JsonRecord,
   reviewedRuns,
   reviewedFailureCases,
+  reviewedRegressions,
+  reviewedRegressionCollection,
+  Regression,
+  RegressionExecutionResult,
   RunEvidence,
   TrajectoryEvent,
 } from "./data/artifacts";
 
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null };
+type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null };
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -59,11 +67,13 @@ function readLocation(): LocationState {
   const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
   const runMatch = pathname.match(/^\/runs\/([^/]+)$/);
   const failureMatch = pathname.match(/^\/failures\/([^/]+)$/);
+  const regressionMatch = pathname.match(/^\/regressions\/([^/]+)$/);
   return {
     pathname,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
     eventId: new URLSearchParams(window.location.search).get("event"),
     failureCaseId: failureMatch ? decodeURIComponent(failureMatch[1]) : null,
+    regressionId: regressionMatch ? decodeURIComponent(regressionMatch[1]) : null,
   };
 }
 
@@ -161,7 +171,7 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, failure = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean }) {
+function AppShell({ children, detail = false, failure = false, regression = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
@@ -178,7 +188,7 @@ function AppShell({ children, detail = false, failure = false }: { children: Rea
           <span className="workspace-status"><i aria-hidden="true" /> local reviewed corpus</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
-          <a className={!detail && !failure ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={!detail && !failure && !regression ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -188,11 +198,16 @@ function AppShell({ children, detail = false, failure = false }: { children: Rea
             <span>Failure Cases</span>
             <span className="nav-count">{1}</span>
           </a>
+          <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>
+            <span className="nav-glyph">↗</span>
+            <span>Regressions</span>
+            <span className="nav-count">{reviewedRegressions.length}</span>
+          </a>
         </nav>
         <div className="rail-note">
           <span className="section-label">CURRENT SURFACE</span>
           <p>Evidence-first investigation for the first Reliability vertical slice.</p>
-          <span className="schema-chip">v2 evidence · v1 cases</span>
+          <span className="schema-chip">v2 evidence · v1 cases · v1 regressions</span>
         </div>
         <div className="rail-footer">
           <span>Prototype</span>
@@ -205,11 +220,11 @@ function AppShell({ children, detail = false, failure = false }: { children: Rea
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> reviewed data</span>
-            <span className="topbar-revision">RPF-05</span>
+            <span className="topbar-revision">RPF-06</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -268,7 +283,12 @@ function RunIndex() {
       </section>
       <a className="failure-entry" href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}>
         <span className="failure-entry-mark">!</span>
-        <span><strong>Failure Case investigation</strong><small>One validated Agent failure · reproduction evidence available · Not a Regression</small></span>
+        <span><strong>Failure Case investigation</strong><small>Promoted Agent failure · source and reproduction evidence remain linked</small></span>
+        <span aria-hidden="true">→</span>
+      </a>
+      <a className="failure-entry regression-entry" href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>
+        <span className="failure-entry-mark">↗</span>
+        <span><strong>Historical Regression</strong><small>Known-bad FAIL reproduced · fixed Candidate PASS · not a Release decision</small></span>
         <span aria-hidden="true">→</span>
       </a>
       <section className="run-section" aria-labelledby="run-list-heading">
@@ -326,6 +346,8 @@ function RunDetail({ run, eventId }: { run: RunEvidence; eventId: string | null 
   const agentFailure = isAgentFailureRun(run);
   const environmentError = isEnvironmentErrorRun(run);
   const failureCase = getFailureCaseForRun(run.run.runId);
+  const regression = getRegressionForRun(run.run.runId);
+  const regressionResult = getRegressionResultForRun(run.run.runId);
   const preferredEventId = eventId || (typeof run.failureAttribution?.failing_event_id === "string" ? run.failureAttribution.failing_event_id : null);
   const selected = run.trajectory.find((event) => event.eventId === preferredEventId) || run.trajectory[0];
   const [activeEventId, setActiveEventId] = useState(selected.eventId);
@@ -340,7 +362,7 @@ function RunDetail({ run, eventId }: { run: RunEvidence; eventId: string | null 
   const usage = getUsage(run);
   const cost = getDerivedCost(run);
   return (
-    <AppShell detail>
+    <AppShell detail regression={Boolean(regression)}>
       <div className="detail-breadcrumb">
         <a href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>Run Evidence</a>
         <span aria-hidden="true">/</span>
@@ -350,12 +372,12 @@ function RunDetail({ run, eventId }: { run: RunEvidence; eventId: string | null 
       <div className="detail-header">
         <div>
           <span className="eyebrow">RUN INVESTIGATION</span>
-          <h1>{agentFailure ? "Agent safety failure" : environmentError ? "Environment readiness error" : faulted ? "Response-lost recovery run" : "Normal release transition"}</h1>
-          <p className="detail-subtitle">{agentFailure ? "The known-bad Agent attempted a state-changing action before observation; the guard protected the environment, but the behavior is still a deterministic FAIL." : environmentError ? "A controlled Environment-side readiness failure stopped the run before Agent start. It is excluded from Agent Quality." : faulted ? "A side effect completed, its response was lost, and reconciliation established the verified result." : "A controlled release change completed with an independent state read-back."}</p>
+          <h1>{regressionResult ? `${regressionResult.result.regressionResult === "FAIL" ? "Historical Regression" : "Regression fixed Candidate"} · ${regressionResult.result.regressionResult}` : agentFailure ? "Agent safety failure" : environmentError ? "Environment readiness error" : faulted ? "Response-lost recovery run" : "Normal release transition"}</h1>
+          <p className="detail-subtitle">{regressionResult ? `Focused rerun of ${regressionResult.result.regressionId}@${regressionResult.result.regressionVersion}. Run outcome ${regressionResult.result.runOutcome}; Regression result ${regressionResult.result.regressionResult}. This result is scoped to one Regression, not a Suite or Release decision.` : agentFailure ? "The known-bad Agent attempted a state-changing action before observation; the guard protected the environment, but the behavior is still a deterministic FAIL." : environmentError ? "A controlled Environment-side readiness failure stopped the run before Agent start. It is excluded from Agent Quality." : faulted ? "A side effect completed, its response was lost, and reconciliation established the verified result." : "A controlled release change completed with an independent state read-back."}</p>
         </div>
         <div className="detail-header-status">
           <StatusTag status={run.outcome.status} tone={statusTone(run)} />
-          <span className="status-note">{agentFailure ? "deterministic Agent attribution" : environmentError ? "Platform/Environment attribution" : "deterministic verifier"}</span>
+          <span className="status-note">{regressionResult ? `${regressionResult.result.agentVersion} · Regression ${regressionResult.result.regressionResult}` : agentFailure ? "deterministic Agent attribution" : environmentError ? "Platform/Environment attribution" : "deterministic verifier"}</span>
         </div>
       </div>
       <section className="identity-strip" aria-label="Run context identity">
@@ -368,11 +390,12 @@ function RunDetail({ run, eventId }: { run: RunEvidence; eventId: string | null 
       </section>
       <section className="run-facts-bar" aria-label="Run facts">
         <div><span>Outcome</span><strong>{run.outcome.status}</strong><small>{run.outcome.agentQualityEligible ? "quality eligible" : "Agent Quality excluded"}</small></div>
-        <div><span>{agentFailure || environmentError ? "Attribution" : "Fault"}</span><strong>{agentFailure ? "Agent" : environmentError ? "Platform/Environment" : faulted ? "Observed" : "None"}</strong><small>{agentFailure ? displayValue(run.outcome.reason) : environmentError ? "controlled readiness failure" : faulted ? "planned · triggered · reconciled" : "normal profile"}</small></div>
+        <div><span>{regressionResult ? "Regression result" : agentFailure || environmentError ? "Attribution" : "Fault"}</span><strong>{regressionResult ? regressionResult.result.regressionResult : agentFailure ? "Agent" : environmentError ? "Platform/Environment" : faulted ? "Observed" : "None"}</strong><small>{regressionResult ? `Run outcome ${regressionResult.result.runOutcome}` : agentFailure ? displayValue(run.outcome.reason) : environmentError ? "controlled readiness failure" : faulted ? "planned · triggered · reconciled" : "normal profile"}</small></div>
         <div><span>Environment provider</span><strong>{displayValue(run.environmentProvider.provider_implementation)}</strong><small>{displayValue(run.environmentProvider.context)} · writable layer</small></div>
         <div><span>Run duration</span><strong>{formatDuration(run.run.durationMs)}</strong><small>{formatDate(run.run.startedAt)} UTC</small></div>
       </section>
-      {agentFailure && <AgentFailureSummary run={run} failureCase={failureCase} />}
+      {agentFailure && <AgentFailureSummary run={run} failureCase={failureCase} regression={regression} />}
+      {regressionResult && regression && <RegressionRunSummary run={run} regression={regression} result={regressionResult} />}
       {environmentError && <EnvironmentErrorSummary run={run} />}
       {faulted && <RecoveryPath />}
       <div className="investigation-layout">
@@ -423,7 +446,18 @@ function failureHref(failureCaseId: string): string {
   return `/failures/${encodeURIComponent(failureCaseId)}`;
 }
 
-function AgentFailureSummary({ run, failureCase }: { run: RunEvidence; failureCase?: FailureCase }) {
+function regressionHref(regressionId: string): string {
+  return `/regressions/${encodeURIComponent(regressionId)}`;
+}
+
+function resultTone(result: string): "success" | "fault" | "error" | "neutral" {
+  if (result === "PASS") return "success";
+  if (result === "FAIL") return "fault";
+  if (result === "ERROR") return "error";
+  return "neutral";
+}
+
+function AgentFailureSummary({ run, failureCase, regression }: { run: RunEvidence; failureCase?: FailureCase; regression?: Regression }) {
   const failure = run.failureAttribution || {};
   const failingEventId = typeof failure.failing_event_id === "string" ? failure.failing_event_id : null;
   return (
@@ -439,7 +473,27 @@ function AgentFailureSummary({ run, failureCase }: { run: RunEvidence; failureCa
         <div><span>Failing event</span><strong className="mono">{shortId(failingEventId, 27)}</strong>{failingEventId && <a href={runHref(run.run.runId, failingEventId)} onClick={(event) => { event.preventDefault(); navigate(runHref(run.run.runId, failingEventId)); }}>Open event deep-link</a>}</div>
         <div><span>Expected / actual</span><strong>{displayValue(failure.expected)}</strong><small>{displayValue(failure.actual)}</small></div>
         <div><span>Side effect</span><strong>Not executed</strong><small>guard rejected unsafe intent</small></div>
-        <div><span>Quality / workflow</span><strong>Excluded from quality</strong><small>{failureCase ? "Failure Case linked · not a Regression" : "Failure Case not linked"}</small></div>
+        <div><span>Quality / workflow</span><strong>Excluded from quality</strong><small>{regression ? `Regression ${shortId(regression.regression.regressionId, 27)} · focused` : failureCase ? "Failure Case linked · promoted separately" : "Failure Case not linked"}</small></div>
+      </div>
+    </section>
+  );
+}
+
+function RegressionRunSummary({ run, regression, result }: { run: RunEvidence; regression: Regression; result: RegressionExecutionResult }) {
+  const resultId = result.result.resultId;
+  const href = regressionHref(regression.regression.regressionId);
+  return (
+    <section className="classification-panel regression-run-panel" aria-label="Regression focused rerun result">
+      <div className="classification-heading">
+        <div><span className="eyebrow">FOCUSED RERUN · REGRESSION RESULT</span><h2>{result.result.agentProfile === "known-bad-unsafe-precondition-v1" ? "Known-bad failure reproduced" : "Fixed Candidate passed this Regression"}</h2></div>
+        <a className="action-link" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open Regression →</a>
+      </div>
+      <p className="classification-copy">Run outcome and Regression result are separate contracts. This execution is evidence for <span className="mono">{shortId(regression.regression.regressionId, 31)}</span> version {regression.regression.regressionVersion}; it is not an overall Agent, Suite, Quality, or Release decision.</p>
+      <div className="classification-grid regression-result-grid">
+        <div><span>Regression result</span><strong><StatusTag status={result.result.regressionResult} tone={resultTone(result.result.regressionResult)} /></strong><small>{result.result.agentVersion}</small></div>
+        <div><span>Underlying Run</span><strong>{run.outcome.status}</strong><small className="mono">{shortId(run.run.runId, 27)}</small></div>
+        <div><span>Execution result</span><strong className="mono">{shortId(resultId, 27)}</strong><small>{displayValue(valueAt(result.result.oracle, "reason"))}</small></div>
+        <div><span>Release eligibility</span><strong>{result.result.releaseEligibility}</strong><small>not evaluated by RPF-06</small></div>
       </div>
     </section>
   );
@@ -629,6 +683,170 @@ function EvidencePanel({ run, usage, cost }: { run: RunEvidence; usage: JsonReco
   );
 }
 
+function runRef(value: unknown): { runId: string; eventId: string | null } | null {
+  const ref = objectValue(value);
+  if (!ref || typeof ref.run_id !== "string") return null;
+  return { runId: ref.run_id, eventId: typeof ref.event_id === "string" ? ref.event_id : null };
+}
+
+function refLabel(value: unknown): string {
+  const ref = objectValue(value);
+  return typeof ref?.kind === "string" ? ref.kind : "Evidence ref";
+}
+
+function RegressionIndex() {
+  return (
+    <AppShell regression>
+      <div className="page-header index-header">
+        <div>
+          <span className="eyebrow">REGRESSIONS · HISTORICAL CORPUS</span>
+          <h1>Make a validated failure reusable.</h1>
+          <p className="lede">Historical Regressions preserve the failure contract, promotion evidence, and focused rerun results as a small read-only test corpus.</p>
+        </div>
+        <div className="corpus-note">
+          <span className="section-label">ACTIVE COLLECTION</span>
+          <strong>{reviewedRegressionCollection.members.length} Regression</strong>
+          <span>{reviewedRegressionCollection.collection.category} · not Release</span>
+        </div>
+      </div>
+      <section className="corpus-boundary" aria-label="Regression boundary">
+        <span className="boundary-mark regression-boundary-mark">↗</span>
+        <p><strong>Regression boundary.</strong> A Regression is a versioned, deterministic test asset. A PASS means only that this Candidate passed this Regression; it does not establish overall Agent quality, Suite status, or Release eligibility.</p>
+      </section>
+      <section className="regression-list-section" aria-labelledby="regression-list-heading">
+        <div className="section-heading">
+          <div><span className="eyebrow">SELECT A REGRESSION</span><h2 id="regression-list-heading">Historical Regression collection</h2></div>
+          <span className="section-count">{reviewedRegressions.length.toString().padStart(2, "0")} records</span>
+        </div>
+        <div className="regression-list">
+          <div className="regression-list-head" aria-hidden="true"><span>STATUS / IDENTITY</span><span>SCENARIO / INVARIANT</span><span>KNOWN-BAD</span><span>FIXED CANDIDATE</span><span /></div>
+          {reviewedRegressions.map((item) => {
+            const results = getRegressionResults(item.regression.regressionId);
+            const knownBad = results.find((result) => result.result.agentProfile === "known-bad-unsafe-precondition-v1");
+            const fixedCandidate = results.find((result) => result.result.agentProfile === "production-change-agent-v1-fixed");
+            const href = regressionHref(item.regression.regressionId);
+            return <a className="regression-row" key={item.regression.regressionId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
+              <div className="regression-row-identity"><StatusTag status="ACTIVE" tone="success" /><strong className="mono">{shortId(item.regression.regressionId, 31)}</strong><span>{item.regression.regressionVersion} · {item.regression.category}</span></div>
+              <div><strong>{displayValue(valueAt(item.scenario, "scenario_id"))}@{displayValue(valueAt(item.scenario, "scenario_version"))}</strong><span>{displayValue(valueAt(valueAt(item.contract, "failure_condition"), "violated_invariant_id"))}</span></div>
+              <div className="regression-result-cell">{knownBad ? <><StatusTag status={knownBad.result.regressionResult} tone={resultTone(knownBad.result.regressionResult)} /><span>{shortId(knownBad.result.agentVersion, 23)}</span></> : <span>—</span>}</div>
+              <div className="regression-result-cell">{fixedCandidate ? <><StatusTag status={fixedCandidate.result.regressionResult} tone={resultTone(fixedCandidate.result.regressionResult)} /><span>{shortId(fixedCandidate.result.agentVersion, 23)}</span></> : <span>—</span>}</div>
+              <span className="row-arrow" aria-hidden="true">→</span>
+            </a>;
+          })}
+        </div>
+      </section>
+      <footer className="page-footnote"><span>Source: reviewed Regression + result + collection artifacts</span><span>Read-only local adapter · no rerun or release action</span></footer>
+    </AppShell>
+  );
+}
+
+function GateStatus({ name, gate }: { name: string; gate: JsonRecord | null }) {
+  const status = typeof gate?.status === "string" ? gate.status : "BLOCKED";
+  const checks = objectValue(gate?.checks);
+  const passed = checks ? Object.values(checks).filter((value) => value === true).length : 0;
+  const total = checks ? Object.keys(checks).length : 0;
+  return <div className={`regression-gate ${status === "PASS" ? "pass" : "blocked"}`}><div><span>{humanize(name)}</span><StatusTag status={status} tone={status === "PASS" ? "success" : "fault"} /></div><strong>{passed}/{total} checks</strong><small>{typeof gate?.status === "string" && status === "PASS" ? "evidence satisfied" : "promotion blocked"}</small></div>;
+}
+
+function RegressionDetail({ regression }: { regression: Regression }) {
+  const results = getRegressionResults(regression.regression.regressionId);
+  const failureCase = getFailureCase(regression.sourceFailureCase.failureCaseId);
+  const gate = objectValue(regression.promotion.gate);
+  const gates = objectValue(gate?.gates);
+  const contract = regression.contract;
+  const failureCondition = objectValue(valueAt(contract, "failure_condition"));
+  const signature = objectValue(valueAt(valueAt(failureCondition, "stable_failure_signature"), "components"));
+  const requiredOutcome = objectValue(valueAt(contract, "required_outcome"));
+  const initialState = objectValue(valueAt(contract, "initial_state")) || {};
+  const seedRequirement = objectValue(valueAt(contract, "seed_requirement")) || {};
+  const scenario = objectValue(valueAt(contract, "scenario")) || regression.scenario;
+  const forbiddenOutcomes = Array.isArray(valueAt(contract, "forbidden_outcomes")) ? valueAt(contract, "forbidden_outcomes") as unknown[] : [];
+  const invariants = Array.isArray(valueAt(contract, "invariants")) ? valueAt(contract, "invariants") as unknown[] : [];
+  const safeBehavior = Array.isArray(valueAt(contract, "expected_safe_behavior")) ? valueAt(contract, "expected_safe_behavior") as unknown[] : [];
+  const sourceRunRef = runRef(valueAt(regression.sourceFailureCase, "source_run_ref"));
+  const reproductionRef = runRef(regression.keyEvidenceRefs.find((item) => item.role === "reproduction")?.ref);
+  const sourceCaseHref = failureCase ? failureHref(failureCase.failureCase.failureCaseId) : null;
+  const sourceHref = sourceRunRef ? runHref(sourceRunRef.runId, sourceRunRef.eventId) : null;
+  const reproductionHref = reproductionRef ? runHref(reproductionRef.runId, reproductionRef.eventId) : null;
+  const knownBad = results.find((result) => result.result.agentProfile === "known-bad-unsafe-precondition-v1");
+  const fixedCandidate = results.find((result) => result.result.agentProfile === "production-change-agent-v1-fixed");
+  const gateOrder = ["reproducibility", "relevance", "stability", "non_duplicate", "expected_behavior_explicit"];
+  return (
+    <AppShell detail regression>
+      <div className="detail-breadcrumb">
+        <a href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>Regressions</a>
+        <span aria-hidden="true">/</span>
+        <span>{shortId(regression.regression.regressionId, 34)}</span>
+        <span className="schema-chip">rpf-regression-v1</span>
+      </div>
+      <div className="detail-header regression-detail-header">
+        <div>
+          <span className="eyebrow">HISTORICAL REGRESSION · ACTIVE</span>
+          <h1>Unsafe precondition Regression.</h1>
+          <p className="detail-subtitle">A validated Agent failure was explicitly promoted after independent stability evidence and is now reusable as Regression version {regression.regression.regressionVersion}. The contract is separate from the source Failure Case and every Run.</p>
+        </div>
+        <div className="detail-header-status"><StatusTag status="ACTIVE" tone="success" /><span className="status-note">Historical Regression · not Release ELIGIBLE</span></div>
+      </div>
+      <section className="regression-identity-grid" aria-label="Regression identity">
+        <IdentityField label="Regression" value={regression.regression.regressionId} mono />
+        <IdentityField label="Version" value={regression.regression.regressionVersion} mono note={regression.schemaVersion} />
+        <IdentityField label="Scenario" value={`${displayValue(valueAt(regression.scenario, "scenario_id"))}@${displayValue(valueAt(regression.scenario, "scenario_version"))}`} mono />
+        <IdentityField label="Agent family" value={displayValue(valueAt(regression.agent, "agent_family"))} note={displayValue(valueAt(regression.agent, "domain"))} />
+        <IdentityField label="Invariant" value={shortId(valueAt(failureCondition, "violated_invariant_id"), 34)} mono />
+        <IdentityField label="Collection" value={displayValue(valueAt(regression.collectionMembership, "collection_id"))} note={displayValue(valueAt(regression.collectionMembership, "category"))} />
+      </section>
+      <section className="classification-panel regression-why-panel" aria-labelledby="regression-why-heading">
+        <div className="classification-heading"><div><span className="eyebrow">WHY THIS EXISTS · PROMOTION GATE</span><h2 id="regression-why-heading">Stable Agent defect, explicitly promoted</h2></div><span className="classification-badge">{displayValue(valueAt(gate, "status"))}</span></div>
+        <p className="classification-copy">The Regression identity is derived from the stable failure signature, scenario, invariant, and action category—not a random source Run ID. The gate recorded all required checks before promotion.</p>
+        <div className="regression-why-grid">
+          <div><span>Source Failure Case</span><strong className="mono">{shortId(regression.sourceFailureCase.failureCaseId, 32)}</strong>{sourceCaseHref && <a className="action-link" href={sourceCaseHref} onClick={(event) => { event.preventDefault(); navigate(sourceCaseHref); }}>Open Failure Case →</a>}</div>
+          <div><span>Stable failure signature</span><strong className="mono">{shortId(valueAt(valueAt(regression.sourceFailureCase, "failure_signature"), "value"), 38)}</strong><small>{displayValue(valueAt(failureCondition, "reason_code"))} · {displayValue(valueAt(failureCondition, "attribution"))}</small></div>
+          <div><span>Promotion decision</span><strong className="mono">{shortId(valueAt(regression.promotion, "decision_id"), 38)}</strong><small>{displayValue(valueAt(regression.promotion, "decided_by"))} · {formatDate(String(valueAt(regression.promotion, "decided_at")))}</small></div>
+          <div><span>Expected behavior</span><strong>Explicit contract</strong><small>{displayValue(valueAt(requiredOutcome, "run_status"))} + deterministic verifier + independent read-back</small></div>
+        </div>
+        <div className="regression-gate-grid">{gateOrder.map((name) => <GateStatus key={name} name={name} gate={gates ? objectValue(gates[name]) : null} />)}</div>
+      </section>
+      <section className="regression-contract-section" aria-labelledby="regression-contract-heading">
+        <div className="section-heading"><div><span className="eyebrow">EXPECTED BEHAVIOR · VERSION {regression.regression.regressionVersion}</span><h2 id="regression-contract-heading">What the Agent must prove</h2></div><span className="section-count">no text-only PASS</span></div>
+        <div className="regression-contract-grid">
+          <div className="regression-contract-card"><span className="field-label">INITIAL STATE / SEED</span><strong className="mono">{displayValue(initialState.release)}</strong><div><span>revision</span><b>{displayValue(initialState.revision)}</b></div><div><span>seed</span><b className="mono">{displayValue(seedRequirement.seed_revision)}</b></div><div><span>fresh per Run</span><b>{displayValue(seedRequirement.fresh_per_run)}</b></div></div>
+          <div className="regression-contract-card"><span className="field-label">SCENARIO / TASK</span><strong>{displayValue(valueAt(scenario, "scenario_id"))}@{displayValue(valueAt(scenario, "scenario_version"))}</strong><p>{displayValue(valueAt(scenario, "task"))}</p></div>
+          <div className="regression-contract-card"><span className="field-label">REQUIRED OUTCOME</span><strong className="success-text">{displayValue(valueAt(requiredOutcome, "run_status"))}</strong><p>release {displayValue(valueAt(valueAt(requiredOutcome, "actual_state"), "release"))} · revision {displayValue(valueAt(valueAt(requiredOutcome, "actual_state"), "revision"))} · {displayValue(valueAt(requiredOutcome, "exactly_one_authorized_mutation")) ? "one mutation" : "contract mismatch"}</p></div>
+          <div className="regression-contract-card"><span className="field-label">FAILURE CONDITION</span><strong className="failure-text">{displayValue(valueAt(failureCondition, "violated_invariant_id"))}</strong><p>{displayValue(valueAt(failureCondition, "reason_code"))} · {displayValue(valueAt(failureCondition, "attribution"))}</p></div>
+        </div>
+        <div className="regression-rule-columns">
+          <div><h3>Invariants</h3><ul>{invariants.map((item, index) => { const row = objectValue(item); return <li key={`${displayValue(valueAt(row, "id"))}-${index}`}><span className="invariant-icon">✓</span><span><strong>{displayValue(valueAt(row, "id"))}</strong>{displayValue(valueAt(row, "description"))}</span></li>; })}</ul></div>
+          <div><h3>Forbidden outcomes</h3><ul>{forbiddenOutcomes.map((item, index) => <li key={`${String(item)}-${index}`}><span className="forbidden-mark">!</span><span>{displayValue(item)}</span></li>)}</ul></div>
+          <div><h3>Expected safe behavior</h3><ul>{safeBehavior.map((item, index) => <li key={`${String(item)}-${index}`}><span className="safe-mark">→</span><span>{displayValue(item)}</span></li>)}</ul></div>
+        </div>
+      </section>
+      <section className="regression-history-section" aria-labelledby="regression-history-heading">
+        <div className="section-heading"><div><span className="eyebrow">HISTORICAL FAILURE · STABLE REFERENCES</span><h2 id="regression-history-heading">Failure evidence path</h2></div><span className="section-count">source history immutable</span></div>
+        <div className="regression-evidence-grid">
+          <div className="regression-evidence-card"><span className="field-label">SOURCE FAIL</span><strong className="mono">{shortId(sourceRunRef?.runId, 32)}</strong><span>{refLabel(valueAt(regression.sourceFailureCase, "source_run_ref"))} · original validated evidence</span>{sourceHref && <a className="action-link" href={sourceHref} onClick={(event) => { event.preventDefault(); navigate(sourceHref); }}>Open source event →</a>}</div>
+          <div className="regression-evidence-arrow" aria-hidden="true">→</div>
+          <div className="regression-evidence-card accent"><span className="field-label">INDEPENDENT REPRODUCTION</span><strong className="mono">{shortId(reproductionRef?.runId, 32)}</strong><span>Fresh Environment · same signature and invariant</span>{reproductionHref && <a className="action-link" href={reproductionHref} onClick={(event) => { event.preventDefault(); navigate(reproductionHref); }}>Open reproduction event →</a>}</div>
+        </div>
+        <div className="regression-ref-list">{regression.keyEvidenceRefs.map((item, index) => { const ref = runRef(item.ref); const href = ref ? runHref(ref.runId, ref.eventId) : null; return <div className="regression-ref-row" key={`${displayValue(item.role)}-${index}`}><span>{displayValue(item.role)}</span><strong className="mono">{shortId(ref?.runId, 34)}</strong>{href ? <a href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open evidence →</a> : <span>stable ref only</span>}</div>; })}</div>
+      </section>
+      <section className="regression-rerun-section" aria-labelledby="regression-rerun-heading">
+        <div className="section-heading"><div><span className="eyebrow">FOCUSED RERUNS · REGRESSION ONLY</span><h2 id="regression-rerun-heading">Known-bad vs fixed Candidate</h2></div><span className="section-count">{results.length} results · no Suite aggregate</span></div>
+        <div className="regression-rerun-list">
+          {results.map((item) => { const ref = runRef(item.result.runRef); const href = ref ? runHref(ref.runId) : null; const known = item.result.agentProfile === "known-bad-unsafe-precondition-v1"; return <div className={`regression-rerun-row ${known ? "known-bad" : "fixed-candidate"}`} key={item.result.resultId}>
+            <div><span className="field-label">{known ? "KNOWN-BAD AGENT" : "FIXED CANDIDATE"}</span><strong>{item.result.agentVersion}</strong><span className="mono">{item.result.agentProfile}</span></div>
+            <div><span>Run outcome</span><strong>{item.result.runOutcome}</strong><small className="mono">{shortId(ref?.runId, 27)}</small></div>
+            <div><span>Regression result</span><StatusTag status={item.result.regressionResult} tone={resultTone(item.result.regressionResult)} /><small>{displayValue(valueAt(item.result.oracle, "reason"))}</small></div>
+            <div><span>Release eligibility</span><strong>{item.result.releaseEligibility}</strong><small>not evaluated</small></div>
+            {href && <a className="action-link" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open Run →</a>}
+          </div>; })}
+        </div>
+      </section>
+      <section className="regression-status-note" aria-label="Regression scope note"><span className="boundary-mark">i</span><p><strong>Scope boundary.</strong> Regression PASS means the fixed Candidate satisfied this Regression's deterministic expected behavior and did not reproduce the historical signature. It does not mean Candidate overall quality, Evaluation Suite PASS, or Release ELIGIBLE.</p></section>
+      <footer className="detail-footer"><span>{regression.regression.regressionId}@{regression.regression.regressionVersion} · {regression.regression.category}</span><span>Regression artifact is independent; source Failure Case and Runs remain linked.</span></footer>
+    </AppShell>
+  );
+}
+
 function FailureIndex() {
   return (
     <AppShell failure>
@@ -636,17 +854,17 @@ function FailureIndex() {
         <div>
           <span className="eyebrow">FAILURE CASES · REVIEWED CORPUS</span>
           <h1>Follow a real failure through reproduction.</h1>
-          <p className="lede">Failure Cases keep source evidence, independent reproduction, and validation together without promoting a failure into Regression.</p>
+          <p className="lede">Failure Cases keep source evidence, independent reproduction, validation, and any additive promotion link together.</p>
         </div>
         <div className="corpus-note">
           <span className="section-label">ACTIVE CASES</span>
-          <strong>{reviewedFailureCases.length} validated</strong>
-          <span>not a Regression</span>
+          <strong>{reviewedFailureCases.length} promoted</strong>
+          <span>validated history retained</span>
         </div>
       </div>
       <section className="corpus-boundary" aria-label="Failure Case boundary">
         <span className="boundary-mark">!</span>
-        <p><strong>Workflow boundary.</strong> A Failure Case is a durable investigation asset after the same failure is reproduced and validated. This surface does not promote it to Regression.</p>
+        <p><strong>Workflow boundary.</strong> A validated Failure Case remains its own immutable investigation asset. Promotion is explicit and additive: the case keeps its validated history while pointing to a separate Regression artifact.</p>
       </section>
       <section className="case-list-section" aria-labelledby="failure-list-heading">
         <div className="section-heading">
@@ -657,10 +875,10 @@ function FailureIndex() {
           {reviewedFailureCases.map((item) => {
             const href = failureHref(item.failureCase.failureCaseId);
             return <a className="case-row" key={item.failureCase.failureCaseId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
-              <div><StatusTag status={item.failureCase.workflowState.toUpperCase()} tone="success" /><span className="signal-label">source FAIL · reproduction matched</span></div>
+              <div><StatusTag status={item.failureCase.currentStatus.toUpperCase()} tone="success" /><span className="signal-label">source FAIL · reproduction matched</span></div>
               <div><strong>{displayValue(item.agent.agent_version)}</strong><span>{displayValue(item.scenario.scenario_id)}@{displayValue(item.scenario.scenario_version)}</span></div>
               <div><strong className="mono">{shortId(item.failureSignature.value, 24)}</strong><span>{displayValue(item.failureSignature.components.violated_invariant_id)}</span></div>
-              <div><strong>Not a Regression</strong><span>{item.reproductionAttempts.length} reproduction attempt · validated</span></div>
+              <div><strong>Promoted to Regression</strong><span>{item.reproductionAttempts.length} reproduction attempt · validated history retained</span></div>
               <span className="row-arrow" aria-hidden="true">→</span>
             </a>;
           })}
@@ -679,6 +897,10 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
   const sourceLink = sourceRun ? runHref(sourceRun.run.runId, failingEventId) : runHref(failureCase.sourceRun.runId);
   const reproductionEventId = typeof valueAt(attempt?.run_ref, "event_id") === "string" ? String(valueAt(attempt?.run_ref, "event_id")) : null;
   const reproductionLink = reproductionRun ? runHref(reproductionRun.run.runId, reproductionEventId) : attempt ? runHref(attempt.runId) : null;
+  const promotedRegressionId = typeof valueAt(failureCase.promotion?.regression_ref, "regression_id") === "string" ? String(valueAt(failureCase.promotion?.regression_ref, "regression_id")) : null;
+  const promotedRegression = promotedRegressionId ? getRegression(promotedRegressionId) : undefined;
+  const promoted = Boolean(promotedRegression && failureCase.promotion);
+  const promotionGate = valueAt(failureCase.promotion, "gate_ref");
   return (
     <AppShell detail failure>
       <div className="detail-breadcrumb">
@@ -693,7 +915,7 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
           <h1>Unsafe precondition failure</h1>
           <p className="detail-subtitle">The source Agent FAIL was reproduced in a fresh Environment with the same failure signature and evidence pattern.</p>
         </div>
-        <div className="detail-header-status"><StatusTag status="VALIDATED" tone="success" /><span className="status-note">Not a Regression</span></div>
+        <div className="detail-header-status"><StatusTag status={promoted ? "PROMOTED" : "VALIDATED"} tone="success" /><span className="status-note">{promoted ? "validated history retained · Regression linked" : "Not a Regression"}</span></div>
       </div>
       <section className="case-identity-grid" aria-label="Failure Case identity">
         <IdentityField label="Failure Case" value={failureCase.failureCase.failureCaseId} mono />
@@ -701,16 +923,17 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
         <IdentityField label="Scenario" value={`${displayValue(failureCase.scenario.scenario_id)}@${displayValue(failureCase.scenario.scenario_version)}`} mono />
         <IdentityField label="Attribution" value={displayValue(failureCase.classification.attribution)} note={displayValue(failureCase.classification.reason_code)} />
         <IdentityField label="Signature" value={shortId(failureCase.failureSignature.value, 28)} mono note={failureCase.failureSignature.signatureVersion} />
-        <IdentityField label="Workflow" value={failureCase.failureCase.workflowState} note="validated · no promotion" />
+        <IdentityField label="Workflow" value={failureCase.failureCase.currentStatus} note={promoted ? "validated · promoted additively" : "validated · no promotion"} />
       </section>
       <section className="classification-panel case-summary-panel" aria-label="Failure Case validation summary">
-        <div className="classification-heading"><div><span className="eyebrow">REPRODUCTION EVIDENCE · VALIDATED</span><h2>Same failure, independently reproduced</h2></div><span className="classification-badge">NOT A REGRESSION</span></div>
-        <p className="classification-copy">Validation matched the stable signature, violated invariant, Agent attribution, key guard evidence, and healthy Provider/Environment boundary. The original Run Evidence remains unchanged.</p>
+        <div className="classification-heading"><div><span className="eyebrow">{promoted ? "PROMOTION EVIDENCE · VALIDATED → REGRESSION" : "REPRODUCTION EVIDENCE · VALIDATED"}</span><h2>{promoted ? "Failure Case promoted to Regression" : "Same failure, independently reproduced"}</h2></div>{promoted && promotedRegression ? <a className="action-link" href={regressionHref(promotedRegression.regression.regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(promotedRegression.regression.regressionId)); }}>Open Regression →</a> : <span className="classification-badge">NOT A REGRESSION</span>}</div>
+        <p className="classification-copy">Validation matched the stable signature, violated invariant, Agent attribution, key guard evidence, and healthy Provider/Environment boundary. {promoted ? `The explicit promotion gate passed and recorded ${displayValue(valueAt(failureCase.promotion, "promoted_at"))}; the original Run Evidence and validated history remain unchanged.` : "The original Run Evidence remains unchanged."}</p>
         <div className="classification-grid case-summary-grid">
           <div><span>Violated invariant</span><strong className="mono">{displayValue(failureCase.failureObservation.violated_invariant_id)}</strong><small>{displayValue(failureCase.failureObservation.violated_invariant)}</small></div>
           <div><span>Expected</span><strong>{displayValue(valueAt(failureCase.failureObservation.expected, "agent_observed_state_before_mutation"))}</strong><small>Agent observes before mutation</small></div>
           <div><span>Actual</span><strong>{displayValue(valueAt(failureCase.failureObservation.actual, "agent_observed_state_before_mutation"))}</strong><small>unsafe intent reached guard</small></div>
           <div><span>Validation</span><strong>{displayValue(valueAt(failureCase.validation, "status"))}</strong><small>{displayValue(valueAt(failureCase.validation, "observed_run_id"))}</small></div>
+          <div><span>Promotion</span><strong>{promoted ? "PROMOTED" : "NOT_A_REGRESSION"}</strong><small>{promoted ? `Gate ${displayValue(valueAt(promotionGate, "all_passed"))} · ${shortId(promotedRegressionId, 28)}` : "no Regression link"}</small></div>
         </div>
       </section>
       <section className="case-compare-section" aria-labelledby="case-compare-heading">
@@ -732,7 +955,7 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
           })}
         </div>
       </section>
-      <footer className="detail-footer"><span>Case {failureCase.failureCase.failureCaseId} · {failureCase.failureCase.workflowState}</span><span>Failure Case validated ≠ Regression.</span></footer>
+      <footer className="detail-footer"><span>Case {failureCase.failureCase.failureCaseId} · {failureCase.failureCase.workflowState}</span><span>{promoted ? "Failure Case history retained · Regression is a separate artifact." : "Failure Case validated ≠ Regression."}</span></footer>
     </AppShell>
   );
 }
@@ -746,8 +969,11 @@ export default function App() {
   }, []);
   const run = useMemo(() => location.runId ? getRun(location.runId) : undefined, [location.runId]);
   const failureCase = useMemo(() => location.failureCaseId ? getFailureCase(location.failureCaseId) : undefined, [location.failureCaseId]);
+  const regression = useMemo(() => location.regressionId ? getRegression(location.regressionId) : undefined, [location.regressionId]);
   if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
+  if (regression) return <RegressionDetail regression={regression} />;
   if (location.pathname === "/failures") return <FailureIndex />;
+  if (location.pathname === "/regressions") return <RegressionIndex />;
   if (run) return <RunDetail run={run} eventId={location.eventId} />;
   return <RunIndex />;
 }

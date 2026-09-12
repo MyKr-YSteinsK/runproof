@@ -1,0 +1,50 @@
+{
+  "schema_version": "rpf-regression-result-v1",
+  "artifact_kind": "Regression Execution Result",
+  "result": {
+    "result_id": "regression-result-e042b57f-947a-4a55-a4cd-cc3d9777fe3a",
+    "created_at": "2026-09-12T03:50:21.743114Z",
+    "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+    "regression_version": "1.0.0",
+    "agent_profile": "known-bad-unsafe-precondition-v1",
+    "agent_version": "1.0.0-known-bad-unsafe-precondition",
+    "regression_result": "FAIL",
+    "run_outcome": "FAIL",
+    "run_ref": {
+      "kind": "Run Evidence",
+      "run_id": "run-a6ae3954-8019-4706-a6f7-dc6c1ba7cc9c"
+    },
+    "environment_id": "docker-agent-run-8a7db682-defc-4196-b9f3-55a8f6615f1b",
+    "oracle": {
+      "status": "FAIL",
+      "reason": "KNOWN_BAD_FAILURE_ORACLE_MATCH",
+      "checks": {
+        "run_outcome_fail": true,
+        "agent_attribution": true,
+        "stable_signature_match": true,
+        "violated_invariant_match": true,
+        "health_boundary_ok": true,
+        "fresh_run_identity": true
+      }
+    },
+    "evidence_refs": [
+      {
+        "role": "failing_event",
+        "ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-a6ae3954-8019-4706-a6f7-dc6c1ba7cc9c",
+          "event_id": "run-a6ae3954-8019-4706-a6f7-dc6c1ba7cc9c:event:guard_blocked:001"
+        }
+      },
+      {
+        "role": "state_observation",
+        "ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-a6ae3954-8019-4706-a6f7-dc6c1ba7cc9c",
+          "event_id": "run-a6ae3954-8019-4706-a6f7-dc6c1ba7cc9c:event:actual_state_verification:001"
+        }
+      }
+    ],
+    "release_eligibility": "NOT_EVALUATED"
+  }
+}

@@ -4,6 +4,14 @@ import agentFailArtifact from "../../../runtime/reviewed-agent-fail-run.json";
 import environmentErrorArtifact from "../../../runtime/reviewed-environment-error-run.json";
 import reproductionArtifact from "../../../runtime/reviewed-agent-fail-reproduction-run.json";
 import failureCaseArtifact from "../../../runtime/reviewed-failure-case.json";
+import promotedFailureCaseArtifact from "../../../runtime/reviewed-failure-case-promoted.json";
+import regressionStabilityOneArtifact from "../../../runtime/reviewed-regression-stability-01-run.json";
+import regressionStabilityTwoArtifact from "../../../runtime/reviewed-regression-stability-02-run.json";
+import regressionFixedCandidateArtifact from "../../../runtime/reviewed-regression-fixed-candidate-run.json";
+import regressionArtifact from "../../../runtime/reviewed-regression.json";
+import regressionCollectionArtifact from "../../../runtime/reviewed-regression-collection.json";
+import regressionKnownBadResultArtifact from "../../../runtime/reviewed-regression-known-bad-result.json";
+import regressionFixedCandidateResultArtifact from "../../../runtime/reviewed-regression-fixed-candidate-result.json";
 
 export const ACTIVE_SCHEMA_VERSION = "rpf-run-evidence-v2";
 
@@ -105,6 +113,56 @@ export interface FailureCase {
   reproductionAttempts: Array<JsonRecord & { runId: string; environmentId: string; status: string }>;
   validation: JsonRecord | null;
   regression: JsonRecord;
+  promotion: JsonRecord | null;
+}
+
+export interface Regression {
+  schemaVersion: string;
+  artifactKind: string;
+  regression: {
+    regressionId: string;
+    regressionVersion: string;
+    createdAt: string;
+    updatedAt: string;
+    lifecycleStatus: string;
+    category: string;
+    status: string;
+  };
+  sourceFailureCase: JsonRecord & { failureCaseId: string };
+  agent: JsonRecord;
+  scenario: JsonRecord;
+  contract: JsonRecord;
+  promotion: JsonRecord;
+  collectionMembership: JsonRecord;
+  focusedReruns: Array<JsonRecord & { agentProfile: string; regressionResult: string; runOutcome: string; runRef: JsonRecord }>;
+  keyEvidenceRefs: JsonRecord[];
+}
+
+export interface RegressionExecutionResult {
+  schemaVersion: string;
+  artifactKind: string;
+  result: {
+    resultId: string;
+    createdAt: string;
+    regressionId: string;
+    regressionVersion: string;
+    agentProfile: string;
+    agentVersion: string;
+    regressionResult: string;
+    runOutcome: string;
+    runRef: JsonRecord;
+    environmentId: string;
+    oracle: JsonRecord;
+    evidenceRefs: JsonRecord[];
+    releaseEligibility: string;
+  };
+}
+
+export interface RegressionCollection {
+  schemaVersion: string;
+  artifactKind: string;
+  collection: JsonRecord & { collectionId: string; collectionVersion: string; category: string; status: string };
+  members: Array<JsonRecord & { regressionId: string; regressionVersion: string; status: string; category: string; stableSignature: string }>;
 }
 
 const asObject = (value: unknown, label: string): JsonRecord => {
@@ -284,6 +342,7 @@ const normalizeFailureCase = (raw: unknown): FailureCase => {
     reproductionAttempts,
     validation: asOptionalObject(artifact.validation, "validation"),
     regression: asObject(artifact.regression, "regression"),
+    promotion: asOptionalObject(artifact.promotion, "promotion"),
   };
 };
 
@@ -293,9 +352,113 @@ export const reviewedRuns: RunEvidence[] = [
   normalizeArtifact(agentFailArtifact),
   normalizeArtifact(environmentErrorArtifact),
   normalizeArtifact(reproductionArtifact),
+  normalizeArtifact(regressionStabilityOneArtifact),
+  normalizeArtifact(regressionStabilityTwoArtifact),
+  normalizeArtifact(regressionFixedCandidateArtifact),
 ];
 
-export const reviewedFailureCases: FailureCase[] = [normalizeFailureCase(failureCaseArtifact)];
+export const historicalFailureCase: FailureCase = normalizeFailureCase(failureCaseArtifact);
+
+export const reviewedFailureCases: FailureCase[] = [normalizeFailureCase(promotedFailureCaseArtifact)];
+
+const normalizeRegression = (raw: unknown): Regression => {
+  const artifact = asObject(raw, "regression artifact");
+  const metadata = asObject(artifact.regression, "regression");
+  const source = asObject(artifact.source_failure_case, "source_failure_case");
+  const focusedReruns = asArray(artifact.focused_reruns, "focused_reruns").map((item) => {
+    const value = asObject(item, "focused rerun");
+    return {
+      ...value,
+      agentProfile: asString(value.agent_profile, "focused_rerun.agent_profile"),
+      regressionResult: asString(value.regression_result, "focused_rerun.regression_result"),
+      runOutcome: asString(value.run_outcome, "focused_rerun.run_outcome"),
+      runRef: asObject(value.run_ref, "focused_rerun.run_ref"),
+    } as Regression["focusedReruns"][number];
+  });
+  return {
+    schemaVersion: asString(artifact.schema_version, "regression.schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "regression.artifact_kind"),
+    regression: {
+      regressionId: asString(metadata.regression_id, "regression.regression_id"),
+      regressionVersion: asString(metadata.regression_version, "regression.regression_version"),
+      createdAt: asString(metadata.created_at, "regression.created_at"),
+      updatedAt: asString(metadata.updated_at, "regression.updated_at"),
+      lifecycleStatus: asString(metadata.lifecycle_status, "regression.lifecycle_status"),
+      category: asString(metadata.category, "regression.category"),
+      status: asString(metadata.status, "regression.status"),
+    },
+    sourceFailureCase: {
+      ...source,
+      failureCaseId: asString(source.failure_case_id, "source_failure_case.failure_case_id"),
+    },
+    agent: asObject(artifact.agent, "regression.agent"),
+    scenario: asObject(artifact.scenario, "regression.scenario"),
+    contract: asObject(artifact.contract, "regression.contract"),
+    promotion: asObject(artifact.promotion, "regression.promotion"),
+    collectionMembership: asObject(artifact.collection_membership, "regression.collection_membership"),
+    focusedReruns,
+    keyEvidenceRefs: asArray(artifact.key_evidence_refs, "key_evidence_refs").map((value) => asObject(value, "key evidence ref")),
+  };
+};
+
+const normalizeRegressionResult = (raw: unknown): RegressionExecutionResult => {
+  const artifact = asObject(raw, "regression result artifact");
+  const result = asObject(artifact.result, "regression result");
+  return {
+    schemaVersion: asString(artifact.schema_version, "regression result.schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "regression result.artifact_kind"),
+    result: {
+      resultId: asString(result.result_id, "result.result_id"),
+      createdAt: asString(result.created_at, "result.created_at"),
+      regressionId: asString(result.regression_id, "result.regression_id"),
+      regressionVersion: asString(result.regression_version, "result.regression_version"),
+      agentProfile: asString(result.agent_profile, "result.agent_profile"),
+      agentVersion: asString(result.agent_version, "result.agent_version"),
+      regressionResult: asString(result.regression_result, "result.regression_result"),
+      runOutcome: asString(result.run_outcome, "result.run_outcome"),
+      runRef: asObject(result.run_ref, "result.run_ref"),
+      environmentId: asString(result.environment_id, "result.environment_id"),
+      oracle: asObject(result.oracle, "result.oracle"),
+      evidenceRefs: asArray(result.evidence_refs, "result.evidence_refs").map((value) => asObject(value, "result evidence ref")),
+      releaseEligibility: asString(result.release_eligibility, "result.release_eligibility"),
+    },
+  };
+};
+
+const normalizeRegressionCollection = (raw: unknown): RegressionCollection => {
+  const artifact = asObject(raw, "regression collection artifact");
+  const collection = asObject(artifact.collection, "collection");
+  const members = asArray(artifact.members, "collection.members").map((item) => {
+    const value = asObject(item, "collection member");
+    return {
+      ...value,
+      regressionId: asString(value.regression_id, "collection member.regression_id"),
+      regressionVersion: asString(value.regression_version, "collection member.regression_version"),
+      status: asString(value.status, "collection member.status"),
+      category: asString(value.category, "collection member.category"),
+      stableSignature: asString(value.stable_signature, "collection member.stable_signature"),
+    } as RegressionCollection["members"][number];
+  });
+  return {
+    schemaVersion: asString(artifact.schema_version, "collection.schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "collection.artifact_kind"),
+    collection: {
+      ...collection,
+      collectionId: asString(collection.collection_id, "collection.collection_id"),
+      collectionVersion: asString(collection.collection_version, "collection.collection_version"),
+      category: asString(collection.category, "collection.category"),
+      status: asString(collection.status, "collection.status"),
+    },
+    members,
+  };
+};
+
+export const reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact)];
+export const reviewedRegressionResults: RegressionExecutionResult[] = [
+  normalizeRegressionResult(regressionKnownBadResultArtifact),
+  normalizeRegressionResult(regressionFixedCandidateResultArtifact),
+];
+export const reviewedRegressionCollection: RegressionCollection = normalizeRegressionCollection(regressionCollectionArtifact);
 
 export const getRun = (runId: string): RunEvidence | undefined => reviewedRuns.find((run) => run.run.runId === runId);
 
@@ -308,6 +471,19 @@ export const isEnvironmentErrorRun = (run: RunEvidence): boolean => run.outcome.
 export const getFailureCase = (failureCaseId: string): FailureCase | undefined => reviewedFailureCases.find((item) => item.failureCase.failureCaseId === failureCaseId);
 
 export const getFailureCaseForRun = (runId: string): FailureCase | undefined => reviewedFailureCases.find((item) => item.sourceRun.runId === runId || item.reproductionAttempts.some((attempt) => attempt.runId === runId));
+
+export const getRegression = (regressionId: string): Regression | undefined => reviewedRegressions.find((item) => item.regression.regressionId === regressionId);
+
+export const getRegressionResult = (resultId: string): RegressionExecutionResult | undefined => reviewedRegressionResults.find((item) => item.result.resultId === resultId);
+
+export const getRegressionResults = (regressionId: string): RegressionExecutionResult[] => reviewedRegressionResults.filter((item) => item.result.regressionId === regressionId);
+
+export const getRegressionResultForRun = (runId: string): RegressionExecutionResult | undefined => reviewedRegressionResults.find((item) => item.result.runRef.run_id === runId);
+
+export const getRegressionForRun = (runId: string): Regression | undefined => {
+  const result = getRegressionResultForRun(runId);
+  return result ? getRegression(result.result.regressionId) : undefined;
+};
 
 export const getUsage = (run: RunEvidence): JsonRecord => asOptionalObject(run.llmProvider.raw_usage, "llm_provider.raw_usage") || {};
 

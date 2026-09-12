@@ -29,6 +29,8 @@
 - RPF-03 `.local/rpf-03/` 只保存本地 Run artifacts，不提交；runtime source identity 由正式 package 文件 hash 记录。live artifacts 必须经过 secret/private-protocol redaction，历史 Run 不得静默覆盖。
 - RPF-03 `runtime/reviewed-*.json` 是经过审查的固定 live evidence 样本，允许提交；`runtime/verify-reviewed-artifacts.py` 校验 artifact schema、PASS、Docker cleanup、response-lost reconcile、secret/private-protocol 边界与 runtime source hash。修改 `runtime/runproof_runtime/` 后必须重新生成并审查样本，不能让旧样本冒充新源码证据。
 - RPF-04 Web product commands：`npm test`、`npm run typecheck`、`npm run build`；Web 只从 `runtime/reviewed-*-run-v2.json` 读取 reviewed corpus，不发起 live Run，不保存 secret、Authorization 或 private reasoning。RPF-04 `.local/rpf-04/` 只保存重新生成 v2 artifacts 的本地副本，不提交；固定 v1/v2 样本身份不得静默覆盖。
+- RPF-05/RPF-06 runtime：同一 `python -m unittest discover -s runtime/tests -p 'test_*.py' -v`、`python runtime/verify-reviewed-artifacts.py` 合同继续适用；RPF-06 的 `--check-promotion`、`--promote-failure-case`、`--focused-regression`、`--verify-regression` 分别覆盖 gate、显式 promotion、focused rerun 与 Regression artifact 校验。RPF-06 使用 Docker Fresh-per-run，临时输出仅在忽略的 `.local/rpf-06/`，reviewed Stability/Focused Runs、Regression、Gate、Result、Collection 与 promoted Failure Case 不得静默覆盖历史 RPF-04/RPF-05 样本。
+- RPF-06 Web 继续使用 `npm test`、`npm run typecheck`、`npm run build`；`/regressions` 与 `/regressions/:regressionId` 只读消费 reviewed Regression corpus，并通过 stable refs 链接 Failure Case、source/reproduction/focused Runs 与 events，不发起 live Run、promote、rerun 或 mutate。
 - Python runtime 当前无独立 lint/build 命令；文档/Project State 仍按语义/链接、Git diff/history/status 和 secret/ignore 边界验证。
 - 真实产品命令引入后，按脚本实际语义更新本节，注明 build 已包含的检查以避免重复；不创建空洞 CI。
 - 当前 runtime/CI/deployment/version 状态仅见 CURRENT_STATE。

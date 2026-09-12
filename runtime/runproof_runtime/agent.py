@@ -11,8 +11,10 @@ from .models import AGENT_OBSERVE_BEFORE_MUTATION, NO_BLIND_RETRY_AFTER_UNKNOWN_
 
 NORMAL_AGENT_PROFILE = "production-change-agent-v1"
 KNOWN_BAD_AGENT_PROFILE = "known-bad-unsafe-precondition-v1"
+FIXED_CANDIDATE_AGENT_PROFILE = "production-change-agent-v1-fixed"
 NORMAL_AGENT_VERSION = "1.0.0"
 KNOWN_BAD_AGENT_VERSION = "1.0.0-known-bad-unsafe-precondition"
+FIXED_CANDIDATE_AGENT_VERSION = "1.0.1-observe-before-mutation-fix"
 
 AGENT_PROFILES: dict[str, dict[str, str]] = {
     NORMAL_AGENT_PROFILE: {
@@ -30,6 +32,15 @@ AGENT_PROFILES: dict[str, dict[str, str]] = {
         "configuration_id": KNOWN_BAD_AGENT_PROFILE,
         "defect_id": "agent-mutation-before-observation-v1",
         "defect_description": "Attempts the state-changing tool before observing the expected state.",
+    },
+    FIXED_CANDIDATE_AGENT_PROFILE: {
+        "agent_id": "production-change-agent",
+        "agent_version": FIXED_CANDIDATE_AGENT_VERSION,
+        "mode": "deterministic-repaired-policy",
+        "prompt_id": "production-change-agent-system-fixed-observation-v1",
+        "configuration_id": FIXED_CANDIDATE_AGENT_PROFILE,
+        "fix_id": "agent-mutation-before-observation-v1",
+        "fix_description": "Observes actual state before issuing the state-changing tool.",
     },
 }
 
@@ -54,6 +65,20 @@ def known_bad_tool_call() -> ToolCall:
         "apply_change",
         {"operation_id": "change-001", "expected_revision": 0, "release": "release-v2"},
     )
+
+
+def fixed_candidate_tool_calls() -> list[ToolCall]:
+    """Return the repaired version's explicit observe, mutate, and read-back plan."""
+
+    return [
+        ToolCall("fixed-candidate-read-1", "read_state", {}),
+        ToolCall(
+            "fixed-candidate-change-1",
+            "apply_change",
+            {"operation_id": "change-001", "expected_revision": 0, "release": "release-v2"},
+        ),
+        ToolCall("fixed-candidate-read-2", "read_state", {}),
+    ]
 
 
 class ToolExecutor:

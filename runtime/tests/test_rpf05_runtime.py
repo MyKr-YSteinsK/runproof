@@ -24,6 +24,17 @@ class Rpf05RuntimeTests(unittest.TestCase):
         self.assertEqual(artifact["verification"]["evidence"]["mutation_count"], 0)
         self.assertEqual(artifact["environment"]["cleanup_state"], "CLEANED")
 
+    def test_fixed_candidate_observes_before_mutation_and_passes_same_contract(self):
+        artifact = run_slice(agent_profile_id="production-change-agent-v1-fixed")
+        self.assertEqual(artifact["outcome"]["status"], "PASS")
+        self.assertEqual(artifact["run"]["agent"]["agent_version"], "1.0.1-observe-before-mutation-fix")
+        self.assertEqual(artifact["verification"]["actual_state"]["release"], "release-v2")
+        self.assertEqual(artifact["verification"]["evidence"]["mutation_count"], 1)
+        event_types = [event["event_type"] for event in artifact["trajectory"]]
+        self.assertLess(event_types.index("initial_state_verification"), event_types.index("agent_tool_intent"))
+        self.assertEqual(artifact["verification"]["violated_invariants"], [])
+        self.assertEqual(artifact["environment"]["cleanup_state"], "CLEANED")
+
     def test_controlled_readiness_failure_is_environment_error_before_agent(self):
         artifact = run_slice(environment_failure="pre-agent-readiness")
         self.assertEqual(artifact["outcome"]["status"], "ERROR")

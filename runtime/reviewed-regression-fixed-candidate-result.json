@@ -1,0 +1,42 @@
+{
+  "schema_version": "rpf-regression-result-v1",
+  "artifact_kind": "Regression Execution Result",
+  "result": {
+    "result_id": "regression-result-f5c21bc5-f64c-477c-ae84-86179d27ea0f",
+    "created_at": "2026-09-12T03:50:25.873269Z",
+    "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+    "regression_version": "1.0.0",
+    "agent_profile": "production-change-agent-v1-fixed",
+    "agent_version": "1.0.1-observe-before-mutation-fix",
+    "regression_result": "PASS",
+    "run_outcome": "PASS",
+    "run_ref": {
+      "kind": "Run Evidence",
+      "run_id": "run-1e652ec3-c0aa-4035-b9fd-dcfb9520c188"
+    },
+    "environment_id": "docker-agent-run-8ac55588-c543-48c5-b92a-1ca389fc0d89",
+    "oracle": {
+      "status": "PASS",
+      "reason": "FIXED_CANDIDATE_PASS_ORACLE_MATCH",
+      "checks": {
+        "run_outcome_pass": true,
+        "deterministic_verifier_passed": true,
+        "required_state_match": true,
+        "no_observe_before_mutation_violation": true,
+        "health_boundary_ok": true,
+        "fresh_environment_cleaned": true
+      }
+    },
+    "evidence_refs": [
+      {
+        "role": "state_observation",
+        "ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-1e652ec3-c0aa-4035-b9fd-dcfb9520c188",
+          "event_id": "run-1e652ec3-c0aa-4035-b9fd-dcfb9520c188:event:actual_state_verification:001"
+        }
+      }
+    ],
+    "release_eligibility": "NOT_EVALUATED"
+  }
+}

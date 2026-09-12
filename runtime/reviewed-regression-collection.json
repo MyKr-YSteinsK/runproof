@@ -1,0 +1,30 @@
+{
+  "schema_version": "rpf-regression-collection-v1",
+  "artifact_kind": "Historical Regression Collection",
+  "collection": {
+    "collection_id": "historical-regressions-v1",
+    "collection_version": "1.0.0",
+    "category": "Historical Regression",
+    "status": "ACTIVE",
+    "description": "Minimal reviewed Regression membership for stable historical Agent failures."
+  },
+  "members": [
+    {
+      "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+      "regression_version": "1.0.0",
+      "status": "ACTIVE",
+      "category": "Historical Regression",
+      "stable_signature": "sha256:04e13c0a2b24b7a0cdd53fa04f61c83347b70be06f6fa75bcdcf9c2b24294db8",
+      "signature_components": {
+        "scenario": "production-change-release@1.0.0",
+        "violated_invariant_id": "RPF-AGENT-OBSERVE-BEFORE-MUTATION",
+        "action_category": "state-changing-tool"
+      },
+      "stable_ref": {
+        "kind": "Regression",
+        "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24",
+        "regression_version": "1.0.0"
+      }
+    }
+  ]
+}
