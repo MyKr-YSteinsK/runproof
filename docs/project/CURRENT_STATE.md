@@ -28,7 +28,7 @@
 - 用户已确认 GitHub identity：`MyKr-YSteinsK/runproof`，`Public`。
 - Git Credential Manager 与 GitHub API 已验证账户 `MyKr-YSteinsK`；无需依赖 gh CLI。
 - Remote: `origin` → https://github.com/MyKr-YSteinsK/runproof.git；GitHub 已验证为 Public，默认分支 `main`。
-- Upstream: `main` → `origin/main`；RPF-04 delivery record commit `d03cb59` 与 RPF-05 focused commit `408506a` 均已普通 push，交付后 fetch 核验远端 HEAD、ahead/behind=`0/0` 与 worktree clean。
+- Upstream: `main` → `origin/main`；RPF-04 delivery record commit `d03cb59`、RPF-05 focused commit `408506a` 与 RPF-06 implementation commit `1ee20b5` 均已普通 push，RPF-06 delivery-state update 亦随后提交并 push；交付后 fetch 核验远端 HEAD、ahead/behind=`0/0` 与 worktree clean。
 - Delivery model: `push-only`；无部署触发。具体授权与执行规则见 AGENTS。
 
 ## Known limitations / risks
