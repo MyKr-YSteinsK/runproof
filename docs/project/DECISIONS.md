@@ -245,3 +245,37 @@ PostgreSQL candidate probe、第二个真实产品场景、跨租户/权限需�
 ### Supersedes
 
 - none
+
+## D-015｜确认 PostgreSQL canonical metadata 与 scoped service authentication candidate
+
+- Status: `Accepted`
+- Date: 2026-09-13
+### Decision
+RunProof v1 的 canonical metadata persistence 继续采用 PostgreSQL-compatible 方向；RPF-10 在真实 PostgreSQL 16.15 candidate 上确认 RPF-09 的 migration、canonical identity、immutable artifact ref、transaction rollback、idempotency/conflict、并发 race、restart 与最小 backup/restore 合同可行。Control Plane 的首个 service-to-service authentication boundary 使用仅由环境/临时运行配置提供的 Bearer credential，并至少分离 `metadata:read`、`evidence:write`、`decision:write` 与不受信 Agent 的观察身份；该决定不引入用户登录、OAuth/OIDC/SSO 或完整 RBAC。
+### Why
+真实 PostgreSQL 执行获得了 PostgreSQL-specific schema、约束、数据库重启、独立 restore database 与 storage failure 证据，避免把 H2 行为当成 PostgreSQL 事实。四类 principal 的实际 HTTP 负向测试证明未认证、无权限、invalid evidence 与 identity conflict 可以保持稳定区分，且 Agent/runtime 无法自授 `Release Decision` authority。
+### Consequences
+正式 Control Plane persistence 可以围绕 PostgreSQL migration、canonical summary、immutable artifact registry、authenticated synchronous HTTP/JSON ingest/read 与 append-only history 施工；数据库不可用返回 retriable platform error，identity/content 或 idempotency conflict 不盲重试，invalid evidence 不计为 Agent FAIL。Bearer secret 不进入 metadata、artifact、API response、audit identity 或普通日志。该 candidate 仍不证明 production HA、replication、性能、retention、backup policy 或 durable execution。
+### Reconsider when
+生产运维/HA、跨租户身份模型、完整 Approval/用户权限、第二个真实产品场景或 TU-004/TU-005 的 durable/job transport 证据改变当前边界时重新评估。
+
+### Supersedes
+
+- none（继承 D-008、D-013、D-014，不构成替代）
+
+## D-016｜Release Decision 采用受信任的外部 decision writer 登记边界
+
+- Status: `Accepted`
+- Date: 2026-09-13
+### Decision
+首个正式 Control Plane implementation 采用 Candidate B：当前 Python `quality.py` 或等价的受信任 deterministic quality component 生成已绑定 Evaluation/Comparison/Policy evidence 的 Decision manifest；独立 `decision:write` principal 仅负责向 Control Plane 登记、校验和保留 Release Decision history。普通 evidence-ingest principal、被测 Agent/runtime 与未来 CI principal 不得创建 canonical Release Decision；Approval authority 仍与 decision writer 分离，`ELIGIBLE` 不授予 deploy/release 权限。
+### Why
+该边界复用已验证的确定性 Quality Policy 逻辑，保持 D-013 的 decision-only 语义，并把 decision registration、evidence reference validation、idempotency/conflict 与 audit 集中在 Control Plane。Candidate A 的 Control Plane-owned evaluator 具有更强集中性，但会更早把 Python evaluator 迁移/耦合进 Java service；当前没有足够证据证明这项耦合值得扩大 Spike 范围。
+### Consequences
+后续实现需要单独保护和审计 `decision:write` credential，验证 Decision manifest 的 evidence refs、identity、policy/gate compatibility、immutable/superseding history，并为 CI 暴露只读结果与 evidence ingest contract；不得提供 release/deploy endpoint。若未来需要服务端执行 Quality Policy 或统一审批编排，再基于新证据复评 Candidate A。
+### Reconsider when
+需要服务端统一执行跨 Suite Policy、外部 decision writer 无法保持独立可信、Approval workflow 与 Control Plane 合并，或第二个真实产品场景证明当前 ownership 不足时重新评估。
+
+### Supersedes
+
+- none（继承 D-013、D-014，不构成替代）

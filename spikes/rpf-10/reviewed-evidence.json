@@ -1,0 +1,151 @@
+{
+  "schema_version": "rpf-10-reviewed-evidence-v1",
+  "review_status": "PASS",
+  "reviewed_at": "2026-09-13T11:56:00+08:00",
+  "evidence_scope": "Disposable PostgreSQL 16 candidate plus disposable Spring Boot service-to-service authentication candidate; no Provider, queue, durable worker, release or deploy action.",
+  "source_identity": {
+    "sha256": "4c97ff0bd88ca14e2a30646e03531b3509c52a5c9e8b7e05c85ad6dc34f8a02a",
+    "files": [
+      "spikes/rpf-10/control-plane/pom.xml",
+      "spikes/rpf-10/control-plane/src/main/resources/application.properties",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/ApiExceptionHandler.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/ApiModels.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/ArtifactRegistry.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/AuditService.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/AuthInterceptor.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/AuthService.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/CanonicalMetadataService.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/ControlPlaneApplication.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/ControlPlaneController.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/PersistenceSchema.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/Principal.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/ProbeExceptions.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/RequestIdentityFilter.java",
+      "spikes/rpf-10/control-plane/src/main/java/com/runproof/rpf10/WebConfig.java",
+      "spikes/rpf-10/probe.py"
+    ]
+  },
+  "execution": {
+    "os": "Windows 11 x64",
+    "docker_context": "desktop-linux",
+    "docker_server_version": "29.7.2",
+    "postgres_image": "postgres:16-alpine",
+    "postgres_image_id": "sha256:cf78e76683b9ca8c5733cbbdce6c9262b45b6767934dd0a95e671f9a0fc20685",
+    "postgresql_version": "16.15",
+    "jdbc_driver": "PostgreSQL JDBC Driver",
+    "jdbc_driver_version": "42.7.5",
+    "schema_version": "rpf-10-postgresql-metadata-schema-v1",
+    "persistence": "unique Docker named volume; container restart and independent pg_dump/pg_restore database proof",
+    "credential_source": "generated in probe process and supplied through container/service environment only"
+  },
+  "persistence_checks": {
+    "migration": {
+      "status": "PASS",
+      "clean_database": true,
+      "timestamptz_created_at": true,
+      "primary_key": "(entity_type, entity_id)",
+      "unique_idempotency_constraint": true
+    },
+    "insert_query": {
+      "status": "PASS",
+      "entities": ["RUN", "EVALUATION", "RELEASE_DECISION"],
+      "artifact_resolution": true,
+      "raw_artifact_in_metadata": false
+    },
+    "transaction_rollback": {
+      "status": "PASS",
+      "forced_write": "PROBE_TRANSACTION_ROLLED_BACK",
+      "post_rollback_lookup": "CANONICAL_METADATA_NOT_FOUND",
+      "retry_after_rollback": "INGESTED"
+    },
+    "idempotency": {
+      "same_identity_same_fingerprint": "200 IDEMPOTENT_REPLAY",
+      "same_identity_different_fingerprint": "409 IDENTITY_CONTENT_CONFLICT",
+      "same_idempotency_key_different_identity": "409 IDENTITY_CONTENT_CONFLICT"
+    },
+    "concurrent_race": {
+      "status": "PASS",
+      "http_statuses": [201, 409],
+      "canonical_rows_for_raced_identity": 1,
+      "conflict": "IDENTITY_CONTENT_CONFLICT"
+    },
+    "release_decision_history": {
+      "status": "PASS",
+      "append_only_records": 3,
+      "supersedes_reference_verified": true
+    },
+    "control_plane_restart": {
+      "status": "PASS",
+      "canonical_history_recovered": true,
+      "artifact_refs_recovered": true
+    },
+    "postgres_restart": {
+      "status": "PASS",
+      "database_unavailable": "503 PLATFORM_STORAGE_UNAVAILABLE retriable=true",
+      "reconnect_health": "200 READY",
+      "canonical_history_recovered": true
+    },
+    "backup_restore": {
+      "status": "PASS",
+      "format": "pg_dump custom",
+      "independent_database": true,
+      "canonical_rows": 6,
+      "release_decision_rows": 3,
+      "artifact_refs_resolved": 6
+    },
+    "schema_mismatch": {
+      "status": "STARTUP_BLOCKED",
+      "exit_code": 1
+    },
+    "invalid_evidence": {
+      "missing_artifact": "422 INVALID_EVIDENCE_ARTIFACT_MISSING",
+      "unknown_schema": "422 INVALID_EVIDENCE_UNKNOWN_SCHEMA",
+      "corrupt_artifact": "422 INVALID_EVIDENCE_ARTIFACT_HASH_MISMATCH",
+      "agent_fail_attribution": false
+    }
+  },
+  "authorization_checks": {
+    "mechanism": "SERVICE_BEARER_ENV",
+    "principals": {
+      "read-service": ["metadata:read"],
+      "evidence-ingest-service": ["evidence:write"],
+      "decision-writer-service": ["decision:write", "metadata:read"],
+      "agent-runtime": ["agent:observe"]
+    },
+    "unauthenticated": "401 AUTHENTICATION_REQUIRED",
+    "invalid_credential": "401 AUTHENTICATION_REQUIRED",
+    "read_principal_ingest": "403 AUTHORIZATION_FORBIDDEN",
+    "evidence_principal_decision_write": "403 AUTHORIZATION_FORBIDDEN",
+    "agent_like_principal_decision_write": "403 AUTHORIZATION_FORBIDDEN",
+    "decision_principal_identity_mismatch": "422 INVALID_EVIDENCE_ARTIFACT_IDENTITY",
+    "invalid_manifest": "400 UNKNOWN_MANIFEST_SCHEMA",
+    "agent_has_release_decision_authority": false,
+    "ci_has_release_or_deploy_authority": false
+  },
+  "boundary": {
+    "transport": "SYNCHRONOUS_HTTP_JSON",
+    "job_transport_resolved": false,
+    "queue_or_broker": false,
+    "approval_authority_implemented": false,
+    "release_or_deploy_authorized": false,
+    "ci_integration": "FUTURE_CONTRACT_ONLY"
+  },
+  "release_decision_ownership": {
+    "candidate_a_control_plane_owned": "strongest central authority boundary, but couples the service to the Python quality evaluator earlier",
+    "candidate_b_trusted_external_writer": "reuses deterministic Python quality evaluation and keeps registration auditable/idempotent, with a separately trusted decision:write credential",
+    "recommendation": "Candidate B; Control Plane validates evidence refs and immutable history, while approval authority remains separate."
+  },
+  "future_ci_contract": {
+    "can_submit": "completed Run/Evaluation evidence through evidence:write after artifact validation",
+    "can_read": "metadata, verified artifact resolution, Gate and Release Decision results through metadata:read",
+    "cannot": ["direct DB writes", "forge ELIGIBLE", "write Release Decision", "approve deployment", "deploy or release"],
+    "machine_result": "HTTP status/error/retriable plus stable entity references"
+  },
+  "redaction": {
+    "status": "PASS",
+    "authorization_header_in_result": false,
+    "bearer_token_in_audit_or_logs": false,
+    "database_password_in_result_or_logs": false,
+    "raw_artifact_in_canonical_metadata": false
+  }
+}

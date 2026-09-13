@@ -138,19 +138,19 @@ public class ControlPlaneController {
     @GetMapping("/probe/boundary")
     public Map<String, Object> boundary(HttpServletRequest request) {
         authService.require(request, "metadata:read");
-        return Map.of(
-                "authentication", "SERVICE_BEARER_ENV",
-                "runtime_evidence_scope", "evidence:write",
-                "decision_authority_scope", "decision:write",
-                "read_scope", "metadata:read",
-                "agent_has_release_decision_authority", false,
-                "approval_authority_implemented", false,
-                "release_or_deploy_authorized", false,
-                "transport", "SYNCHRONOUS_HTTP_JSON",
-                "job_transport_resolved", false,
-                "queue_or_broker", false,
-                "ci_integration", "FUTURE_CONTRACT_ONLY",
-                "active_scopes", List.of("metadata:read", "evidence:write", "decision:write", "agent:observe")
+        return Map.ofEntries(
+                Map.entry("authentication", "SERVICE_BEARER_ENV"),
+                Map.entry("runtime_evidence_scope", "evidence:write"),
+                Map.entry("decision_authority_scope", "decision:write"),
+                Map.entry("read_scope", "metadata:read"),
+                Map.entry("agent_has_release_decision_authority", false),
+                Map.entry("approval_authority_implemented", false),
+                Map.entry("release_or_deploy_authorized", false),
+                Map.entry("transport", "SYNCHRONOUS_HTTP_JSON"),
+                Map.entry("job_transport_resolved", false),
+                Map.entry("queue_or_broker", false),
+                Map.entry("ci_integration", "FUTURE_CONTRACT_ONLY"),
+                Map.entry("active_scopes", List.of("metadata:read", "evidence:write", "decision:write", "agent:observe"))
         );
     }
 
