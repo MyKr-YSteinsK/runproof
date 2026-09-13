@@ -1,0 +1,90 @@
+name: RPF-12 Canonical Release Gate
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release-gate.yml"
+      - "ci/**"
+      - "control-plane/**"
+      - "runtime/**"
+      - "web/**"
+      - "package.json"
+      - "package-lock.json"
+      - "AGENTS.md"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release-gate.yml"
+      - "ci/**"
+      - "control-plane/**"
+      - "runtime/**"
+      - "web/**"
+      - "package.json"
+      - "package-lock.json"
+      - "AGENTS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: rpf12-release-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  canonical-release-gate:
+    name: Fresh canonical Release Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install Web dependencies
+        run: npm ci
+
+      - name: Run repository contract checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s runtime/tests -p 'test_*.py' -v
+          python runtime/verify-reviewed-artifacts.py
+          mvn -q test package -f control-plane/pom.xml
+          npm test
+          npm run typecheck
+          npm run build
+
+      - name: Run fresh canonical Release Gate
+        run: python ci/run_release_gate.py --repo-root "$GITHUB_WORKSPACE" --output-dir ci-results
+
+      - name: Upload machine-readable Gate result
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-12-release-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf12-release-gate-result.json
+          if-no-files-found: error
+          retention-days: 14

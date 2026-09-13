@@ -11,6 +11,7 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 - [AGENTS](AGENTS.md)：仓库执行、安全和 Git/delivery 规则。
 - RPF-02 已取得 Docker provider 的 Prototype-level minimum Environment 证据；RPF-03 已建立首个单 Run reliability vertical slice；RPF-04 收敛了 Run Evidence 合同；RPF-05 已建立真实 Agent FAIL、Platform/Environment ERROR 与 Failure Case 复现闭环；RPF-06 已将该 Failure Case 经 promotion gate 晋升为首条 Historical Regression，并完成 known-bad/fixed Candidate focused rerun；RPF-07 建立了三成员 Evaluation Suite、Baseline/Candidate 聚合比较与只读 Evaluation/Comparison 控制面；RPF-08 建立了 Quality Policy、Release Gate、Baseline/Candidate Release Decision；RPF-09 以 disposable Spring Boot/H2 candidate 验证了 Stabilization 的 metadata/artifact/API 最小边界。不代表 production-grade isolation/HA/DB/API/Job Transport，也不把 Docker、H2 或本地 artifact store 固化为永久产品身份。
 - RPF-11 已将 RPF-10 证实的边界收敛为正式 Java/Spring + PostgreSQL canonical metadata 模块、immutable artifact store、受限 service auth、Python HTTP client 与默认 API-backed Web datasource；不引入 Queue、scheduler、durable worker、Approval 或 release/deploy endpoint。
+- RPF-12 已接入真实 GitHub Actions Canonical Release Gate：每次 main 代码变更在 hosted runner 上 fresh 执行 Baseline/Candidate Evaluation，并以 Control Plane canonical Release Decision read-back 作为 CI 结论；只上传脱敏 JSON/Job Summary，不执行 release/deploy。
 
 ## 核心方向
 

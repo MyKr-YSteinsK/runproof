@@ -27,3 +27,4 @@ node_modules/
 
 # Formal RPF-11 Java/Spring product build output
 /control-plane/target/
+/ci-results/
