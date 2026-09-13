@@ -228,3 +228,20 @@ Quality Policy、Gate Evaluation 和 Release Decision 独立于 Suite/Evaluation
 ### Supersedes
 
 - none
+
+## D-014｜Stabilization 的 metadata / artifact / API 最小边界
+
+- Status: `Accepted`
+- Date: 2026-09-13
+### Decision
+进入 Stabilization 后，Run、Evaluation、Regression、Quality Gate 与 Release Decision 的 canonical metadata 与大型/不可变 artifact 逻辑分层：metadata 只保存可查询 identity、outcome/summary、source/schema/version、stable artifact ref/hash 与必要历史关系；artifact 由独立 registry/store 保存并在 ingest/query 时验证 identity、content hash、schema 与 source identity。completed-result 首个同步边界采用受约束 HTTP/JSON manifest；同一 `(entity_type, entity_id)` 与相同 immutable fingerprint 的重复 ingest 幂等成功，不同 fingerprint 冲突并禁止覆盖；后续解释通过新 version 或 superseding reference，不能 update-in-place 改写历史。该决定不解决 TU-005 Job Transport，也不增加 release/deploy authorization。
+### Why
+RPF-09 的真实 Spring Boot 3.4.5 + H2 2.3.232 跨进程 probe 已验证 migration、canonical summary insert/query、artifact stable ref、事务回滚、duplicate/conflict、服务重启恢复及 missing/corrupt/unknown schema 的 fail-closed 语义；Python Runtime 可通过同步 HTTP/JSON 送入 Run、Evaluation 与 Release Decision manifest。证据支持最小逻辑边界，但尚未验证 PostgreSQL 运行/运维属性。
+### Consequences
+PostgreSQL 仍是正式 v1 canonical metadata 的推荐 candidate，必须由后续专门兼容性/运维 probe 验证；正式 Control Plane 可先实现 authenticated idempotent ingest、summary read model 与 append-only decision history。Web 可以从 static corpus adapter 迁移到 API DTO adapter，不应直接依赖数据库字段或把 raw artifact blob 复制进 canonical metadata。Approval authority、Policy registry、CI integration、Queue/durable execution 与 production release architecture 仍是后续边界。
+### Reconsider when
+PostgreSQL candidate probe、第二个真实产品场景、跨租户/权限需求或 TU-004/TU-005 的 durable/job transport 设计提供了足够新证据。
+
+### Supersedes
+
+- none
