@@ -279,3 +279,37 @@ RunProof v1 的 canonical metadata persistence 继续采用 PostgreSQL-compatibl
 ### Supersedes
 
 - none（继承 D-013、D-014，不构成替代）
+
+## D-017｜Durable execution 使用 fenced PostgreSQL job state 与 reconcile-before-retry
+
+- Status: `Accepted`
+- Date: 2026-09-13
+### Decision
+下一正式 durable execution implementation 采用 PostgreSQL-backed mutable execution state、worker poll/claim/lease/heartbeat、append-only attempt/event history，以及与 execution 分层的 immutable Run/Evaluation evidence。delivery 按 at-least-once 处理；每次 re-claim 创建新 `attempt_id`，owner mutation 必须通过 `job_id`、`attempt_id`、`worker_id`、lease token/version fencing。所有 state-changing operation 保持稳定 `operation_id`；`UNKNOWN_OUTCOME`、`IN_FLIGHT` 或无法证明未发送的 operation 必须先按 environment/receipt reconcile，再决定 retry。该决定是下一正式实现方向，不宣称 production HA、exactly-once、scheduler 或 broker 已实现。
+### Why
+RPF-13 在真实 PostgreSQL 16.15 candidate 上验证了 durable submit/replay、并发 claim 单 owner、heartbeat/version fencing、lease expiry safe reclaim、stale finalize rejection、跨 worker process 的 response-lost → `UNKNOWN_OUTCOME` → receipt reconcile、effect count 保持 1、immutable evidence replay、数据库/服务重启读回与 platform failure 分界。证据也证明 lease expiry 不是 side effect 未发生的证明。
+### Consequences
+正式 Control Plane 需要将 job/attempt/operation/evidence 分表或分域，保持 D-009 的 Agent FAIL 与 Platform ERROR/INCONCLUSIVE 分离；worker 只拥有执行/报告权限，不拥有 Release Decision、Approval 或 deploy/release authority。无法证明安全恢复的 execution 必须停在 `RECONCILE_REQUIRED` 或 `INCONCLUSIVE`，不能静默 whole-run retry。
+### Reconsider when
+真实吞吐/延迟、延迟投递、fan-out、跨服务背压、multi-region 或 broker-specific operational evidence 表明 PostgreSQL poll/claim 不再满足需要，或第二个真实产品场景改变 execution identity/retention 边界。
+
+### Supersedes
+
+- none（细化 D-008、D-014、D-015 的后续 durable execution 边界，不修改其既有语义）
+
+## D-018｜Evaluation Job Transport 首选 PostgreSQL poll/claim，broker 延后
+
+- Status: `Accepted`
+- Date: 2026-09-13
+### Decision
+在当前 v1 scale 与已验证 failure semantics 下，下一份正式 Plan 首先实现 `POSTGRESQL_POLL_CLAIM_LEASE`：PostgreSQL 承担 canonical execution coordination，worker 通过 poll/claim/lease 获取工作。独立 broker/queue 作为 Candidate B 保留，不因 at-least-once delivery 或组件推荐而预先引入；broker 不提供 side-effect exactly-once 的替代证明。
+### Why
+RPF-13 的 Candidate A 是可重复的真实 PostgreSQL candidate，已覆盖 duplicate delivery、claim race、lease/retry、crash recovery、`UNKNOWN_OUTCOME` reconcile、CI/local reproducibility 与 operator read model；Candidate B 未被当前证据证明为必要，增加 broker 会扩大运维和故障边界而不自动解决 operation identity。
+### Consequences
+后续正式实现必须保留明确的 worker/CI submit-poll/read API、capacity/observability measurement、safe retry/reconcile 与 retention 设计，并以 measured trigger 决定是否开展 broker migration。该决定不引入 scheduler、autoscaling、multi-region、production HA 或 deploy/release endpoint。
+### Reconsider when
+出现经测量的吞吐/延迟瓶颈、需要独立 backpressure/fan-out/delayed delivery、跨进程 transport 的运维需求，或 Postgres candidate 在真实工作负载下无法满足 durable execution contract。
+
+### Supersedes
+
+- none（承接 D-014、D-015；不替代 D-016 的 decision-writer authority）

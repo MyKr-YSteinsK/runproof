@@ -1,0 +1,162 @@
+{
+  "schema_version": "rpf-13-durable-execution-evidence-v1",
+  "artifact_kind": "Durable Execution Investigation Evidence",
+  "status": "PASS",
+  "source_identity": {
+    "sha256": "5a54a606b7611f0a1a3ced06fa5abe52f7b29b0b7c9ae7acb202aeaea474aed9",
+    "files": [
+      "spikes/rpf-13/control-plane/pom.xml",
+      "spikes/rpf-13/control-plane/src/main/resources/application.properties",
+      "spikes/rpf-13/control-plane/src/main/java/com/runproof/rpf13/ApiExceptionHandler.java",
+      "spikes/rpf-13/control-plane/src/main/java/com/runproof/rpf13/ControlPlaneApplication.java",
+      "spikes/rpf-13/control-plane/src/main/java/com/runproof/rpf13/DurableExecutionController.java",
+      "spikes/rpf-13/control-plane/src/main/java/com/runproof/rpf13/PersistenceSchema.java",
+      "spikes/rpf-13/control-plane/src/main/java/com/runproof/rpf13/ProbeExceptions.java",
+      "spikes/rpf-13/probe.py"
+    ]
+  },
+  "provider": {
+    "type": "REAL_DOCKER_POSTGRESQL",
+    "image": "postgres:16-alpine",
+    "database_product": "PostgreSQL",
+    "database_version": "16.15",
+    "service_runtime": "Spring Boot 3.4.5 / Java 17"
+  },
+  "candidate": {
+    "module": "spikes/rpf-13/control-plane/",
+    "schema_version": "rpf-13-durable-execution-schema-v1",
+    "database_image": "postgres:16-alpine",
+    "transport": "POSTGRESQL_POLL_CLAIM_LEASE",
+    "delivery_semantics": "AT_LEAST_ONCE",
+    "broker": false,
+    "scheduler": false,
+    "release_authority": false,
+    "approval_authority": false
+  },
+  "observations": {
+    "health_and_boundary": {
+      "status": "PASS",
+      "database": "REACHABLE",
+      "broker": false,
+      "scheduler": false,
+      "release_authority": false
+    },
+    "durable_submit_and_idempotency": {
+      "status": "PASS",
+      "initial": "SUBMITTED",
+      "replay": "IDEMPOTENT_REPLAY",
+      "conflict": "IDEMPOTENCY_CONFLICT",
+      "execution_evidence_separate": true
+    },
+    "claim_concurrency_heartbeat_terminal": {
+      "status": "PASS",
+      "concurrent_http_statuses": [200, 409],
+      "single_owner": true,
+      "heartbeat": "LEASE_EXTENDED_AND_VERSION_FENCED",
+      "terminal_claim": "TERMINAL"
+    },
+    "crash_matrix_A_and_stale_fencing": {
+      "status": "PASS",
+      "lease_expiry": "SAFE_RECLAIM",
+      "stale_finalize": "STALE_ATTEMPT",
+      "agent_fail_created": false,
+      "evidence_replayed_not_overwritten": true
+    },
+    "crash_matrix_B_C_and_operation_identity": {
+      "status": "PASS",
+      "agent_started_before_action_reclaim": true,
+      "explicit_not_submitted": "NOT_SUBMITTED",
+      "prepare_replay": "IDEMPOTENT_REPLAY",
+      "apply": "SENT",
+      "confirm": "CONFIRMED",
+      "effect_count": 1,
+      "agent_fail_created": false,
+      "evidence_count": 1
+    },
+    "crash_matrix_D_unknown_outcome_cross_process": {
+      "status": "PASS",
+      "worker_process_exit_code": 17,
+      "expiry_result": "RECONCILE_REQUIRED",
+      "unknown": "UNKNOWN_OUTCOME",
+      "reconcile": "CONFIRMED",
+      "safe_to_retry_after_reconcile": false,
+      "post_reconcile_apply": "IDEMPOTENT_REPLAY",
+      "effect_count": 1,
+      "agent_fail_created": false
+    },
+    "crash_matrix_E_artifact_before_ingest": {
+      "status": "PASS",
+      "artifact_generated": true,
+      "worker_process_exit_code": 23,
+      "first_ingest": "EVIDENCE_STORED",
+      "replay": "IDEMPOTENT_REPLAY",
+      "attempt_number": 1,
+      "evidence_count": 1,
+      "raw_artifact_in_execution_row": false
+    },
+    "cancellation_semantics": {
+      "status": "PASS",
+      "queued": "CANCELLED",
+      "running_request": "CANCEL_REQUESTED",
+      "running_ack": "CANCELLED",
+      "terminal_outcome": "CANCELLED",
+      "agent_fail_created": false
+    },
+    "cancellation_timeout_semantics": {
+      "status": "PASS",
+      "unknown_side_effect_timeout": "RECONCILE_REQUIRED",
+      "reconcile": "CONFIRMED",
+      "post_reconcile_platform_state": "FAILED_PLATFORM",
+      "post_reconcile_outcome": "INCONCLUSIVE",
+      "queued_timeout_state": "FAILED_PLATFORM",
+      "queued_timeout_outcome": "INCONCLUSIVE",
+      "agent_fail_created": false
+    },
+    "crash_matrix_F_database_unavailable_restart": {
+      "status": "PASS",
+      "unavailable_http_status": 503,
+      "recovered_readback": "COMPLETED",
+      "recovered_health": "READY",
+      "agent_fail_created": false,
+      "database_restart": true,
+      "control_plane_restart": true
+    },
+    "future_ci_submit_poll_terminal_read": {
+      "status": "PASS",
+      "submit": "SUBMITTED",
+      "initial_poll": "QUEUED",
+      "terminal": "COMPLETED",
+      "target_type": "EVALUATION",
+      "canonical_decision_read": "RPF-12_CONTROL_PLANE_READ_ONLY_FOLLOW_UP",
+      "timeout_rule": "FAIL_CLOSED_PLATFORM_OR_RECONCILE",
+      "release_authority": false
+    },
+    "operator_read_model": {
+      "status": "PASS",
+      "fields": ["active_attempt_id", "attempts", "events", "evidence", "operations", "outcome_status", "platform_reason", "state"],
+      "worker_attempt_lease": true,
+      "reconcile_required": true,
+      "terminal_outcome": true,
+      "platform_failure": true
+    },
+    "transport_candidate_comparison": {
+      "status": "PASS",
+      "candidate_a": {"name": "PostgreSQL durable job state + worker poll/claim", "proven": true},
+      "candidate_b": {"name": "Independent broker plus PostgreSQL canonical execution state", "implemented": false},
+      "conclusion": "CANDIDATE_A_SUFFICIENT_FOR_NEXT_FORMAL_SPIKE_BOUNDARY_NOT_PRODUCTION_HA"
+    },
+    "secret_private_protocol_boundary": {
+      "status": "PASS",
+      "credentials_in_result": false,
+      "credentials_in_logs": false,
+      "forbidden_payload_rejected": true,
+      "job_payload_only_refs": true,
+      "private_reasoning_persisted": false,
+      "release_deploy_authority": false
+    }
+  },
+  "cleanup": {
+    "container_removed": true,
+    "volume_removed": true
+  }
+}
