@@ -83,6 +83,19 @@ jobs:
       - name: Run fresh canonical Release Gate
         run: python ci/run_release_gate.py --repo-root "$GITHUB_WORKSPACE" --output-dir ci-results
 
+      - name: Verify Job Summary contract
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s "$GITHUB_STEP_SUMMARY"
+          grep -Fq "RPF-12 Canonical Release Gate" "$GITHUB_STEP_SUMMARY"
+          grep -Fq "Baseline control" "$GITHUB_STEP_SUMMARY"
+          grep -Fq "Candidate Gate" "$GITHUB_STEP_SUMMARY"
+          grep -Fq "Final Decision" "$GITHUB_STEP_SUMMARY"
+          grep -Fq "No release executed; no deployment authorization." "$GITHUB_STEP_SUMMARY"
+          echo "Job Summary contract verified without emitting its contents."
+
       - name: Upload machine-readable Gate result
         if: ${{ always() }}
         uses: actions/upload-artifact@v4
