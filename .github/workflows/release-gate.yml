@@ -66,6 +66,9 @@ jobs:
       - name: Install Web dependencies
         run: npm ci
 
+      - name: Prepare fixed Docker runtime image
+        run: docker pull alpine:3.22
+
       - name: Run repository contract checks
         shell: bash
         run: |
