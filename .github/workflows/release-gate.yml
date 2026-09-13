@@ -88,12 +88,13 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test -s "$GITHUB_STEP_SUMMARY"
-          grep -Fq "RPF-12 Canonical Release Gate" "$GITHUB_STEP_SUMMARY"
-          grep -Fq "Baseline control" "$GITHUB_STEP_SUMMARY"
-          grep -Fq "Candidate Gate" "$GITHUB_STEP_SUMMARY"
-          grep -Fq "Final Decision" "$GITHUB_STEP_SUMMARY"
-          grep -Fq "No release executed; no deployment authorization." "$GITHUB_STEP_SUMMARY"
+          summary_file="ci-results/rpf12-release-gate-summary.md"
+          test -s "$summary_file"
+          grep -Fq "RPF-12 Canonical Release Gate" "$summary_file"
+          grep -Fq "Baseline control" "$summary_file"
+          grep -Fq "Candidate Gate" "$summary_file"
+          grep -Fq "Final Decision" "$summary_file"
+          grep -Fq "No release executed; no deployment authorization." "$summary_file"
           echo "Job Summary contract verified without emitting its contents."
 
       - name: Upload machine-readable Gate result
@@ -101,6 +102,8 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: rpf-12-release-gate-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ci-results/rpf12-release-gate-result.json
+          path: |
+            ci-results/rpf12-release-gate-result.json
+            ci-results/rpf12-release-gate-summary.md
           if-no-files-found: error
           retention-days: 14

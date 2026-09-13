@@ -650,9 +650,7 @@ def _write_result(path: Path, result: dict[str, Any]) -> None:
     path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
-def _write_summary(path: str | None, result: dict[str, Any]) -> None:
-    if not path:
-        return
+def _write_summary(path: str | None, result: dict[str, Any], mirror_path: Path | None = None) -> None:
     workflow = result.get("workflow", {})
     gate = result.get("gate", {})
     baseline = result.get("baseline", {})
@@ -684,7 +682,12 @@ def _write_summary(path: str | None, result: dict[str, Any]) -> None:
     ]
     if failure:
         lines.extend([f"- Failure phase/code: `{failure.get('phase', 'unknown')}` / `{failure.get('code', 'unknown')}`", ""])
-    Path(path).write_text("\n".join(lines), encoding="utf-8")
+    summary = "\n".join(lines)
+    if path:
+        Path(path).write_text(summary, encoding="utf-8")
+    if mirror_path:
+        mirror_path.parent.mkdir(parents=True, exist_ok=True)
+        mirror_path.write_text(summary, encoding="utf-8")
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -718,7 +721,11 @@ def main(argv: list[str] | None = None) -> int:
             infrastructure.stop()
         shutil.rmtree(temporary, ignore_errors=True)
     _write_result(result_path, result)
-    _write_summary(os.environ.get("GITHUB_STEP_SUMMARY"), result)
+    _write_summary(
+        os.environ.get("GITHUB_STEP_SUMMARY"),
+        result,
+        output_dir / "rpf12-release-gate-summary.md",
+    )
     print(json.dumps({"status": result["status"], "result": str(result_path)}, ensure_ascii=False))
     return 0 if result["status"] == "PASS" else 1
 
