@@ -509,6 +509,10 @@ def _run_fresh_gate(
     _require(_status(candidate_read_meta, "outcome") == "ELIGIBLE", "canonical_readback", "CANONICAL_CANDIDATE_NOT_ELIGIBLE")
     _require(candidate_artifact_meta["authorization_boundary"]["release_executed"] is False, "canonical_readback", "RELEASE_EXECUTED_BOUNDARY_DRIFT")
     _require(candidate_artifact_meta["authorization_boundary"]["deployment_authorized"] is False, "canonical_readback", "DEPLOYMENT_AUTHORITY_BOUNDARY_DRIFT")
+    baseline_history = baseline_artifact_meta.get("history") if isinstance(baseline_artifact_meta.get("history"), dict) else {}
+    candidate_history = candidate_artifact_meta.get("history") if isinstance(candidate_artifact_meta.get("history"), dict) else {}
+    _require(baseline_history.get("immutable") is True, "canonical_readback", "BASELINE_HISTORY_NOT_IMMUTABLE")
+    _require(candidate_history.get("immutable") is True, "canonical_readback", "CANDIDATE_HISTORY_NOT_IMMUTABLE")
     _require(candidate_replay.get("status") == "IDEMPOTENT_REPLAY", "identity", "CANDIDATE_REPLAY_NOT_IDEMPOTENT")
     _require(candidate_replay.get("already_exists") is True, "identity", "CANDIDATE_REPLAY_NOT_MARKED")
     _require(candidate_identity["entity_id"] == candidate_decision_id, "identity", "CANDIDATE_IDENTITY_DRIFT")
@@ -536,6 +540,15 @@ def _run_fresh_gate(
             "checkout_commit_sha": context["checkout_commit_sha"],
         },
         "correlation": correlation,
+        "fresh_infrastructure": {
+            "postgres": {"image": "postgres:16-alpine", "readiness": "PASS"},
+            "formal_control_plane": {
+                "module": "control-plane/",
+                "readiness": "PASS",
+                "health_ready": infrastructure.health.get("ready") is True,
+            },
+            "formal_runtime": {"module": "runtime/", "execution": "FRESH_PER_MEMBER"},
+        },
         "suite": {"id": EVALUATION_SUITE_ID, "version": EVALUATION_SUITE_VERSION},
         "policy": {"id": QUALITY_POLICY_ID, "version": QUALITY_POLICY_VERSION},
         "baseline": {
@@ -595,6 +608,10 @@ def _run_fresh_gate(
             "candidate_replay_already_exists": candidate_replay.get("already_exists") is True,
             "new_identity_per_run": True,
             "correlation_includes_run_attempt": True,
+            "immutable_decision_history": {
+                "baseline": baseline_history.get("immutable") is True,
+                "candidate": candidate_history.get("immutable") is True,
+            },
         },
         "decision_writer": {
             "principal": "decision-writer-service",
