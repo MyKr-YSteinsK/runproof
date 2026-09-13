@@ -12,11 +12,15 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class PersistenceSchema {
 
-    public static final String SCHEMA_VERSION = "rpf-11-postgresql-canonical-schema-v1";
+    public static final String CANONICAL_SCHEMA_VERSION = "rpf-11-postgresql-canonical-schema-v1";
+    public static final String SCHEMA_VERSION = "rpf-14-durable-execution-schema-v1";
+    public static final String EXECUTION_SCHEMA_VERSION = SCHEMA_VERSION;
+    private static final Set<String> SUPPORTED_HISTORY = Set.of(CANONICAL_SCHEMA_VERSION, EXECUTION_SCHEMA_VERSION);
 
     private final JdbcTemplate jdbcTemplate;
     private final DataSource dataSource;
@@ -37,7 +41,7 @@ public class PersistenceSchema {
     @PostConstruct
     public void migrate() {
         if (!SCHEMA_VERSION.equals(configuredSchemaVersion)) {
-            throw new IllegalStateException("Unsupported configured RPF schema version; startup is blocked.");
+            throw new IllegalStateException("Unsupported configured RPF-14 schema version; startup is blocked.");
         }
         jdbcTemplate.execute("""
                 CREATE TABLE IF NOT EXISTS rpf_schema_history (
@@ -50,7 +54,7 @@ public class PersistenceSchema {
                 "SELECT version FROM rpf_schema_history ORDER BY applied_at, version",
                 (rs, rowNum) -> rs.getString("version")
         );
-        if (versions.stream().anyMatch(version -> !SCHEMA_VERSION.equals(version))) {
+        if (versions.stream().anyMatch(version -> !SUPPORTED_HISTORY.contains(version))) {
             throw new IllegalStateException("Unsupported RPF schema history; startup is blocked.");
         }
 
@@ -95,15 +99,130 @@ public class PersistenceSchema {
                 )
                 """);
 
-        if (versions.isEmpty()) {
+        if (versions.stream().noneMatch(CANONICAL_SCHEMA_VERSION::equals)) {
             jdbcTemplate.update(
                     "INSERT INTO rpf_schema_history(version, applied_at) VALUES (?, ?)",
-                    SCHEMA_VERSION,
+                    CANONICAL_SCHEMA_VERSION,
                     Timestamp.from(Instant.now())
             );
         }
+
+        migrateExecutionTables(versions);
         databaseIdentity = readDatabaseIdentity();
         migrationValid = true;
+    }
+
+    private void migrateExecutionTables(List<String> versions) {
+        jdbcTemplate.execute("""
+                CREATE TABLE IF NOT EXISTS rpf_execution_job (
+                    job_id VARCHAR(256) PRIMARY KEY,
+                    idempotency_key VARCHAR(512) NOT NULL UNIQUE,
+                    request_fingerprint VARCHAR(128) NOT NULL,
+                    job_type VARCHAR(64) NOT NULL,
+                    target_type VARCHAR(64) NOT NULL,
+                    target_id VARCHAR(256) NOT NULL,
+                    payload_ref_json TEXT NOT NULL,
+                    correlation_id VARCHAR(256) NOT NULL,
+                    state VARCHAR(64) NOT NULL,
+                    version BIGINT NOT NULL,
+                    attempt_number INTEGER NOT NULL,
+                    active_attempt_id VARCHAR(256),
+                    active_worker_id VARCHAR(256),
+                    active_lease_token_hash VARCHAR(128),
+                    lease_expires_at TIMESTAMPTZ,
+                    heartbeat_at TIMESTAMPTZ,
+                    cancel_requested BOOLEAN NOT NULL,
+                    timeout_requested BOOLEAN NOT NULL,
+                    outcome_status VARCHAR(64),
+                    platform_reason VARCHAR(256),
+                    terminal_evidence_id VARCHAR(256),
+                    last_operation_id VARCHAR(256),
+                    created_at TIMESTAMPTZ NOT NULL,
+                    updated_at TIMESTAMPTZ NOT NULL,
+                    CONSTRAINT rpf_execution_job_state_ck CHECK (
+                        state IN ('QUEUED', 'CLAIMED', 'RUNNING', 'CANCEL_REQUESTED', 'RECONCILE_REQUIRED', 'COMPLETED', 'FAILED_PLATFORM', 'CANCELLED')
+                    )
+                )
+                """);
+        jdbcTemplate.execute("""
+                CREATE TABLE IF NOT EXISTS rpf_execution_attempt (
+                    attempt_id VARCHAR(256) PRIMARY KEY,
+                    job_id VARCHAR(256) NOT NULL REFERENCES rpf_execution_job(job_id),
+                    attempt_number INTEGER NOT NULL,
+                    worker_id VARCHAR(256) NOT NULL,
+                    lease_token_hash VARCHAR(128) NOT NULL,
+                    lease_version BIGINT NOT NULL,
+                    status VARCHAR(64) NOT NULL,
+                    lease_expires_at TIMESTAMPTZ NOT NULL,
+                    heartbeat_at TIMESTAMPTZ,
+                    started_at TIMESTAMPTZ,
+                    ended_at TIMESTAMPTZ,
+                    reason VARCHAR(256),
+                    created_at TIMESTAMPTZ NOT NULL,
+                    UNIQUE (job_id, attempt_number)
+                )
+                """);
+        jdbcTemplate.execute("""
+                CREATE TABLE IF NOT EXISTS rpf_execution_operation (
+                    operation_id VARCHAR(256) PRIMARY KEY,
+                    job_id VARCHAR(256) NOT NULL REFERENCES rpf_execution_job(job_id),
+                    attempt_id VARCHAR(256) NOT NULL REFERENCES rpf_execution_attempt(attempt_id),
+                    environment_id VARCHAR(256) NOT NULL,
+                    operation_fingerprint VARCHAR(128) NOT NULL,
+                    status VARCHAR(64) NOT NULL,
+                    effect_count INTEGER NOT NULL,
+                    receipt_ref VARCHAR(256),
+                    created_at TIMESTAMPTZ NOT NULL,
+                    updated_at TIMESTAMPTZ NOT NULL,
+                    UNIQUE (job_id, operation_id)
+                )
+                """);
+        jdbcTemplate.execute("""
+                CREATE TABLE IF NOT EXISTS rpf_simulated_effect (
+                    operation_id VARCHAR(256) PRIMARY KEY REFERENCES rpf_execution_operation(operation_id),
+                    job_id VARCHAR(256) NOT NULL REFERENCES rpf_execution_job(job_id),
+                    environment_id VARCHAR(256) NOT NULL,
+                    receipt_ref VARCHAR(256) NOT NULL,
+                    applied_at TIMESTAMPTZ NOT NULL
+                )
+                """);
+        jdbcTemplate.execute("""
+                CREATE TABLE IF NOT EXISTS rpf_execution_evidence (
+                    evidence_id VARCHAR(256) PRIMARY KEY,
+                    job_id VARCHAR(256) NOT NULL REFERENCES rpf_execution_job(job_id),
+                    entity_type VARCHAR(64) NOT NULL,
+                    entity_id VARCHAR(256) NOT NULL,
+                    outcome VARCHAR(64) NOT NULL,
+                    content_sha256 VARCHAR(128) NOT NULL,
+                    artifact_ref_json TEXT NOT NULL,
+                    created_at TIMESTAMPTZ NOT NULL,
+                    UNIQUE (job_id, entity_type, entity_id)
+                )
+                """);
+        jdbcTemplate.execute("""
+                CREATE TABLE IF NOT EXISTS rpf_execution_event (
+                    event_id BIGINT GENERATED BY DEFAULT AS IDENTITY PRIMARY KEY,
+                    job_id VARCHAR(256) NOT NULL REFERENCES rpf_execution_job(job_id),
+                    from_state VARCHAR(64),
+                    to_state VARCHAR(64) NOT NULL,
+                    event_type VARCHAR(128) NOT NULL,
+                    attempt_id VARCHAR(256),
+                    operation_id VARCHAR(256),
+                    reason VARCHAR(256),
+                    version BIGINT NOT NULL,
+                    occurred_at TIMESTAMPTZ NOT NULL
+                )
+                """);
+        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS rpf_execution_job_state_idx ON rpf_execution_job(state, lease_expires_at, created_at)");
+        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS rpf_execution_event_job_idx ON rpf_execution_event(job_id, event_id)");
+
+        if (versions.stream().noneMatch(EXECUTION_SCHEMA_VERSION::equals)) {
+            jdbcTemplate.update(
+                    "INSERT INTO rpf_schema_history(version, applied_at) VALUES (?, ?)",
+                    EXECUTION_SCHEMA_VERSION,
+                    Timestamp.from(Instant.now())
+            );
+        }
     }
 
     public boolean isMigrationValid() {

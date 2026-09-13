@@ -1,6 +1,6 @@
 # RPF-08 Product Runtime
 
-这是 RunProof 的第一份正式产品形态 runtime，不是对 `spikes/` 的重命名。当前 vertical slice 覆盖 Production Change Agent、DeepSeek non-thinking、Docker Fresh-per-run Environment、版本化 Stateful Scenario、structured Trajectory、deterministic Verifier、Run Evidence、真实 FAIL/ERROR、Failure Case 复现、Historical Regression promotion/focused rerun、最小三成员 Evaluation Suite 的 Baseline/Candidate 聚合比较，以及独立 versioned Quality Policy、Quality Gate Evaluation 和只读 Release Decision。RPF-11 的 `control_plane_client.py` 通过 HTTP/JSON 将这些 reviewed product artifacts 登记到正式 Control Plane；runtime 不直写 PostgreSQL。
+这是 RunProof 的第一份正式产品形态 runtime，不是对 `spikes/` 的重命名。当前 vertical slice 覆盖 Production Change Agent、DeepSeek non-thinking、Docker Fresh-per-run Environment、版本化 Stateful Scenario、structured Trajectory、deterministic Verifier、Run Evidence、真实 FAIL/ERROR、Failure Case 复现、Historical Regression promotion/focused rerun、最小三成员 Evaluation Suite 的 Baseline/Candidate 聚合比较，以及独立 versioned Quality Policy、Quality Gate Evaluation 和只读 Release Decision。RPF-11 的 `control_plane_client.py` 通过 HTTP/JSON 将这些 reviewed product artifacts 登记到正式 Control Plane；RPF-14 新增 `durable_worker.py`，负责正式 PostgreSQL Job Transport 下的 Evaluation 执行与 evidence terminalization；runtime/worker 不直写 PostgreSQL，也不拥有 decision/release authority。
 
 ## Formal Control Plane client
 
@@ -15,7 +15,7 @@ python -m runtime.runproof_runtime.control_plane_client query RUN <run-id> --bas
 
 ## GitHub Actions Canonical Release Gate
 
-`.github/workflows/release-gate.yml` 调用 `ci/run_release_gate.py`。该脚本在 GitHub-hosted runner 内使用 `postgres:16-alpine` 和正式 `control-plane/`，以当前 `GITHUB_RUN_ID` / `GITHUB_RUN_ATTEMPT` 生成新的 Baseline/Candidate Evaluation、Comparison、Quality Gate 和 Release Decision identity；普通 CI/evidence principal 只能写 evidence，独立 decision writer 才能登记 Decision，最终 CI 结论来自 canonical Release Decision API read-back。临时数据库密码和五个 service token 在进程内随机生成，不进入 workflow source、日志、Job Summary 或 machine-readable result；结果 JSON 与 Summary mirror 只包含脱敏 identity/status/coverage/authority/boundary facts。
+`.github/workflows/release-gate.yml` 调用 `ci/run_release_gate.py`。该脚本在 GitHub-hosted runner 内使用 `postgres:16-alpine` 和正式 `control-plane/`，以当前 `GITHUB_RUN_ID` / `GITHUB_RUN_ATTEMPT` 生成新的 Baseline/Candidate Evaluation、Comparison、Quality Gate 和 Release Decision identity；Baseline/Candidate 都先由 CI submitter 创建 durable Job，再由独立 `runtime.runproof_runtime.durable_worker` poll/claim/heartbeat/执行，最后由 CI 通过 canonical Job/Evaluation/Decision API read-back。普通 CI/evidence principal 只能写 evidence/submit，worker 不能写 Decision，独立 decision writer 才能登记 Decision，最终 CI 结论来自 canonical Release Decision API read-back。临时数据库密码和六个 service token 在进程内随机生成，不进入 workflow source、日志、Job Summary 或 machine-readable result；结果 JSON 与 Summary mirror 只包含脱敏 identity/status/coverage/authority/boundary facts。durable path 失败不会回退到 direct Evaluation。
 
 ## Entry points
 
@@ -47,6 +47,7 @@ python -m runtime.runproof_runtime --evaluate-quality-gate runtime/reviewed-eval
 python -m runtime.runproof_runtime --create-release-decision .local/rpf-08/candidate-gate/quality-gate-evaluation.json --release-decision-id release-decision-rpf08-candidate-cli --decision-timestamp 2026-09-12T13:00:00Z --output .local/rpf-08/candidate-decision
 python -m runtime.runproof_runtime --verify-quality-gate runtime/reviewed-quality-gate-candidate.json
 python -m runtime.runproof_runtime --verify-release-decision runtime/reviewed-release-decision-candidate.json
+python -m runtime.runproof_runtime.durable_worker --help
 ```
 
 正常 live 命令从进程环境读取 `DEEPSEEK_API_KEY`，默认模型为 `deepseek-flash`，也可以用 `RPF_MODEL` 或 `--model` 覆盖。每次命令创建独立 Docker container，普通 Run 结果写入被忽略的 `.local/rpf-08/`，不会覆盖历史 Run。known-bad 与 fixed Candidate focused profile 均保留真实 Tool executor、guard、Scenario 和 deterministic verifier；当前两个 focused path 不需要 Provider continuation。known-bad profile 让真实 Tool guard 捕获“先写后观察”的 unsafe intent，从而以稳定方式建立 FAIL 证据；fixed Candidate 先 read state，再以 observed revision 进行唯一 mutation 并独立 read-back。Environment ERROR 使用 runtime-only readiness hook，不是业务 Tool。RPF-07 Evaluation Suite 使用 deterministic profiles 与真实 Docker Fresh-per-member execution，不调用 Provider；每次评测写入被忽略的 `.local/rpf-07/`，历史 reviewed corpus 不被覆盖。RPF-08 Quality Gate 只读取 Policy、Suite、Baseline/Candidate Evaluation、Comparison 和 Regression，按确定性 Hard/Soft/Review rule 计算 `BLOCKED` / `INCONCLUSIVE` / `REVIEW_REQUIRED` / `ELIGIBLE`；Unknown token/cost/latency 保持为非阻断 warning，不执行 release/deploy。
@@ -88,4 +89,4 @@ Quality 只以有效 Agent `PASS/FAIL` evidence 为分母；`ERROR`、`INVALID`�
 
 ## Scope boundary
 
-这是单 Run + Failure Case + 单条 Historical Regression + 最小 Evaluation Suite + Quality Policy/Release Gate decision vertical slice，不包含 Java Control Plane、API/backend、DB、Queue、scheduler、durable worker、lease/checkpoint、streaming、thinking continuation、通用 Agent SDK、SLA/统计显著性、自动发布或真实生产 destructive operation。RPF-07 Evaluation 与 RPF-08 Gate 是确定性 reviewed prototype，不证明长期 Provider 成本/性能稳定性，也不提供 deployment/release endpoint。Docker 是当前 evidence/provider 实现，不是永久产品身份。
+这是单 Run + Failure Case + 单条 Historical Regression + 最小 Evaluation Suite + Quality Policy/Release Gate decision vertical slice，并由 RPF-11/RPF-14 的正式 Control Plane、durable worker 与 Job Transport 承载 canonical ingest/read 与 Evaluation execution；仍不包含 broker、scheduler、production HA、超出 bounded worker contract 的完整 lease/checkpoint、streaming、thinking continuation、通用 Agent SDK、SLA/统计显著性、自动发布或真实生产 destructive operation。RPF-07 Evaluation 与 RPF-08 Gate 是确定性 reviewed prototype，不证明长期 Provider 成本/性能稳定性，也不提供 deployment/release endpoint。Docker 是当前 evidence/provider 实现，不是永久产品身份。

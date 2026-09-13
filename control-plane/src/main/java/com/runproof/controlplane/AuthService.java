@@ -34,6 +34,9 @@ public class AuthService {
     @Value("${rpf.auth.ci-token:}")
     private String ciToken;
 
+    @Value("${rpf.auth.worker-token:}")
+    private String workerToken;
+
     @PostConstruct
     void initialize() {
         credentials.clear();
@@ -41,7 +44,8 @@ public class AuthService {
         add("evidence-ingest-service", evidenceToken, Set.of("evidence:write"));
         add("decision-writer-service", decisionToken, Set.of("decision:write", "metadata:read"));
         add("agent-runtime", agentToken, Set.of("agent:observe"));
-        add("ci-service", ciToken, Set.of("metadata:read", "evidence:write"));
+        add("ci-service", ciToken, Set.of("metadata:read", "evidence:write", "execution:submit"));
+        add("durable-worker", workerToken, Set.of("metadata:read", "evidence:write", "execution:worker"));
     }
 
     public Principal authenticate(HttpServletRequest request) {
@@ -73,6 +77,15 @@ public class AuthService {
             throw new AuthorizationForbiddenException(scope);
         }
         return principal;
+    }
+
+    public Principal requireAny(HttpServletRequest request, String... scopes) {
+        Object value = request.getAttribute("rpf.control-plane.principal");
+        Principal principal = value instanceof Principal found ? found : authenticate(request);
+        for (String scope : scopes) {
+            if (principal.hasScope(scope)) return principal;
+        }
+        throw new AuthorizationForbiddenException(String.join(" or ", scopes));
     }
 
     private void add(String id, String token, Set<String> scopes) {

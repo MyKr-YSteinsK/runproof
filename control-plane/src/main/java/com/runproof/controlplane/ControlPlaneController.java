@@ -84,8 +84,8 @@ public class ControlPlaneController {
                 "POSTGRESQL_CANONICAL_METADATA",
                 "IMMUTABLE_ARTIFACT_STORE_ABSTRACTION",
                 "SERVICE_BEARER_ENV",
-                List.of("metadata:read", "evidence:write", "decision:write", "agent:observe"),
-                false, false, false, false, false, false, "FUTURE_CONTRACT_ONLY"
+                List.of("metadata:read", "evidence:write", "decision:write", "agent:observe", "execution:submit", "execution:worker"),
+                false, false, false, false, false, true, "DURABLE_SUBMIT_POLL_CANONICAL_READBACK"
         );
     }
 

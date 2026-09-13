@@ -47,8 +47,8 @@ public class ApiExceptionHandler {
 
     @ExceptionHandler(IdentityConflictException.class)
     ResponseEntity<ApiModels.ApiError> identityConflict(IdentityConflictException exception, HttpServletRequest request) {
-        request.setAttribute("rpf.control-plane.reason", "IDENTITY_CONTENT_CONFLICT");
-        return error(HttpStatus.CONFLICT, "IDENTITY_CONTENT_CONFLICT", exception.getMessage(), false, false, request);
+        request.setAttribute("rpf.control-plane.reason", exception.code());
+        return error(HttpStatus.CONFLICT, exception.code(), exception.getMessage(), false, false, request);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)

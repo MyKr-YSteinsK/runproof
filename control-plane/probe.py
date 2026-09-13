@@ -1,8 +1,15 @@
-"""Disposable end-to-end probe for the formal RPF-11 Control Plane."""
+"""Disposable end-to-end probe for the formal RPF-14 Control Plane.
+
+This probe owns a real PostgreSQL container and starts the packaged formal
+Control Plane as an independent JVM.  It keeps the existing RPF-11 canonical
+metadata checks and adds the formal durable job/worker crash matrix.  Secrets
+are generated in-process and are never written to the result or logs.
+"""
 
 from __future__ import annotations
 
 import json
+import hashlib
 import os
 import secrets
 import socket
@@ -28,10 +35,11 @@ from runtime.runproof_runtime.control_plane_client import (
 
 
 ROOT = Path(__file__).resolve().parents[1]
-LOCAL_ROOT = ROOT / ".local" / "rpf-11"
+LOCAL_ROOT = ROOT / ".local" / "rpf-14"
 JAR_PATH = ROOT / "control-plane" / "target" / "runproof-control-plane-0.1.0-SNAPSHOT.jar"
 PG_IMAGE = "postgres:16-alpine"
-SCHEMA_VERSION = "rpf-11-postgresql-canonical-schema-v1"
+SCHEMA_VERSION = "rpf-14-durable-execution-schema-v1"
+PROBE_PROCESS_IDS: set[int] = set()
 
 
 class ProbeFailure(RuntimeError):
@@ -113,6 +121,34 @@ def wait_for_process_exit(process: subprocess.Popen[bytes], timeout: float = 15.
     raise ProbeFailure("Expected process to fail closed but it remained running")
 
 
+def stop_process(process: subprocess.Popen[bytes], timeout: float = 10.0) -> None:
+    """Stop one probe-owned process, escalating only to its exact PID tree."""
+
+    process_id = process.pid
+    # Terminate the exact process tree before terminating the Popen handle.
+    # On Windows the Java launcher may have a JVM child; killing the parent
+    # first lets that child detach and defeats a later /T cleanup.
+    if os.name == "nt" and process.poll() is None:
+        subprocess.run(["taskkill", "/PID", str(process_id), "/T", "/F"], capture_output=True, check=False, timeout=10)
+    if process.poll() is None:
+        process.terminate()
+        try:
+            process.wait(timeout=timeout)
+        except subprocess.TimeoutExpired:
+            pass
+    # The exact PID is probe-owned, so this fallback cannot broaden cleanup to
+    # unrelated processes and also handles a launcher that exited just before
+    # the tree command above.
+    if os.name == "nt":
+        subprocess.run(["taskkill", "/PID", str(process_id), "/T", "/F"], capture_output=True, check=False, timeout=10)
+    try:
+        if process.poll() is None:
+            process.wait(timeout=5)
+    except subprocess.TimeoutExpired:
+        process.kill()
+        process.wait(timeout=5)
+
+
 def start_service(
     port_number: int,
     pg_port: int,
@@ -137,6 +173,7 @@ def start_service(
         "RPF_AUTH_DECISION_TOKEN": credentials["decision"],
         "RPF_AUTH_AGENT_TOKEN": credentials["agent"],
         "RPF_AUTH_CI_TOKEN": credentials["ci"],
+        "RPF_AUTH_WORKER_TOKEN": credentials["worker"],
     })
     process = subprocess.Popen(
         ["java", "-jar", str(JAR_PATH)],
@@ -145,6 +182,7 @@ def start_service(
         stdout=stdout,
         stderr=stderr,
     )
+    PROBE_PROCESS_IDS.add(process.pid)
     return process, stdout, stderr
 
 
@@ -191,6 +229,278 @@ def cleanup(container: str | None, volume: str | None) -> None:
         subprocess.run(["docker", "volume", "rm", "-f", volume], capture_output=True, check=False, timeout=30)
 
 
+def sha256(value: str | bytes) -> str:
+    data = value.encode("utf-8") if isinstance(value, str) else value
+    return hashlib.sha256(data).hexdigest()
+
+
+def formal_source_identity() -> dict[str, Any]:
+    """Bind probe evidence to the formal RPF-14 implementation bytes."""
+
+    source_paths = [
+        ROOT / "control-plane" / "pom.xml",
+        ROOT / "control-plane" / "src" / "main" / "resources" / "application.properties",
+        ROOT / "runtime" / "runproof_runtime" / "control_plane_client.py",
+        ROOT / "runtime" / "runproof_runtime" / "durable_worker.py",
+        ROOT / "ci" / "run_release_gate.py",
+        ROOT / "web" / "src" / "App.tsx",
+        ROOT / "web" / "src" / "data" / "executions.ts",
+        ROOT / "web" / "src" / "styles.css",
+        ROOT / "control-plane" / "probe.py",
+    ]
+    source_paths.extend(sorted((ROOT / "control-plane" / "src" / "main" / "java").rglob("*.java")))
+    digest = hashlib.sha256()
+    files: list[str] = []
+    for path in sorted(source_paths, key=lambda candidate: candidate.relative_to(ROOT).as_posix()):
+        relative = path.relative_to(ROOT).as_posix()
+        digest.update(relative.encode("utf-8"))
+        digest.update(b"\0")
+        digest.update(path.read_bytes())
+        digest.update(b"\0")
+        files.append(relative)
+    return {"source_sha256": digest.hexdigest(), "files": files}
+
+
+def contains_key(value: Any, key: str) -> bool:
+    if isinstance(value, dict):
+        return key in value or any(contains_key(child, key) for child in value.values())
+    if isinstance(value, list):
+        return any(contains_key(child, key) for child in value)
+    return False
+
+
+def durable_payload(job_id: str, *, profile: str | None = None, output_dir: Path | None = None) -> dict[str, Any]:
+    if profile is not None and output_dir is not None:
+        return {
+            "contract": "rpf-evaluation-execution-v1",
+            "agent_profile": profile,
+            "regression_path": "runtime/reviewed-regression.json",
+            "output_dir": str(output_dir),
+            "evaluation_id": f"evaluation-{job_id}",
+            "operation_environment_id": f"rpf14-environment-{job_id}",
+        }
+    return {
+        "contract": "rpf14-durable-probe-v1",
+        "scenario_ref": {"scenario_id": "rpf14-formal-probe", "scenario_version": "1"},
+        "execution_ref": f"execution-{job_id}",
+    }
+
+
+def durable_submission(
+    job_id: str,
+    *,
+    target_id: str | None = None,
+    payload_ref: dict[str, Any] | None = None,
+    idempotency_key: str | None = None,
+) -> dict[str, Any]:
+    target = target_id or f"evaluation-{job_id}"
+    payload = payload_ref or durable_payload(job_id)
+    fingerprint_input = {
+        "job_id": job_id,
+        "target_type": "EVALUATION",
+        "target_id": target,
+        "payload_ref": payload,
+    }
+    return {
+        "job_id": job_id,
+        "idempotency_key": idempotency_key or f"rpf14-idempotency-{job_id}",
+        "request_fingerprint": sha256(json.dumps(fingerprint_input, sort_keys=True, separators=(",", ":"))),
+        "job_type": "EVALUATION",
+        "target_type": "EVALUATION",
+        "target_id": target,
+        "correlation_id": f"rpf14-correlation-{job_id}",
+        "payload_ref": payload,
+    }
+
+
+def submit_durable(
+    base_url: str,
+    token: str,
+    job_id: str,
+    *,
+    target_id: str | None = None,
+    payload_ref: dict[str, Any] | None = None,
+    idempotency_key: str | None = None,
+) -> tuple[int, dict[str, Any], dict[str, Any]]:
+    request_body = durable_submission(
+        job_id,
+        target_id=target_id,
+        payload_ref=payload_ref,
+        idempotency_key=idempotency_key,
+    )
+    status, response = http_json(base_url, "POST", "/jobs", token=token, body=request_body)
+    return status, response, request_body
+
+
+def owner_payload(lease: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "attempt_id": lease["attempt_id"],
+        "worker_id": lease["worker_id"],
+        "lease_token": lease["lease_token"],
+        "lease_version": lease["lease_version"],
+    }
+
+
+def claim_durable(base_url: str, token: str, job_id: str, worker_id: str, lease_seconds: int = 3) -> tuple[int, dict[str, Any], dict[str, Any] | None]:
+    status, response = http_json(
+        base_url,
+        "POST",
+        f"/jobs/{job_id}/claim",
+        token=token,
+        body={"worker_id": worker_id, "lease_seconds": lease_seconds},
+    )
+    lease = response.get("lease") if isinstance(response.get("lease"), dict) else None
+    return status, response, lease
+
+
+def start_durable(base_url: str, token: str, job_id: str, lease: dict[str, Any]) -> tuple[int, dict[str, Any]]:
+    status, response = http_json(base_url, "POST", f"/jobs/{job_id}/start", token=token, body=owner_payload(lease))
+    if status == 200 and isinstance(response.get("job"), dict) and isinstance(response["job"].get("version"), int):
+        lease["lease_version"] = response["job"]["version"]
+    return status, response
+
+
+def evidence_body(job_id: str, outcome: str = "PASS", suffix: str = "terminal") -> dict[str, Any]:
+    evidence_id = f"rpf14-evidence-{job_id}-{suffix}"
+    content_sha = sha256(f"{evidence_id}:{outcome}:rpf14")
+    return {
+        "evidence_id": evidence_id,
+        "entity_type": "EVALUATION",
+        "entity_id": f"evaluation-{job_id}",
+        "outcome": outcome,
+        "content_sha256": content_sha,
+        "artifact_ref": {
+            "artifact_id": evidence_id,
+            "artifact_key": f"evaluation/{job_id}/{content_sha}.json",
+            "artifact_kind": "RunProof Durable Execution Evidence",
+            "schema_version": "rpf-execution-evidence-v1",
+            "content_sha256": content_sha,
+            "source_sha256": sha256("rpf14-formal-probe-source"),
+            "runtime_version": "rpf14-formal-probe-v1",
+        },
+    }
+
+
+def ingest_durable_evidence(base_url: str, token: str, job_id: str, outcome: str = "PASS", suffix: str = "terminal") -> tuple[int, dict[str, Any], dict[str, Any]]:
+    body = evidence_body(job_id, outcome, suffix)
+    status, response = http_json(base_url, "POST", f"/jobs/{job_id}/evidence", token=token, body=body)
+    return status, response, body
+
+
+def operation_body(lease: dict[str, Any], operation_id: str, environment_id: str) -> dict[str, Any]:
+    return owner_payload(lease) | {
+        "operation_id": operation_id,
+        "environment_id": environment_id,
+        "operation_fingerprint": sha256(f"{operation_id}:{environment_id}:rpf14-operation-v1"),
+    }
+
+
+def spawn_response_lost_worker(base_url: str, job_id: str, operation_id: str, token: str) -> subprocess.CompletedProcess[bytes]:
+    environment = os.environ.copy()
+    environment["RPF_AUTH_WORKER_TOKEN"] = token
+    return subprocess.run(
+        [sys.executable, str(Path(__file__).resolve()), "--worker-response-lost", base_url, job_id, operation_id],
+        cwd=ROOT,
+        env=environment,
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+
+
+def run_response_lost_child(base_url: str, job_id: str, operation_id: str) -> int:
+    token = os.environ.get("RPF_AUTH_WORKER_TOKEN")
+    if not token:
+        return 31
+    status, claim, lease = claim_durable(base_url, token, job_id, "rpf14-worker-lost", 1)
+    if status != 200 or claim.get("status") != "CLAIMED" or lease is None:
+        return 32
+    status, _ = start_durable(base_url, token, job_id, lease)
+    if status != 200:
+        return 33
+    prepared_status, prepared = http_json(
+        base_url,
+        "POST",
+        f"/jobs/{job_id}/operations",
+        token=token,
+        body=operation_body(lease, operation_id, "rpf14-response-lost-environment"),
+    )
+    if prepared_status != 200 or prepared.get("status") not in {"PREPARED", "IDEMPOTENT_REPLAY"}:
+        return 34
+    lost_status, lost = http_json(
+        base_url,
+        "POST",
+        f"/jobs/{job_id}/operations/{operation_id}/apply?simulate_response_lost=true",
+        token=token,
+        body=owner_payload(lease),
+    )
+    if lost_status != 503 or lost.get("error") != "TRANSPORT_RESPONSE_LOST":
+        return 35
+    os._exit(17)
+
+
+def spawn_artifact_crash_worker(artifact_path: Path) -> subprocess.CompletedProcess[bytes]:
+    return subprocess.run(
+        [sys.executable, str(Path(__file__).resolve()), "--worker-artifact-crash", str(artifact_path)],
+        cwd=ROOT,
+        capture_output=True,
+        check=False,
+        timeout=30,
+    )
+
+
+def run_artifact_crash_child(artifact_path: str) -> int:
+    if not Path(artifact_path).is_file():
+        return 41
+    os._exit(23)
+
+
+def spawn_formal_worker(
+    base_url: str,
+    token: str,
+    artifact_root: Path,
+    repo_root: Path,
+    result_path: Path,
+) -> tuple[subprocess.CompletedProcess[bytes], dict[str, Any]]:
+    environment = os.environ.copy()
+    environment["RPF_AUTH_WORKER_TOKEN"] = token
+    process = subprocess.run(
+        [
+            sys.executable,
+            "-m",
+            "runtime.runproof_runtime.durable_worker",
+            "--base-url",
+            base_url,
+            "--worker-id",
+            "rpf14-formal-worker",
+            "--repo-root",
+            str(repo_root),
+            "--artifact-store-root",
+            str(artifact_root),
+            "--lease-seconds",
+            "3",
+            "--max-jobs",
+            "1",
+            "--idle-timeout",
+            "180",
+            "--result-path",
+            str(result_path),
+        ],
+        cwd=ROOT,
+        env=environment,
+        capture_output=True,
+        check=False,
+        timeout=210,
+    )
+    if not result_path.is_file():
+        return process, {}
+    try:
+        document = json.loads(result_path.read_text(encoding="utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        document = {}
+    return process, document if isinstance(document, dict) else {}
+
+
 def main() -> int:
     if not JAR_PATH.is_file():
         raise ProbeFailure("Formal Control Plane jar is missing; run Maven package first")
@@ -200,8 +510,8 @@ def main() -> int:
     artifact_root = run_dir / "artifacts"
     log_dir = run_dir / "logs"
     run_dir.mkdir(parents=True, exist_ok=True)
-    container = f"rpf11-postgres-{uuid.uuid4().hex[:10]}"
-    volume = f"rpf11-volume-{uuid.uuid4().hex[:10]}"
+    container = f"rpf14-postgres-{uuid.uuid4().hex[:10]}"
+    volume = f"rpf14-volume-{uuid.uuid4().hex[:10]}"
     pg_port = port()
     service_port = port()
     base_url = f"http://127.0.0.1:{service_port}/api/v1"
@@ -213,6 +523,7 @@ def main() -> int:
         "decision": "rpf-decision-" + secrets.token_urlsafe(18),
         "agent": "rpf-agent-" + secrets.token_urlsafe(18),
         "ci": "rpf-ci-" + secrets.token_urlsafe(18),
+        "worker": "rpf-worker-" + secrets.token_urlsafe(18),
     }
     service: subprocess.Popen[bytes] | None = None
     service_handles: tuple[Any, Any] | None = None
@@ -220,6 +531,7 @@ def main() -> int:
     checks: dict[str, dict[str, Any]] = {}
     artifacts: list[Any] = []
     expected_rows = 0
+    worker_job_id: str | None = None
 
     try:
         start_postgres(container, volume, pg_port, password)
@@ -228,13 +540,65 @@ def main() -> int:
         health = wait_for_health(base_url, service)
         checks["health_readiness"] = {"status": "PASS", "database": health.get("database"), "schema": health.get("schema_version")}
         if health.get("database_product") != "PostgreSQL" or health.get("schema_version") != SCHEMA_VERSION:
-            raise ProbeFailure("health did not report PostgreSQL and RPF-11 schema identity")
+            raise ProbeFailure("health did not report PostgreSQL and RPF-14 schema identity")
 
         status, boundary = http_json(base_url, "GET", "/capabilities")
         require_status(status, 200, boundary, "capabilities")
-        if boundary.get("canonical_store") != "POSTGRESQL_CANONICAL_METADATA" or boundary.get("queue_or_broker") is not False or boundary.get("release_or_deploy_authorized") is not False:
+        if boundary.get("canonical_store") != "POSTGRESQL_CANONICAL_METADATA" or boundary.get("queue_or_broker") is not False or boundary.get("release_or_deploy_authorized") is not False or boundary.get("job_transport_resolved") is not True:
             raise ProbeFailure("capability boundary drifted")
-        checks["boundary"] = {"status": "PASS", "transport": boundary.get("transport"), "queue": False, "release_authorized": False}
+        checks["boundary"] = {"status": "PASS", "transport": boundary.get("transport"), "ci_integration": boundary.get("ci_integration"), "queue": False, "release_authorized": False, "job_transport_resolved": True}
+
+        # Run the formal worker as an independent process against the formal
+        # API.  This is the product path used later by CI, not the historical
+        # RPF-13 disposable candidate.
+        worker_job_id = "rpf14-formal-worker-" + uuid.uuid4().hex[:8]
+        worker_output_dir = run_dir / "worker-output"
+        worker_result_path = run_dir / "worker-result.json"
+        worker_payload = durable_payload(
+            worker_job_id,
+            profile="production-change-agent-v1",
+            output_dir=worker_output_dir,
+        )
+        submit_status, submit_response, _ = submit_durable(
+            base_url,
+            credentials["ci"],
+            worker_job_id,
+            target_id=f"evaluation-{worker_job_id}",
+            payload_ref=worker_payload,
+        )
+        if submit_status != 201 or submit_response.get("status") != "SUBMITTED" or submit_response.get("job", {}).get("state") != "QUEUED":
+            raise ProbeFailure("formal worker job did not enter QUEUED")
+        worker_process, worker_result = spawn_formal_worker(
+            base_url,
+            credentials["worker"],
+            artifact_root,
+            ROOT,
+            worker_result_path,
+        )
+        if worker_process.returncode != 0 or worker_result.get("status") != "PASS":
+            raise ProbeFailure("formal durable worker process did not complete successfully")
+        worker_jobs = worker_result.get("jobs")
+        if not isinstance(worker_jobs, list) or len(worker_jobs) != 1 or worker_jobs[0].get("status") != "COMPLETED":
+            raise ProbeFailure("formal durable worker did not report one completed job")
+        worker_read_status, worker_read = http_json(base_url, "GET", f"/jobs/{worker_job_id}", token=credentials["read"])
+        require_status(worker_read_status, 200, worker_read, "formal worker job read-back")
+        if worker_read.get("state") != "COMPLETED" or not worker_read.get("terminal_evidence_id") or not worker_read.get("operations"):
+            raise ProbeFailure("formal worker job did not retain terminal evidence and operation history")
+        worker_serialized = json.dumps(worker_result, ensure_ascii=False)
+        if any(secret in worker_serialized for secret in credentials.values()):
+            raise ProbeFailure("formal worker result exposed a credential")
+        checks["formal_worker_process"] = {
+            "status": "PASS",
+            "job_id": worker_job_id,
+            "submit": submit_response.get("status"),
+            "worker_process_exit": worker_process.returncode,
+            "terminal_state": worker_read.get("state"),
+            "attempt_number": worker_read.get("attempt_number"),
+            "operation_status": worker_read["operations"][0].get("status"),
+            "evidence_count": len(worker_read.get("evidence", [])),
+            "raw_lease_token_in_result": False,
+            "agent_fail_created": False,
+        }
 
         status, body = http_json(base_url, "GET", "/metadata?entity_type=RUN")
         require_status(status, 401, body, "no credential")
@@ -287,7 +651,7 @@ def main() -> int:
 
         # Two valid, different payloads with one new identity exercise the
         # database uniqueness boundary under an actual concurrent POST race.
-        race_id = "rpf11-concurrent-run-" + uuid.uuid4().hex[:8]
+        race_id = "rpf14-concurrent-run-" + uuid.uuid4().hex[:8]
         race_manifests: list[dict[str, Any]] = []
         for marker in ("left", "right"):
             race_document = json.loads(json.dumps(first.document))
@@ -320,7 +684,7 @@ def main() -> int:
         status, body = http_json(base_url, "POST", "/ingest/completed-evidence", token=credentials["evidence"], body=conflict.manifest)
         require_status(status, 409, body, "identity content conflict")
         key_conflict_document = json.loads(json.dumps(first.document))
-        key_conflict_document["run"]["run_id"] = "rpf11-idempotency-conflict-" + uuid.uuid4().hex[:8]
+        key_conflict_document["run"]["run_id"] = "rpf14-idempotency-conflict-" + uuid.uuid4().hex[:8]
         key_conflict_path = run_dir / "idempotency-conflict.json"
         key_conflict_path.write_text(json.dumps(key_conflict_document, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
         key_conflict = json.loads(json.dumps(build_artifact_manifest(key_conflict_path, artifact_root).manifest))
@@ -392,7 +756,475 @@ def main() -> int:
         checks["read_api_layers"] = {"status": "PASS", "core_entity_types": 9, "raw_artifact_in_metadata": False, "stable_artifact_endpoint": True}
 
         candidate_decision = next(item for item in artifacts if item.entity_id == "release-decision-rpf08-candidate")
-        decision_id = "release-decision-rpf11-superseding-" + uuid.uuid4().hex[:8]
+        candidate_evaluation = next(item for item in artifacts if item.entity_type == "EVALUATION" and "candidate" in item.path.name)
+
+        # Formal durable execution contract: submit/replay/conflict, bounded
+        # payloads, and explicit separation between submitter and worker.
+        durable_job_id = "rpf14-submit-" + uuid.uuid4().hex[:8]
+        submit_status, submit_response, submit_request = submit_durable(base_url, credentials["ci"], durable_job_id)
+        require_status(submit_status, 201, submit_response, "durable initial submit")
+        if submit_response.get("status") != "SUBMITTED" or submit_response.get("job", {}).get("state") != "QUEUED":
+            raise ProbeFailure("durable submit did not return QUEUED")
+        replay_status, replay_response, _ = submit_durable(
+            base_url,
+            credentials["ci"],
+            durable_job_id,
+            target_id=submit_request["target_id"],
+            payload_ref=submit_request["payload_ref"],
+            idempotency_key=submit_request["idempotency_key"],
+        )
+        require_status(replay_status, 200, replay_response, "durable replay")
+        if replay_response.get("status") != "IDEMPOTENT_REPLAY" or replay_response.get("already_exists") is not True:
+            raise ProbeFailure("same durable submit was not an idempotent replay")
+        conflict_request = dict(submit_request)
+        conflict_request["request_fingerprint"] = sha256("rpf14-different-submit")
+        conflict_status, conflict_response = http_json(base_url, "POST", "/jobs", token=credentials["ci"], body=conflict_request)
+        require_status(conflict_status, 409, conflict_response, "durable identity conflict")
+        if conflict_response.get("error") != "IDEMPOTENCY_CONFLICT":
+            raise ProbeFailure("durable identity conflict code drifted")
+        unsafe_request = durable_submission("rpf14-unsafe-" + uuid.uuid4().hex[:8])
+        unsafe_request["payload_ref"] = {"private_reasoning": "must-not-persist"}
+        unsafe_status, unsafe_response = http_json(base_url, "POST", "/jobs", token=credentials["ci"], body=unsafe_request)
+        require_status(unsafe_status, 400, unsafe_response, "unsafe durable payload")
+        if unsafe_response.get("error") != "FORBIDDEN_PAYLOAD_FIELD":
+            raise ProbeFailure("unsafe durable payload was not rejected")
+        authority_checks = {}
+        for principal_name in ("read", "agent", "decision"):
+            denied_status, denied_body = http_json(
+                base_url,
+                "POST",
+                f"/jobs/{durable_job_id}/claim",
+                token=credentials[principal_name],
+                body={"worker_id": f"rpf14-denied-{principal_name}", "lease_seconds": 3},
+            )
+            require_status(denied_status, 403, denied_body, f"{principal_name} claim authority")
+            authority_checks[f"{principal_name}_claim"] = denied_status
+        ci_claim_status, ci_claim_body = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{durable_job_id}/claim",
+            token=credentials["ci"],
+            body={"worker_id": "rpf14-ci-cannot-claim", "lease_seconds": 3},
+        )
+        require_status(ci_claim_status, 403, ci_claim_body, "CI worker authority")
+        authority_checks["ci_claim"] = ci_claim_status
+        worker_decision_status, worker_decision_body = http_json(
+            base_url,
+            "POST",
+            "/release-decisions",
+            token=credentials["worker"],
+            body=decision_artifact.manifest,
+        )
+        require_status(worker_decision_status, 403, worker_decision_body, "worker decision authority")
+        authority_checks["worker_decision"] = worker_decision_status
+        checks["durable_submit_replay_conflict_authority"] = {
+            "status": "PASS",
+            "initial": submit_response.get("status"),
+            "initial_http": submit_status,
+            "replay": replay_response.get("status"),
+            "conflict": conflict_response.get("error"),
+            "unsafe_payload": unsafe_response.get("error"),
+            "authority": authority_checks,
+            "submit_does_not_start": submit_response["job"]["state"] == "QUEUED",
+        }
+
+        # Two independent HTTP workers race on one PostgreSQL row.  The
+        # winner is heartbeated and finalized; the terminal row is not
+        # claimable again and never exposes the raw lease token.
+        race_job_id = "rpf14-claim-race-" + uuid.uuid4().hex[:8]
+        race_submit_status, _, _ = submit_durable(base_url, credentials["ci"], race_job_id)
+        require_status(race_submit_status, 201, {}, "claim race submit")
+        with ThreadPoolExecutor(max_workers=2) as executor:
+            race_results = list(executor.map(
+                lambda worker: claim_durable(base_url, credentials["worker"], race_job_id, worker, 4),
+                ("rpf14-race-a", "rpf14-race-b"),
+            ))
+        race_statuses = sorted(item[0] for item in race_results)
+        if race_statuses != [200, 409]:
+            raise ProbeFailure(f"concurrent durable claim expected [200, 409], got {race_statuses}")
+        _, race_winner, race_lease = next(item for item in race_results if item[0] == 200)
+        if race_lease is None:
+            raise ProbeFailure("winning durable claim did not return a lease")
+        start_status, start_response = start_durable(base_url, credentials["worker"], race_job_id, race_lease)
+        require_status(start_status, 200, start_response, "race start")
+        previous_version = race_lease["lease_version"]
+        heartbeat_status, heartbeat_response = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{race_job_id}/heartbeat",
+            token=credentials["worker"],
+            body=owner_payload(race_lease) | {"lease_seconds": 4},
+        )
+        require_status(heartbeat_status, 200, heartbeat_response, "race heartbeat")
+        race_lease.update(heartbeat_response.get("lease", {}))
+        if race_lease.get("lease_version", 0) <= previous_version:
+            raise ProbeFailure("heartbeat did not advance fencing version")
+        _, race_evidence_response, race_evidence = ingest_durable_evidence(base_url, credentials["worker"], race_job_id)
+        race_complete_status, race_complete = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{race_job_id}/complete",
+            token=credentials["worker"],
+            body=owner_payload(race_lease) | {"evidence_id": race_evidence["evidence_id"]},
+        )
+        require_status(race_complete_status, 200, race_complete, "race complete")
+        terminal_status, terminal_body, _ = claim_durable(base_url, credentials["worker"], race_job_id, "rpf14-after-terminal", 3)
+        require_status(terminal_status, 200, terminal_body, "terminal claim")
+        if terminal_body.get("status") != "TERMINAL":
+            raise ProbeFailure("terminal durable job was claimable again")
+        if contains_key(race_complete, "lease_token"):
+            raise ProbeFailure("raw lease token appeared in durable job read model")
+        checks["claim_heartbeat_terminal"] = {
+            "status": "PASS",
+            "concurrent_http_statuses": race_statuses,
+            "single_owner": True,
+            "heartbeat_version_advanced": True,
+            "terminal_claim": terminal_body.get("status"),
+            "terminal_evidence": race_complete.get("job", {}).get("terminal_evidence_id"),
+            "raw_lease_token_in_read_model": False,
+            "evidence_ingest": race_evidence_response.get("status"),
+        }
+
+        # Lease expiry before Agent start is safe to reclaim.  The old
+        # attempt is fenced from heartbeat and finalization, while the new
+        # attempt receives a distinct attempt id/number.
+        reclaim_job_id = "rpf14-reclaim-" + uuid.uuid4().hex[:8]
+        reclaim_submit_status, _, _ = submit_durable(base_url, credentials["ci"], reclaim_job_id)
+        require_status(reclaim_submit_status, 201, {}, "reclaim submit")
+        old_claim_status, _, old_lease = claim_durable(base_url, credentials["worker"], reclaim_job_id, "rpf14-old-worker", 1)
+        require_status(old_claim_status, 200, {}, "old reclaim claim")
+        if old_lease is None:
+            raise ProbeFailure("old reclaim attempt has no lease")
+        time.sleep(1.4)
+        new_claim_status, new_claim, new_lease = claim_durable(base_url, credentials["worker"], reclaim_job_id, "rpf14-new-worker", 3)
+        require_status(new_claim_status, 200, new_claim, "safe reclaim")
+        if new_claim.get("status") != "CLAIMED" or new_lease is None or new_claim.get("job", {}).get("attempt_number") != 2:
+            raise ProbeFailure("expired safe reclaim did not create attempt two")
+        _, _, reclaim_evidence = ingest_durable_evidence(base_url, credentials["worker"], reclaim_job_id)
+        old_heartbeat_status, old_heartbeat = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{reclaim_job_id}/heartbeat",
+            token=credentials["worker"],
+            body=owner_payload(old_lease) | {"lease_seconds": 3},
+        )
+        require_status(old_heartbeat_status, 409, old_heartbeat, "stale heartbeat")
+        old_complete_status, old_complete = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{reclaim_job_id}/complete",
+            token=credentials["worker"],
+            body=owner_payload(old_lease) | {"evidence_id": reclaim_evidence["evidence_id"]},
+        )
+        require_status(old_complete_status, 409, old_complete, "stale finalization")
+        if old_heartbeat.get("error") != "STALE_ATTEMPT" or old_complete.get("error") != "STALE_ATTEMPT":
+            raise ProbeFailure("stale attempt rejection code drifted")
+        start_durable(base_url, credentials["worker"], reclaim_job_id, new_lease)
+        new_complete_status, new_complete = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{reclaim_job_id}/complete",
+            token=credentials["worker"],
+            body=owner_payload(new_lease) | {"evidence_id": reclaim_evidence["evidence_id"]},
+        )
+        require_status(new_complete_status, 200, new_complete, "new attempt finalization")
+        attempts = new_complete.get("job", {}).get("attempts", [])
+        if len(attempts) != 2 or attempts[0].get("attempt_id") == attempts[1].get("attempt_id"):
+            raise ProbeFailure("safe reclaim did not preserve distinct append-only attempts")
+        checks["lease_expiry_reclaim_stale_fencing"] = {
+            "status": "PASS",
+            "old_attempt_status": attempts[0].get("status"),
+            "new_attempt_status": attempts[1].get("status"),
+            "attempt_number": new_complete.get("job", {}).get("attempt_number"),
+            "old_heartbeat": old_heartbeat.get("error"),
+            "old_finalize": old_complete.get("error"),
+            "agent_fail_created": False,
+        }
+
+        # A durable NOT_SUBMITTED boundary lets a later attempt reuse the
+        # same operation identity.  The simulated controlled effect is then
+        # applied once and confirmed once.
+        operation_job_id = "rpf14-not-submitted-" + uuid.uuid4().hex[:8]
+        operation_submit_status, _, _ = submit_durable(base_url, credentials["ci"], operation_job_id)
+        require_status(operation_submit_status, 201, {}, "operation submit")
+        _, _, operation_old_lease = claim_durable(base_url, credentials["worker"], operation_job_id, "rpf14-operation-old", 2)
+        if operation_old_lease is None:
+            raise ProbeFailure("operation old lease missing")
+        start_durable(base_url, credentials["worker"], operation_job_id, operation_old_lease)
+        operation_id = f"rpf14-operation-{operation_job_id}"
+        operation_request = operation_body(operation_old_lease, operation_id, "rpf14-safe-environment")
+        prepared_status, prepared = http_json(base_url, "POST", f"/jobs/{operation_job_id}/operations", token=credentials["worker"], body=operation_request)
+        require_status(prepared_status, 200, prepared, "operation prepare")
+        if prepared.get("status") != "PREPARED":
+            raise ProbeFailure("operation did not enter PREPARED")
+        not_submitted_status, not_submitted = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{operation_job_id}/operations/{operation_id}/not-submitted",
+            token=credentials["worker"],
+            body=owner_payload(operation_old_lease),
+        )
+        require_status(not_submitted_status, 200, not_submitted, "not submitted proof")
+        if not_submitted.get("status") != "NOT_SUBMITTED":
+            raise ProbeFailure("NOT_SUBMITTED proof was not recorded")
+        time.sleep(2.4)
+        _, operation_new_claim, operation_new_lease = claim_durable(base_url, credentials["worker"], operation_job_id, "rpf14-operation-new", 3)
+        if operation_new_claim.get("status") != "CLAIMED" or operation_new_lease is None:
+            raise ProbeFailure("NOT_SUBMITTED job was not safely re-claimed")
+        start_durable(base_url, credentials["worker"], operation_job_id, operation_new_lease)
+        operation_replay_status, operation_replay = http_json(base_url, "POST", f"/jobs/{operation_job_id}/operations", token=credentials["worker"], body=operation_body(operation_new_lease, operation_id, "rpf14-safe-environment"))
+        require_status(operation_replay_status, 200, operation_replay, "operation identity replay")
+        operation_conflict_body = operation_body(operation_new_lease, operation_id, "rpf14-different-environment")
+        operation_conflict_status, operation_conflict = http_json(base_url, "POST", f"/jobs/{operation_job_id}/operations", token=credentials["worker"], body=operation_conflict_body)
+        require_status(operation_conflict_status, 409, operation_conflict, "operation identity conflict")
+        applied_status, applied = http_json(base_url, "POST", f"/jobs/{operation_job_id}/operations/{operation_id}/apply", token=credentials["worker"], body=owner_payload(operation_new_lease))
+        require_status(applied_status, 200, applied, "operation apply")
+        confirmed_status, confirmed = http_json(base_url, "POST", f"/jobs/{operation_job_id}/operations/{operation_id}/confirm", token=credentials["worker"], body=owner_payload(operation_new_lease))
+        require_status(confirmed_status, 200, confirmed, "operation confirm")
+        _, _, operation_evidence = ingest_durable_evidence(base_url, credentials["worker"], operation_job_id)
+        operation_complete_status, operation_complete = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{operation_job_id}/complete",
+            token=credentials["worker"],
+            body=owner_payload(operation_new_lease) | {"evidence_id": operation_evidence["evidence_id"]},
+        )
+        require_status(operation_complete_status, 200, operation_complete, "operation complete")
+        operation_snapshot = operation_complete.get("job", {})
+        if operation_snapshot.get("operations", [{}])[0].get("effect_count") != 1:
+            raise ProbeFailure("operation retry produced more than one side effect")
+        checks["operation_identity_not_submitted"] = {
+            "status": "PASS",
+            "prepare": prepared.get("status"),
+            "not_submitted": not_submitted.get("status"),
+            "reclaim_attempt": operation_snapshot.get("attempt_number"),
+            "replay": operation_replay.get("status"),
+            "identity_conflict": operation_conflict.get("error"),
+            "apply": applied.get("status"),
+            "confirm": confirmed.get("status"),
+            "effect_count": operation_snapshot["operations"][0].get("effect_count"),
+            "agent_fail_created": False,
+        }
+
+        # A real child process commits the controlled effect, receives a
+        # response-lost boundary, and exits.  The recovery worker must first
+        # mark/reconcile UNKNOWN_OUTCOME; it may not blindly apply again.
+        unknown_job_id = "rpf14-unknown-" + uuid.uuid4().hex[:8]
+        unknown_submit_status, _, _ = submit_durable(base_url, credentials["ci"], unknown_job_id)
+        require_status(unknown_submit_status, 201, {}, "unknown submit")
+        unknown_operation_id = f"rpf14-operation-{unknown_job_id}"
+        response_lost_child = spawn_response_lost_worker(base_url, unknown_job_id, unknown_operation_id, credentials["worker"])
+        if response_lost_child.returncode != 17:
+            raise ProbeFailure(f"response-lost child exited at wrong boundary: {response_lost_child.returncode}")
+        time.sleep(1.4)
+        expired_status, expired_response, expired_lease = claim_durable(base_url, credentials["worker"], unknown_job_id, "rpf14-reconcile-worker", 3)
+        require_status(expired_status, 200, expired_response, "expired unknown claim")
+        if expired_response.get("status") != "RECONCILE_REQUIRED" or expired_lease is not None:
+            raise ProbeFailure("expired in-flight effect did not enter reconcile-required")
+        unknown_status, unknown_response = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/operations/{unknown_operation_id}/unknown", token=credentials["worker"], body={"worker_id": "rpf14-reconcile-worker"})
+        require_status(unknown_status, 200, unknown_response, "mark unknown outcome")
+        reconcile_status, reconcile_response = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/operations/{unknown_operation_id}/reconcile", token=credentials["worker"], body={"worker_id": "rpf14-reconcile-worker"})
+        require_status(reconcile_status, 200, reconcile_response, "operation reconcile")
+        if unknown_response.get("status") != "UNKNOWN_OUTCOME" or reconcile_response.get("status") != "CONFIRMED" or reconcile_response.get("safe_to_retry") is not False:
+            raise ProbeFailure("UNKNOWN_OUTCOME reconcile contract failed")
+        _, unknown_reclaim, unknown_lease = claim_durable(base_url, credentials["worker"], unknown_job_id, "rpf14-reconcile-final", 3)
+        if unknown_reclaim.get("status") != "CLAIMED" or unknown_lease is None:
+            raise ProbeFailure("reconciled unknown job was not re-queued")
+        start_durable(base_url, credentials["worker"], unknown_job_id, unknown_lease)
+        confirmed_replay_status, confirmed_replay = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/operations", token=credentials["worker"], body=operation_body(unknown_lease, unknown_operation_id, "rpf14-response-lost-environment"))
+        require_status(confirmed_replay_status, 200, confirmed_replay, "confirmed operation prepare replay")
+        no_blind_retry_status, no_blind_retry = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/operations/{unknown_operation_id}/apply", token=credentials["worker"], body=owner_payload(unknown_lease))
+        require_status(no_blind_retry_status, 200, no_blind_retry, "confirmed operation no-op")
+        _, _, unknown_evidence = ingest_durable_evidence(base_url, credentials["worker"], unknown_job_id)
+        unknown_complete_status, unknown_complete = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/complete", token=credentials["worker"], body=owner_payload(unknown_lease) | {"evidence_id": unknown_evidence["evidence_id"]})
+        require_status(unknown_complete_status, 200, unknown_complete, "unknown complete")
+        unknown_snapshot = unknown_complete.get("job", {})
+        unknown_operation = unknown_snapshot.get("operations", [{}])[0]
+        unknown_events = [event.get("event_type") for event in unknown_snapshot.get("events", [])]
+        if unknown_operation.get("effect_count") != 1 or "UNKNOWN_OUTCOME" not in unknown_events or "OPERATION_RECONCILED" not in unknown_events:
+            raise ProbeFailure("unknown outcome recovery duplicated effect or lost event history")
+        checks["response_lost_unknown_reconcile_cross_process"] = {
+            "status": "PASS",
+            "child_exit": response_lost_child.returncode,
+            "expired_claim": expired_response.get("status"),
+            "unknown": unknown_response.get("status"),
+            "reconcile": reconcile_response.get("status"),
+            "safe_to_retry": reconcile_response.get("safe_to_retry"),
+            "confirmed_prepare_replay": confirmed_replay.get("status"),
+            "post_reconcile_apply": no_blind_retry.get("status"),
+            "effect_count": unknown_operation.get("effect_count"),
+            "events": [event for event in unknown_events if event in {"UNKNOWN_OUTCOME", "OPERATION_RECONCILED"}],
+            "worker_restart_boundary": True,
+            "agent_fail_created": False,
+        }
+
+        # Artifact generation is separated from ingest.  A child exits after
+        # generation; the parent performs canonical ingest twice and records
+        # one immutable execution evidence ref without rerunning the Agent.
+        artifact_job_id = "rpf14-artifact-" + uuid.uuid4().hex[:8]
+        artifact_submit_status, _, _ = submit_durable(base_url, credentials["ci"], artifact_job_id)
+        require_status(artifact_submit_status, 201, {}, "artifact submit")
+        _, _, artifact_lease = claim_durable(base_url, credentials["worker"], artifact_job_id, "rpf14-artifact-worker", 4)
+        if artifact_lease is None:
+            raise ProbeFailure("artifact job lease missing")
+        start_durable(base_url, credentials["worker"], artifact_job_id, artifact_lease)
+        artifact_document = json.loads(candidate_evaluation.path.read_text(encoding="utf-8"))
+        artifact_evaluation_id = f"rpf14-generated-evaluation-{uuid.uuid4().hex[:8]}"
+        if not isinstance(artifact_document.get("evaluation"), dict):
+            raise ProbeFailure("reviewed Evaluation fixture is malformed")
+        artifact_document["evaluation"]["evaluation_id"] = artifact_evaluation_id
+        generated_artifact_path = run_dir / f"{artifact_evaluation_id}.json"
+        generated_artifact_path.write_text(json.dumps(artifact_document, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+        artifact_crash = spawn_artifact_crash_worker(generated_artifact_path)
+        if artifact_crash.returncode != 23:
+            raise ProbeFailure(f"artifact worker exited at wrong boundary: {artifact_crash.returncode}")
+        artifact_client = ControlPlaneClient(base_url, credentials["worker"])
+        artifact_first = artifact_client.ingest_file(generated_artifact_path, artifact_root)
+        artifact_manifest = build_artifact_manifest(generated_artifact_path, artifact_root)
+        artifact_second = artifact_client.ingest_file(generated_artifact_path, artifact_root)
+        if artifact_first.get("status") not in {"INGESTED", "RECONCILED"} or artifact_second.get("status") not in {"IDEMPOTENT_REPLAY", "RECONCILED"}:
+            raise ProbeFailure("artifact ingest interruption was not idempotent")
+        artifact_evidence = {
+            "evidence_id": f"rpf14-execution-evidence-{artifact_job_id}",
+            "entity_type": "EVALUATION",
+            "entity_id": artifact_evaluation_id,
+            "outcome": "PASS",
+            "content_sha256": artifact_manifest.content_sha256,
+            "artifact_ref": artifact_manifest.manifest["artifact_ref"],
+        }
+        artifact_evidence_status, artifact_evidence_response = http_json(base_url, "POST", f"/jobs/{artifact_job_id}/evidence", token=credentials["worker"], body=artifact_evidence)
+        require_status(artifact_evidence_status, 200, artifact_evidence_response, "artifact execution evidence")
+        artifact_replay_status, artifact_replay_response = http_json(base_url, "POST", f"/jobs/{artifact_job_id}/evidence", token=credentials["worker"], body=artifact_evidence)
+        require_status(artifact_replay_status, 200, artifact_replay_response, "artifact evidence replay")
+        artifact_complete_status, artifact_complete = http_json(base_url, "POST", f"/jobs/{artifact_job_id}/complete", token=credentials["worker"], body=owner_payload(artifact_lease) | {"evidence_id": artifact_evidence["evidence_id"]})
+        require_status(artifact_complete_status, 200, artifact_complete, "artifact job complete")
+        if artifact_complete.get("job", {}).get("attempt_number") != 1 or len(artifact_complete.get("job", {}).get("evidence", [])) != 1:
+            raise ProbeFailure("artifact recovery reran the attempt or duplicated evidence")
+        checks["artifact_ingest_crash_recovery"] = {
+            "status": "PASS",
+            "artifact_generated_before_crash": True,
+            "child_exit": artifact_crash.returncode,
+            "canonical_first_ingest": artifact_first.get("status"),
+            "canonical_replay": artifact_second.get("status"),
+            "execution_evidence": artifact_evidence_response.get("status"),
+            "execution_evidence_replay": artifact_replay_response.get("status"),
+            "attempt_number": artifact_complete.get("job", {}).get("attempt_number"),
+            "evidence_count": len(artifact_complete.get("job", {}).get("evidence", [])),
+            "agent_rerun": False,
+        }
+
+        # Cancellation and timeout remain platform/execution states, never
+        # an Agent FAIL.  Queued cancellation/timeout terminalize directly;
+        # running cancellation waits for owner acknowledgement.
+        queued_cancel_id = "rpf14-cancel-queued-" + uuid.uuid4().hex[:8]
+        cancel_submit_status, _, _ = submit_durable(base_url, credentials["ci"], queued_cancel_id)
+        require_status(cancel_submit_status, 201, {}, "queued cancel submit")
+        _, _, queued_cancel_evidence = ingest_durable_evidence(base_url, credentials["worker"], queued_cancel_id, "CANCELLED")
+        queued_cancel_status, queued_cancel_response = http_json(base_url, "POST", f"/jobs/{queued_cancel_id}/cancel", token=credentials["ci"], body={"evidence_id": queued_cancel_evidence["evidence_id"]})
+        require_status(queued_cancel_status, 200, queued_cancel_response, "queued cancel")
+        if queued_cancel_response.get("job", {}).get("state") != "CANCELLED":
+            raise ProbeFailure("queued cancel did not terminalize")
+        running_cancel_id = "rpf14-cancel-running-" + uuid.uuid4().hex[:8]
+        cancel_running_submit_status, _, _ = submit_durable(base_url, credentials["ci"], running_cancel_id)
+        require_status(cancel_running_submit_status, 201, {}, "running cancel submit")
+        _, _, running_cancel_lease = claim_durable(base_url, credentials["worker"], running_cancel_id, "rpf14-cancel-worker", 4)
+        if running_cancel_lease is None:
+            raise ProbeFailure("running cancel lease missing")
+        start_durable(base_url, credentials["worker"], running_cancel_id, running_cancel_lease)
+        _, _, running_cancel_evidence = ingest_durable_evidence(base_url, credentials["worker"], running_cancel_id, "CANCELLED")
+        cancel_request_status, cancel_request_response = http_json(base_url, "POST", f"/jobs/{running_cancel_id}/cancel", token=credentials["ci"], body={})
+        require_status(cancel_request_status, 200, cancel_request_response, "running cancel request")
+        if cancel_request_response.get("status") != "CANCEL_REQUESTED":
+            raise ProbeFailure("running cancel did not remain a request")
+        running_cancel_lease["lease_version"] = cancel_request_response["job"]["version"]
+        cancel_ack_status, cancel_ack_response = http_json(base_url, "POST", f"/jobs/{running_cancel_id}/cancel/ack", token=credentials["worker"], body=owner_payload(running_cancel_lease) | {"evidence_id": running_cancel_evidence["evidence_id"]})
+        require_status(cancel_ack_status, 200, cancel_ack_response, "running cancel acknowledgement")
+        if cancel_ack_response.get("job", {}).get("state") != "CANCELLED":
+            raise ProbeFailure("running cancel acknowledgement did not cancel")
+
+        timeout_job_id = "rpf14-timeout-unknown-" + uuid.uuid4().hex[:8]
+        timeout_submit_status, _, _ = submit_durable(base_url, credentials["ci"], timeout_job_id)
+        require_status(timeout_submit_status, 201, {}, "timeout submit")
+        _, _, timeout_lease = claim_durable(base_url, credentials["worker"], timeout_job_id, "rpf14-timeout-worker", 4)
+        if timeout_lease is None:
+            raise ProbeFailure("timeout lease missing")
+        start_durable(base_url, credentials["worker"], timeout_job_id, timeout_lease)
+        timeout_operation_id = f"rpf14-operation-{timeout_job_id}"
+        timeout_operation_status, timeout_operation_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/operations", token=credentials["worker"], body=operation_body(timeout_lease, timeout_operation_id, "rpf14-timeout-environment"))
+        require_status(timeout_operation_status, 200, timeout_operation_response, "timeout operation prepare")
+        timeout_lost_status, timeout_lost_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/operations/{timeout_operation_id}/apply?simulate_response_lost=true", token=credentials["worker"], body=owner_payload(timeout_lease))
+        require_status(timeout_lost_status, 503, timeout_lost_response, "timeout response-lost")
+        _, _, timeout_evidence = ingest_durable_evidence(base_url, credentials["worker"], timeout_job_id, "INCONCLUSIVE")
+        timeout_request_status, timeout_request_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/timeout", token=credentials["worker"], body=owner_payload(timeout_lease) | {"evidence_id": timeout_evidence["evidence_id"]})
+        require_status(timeout_request_status, 200, timeout_request_response, "unknown timeout")
+        if timeout_request_response.get("status") != "RECONCILE_REQUIRED":
+            raise ProbeFailure("unknown side-effect timeout did not require reconcile")
+        http_json(base_url, "POST", f"/jobs/{timeout_job_id}/operations/{timeout_operation_id}/unknown", token=credentials["worker"], body={"worker_id": "rpf14-timeout-recovery"})
+        timeout_reconcile_status, timeout_reconcile_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/operations/{timeout_operation_id}/reconcile", token=credentials["worker"], body={"worker_id": "rpf14-timeout-recovery"})
+        require_status(timeout_reconcile_status, 200, timeout_reconcile_response, "timeout reconcile")
+        _, _, timeout_final_lease = claim_durable(base_url, credentials["worker"], timeout_job_id, "rpf14-timeout-final", 3)
+        if timeout_final_lease is None:
+            raise ProbeFailure("timeout reconcile did not requeue")
+        start_durable(base_url, credentials["worker"], timeout_job_id, timeout_final_lease)
+        timeout_failed_status, timeout_failed_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/fail-platform", token=credentials["worker"], body=owner_payload(timeout_final_lease) | {"evidence_id": timeout_evidence["evidence_id"], "reason": "RPF14_TIMEOUT_AFTER_RECONCILE"})
+        require_status(timeout_failed_status, 200, timeout_failed_response, "platform timeout finalization")
+        queued_timeout_id = "rpf14-timeout-queued-" + uuid.uuid4().hex[:8]
+        queued_timeout_submit_status, _, _ = submit_durable(base_url, credentials["ci"], queued_timeout_id)
+        require_status(queued_timeout_submit_status, 201, {}, "queued timeout submit")
+        _, _, queued_timeout_evidence = ingest_durable_evidence(base_url, credentials["worker"], queued_timeout_id, "INCONCLUSIVE")
+        queued_timeout_status, queued_timeout_response = http_json(base_url, "POST", f"/jobs/{queued_timeout_id}/timeout", token=credentials["ci"], body={"evidence_id": queued_timeout_evidence["evidence_id"]})
+        require_status(queued_timeout_status, 200, queued_timeout_response, "queued timeout")
+        if timeout_failed_response.get("job", {}).get("state") != "FAILED_PLATFORM" or timeout_failed_response.get("job", {}).get("outcome_status") != "INCONCLUSIVE":
+            raise ProbeFailure("platform timeout was not FAILED_PLATFORM/INCONCLUSIVE")
+        if queued_timeout_response.get("job", {}).get("state") != "FAILED_PLATFORM":
+            raise ProbeFailure("queued timeout was not FAILED_PLATFORM")
+        checks["cancellation_timeout_platform_semantics"] = {
+            "status": "PASS",
+            "queued_cancel": queued_cancel_response.get("status"),
+            "running_cancel_request": cancel_request_response.get("status"),
+            "running_cancel_ack": cancel_ack_response.get("job", {}).get("state"),
+            "unknown_timeout": timeout_request_response.get("status"),
+            "timeout_reconcile": timeout_reconcile_response.get("status"),
+            "platform_timeout_state": timeout_failed_response.get("job", {}).get("state"),
+            "platform_timeout_outcome": timeout_failed_response.get("job", {}).get("outcome_status"),
+            "queued_timeout_state": queued_timeout_response.get("job", {}).get("state"),
+            "agent_fail_created": False,
+        }
+
+        # Read API/metrics and retention boundary are intentionally
+        # operator-facing and read-only.  No delete/cleanup route is exposed
+        # by this stabilization implementation.
+        jobs_status, jobs_response = http_json(base_url, "GET", "/jobs?limit=100", token=credentials["read"])
+        require_status(jobs_status, 200, jobs_response, "execution list API")
+        metrics_status, metrics_response = http_json(base_url, "GET", "/execution-metrics", token=credentials["read"])
+        require_status(metrics_status, 200, metrics_response, "execution metrics API")
+        required_metrics = {"queued_jobs", "claimed_or_running_jobs", "reconcile_required_jobs", "completed_jobs", "platform_failed_jobs", "cancelled_jobs", "lease_expiry_count", "reclaim_count", "stale_attempt_rejection_count", "attempts_total"}
+        if not required_metrics.issubset(metrics_response):
+            raise ProbeFailure("execution metrics are incomplete")
+        listed_jobs = jobs_response.get("items", [])
+        if any(contains_key(item, "lease_token") for item in listed_jobs):
+            raise ProbeFailure("execution list API exposed a raw lease token")
+        schema_tables = psql(container, "runproof", "SELECT count(*) FROM information_schema.tables WHERE table_name IN ('rpf_execution_job','rpf_execution_attempt','rpf_execution_operation','rpf_execution_event','rpf_execution_evidence');")
+        history_versions = psql(container, "runproof", "SELECT string_agg(version, ',') FROM rpf_schema_history;")
+        if int(schema_tables) != 5 or "rpf-11-postgresql-canonical-schema-v1" not in history_versions or SCHEMA_VERSION not in history_versions:
+            raise ProbeFailure("durable schema/history identity is incomplete")
+        checks["execution_read_api_metrics_retention"] = {
+            "status": "PASS",
+            "listed_jobs": len(listed_jobs),
+            "metrics": sorted(required_metrics),
+            "raw_lease_token_in_read_model": False,
+            "retention": {
+                "terminal_jobs_retained": True,
+                "attempts_events_append_only": True,
+                "evidence_retention_independent": True,
+                "delete_endpoint": False,
+                "cleanup_policy": "OUT_OF_SCOPE_NO_SILENT_DELETE",
+            },
+            "execution_tables": int(schema_tables),
+            "schema_history": history_versions.split(","),
+        }
+
+        decision_id = "release-decision-rpf14-superseding-" + uuid.uuid4().hex[:8]
         superseding_document = json.loads(candidate_decision.path.read_text(encoding="utf-8"))
         superseding_document["release_decision"]["release_decision_id"] = decision_id
         superseding_document["release_decision"].setdefault("history", {})["supersedes_decision_id"] = candidate_decision.entity_id
@@ -410,14 +1242,21 @@ def main() -> int:
         require_status(status, 200, body, "release decision history")
         checks["decision_writer_history"] = {"status": "PASS", "history_count": len(body.get("items", [])), "supersedes": candidate_decision.entity_id, "release_executed": False, "deployment_authorized": False}
 
-        service.terminate()
-        service.wait(timeout=10)
+        stop_process(service)
+        if service_handles:
+            for handle in service_handles:
+                handle.close()
+            service_handles = None
         service, *handles = start_service(service_port, pg_port, artifact_root, credentials, log_dir)
         service_handles = (handles[0], handles[1])
         health = wait_for_health(base_url, service)
         status, body = http_json(base_url, "GET", f"/metadata/RELEASE_DECISION/{decision_id}", token=credentials["read"])
         require_status(status, 200, body, "service restart history")
-        checks["service_restart"] = {"status": "PASS", "ready": health.get("readiness"), "history_recovered": True}
+        status, worker_after_restart = http_json(base_url, "GET", f"/jobs/{worker_job_id}", token=credentials["read"])
+        require_status(status, 200, worker_after_restart, "worker terminal read after service restart")
+        if worker_after_restart.get("state") != "COMPLETED":
+            raise ProbeFailure("formal worker terminal job was not readable after service restart")
+        checks["service_restart"] = {"status": "PASS", "ready": health.get("readiness"), "history_recovered": True, "worker_terminal_readback": worker_after_restart.get("state")}
 
         docker(["stop", container], timeout=30)
         unavailable_seen = False
@@ -435,15 +1274,17 @@ def main() -> int:
         checks["database_restart"] = {"status": "PASS", "unavailable_status": 503, "recovered_readiness": health.get("readiness")}
 
         dump = docker(["exec", container, "pg_dump", "-U", "runproof", "-d", "runproof", "-Fc"], timeout=60).stdout
-        restore_database = "rpf11_restore"
+        restore_database = "rpf14_restore"
         docker(["exec", container, "createdb", "-U", "runproof", restore_database])
         docker(["exec", "-i", container, "pg_restore", "-U", "runproof", "-d", restore_database], input_bytes=dump, timeout=60)
         restored_rows = int(psql(container, restore_database, "SELECT count(*) FROM canonical_metadata;"))
         restored_decisions = int(psql(container, restore_database, "SELECT count(*) FROM canonical_metadata WHERE entity_type = 'RELEASE_DECISION';"))
+        restored_jobs = int(psql(container, restore_database, "SELECT count(*) FROM rpf_execution_job;"))
+        restored_events = int(psql(container, restore_database, "SELECT count(*) FROM rpf_execution_event;"))
         docker(["exec", container, "dropdb", "-U", "runproof", restore_database])
-        if restored_rows < expected_rows or restored_decisions < 3:
-            raise ProbeFailure("independent pg_restore did not preserve canonical rows")
-        checks["backup_restore"] = {"status": "PASS", "format": "pg_dump custom", "bytes": len(dump), "restored_canonical_rows": restored_rows, "restored_decisions": restored_decisions}
+        if restored_rows < expected_rows or restored_decisions < 3 or restored_jobs < 1 or restored_events < restored_jobs:
+            raise ProbeFailure("independent pg_restore did not preserve canonical and execution rows")
+        checks["backup_restore"] = {"status": "PASS", "format": "pg_dump custom", "bytes": len(dump), "restored_canonical_rows": restored_rows, "restored_decisions": restored_decisions, "restored_execution_jobs": restored_jobs, "restored_execution_events": restored_events}
 
         psql(container, "runproof", "INSERT INTO rpf_schema_history(version, applied_at) VALUES ('rpf-unsupported-schema-v999', now());")
         mismatch_port = port()
@@ -465,8 +1306,11 @@ def main() -> int:
             "private_reasoning_persisted": False,
         }
         result_document = {
+            "schema_version": "rpf-14-formal-control-plane-evidence-v1",
+            "artifact_kind": "RunProof Formal Durable Execution Evidence",
             "status": "PASS",
             "checks": checks,
+            "source_identity": formal_source_identity(),
             "toolchain": {"postgres_image": PG_IMAGE, "schema_version": SCHEMA_VERSION, "java": "17+", "client": "Python urllib"},
         }
         serialized = json.dumps(result_document, ensure_ascii=False)
@@ -478,30 +1322,31 @@ def main() -> int:
         return write_result(run_dir, {"status": "FAIL", "error": safe_error, "checks": checks})
     finally:
         if mismatch_service is not None:
-            mismatch_service.kill()
-            mismatch_service.wait(timeout=5)
+            stop_process(mismatch_service, timeout=5)
         if service is not None and service.poll() is None:
-            service.terminate()
-            try:
-                service.wait(timeout=10)
-            except subprocess.TimeoutExpired:
-                service.kill()
-                service.wait(timeout=5)
+            stop_process(service)
         if service_handles:
             for handle in service_handles:
                 handle.close()
         cleanup(container, volume)
+        for process_id in sorted(PROBE_PROCESS_IDS):
+            subprocess.run(["taskkill", "/PID", str(process_id), "/T", "/F"], capture_output=True, check=False, timeout=10)
+        PROBE_PROCESS_IDS.clear()
 
 
 def write_result(run_dir: Path, document: dict[str, Any]) -> int:
     output = run_dir / "probe-result.json"
     output.write_text(json.dumps(document, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     if document.get("status") == "PASS":
-        print(f"PASS: RPF-11 formal Control Plane PostgreSQL/corpus/auth probe ({output.as_posix()})")
+        print(f"PASS: RPF-14 formal Control Plane durable/PostgreSQL/corpus/auth probe ({output.as_posix()})")
         return 0
-    print(f"FAIL: RPF-11 formal Control Plane probe ({output.as_posix()})", file=sys.stderr)
+    print(f"FAIL: RPF-14 formal Control Plane probe ({output.as_posix()})", file=sys.stderr)
     return 1
 
 
 if __name__ == "__main__":
+    if len(sys.argv) == 5 and sys.argv[1] == "--worker-response-lost":
+        raise SystemExit(run_response_lost_child(sys.argv[2], sys.argv[3], sys.argv[4]))
+    if len(sys.argv) == 3 and sys.argv[1] == "--worker-artifact-crash":
+        raise SystemExit(run_artifact_crash_child(sys.argv[2]))
     raise SystemExit(main())

@@ -357,6 +357,99 @@ class ControlPlaneClient:
         path = "/release-decisions" if entity_type == "RELEASE_DECISION" else "/ingest/completed-evidence"
         return self.request("POST", path, manifest)
 
+    # Durable execution API. These methods deliberately stay HTTP/JSON-only;
+    # the worker never opens a PostgreSQL connection or writes canonical rows.
+    def submit_job(self, payload: dict[str, Any]) -> dict[str, Any]:
+        return self.request("POST", "/jobs", payload)
+
+    def list_jobs(self, *, state: str | None = None, target_type: str | None = None, limit: int = 50) -> list[dict[str, Any]]:
+        query: list[str] = []
+        if state:
+            query.append(f"state={quote(state, safe='')}")
+        if target_type:
+            query.append(f"target_type={quote(target_type, safe='')}")
+        query.append(f"limit={max(1, min(limit, 100))}")
+        response = self.request("GET", "/jobs" + ("?" + "&".join(query) if query else ""))
+        items = response.get("items")
+        if not isinstance(items, list):
+            raise ControlPlaneClientError("Control Plane job list response is malformed", code="INVALID_API_RESPONSE")
+        return [item for item in items if isinstance(item, dict)]
+
+    def get_job(self, job_id: str) -> dict[str, Any] | None:
+        try:
+            return self.request("GET", f"/jobs/{quote(job_id, safe='')}")
+        except ControlPlaneClientError as error:
+            if error.status == 404 and error.code == "CANONICAL_METADATA_NOT_FOUND":
+                return None
+            raise
+
+    def claim_job(self, job_id: str, worker_id: str, *, lease_seconds: int = 15) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/claim", {
+            "worker_id": worker_id,
+            "lease_seconds": lease_seconds,
+        })
+
+    def start_job(self, job_id: str, owner: dict[str, Any]) -> dict[str, Any]:
+        response = self.request("POST", f"/jobs/{quote(job_id, safe='')}/start", owner)
+        job = response.get("job")
+        if isinstance(job, dict) and isinstance(job.get("version"), int):
+            owner["lease_version"] = job["version"]
+        return response
+
+    def heartbeat_job(self, job_id: str, owner: dict[str, Any], *, lease_seconds: int = 15) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/heartbeat", {**owner, "lease_seconds": lease_seconds})
+
+    def prepare_operation(self, job_id: str, owner: dict[str, Any], *, operation_id: str, environment_id: str, operation_fingerprint: str) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations", {
+            **owner,
+            "operation_id": operation_id,
+            "environment_id": environment_id,
+            "operation_fingerprint": operation_fingerprint,
+        })
+
+    def dispatch_operation(self, job_id: str, operation_id: str, owner: dict[str, Any]) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/dispatch", owner)
+
+    def mark_operation_not_submitted(self, job_id: str, operation_id: str, owner: dict[str, Any]) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/not-submitted", owner)
+
+    def apply_operation(self, job_id: str, operation_id: str, owner: dict[str, Any], *, simulate_response_lost: bool = False) -> dict[str, Any]:
+        suffix = "?simulate_response_lost=true" if simulate_response_lost else ""
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/apply{suffix}", owner)
+
+    def confirm_operation(self, job_id: str, operation_id: str, owner: dict[str, Any], *, receipt_ref: str | None = None) -> dict[str, Any]:
+        body = dict(owner)
+        if receipt_ref:
+            body["receipt_ref"] = receipt_ref
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/confirm", body)
+
+    def mark_operation_unknown(self, job_id: str, operation_id: str, worker_id: str) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/unknown", {"worker_id": worker_id})
+
+    def reconcile_operation(self, job_id: str, operation_id: str, worker_id: str) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/reconcile", {"worker_id": worker_id})
+
+    def get_operation(self, job_id: str, operation_id: str) -> dict[str, Any]:
+        return self.request("GET", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}")
+
+    def ingest_execution_evidence(self, job_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/evidence", payload)
+
+    def complete_job(self, job_id: str, owner: dict[str, Any], evidence_id: str) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/complete", {**owner, "evidence_id": evidence_id})
+
+    def fail_platform_job(self, job_id: str, owner: dict[str, Any], evidence_id: str, reason: str) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/fail-platform", {**owner, "evidence_id": evidence_id, "reason": reason})
+
+    def cancel_job(self, job_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/cancel", payload or {})
+
+    def acknowledge_cancel(self, job_id: str, owner: dict[str, Any], evidence_id: str) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/cancel/ack", {**owner, "evidence_id": evidence_id})
+
+    def timeout_job(self, job_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/timeout", payload)
+
     def get(self, entity_type: str, entity_id: str) -> dict[str, Any] | None:
         try:
             return self.request("GET", f"/metadata/{quote(entity_type, safe='')}/{quote(entity_id, safe='')}")

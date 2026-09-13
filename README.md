@@ -4,7 +4,7 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 
 ## 仓库入口
 
-仓库包含 bootstrap 文档、[RPF-01 disposable DeepSeek probe](spikes/rpf-01/README.md)、[RPF-02 controlled-environment probe](spikes/rpf-02/README.md)、[RPF-03～RPF-08 product runtime](runtime/README.md)、[RPF-09 persistence/API boundary probe](spikes/rpf-09/README.md)、[RPF-10 PostgreSQL/auth boundary probe](spikes/rpf-10/README.md)、[RPF-11 formal Control Plane](control-plane/README.md) 和 [Evidence / Evaluation / Failure / Regression / Release Decision Web surface](web/README.md)。当前生命周期、任务与远端交付事实以 [CURRENT_STATE](docs/project/CURRENT_STATE.md) 为准。
+仓库包含 bootstrap 文档、[RPF-01 disposable DeepSeek probe](spikes/rpf-01/README.md)、[RPF-02 controlled-environment probe](spikes/rpf-02/README.md)、[RPF-03～RPF-08 product runtime](runtime/README.md)、[RPF-09 persistence/API boundary probe](spikes/rpf-09/README.md)、[RPF-10 PostgreSQL/auth boundary probe](spikes/rpf-10/README.md)、[RPF-11 formal Control Plane](control-plane/README.md)、RPF-14 formal durable execution / PostgreSQL job transport 和 [Evidence / Evaluation / Failure / Regression / Release Decision Web surface](web/README.md)。当前生命周期、任务与远端交付事实以 [CURRENT_STATE](docs/project/CURRENT_STATE.md) 为准。
 
 - [PROJECT_BRIEF](docs/project/PROJECT_BRIEF.md)：稳定产品意图、v1 Reliability/UX 合同与边界。
 - [DECISIONS](docs/project/DECISIONS.md)：继承 Bootstrap canonical D-001～D-012 的有效决定。
@@ -12,6 +12,7 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 - RPF-02 已取得 Docker provider 的 Prototype-level minimum Environment 证据；RPF-03 已建立首个单 Run reliability vertical slice；RPF-04 收敛了 Run Evidence 合同；RPF-05 已建立真实 Agent FAIL、Platform/Environment ERROR 与 Failure Case 复现闭环；RPF-06 已将该 Failure Case 经 promotion gate 晋升为首条 Historical Regression，并完成 known-bad/fixed Candidate focused rerun；RPF-07 建立了三成员 Evaluation Suite、Baseline/Candidate 聚合比较与只读 Evaluation/Comparison 控制面；RPF-08 建立了 Quality Policy、Release Gate、Baseline/Candidate Release Decision；RPF-09 以 disposable Spring Boot/H2 candidate 验证了 Stabilization 的 metadata/artifact/API 最小边界。不代表 production-grade isolation/HA/DB/API/Job Transport，也不把 Docker、H2 或本地 artifact store 固化为永久产品身份。
 - RPF-11 已将 RPF-10 证实的边界收敛为正式 Java/Spring + PostgreSQL canonical metadata 模块、immutable artifact store、受限 service auth、Python HTTP client 与默认 API-backed Web datasource；不引入 Queue、scheduler、durable worker、Approval 或 release/deploy endpoint。
 - RPF-12 已接入真实 GitHub Actions Canonical Release Gate：每次 main 代码变更在 hosted runner 上 fresh 执行 Baseline/Candidate Evaluation，并以 Control Plane canonical Release Decision read-back 作为 CI 结论；只上传脱敏 JSON/Job Summary，不执行 release/deploy。
+- RPF-14 已将 RPF-13 的候选边界落入正式 Control Plane：PostgreSQL durable Job/Attempt/Operation/Event/Evidence schema、fenced poll/claim/heartbeat、跨进程 UNKNOWN_OUTCOME reconcile、正式 Python worker、只读 Execution investigation surface，以及 RPF-12 的 Baseline/Candidate durable submit/poll/read 路径。仍不引入 broker、scheduler、生产 HA、Approval 或 release/deploy endpoint。
 
 ## 核心方向
 

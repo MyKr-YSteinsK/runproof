@@ -41,12 +41,13 @@ import {
   TrajectoryEvent,
 } from "./data/artifacts";
 import { ControlPlaneApiError, controlPlaneDataSourceMode, loadControlPlaneCorpus } from "./data/controlPlaneApi";
+import { ExecutionJobDto, loadExecutionJob, loadExecutionJobs, loadExecutionMetrics } from "./data/executions";
 
 const DATA_SOURCE_MODE = controlPlaneDataSourceMode();
 const DATA_SOURCE_LABEL = DATA_SOURCE_MODE === "api" ? "Control Plane API" : "reviewed fixture corpus";
 const DATA_SOURCE_FOOTNOTE = DATA_SOURCE_MODE === "api" ? "Control Plane API + verified immutable artifact" : "reviewed fixture artifact";
 
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null };
+type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null; executionJobId: string | null };
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -92,6 +93,7 @@ function readLocation(): LocationState {
   const evaluationMatch = pathname.match(/^\/evaluations\/([^/]+)$/);
   const comparisonMatch = pathname.match(/^\/comparisons\/([^/]+)$/);
   const releaseDecisionMatch = pathname.match(/^\/release-decisions\/([^/]+)$/);
+  const executionMatch = pathname.match(/^\/executions\/([^/]+)$/);
   return {
     pathname,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
@@ -101,6 +103,7 @@ function readLocation(): LocationState {
     evaluationId: evaluationMatch ? decodeURIComponent(evaluationMatch[1]) : null,
     comparisonId: comparisonMatch ? decodeURIComponent(comparisonMatch[1]) : null,
     releaseDecisionId: releaseDecisionMatch ? decodeURIComponent(releaseDecisionMatch[1]) : null,
+    executionJobId: executionMatch ? decodeURIComponent(executionMatch[1]) : null,
   };
 }
 
@@ -198,7 +201,7 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, failure = false, regression = false, evaluation = false, comparison = false, release = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean }) {
+function AppShell({ children, detail = false, failure = false, regression = false, evaluation = false, comparison = false, release = false, execution = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean; execution?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
@@ -215,7 +218,7 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <span className="workspace-status"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
-          <a className={!detail && !failure && !regression && !evaluation && !comparison && !release ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={!detail && !failure && !regression && !evaluation && !comparison && !release && !execution ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -245,6 +248,11 @@ function AppShell({ children, detail = false, failure = false, regression = fals
             <span>Release Decisions</span>
             <span className="nav-count">{reviewedReleaseDecisions.length}</span>
           </a>
+          <a className={execution ? "active" : ""} href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}>
+            <span className="nav-glyph">◇</span>
+            <span>Executions</span>
+            <span className="nav-count">API</span>
+          </a>
         </nav>
         <div className="rail-note">
           <span className="section-label">CURRENT SURFACE</span>
@@ -262,11 +270,11 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{execution ? (detail ? "Durable execution detail" : "Durable executions") : release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
-            <span className="topbar-revision">RPF-11</span>
+            <span className="topbar-revision">RPF-14</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -1410,6 +1418,192 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
   );
 }
 
+function executionStatusTone(state: string): "success" | "fault" | "error" | "neutral" | "review" {
+  if (state === "COMPLETED") return "success";
+  if (state === "FAILED_PLATFORM") return "error";
+  if (state === "CANCELLED") return "fault";
+  if (state === "RECONCILE_REQUIRED") return "review";
+  return "neutral";
+}
+
+function executionStateNote(state: string): string {
+  switch (state) {
+    case "QUEUED": return "Awaiting a worker claim";
+    case "CLAIMED": return "Claimed; Agent start not yet proven";
+    case "RUNNING": return "Worker execution in progress";
+    case "CANCEL_REQUESTED": return "Cancellation requested; awaiting safe ack";
+    case "RECONCILE_REQUIRED": return "Side-effect outcome is uncertain · blind retry prohibited";
+    case "COMPLETED": return "Terminal evidence committed";
+    case "FAILED_PLATFORM": return "Platform boundary · not Agent FAIL";
+    case "CANCELLED": return "Terminal cancellation evidence committed";
+    default: return "Unknown execution state";
+  }
+}
+
+function executionTargetHref(target: ExecutionJobDto["target"] | null | undefined): string | null {
+  if (!target || typeof target.id !== "string" || !target.id) return null;
+  const routeByType: Record<string, string> = {
+    RUN: "runs",
+    EVALUATION: "evaluations",
+    REGRESSION: "regressions",
+    RELEASE_DECISION: "release-decisions",
+  };
+  const route = routeByType[target.type];
+  return route ? `/${route}/${encodeURIComponent(target.id)}` : null;
+}
+
+function executionEvidenceHref(evidence: { entity_type: string; entity_id: string }): string | null {
+  return executionTargetHref({ type: evidence.entity_type, id: evidence.entity_id });
+}
+
+function executionLeaseState(job: ExecutionJobDto): string {
+  if (job.state === "RECONCILE_REQUIRED") return "RECONCILE REQUIRED";
+  if (!job.active_attempt_id) return job.state === "QUEUED" ? "NOT CLAIMED" : "NO ACTIVE LEASE";
+  const expiry = job.lease.lease_expires_at ? Date.parse(job.lease.lease_expires_at) : Number.NaN;
+  if (!Number.isNaN(expiry) && expiry <= Date.now()) return "EXPIRED / RECLAIMABLE";
+  return "LEASE ACTIVE";
+}
+
+function ExecutionIndex() {
+  const [state, setState] = useState<"loading" | "ready" | "error">(DATA_SOURCE_MODE === "fixture" ? "ready" : "loading");
+  const [jobs, setJobs] = useState<ExecutionJobDto[]>([]);
+  const [metrics, setMetrics] = useState<Record<string, number> | null>(null);
+  const [error, setError] = useState<ControlPlaneApiError | undefined>();
+  useEffect(() => {
+    if (DATA_SOURCE_MODE === "fixture") return;
+    let active = true;
+    Promise.all([loadExecutionJobs(), loadExecutionMetrics()])
+      .then(([nextJobs, nextMetrics]) => {
+        if (!active) return;
+        setJobs(nextJobs);
+        setMetrics(nextMetrics as unknown as Record<string, number>);
+        setState("ready");
+      })
+      .catch((cause: unknown) => {
+        if (!active) return;
+        setError(cause instanceof ControlPlaneApiError ? cause : new ControlPlaneApiError("Execution API is unavailable.", "API_UNAVAILABLE", null, true));
+        setState("error");
+      });
+    return () => { active = false; };
+  }, []);
+  if (state === "error") return <ExecutionSurfaceState error={error} />;
+  return (
+    <AppShell execution>
+      <div className="page-header index-header">
+        <div>
+          <span className="eyebrow">DURABLE EXECUTIONS · POSTGRESQL READ MODEL</span>
+          <h1>Follow a job across attempts, leases, and evidence.</h1>
+          <p className="lede">Execution coordination is mutable; Run and Evaluation evidence remains immutable. This surface is read-only and never claims, retries, cancels, or releases a job.</p>
+        </div>
+        <div className="corpus-note">
+          <span className="section-label">CURRENT VIEW</span>
+          <strong>{DATA_SOURCE_MODE === "fixture" ? "API only" : `${jobs.length} jobs`}</strong>
+          <span>{DATA_SOURCE_MODE === "fixture" ? "fixture mode has no jobs" : "canonical job snapshots"}</span>
+        </div>
+      </div>
+      <section className="corpus-boundary execution-boundary" aria-label="Execution boundary">
+        <span className="boundary-mark">◇</span>
+        <p><strong>Execution boundary.</strong> A <strong>RECONCILE_REQUIRED</strong> job means lease expiry or transport uncertainty did not prove non-execution. Inspect the operation and receipt evidence before any next attempt; blind retry is prohibited.</p>
+      </section>
+      {DATA_SOURCE_MODE === "fixture" ? (
+        <section className="execution-empty" aria-live="polite">
+          <span className="eyebrow">EXPLICIT FIXTURE MODE</span>
+          <h2>Durable jobs are available from the Control Plane API.</h2>
+          <p>Fixture mode intentionally does not invent execution records. Run the Web against <span className="mono">/api/v1</span> to inspect canonical PostgreSQL job state.</p>
+        </section>
+      ) : (
+        <>
+          <section className="execution-metrics" aria-label="Execution metrics">
+            <div><span>Queued</span><strong>{metrics?.queued_jobs ?? "—"}</strong><small>awaiting claim</small></div>
+            <div><span>Active</span><strong>{metrics?.claimed_or_running_jobs ?? "—"}</strong><small>claim / run / cancel request</small></div>
+            <div><span>Reconcile</span><strong>{metrics?.reconcile_required_jobs ?? "—"}</strong><small>blind retry blocked</small></div>
+            <div><span>Completed</span><strong>{metrics?.completed_jobs ?? "—"}</strong><small>terminal evidence bound</small></div>
+            <div><span>Platform failed</span><strong>{metrics?.platform_failed_jobs ?? "—"}</strong><small>not Agent FAIL</small></div>
+          </section>
+          <section className="execution-list-section" aria-labelledby="execution-list-heading">
+            <div className="section-heading"><div><span className="eyebrow">SELECT A JOB</span><h2 id="execution-list-heading">Canonical execution jobs</h2></div><span className="section-count">{jobs.length.toString().padStart(2, "0")} records</span></div>
+            {jobs.length === 0 ? <div className="execution-empty compact"><h2>No durable jobs in the current Control Plane.</h2><p>Submission and worker mutation are intentionally unavailable from this read-only surface.</p></div> : (
+              <div className="execution-list">
+                <div className="execution-list-head" aria-hidden="true"><span>STATE / SIGNAL</span><span>JOB / TARGET</span><span>ATTEMPT / WORKER</span><span>LEASE / UPDATED</span><span /></div>
+                {jobs.map((job) => {
+                  const href = `/executions/${encodeURIComponent(job.job_id)}`;
+                  return <a className="execution-row" key={job.job_id} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
+                    <div><StatusTag status={job.state} tone={executionStatusTone(job.state)} /><span className="signal-label">{executionStateNote(job.state)}</span></div>
+                    <div><strong className="mono">{shortId(job.job_id, 25)}</strong><span>{displayValue(job.job_type)} · {displayValue(job.target?.type)} / {shortId(job.target?.id, 26)}</span></div>
+                    <div><strong>{job.attempt_number ? `Attempt ${job.attempt_number}` : "No attempt"}</strong><span>{displayValue(job.active_worker_id || "—")} · v{displayValue(job.version)}</span></div>
+                    <div><strong>{executionLeaseState(job)}</strong><span>{formatDate(job.updated_at)} UTC</span></div>
+                    <span className="row-arrow" aria-hidden="true">→</span>
+                  </a>;
+                })}
+              </div>
+            )}
+          </section>
+        </>
+      )}
+      <footer className="page-footnote"><span>Source: Control Plane API · PostgreSQL canonical execution state</span><span>Read-only · no worker or release action</span></footer>
+    </AppShell>
+  );
+}
+
+function ExecutionDetail({ jobId }: { jobId: string }) {
+  const [state, setState] = useState<"loading" | "ready" | "error">(DATA_SOURCE_MODE === "fixture" ? "ready" : "loading");
+  const [job, setJob] = useState<ExecutionJobDto | null>(null);
+  const [error, setError] = useState<ControlPlaneApiError | undefined>();
+  useEffect(() => {
+    if (DATA_SOURCE_MODE === "fixture") return;
+    let active = true;
+    loadExecutionJob(jobId)
+      .then((nextJob) => { if (active) { setJob(nextJob); setState("ready"); } })
+      .catch((cause: unknown) => {
+        if (!active) return;
+        setError(cause instanceof ControlPlaneApiError ? cause : new ControlPlaneApiError("Execution API is unavailable.", "API_UNAVAILABLE", null, true));
+        setState("error");
+      });
+    return () => { active = false; };
+  }, [jobId]);
+  if (DATA_SOURCE_MODE === "fixture") return <ExecutionSurfaceState />;
+  if (state === "error") return <ExecutionSurfaceState error={error} />;
+  if (state === "loading" || !job) return <ExecutionSurfaceState loading />;
+  const activeAttempt = job.active_attempt_id ? job.attempts.find((attempt) => attempt.attempt_id === job.active_attempt_id) : undefined;
+  const targetHref = executionTargetHref(job.target);
+  const reconcileRequired = job.state === "RECONCILE_REQUIRED" || job.operations.some((operation) => ["PREPARED", "IN_FLIGHT", "UNKNOWN_OUTCOME"].includes(operation.status));
+  return (
+    <AppShell detail execution>
+      <div className="detail-breadcrumb"><a href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}>Executions</a><span aria-hidden="true">/</span><span>{shortId(job.job_id, 34)}</span><span className="schema-chip">rpf-14 durable job</span></div>
+      <div className="detail-header execution-detail-header">
+        <div><span className="eyebrow">DURABLE EXECUTION INVESTIGATION</span><h1>{humanize(job.state)} · {displayValue(job.job_type)}</h1><p className="detail-subtitle">{executionStateNote(job.state)}. The execution state and Agent/Evaluation outcome are intentionally reported as separate facts.</p></div>
+        <div className="detail-header-status"><StatusTag status={job.state} tone={executionStatusTone(job.state)} /><span className="status-note">read-only canonical job snapshot</span></div>
+      </div>
+      {reconcileRequired && <section className="execution-alert" aria-label="Reconcile required"><span className="boundary-mark">!</span><div><strong>RECONCILE_REQUIRED · 禁止 blind retry</strong><p>At least one operation is not durably resolved. Lease expiry is not proof that the side effect did not happen; inspect receipt/environment evidence before submitting another mutation.</p></div></section>}
+      <section className="identity-strip execution-identity" aria-label="Execution identity">
+        <IdentityField label="Job" value={job.job_id} mono />
+        <IdentityField label="Target" value={`${displayValue(job.target?.type)} / ${shortId(job.target?.id, 22)}`} mono note={targetHref ? "linked canonical evidence" : "stable target ref"} />
+        <IdentityField label="Correlation" value={job.correlation_id} mono />
+        <IdentityField label="Current attempt" value={job.active_attempt_id || "—"} mono note={job.active_worker_id || "no active worker"} />
+        <IdentityField label="Lease" value={executionLeaseState(job)} note={job.lease.lease_token_present ? "token withheld; hash never shown" : "no raw token"} />
+        <IdentityField label="Version" value={`v${job.version}`} mono note={`attempt ${job.attempt_number}`} />
+      </section>
+      <section className="execution-facts-bar" aria-label="Execution facts">
+        <div><span>Execution state</span><strong>{job.state}</strong><small>{executionStateNote(job.state)}</small></div>
+        <div><span>Agent / Evaluation outcome</span><strong>{job.outcome_status || "NOT YET RECORDED"}</strong><small>{job.state === "FAILED_PLATFORM" ? "Platform failure; not Agent FAIL" : "terminal evidence only"}</small></div>
+        <div><span>Worker ownership</span><strong>{job.active_worker_id || "NONE"}</strong><small>{activeAttempt ? `${activeAttempt.status} · ${activeAttempt.worker_id}` : "no active attempt"}</small></div>
+        <div><span>Terminal evidence</span><strong>{job.terminal_evidence_id ? "BOUND" : "PENDING"}</strong><small>{shortId(job.terminal_evidence_id, 25)}</small></div>
+      </section>
+      <section className="execution-panel" aria-labelledby="attempt-history-heading"><div className="panel-heading"><div><span className="eyebrow">APPEND-ONLY HISTORY</span><h2 id="attempt-history-heading">Attempts and lease changes</h2></div><span className="section-count">{job.attempts.length} attempts</span></div><div className="execution-attempts">{job.attempts.map((attempt) => <div className="execution-attempt" key={attempt.attempt_id}><div><span className="execution-index">{attempt.attempt_number.toString().padStart(2, "0")}</span><strong>{attempt.status}</strong><small className="mono">{attempt.attempt_id}</small></div><div><span>Worker</span><strong>{attempt.worker_id}</strong><small>lease version v{attempt.lease_version}</small></div><div><span>Window</span><strong>{formatDate(attempt.started_at || attempt.created_at)}</strong><small>{attempt.ended_at ? `ended ${formatDate(attempt.ended_at)}` : `expires ${formatDate(attempt.lease_expires_at)}`}</small></div><div><span>Reason</span><strong>{displayValue(attempt.reason)}</strong><small>{attempt.heartbeat_at ? `heartbeat ${formatDate(attempt.heartbeat_at)}` : "no heartbeat recorded"}</small></div></div>)}</div></section>
+      <section className="execution-panel" aria-labelledby="operation-heading"><div className="panel-heading"><div><span className="eyebrow">SIDE-EFFECT IDENTITY</span><h2 id="operation-heading">Operations and reconcile status</h2></div><span className="section-count">stable operation_id · at-least-once delivery</span></div>{job.operations.length === 0 ? <p className="execution-muted">No state-changing operation has been prepared for this job.</p> : <div className="execution-operation-list">{job.operations.map((operation) => <div className={`execution-operation ${operation.status === "UNKNOWN_OUTCOME" ? "warning" : ""}`} key={operation.operation_id}><div><span className="field-label">OPERATION</span><strong className="mono">{operation.operation_id}</strong><small>{operation.environment_id}</small></div><div><span className="field-label">STATUS</span><StatusTag status={operation.status} tone={operation.status === "CONFIRMED" ? "success" : operation.status === "UNKNOWN_OUTCOME" ? "review" : "neutral"} /><small>{operation.status === "UNKNOWN_OUTCOME" ? "reconcile before retry" : executionStateNote(operation.status)}</small></div><div><span className="field-label">EFFECT COUNT</span><strong>{operation.effect_count}</strong><small>{operation.receipt_ref || "receipt withheld / pending"}</small></div><div><span className="field-label">FINGERPRINT</span><strong className="mono">{shortId(operation.operation_fingerprint, 22)}</strong><small>{formatDate(operation.updated_at)}</small></div></div>)}</div>}</section>
+      <section className="execution-panel" aria-labelledby="evidence-heading"><div className="panel-heading"><div><span className="eyebrow">IMMUTABLE REFERENCES</span><h2 id="evidence-heading">Terminal and execution evidence</h2></div><span className="section-count">{job.evidence.length} refs · bytes not editable here</span></div>{job.evidence.length === 0 ? <p className="execution-muted">No execution evidence has been registered yet.</p> : <div className="execution-evidence-list">{job.evidence.map((evidence) => { const href = executionEvidenceHref(evidence); return <div className="execution-evidence-row" key={evidence.evidence_id}><div><span className="field-label">{evidence.entity_type}</span><strong>{evidence.outcome}</strong><small className="mono">{evidence.evidence_id}</small></div><div><span>Entity</span><strong className="mono">{shortId(evidence.entity_id, 30)}</strong><small>{shortId(evidence.content_sha256, 26)}</small></div>{href ? <a className="action-link" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open canonical evidence →</a> : <span className="execution-muted">stable ref only</span>}</div>; })}</div>}</section>
+      <section className="execution-panel" aria-labelledby="event-history-heading"><div className="panel-heading"><div><span className="eyebrow">TRANSITION AUDIT</span><h2 id="event-history-heading">Append-only event history</h2></div><span className="section-count">{job.events.length} events</span></div><ol className="execution-event-list">{job.events.map((event) => <li key={event.event_id}><span className="execution-event-number">{event.event_id}</span><div><strong>{event.event_type}</strong><span>{displayValue(event.from_state)} → <b>{event.to_state}</b> · version {event.version}</span><small>{displayValue(event.reason)} · {formatDate(event.occurred_at)} UTC · {displayValue(event.attempt_id || event.operation_id || "job")}</small></div></li>)}</ol></section>
+      <details className="raw-details execution-raw"><summary>Expert escape hatch · normalized durable job JSON</summary><pre>{JSON.stringify(job, null, 2)}</pre></details>
+      <footer className="detail-footer"><span>{job.job_id} · {job.state} · correlation {job.correlation_id}</span><span>{job.outcome_status || "outcome pending"} · no mutation available from Web</span></footer>
+    </AppShell>
+  );
+}
+
+function ExecutionSurfaceState({ loading = false, error }: { loading?: boolean; error?: ControlPlaneApiError }) {
+  const unavailable = Boolean(error);
+  return <main className="data-source-state" aria-live="polite"><div className={"data-source-state-card" + (unavailable ? " error" : "")}><span className="eyebrow">DURABLE EXECUTION API · RPF-14</span><h1>{unavailable ? "Execution data is unavailable." : loading ? "Loading durable job…" : "Execution data is API-only."}</h1><p>{unavailable ? "The Web surface did not receive a canonical execution response. It does not invent a fixture or retry a mutation." : "Use the Control Plane read API to inspect PostgreSQL-backed jobs, attempts, operations, evidence refs, and events."}</p>{unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}</div></main>;
+}
+
 function DataSourceState({ status, error }: { status: "loading" | "error"; error?: ControlPlaneApiError }) {
   const unavailable = status === "error";
   return (
@@ -1434,8 +1628,12 @@ export default function App() {
     window.addEventListener("popstate", update);
     return () => window.removeEventListener("popstate", update);
   }, []);
+  const executionRoute = location.pathname === "/executions" || Boolean(location.executionJobId);
   useEffect(() => {
-    if (DATA_SOURCE_MODE === "fixture") return;
+    if (DATA_SOURCE_MODE === "fixture" || executionRoute) {
+      setDataSource({ status: "ready" });
+      return;
+    }
     let active = true;
     loadControlPlaneCorpus()
       .then((payload) => {
@@ -1467,13 +1665,14 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, []);
+  }, [executionRoute]);
   const run = useMemo(() => location.runId ? getRun(location.runId) : undefined, [location.runId]);
   const failureCase = useMemo(() => location.failureCaseId ? getFailureCase(location.failureCaseId) : undefined, [location.failureCaseId]);
   const regression = useMemo(() => location.regressionId ? getRegression(location.regressionId) : undefined, [location.regressionId]);
   const evaluation = useMemo(() => location.evaluationId ? getEvaluation(location.evaluationId) : undefined, [location.evaluationId]);
   const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
   const releaseDecision = useMemo(() => location.releaseDecisionId ? getReleaseDecision(location.releaseDecisionId) : undefined, [location.releaseDecisionId]);
+  if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
   if (dataSource.status === "loading") return <DataSourceState status="loading" />;
   if (dataSource.status === "error") return <DataSourceState status="error" error={dataSource.error} />;
   if (releaseDecision) return <ReleaseDecisionDetail decision={releaseDecision} />;

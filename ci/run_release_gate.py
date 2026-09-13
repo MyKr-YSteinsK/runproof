@@ -2,15 +2,16 @@
 
 The workflow deliberately keeps orchestration in a small stdlib-only script so
 the same code can be inspected, exercised locally, and run on a clean hosted
-runner.  It starts a fresh PostgreSQL container and the formal Control Plane,
-creates new Baseline/Candidate Evaluation and Decision identities for the
-current GitHub run, and makes the final conclusion from canonical API
-read-back.  No release or deployment action is implemented here.
+runner. It starts a fresh PostgreSQL container and the formal Control Plane,
+submits Baseline/Candidate Evaluation jobs to PostgreSQL, starts the formal
+Python durable worker, and makes the final conclusion from canonical API
+read-back. No release or deployment action is implemented here.
 """
 
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 import secrets
@@ -42,7 +43,6 @@ from runtime.runproof_runtime.evaluation import (
     EVALUATION_SUITE_VERSION,
     build_minimal_suite,
     compare_evaluations,
-    execute_evaluation,
     validate_comparison_artifact,
     validate_evaluation_artifact,
     validate_suite_artifact,
@@ -192,6 +192,7 @@ class FreshInfrastructure:
             "decision": secrets.token_urlsafe(32),
             "agent": secrets.token_urlsafe(32),
             "ci": secrets.token_urlsafe(32),
+            "worker": secrets.token_urlsafe(32),
         }
         self.process: subprocess.Popen[bytes] | None = None
         self.log_handle: Any = None
@@ -237,6 +238,7 @@ class FreshInfrastructure:
                 "RPF_AUTH_DECISION_TOKEN": self.tokens["decision"],
                 "RPF_AUTH_AGENT_TOKEN": self.tokens["agent"],
                 "RPF_AUTH_CI_TOKEN": self.tokens["ci"],
+                "RPF_AUTH_WORKER_TOKEN": self.tokens["worker"],
             }
         )
         jar = REPO_ROOT / "control-plane" / "target" / "runproof-control-plane-0.1.0-SNAPSHOT.jar"
@@ -257,6 +259,17 @@ class FreshInfrastructure:
 
     def stop(self) -> None:
         if self.process is not None:
+            # Java may launch a child JVM on Windows. Kill the exact process
+            # tree before the parent handle is terminated so the child cannot
+            # detach and survive CI cleanup.
+            if os.name == "nt" and self.process.poll() is None:
+                subprocess.run(
+                    ["taskkill", "/PID", str(self.process.pid), "/T", "/F"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    check=False,
+                    timeout=20,
+                )
             if self.process.poll() is None:
                 self.process.terminate()
                 try:
@@ -264,6 +277,14 @@ class FreshInfrastructure:
                 except subprocess.TimeoutExpired:
                     self.process.kill()
                     self.process.wait(timeout=10)
+            if os.name == "nt":
+                subprocess.run(
+                    ["taskkill", "/PID", str(self.process.pid), "/T", "/F"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    check=False,
+                    timeout=20,
+                )
             else:
                 self.process.wait(timeout=10)
         if self.log_handle is not None:
@@ -353,6 +374,154 @@ def _recovery_status(facts: dict[str, Any]) -> str:
     return "INCONCLUSIVE"
 
 
+def _durable_request_fingerprint(payload: dict[str, Any]) -> str:
+    encoded = json.dumps(payload, ensure_ascii=True, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+
+def _safe_process_output(value: str) -> bool:
+    forbidden = ("Authorization", "Bearer ", "DEEPSEEK_API_KEY", "RPF_DB_PASSWORD", "private reasoning", "chain_of_thought")
+    return not any(marker in value for marker in forbidden)
+
+
+def _load_durable_evaluation_result(output_dir: Path, evaluation_id: str) -> dict[str, Any]:
+    """Reconstruct the execute_evaluation-shaped result from worker artifacts."""
+
+    evaluation_path = output_dir / f"{evaluation_id}.json"
+    if not evaluation_path.is_file():
+        raise GateFailure("durable_worker", "EVALUATION_ARTIFACT_MISSING")
+    try:
+        evaluation = json.loads(evaluation_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise GateFailure("durable_worker", "EVALUATION_ARTIFACT_INVALID") from error
+    if not isinstance(evaluation, dict):
+        raise GateFailure("durable_worker", "EVALUATION_ARTIFACT_INVALID")
+    runs: list[Path] = []
+    regression_results: dict[str, Path] = {}
+    for path in sorted(output_dir.glob("*.json")):
+        if path == evaluation_path:
+            continue
+        try:
+            document = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise GateFailure("durable_worker", "WORKER_ARTIFACT_INVALID") from error
+        if not isinstance(document, dict):
+            continue
+        kind = document.get("artifact_kind")
+        if kind == "Run Evidence":
+            runs.append(path)
+        elif kind == "Regression Execution Result":
+            result = document.get("result") if isinstance(document.get("result"), dict) else {}
+            result_id = result.get("result_id")
+            if isinstance(result_id, str):
+                member_id = result.get("suite_member_ref", {}).get("member_id") if isinstance(result.get("suite_member_ref"), dict) else path.stem
+                regression_results[str(member_id)] = path
+    return {
+        "evaluation": evaluation,
+        "runs": [],
+        "regression_results": {},
+        "paths": {"evaluation": evaluation_path, "runs": runs, "regression_results": regression_results},
+    }
+
+
+def _run_durable_evaluations(
+    infrastructure: FreshInfrastructure,
+    generated_root: Path,
+    jobs: list[tuple[str, str, Path]],
+) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any]]:
+    """Submit Baseline/Candidate and execute both through the formal worker."""
+
+    ci_client = ControlPlaneClient(infrastructure.base_url, infrastructure.tokens["ci"])
+    worker_result_path = generated_root / "durable-worker-result.json"
+    submissions: list[dict[str, Any]] = []
+    for target_id, profile, output_dir in jobs:
+        payload_ref = {
+            "contract": "rpf-evaluation-execution-v1",
+            "agent_profile": profile,
+            "regression_path": "runtime/reviewed-regression.json",
+            "output_dir": str(output_dir),
+            "evaluation_id": target_id,
+            "operation_environment_id": f"ci-evaluation-environment-{target_id}",
+        }
+        submission = {
+            "job_id": f"job-{target_id}",
+            "idempotency_key": f"ci-evaluation:{target_id}",
+            "request_fingerprint": _durable_request_fingerprint(payload_ref),
+            "job_type": "EVALUATION",
+            "target_type": "EVALUATION",
+            "target_id": target_id,
+            "correlation_id": f"ci-durable-{target_id}",
+            "payload_ref": payload_ref,
+        }
+        response = ci_client.submit_job(submission)
+        if response.get("status") not in {"SUBMITTED", "IDEMPOTENT_REPLAY"}:
+            raise GateFailure("durable_submit", "DURABLE_SUBMIT_NOT_ACCEPTED")
+        submissions.append({"job_id": submission["job_id"], "target_id": target_id, "status": response.get("status")})
+
+    worker_env = os.environ.copy()
+    worker_env["RPF_AUTH_WORKER_TOKEN"] = infrastructure.tokens["worker"]
+    command = [
+        sys.executable,
+        "-m",
+        "runtime.runproof_runtime.durable_worker",
+        "--base-url",
+        infrastructure.base_url,
+        "--token-env",
+        "RPF_AUTH_WORKER_TOKEN",
+        "--repo-root",
+        str(REPO_ROOT),
+        "--artifact-store-root",
+        str(infrastructure.artifact_root),
+        "--worker-id",
+        f"ci-worker-{uuid.uuid4().hex[:10]}",
+        "--lease-seconds",
+        "30",
+        "--max-jobs",
+        str(len(jobs)),
+        "--idle-timeout",
+        "180",
+        "--once",
+        "--result-path",
+        str(worker_result_path),
+    ]
+    try:
+        worker = subprocess.run(command, cwd=REPO_ROOT, env=worker_env, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, timeout=300, check=False)
+    except (FileNotFoundError, subprocess.TimeoutExpired) as error:
+        raise GateFailure("durable_worker", "DURABLE_WORKER_PROCESS_FAILED") from error
+    if worker.returncode != 0 or not worker_result_path.is_file():
+        raise GateFailure("durable_worker", "DURABLE_WORKER_PROCESS_FAILED")
+    try:
+        worker_result = json.loads(worker_result_path.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise GateFailure("durable_worker", "DURABLE_WORKER_RESULT_INVALID") from error
+    if not isinstance(worker_result, dict) or worker_result.get("status") != "PASS":
+        raise GateFailure("durable_worker", "DURABLE_WORKER_RESULT_NOT_PASS")
+    worker_jobs = worker_result.get("jobs") if isinstance(worker_result.get("jobs"), list) else []
+    if len(worker_jobs) != len(jobs) or any(
+        not isinstance(item, dict) or item.get("state") != "COMPLETED"
+        for item in worker_jobs
+    ):
+        raise GateFailure("durable_worker", "DURABLE_JOB_NOT_COMPLETED")
+    read_jobs = []
+    for submission in submissions:
+        job = ci_client.get_job(str(submission["job_id"]))
+        if not isinstance(job, dict) or job.get("state") != "COMPLETED":
+            raise GateFailure("durable_readback", "DURABLE_JOB_READBACK_NOT_COMPLETED")
+        read_jobs.append({"job_id": submission["job_id"], "state": job.get("state"), "attempt_number": job.get("attempt_number"), "terminal_evidence_id": job.get("terminal_evidence_id")})
+    baseline = _load_durable_evaluation_result(jobs[0][2], jobs[0][0])
+    candidate = _load_durable_evaluation_result(jobs[1][2], jobs[1][0])
+    transport = {
+        "mechanism": "POSTGRESQL_POLL_CLAIM_LEASE",
+        "submissions": submissions,
+        "worker": {"module": "runtime.runproof_runtime.durable_worker", "process_exit": worker.returncode, "processed_jobs": len(worker_jobs)},
+        "terminal_readback": read_jobs,
+        "silent_fallback": False,
+        "worker_stdout_safe": _safe_process_output(worker.stdout),
+        "worker_stderr_safe": _safe_process_output(worker.stderr),
+    }
+    return baseline, candidate, transport
+
+
 def _run_fresh_gate(
     repo_root: Path,
     output_dir: Path,
@@ -383,21 +552,13 @@ def _run_fresh_gate(
     run_key = f"{_safe_fragment(context['run_id'])}-{_safe_fragment(context['run_attempt'])}"
     baseline_eval_id = f"evaluation-ci-{run_key}-baseline"
     candidate_eval_id = f"evaluation-ci-{run_key}-candidate"
-    baseline_result = execute_evaluation(
-        suite,
-        regression,
-        KNOWN_BAD_AGENT_PROFILE,
-        generated_root / "baseline",
-        api_key=None,
-        evaluation_id=baseline_eval_id,
-    )
-    candidate_result = execute_evaluation(
-        suite,
-        regression,
-        FIXED_CANDIDATE_AGENT_PROFILE,
-        generated_root / "candidate",
-        api_key=None,
-        evaluation_id=candidate_eval_id,
+    baseline_result, candidate_result, durable_transport = _run_durable_evaluations(
+        infrastructure,
+        generated_root,
+        [
+            (baseline_eval_id, KNOWN_BAD_AGENT_PROFILE, generated_root / "baseline"),
+            (candidate_eval_id, FIXED_CANDIDATE_AGENT_PROFILE, generated_root / "candidate"),
+        ],
     )
     baseline_evaluation = baseline_result["evaluation"]
     candidate_evaluation = candidate_result["evaluation"]
@@ -547,8 +708,9 @@ def _run_fresh_gate(
                 "readiness": "PASS",
                 "health_ready": infrastructure.health.get("ready") is True,
             },
-            "formal_runtime": {"module": "runtime/", "execution": "FRESH_PER_MEMBER"},
+            "formal_runtime": {"module": "runtime/", "execution": "FRESH_PER_MEMBER_VIA_DURABLE_WORKER"},
         },
+        "durable_execution": durable_transport,
         "suite": {"id": EVALUATION_SUITE_ID, "version": EVALUATION_SUITE_VERSION},
         "policy": {"id": QUALITY_POLICY_ID, "version": QUALITY_POLICY_VERSION},
         "baseline": {

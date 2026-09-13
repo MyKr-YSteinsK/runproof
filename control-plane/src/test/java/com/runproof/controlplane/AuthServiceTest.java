@@ -20,6 +20,7 @@ class AuthServiceTest {
         ReflectionTestUtils.setField(service, "decisionToken", "decision-token");
         ReflectionTestUtils.setField(service, "agentToken", "agent-token");
         ReflectionTestUtils.setField(service, "ciToken", "ci-token");
+        ReflectionTestUtils.setField(service, "workerToken", "worker-token");
         service.initialize();
     }
 

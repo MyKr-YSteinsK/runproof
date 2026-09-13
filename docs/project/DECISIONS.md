@@ -313,3 +313,20 @@ RPF-13 的 Candidate A 是可重复的真实 PostgreSQL candidate，已覆盖 du
 ### Supersedes
 
 - none（承接 D-014、D-015；不替代 D-016 的 decision-writer authority）
+
+## D-019｜正式 durable path 分离 submitter、worker 与 decision writer
+
+- Status: `Accepted`
+- Date: 2026-09-13
+### Decision
+正式 durable execution 采用最小 scoped service principal：CI/submitter 只能 submit、read 和登记 evidence；durable worker 只能 poll、claim、heartbeat、reconcile、登记 execution evidence 与 terminalize；独立 decision writer 才能登记 Release Decision。RPF-12 的正式 durable path 失败时不得静默回退到同进程 direct Evaluation；`ELIGIBLE` 仍不构成 deploy/release authorization。
+### Why
+RPF-14 将 RPF-13 的 PostgreSQL poll/claim/lease、operation reconcile 和 immutable execution evidence 落入正式 Control Plane，并以真实独立 worker process 运行 Baseline/Candidate。明确 principal 与 fallback 边界可以避免 worker 越权写 Decision，也避免 durable transport 故障被 direct path 掩盖而产生不完整的审计证据。
+### Consequences
+正式 API 必须保留 `execution:submit` 与 `execution:worker` 的可验证分离，worker credential 不包含 `decision:write`；CI 必须通过 Job submit/poll/read 获得 Evaluation，canonical Release Decision read-back 仍由现有独立 decision writer 产生。当前不引入用户登录、OAuth/OIDC/SSO、tenant/RBAC、Approval、scheduler、broker 或 release/deploy endpoint。
+### Reconsider when
+真实容量/拓扑、跨租户身份或 Approval/release 集成需要更细的 principal、scheduler 或独立 transport，并有新的运维与安全证据支持迁移时重新评估。
+
+### Supersedes
+
+- none（细化 D-015～D-018 的正式 execution authority，不替代既有 durable state/reconcile 语义）
