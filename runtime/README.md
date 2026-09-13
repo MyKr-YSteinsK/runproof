@@ -15,7 +15,7 @@ python -m runtime.runproof_runtime.control_plane_client query RUN <run-id> --bas
 
 ## GitHub Actions Canonical Release Gate
 
-`.github/workflows/release-gate.yml` 调用 `ci/run_release_gate.py`。该脚本在 GitHub-hosted runner 内使用 `postgres:16-alpine` 和正式 `control-plane/`，以当前 `GITHUB_RUN_ID` / `GITHUB_RUN_ATTEMPT` 生成新的 Baseline/Candidate Evaluation、Comparison、Quality Gate 和 Release Decision identity；普通 CI/evidence principal 只能写 evidence，独立 decision writer 才能登记 Decision，最终 CI 结论来自 canonical Release Decision API read-back。临时数据库密码和五个 service token 在进程内随机生成，不进入 workflow source、日志、Job Summary 或 machine-readable result；结果文件只包含脱敏 identity/status/coverage/authority/boundary facts。
+`.github/workflows/release-gate.yml` 调用 `ci/run_release_gate.py`。该脚本在 GitHub-hosted runner 内使用 `postgres:16-alpine` 和正式 `control-plane/`，以当前 `GITHUB_RUN_ID` / `GITHUB_RUN_ATTEMPT` 生成新的 Baseline/Candidate Evaluation、Comparison、Quality Gate 和 Release Decision identity；普通 CI/evidence principal 只能写 evidence，独立 decision writer 才能登记 Decision，最终 CI 结论来自 canonical Release Decision API read-back。临时数据库密码和五个 service token 在进程内随机生成，不进入 workflow source、日志、Job Summary 或 machine-readable result；结果 JSON 与 Summary mirror 只包含脱敏 identity/status/coverage/authority/boundary facts。
 
 ## Entry points
 
