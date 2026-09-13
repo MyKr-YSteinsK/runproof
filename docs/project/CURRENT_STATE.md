@@ -34,7 +34,7 @@
 - 用户已确认 GitHub identity：`MyKr-YSteinsK/runproof`，`Public`。
 - Git Credential Manager 与 GitHub API 已验证账户 `MyKr-YSteinsK`；无需依赖 gh CLI。
 - Remote: `origin` → https://github.com/MyKr-YSteinsK/runproof.git；GitHub 已验证为 Public，默认分支 `main`。
-- Upstream: `main` → `origin/main`；RPF-04 delivery record commit `d03cb59`、RPF-05 focused commit `408506a`、RPF-06 implementation commit `1ee20b5` 与 RPF-07 implementation commit `bfd49c9` 均已普通 push，RPF-06 delivery-state update 亦随后提交并 push；RPF-07 implementation 包含 reviewed Suite/Evaluations/Comparison corpus、runtime/Web surface 与当前合同文档，CLI 路径说明 follow-up commit `ff7cb0a` 亦已 push；RPF-08 Quality Policy/Release Gate/Decision implementation commit `6a153e1` 与 RPF-09 Control Plane persistence/API spike commit `a4cc895` 已普通 push；RPF-10 未完成 candidate 源码已由 checkpoint commit `7d51b92` 固化。当前交付后 fetch 核验远端 HEAD、ahead/behind=`0/0` 与 worktree clean。
+- Upstream: `main` → `origin/main`；RPF-04 delivery record commit `d03cb59`、RPF-05 focused commit `408506a`、RPF-06 implementation commit `1ee20b5` 与 RPF-07 implementation commit `bfd49c9` 均已普通 push，RPF-06 delivery-state update 亦随后提交并 push；RPF-07 implementation 包含 reviewed Suite/Evaluations/Comparison corpus、runtime/Web surface 与当前合同文档，CLI 路径说明 follow-up commit `ff7cb0a` 亦已 push；RPF-08 Quality Policy/Release Gate/Decision implementation commit `6a153e1` 与 RPF-09 Control Plane persistence/API spike commit `a4cc895` 已普通 push；RPF-10 PostgreSQL/Auth spike implementation、probe、reviewed evidence 与项目状态已由 commit `0a65a7b` 固化。本次交付后将 fetch 核验远端 HEAD、ahead/behind=`0/0` 与 worktree clean。
 - Delivery model: `push-only`；无部署触发。具体授权与执行规则见 AGENTS。
 
 ## Known limitations / risks
