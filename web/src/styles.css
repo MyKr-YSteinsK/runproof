@@ -1033,3 +1033,11 @@ button:focus-visible, a:focus-visible, summary:focus-visible {
   .release-big-fact { display: block; }
   .release-big-fact span { display: block; margin-top: 5px; }
 }
+
+/* RPF-11 API-backed data-source boundary */
+.data-source-state { display: grid; min-height: 100vh; place-items: center; padding: 32px; background: var(--ink, #0d1215); }
+.data-source-state-card { width: min(620px, 100%); padding: 32px; border: 1px solid #41675d; background: #151e1c; }
+.data-source-state-card.error { border-color: #6e4a3e; background: #1a1717; }
+.data-source-state-card h1 { margin: 14px 0 0; color: #e0ebe6; font-size: clamp(26px, 4vw, 42px); line-height: 1.1; }
+.data-source-state-card p { margin: 16px 0 0; color: var(--muted, #91a19c); font-size: 12px; line-height: 1.7; }
+.data-source-state-card code { display: inline-block; margin-top: 20px; padding: 8px 10px; border: 1px solid #5b3c34; color: var(--coral, #df927d); font-family: var(--mono, monospace); font-size: 10px; }

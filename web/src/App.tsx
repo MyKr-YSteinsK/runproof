@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import {
+  activateControlPlaneCorpus,
   EvidenceLayer,
   EvaluationComparison,
   EvaluationComparisonMember,
@@ -39,6 +40,11 @@ import {
   RunEvidence,
   TrajectoryEvent,
 } from "./data/artifacts";
+import { ControlPlaneApiError, controlPlaneDataSourceMode, loadControlPlaneCorpus } from "./data/controlPlaneApi";
+
+const DATA_SOURCE_MODE = controlPlaneDataSourceMode();
+const DATA_SOURCE_LABEL = DATA_SOURCE_MODE === "api" ? "Control Plane API" : "reviewed fixture corpus";
+const DATA_SOURCE_FOOTNOTE = DATA_SOURCE_MODE === "api" ? "Control Plane API + verified immutable artifact" : "reviewed fixture artifact";
 
 type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null };
 
@@ -205,8 +211,8 @@ function AppShell({ children, detail = false, failure = false, regression = fals
         </a>
         <div className="workspace-switcher">
           <span className="section-label">WORKSPACE</span>
-          <span className="workspace-name">RPF / Prototype</span>
-          <span className="workspace-status"><i aria-hidden="true" /> local reviewed corpus</span>
+          <span className="workspace-name">RPF / Stabilization</span>
+          <span className="workspace-status"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
           <a className={!detail && !failure && !regression && !evaluation && !comparison && !release ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
@@ -246,9 +252,9 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <span className="schema-chip">v2 evidence · v1 evals · v1 gates</span>
         </div>
         <div className="rail-footer">
-          <span>Prototype</span>
+          <span>Stabilization</span>
           <span className="footer-dot" aria-hidden="true" />
-          <span>offline corpus</span>
+          <span>{DATA_SOURCE_MODE === "api" ? "canonical read model" : "fixture mode"}</span>
         </div>
       </aside>
       <main className="app-main">
@@ -259,8 +265,8 @@ function AppShell({ children, detail = false, failure = false, regression = fals
             <span>{release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
-            <span className="live-indicator"><i aria-hidden="true" /> reviewed data</span>
-            <span className="topbar-revision">RPF-08</span>
+            <span className="live-indicator"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
+            <span className="topbar-revision">RPF-11</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -343,8 +349,8 @@ function RunIndex() {
         </div>
       </section>
       <footer className="page-footnote">
-        <span>Source: reviewed Run Evidence artifact</span>
-        <span>Read-only local adapter · no live run action</span>
+        <span>Source: {DATA_SOURCE_FOOTNOTE}</span>
+        <span>Read-only API adapter · no live run action</span>
       </footer>
     </AppShell>
   );
@@ -807,7 +813,7 @@ function RegressionIndex() {
           })}
         </div>
       </section>
-      <footer className="page-footnote"><span>Source: reviewed Regression + result + collection artifacts</span><span>Read-only local adapter · no rerun or release action</span></footer>
+      <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE}</span><span>Read-only API adapter · no rerun or release action</span></footer>
     </AppShell>
   );
 }
@@ -984,7 +990,7 @@ function EvaluationIndex() {
           {reviewedEvaluations.map((evaluation) => <EvaluationRow key={evaluation.evaluation.evaluationId} evaluation={evaluation} />)}
         </div>
       </section>
-      <footer className="page-footnote"><span>Source: reviewed Suite + independent Evaluation artifacts</span><span>Read-only local adapter · no execute or release action</span></footer>
+      <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE}</span><span>Read-only API adapter · no execute or release action</span></footer>
     </AppShell>
   );
 }
@@ -1238,7 +1244,7 @@ function ReleaseDecisionIndex() {
     <div className="page-header index-header"><div><span className="eyebrow">RELEASE DECISIONS · REVIEWED CORPUS</span><h1>Turn evidence into a bounded decision.</h1><p className="lede">A versioned Quality Policy evaluates the same Suite snapshot and keeps blockers, review requirements, warnings, and authorization boundaries explicit.</p></div><div className="corpus-note"><span className="section-label">ACTIVE POLICY</span><strong>{reviewedQualityPolicy.policy.policyVersion}</strong><span>{reviewedReleaseDecisions.length} reviewed decisions · decision-only</span></div></div>
     <section className="corpus-boundary release-boundary-note" aria-label="Release Decision boundary"><span className="boundary-mark">✓</span><p><strong>Release boundary.</strong> <span>ELIGIBLE</span> means only that the Candidate meets the selected Policy and evidence snapshot for release consideration. No release was executed and no deployment was authorized.</p></section>
     <section className="release-decision-list-section" aria-labelledby="release-decision-list-heading"><div className="section-heading"><div><span className="eyebrow">SELECT A DECISION</span><h2 id="release-decision-list-heading">Baseline / Candidate decisions</h2></div><span className="section-count">{reviewedReleaseDecisions.length.toString().padStart(2, "0")} records · same Policy</span></div><div className="release-decision-list"><div className="release-decision-list-head" aria-hidden="true"><span>SUBJECT / STATUS</span><span>POLICY / SUITE</span><span>EVIDENCE COVERAGE</span><span>GATES / REGRESSION</span><span>DECIDED AT</span><span /></div>{reviewedReleaseDecisions.map((decision) => <ReleaseDecisionRow key={decision.releaseDecision.releaseDecisionId} decision={decision} />)}</div></section>
-    <footer className="page-footnote"><span>Source: reviewed Quality Policy + Gate + Release Decision artifacts</span><span>Read-only local adapter · no release/deploy action</span></footer>
+    <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE}</span><span>Read-only API adapter · no release/deploy action</span></footer>
   </AppShell>;
 }
 
@@ -1328,7 +1334,7 @@ function FailureIndex() {
           })}
         </div>
       </section>
-      <footer className="page-footnote"><span>Source: reviewed Failure Case artifact</span><span>Read-only local adapter · no promote action</span></footer>
+      <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE}</span><span>Read-only API adapter · no promote action</span></footer>
     </AppShell>
   );
 }
@@ -1404,12 +1410,63 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
   );
 }
 
+function DataSourceState({ status, error }: { status: "loading" | "error"; error?: ControlPlaneApiError }) {
+  const unavailable = status === "error";
+  return (
+    <main className="data-source-state" aria-live="polite">
+      <div className={"data-source-state-card" + (unavailable ? " error" : "")}>
+        <span className="eyebrow">CONTROL PLANE API · RPF-11</span>
+        <h1>{unavailable ? "Canonical data is unavailable." : "Loading canonical data…"}</h1>
+        <p>{unavailable ? "The Web surface did not receive a complete API-backed snapshot. Static fixtures are not used as a silent fallback." : "Resolving metadata and verified immutable artifacts before rendering the investigation surface."}</p>
+        {unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}
+      </div>
+    </main>
+  );
+}
+
 export default function App() {
   const [location, setLocation] = useState<LocationState>(() => readLocation());
+  const [dataSource, setDataSource] = useState<{ status: "loading" | "ready" | "error"; error?: ControlPlaneApiError }>(() => ({
+    status: DATA_SOURCE_MODE === "fixture" ? "ready" : "loading",
+  }));
   useEffect(() => {
     const update = () => setLocation(readLocation());
     window.addEventListener("popstate", update);
     return () => window.removeEventListener("popstate", update);
+  }, []);
+  useEffect(() => {
+    if (DATA_SOURCE_MODE === "fixture") return;
+    let active = true;
+    loadControlPlaneCorpus()
+      .then((payload) => {
+        if (!active) return;
+        try {
+          activateControlPlaneCorpus(payload);
+          setDataSource({ status: "ready" });
+        } catch {
+          setDataSource({
+            status: "error",
+            error: new ControlPlaneApiError(
+              "Control Plane artifact normalization failed.",
+              "INVALID_API_CORPUS",
+              null,
+              false,
+            ),
+          });
+        }
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setDataSource({
+          status: "error",
+          error: error instanceof ControlPlaneApiError
+            ? error
+            : new ControlPlaneApiError("Control Plane API is unavailable.", "API_UNAVAILABLE", null, true),
+        });
+      });
+    return () => {
+      active = false;
+    };
   }, []);
   const run = useMemo(() => location.runId ? getRun(location.runId) : undefined, [location.runId]);
   const failureCase = useMemo(() => location.failureCaseId ? getFailureCase(location.failureCaseId) : undefined, [location.failureCaseId]);
@@ -1417,6 +1474,8 @@ export default function App() {
   const evaluation = useMemo(() => location.evaluationId ? getEvaluation(location.evaluationId) : undefined, [location.evaluationId]);
   const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
   const releaseDecision = useMemo(() => location.releaseDecisionId ? getReleaseDecision(location.releaseDecisionId) : undefined, [location.releaseDecisionId]);
+  if (dataSource.status === "loading") return <DataSourceState status="loading" />;
+  if (dataSource.status === "error") return <DataSourceState status="error" error={dataSource.error} />;
   if (releaseDecision) return <ReleaseDecisionDetail decision={releaseDecision} />;
   if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
   if (regression) return <RegressionDetail regression={regression} />;

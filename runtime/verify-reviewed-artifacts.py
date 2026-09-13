@@ -81,6 +81,7 @@ HISTORICAL_RPF06_SOURCE_SHA256 = "a8f5cbebc475463c392fda85a38e97fecdeb34af80ddf7
 HISTORICAL_RPF06_RUNTIME_VERSION = "rpf-06.v1"
 CURRENT_RPF07_RUNTIME_VERSION = "rpf-07.v1"
 HISTORICAL_RPF07_SOURCE_SHA256 = "c607e5e38015c99fedcbba3efbcdc20834953f2fec7543313ead3ce0211d3adf"
+HISTORICAL_RPF08_SOURCE_SHA256 = "d6313e5849b2662d9badafa7be25d568e84ab6cc4912c9587495a5f9427bfd69"
 SECRET_VALUE = re.compile(
     r"(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)"
 )
@@ -633,7 +634,7 @@ def assert_rpf08_policy(path: Path, suite: dict[str, Any], source_hash: str) -> 
         "latency": "WARNING_NOT_ZERO",
     }
     assert metadata["source_identity"]["runtime_version"] == "rpf-08.v1"
-    assert metadata["source_identity"]["source_sha256"] == source_hash
+    assert metadata["source_identity"]["source_sha256"] in {HISTORICAL_RPF08_SOURCE_SHA256, source_hash}
     assert_private_boundary(policy)
     return policy
 
@@ -659,7 +660,7 @@ def assert_rpf08_gate(path: Path, policy: dict[str, Any], suite: dict[str, Any],
         "release_action": "DECISION_ONLY",
     }
     assert metadata["source_identity"]["runtime_version"] == "rpf-08.v1"
-    assert metadata["source_identity"]["source_sha256"] == source_hash
+    assert metadata["source_identity"]["source_sha256"] in {HISTORICAL_RPF08_SOURCE_SHA256, source_hash}
     assert metadata["rule_results"]
     assert_private_boundary(gate)
     return gate
@@ -678,7 +679,7 @@ def assert_rpf08_decision(path: Path, expected_status: str, expected_evaluated_v
     assert metadata["authorization_boundary"]["release_action"] == "DECISION_ONLY"
     assert metadata["history"]["immutable"] is True
     assert metadata["source_identity"]["runtime_version"] == "rpf-08.v1"
-    assert metadata["source_identity"]["source_sha256"] == source_hash
+    assert metadata["source_identity"]["source_sha256"] in {HISTORICAL_RPF08_SOURCE_SHA256, source_hash}
     assert_private_boundary(decision)
     return decision
 

@@ -568,7 +568,7 @@ const normalizeFailureCase = (raw: unknown): FailureCase => {
   };
 };
 
-export const reviewedRuns: RunEvidence[] = [
+export let reviewedRuns: RunEvidence[] = [
   normalizeArtifact(normalArtifact),
   normalizeArtifact(responseLostArtifact),
   normalizeArtifact(agentFailArtifact),
@@ -581,7 +581,7 @@ export const reviewedRuns: RunEvidence[] = [
 
 export const historicalFailureCase: FailureCase = normalizeFailureCase(failureCaseArtifact);
 
-export const reviewedFailureCases: FailureCase[] = [normalizeFailureCase(promotedFailureCaseArtifact)];
+export let reviewedFailureCases: FailureCase[] = [normalizeFailureCase(promotedFailureCaseArtifact)];
 
 const normalizeRegression = (raw: unknown): Regression => {
   const artifact = asObject(raw, "regression artifact");
@@ -912,29 +912,29 @@ const normalizeReleaseDecision = (raw: unknown): ReleaseDecision => {
   };
 };
 
-export const reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact)];
-export const reviewedRegressionResults: RegressionExecutionResult[] = [
+export let reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact)];
+export let reviewedRegressionResults: RegressionExecutionResult[] = [
   normalizeRegressionResult(regressionKnownBadResultArtifact),
   normalizeRegressionResult(regressionFixedCandidateResultArtifact),
 ];
-export const reviewedRegressionCollection: RegressionCollection = normalizeRegressionCollection(regressionCollectionArtifact);
+export let reviewedRegressionCollection: RegressionCollection = normalizeRegressionCollection(regressionCollectionArtifact);
 
-export const reviewedEvaluationSuite: EvaluationSuite = normalizeEvaluationSuite(evaluationSuiteArtifact);
-export const reviewedEvaluations: EvaluationResult[] = [
+export let reviewedEvaluationSuite: EvaluationSuite = normalizeEvaluationSuite(evaluationSuiteArtifact);
+export let reviewedEvaluations: EvaluationResult[] = [
   normalizeEvaluation(evaluationBaselineArtifact),
   normalizeEvaluation(evaluationCandidateArtifact),
 ];
-export const reviewedEvaluationComparison: EvaluationComparison = normalizeComparison(evaluationComparisonArtifact);
-export const reviewedQualityPolicy: QualityPolicy = normalizeQualityPolicy(qualityPolicyArtifact);
-export const reviewedQualityGates: QualityGateEvaluation[] = [
+export let reviewedEvaluationComparison: EvaluationComparison = normalizeComparison(evaluationComparisonArtifact);
+export let reviewedQualityPolicy: QualityPolicy = normalizeQualityPolicy(qualityPolicyArtifact);
+export let reviewedQualityGates: QualityGateEvaluation[] = [
   normalizeQualityGate(qualityGateBaselineArtifact),
   normalizeQualityGate(qualityGateCandidateArtifact),
 ];
-export const reviewedReleaseDecisions: ReleaseDecision[] = [
+export let reviewedReleaseDecisions: ReleaseDecision[] = [
   normalizeReleaseDecision(releaseDecisionBaselineArtifact),
   normalizeReleaseDecision(releaseDecisionCandidateArtifact),
 ];
-export const reviewedEvaluationRuns: RunEvidence[] = [
+export let reviewedEvaluationRuns: RunEvidence[] = [
   normalizeArtifact(evaluationBaselineNormalRunArtifact),
   normalizeArtifact(evaluationBaselineRecoveryRunArtifact),
   normalizeArtifact(evaluationBaselineRegressionRunArtifact),
@@ -942,13 +942,72 @@ export const reviewedEvaluationRuns: RunEvidence[] = [
   normalizeArtifact(evaluationCandidateRecoveryRunArtifact),
   normalizeArtifact(evaluationCandidateRegressionRunArtifact),
 ];
-export const reviewedEvaluationRegressionResults: RegressionExecutionResult[] = [
+export let reviewedEvaluationRegressionResults: RegressionExecutionResult[] = [
   normalizeRegressionResult(evaluationBaselineRegressionResultArtifact),
   normalizeRegressionResult(evaluationCandidateRegressionResultArtifact),
 ];
 
-const allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
-const allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
+let allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
+let allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
+
+export interface ControlPlaneCorpusPayload {
+  runs: unknown[];
+  failures: unknown[];
+  regressions: unknown[];
+  regressionResults: unknown[];
+  regressionCollection: unknown;
+  evaluationSuite: unknown;
+  evaluations: unknown[];
+  comparison: unknown;
+  qualityPolicy: unknown;
+  qualityGates: unknown[];
+  releaseDecisions: unknown[];
+}
+
+/** Replace the fixture-backed snapshot only after every API artifact resolves and normalizes. */
+export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): void => {
+  const runs = payload.runs.map(normalizeArtifact);
+  const failures = payload.failures.map(normalizeFailureCase);
+  const regressions = payload.regressions.map(normalizeRegression);
+  const regressionResults = payload.regressionResults.map(normalizeRegressionResult);
+  const evaluations = payload.evaluations.map(normalizeEvaluation);
+  const qualityGates = payload.qualityGates.map(normalizeQualityGate);
+  const decisions = payload.releaseDecisions.map(normalizeReleaseDecision);
+  const suite = normalizeEvaluationSuite(payload.evaluationSuite);
+  const comparison = normalizeComparison(payload.comparison);
+  const policy = normalizeQualityPolicy(payload.qualityPolicy);
+  const collection = normalizeRegressionCollection(payload.regressionCollection);
+  const evaluationRunIds = new Set(
+    evaluations.flatMap((evaluation) => evaluation.evaluation.memberResults
+      .map((member) => member.runRef.run_id)
+      .filter((value): value is string => typeof value === "string")),
+  );
+  const evaluationRegressionResultIds = new Set(
+    evaluations.flatMap((evaluation) => evaluation.evaluation.memberResults
+      .map((member) => member.regressionResultRef?.result_id)
+      .filter((value): value is string => typeof value === "string")),
+  );
+  const evaluationRuns = runs.filter((run) => evaluationRunIds.has(run.run.runId));
+  const primaryRuns = runs.filter((run) => !evaluationRunIds.has(run.run.runId));
+  const evaluationRegressionResults = regressionResults.filter((result) => evaluationRegressionResultIds.has(result.result.resultId));
+  const primaryRegressionResults = regressionResults.filter((result) => !evaluationRegressionResultIds.has(result.result.resultId));
+
+  reviewedRuns = primaryRuns;
+  reviewedEvaluationRuns = evaluationRuns;
+  reviewedFailureCases = failures;
+  reviewedRegressions = regressions;
+  reviewedRegressionResults = primaryRegressionResults;
+  reviewedEvaluationRegressionResults = evaluationRegressionResults;
+  reviewedRegressionCollection = collection;
+  reviewedEvaluationSuite = suite;
+  reviewedEvaluations = evaluations;
+  reviewedEvaluationComparison = comparison;
+  reviewedQualityPolicy = policy;
+  reviewedQualityGates = qualityGates;
+  reviewedReleaseDecisions = decisions;
+  allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
+  allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
+};
 
 export const getRun = (runId: string): RunEvidence | undefined => allReviewedRuns.find((run) => run.run.runId === runId);
 

@@ -24,3 +24,6 @@ node_modules/
 
 # Disposable RPF-10 Java/Spring probe build output
 /spikes/rpf-10/control-plane/target/
+
+# Formal RPF-11 Java/Spring product build output
+/control-plane/target/

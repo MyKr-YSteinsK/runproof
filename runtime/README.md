@@ -1,6 +1,17 @@
 # RPF-08 Product Runtime
 
-这是 RunProof 的第一份正式产品形态 runtime，不是对 `spikes/` 的重命名。当前 vertical slice 覆盖 Production Change Agent、DeepSeek non-thinking、Docker Fresh-per-run Environment、版本化 Stateful Scenario、structured Trajectory、deterministic Verifier、Run Evidence、真实 FAIL/ERROR、Failure Case 复现、Historical Regression promotion/focused rerun、最小三成员 Evaluation Suite 的 Baseline/Candidate 聚合比较，以及独立 versioned Quality Policy、Quality Gate Evaluation 和只读 Release Decision。
+这是 RunProof 的第一份正式产品形态 runtime，不是对 `spikes/` 的重命名。当前 vertical slice 覆盖 Production Change Agent、DeepSeek non-thinking、Docker Fresh-per-run Environment、版本化 Stateful Scenario、structured Trajectory、deterministic Verifier、Run Evidence、真实 FAIL/ERROR、Failure Case 复现、Historical Regression promotion/focused rerun、最小三成员 Evaluation Suite 的 Baseline/Candidate 聚合比较，以及独立 versioned Quality Policy、Quality Gate Evaluation 和只读 Release Decision。RPF-11 的 `control_plane_client.py` 通过 HTTP/JSON 将这些 reviewed product artifacts 登记到正式 Control Plane；runtime 不直写 PostgreSQL。
+
+## Formal Control Plane client
+
+从仓库根目录可使用统一 client 登记 reviewed corpus 或查询 canonical read model：
+
+```powershell
+python -m runtime.runproof_runtime.control_plane_client register-reviewed-corpus --root . --artifact-store-root .local/control-plane/artifacts --base-url http://127.0.0.1:8081/api/v1 --json
+python -m runtime.runproof_runtime.control_plane_client query RUN <run-id> --base-url http://127.0.0.1:8081/api/v1
+```
+
+命令通过 `RPF_AUTH_EVIDENCE_TOKEN`、`RPF_AUTH_DECISION_TOKEN`、`RPF_AUTH_READ_TOKEN` 或显式 `--*-token-env` 从进程环境取 credential；不会写入 manifest、artifact、日志或源码。相同 identity + fingerprint 可安全 replay；transport uncertainty 会先 query/reconcile，再进行有界重试。client 只负责 HTTP/JSON 与本地 immutable artifact copy，不暴露 DB connection 或 hardcoded credential。
 
 ## Entry points
 
