@@ -1,0 +1,709 @@
+{
+  "schema_version": "rpf-evaluation-comparison-v1",
+  "artifact_kind": "Evaluation Comparison",
+  "comparison": {
+    "comparison_id": "comparison-12421f28-9861-4a88-a17e-d33746d87e19",
+    "status": "COMPLETE",
+    "suite_ref": {
+      "kind": "Evaluation Suite",
+      "suite_id": "rpf-incident-remediation-suite",
+      "suite_version": "1.0.0",
+      "member_contract_digest": "5ef29f4922a92a5cd415e7f767edf8f9d0eb4a5f5f1df4bfeb1129e01230a446"
+    },
+    "baseline": {
+      "evaluation_ref": {
+        "kind": "Evaluation Result",
+        "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+        "agent_version": "1.0.0-known-bad-symptom-driven"
+      },
+      "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+      "agent": {
+        "agent_id": "incident-remediation-agent",
+        "agent_version": "1.0.0-known-bad-symptom-driven",
+        "configuration_id": "incident-remediation-agent-v1-known-bad",
+        "mode": "known-bad-deterministic-policy",
+        "prompt_id": "incident-remediation-agent-system-known-bad-symptom-driven-v1",
+        "agent_domain": "Incident Remediation Agent",
+        "agent_type": "INCIDENT_REMEDIATION",
+        "agent_contract_id": "incident-remediation-agent-contract",
+        "agent_contract_version": "1.0.0",
+        "defect_id": "incident-symptom-driven-remediation-v1"
+      },
+      "summary": {
+        "valid_evidence_coverage": {
+          "required_item_count": 3,
+          "valid_evidence_item_count": 3,
+          "missing_or_invalid_item_count": 0,
+          "coverage_ratio": 1.0,
+          "gap_reasons": [],
+          "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+        },
+        "agent_quality": {
+          "pass_count": 0,
+          "fail_count": 3,
+          "denominator": 3,
+          "success_rate": 0.0,
+          "failure_rate": 1.0,
+          "quality_evidence_rule": "Only valid Agent PASS/FAIL evidence enters this denominator; ERROR/INVALID/INCONCLUSIVE/CANCELLED are excluded.",
+          "excluded_outcome_counts": {
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          }
+        },
+        "regression": {
+          "member_count": 1,
+          "result_counts": {
+            "PASS": 0,
+            "FAIL": 1,
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          },
+          "results": [
+            {
+              "member_id": "external-dependency",
+              "regression_ref": {
+                "kind": "Regression",
+                "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+                "regression_version": "1.0.0"
+              },
+              "result": "FAIL",
+              "run_outcome": "FAIL",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+              },
+              "result_ref": {
+                "kind": "Regression Execution Result",
+                "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+              }
+            }
+          ]
+        },
+        "fault_recovery": {
+          "member_count": 1,
+          "planned_fault_count": 1,
+          "triggered_fault_count": 1,
+          "observed_fault_count": 1,
+          "reconciled_fault_count": 0,
+          "recovered_pass_count": 0,
+          "not_reached_count": 0,
+          "members": [
+            {
+              "member_id": "response-lost",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+              },
+              "run_outcome": "FAIL",
+              "item_result": "FAIL",
+              "recovery_status": "UNRESOLVED",
+              "fault": {
+                "fault_id": "side_effect_success_response_lost",
+                "planned": true,
+                "triggered": true,
+                "observed": true,
+                "reconciled": false
+              }
+            }
+          ],
+          "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+        },
+        "cost_token_latency": {
+          "reported_token_usage_sum": null,
+          "reported_token_usage_item_count": 0,
+          "missing_usage_count": 3,
+          "derived_cost_sum": null,
+          "derived_cost_item_count": 0,
+          "unknown_cost_count": 3,
+          "currency": "CNY",
+          "cost_basis": "derived from Provider-reported usage and pricing metadata only",
+          "cost_is_provider_invoice": false,
+          "latency": {
+            "per_item_ms": {
+              "local-recoverable": 2,
+              "response-lost": 2,
+              "external-dependency": 2
+            },
+            "known_item_count": 3,
+            "unknown_item_count": 0,
+            "total_observed_runtime_ms": 6,
+            "average_item_latency_ms": 2.0,
+            "max_item_latency_ms": 2,
+            "min_item_latency_ms": 2
+          },
+          "unknown_values_are_not_zero": true
+        }
+      }
+    },
+    "candidate": {
+      "evaluation_ref": {
+        "kind": "Evaluation Result",
+        "evaluation_id": "evaluation-rpf16-reviewed-candidate",
+        "agent_version": "1.0.1-evidence-supported-remediation"
+      },
+      "evaluation_id": "evaluation-rpf16-reviewed-candidate",
+      "agent": {
+        "agent_id": "incident-remediation-agent",
+        "agent_version": "1.0.1-evidence-supported-remediation",
+        "configuration_id": "incident-remediation-agent-v1-fixed",
+        "mode": "deterministic-repaired-policy",
+        "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+        "agent_domain": "Incident Remediation Agent",
+        "agent_type": "INCIDENT_REMEDIATION",
+        "agent_contract_id": "incident-remediation-agent-contract",
+        "agent_contract_version": "1.0.0",
+        "fix_id": "incident-evidence-supported-remediation-v1"
+      },
+      "summary": {
+        "valid_evidence_coverage": {
+          "required_item_count": 3,
+          "valid_evidence_item_count": 3,
+          "missing_or_invalid_item_count": 0,
+          "coverage_ratio": 1.0,
+          "gap_reasons": [],
+          "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+        },
+        "agent_quality": {
+          "pass_count": 3,
+          "fail_count": 0,
+          "denominator": 3,
+          "success_rate": 1.0,
+          "failure_rate": 0.0,
+          "quality_evidence_rule": "Only valid Agent PASS/FAIL evidence enters this denominator; ERROR/INVALID/INCONCLUSIVE/CANCELLED are excluded.",
+          "excluded_outcome_counts": {
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          }
+        },
+        "regression": {
+          "member_count": 1,
+          "result_counts": {
+            "PASS": 1,
+            "FAIL": 0,
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          },
+          "results": [
+            {
+              "member_id": "external-dependency",
+              "regression_ref": {
+                "kind": "Regression",
+                "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+                "regression_version": "1.0.0"
+              },
+              "result": "PASS",
+              "run_outcome": "PASS",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-ccd74251-3897-4956-9af8-e183205c27b7"
+              },
+              "result_ref": {
+                "kind": "Regression Execution Result",
+                "result_id": "regression-result-880d0a1e-fb39-4ef2-aa42-d8637360c5c2"
+              }
+            }
+          ]
+        },
+        "fault_recovery": {
+          "member_count": 1,
+          "planned_fault_count": 1,
+          "triggered_fault_count": 1,
+          "observed_fault_count": 1,
+          "reconciled_fault_count": 1,
+          "recovered_pass_count": 1,
+          "not_reached_count": 0,
+          "members": [
+            {
+              "member_id": "response-lost",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-b00813da-8cae-4b80-84c4-98303ac85804"
+              },
+              "run_outcome": "PASS",
+              "item_result": "PASS",
+              "recovery_status": "RECOVERED",
+              "fault": {
+                "fault_id": "side_effect_success_response_lost",
+                "planned": true,
+                "triggered": true,
+                "observed": true,
+                "reconciled": true
+              }
+            }
+          ],
+          "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+        },
+        "cost_token_latency": {
+          "reported_token_usage_sum": null,
+          "reported_token_usage_item_count": 0,
+          "missing_usage_count": 3,
+          "derived_cost_sum": null,
+          "derived_cost_item_count": 0,
+          "unknown_cost_count": 3,
+          "currency": "CNY",
+          "cost_basis": "derived from Provider-reported usage and pricing metadata only",
+          "cost_is_provider_invoice": false,
+          "latency": {
+            "per_item_ms": {
+              "local-recoverable": 2,
+              "response-lost": 2,
+              "external-dependency": 2
+            },
+            "known_item_count": 3,
+            "unknown_item_count": 0,
+            "total_observed_runtime_ms": 6,
+            "average_item_latency_ms": 2.0,
+            "max_item_latency_ms": 2,
+            "min_item_latency_ms": 2
+          },
+          "unknown_values_are_not_zero": true
+        }
+      }
+    },
+    "per_member_comparison": [
+      {
+        "member_id": "local-recoverable",
+        "category": "Normal / Functional",
+        "required": true,
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "regression_ref": null,
+        "baseline": {
+          "item_result": "FAIL",
+          "run_outcome": "FAIL",
+          "attribution": "Agent",
+          "valid_evidence_status": "VALID",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3"
+          },
+          "result_ref": null,
+          "evidence_gap_reasons": []
+        },
+        "candidate": {
+          "item_result": "PASS",
+          "run_outcome": "PASS",
+          "attribution": "Agent",
+          "valid_evidence_status": "VALID",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-b0a9c2fc-3203-429b-a956-641a99d3fa34"
+          },
+          "result_ref": null,
+          "evidence_gap_reasons": []
+        },
+        "classification": "IMPROVED",
+        "reasons": [
+          "BASELINE_FAIL_TO_CANDIDATE_PASS"
+        ]
+      },
+      {
+        "member_id": "response-lost",
+        "category": "Recovery / Fault",
+        "required": true,
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "response-lost"
+        },
+        "regression_ref": null,
+        "baseline": {
+          "item_result": "FAIL",
+          "run_outcome": "FAIL",
+          "attribution": "Agent",
+          "valid_evidence_status": "VALID",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+          },
+          "result_ref": null,
+          "evidence_gap_reasons": []
+        },
+        "candidate": {
+          "item_result": "PASS",
+          "run_outcome": "PASS",
+          "attribution": "Agent",
+          "valid_evidence_status": "VALID",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-b00813da-8cae-4b80-84c4-98303ac85804"
+          },
+          "result_ref": null,
+          "evidence_gap_reasons": []
+        },
+        "classification": "IMPROVED",
+        "reasons": [
+          "BASELINE_FAIL_TO_CANDIDATE_PASS"
+        ]
+      },
+      {
+        "member_id": "external-dependency",
+        "category": "Historical Regression",
+        "required": true,
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "external-dependency"
+        },
+        "regression_ref": {
+          "kind": "Regression",
+          "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+          "regression_version": "1.0.0"
+        },
+        "baseline": {
+          "item_result": "FAIL",
+          "run_outcome": "FAIL",
+          "attribution": "Agent",
+          "valid_evidence_status": "VALID",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+          },
+          "result_ref": {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+          },
+          "evidence_gap_reasons": []
+        },
+        "candidate": {
+          "item_result": "PASS",
+          "run_outcome": "PASS",
+          "attribution": "Agent",
+          "valid_evidence_status": "VALID",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-ccd74251-3897-4956-9af8-e183205c27b7"
+          },
+          "result_ref": {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-880d0a1e-fb39-4ef2-aa42-d8637360c5c2"
+          },
+          "evidence_gap_reasons": []
+        },
+        "classification": "IMPROVED",
+        "reasons": [
+          "BASELINE_FAIL_TO_CANDIDATE_PASS"
+        ]
+      }
+    ],
+    "aggregate": {
+      "summary": "CANDIDATE_IMPROVED",
+      "outcome_counts": {
+        "baseline": {
+          "PASS": 0,
+          "FAIL": 3,
+          "ERROR": 0,
+          "INVALID": 0,
+          "INCONCLUSIVE": 0,
+          "CANCELLED": 0
+        },
+        "candidate": {
+          "PASS": 3,
+          "FAIL": 0,
+          "ERROR": 0,
+          "INVALID": 0,
+          "INCONCLUSIVE": 0,
+          "CANCELLED": 0
+        },
+        "delta": {
+          "PASS": 3,
+          "FAIL": -3,
+          "ERROR": 0,
+          "INVALID": 0,
+          "INCONCLUSIVE": 0,
+          "CANCELLED": 0
+        }
+      },
+      "agent_quality": {
+        "baseline": {
+          "pass_count": 0,
+          "fail_count": 3,
+          "denominator": 3,
+          "success_rate": 0.0,
+          "failure_rate": 1.0,
+          "quality_evidence_rule": "Only valid Agent PASS/FAIL evidence enters this denominator; ERROR/INVALID/INCONCLUSIVE/CANCELLED are excluded.",
+          "excluded_outcome_counts": {
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          }
+        },
+        "candidate": {
+          "pass_count": 3,
+          "fail_count": 0,
+          "denominator": 3,
+          "success_rate": 1.0,
+          "failure_rate": 0.0,
+          "quality_evidence_rule": "Only valid Agent PASS/FAIL evidence enters this denominator; ERROR/INVALID/INCONCLUSIVE/CANCELLED are excluded.",
+          "excluded_outcome_counts": {
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          }
+        },
+        "success_rate_delta": {
+          "baseline": 0.0,
+          "candidate": 1.0,
+          "delta": 1.0,
+          "status": "KNOWN"
+        },
+        "pass_count_delta": {
+          "baseline": 0,
+          "candidate": 3,
+          "delta": 3,
+          "status": "KNOWN"
+        },
+        "fail_count_delta": {
+          "baseline": 3,
+          "candidate": 0,
+          "delta": -3,
+          "status": "KNOWN"
+        }
+      },
+      "valid_evidence_coverage": {
+        "baseline": {
+          "required_item_count": 3,
+          "valid_evidence_item_count": 3,
+          "missing_or_invalid_item_count": 0,
+          "coverage_ratio": 1.0,
+          "gap_reasons": [],
+          "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+        },
+        "candidate": {
+          "required_item_count": 3,
+          "valid_evidence_item_count": 3,
+          "missing_or_invalid_item_count": 0,
+          "coverage_ratio": 1.0,
+          "gap_reasons": [],
+          "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+        },
+        "coverage_ratio_delta": {
+          "baseline": 1.0,
+          "candidate": 1.0,
+          "delta": 0.0,
+          "status": "KNOWN"
+        }
+      },
+      "regression": {
+        "baseline": {
+          "member_count": 1,
+          "result_counts": {
+            "PASS": 0,
+            "FAIL": 1,
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          },
+          "results": [
+            {
+              "member_id": "external-dependency",
+              "regression_ref": {
+                "kind": "Regression",
+                "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+                "regression_version": "1.0.0"
+              },
+              "result": "FAIL",
+              "run_outcome": "FAIL",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+              },
+              "result_ref": {
+                "kind": "Regression Execution Result",
+                "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+              }
+            }
+          ]
+        },
+        "candidate": {
+          "member_count": 1,
+          "result_counts": {
+            "PASS": 1,
+            "FAIL": 0,
+            "ERROR": 0,
+            "INVALID": 0,
+            "INCONCLUSIVE": 0,
+            "CANCELLED": 0
+          },
+          "results": [
+            {
+              "member_id": "external-dependency",
+              "regression_ref": {
+                "kind": "Regression",
+                "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+                "regression_version": "1.0.0"
+              },
+              "result": "PASS",
+              "run_outcome": "PASS",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-ccd74251-3897-4956-9af8-e183205c27b7"
+              },
+              "result_ref": {
+                "kind": "Regression Execution Result",
+                "result_id": "regression-result-880d0a1e-fb39-4ef2-aa42-d8637360c5c2"
+              }
+            }
+          ]
+        },
+        "historical_regression_member_deltas": [
+          {
+            "member_id": "external-dependency",
+            "regression_ref": {
+              "kind": "Regression",
+              "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+              "regression_version": "1.0.0"
+            },
+            "baseline_result": "FAIL",
+            "candidate_result": "PASS",
+            "classification": "IMPROVED",
+            "baseline_run_ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+            },
+            "candidate_run_ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-ccd74251-3897-4956-9af8-e183205c27b7"
+            }
+          }
+        ]
+      },
+      "fault_recovery": {
+        "baseline": {
+          "member_count": 1,
+          "planned_fault_count": 1,
+          "triggered_fault_count": 1,
+          "observed_fault_count": 1,
+          "reconciled_fault_count": 0,
+          "recovered_pass_count": 0,
+          "not_reached_count": 0,
+          "members": [
+            {
+              "member_id": "response-lost",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+              },
+              "run_outcome": "FAIL",
+              "item_result": "FAIL",
+              "recovery_status": "UNRESOLVED",
+              "fault": {
+                "fault_id": "side_effect_success_response_lost",
+                "planned": true,
+                "triggered": true,
+                "observed": true,
+                "reconciled": false
+              }
+            }
+          ],
+          "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+        },
+        "candidate": {
+          "member_count": 1,
+          "planned_fault_count": 1,
+          "triggered_fault_count": 1,
+          "observed_fault_count": 1,
+          "reconciled_fault_count": 1,
+          "recovered_pass_count": 1,
+          "not_reached_count": 0,
+          "members": [
+            {
+              "member_id": "response-lost",
+              "run_ref": {
+                "kind": "Run Evidence",
+                "run_id": "run-incident-b00813da-8cae-4b80-84c4-98303ac85804"
+              },
+              "run_outcome": "PASS",
+              "item_result": "PASS",
+              "recovery_status": "RECOVERED",
+              "fault": {
+                "fault_id": "side_effect_success_response_lost",
+                "planned": true,
+                "triggered": true,
+                "observed": true,
+                "reconciled": true
+              }
+            }
+          ],
+          "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+        },
+        "recovered_pass_delta": {
+          "baseline": 0,
+          "candidate": 1,
+          "delta": 1,
+          "status": "KNOWN"
+        },
+        "triggered_fault_delta": {
+          "baseline": 1,
+          "candidate": 1,
+          "delta": 0,
+          "status": "KNOWN"
+        }
+      },
+      "cost_token_latency": {
+        "reported_tokens": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null,
+          "status": "UNKNOWN"
+        },
+        "derived_cost": {
+          "baseline": null,
+          "candidate": null,
+          "delta": null,
+          "status": "UNKNOWN"
+        },
+        "unknown_cost_count": {
+          "baseline": 3,
+          "candidate": 3,
+          "delta": 0,
+          "status": "KNOWN"
+        },
+        "total_observed_runtime_ms": {
+          "baseline": 6,
+          "candidate": 6,
+          "delta": 0,
+          "status": "KNOWN"
+        },
+        "average_item_latency_ms": {
+          "baseline": 2.0,
+          "candidate": 2.0,
+          "delta": 0.0,
+          "status": "KNOWN"
+        },
+        "cost_comparison_rule": "Derived estimate only; no Provider invoice is inferred."
+      },
+      "evidence": {
+        "incomparable_member_count": 0,
+        "warnings": [
+          "Cost is unknown for items without Provider-reported usage; missing cost is not treated as zero."
+        ],
+        "quality_and_coverage_are_separate": true
+      }
+    },
+    "validation_errors": [],
+    "non_release_boundary": "COMPARISON_ONLY_NO_RELEASE_DECISION",
+    "runtime": {
+      "runtime_version": "rpf-08.v1",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494",
+      "comparison_mode": "same-suite-version-independent-evaluations"
+    }
+  }
+}

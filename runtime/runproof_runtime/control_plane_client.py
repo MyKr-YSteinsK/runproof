@@ -167,7 +167,7 @@ def _summary(document: dict[str, Any], entity_type: str, entity_id: str) -> dict
     if isinstance(container.get("decision_subject"), str):
         summary["decision_subject"] = container["decision_subject"]
     if isinstance(agent, dict):
-        for key in ("agent_id", "agent_family", "agent_version", "known_bad_version"):
+        for key in ("agent_id", "agent_family", "agent_version", "known_bad_version", "agent_domain", "agent_type", "agent_contract_id", "configuration_id"):
             if isinstance(agent.get(key), str):
                 summary[key] = agent[key]
     if isinstance(scenario, dict):
@@ -518,6 +518,13 @@ def reviewed_product_corpus(root: Path) -> list[Path]:
         "reviewed-regression-stability-01-run.json", "reviewed-regression-stability-02-run.json", "reviewed-regression-fixed-candidate-run.json",
         "reviewed-evaluation-baseline-normal-run.json", "reviewed-evaluation-baseline-recovery-run.json", "reviewed-evaluation-baseline-regression-run.json",
         "reviewed-evaluation-candidate-normal-run.json", "reviewed-evaluation-candidate-recovery-run.json", "reviewed-evaluation-candidate-regression-run.json",
+        # RPF-16 Incident Remediation Agent corpus. It uses the same canonical
+        # artifact kinds with explicit Agent/Suite identities; none of these
+        # entries replaces the Production Change history above.
+        "reviewed-rpf16-incident-source-failure-run.json", "reviewed-rpf16-incident-failure-reproduction-run.json",
+        "reviewed-rpf16-incident-stability-01-run.json", "reviewed-rpf16-incident-stability-02-run.json", "reviewed-rpf16-incident-fixed-focus-run.json",
+        "reviewed-rpf16-incident-evaluation-baseline-local-run.json", "reviewed-rpf16-incident-evaluation-baseline-response-lost-run.json", "reviewed-rpf16-incident-evaluation-baseline-external-regression-run.json",
+        "reviewed-rpf16-incident-evaluation-candidate-local-run.json", "reviewed-rpf16-incident-evaluation-candidate-response-lost-run.json", "reviewed-rpf16-incident-evaluation-candidate-external-regression-run.json",
         # Final product Failure Case/Regression history; the pre-promotion case
         # is intentionally not silently ingested under the same identity.
         "reviewed-failure-case-promoted.json", "reviewed-regression.json",
@@ -528,6 +535,13 @@ def reviewed_product_corpus(root: Path) -> list[Path]:
         "reviewed-evaluation-comparison.json",
         "reviewed-quality-policy.json", "reviewed-quality-gate-baseline.json", "reviewed-quality-gate-candidate.json",
         "reviewed-release-decision-baseline.json", "reviewed-release-decision-candidate.json",
+        "reviewed-rpf16-incident-failure-case.json", "reviewed-rpf16-incident-regression.json",
+        "reviewed-rpf16-incident-known-bad-regression-result.json", "reviewed-rpf16-incident-fixed-regression-result.json",
+        "reviewed-rpf16-incident-baseline-evaluation-regression-result.json", "reviewed-rpf16-incident-candidate-evaluation-regression-result.json",
+        "reviewed-rpf16-incident-regression-collection.json", "reviewed-rpf16-incident-suite.json",
+        "reviewed-rpf16-incident-baseline-evaluation.json", "reviewed-rpf16-incident-candidate-evaluation.json", "reviewed-rpf16-incident-comparison.json",
+        "reviewed-rpf16-incident-quality-policy.json", "reviewed-rpf16-incident-baseline-gate.json", "reviewed-rpf16-incident-candidate-gate.json",
+        "reviewed-rpf16-incident-baseline-decision.json", "reviewed-rpf16-incident-candidate-decision.json",
     ]
     paths = [runtime / name for name in names]
     missing = [path for path in paths if not path.is_file()]

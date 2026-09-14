@@ -176,10 +176,10 @@ def _wait_control_plane(process: subprocess.Popen[bytes], base_url: str, timeout
 class FreshInfrastructure:
     """Own exactly one temporary PostgreSQL container and Java service."""
 
-    def __init__(self, context: dict[str, Any], temp_root: Path):
+    def __init__(self, context: dict[str, Any], temp_root: Path, *, resource_prefix: str = "rpf12"):
         nonce = uuid.uuid4().hex[:8]
         suffix = f"{_safe_fragment(context['run_id'])}-{_safe_fragment(context['run_attempt'])}-{nonce}"
-        self.container = f"rpf12-postgres-{suffix}"
+        self.container = f"{resource_prefix}-postgres-{suffix}"
         self.db_port = _free_port()
         self.api_port = _free_port()
         self.temp_root = temp_root

@@ -8,6 +8,7 @@ import {
   EvaluationResult,
   FailureCase,
   getDerivedCost,
+  getAgent,
   getEvaluation,
   getEvaluationComparison,
   getFailureCase,
@@ -24,16 +25,22 @@ import {
   isEnvironmentErrorRun,
   isFaultedRun,
   JsonRecord,
+  AgentSummary,
+  reviewedAgents,
   reviewedRuns,
   reviewedFailureCases,
   reviewedEvaluationComparison,
+  reviewedEvaluationComparisons,
   reviewedEvaluations,
   reviewedEvaluationSuite,
+  reviewedEvaluationSuites,
   reviewedQualityGates,
   reviewedQualityPolicy,
+  reviewedQualityPolicies,
   reviewedReleaseDecisions,
   reviewedRegressions,
   reviewedRegressionCollection,
+  reviewedRegressionCollections,
   Regression,
   RegressionExecutionResult,
   ReleaseDecision,
@@ -47,7 +54,7 @@ const DATA_SOURCE_MODE = controlPlaneDataSourceMode();
 const DATA_SOURCE_LABEL = DATA_SOURCE_MODE === "api" ? "Control Plane API" : "reviewed fixture corpus";
 const DATA_SOURCE_FOOTNOTE = DATA_SOURCE_MODE === "api" ? "Control Plane API + verified immutable artifact" : "reviewed fixture artifact";
 
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null; executionJobId: string | null };
+type LocationState = { pathname: string; runId: string | null; eventId: string | null; agentId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null; executionJobId: string | null };
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -87,6 +94,7 @@ const CHECK_LABELS: Record<string, string> = {
 
 function readLocation(): LocationState {
   const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
+  const agentMatch = pathname.match(/^\/agents\/([^/]+)$/);
   const runMatch = pathname.match(/^\/runs\/([^/]+)$/);
   const failureMatch = pathname.match(/^\/failures\/([^/]+)$/);
   const regressionMatch = pathname.match(/^\/regressions\/([^/]+)$/);
@@ -98,6 +106,7 @@ function readLocation(): LocationState {
     pathname,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
     eventId: new URLSearchParams(window.location.search).get("event"),
+    agentId: agentMatch ? decodeURIComponent(agentMatch[1]) : null,
     failureCaseId: failureMatch ? decodeURIComponent(failureMatch[1]) : null,
     regressionId: regressionMatch ? decodeURIComponent(regressionMatch[1]) : null,
     evaluationId: evaluationMatch ? decodeURIComponent(evaluationMatch[1]) : null,
@@ -125,6 +134,37 @@ function displayValue(value: unknown): string {
   if (typeof value === "boolean") return value ? "Yes" : "No";
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
+}
+
+function agentDomain(value: unknown): string {
+  const record = objectValue(value);
+  const explicit = record?.agent_domain;
+  if (typeof explicit === "string" && explicit) return explicit;
+  return record?.agent_id === "incident-remediation-agent" || record?.agent_family === "incident-remediation-agent"
+    ? "Incident Remediation Agent"
+    : "Production Change Agent";
+}
+
+function agentIdentity(value: unknown): string {
+  const record = objectValue(value);
+  const id = record?.agent_id || record?.agent_family || "unknown-agent";
+  const version = record?.agent_version || record?.known_bad_version;
+  return `${String(id)}${version ? ` · ${String(version)}` : ""}`;
+}
+
+function agentType(value: unknown): string {
+  const record = objectValue(value);
+  return typeof record?.agent_type === "string" ? record.agent_type : agentDomain(value) === "Incident Remediation Agent" ? "INCIDENT_REMEDIATION" : "STATEFUL_CHANGE";
+}
+
+function isKnownBadProfile(value: unknown): boolean {
+  const profile = typeof value === "string" ? value : displayValue(value);
+  return profile.includes("known-bad");
+}
+
+function isFixedCandidateProfile(value: unknown): boolean {
+  const profile = typeof value === "string" ? value : displayValue(value);
+  return profile.includes("fixed") || profile.includes("candidate");
 }
 
 function shortId(value: unknown, length = 18): string {
@@ -201,7 +241,7 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, failure = false, regression = false, evaluation = false, comparison = false, release = false, execution = false }: { children: React.ReactNode; detail?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean; execution?: boolean }) {
+function AppShell({ children, detail = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, release = false, execution = false }: { children: React.ReactNode; detail?: boolean; agent?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean; execution?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
@@ -218,7 +258,12 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <span className="workspace-status"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
-          <a className={!detail && !failure && !regression && !evaluation && !comparison && !release && !execution ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={agent ? "active" : ""} href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}>
+            <span className="nav-glyph">◇</span>
+            <span>Agents</span>
+            <span className="nav-count">{reviewedAgents.length}</span>
+          </a>
+          <a className={!detail && !agent && !failure && !regression && !evaluation && !comparison && !release && !execution ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -226,7 +271,7 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <a className={failure ? "active" : ""} href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}>
             <span className="nav-glyph">!</span>
             <span>Failure Cases</span>
-            <span className="nav-count">{1}</span>
+            <span className="nav-count">{reviewedFailureCases.length}</span>
           </a>
           <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>
             <span className="nav-glyph">↗</span>
@@ -241,7 +286,7 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <a className={comparison ? "active" : ""} href={`/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`} onClick={(event) => { event.preventDefault(); navigate(`/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`); }}>
             <span className="nav-glyph">⇄</span>
             <span>Comparisons</span>
-            <span className="nav-count">1</span>
+            <span className="nav-count">{2}</span>
           </a>
           <a className={release ? "active" : ""} href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}>
             <span className="nav-glyph">✓</span>
@@ -270,11 +315,11 @@ function AppShell({ children, detail = false, failure = false, regression = fals
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{execution ? (detail ? "Durable execution detail" : "Durable executions") : release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{execution ? (detail ? "Durable execution detail" : "Durable executions") : agent ? (detail ? "Agent detail" : "Agent registry") : release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
-            <span className="topbar-revision">RPF-14</span>
+            <span className="topbar-revision">RPF-16</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -376,8 +421,8 @@ function RunRow({ run }: { run: RunEvidence }) {
         <span className={`signal-label ${faulted || run.outcome.status !== "PASS" ? "fault" : ""}`}>{runSignal(run)}</span>
       </div>
       <div className="run-row-agent">
-        <strong>{displayValue(run.run.agent.agent_id)}</strong>
-        <span>{displayValue(run.run.agent.agent_version)} <em>·</em> {displayValue(run.scenario.scenario_id)}@{displayValue(run.scenario.scenario_version)}</span>
+        <strong>{agentIdentity(run.run.agent)}</strong>
+        <span>{agentDomain(run.run.agent)} <em>·</em> {displayValue(run.scenario.scenario_id)}@{displayValue(run.scenario.scenario_version)}</span>
       </div>
       <div className="run-row-provider">
         <strong>{displayValue(run.llmProvider.requested_model)}</strong>
@@ -431,7 +476,8 @@ function RunDetail({ run, eventId }: { run: RunEvidence; eventId: string | null 
         </div>
       </div>
       <section className="identity-strip" aria-label="Run context identity">
-        <IdentityField label="Agent" value={`${displayValue(run.run.agent.agent_id)} / ${displayValue(run.run.agent.agent_version)}`} />
+        <IdentityField label="Agent" value={agentIdentity(run.run.agent)} note={agentDomain(run.run.agent)} />
+        <IdentityField label="Agent type / contract" value={`${agentType(run.run.agent)} / ${displayValue(run.run.agent.agent_contract_id || "—")}`} mono />
         <IdentityField label="Evaluation / Run" value={`${shortId(run.run.evaluationId, 16)} / ${shortId(run.run.runId, 16)}`} mono />
         <IdentityField label="Scenario" value={`${displayValue(run.scenario.scenario_id)}@${displayValue(run.scenario.scenario_version)}`} mono />
         <IdentityField label="LLM provider" value={`${displayValue(run.llmProvider.provider_id)} · ${displayValue(run.llmProvider.requested_model)}`} note={displayValue(run.llmProvider.mode)} />
@@ -546,19 +592,21 @@ function resultTone(result: string): "success" | "fault" | "error" | "neutral" {
 function AgentFailureSummary({ run, failureCase, regression }: { run: RunEvidence; failureCase?: FailureCase; regression?: Regression }) {
   const failure = run.failureAttribution || {};
   const failingEventId = typeof failure.failing_event_id === "string" ? failure.failing_event_id : null;
+  const incident = agentDomain(run.run.agent) === "Incident Remediation Agent";
+  const sideEffect = objectValue(failure.remediation_side_effect) || {};
   return (
     <section className="classification-panel agent-failure-panel" aria-label="Agent failure attribution">
       <div className="classification-heading">
-        <div><span className="eyebrow">FAILURE ATTRIBUTION · DETERMINISTIC</span><h2>Agent FAIL, guard protected state</h2></div>
+        <div><span className="eyebrow">FAILURE ATTRIBUTION · DETERMINISTIC</span><h2>{incident ? "Agent FAIL, harmful remediation observed" : "Agent FAIL, guard protected state"}</h2></div>
         {failureCase && <a className="action-link" href={failureHref(failureCase.failureCase.failureCaseId)} onClick={(event) => { event.preventDefault(); navigate(failureHref(failureCase.failureCase.failureCaseId)); }}>Open Failure Case →</a>}
       </div>
-      <p className="classification-copy">The Candidate Agent issued a state-changing intent before observing the expected state. The runtime guard rejected it, so no business mutation occurred; the unsafe behavior itself remains a FAIL.</p>
+      <p className="classification-copy">{incident ? "The Incident Remediation Agent acted on a service symptom without disambiguating dependency health. The controlled simulation recorded the remediation side effect, so the unsafe behavior remains an Agent FAIL." : "The Candidate Agent issued a state-changing intent before observing the expected state. The runtime guard rejected it, so no business mutation occurred; the unsafe behavior itself remains a FAIL."}</p>
       <div className="classification-grid">
         <div><span>Attribution</span><strong>Agent</strong><small>{displayValue(failure.reason_code)}</small></div>
         <div><span>Violated invariant</span><strong className="mono">{displayValue(failure.violated_invariant_id)}</strong><small>{displayValue(failure.violated_invariant)}</small></div>
         <div><span>Failing event</span><strong className="mono">{shortId(failingEventId, 27)}</strong>{failingEventId && <a href={runHref(run.run.runId, failingEventId)} onClick={(event) => { event.preventDefault(); navigate(runHref(run.run.runId, failingEventId)); }}>Open event deep-link</a>}</div>
         <div><span>Expected / actual</span><strong>{displayValue(failure.expected)}</strong><small>{displayValue(failure.actual)}</small></div>
-        <div><span>Side effect</span><strong>Not executed</strong><small>guard rejected unsafe intent</small></div>
+        <div><span>Side effect</span><strong>{incident ? displayValue(sideEffect.executed ? "Executed" : "Not executed") : "Not executed"}</strong><small>{incident ? `${displayValue(sideEffect.harmful ? "harmful local mutation" : "no harmful local mutation")} · effect ${displayValue(sideEffect.effect_count)}` : "guard rejected unsafe intent"}</small></div>
         <div><span>Quality / workflow</span><strong>Excluded from quality</strong><small>{regression ? `Regression ${shortId(regression.regression.regressionId, 27)} · focused` : failureCase ? "Failure Case linked · promoted separately" : "Failure Case not linked"}</small></div>
       </div>
     </section>
@@ -571,7 +619,7 @@ function RegressionRunSummary({ run, regression, result }: { run: RunEvidence; r
   return (
     <section className="classification-panel regression-run-panel" aria-label="Regression focused rerun result">
       <div className="classification-heading">
-        <div><span className="eyebrow">FOCUSED RERUN · REGRESSION RESULT</span><h2>{result.result.agentProfile === "known-bad-unsafe-precondition-v1" ? "Known-bad failure reproduced" : "Fixed Candidate passed this Regression"}</h2></div>
+        <div><span className="eyebrow">FOCUSED RERUN · REGRESSION RESULT</span><h2>{isKnownBadProfile(result.result.agentProfile) ? "Known-bad failure reproduced" : "Fixed Candidate passed this Regression"}</h2></div>
         <a className="action-link" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open Regression →</a>
       </div>
       <p className="classification-copy">Run outcome and Regression result are separate contracts. This execution is evidence for <span className="mono">{shortId(regression.regression.regressionId, 31)}</span> version {regression.regression.regressionVersion}; it is not an overall Agent, Suite, Quality, or Release decision.</p>
@@ -780,6 +828,49 @@ function refLabel(value: unknown): string {
   return typeof ref?.kind === "string" ? ref.kind : "Evidence ref";
 }
 
+function agentHref(agentId: string): string {
+  return `/agents/${encodeURIComponent(agentId)}`;
+}
+
+function AgentIndex() {
+  return <AppShell agent>
+    <div className="page-header index-header"><div><span className="eyebrow">AGENTS · CROSS-AGENT REGISTRY</span><h1>Follow reliability by Agent identity.</h1><p className="lede">Each Agent keeps its own domain, scenario, tool, environment, verifier, and versioned evidence. Shared semantics stop at the narrow integration contract.</p></div><div className="corpus-note"><span className="section-label">REGISTERED AGENTS</span><strong>{reviewedAgents.length}</strong><span>explicit reviewed adapters</span></div></div>
+    <section className="corpus-boundary agent-boundary" aria-label="Agent contract boundary"><span className="boundary-mark">◇</span><p><strong>Integration boundary.</strong> The registry is explicit and read-only. It does not dynamically load plugins, grant production access, or give an Agent release authority.</p></section>
+    <section className="agent-card-grid" aria-label="Registered Agents">
+      {reviewedAgents.map((item) => <a className="agent-card" key={item.agentId} href={agentHref(item.agentId)} onClick={(event) => { event.preventDefault(); navigate(agentHref(item.agentId)); }}><div className="agent-card-mark">{item.domain === "Incident Remediation Agent" ? "IR" : "PC"}</div><div className="agent-card-body"><span className="eyebrow">{item.domain}</span><h2>{item.agentId}</h2><p>{item.agentType} · {item.versions.length} reviewed version(s)</p><div className="agent-card-facts"><span><strong>{item.runIds.length}</strong> Runs</span><span><strong>{item.failureCaseIds.length}</strong> Failures</span><span><strong>{item.regressionIds.length}</strong> Regressions</span><span><strong>{item.evaluationIds.length}</strong> Evaluations</span></div></div><span className="row-arrow" aria-hidden="true">→</span></a>)}
+    </section>
+    <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE} · derived from verified Agent-bearing artifacts</span><span>Read-only registry · no mutation or release action</span></footer>
+  </AppShell>;
+}
+
+function AgentDetail({ agent }: { agent: AgentSummary }) {
+  const runs = reviewedRuns.filter((run) => agentTextFor(run.run.agent, agent.agentId));
+  const failures = reviewedFailureCases.filter((item) => agentTextFor(item.agent, agent.agentId));
+  const regressions = reviewedRegressions.filter((item) => agentTextFor(item.agent, agent.agentId));
+  const evaluations = reviewedEvaluations.filter((item) => agentTextFor(item.evaluation.agent, agent.agentId));
+  const decisions = reviewedReleaseDecisions.filter((item) => agentTextFor(item.releaseDecision.evaluatedAgent, agent.agentId) || agentTextFor(item.releaseDecision.candidateAgent, agent.agentId));
+  const incidentFailure = failures.find((item) => item.scenario.scenario_id === "incident-remediation");
+  const observation = incidentFailure?.failureObservation || {};
+  const dependencyFacts = objectValue(observation.dependency_facts) || objectValue(valueAt(observation, "actual")) || {};
+  const sideEffect = objectValue(observation.remediation_side_effect) || {};
+  return <AppShell agent detail>
+    <div className="detail-breadcrumb"><a href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}>Agents</a><span aria-hidden="true">/</span><span>{shortId(agent.agentId, 34)}</span><span className="schema-chip">rpf-agent-integration-contract-v1</span></div>
+    <div className="detail-header agent-detail-header"><div><span className="eyebrow">{agent.domain} · AGENT DETAIL</span><h1>{agent.agentId}</h1><p className="detail-subtitle">This view binds versions and execution evidence to one explicit Agent contract. Production Change history remains independent from Incident Remediation history.</p></div><div className="detail-header-status"><span className="status-chip success">REGISTERED</span><span className="status-note">read-only contract view</span></div></div>
+    <section className="identity-strip agent-identity-strip" aria-label="Agent contract identity"><IdentityField label="Agent domain" value={agent.domain} /><IdentityField label="Agent type" value={agent.agentType} mono /><IdentityField label="Contract" value={`${agent.contractId}@1.0.0`} mono /><IdentityField label="Versions" value={agent.versions.join(" · ")} /><IdentityField label="Profiles" value={agent.profiles.join(" · ")} mono /></section>
+    <section className="agent-contract-panel panel" aria-labelledby="agent-contract-heading"><div className="panel-heading"><div><span className="eyebrow">COMPATIBILITY CONTRACT · EXPLICIT</span><h2 id="agent-contract-heading">Scenario, tools, environment, verifier</h2></div><span className="schema-chip">evidence: rpf-run-evidence-v2</span></div><div className="agent-contract-grid"><div><span>Scenario refs</span><strong>{agent.scenarioRefs.map((ref) => `${displayValue(ref.scenario_id)}@${displayValue(ref.scenario_version)}`).join(" · ") || "—"}</strong><small>versioned case identity stays visible</small></div><div><span>Supported execution</span><strong>fresh-per-member</strong><small>sequential · controlled simulation</small></div><div><span>Evidence boundary</span><strong>Observed Fact / Verified Result</strong><small>private protocol fields are not displayed</small></div><div><span>Authority</span><strong>Agent has no release authority</strong><small>decision-only quality boundary</small></div></div></section>
+    <section className="agent-evidence-grid" aria-label="Agent evidence counts"><div className="panel"><span className="eyebrow">RUN EVIDENCE</span><strong className="agent-big-number">{runs.length}</strong><span>linked immutable Runs</span></div><div className="panel"><span className="eyebrow">FAILURE CASES</span><strong className="agent-big-number">{failures.length}</strong><span>investigated Agent failures</span></div><div className="panel"><span className="eyebrow">EVALUATIONS</span><strong className="agent-big-number">{evaluations.length}</strong><span>Baseline / Candidate aggregates</span></div><div className="panel"><span className="eyebrow">DECISIONS</span><strong className="agent-big-number">{decisions.length}</strong><span>decision-only quality records</span></div></section>
+    {incidentFailure && <section className="incident-investigation-panel panel" aria-labelledby="incident-investigation-heading"><div className="panel-heading"><div><span className="eyebrow">INCIDENT INVESTIGATION · FACTS FIRST</span><h2 id="incident-investigation-heading">First divergence and dependency attribution</h2></div><StatusTag status="FAILURE CASE" tone="fault" /></div><div className="incident-facts-grid"><div><span>FIRST DIVERGENCE</span><strong className="mono">{displayValue(observation.failing_event_id)}</strong><small>{displayValue(observation.violated_invariant_id)}</small></div><div><span>DEPENDENCY FACT</span><strong>{displayValue(dependencyFacts.dependency_health || dependencyFacts.dependency_health_at_mutation)}</strong><small>{displayValue(dependencyFacts.cause_classification || "external dependency observation")}</small></div><div><span>REMEDIATION SIDE EFFECT</span><strong>{displayValue(sideEffect.executed ? "EXECUTED" : "NOT EXECUTED")}</strong><small>{displayValue(sideEffect.harmful ? "harmful local mutation" : "no harmful local mutation")} · effect {displayValue(sideEffect.effect_count)}</small></div><div><span>VERIFIED LINKS</span><strong>{runs.length} Runs · {regressions.length} Regression(s)</strong><small>{failures[0] ? <a className="action-link" href={failureHref(failures[0].failureCase.failureCaseId)} onClick={(event) => { event.preventDefault(); navigate(failureHref(failures[0].failureCase.failureCaseId)); }}>Open Failure Case →</a> : "—"}</small></div></div><div className="evidence-separation"><div><span className="eyebrow">FACTS</span><p>Service symptom, dependency health, recent change evidence, remediation receipt, and effect count come from the controlled simulation.</p></div><div><span className="eyebrow">VERIFIED</span><p>{displayValue(observation.violated_invariant)} The deterministic verifier and Regression oracle bind the first divergence to the known-bad Agent version.</p></div><div><span className="eyebrow">INFERENCE</span><p>No free-form AI inference is persisted in this view. Any operator conclusion must remain separate from the verified evidence.</p></div></div></section>}
+    <section className="agent-linked-lists" aria-label="Agent linked evidence"><div className="panel"><div className="panel-heading"><div><span className="eyebrow">VERSIONS</span><h2>Reviewed configurations</h2></div><span className="section-count">{agent.versions.length}</span></div>{agent.versions.map((version) => <div className="agent-version-row" key={version}><strong>{version}</strong><span>{agent.profiles.join(" · ")}</span></div>)}</div><div className="panel"><div className="panel-heading"><div><span className="eyebrow">LATEST DECISION</span><h2>Quality outcome</h2></div><span className="section-count">{decisions.length}</span></div>{decisions.length ? decisions.slice(-2).map((item) => { const decision = item.releaseDecision; const href = releaseDecisionHref(decision.releaseDecisionId); return <a className="agent-linked-row" key={decision.releaseDecisionId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><strong>{decision.decisionStatus}</strong><span>{decision.evaluatedAgentVersion} · {decision.decisionSubject}</span><span className="row-arrow">→</span></a>; }) : <p className="release-empty-note">No decision record linked.</p>}</div></section>
+    <section className="agent-run-links panel" aria-labelledby="agent-run-links-heading"><div className="panel-heading"><div><span className="eyebrow">EXECUTION EVIDENCE</span><h2 id="agent-run-links-heading">Open linked Runs and Regressions</h2></div><span className="section-count">{runs.length + regressions.length} refs</span></div><div className="agent-ref-list">{runs.slice(0, 12).map((run) => <a key={run.run.runId} href={runHref(run.run.runId)} onClick={(event) => { event.preventDefault(); navigate(runHref(run.run.runId)); }}><span className="field-label">RUN · {run.outcome.status}</span><strong className="mono">{shortId(run.run.runId, 34)}</strong><small>{displayValue(run.scenario.case_id || run.scenario.scenario_id)} · {agentIdentity(run.run.agent)}</small></a>)}{regressions.map((item) => <a key={item.regression.regressionId} href={regressionHref(item.regression.regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(item.regression.regressionId)); }}><span className="field-label">REGRESSION · {item.regression.status}</span><strong className="mono">{shortId(item.regression.regressionId, 34)}</strong><small>{displayValue(item.scenario.scenario_id)} · {displayValue(item.agent.agent_version || item.agent.known_bad_version)}</small></a>)}</div></section>
+    <footer className="detail-footer"><span>{agent.agentId} · {agent.domain} · contract-bound</span><span>Read-only · no Agent mutation or release action</span></footer>
+  </AppShell>;
+}
+
+function agentTextFor(value: unknown, expectedAgentId: string): boolean {
+  const record = objectValue(value) || {};
+  return record.agent_id === expectedAgentId || record.agent_family === expectedAgentId;
+}
+
 function RegressionIndex() {
   return (
     <AppShell regression>
@@ -791,8 +882,8 @@ function RegressionIndex() {
         </div>
         <div className="corpus-note">
           <span className="section-label">ACTIVE COLLECTION</span>
-          <strong>{reviewedRegressionCollection.members.length} Regression</strong>
-          <span>{reviewedRegressionCollection.collection.category} · not Release</span>
+          <strong>{reviewedRegressions.length} Regression</strong>
+          <span>{reviewedRegressionCollections.length} versioned collections · not Release</span>
         </div>
       </div>
       <section className="corpus-boundary" aria-label="Regression boundary">
@@ -808,8 +899,8 @@ function RegressionIndex() {
           <div className="regression-list-head" aria-hidden="true"><span>STATUS / IDENTITY</span><span>SCENARIO / INVARIANT</span><span>KNOWN-BAD</span><span>FIXED CANDIDATE</span><span /></div>
           {reviewedRegressions.map((item) => {
             const results = getRegressionResults(item.regression.regressionId);
-            const knownBad = results.find((result) => result.result.agentProfile === "known-bad-unsafe-precondition-v1");
-            const fixedCandidate = results.find((result) => result.result.agentProfile === "production-change-agent-v1-fixed");
+            const knownBad = results.find((result) => isKnownBadProfile(result.result.agentProfile));
+            const fixedCandidate = results.find((result) => isFixedCandidateProfile(result.result.agentProfile));
             const href = regressionHref(item.regression.regressionId);
             return <a className="regression-row" key={item.regression.regressionId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
               <div className="regression-row-identity"><StatusTag status="ACTIVE" tone="success" /><strong className="mono">{shortId(item.regression.regressionId, 31)}</strong><span>{item.regression.regressionVersion} · {item.regression.category}</span></div>
@@ -854,8 +945,9 @@ function RegressionDetail({ regression }: { regression: Regression }) {
   const sourceCaseHref = failureCase ? failureHref(failureCase.failureCase.failureCaseId) : null;
   const sourceHref = sourceRunRef ? runHref(sourceRunRef.runId, sourceRunRef.eventId) : null;
   const reproductionHref = reproductionRef ? runHref(reproductionRef.runId, reproductionRef.eventId) : null;
-  const knownBad = results.find((result) => result.result.agentProfile === "known-bad-unsafe-precondition-v1");
-  const fixedCandidate = results.find((result) => result.result.agentProfile === "production-change-agent-v1-fixed");
+  const knownBad = results.find((result) => isKnownBadProfile(result.result.agentProfile));
+  const fixedCandidate = results.find((result) => isFixedCandidateProfile(result.result.agentProfile));
+  const incident = agentDomain(regression.agent) === "Incident Remediation Agent";
   const gateOrder = ["reproducibility", "relevance", "stability", "non_duplicate", "expected_behavior_explicit"];
   return (
     <AppShell detail regression>
@@ -868,7 +960,7 @@ function RegressionDetail({ regression }: { regression: Regression }) {
       <div className="detail-header regression-detail-header">
         <div>
           <span className="eyebrow">HISTORICAL REGRESSION · ACTIVE</span>
-          <h1>Unsafe precondition Regression.</h1>
+          <h1>{incident ? "External dependency remediation Regression." : "Unsafe precondition Regression."}</h1>
           <p className="detail-subtitle">A validated Agent failure was explicitly promoted after independent stability evidence and is now reusable as Regression version {regression.regression.regressionVersion}. The contract is separate from the source Failure Case and every Run.</p>
         </div>
         <div className="detail-header-status"><StatusTag status="ACTIVE" tone="success" /><span className="status-note">Historical Regression · not Release ELIGIBLE</span></div>
@@ -877,7 +969,8 @@ function RegressionDetail({ regression }: { regression: Regression }) {
         <IdentityField label="Regression" value={regression.regression.regressionId} mono />
         <IdentityField label="Version" value={regression.regression.regressionVersion} mono note={regression.schemaVersion} />
         <IdentityField label="Scenario" value={`${displayValue(valueAt(regression.scenario, "scenario_id"))}@${displayValue(valueAt(regression.scenario, "scenario_version"))}`} mono />
-        <IdentityField label="Agent family" value={displayValue(valueAt(regression.agent, "agent_family"))} note={displayValue(valueAt(regression.agent, "domain"))} />
+        <IdentityField label="Agent / domain" value={agentIdentity(regression.agent)} note={agentDomain(regression.agent)} />
+        <IdentityField label="Agent type / contract" value={`${agentType(regression.agent)} / ${displayValue(valueAt(regression.agent, "agent_contract_id"))}`} mono />
         <IdentityField label="Invariant" value={shortId(valueAt(failureCondition, "violated_invariant_id"), 34)} mono />
         <IdentityField label="Collection" value={displayValue(valueAt(regression.collectionMembership, "collection_id"))} note={displayValue(valueAt(regression.collectionMembership, "category"))} />
       </section>
@@ -895,9 +988,9 @@ function RegressionDetail({ regression }: { regression: Regression }) {
       <section className="regression-contract-section" aria-labelledby="regression-contract-heading">
         <div className="section-heading"><div><span className="eyebrow">EXPECTED BEHAVIOR · VERSION {regression.regression.regressionVersion}</span><h2 id="regression-contract-heading">What the Agent must prove</h2></div><span className="section-count">no text-only PASS</span></div>
         <div className="regression-contract-grid">
-          <div className="regression-contract-card"><span className="field-label">INITIAL STATE / SEED</span><strong className="mono">{displayValue(initialState.release)}</strong><div><span>revision</span><b>{displayValue(initialState.revision)}</b></div><div><span>seed</span><b className="mono">{displayValue(seedRequirement.seed_revision)}</b></div><div><span>fresh per Run</span><b>{displayValue(seedRequirement.fresh_per_run)}</b></div></div>
+          <div className="regression-contract-card"><span className="field-label">INITIAL STATE / SEED</span><strong className="mono">{incident ? displayValue(valueAt(valueAt(initialState, "service"), "service_id")) : displayValue(initialState.release)}</strong><div><span>{incident ? "dependency" : "revision"}</span><b>{incident ? displayValue(valueAt(valueAt(initialState, "dependency"), "health")) : displayValue(initialState.revision)}</b></div><div><span>seed</span><b className="mono">{displayValue(seedRequirement.seed_revision)}</b></div><div><span>fresh per Run</span><b>{displayValue(seedRequirement.fresh_per_run)}</b></div></div>
           <div className="regression-contract-card"><span className="field-label">SCENARIO / TASK</span><strong>{displayValue(valueAt(scenario, "scenario_id"))}@{displayValue(valueAt(scenario, "scenario_version"))}</strong><p>{displayValue(valueAt(scenario, "task"))}</p></div>
-          <div className="regression-contract-card"><span className="field-label">REQUIRED OUTCOME</span><strong className="success-text">{displayValue(valueAt(requiredOutcome, "run_status"))}</strong><p>release {displayValue(valueAt(valueAt(requiredOutcome, "actual_state"), "release"))} · revision {displayValue(valueAt(valueAt(requiredOutcome, "actual_state"), "revision"))} · {displayValue(valueAt(requiredOutcome, "exactly_one_authorized_mutation")) ? "one mutation" : "contract mismatch"}</p></div>
+          <div className="regression-contract-card"><span className="field-label">REQUIRED OUTCOME</span><strong className="success-text">{displayValue(valueAt(requiredOutcome, "run_status"))}</strong><p>{incident ? `terminal mode ${displayValue(valueAt(requiredOutcome, "terminal_mode"))} · effect count ${displayValue(valueAt(requiredOutcome, "effect_count"))} · no harmful local remediation` : `release ${displayValue(valueAt(valueAt(requiredOutcome, "actual_state"), "release"))} · revision ${displayValue(valueAt(valueAt(requiredOutcome, "actual_state"), "revision"))} · ${displayValue(valueAt(requiredOutcome, "exactly_one_authorized_mutation")) ? "one mutation" : "contract mismatch"}`}</p></div>
           <div className="regression-contract-card"><span className="field-label">FAILURE CONDITION</span><strong className="failure-text">{displayValue(valueAt(failureCondition, "violated_invariant_id"))}</strong><p>{displayValue(valueAt(failureCondition, "reason_code"))} · {displayValue(valueAt(failureCondition, "attribution"))}</p></div>
         </div>
         <div className="regression-rule-columns">
@@ -918,8 +1011,8 @@ function RegressionDetail({ regression }: { regression: Regression }) {
       <section className="regression-rerun-section" aria-labelledby="regression-rerun-heading">
         <div className="section-heading"><div><span className="eyebrow">FOCUSED RERUNS · REGRESSION ONLY</span><h2 id="regression-rerun-heading">Known-bad vs fixed Candidate</h2></div><span className="section-count">{results.length} results · no Suite aggregate</span></div>
         <div className="regression-rerun-list">
-          {results.map((item) => { const ref = runRef(item.result.runRef); const href = ref ? runHref(ref.runId) : null; const known = item.result.agentProfile === "known-bad-unsafe-precondition-v1"; return <div className={`regression-rerun-row ${known ? "known-bad" : "fixed-candidate"}`} key={item.result.resultId}>
-            <div><span className="field-label">{known ? "KNOWN-BAD AGENT" : "FIXED CANDIDATE"}</span><strong>{item.result.agentVersion}</strong><span className="mono">{item.result.agentProfile}</span></div>
+          {results.map((item) => { const ref = runRef(item.result.runRef); const href = ref ? runHref(ref.runId) : null; const known = isKnownBadProfile(item.result.agentProfile); return <div className={`regression-rerun-row ${known ? "known-bad" : "fixed-candidate"}`} key={item.result.resultId}>
+            <div><span className="field-label">{known ? "KNOWN-BAD AGENT" : "FIXED CANDIDATE"}</span><strong>{item.result.agentVersion}</strong><span>{agentDomain(regression.agent)} · {agentIdentity(regression.agent)}</span><span className="mono">{item.result.agentProfile}</span></div>
             <div><span>Run outcome</span><strong>{item.result.runOutcome}</strong><small className="mono">{shortId(ref?.runId, 27)}</small></div>
             <div><span>Regression result</span><StatusTag status={item.result.regressionResult} tone={resultTone(item.result.regressionResult)} /><small>{displayValue(valueAt(item.result.oracle, "reason"))}</small></div>
             <div><span>Release eligibility</span><strong>{item.result.releaseEligibility}</strong><small>not evaluated</small></div>
@@ -935,9 +1028,13 @@ function RegressionDetail({ regression }: { regression: Regression }) {
 
 function EvaluationLabel({ evaluation }: { evaluation: EvaluationResult }): string {
   const version = displayValue(evaluation.evaluation.agent.agent_version);
-  if (version === "1.0.0-known-bad-unsafe-precondition") return "BASELINE";
-  if (version === "1.0.1-observe-before-mutation-fix") return "CANDIDATE";
+  if (isKnownBadProfile(evaluation.evaluation.agent.configuration_id) || version.includes("known-bad")) return "BASELINE";
+  if (isFixedCandidateProfile(evaluation.evaluation.agent.configuration_id) || version.includes("fixed") || version.includes("candidate")) return "CANDIDATE";
   return "EVALUATION";
+}
+
+function comparisonForEvaluation(evaluationId: string): EvaluationComparison {
+  return reviewedEvaluationComparisons.find((item) => valueAt(item.comparison.baseline, "evaluation_id") === evaluationId || valueAt(item.comparison.candidate, "evaluation_id") === evaluationId) || reviewedEvaluationComparison;
 }
 
 function ProgressMeter({ value, label, note }: { value: unknown; label: string; note: string }) {
@@ -976,7 +1073,7 @@ function EvaluationIndex() {
         <div className="corpus-note">
           <span className="section-label">ACTIVE SUITE</span>
           <strong>{reviewedEvaluationSuite.suite.suiteVersion}</strong>
-          <span>{reviewedEvaluationSuite.suite.members.length} required members · sequential</span>
+          <span>{reviewedEvaluationSuite.suite.members.length} required members · {reviewedEvaluationSuites.length} Agent suites reviewed</span>
         </div>
       </div>
       <section className="corpus-boundary evaluation-boundary-note" aria-label="Evaluation boundary">
@@ -1014,7 +1111,8 @@ function EvaluationRow({ evaluation }: { evaluation: EvaluationResult }) {
     <a className="evaluation-row" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
       <div className="evaluation-row-identity">
         <span className="evaluation-kind">{EvaluationLabel({ evaluation })}</span>
-        <strong>{displayValue(metadata.agent.agent_version)}</strong>
+        <strong>{agentIdentity(metadata.agent)}</strong>
+        <span>{agentDomain(metadata.agent)}</span>
         <span className="mono">{shortId(metadata.evaluationId, 28)}</span>
         <StatusTag status={metadata.evaluationStatus} tone="success" />
       </div>
@@ -1089,7 +1187,7 @@ function EvaluationDetail({ evaluation }: { evaluation: EvaluationResult }) {
   const latency = objectValue(valueAt(metrics, "latency")) || {};
   const regressionSummary = objectValue(valueAt(metadata.summary, "regression")) || {};
   const faultSummary = objectValue(valueAt(metadata.summary, "fault_recovery")) || {};
-  const comparison = reviewedEvaluationComparison.comparison;
+  const comparison = comparisonForEvaluation(metadata.evaluationId).comparison;
   const comparisonLink = comparisonHref(comparison.comparisonId);
   return (
     <AppShell detail evaluation>
@@ -1099,7 +1197,8 @@ function EvaluationDetail({ evaluation }: { evaluation: EvaluationResult }) {
         <div className="detail-header-status"><StatusTag status={metadata.evaluationStatus} tone="success" /><span className="status-note">{metadata.memberResults.length} members · read-only reviewed result</span></div>
       </div>
       <section className="identity-strip evaluation-identity-strip" aria-label="Evaluation context identity">
-        <IdentityField label="Agent Version" value={displayValue(metadata.agent.agent_version)} note={displayValue(metadata.agent.configuration_id)} />
+        <IdentityField label="Agent / domain" value={agentIdentity(metadata.agent)} note={agentDomain(metadata.agent)} />
+        <IdentityField label="Agent type / contract" value={`${agentType(metadata.agent)} / ${displayValue(metadata.agent.agent_contract_id || "—")}`} mono />
         <IdentityField label="Evaluation" value={metadata.evaluationId} mono note={metadata.evaluationStatus} />
         <IdentityField label="Suite" value={`${displayValue(valueAt(metadata.suiteRef, "suite_id"))}@${displayValue(valueAt(metadata.suiteRef, "suite_version"))}`} mono note={shortId(valueAt(metadata.suiteRef, "member_contract_digest"), 18)} />
         <IdentityField label="Quality" value={formatRate(quality.success_rate)} note={`${displayValue(quality.pass_count)} pass · ${displayValue(quality.fail_count)} fail`} />
@@ -1142,8 +1241,12 @@ function ComparisonMemberRow({ item }: { item: EvaluationComparisonMember }) {
 }
 
 function ComparisonIndex() {
-  const comparison = reviewedEvaluationComparison.comparison;
-  return <AppShell comparison><div className="page-header index-header"><div><span className="eyebrow">COMPARISONS · REVIEWED CORPUS</span><h1>See what changed between versions.</h1><p className="lede">A single side-by-side surface keeps member outcomes, evidence sufficiency, regression behavior, and observed cost/latency in the same context.</p></div><div className="corpus-note"><span className="section-label">ACTIVE COMPARISON</span><strong>{displayValue(comparison.aggregate?.summary)}</strong><span>same Suite · no Release Decision</span></div></div><section className="corpus-boundary comparison-boundary-note" aria-label="Comparison boundary"><span className="boundary-mark">⇄</span><p><strong>Comparison boundary.</strong> This result is descriptive evidence about two Agent Versions. It never emits <strong>ELIGIBLE</strong>, <strong>BLOCKED</strong>, or deploy authorization.</p></section><a className="comparison-card" href={comparisonHref(comparison.comparisonId)} onClick={(event) => { event.preventDefault(); navigate(comparisonHref(comparison.comparisonId)); }}><span className="comparison-entry-mark">⇄</span><span><strong>{shortId(comparison.comparisonId, 33)}</strong><small>{displayValue(valueAt(comparison.suiteRef, "suite_id"))}@{displayValue(valueAt(comparison.suiteRef, "suite_version"))} · open side-by-side result</small></span><StatusTag status={displayValue(comparison.aggregate?.summary)} tone={evaluationTone(String(comparison.aggregate?.summary || ""))} /><span className="row-arrow" aria-hidden="true">→</span></a></AppShell>;
+  return <AppShell comparison>
+    <div className="page-header index-header"><div><span className="eyebrow">COMPARISONS · REVIEWED CORPUS</span><h1>See what changed between versions.</h1><p className="lede">A single side-by-side surface keeps member outcomes, evidence sufficiency, regression behavior, and observed cost/latency in the same context.</p></div><div className="corpus-note"><span className="section-label">REVIEWED COMPARISONS</span><strong>{reviewedEvaluationComparisons.length}</strong><span>same Agent contract per comparison · no Release Decision</span></div></div>
+    <section className="corpus-boundary comparison-boundary-note" aria-label="Comparison boundary"><span className="boundary-mark">⇄</span><p><strong>Comparison boundary.</strong> Each result is descriptive evidence about two compatible Agent Versions. It never emits <strong>ELIGIBLE</strong>, <strong>BLOCKED</strong>, or deploy authorization.</p></section>
+    <section className="comparison-card-list" aria-label="Reviewed comparisons">{reviewedEvaluationComparisons.map((item) => { const comparison = item.comparison; const href = comparisonHref(comparison.comparisonId); const baseline = objectValue(valueAt(comparison.baseline, "agent")); const candidate = objectValue(valueAt(comparison.candidate, "agent")); return <a className="comparison-card" key={comparison.comparisonId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><span className="comparison-entry-mark">⇄</span><span><strong>{shortId(comparison.comparisonId, 33)}</strong><small>{agentDomain(candidate || baseline)} · {agentIdentity(candidate || baseline)} · {displayValue(valueAt(comparison.suiteRef, "suite_id"))}@{displayValue(valueAt(comparison.suiteRef, "suite_version"))}</small></span><StatusTag status={displayValue(comparison.aggregate?.summary)} tone={evaluationTone(String(comparison.aggregate?.summary || ""))} /><span className="row-arrow" aria-hidden="true">→</span></a>; })}</section>
+    <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE}</span><span>Read-only · no comparison mutation or release action</span></footer>
+  </AppShell>;
 }
 
 function ComparisonDetail({ comparison }: { comparison: EvaluationComparison }) {
@@ -1175,7 +1278,7 @@ function ComparisonDetail({ comparison }: { comparison: EvaluationComparison }) 
   return <AppShell detail comparison>
     <div className="detail-breadcrumb"><a href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}>Evaluations</a><span aria-hidden="true">/</span><span>{shortId(metadata.comparisonId, 34)}</span><span className="schema-chip">rpf-evaluation-comparison-v1</span></div>
     <div className="detail-header comparison-detail-header"><div><span className="eyebrow">BASELINE ↔ CANDIDATE · COMPARISON</span><h1>{displayValue(aggregate.summary)} across the same Suite.</h1><p className="detail-subtitle">The comparison describes member-level evidence changes between two independent Evaluations. It is not a Quality Policy result or Release Decision.</p></div><div className="detail-header-status"><StatusTag status={metadata.status} tone="success" /><span className="status-note">{displayValue(aggregate.summary)} · no release action</span></div></div>
-    <section className="comparison-identity-strip" aria-label="Comparison identity"><div><span>BASELINE AGENT VERSION</span><strong>{displayValue(baselineAgent.agent_version)}</strong><small>{shortId(baselineEvaluationId, 31)}</small></div><div className="comparison-identity-arrow" aria-hidden="true">→</div><div className="candidate-identity"><span>CANDIDATE AGENT VERSION</span><strong>{displayValue(candidateAgent.agent_version)}</strong><small>{shortId(candidateEvaluationId, 31)}</small></div><div><span>SAME SUITE</span><strong>{displayValue(valueAt(metadata.suiteRef, "suite_id"))}</strong><small>version {displayValue(valueAt(metadata.suiteRef, "suite_version"))}</small></div></section>
+    <section className="comparison-identity-strip" aria-label="Comparison identity"><div><span>BASELINE AGENT</span><strong>{agentIdentity(baselineAgent)}</strong><small>{agentDomain(baselineAgent)} · {shortId(baselineEvaluationId, 31)}</small></div><div className="comparison-identity-arrow" aria-hidden="true">→</div><div className="candidate-identity"><span>CANDIDATE AGENT</span><strong>{agentIdentity(candidateAgent)}</strong><small>{agentDomain(candidateAgent)} · {shortId(candidateEvaluationId, 31)}</small></div><div><span>SAME SUITE</span><strong>{displayValue(valueAt(metadata.suiteRef, "suite_id"))}</strong><small>version {displayValue(valueAt(metadata.suiteRef, "suite_version"))}</small></div></section>
     <section className="comparison-boundary-panel" aria-label="Comparison result boundary"><span className="boundary-mark">i</span><p><strong>Descriptive comparison only.</strong> Candidate improves the three observed members with full valid evidence coverage in this reviewed corpus. That statement does not grant <strong>ELIGIBLE</strong>, <strong>BLOCKED</strong>, or deployment authority.</p></section>
     <section className="comparison-metrics-section" aria-labelledby="comparison-metrics-heading"><div className="section-heading"><div><span className="eyebrow">AGGREGATE DELTAS · THREE LENSES</span><h2 id="comparison-metrics-heading">Quality, evidence, and observed cost</h2></div><span className="section-count">same members · independent Runs</span></div><div className="comparison-metrics-grid"><ComparisonMetric label="Agent Quality" baseline={formatRate(baselineQuality.success_rate)} candidate={formatRate(candidateQuality.success_rate)} delta={`+${formatRate(qualityDelta.delta)}`} note={`${displayValue(baselineQuality.denominator)} → ${displayValue(candidateQuality.denominator)} valid quality items`} tone="success" /><ComparisonMetric label="Valid Evidence Coverage" baseline={formatRate(baselineCoverage.coverage_ratio)} candidate={formatRate(candidateCoverage.coverage_ratio)} delta={`${coverageDelta.delta === 0 ? "unchanged" : formatRate(coverageDelta.delta)}`} note={`${displayValue(candidateCoverage.valid_evidence_item_count)}/${displayValue(candidateCoverage.required_item_count)} Candidate required`} tone="neutral" /><ComparisonMetric label="Observed Runtime" baseline={formatMetric(valueAt(runtimeDelta, "baseline"), " ms")} candidate={formatMetric(valueAt(runtimeDelta, "candidate"), " ms")} delta={runtimeDeltaValue === null ? "UNKNOWN" : `${runtimeDeltaValue >= 0 ? "+" : ""}${formatMetric(runtimeDeltaValue, " ms")}`} note="derived from independent member Run durations" tone="neutral" /><ComparisonMetric label="Reported Tokens" baseline={formatMetric(valueAt(tokenDelta, "baseline"))} candidate={formatMetric(valueAt(tokenDelta, "candidate"))} delta={tokenDelta.status === "UNKNOWN" ? "UNKNOWN" : formatMetric(tokenDelta.delta)} note="missing Provider usage is not zero" tone="neutral" /><ComparisonMetric label="Derived Cost" baseline={costDelta.status === "UNKNOWN" ? "UNKNOWN" : `¥${formatMetric(valueAt(costDelta, "baseline"))}`} candidate={costDelta.status === "UNKNOWN" ? "UNKNOWN" : `¥${formatMetric(valueAt(costDelta, "candidate"))}`} delta={costDelta.status === "UNKNOWN" ? "UNKNOWN" : `¥${formatMetric(costDelta.delta)}`} note="not a Provider invoice" tone="neutral" /></div></section>
      <section className="comparison-reliability-grid" aria-label="Regression and Recovery comparisons">
@@ -1238,7 +1341,7 @@ function ReleaseDecisionRow({ decision }: { decision: ReleaseDecision }) {
   const regression = objectValue(valueAt(metadata.historicalRegression, "result_counts")) || {};
   const href = releaseDecisionHref(metadata.releaseDecisionId);
   return <a className={`release-decision-row ${metadata.decisionStatus.toLowerCase()}`} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
-    <div className="release-row-identity"><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /><strong>{metadata.evaluatedAgentVersion}</strong><span className="mono">{shortId(metadata.releaseDecisionId, 28)}</span></div>
+    <div className="release-row-identity"><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /><strong>{agentIdentity(metadata.evaluatedAgent)}</strong><span>{agentDomain(metadata.evaluatedAgent)}</span><span className="mono">{shortId(metadata.releaseDecisionId, 28)}</span></div>
     <div><strong>{shortId(valueAt(metadata.policyRef, "policy_identity"), 30)}</strong><span>Suite {displayValue(valueAt(metadata.suiteRef, "suite_version"))} · {metadata.decisionSubject} subject</span></div>
     <div><strong>{formatRate(valueAt(coverage, "coverage_ratio"))}</strong><span>{displayValue(valueAt(coverage, "valid_evidence_item_count"))}/{displayValue(valueAt(coverage, "required_item_count"))} valid evidence</span></div>
     <div><strong>{metadata.blockingReasons.length} blockers · {metadata.reviewReasons.length} review</strong><span>{metadata.softWarnings.length} soft warning(s) · Regression {displayValue(regression.PASS || 0)} PASS / {displayValue(regression.FAIL || 0)} FAIL</span></div>
@@ -1288,11 +1391,13 @@ function ReleaseDecisionDetail({ decision }: { decision: ReleaseDecision }) {
   const coverage = metadata.validEvidenceCoverage;
   const regressionCounts = objectValue(valueAt(metadata.historicalRegression, "result_counts")) || {};
   const recovery = metadata.recoveryFault;
-  const policy = reviewedQualityPolicy.policy;
+  const policyRefId = String(valueAt(metadata.policyRef, "policy_id") || "");
+  const policyRefIdentity = String(valueAt(metadata.policyRef, "policy_identity") || "");
+  const policy = reviewedQualityPolicies.find((item) => item.policy.policyId === policyRefId || item.policy.policyIdentity === policyRefIdentity)?.policy || reviewedQualityPolicy.policy;
   return <AppShell detail release>
     <div className="detail-breadcrumb"><a href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}>Release Decisions</a><span aria-hidden="true">/</span><span>{shortId(metadata.releaseDecisionId, 34)}</span><span className="schema-chip">rpf-release-decision-v1</span></div>
     <div className="detail-header release-detail-header"><div><span className="eyebrow">{metadata.decisionSubject} · RELEASE DECISION</span><h1>{metadata.evaluatedAgentVersion} is {metadata.decisionStatus}.</h1><p className="detail-subtitle"><ReleaseStatusMessage status={metadata.decisionStatus} /> The decision is tied to one Policy, Suite, Evaluation, Comparison, and Regression evidence snapshot.</p></div><div className="detail-header-status"><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /><span className="status-note">{metadata.decisionSubject} · no release action</span></div></div>
-    <section className="release-identity-grid" aria-label="Release Decision identity"><IdentityField label="Evaluated Agent" value={metadata.evaluatedAgentVersion} note={metadata.decisionSubject} /><IdentityField label="Policy" value={String(valueAt(metadata.policyRef, "policy_identity"))} mono /><IdentityField label="Suite" value={`${displayValue(valueAt(metadata.suiteRef, "suite_id"))}@${displayValue(valueAt(metadata.suiteRef, "suite_version"))}`} mono /><IdentityField label="Evidence coverage" value={formatRate(valueAt(coverage, "coverage_ratio"))} note={`${displayValue(valueAt(coverage, "valid_evidence_item_count"))}/${displayValue(valueAt(coverage, "required_item_count"))} required`} /><IdentityField label="Gate Evaluation" value={gateId} mono note={gateMetadata?.status || "—"} /><IdentityField label="Decision time" value={formatDate(metadata.decisionTimestamp)} mono /></section>
+    <section className="release-identity-grid" aria-label="Release Decision identity"><IdentityField label="Evaluated Agent" value={agentIdentity(metadata.evaluatedAgent)} note={`${agentDomain(metadata.evaluatedAgent)} · ${metadata.decisionSubject}`} /><IdentityField label="Agent type / contract" value={`${agentType(metadata.evaluatedAgent)} / ${displayValue(metadata.evaluatedAgent.agent_contract_id || "—")}`} mono /><IdentityField label="Policy" value={String(valueAt(metadata.policyRef, "policy_identity"))} mono /><IdentityField label="Suite" value={`${displayValue(valueAt(metadata.suiteRef, "suite_id"))}@${displayValue(valueAt(metadata.suiteRef, "suite_version"))}`} mono /><IdentityField label="Evidence coverage" value={formatRate(valueAt(coverage, "coverage_ratio"))} note={`${displayValue(valueAt(coverage, "valid_evidence_item_count"))}/${displayValue(valueAt(coverage, "required_item_count"))} required`} /><IdentityField label="Gate Evaluation" value={gateId} mono note={gateMetadata?.status || "—"} /><IdentityField label="Decision time" value={formatDate(metadata.decisionTimestamp)} mono /></section>
     <section className={`release-authorization-panel ${metadata.decisionStatus.toLowerCase()}`} aria-label="Release authorization boundary"><span className="boundary-mark">i</span><div><span className="eyebrow">AUTHORIZATION BOUNDARY · EXPLICIT</span><h2><ReleaseStatusMessage status={metadata.decisionStatus} /></h2><p><strong>No release executed / No deployment authorization.</strong> `ELIGIBLE` is a quality decision only. Agent/runtime does not hold Release Authority, and this surface has no deploy action.</p></div></section>
     <section className="release-policy-panel" aria-labelledby="release-policy-heading"><div className="panel-heading"><div><span className="eyebrow">QUALITY POLICY · VERSIONED SEMANTICS</span><h2 id="release-policy-heading">{policy.name}</h2></div><span className="schema-chip">{policy.policyIdentity}</span></div><p className="classification-copy">{policy.purpose}</p><div className="release-policy-facts"><div><span>Compatible Suite</span><strong>{displayValue(valueAt(policy.compatibleSuite, "suite_id"))}@{displayValue(valueAt(policy.compatibleSuite, "suite_version"))}</strong><small>identity-bound evidence snapshot</small></div><div><span>Required evidence</span><strong>{displayValue(valueAt(policy.requiredEvidence, "required_member_count"))} members · {formatRate(valueAt(policy.requiredEvidence, "minimum_coverage_ratio"))}</strong><small>valid Agent PASS / FAIL only</small></div><div><span>Decision precedence</span><strong>Hard → Evidence → Review → Eligible</strong><small>unknown is never zero</small></div><div><span>Configured rules</span><strong>{policy.rules.length} rules · {policy.rules.filter((rule) => rule.gate === "HARD").length} Hard</strong><small>Soft warnings stay visible</small></div></div></section>
     <section className="release-gates-section" aria-labelledby="release-gates-heading"><div className="section-heading"><div><span className="eyebrow">DETERMINISTIC GATE EVALUATION</span><h2 id="release-gates-heading">Policy Gates</h2></div><span className="section-count">{gateMetadata?.ruleResults.length || 0} rule results · {gateMetadata?.status || "unavailable"}</span></div>{gateMetadata ? <div className="release-gates-layout"><div className="release-rule-matrix"><div className="release-rule-head"><span>RULE / TYPE</span><span>RESULT</span><span>SEMANTICS / REASON</span><span>EVIDENCE REFS</span></div>{gateMetadata.ruleResults.map((result, index) => <GateRuleRow key={`${String(result.rule_id)}-${index}`} result={result} />)}</div><aside className="release-gate-summary panel"><div className="panel-heading"><div><span className="eyebrow">FINAL PRECEDENCE</span><h2>{metadata.decisionStatus}</h2></div><StatusTag status={metadata.decisionStatus} tone={releaseTone(metadata.decisionStatus)} /></div><div className="fact-list"><div className="fact-row"><span>Hard blockers</span><strong>{metadata.blockingReasons.length}</strong></div><div className="fact-row"><span>Evidence gaps</span><strong>{metadata.evidenceGapReasons.length}</strong></div><div className="fact-row"><span>Review reasons</span><strong>{metadata.reviewReasons.length}</strong></div><div className="fact-row"><span>Soft warnings</span><strong>{metadata.softWarnings.length}</strong></div></div><p className="release-gate-summary-note">A proven Hard blocker wins over evidence gaps. Evidence gaps fail closed as INCONCLUSIVE. Review is evaluated only after evidence sufficiency.</p></aside></div> : <div className="empty-evidence"><strong>Gate Evaluation unavailable</strong><p>The Release Decision ref does not resolve to the reviewed Gate artifact.</p></div>}</section>
@@ -1334,7 +1439,7 @@ function FailureIndex() {
             const href = failureHref(item.failureCase.failureCaseId);
             return <a className="case-row" key={item.failureCase.failureCaseId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
               <div><StatusTag status={item.failureCase.currentStatus.toUpperCase()} tone="success" /><span className="signal-label">source FAIL · reproduction matched</span></div>
-              <div><strong>{displayValue(item.agent.agent_version)}</strong><span>{displayValue(item.scenario.scenario_id)}@{displayValue(item.scenario.scenario_version)}</span></div>
+              <div><strong>{agentIdentity(item.agent)}</strong><span>{agentDomain(item.agent)} · {displayValue(item.scenario.scenario_id)}@{displayValue(item.scenario.scenario_version)}</span></div>
               <div><strong className="mono">{shortId(item.failureSignature.value, 24)}</strong><span>{displayValue(item.failureSignature.components.violated_invariant_id)}</span></div>
               <div><strong>Promoted to Regression</strong><span>{item.reproductionAttempts.length} reproduction attempt · validated history retained</span></div>
               <span className="row-arrow" aria-hidden="true">→</span>
@@ -1358,6 +1463,11 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
   const promotedRegressionId = typeof valueAt(failureCase.promotion?.regression_ref, "regression_id") === "string" ? String(valueAt(failureCase.promotion?.regression_ref, "regression_id")) : null;
   const promotedRegression = promotedRegressionId ? getRegression(promotedRegressionId) : undefined;
   const promoted = Boolean(promotedRegression && failureCase.promotion);
+  const incident = agentDomain(failureCase.agent) === "Incident Remediation Agent";
+  const incidentExpected = objectValue(failureCase.failureObservation.expected) || {};
+  const incidentActual = objectValue(failureCase.failureObservation.actual) || {};
+  const incidentFacts = objectValue(failureCase.failureObservation.dependency_facts) || {};
+  const incidentSideEffect = objectValue(failureCase.failureObservation.remediation_side_effect) || {};
   const promotionGate = valueAt(failureCase.promotion, "gate_ref");
   return (
     <AppShell detail failure>
@@ -1370,14 +1480,15 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
       <div className="detail-header case-detail-header">
         <div>
           <span className="eyebrow">FAILURE CASE INVESTIGATION</span>
-          <h1>Unsafe precondition failure</h1>
-          <p className="detail-subtitle">The source Agent FAIL was reproduced in a fresh Environment with the same failure signature and evidence pattern.</p>
+          <h1>{incident ? "External dependency remediation failure" : "Unsafe precondition failure"}</h1>
+          <p className="detail-subtitle">{incident ? "The source Incident Remediation Agent acted before dependency disambiguation; the failure was reproduced in a fresh controlled simulation with the same signature and harmful side-effect evidence." : "The source Agent FAIL was reproduced in a fresh Environment with the same failure signature and evidence pattern."}</p>
         </div>
         <div className="detail-header-status"><StatusTag status={promoted ? "PROMOTED" : "VALIDATED"} tone="success" /><span className="status-note">{promoted ? "validated history retained · Regression linked" : "Not a Regression"}</span></div>
       </div>
       <section className="case-identity-grid" aria-label="Failure Case identity">
         <IdentityField label="Failure Case" value={failureCase.failureCase.failureCaseId} mono />
-        <IdentityField label="Agent Version" value={`${displayValue(failureCase.agent.agent_id)} / ${displayValue(failureCase.agent.agent_version)}`} />
+        <IdentityField label="Agent / domain" value={agentIdentity(failureCase.agent)} note={agentDomain(failureCase.agent)} />
+        <IdentityField label="Agent type / contract" value={`${agentType(failureCase.agent)} / ${displayValue(failureCase.agent.agent_contract_id || "—")}`} mono />
         <IdentityField label="Scenario" value={`${displayValue(failureCase.scenario.scenario_id)}@${displayValue(failureCase.scenario.scenario_version)}`} mono />
         <IdentityField label="Attribution" value={displayValue(failureCase.classification.attribution)} note={displayValue(failureCase.classification.reason_code)} />
         <IdentityField label="Signature" value={shortId(failureCase.failureSignature.value, 28)} mono note={failureCase.failureSignature.signatureVersion} />
@@ -1385,11 +1496,12 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
       </section>
       <section className="classification-panel case-summary-panel" aria-label="Failure Case validation summary">
         <div className="classification-heading"><div><span className="eyebrow">{promoted ? "PROMOTION EVIDENCE · VALIDATED → REGRESSION" : "REPRODUCTION EVIDENCE · VALIDATED"}</span><h2>{promoted ? "Failure Case promoted to Regression" : "Same failure, independently reproduced"}</h2></div>{promoted && promotedRegression ? <a className="action-link" href={regressionHref(promotedRegression.regression.regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(promotedRegression.regression.regressionId)); }}>Open Regression →</a> : <span className="classification-badge">NOT A REGRESSION</span>}</div>
-        <p className="classification-copy">Validation matched the stable signature, violated invariant, Agent attribution, key guard evidence, and healthy Provider/Environment boundary. {promoted ? `The explicit promotion gate passed and recorded ${displayValue(valueAt(failureCase.promotion, "promoted_at"))}; the original Run Evidence and validated history remain unchanged.` : "The original Run Evidence remains unchanged."}</p>
+        <p className="classification-copy">{incident ? "Validation matched the stable signature, violated invariant, Incident Agent attribution, dependency facts, side-effect evidence, and healthy Provider/Environment boundary." : "Validation matched the stable signature, violated invariant, Agent attribution, key guard evidence, and healthy Provider/Environment boundary."} {promoted ? `The explicit promotion gate passed and recorded ${displayValue(valueAt(failureCase.promotion, "promoted_at"))}; the original Run Evidence and validated history remain unchanged.` : "The original Run Evidence remains unchanged."}</p>
         <div className="classification-grid case-summary-grid">
           <div><span>Violated invariant</span><strong className="mono">{displayValue(failureCase.failureObservation.violated_invariant_id)}</strong><small>{displayValue(failureCase.failureObservation.violated_invariant)}</small></div>
-          <div><span>Expected</span><strong>{displayValue(valueAt(failureCase.failureObservation.expected, "agent_observed_state_before_mutation"))}</strong><small>Agent observes before mutation</small></div>
-          <div><span>Actual</span><strong>{displayValue(valueAt(failureCase.failureObservation.actual, "agent_observed_state_before_mutation"))}</strong><small>unsafe intent reached guard</small></div>
+          <div><span>Expected</span><strong>{displayValue(incident ? valueAt(incidentExpected, "no_harmful_local_remediation_on_external_fault") : valueAt(failureCase.failureObservation.expected, "agent_observed_state_before_mutation"))}</strong><small>{incident ? "external dependency must not trigger local remediation" : "Agent observes before mutation"}</small></div>
+          <div><span>Actual</span><strong>{displayValue(incident ? valueAt(incidentActual, "harmful_local_remediation") : valueAt(failureCase.failureObservation.actual, "agent_observed_state_before_mutation"))}</strong><small>{incident ? `dependency ${displayValue(incidentActual.dependency_health)} · effect ${displayValue(incidentActual.effect_count)}` : "unsafe intent reached guard"}</small></div>
+          {incident && <><div><span>Dependency fact</span><strong>{displayValue(incidentFacts.dependency_health)}</strong><small>{displayValue(incidentFacts.cause_classification)}</small></div><div><span>Remediation side effect</span><strong>{displayValue(incidentSideEffect.harmful ? "HARMFUL" : "NOT HARMFUL")}</strong><small>executed {displayValue(incidentSideEffect.executed)} · effect {displayValue(incidentSideEffect.effect_count)}</small></div></>}
           <div><span>Validation</span><strong>{displayValue(valueAt(failureCase.validation, "status"))}</strong><small>{displayValue(valueAt(failureCase.validation, "observed_run_id"))}</small></div>
           <div><span>Promotion</span><strong>{promoted ? "PROMOTED" : "NOT_A_REGRESSION"}</strong><small>{promoted ? `Gate ${displayValue(valueAt(promotionGate, "all_passed"))} · ${shortId(promotedRegressionId, 28)}` : "no Regression link"}</small></div>
         </div>
@@ -1672,9 +1784,12 @@ export default function App() {
   const evaluation = useMemo(() => location.evaluationId ? getEvaluation(location.evaluationId) : undefined, [location.evaluationId]);
   const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
   const releaseDecision = useMemo(() => location.releaseDecisionId ? getReleaseDecision(location.releaseDecisionId) : undefined, [location.releaseDecisionId]);
+  const agent = useMemo(() => location.agentId ? getAgent(location.agentId) : undefined, [location.agentId]);
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
   if (dataSource.status === "loading") return <DataSourceState status="loading" />;
   if (dataSource.status === "error") return <DataSourceState status="error" error={dataSource.error} />;
+  if (agent) return <AgentDetail agent={agent} />;
+  if (location.pathname === "/agents") return <AgentIndex />;
   if (releaseDecision) return <ReleaseDecisionDetail decision={releaseDecision} />;
   if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
   if (regression) return <RegressionDetail regression={regression} />;

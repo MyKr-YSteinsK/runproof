@@ -237,8 +237,23 @@ def _canonical_rules() -> list[dict[str, Any]]:
     ]
 
 
-def build_minimal_quality_policy(suite: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Build the frozen Prototype policy for the RPF-07 minimum Suite."""
+def build_minimal_quality_policy(
+    suite: dict[str, Any] | None = None,
+    *,
+    policy_id: str | None = None,
+    policy_version: str | None = None,
+    name: str | None = None,
+    purpose: str | None = None,
+) -> dict[str, Any]:
+    """Build the versioned policy for an explicit Agent Suite.
+
+    The default values preserve the frozen RPF-08 Production Change policy;
+    callers may provide a separate identity for a compatible second Agent
+    Suite while retaining the same bounded gate semantics.
+    """
+
+    selected_policy_id = policy_id or QUALITY_POLICY_ID
+    selected_policy_version = policy_version or QUALITY_POLICY_VERSION
 
     compatible_suite = {
         "kind": "Evaluation Suite",
@@ -263,11 +278,11 @@ def build_minimal_quality_policy(suite: dict[str, Any] | None = None) -> dict[st
         "schema_version": QUALITY_POLICY_SCHEMA_VERSION,
         "artifact_kind": QUALITY_POLICY_ARTIFACT_KIND,
         "policy": {
-            "policy_id": QUALITY_POLICY_ID,
-            "policy_version": QUALITY_POLICY_VERSION,
-            "policy_identity": QUALITY_POLICY_IDENTITY,
-            "name": "Minimum Stateful Reliability Release Policy",
-            "purpose": "Decide whether the current Candidate evidence is eligible for release consideration without executing release.",
+            "policy_id": selected_policy_id,
+            "policy_version": selected_policy_version,
+            "policy_identity": f"{selected_policy_id}@{selected_policy_version}",
+            "name": name or "Minimum Stateful Reliability Release Policy",
+            "purpose": purpose or "Decide whether the current Candidate evidence is eligible for release consideration without executing release.",
             "compatible_suite": compatible_suite,
             "required_evidence": {
                 "required_member_ids": required_member_ids,

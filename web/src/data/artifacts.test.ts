@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 import historicalNormal from "../../../runtime/reviewed-normal-run.json";
-import { getEvaluation, getEvaluationComparison, getFailureCaseForRun, getQualityGate, getRegression, getRegressionResultForRun, getRegressionResults, getReleaseDecision, getRun, normalizeArtifact, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedQualityGates, reviewedQualityPolicy, reviewedRegressionCollection, reviewedRegressions, reviewedReleaseDecisions, reviewedRuns } from "./artifacts";
+import { getAgent, getEvaluation, getEvaluationComparison, getFailureCaseForRun, getQualityGate, getRegression, getRegressionResultForRun, getRegressionResults, getReleaseDecision, getRun, normalizeArtifact, reviewedAgents, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedQualityGates, reviewedQualityPolicy, reviewedRegressionCollection, reviewedRegressions, reviewedReleaseDecisions, reviewedRuns } from "./artifacts";
 
 describe("reviewed evidence adapter", () => {
   it("loads only the current v2 reviewed corpus", () => {
-    expect(reviewedRuns).toHaveLength(8);
+    expect(reviewedRuns).toHaveLength(13);
     expect(reviewedRuns.every((run) => run.schemaVersion === "rpf-run-evidence-v2")).toBe(true);
-    expect(reviewedRuns.map((run) => run.outcome.status)).toEqual(["PASS", "PASS", "FAIL", "ERROR", "FAIL", "FAIL", "FAIL", "PASS"]);
+    expect(reviewedRuns.slice(0, 8).map((run) => run.outcome.status)).toEqual(["PASS", "PASS", "FAIL", "ERROR", "FAIL", "FAIL", "FAIL", "PASS"]);
+    expect(reviewedRuns.slice(8).every((run) => run.run.agent.agent_id === "incident-remediation-agent")).toBe(true);
     expect(reviewedRuns.every((run) => run.llmProvider.provider_type === "llm")).toBe(true);
     expect(reviewedRuns.every((run) => run.environmentProvider.provider_type === "environment")).toBe(true);
   });
@@ -33,7 +34,7 @@ describe("reviewed evidence adapter", () => {
   });
 
   it("keeps the validated Failure Case and additive Regression promotion link", () => {
-    expect(reviewedFailureCases).toHaveLength(1);
+    expect(reviewedFailureCases).toHaveLength(2);
     const failureCase = reviewedFailureCases[0];
     expect(failureCase.failureCase.workflowState).toBe("validated");
     expect(failureCase.failureCase.isRegression).toBe(false);
@@ -45,7 +46,7 @@ describe("reviewed evidence adapter", () => {
   });
 
   it("loads one stable Historical Regression with separated focused results", () => {
-    expect(reviewedRegressions).toHaveLength(1);
+    expect(reviewedRegressions).toHaveLength(2);
     const regression = reviewedRegressions[0];
     expect(regression.regression.regressionVersion).toBe("1.0.0");
     expect(regression.regression.regressionId).not.toContain("run-");
@@ -59,11 +60,11 @@ describe("reviewed evidence adapter", () => {
     expect(reviewedEvaluationSuite.suite.suiteVersion).toBe("1.0.0");
     expect(reviewedEvaluationSuite.suite.members).toHaveLength(3);
     expect(reviewedEvaluationSuite.suite.members.map((member) => member.category)).toEqual(["Normal / Functional", "Recovery / Fault", "Historical Regression"]);
-    expect(reviewedEvaluations.map((item) => item.evaluation.agent.agent_version)).toEqual(["1.0.0-known-bad-unsafe-precondition", "1.0.1-observe-before-mutation-fix"]);
-    expect(reviewedEvaluationRuns).toHaveLength(6);
-    expect(reviewedEvaluationRuns.every((run) => /^run-[0-9a-f-]+$/.test(run.run.runId))).toBe(true);
+    expect(reviewedEvaluations.map((item) => item.evaluation.agent.agent_version)).toEqual(["1.0.0-known-bad-unsafe-precondition", "1.0.1-observe-before-mutation-fix", "1.0.0-known-bad-symptom-driven", "1.0.1-evidence-supported-remediation"]);
+    expect(reviewedEvaluationRuns).toHaveLength(12);
+    expect(reviewedEvaluationRuns.every((run) => /^run-(?:incident-)?[0-9a-f-]+$/.test(run.run.runId))).toBe(true);
     expect(reviewedEvaluationRuns.every((run) => getRun(run.run.runId) === run)).toBe(true);
-    expect(reviewedEvaluationRuns.filter((run) => run.fault.reconciled).length).toBe(1);
+    expect(reviewedEvaluationRuns.filter((run) => run.fault.reconciled).length).toBe(2);
     expect(getEvaluation(reviewedEvaluations[0].evaluation.evaluationId)).toBe(reviewedEvaluations[0]);
     expect(getEvaluationComparison(reviewedEvaluationComparison.comparison.comparisonId)).toBe(reviewedEvaluationComparison);
     expect(reviewedEvaluationComparison.comparison.aggregate?.summary).toBe("CANDIDATE_IMPROVED");
@@ -75,13 +76,19 @@ describe("reviewed evidence adapter", () => {
   it("loads the versioned Quality Policy, Gate results, and immutable decisions", () => {
     expect(reviewedQualityPolicy.policy.policyIdentity).toBe("rpf-minimal-release-policy@1.0.0");
     expect(reviewedQualityPolicy.policy.decisionPrecedence).toEqual(["HARD_BLOCKER", "EVIDENCE_INSUFFICIENT", "REVIEW_REQUIRED", "ELIGIBLE"]);
-    expect(reviewedQualityGates).toHaveLength(2);
-    expect(reviewedQualityGates.map((item) => item.gateEvaluation.decisionStatus)).toEqual(["BLOCKED", "ELIGIBLE"]);
+    expect(reviewedQualityGates).toHaveLength(4);
+    expect(reviewedQualityGates.map((item) => item.gateEvaluation.decisionStatus)).toEqual(["BLOCKED", "ELIGIBLE", "BLOCKED", "ELIGIBLE"]);
     expect(reviewedQualityGates.every((item) => item.gateEvaluation.authorizationBoundary.release_executed === false)).toBe(true);
-    expect(reviewedReleaseDecisions).toHaveLength(2);
-    expect(reviewedReleaseDecisions.map((item) => item.releaseDecision.decisionStatus)).toEqual(["BLOCKED", "ELIGIBLE"]);
+    expect(reviewedReleaseDecisions).toHaveLength(4);
+    expect(reviewedReleaseDecisions.map((item) => item.releaseDecision.decisionStatus)).toEqual(["BLOCKED", "ELIGIBLE", "BLOCKED", "ELIGIBLE"]);
     expect(reviewedReleaseDecisions.every((item) => item.releaseDecision.authorizationBoundary.deployment_authorized === false)).toBe(true);
     expect(getQualityGate("gate-evaluation-rpf08-candidate")?.gateEvaluation.decisionStatus).toBe("ELIGIBLE");
     expect(getReleaseDecision("release-decision-rpf08-baseline")?.releaseDecision.decisionStatus).toBe("BLOCKED");
+  });
+
+  it("keeps the two Agent identities explicit and independently addressable", () => {
+    expect(reviewedAgents.map((agent) => agent.agentId)).toEqual(["incident-remediation-agent", "production-change-agent"]);
+    expect(getAgent("incident-remediation-agent")?.domain).toBe("Incident Remediation Agent");
+    expect(getAgent("production-change-agent")?.domain).toBe("Production Change Agent");
   });
 });

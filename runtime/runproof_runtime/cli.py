@@ -8,8 +8,10 @@ import sys
 from pathlib import Path
 
 from .agent import FIXED_CANDIDATE_AGENT_PROFILE, KNOWN_BAD_AGENT_PROFILE
+from .agent_contract import INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE, INCIDENT_KNOWN_BAD_AGENT_PROFILE, run_agent_slice
 from .evidence import write_artifact
 from .evaluation import (
+    build_incident_suite,
     build_minimal_suite,
     compare_evaluations,
     execute_evaluation,
@@ -37,16 +39,16 @@ from .quality import (
     validate_release_decision_artifact,
     write_named_artifact as write_quality_artifact,
 )
-from .runner import run_slice
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Run the RunProof Production Change reliability vertical slice.")
+    parser = argparse.ArgumentParser(description="Run a RunProof Agent reliability vertical slice.")
     parser.add_argument("--fault", choices=("none", "response-lost"), default="none")
     parser.add_argument("--output", type=Path, default=Path(".local/rpf-08"))
     parser.add_argument("--model", default=None, help="Provider model alias; defaults to RPF_MODEL or deepseek-flash.")
-    parser.add_argument("--agent-profile", choices=("production-change-agent-v1", KNOWN_BAD_AGENT_PROFILE, FIXED_CANDIDATE_AGENT_PROFILE), default="production-change-agent-v1")
-    parser.add_argument("--agent-version", choices=("1.0.0", "1.0.0-known-bad-unsafe-precondition", "1.0.1-observe-before-mutation-fix"), default=None, help="Agent version identity; maps to its deterministic/runtime profile.")
+    parser.add_argument("--agent-profile", choices=("production-change-agent-v1", KNOWN_BAD_AGENT_PROFILE, FIXED_CANDIDATE_AGENT_PROFILE, INCIDENT_KNOWN_BAD_AGENT_PROFILE, INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE), default="production-change-agent-v1")
+    parser.add_argument("--agent-version", choices=("1.0.0", "1.0.0-known-bad-unsafe-precondition", "1.0.1-observe-before-mutation-fix", "1.0.0-known-bad-symptom-driven", "1.0.1-evidence-supported-remediation"), default=None, help="Agent version identity; maps to its deterministic/runtime profile.")
+    parser.add_argument("--scenario-case", choices=("local-recoverable", "external-dependency", "response-lost"), default="local-recoverable", help="Incident scenario case; ignored by the Production Change Agent.")
     parser.add_argument("--environment-failure", choices=("pre-agent-readiness",), default=None)
     parser.add_argument("--regression-collection", type=Path, default=None, help="Existing Historical Regression collection used for duplicate checks.")
     parser.add_argument("--regression-artifact", "--regression", dest="regression_artifact", type=Path, default=None, help="Regression contract used by Evaluation Suite members.")
@@ -85,7 +87,8 @@ def main(argv: list[str] | None = None) -> int:
     try:
         if args.build_suite:
             regression = load_json(args.build_suite)
-            suite = build_minimal_suite(regression)
+            agent = regression.get("agent") if isinstance(regression.get("agent"), dict) else {}
+            suite = build_incident_suite(regression) if agent.get("agent_id") == "incident-remediation-agent" else build_minimal_suite(regression)
             errors = validate_suite_artifact(suite, regression)
             path = write_evaluation_artifact(suite, args.output, "evaluation-suite.json", os.environ.get("DEEPSEEK_API_KEY", ""))
             print({"status": "PASS" if not errors else "INVALID", "suite": str(path), "errors": errors})
@@ -104,6 +107,8 @@ def main(argv: list[str] | None = None) -> int:
                 "1.0.0": "production-change-agent-v1",
                 "1.0.0-known-bad-unsafe-precondition": KNOWN_BAD_AGENT_PROFILE,
                 "1.0.1-observe-before-mutation-fix": FIXED_CANDIDATE_AGENT_PROFILE,
+                "1.0.0-known-bad-symptom-driven": INCIDENT_KNOWN_BAD_AGENT_PROFILE,
+                "1.0.1-evidence-supported-remediation": INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE,
             }
             profile_id = profile_by_version.get(args.agent_version, args.agent_profile)
             if args.agent_version and args.agent_profile != "production-change-agent-v1" and profile_id != args.agent_profile:
@@ -256,10 +261,13 @@ def main(argv: list[str] | None = None) -> int:
             return 0 if complete else 1
         if args.focused_regression:
             regression = load_json(args.focused_regression)
-            run = run_slice(
+            scenario_case_id = ((regression.get("scenario") if isinstance(regression.get("scenario"), dict) else {}).get("case_id"))
+            run = run_agent_slice(
+                args.agent_profile,
+                fault_profile=args.fault,
                 api_key=os.environ.get("DEEPSEEK_API_KEY"),
                 model=args.model,
-                agent_profile_id=args.agent_profile,
+                scenario_case_id=scenario_case_id if isinstance(scenario_case_id, str) else args.scenario_case,
             )
             run_path = write_artifact(run, args.output, os.environ.get("DEEPSEEK_API_KEY", ""))
             result = evaluate_regression_run(regression, run, args.agent_profile)
@@ -301,10 +309,12 @@ def main(argv: list[str] | None = None) -> int:
                 "reproduction": str(reproduction_path),
             })
             return 0 if validation["same_failure"] else 1
-        artifact = run_slice(
-            args.fault,
+        artifact = run_agent_slice(
+            args.agent_profile,
+            fault_profile=args.fault,
+            api_key=os.environ.get("DEEPSEEK_API_KEY"),
             model=args.model,
-            agent_profile_id=args.agent_profile,
+            scenario_case_id=args.scenario_case,
             environment_failure=args.environment_failure,
         )
         path = write_artifact(artifact, args.output, os.environ.get("DEEPSEEK_API_KEY", ""))

@@ -12,10 +12,17 @@ from typing import Any, Iterable, Sequence
 
 from . import RUNTIME_VERSION
 from .agent import FIXED_CANDIDATE_AGENT_PROFILE, KNOWN_BAD_AGENT_PROFILE
+from .agent_contract import (
+    INCIDENT_AGENT_ID,
+    agent_contract_for_profile,
+    fixed_profile_for,
+    known_bad_profile_for,
+    regression_contract_for_case,
+    run_agent_slice,
+)
 from .evidence import assert_safe_artifact, redact, timestamp, write_artifact
 from .failure_case import failure_signature, load_json, validate_reproduction
-from .models import AGENT_OBSERVE_BEFORE_MUTATION, INITIAL_STATE, NO_BLIND_RETRY_AFTER_UNKNOWN_OUTCOME, TARGET_STATE
-from .runner import run_slice
+from .models import AGENT_OBSERVE_BEFORE_MUTATION, INITIAL_STATE, NO_BLIND_RETRY_AFTER_UNKNOWN_OUTCOME, TARGET_STATE, RuntimeFailure
 from .scenario import SCENARIO
 
 
@@ -98,6 +105,10 @@ def regression_identity(case: dict[str, Any]) -> str:
 
 def build_regression_contract(case: dict[str, Any]) -> dict[str, Any]:
     """Materialize the explicit safe behavior and failure/pass oracles."""
+
+    incident_contract = regression_contract_for_case(case)
+    if incident_contract is not None:
+        return incident_contract
 
     classification = _required_object(case.get("classification"), "classification")
     observation = _required_object(case.get("failure_observation"), "failure_observation")
@@ -218,12 +229,21 @@ def _relevance_gate(case: dict[str, Any]) -> dict[str, Any]:
     validation = case.get("validation") if isinstance(case.get("validation"), dict) else {}
     validation_checks = validation.get("checks") if isinstance(validation.get("checks"), dict) else {}
     scenario = _required_object(case.get("scenario"), "scenario")
-    checks = {
-        "deterministic_agent_attribution": classification.get("outcome") == "FAIL" and classification.get("attribution") == "Agent" and classification.get("deterministic") is True,
-        "known_versioned_agent_defect": agent.get("defect_id") == "agent-mutation-before-observation-v1" and agent.get("agent_version") == "1.0.0-known-bad-unsafe-precondition",
-        "provider_environment_not_failure_source": validation_checks.get("provider_environment_not_failure_source") is True,
-        "valid_reference_scenario": scenario.get("scenario_id") == SCENARIO["scenario_id"] and scenario.get("scenario_version") == SCENARIO["scenario_version"],
-    }
+    if agent.get("agent_id") == INCIDENT_AGENT_ID:
+        expected_profile = known_bad_profile_for(str(agent.get("configuration_id"))) if agent.get("configuration_id") else ""
+        checks = {
+            "deterministic_agent_attribution": classification.get("outcome") == "FAIL" and classification.get("attribution") == "Agent" and classification.get("deterministic") is True,
+            "known_versioned_agent_defect": agent.get("configuration_id") == expected_profile and agent.get("defect_id") == "incident-symptom-driven-remediation-v1",
+            "provider_environment_not_failure_source": validation_checks.get("provider_environment_not_failure_source") is True,
+            "valid_reference_scenario": scenario.get("scenario_id") == "incident-remediation" and scenario.get("scenario_version") == "1.0.0",
+        }
+    else:
+        checks = {
+            "deterministic_agent_attribution": classification.get("outcome") == "FAIL" and classification.get("attribution") == "Agent" and classification.get("deterministic") is True,
+            "known_versioned_agent_defect": agent.get("defect_id") == "agent-mutation-before-observation-v1" and agent.get("agent_version") == "1.0.0-known-bad-unsafe-precondition",
+            "provider_environment_not_failure_source": validation_checks.get("provider_environment_not_failure_source") is True,
+            "valid_reference_scenario": scenario.get("scenario_id") == SCENARIO["scenario_id"] and scenario.get("scenario_version") == SCENARIO["scenario_version"],
+        }
     return {
         "status": "PASS" if all(checks.values()) else "BLOCKED",
         "checks": checks,
@@ -240,6 +260,7 @@ def _stability_gate(case: dict[str, Any], stability_runs: Sequence[dict[str, Any
     source = _required_object(case.get("source_run"), "source_run")
     source_run_id = source.get("run_id")
     source_environment_id = source.get("environment_id")
+    expected_bad_version = (_required_object(case.get("agent"), "agent")).get("agent_version")
     seen_runs: set[str] = set()
     seen_environments: set[str] = set()
     observations: list[dict[str, Any]] = []
@@ -260,7 +281,7 @@ def _stability_gate(case: dict[str, Any], stability_runs: Sequence[dict[str, Any
             "environment_id": environment_id,
             "same_failure": validation.get("same_failure") is True,
             "validation_checks": validation.get("checks", {}),
-            "known_bad_version": agent.get("agent_version") == "1.0.0-known-bad-unsafe-precondition",
+            "known_bad_version": agent.get("agent_version") == expected_bad_version,
             "independent_fresh_identity": independent,
         })
     checks = {
@@ -389,6 +410,8 @@ def build_regression(case: dict[str, Any], gate: dict[str, Any], promoted_by: st
     created = gate.get("evaluated_at") or timestamp()
     source = _required_object(case.get("source_run"), "source_run")
     attempts = _required_list(case.get("reproduction_attempts"), "reproduction_attempts")
+    scenario = _required_object(case.get("scenario"), "scenario")
+    collection_id = str(case.get("regression_collection_id") or REGRESSION_COLLECTION_ID)
     return {
         "schema_version": REGRESSION_SCHEMA_VERSION,
         "artifact_kind": "Regression",
@@ -408,10 +431,12 @@ def build_regression(case: dict[str, Any], gate: dict[str, Any], promoted_by: st
             "domain": (_required_object(case.get("classification"), "classification")).get("domain"),
             "known_bad_version": (_required_object(case.get("agent"), "agent")).get("agent_version"),
             "defect_id": (_required_object(case.get("agent"), "agent")).get("defect_id"),
+            **{key: (_required_object(case.get("agent"), "agent")).get(key) for key in ("agent_domain", "agent_type", "agent_contract_id", "configuration_id") if (_required_object(case.get("agent"), "agent")).get(key)},
         },
         "scenario": {
-            "scenario_id": SCENARIO["scenario_id"],
-            "scenario_version": SCENARIO["scenario_version"],
+            "scenario_id": scenario.get("scenario_id"),
+            "scenario_version": scenario.get("scenario_version"),
+            **({"case_id": scenario["case_id"]} if isinstance(scenario.get("case_id"), str) else {}),
         },
         "contract": gate["contract"],
         "promotion": {
@@ -423,7 +448,7 @@ def build_regression(case: dict[str, Any], gate: dict[str, Any], promoted_by: st
             "source_history_immutable": True,
         },
         "collection_membership": {
-            "collection_id": REGRESSION_COLLECTION_ID,
+            "collection_id": collection_id,
             "collection_version": "1.0.0",
             "category": REGRESSION_CATEGORY,
             "membership_status": "ACTIVE",
@@ -508,7 +533,7 @@ def validate_regression_artifact(regression: dict[str, Any]) -> list[str]:
             errors.append("CONTRACT_INCOMPLETE")
         if promotion.get("status") != "PROMOTED" or not promotion.get("gate", {}).get("all_passed"):
             errors.append("PROMOTION_GATE")
-        if membership.get("collection_id") != REGRESSION_COLLECTION_ID:
+        if not isinstance(membership.get("collection_id"), str) or not membership.get("collection_id"):
             errors.append("COLLECTION_MEMBERSHIP")
         source_signature = _required_object(source["failure_signature"], "source_failure_case.failure_signature")
         source_components = _required_object(source_signature.get("components"), "source_signature.components")
@@ -525,6 +550,14 @@ def _result_oracle_checks(regression: dict[str, Any], run: dict[str, Any], profi
     errors = validate_regression_artifact(regression)
     if errors:
         return "INVALID", {"definition_errors": errors}, "INVALID_REGRESSION_DEFINITION"
+    try:
+        profile_contract = agent_contract_for_profile(profile_id)
+    except RuntimeFailure:
+        profile_contract = None
+    if profile_contract is not None and profile_contract.get("agent_id") == INCIDENT_AGENT_ID:
+        from .incident import evaluate_incident_regression_run
+
+        return evaluate_incident_regression_run(regression, run, profile_id)
     if profile_id not in {KNOWN_BAD_AGENT_PROFILE, FIXED_CANDIDATE_AGENT_PROFILE}:
         return "INVALID", {"profile_allowed": False}, "UNSUPPORTED_FOCUSED_PROFILE"
     run_meta = _required_object(run.get("run"), "run")
@@ -625,6 +658,8 @@ def build_collection(regression: dict[str, Any], existing_members: Sequence[dict
     source = _required_object(regression.get("source_failure_case"), "source_failure_case")
     signature = _required_object(source.get("failure_signature"), "source_failure_case.failure_signature")
     components = _required_object(signature.get("components"), "source_failure_case.failure_signature.components")
+    membership = _required_object(regression.get("collection_membership"), "collection_membership")
+    collection_id = str(membership.get("collection_id") or REGRESSION_COLLECTION_ID)
     members = [copy.deepcopy(item) for item in existing_members if isinstance(item, dict)]
     members.append({
         "regression_id": regression["regression"]["regression_id"],
@@ -643,7 +678,7 @@ def build_collection(regression: dict[str, Any], existing_members: Sequence[dict
         "schema_version": REGRESSION_COLLECTION_SCHEMA_VERSION,
         "artifact_kind": "Historical Regression Collection",
         "collection": {
-            "collection_id": REGRESSION_COLLECTION_ID,
+            "collection_id": collection_id,
             "collection_version": "1.0.0",
             "category": REGRESSION_CATEGORY,
             "status": "ACTIVE",
@@ -687,10 +722,19 @@ def run_promotion_workflow(
         raise RegressionPromotionBlocked(gate)
     regression, promoted_case, gate = promote_failure_case(case, stability_runs, existing_members)
     known_bad_run = stability_runs[-1]
-    known_bad_result = evaluate_regression_run(regression, known_bad_run, KNOWN_BAD_AGENT_PROFILE)
-    fixed_run = run_slice(api_key=api_key, model=model, agent_profile_id=FIXED_CANDIDATE_AGENT_PROFILE)
+    source_profile = str((_required_object(case.get("agent"), "agent")).get("configuration_id"))
+    known_bad_profile = known_bad_profile_for(source_profile)
+    fixed_profile = fixed_profile_for(source_profile)
+    known_bad_result = evaluate_regression_run(regression, known_bad_run, known_bad_profile)
+    scenario_case_id = (_required_object(case.get("scenario"), "scenario")).get("case_id")
+    fixed_run = run_agent_slice(
+        fixed_profile,
+        api_key=api_key,
+        model=model,
+        scenario_case_id=scenario_case_id if isinstance(scenario_case_id, str) else None,
+    )
     fixed_path = write_artifact(fixed_run, output_dir, api_key or "")
-    fixed_result = evaluate_regression_run(regression, fixed_run, FIXED_CANDIDATE_AGENT_PROFILE)
+    fixed_result = evaluate_regression_run(regression, fixed_run, fixed_profile)
     regression = record_focused_rerun(regression, known_bad_result)
     regression = record_focused_rerun(regression, fixed_result)
     collection = build_collection(regression, existing_members)
@@ -733,7 +777,14 @@ def _collect_stability_runs(
     stability_runs: list[dict[str, Any]] = []
     stability_paths: list[Path] = []
     for _ in range(MIN_STABILITY_RUNS):
-        run = run_slice(api_key=api_key, model=model, agent_profile_id=KNOWN_BAD_AGENT_PROFILE)
+        agent = _required_object(case.get("agent"), "agent")
+        scenario = _required_object(case.get("scenario"), "scenario")
+        run = run_agent_slice(
+            str(agent.get("configuration_id")),
+            api_key=api_key,
+            model=model,
+            scenario_case_id=scenario.get("case_id") if isinstance(scenario.get("case_id"), str) else None,
+        )
         stability_runs.append(run)
         stability_paths.append(write_artifact(run, output_dir, api_key or ""))
     return stability_runs, stability_paths

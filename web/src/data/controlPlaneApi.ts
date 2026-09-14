@@ -168,20 +168,20 @@ export const loadControlPlaneCorpus = async (
     resolveArtifacts(baseUrl, qualityGates, fetcher),
     resolveArtifacts(baseUrl, releaseDecisions, fetcher),
   ]);
-  const first = (values: unknown[], label: string): unknown => {
+  const required = (values: unknown[], label: string): unknown[] => {
     if (values.length === 0) throw new ControlPlaneApiError(`Control Plane corpus is missing ${label}.`, "CORPUS_INCOMPLETE", null, false);
-    return values[0];
+    return values;
   };
   return {
     runs: runArtifacts,
     failures: failureArtifacts,
     regressions: regressionArtifacts,
     regressionResults: regressionResultArtifacts,
-    regressionCollection: first(collectionArtifacts, "Regression Collection"),
-    evaluationSuite: first(suiteArtifacts, "Evaluation Suite"),
+    regressionCollections: required(collectionArtifacts, "Regression Collection"),
+    evaluationSuites: required(suiteArtifacts, "Evaluation Suite"),
     evaluations: evaluationArtifacts,
-    comparison: first(comparisonArtifacts, "Evaluation Comparison"),
-    qualityPolicy: first(policyArtifacts, "Quality Policy"),
+    comparisons: required(comparisonArtifacts, "Evaluation Comparison"),
+    qualityPolicies: required(policyArtifacts, "Quality Policy"),
     qualityGates: gateArtifacts,
     releaseDecisions: decisionArtifacts,
   };

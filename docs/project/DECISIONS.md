@@ -347,3 +347,22 @@ RPF-15 的 Candidate A probe 在本机真实 Docker/PostgreSQL 环境通过 21 �
 ### Supersedes
 
 - none（细化 D-014、D-015、D-018、D-019 的 Production boundary，不改变 durable state/reconcile 或 decision-only 语义）
+
+## D-021｜第二真实 Agent 采用显式窄 Integration Contract，Incident Remediation 保持独立证据域
+
+- Status: `Accepted`
+- Date: 2026-09-14
+### Decision
+RPF-16 接入第二个真实产品 Agent：`Incident Remediation Agent`。它与既有 `Production Change Agent` 共享的边界仅为窄的、显式 versioned `rpf-agent-integration-contract-v1`：Agent identity/domain/type、Scenario、Tool、Environment、Verifier、supported execution profile 与 evidence schema compatibility。两个 Agent 保持独立的 profile、scenario、Failure Case/Regression、Evaluation Suite、Quality Policy 与 evidence identity；registry 只允许 reviewed adapters，不支持 plugin、marketplace、SDK 或 dynamic loading。
+
+Incident Remediation 的 mutation 只能发生在受控、fresh-per-run simulation，并且必须先观察 service health、dependency/change evidence；external dependency fault 只能 safe stop/escalate，不得执行 harmful local remediation；local remediation 最多一次，response-lost 必须 `UNKNOWN_OUTCOME` → reconcile → recovery verification。Agent、worker 与 decision writer 均不获得 Release/Deploy authority。
+### Why
+第二个真实 domain 能验证 Reliability contract 是否跨 Agent 复用，同时避免把不同的故障语义压进 Production Change 的名称或分支。RPF-16 的 known-bad symptom-driven path 产生真实 Agent `FAIL` 与 harmful external side effect 证据，fixed Candidate 在相同 Scenario/Regression 下区分 dependency、执行 bounded action 或 safe stop，并通过独立三成员 Suite 与正式 durable worker 验证了跨 Agent 证据链。
+### Consequences
+Web 提供 `/agents` 与 `/agents/:agentId` 只读 registry/detail；既有 Run、Failure、Regression、Evaluation、Comparison 与 Decision surface 必须显示 Agent identity/domain。Incident reviewed corpus 绑定独立 source identity；Baseline Gate/Decision 为 `BLOCKED`，fixed Candidate 为 `ELIGIBLE`，但仍是 decision-only。正式 durable worker 只执行 explicit suite/profile，不能通过 payload 动态加载任意 Agent。
+### Reconsider when
+出现第三个真实 Agent、跨 domain 的通用 Policy/Scenario 复用需求、需要 plugin/marketplace/dynamic loading，或真实 Production remediation、用户身份/Approval 与多租户权限要求扩大 authority boundary 时，基于新证据重新评估该窄 contract。
+
+### Supersedes
+
+- none（承接并细化 D-009、D-013、D-017～D-020；不替代既有 Agent/Run/Evaluation/Release 与 durable reconcile 语义）

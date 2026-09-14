@@ -1,6 +1,6 @@
 # RPF-08 Product Runtime
 
-这是 RunProof 的第一份正式产品形态 runtime，不是对 `spikes/` 的重命名。当前 vertical slice 覆盖 Production Change Agent、DeepSeek non-thinking、Docker Fresh-per-run Environment、版本化 Stateful Scenario、structured Trajectory、deterministic Verifier、Run Evidence、真实 FAIL/ERROR、Failure Case 复现、Historical Regression promotion/focused rerun、最小三成员 Evaluation Suite 的 Baseline/Candidate 聚合比较，以及独立 versioned Quality Policy、Quality Gate Evaluation 和只读 Release Decision。RPF-11 的 `control_plane_client.py` 通过 HTTP/JSON 将这些 reviewed product artifacts 登记到正式 Control Plane；RPF-14 新增 `durable_worker.py`，负责正式 PostgreSQL Job Transport 下的 Evaluation 执行与 evidence terminalization；runtime/worker 不直写 PostgreSQL，也不拥有 decision/release authority。
+这是 RunProof 的正式产品形态 runtime，不是对 `spikes/` 的重命名。当前 vertical slice 覆盖 Production Change Agent、DeepSeek non-thinking、Docker Fresh-per-run Environment、版本化 Stateful Scenario、structured Trajectory、deterministic Verifier、Run Evidence、真实 FAIL/ERROR、Failure Case 复现、Historical Regression promotion/focused rerun、最小三成员 Evaluation Suite 的 Baseline/Candidate 聚合比较，以及独立 versioned Quality Policy、Quality Gate Evaluation 和只读 Release Decision。RPF-16 在不改写既有 Production Change 历史的前提下，增加 Incident Remediation Agent 的显式跨 Agent integration contract、受控 Incident simulation、Failure Case/Regression/Evaluation/Decision corpus；RPF-11 的 `control_plane_client.py` 通过 HTTP/JSON 将这些 reviewed product artifacts 登记到正式 Control Plane；RPF-14 新增 `durable_worker.py`，负责正式 PostgreSQL Job Transport 下的 Evaluation 执行与 evidence terminalization；runtime/worker 不直写 PostgreSQL，也不拥有 decision/release authority。
 
 ## Formal Control Plane client
 
@@ -48,6 +48,9 @@ python -m runtime.runproof_runtime --create-release-decision .local/rpf-08/candi
 python -m runtime.runproof_runtime --verify-quality-gate runtime/reviewed-quality-gate-candidate.json
 python -m runtime.runproof_runtime --verify-release-decision runtime/reviewed-release-decision-candidate.json
 python -m runtime.runproof_runtime.durable_worker --help
+python spikes/rpf-16/probe.py --build-reviewed
+python spikes/rpf-16/probe.py --verify
+python spikes/rpf-16/probe.py --run
 ```
 
 正常 live 命令从进程环境读取 `DEEPSEEK_API_KEY`，默认模型为 `deepseek-flash`，也可以用 `RPF_MODEL` 或 `--model` 覆盖。每次命令创建独立 Docker container，普通 Run 结果写入被忽略的 `.local/rpf-08/`，不会覆盖历史 Run。known-bad 与 fixed Candidate focused profile 均保留真实 Tool executor、guard、Scenario 和 deterministic verifier；当前两个 focused path 不需要 Provider continuation。known-bad profile 让真实 Tool guard 捕获“先写后观察”的 unsafe intent，从而以稳定方式建立 FAIL 证据；fixed Candidate 先 read state，再以 observed revision 进行唯一 mutation 并独立 read-back。Environment ERROR 使用 runtime-only readiness hook，不是业务 Tool。RPF-07 Evaluation Suite 使用 deterministic profiles 与真实 Docker Fresh-per-member execution，不调用 Provider；每次评测写入被忽略的 `.local/rpf-07/`，历史 reviewed corpus 不被覆盖。RPF-08 Quality Gate 只读取 Policy、Suite、Baseline/Candidate Evaluation、Comparison 和 Regression，按确定性 Hard/Soft/Review rule 计算 `BLOCKED` / `INCONCLUSIVE` / `REVIEW_REQUIRED` / `ELIGIBLE`；Unknown token/cost/latency 保持为非阻断 warning，不执行 release/deploy。
@@ -64,6 +67,7 @@ python -m runtime.runproof_runtime.durable_worker --help
 - `regression.py`：独立 `rpf-regression-v1`、五项 promotion gate、`rpf-regression-result-v1` focused rerun result 与最小 Historical Regression collection；Regression identity 不依赖随机 source Run ID。
 - `evaluation.py`：独立 `rpf-evaluation-suite-v1`、`rpf-evaluation-result-v1` 与 `rpf-evaluation-comparison-v1`；Suite 成员、Scenario/Regression/Policy oracle、source identity 与 member contract digest 冻结，Evaluation 分开统计 Run outcome、Agent quality、evidence coverage、Recovery/Regression、raw usage/cost/latency，Comparison 仅输出 member-level classification 与 aggregate delta，不输出 Release Decision。
 - `quality.py`：独立 versioned `rpf-quality-policy-v1`、`rpf-quality-gate-evaluation-v1` 与 `rpf-release-decision-v1`；Policy 冻结 Suite/required evidence/rule 类型/unknown semantics，Gate 以 Hard blocker > evidence gap > review > eligible 的固定 precedence 聚合，Decision 保留 blocking/review/soft evidence 与 immutable/superseding history；所有 authorization boundary 均为 decision-only。
+- `agent_contract.py` / `incident.py`：显式注册 Production Change 与 Incident Remediation 两份窄 integration contract；Incident Agent 只使用 process-local controlled simulation，区分 service symptom、dependency evidence、bounded remediation、UNKNOWN_OUTCOME reconcile、recovery/safe stop 与 effect count，不提供 plugin/dynamic loading 或真实 Production access。
 - `evidence.py` / `runner.py`：Observed Fact / Verified Result 分层、Run identity、trajectory、redaction、归因与 artifact 写入。
 
 Artifact 不保存 request messages、Authorization、secret、private reasoning 或自由模型文本；只保存可观察的 tool intent/result、fault、environment transition、usage、identity 与确定性验证结果。

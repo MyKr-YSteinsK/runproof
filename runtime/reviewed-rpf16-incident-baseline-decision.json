@@ -1,0 +1,630 @@
+{
+  "schema_version": "rpf-release-decision-v1",
+  "artifact_kind": "Release Decision",
+  "release_decision": {
+    "release_decision_id": "release-decision-rpf16-reviewed-baseline",
+    "decision_timestamp": "2026-09-14T05:30:59.399744Z",
+    "decision_status": "BLOCKED",
+    "evaluated_agent": {
+      "agent_id": "incident-remediation-agent",
+      "agent_version": "1.0.0-known-bad-symptom-driven",
+      "configuration_id": "incident-remediation-agent-v1-known-bad",
+      "mode": "known-bad-deterministic-policy",
+      "prompt_id": "incident-remediation-agent-system-known-bad-symptom-driven-v1",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "agent_contract_id": "incident-remediation-agent-contract",
+      "agent_contract_version": "1.0.0",
+      "defect_id": "incident-symptom-driven-remediation-v1"
+    },
+    "evaluated_agent_version": "1.0.0-known-bad-symptom-driven",
+    "decision_subject": "BASELINE",
+    "candidate_agent": {
+      "agent_id": "incident-remediation-agent",
+      "agent_version": "1.0.1-evidence-supported-remediation",
+      "configuration_id": "incident-remediation-agent-v1-fixed",
+      "mode": "deterministic-repaired-policy",
+      "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "agent_contract_id": "incident-remediation-agent-contract",
+      "agent_contract_version": "1.0.0",
+      "fix_id": "incident-evidence-supported-remediation-v1"
+    },
+    "candidate_agent_version": "1.0.1-evidence-supported-remediation",
+    "baseline_agent": {
+      "agent_id": "incident-remediation-agent",
+      "agent_version": "1.0.0-known-bad-symptom-driven",
+      "configuration_id": "incident-remediation-agent-v1-known-bad",
+      "mode": "known-bad-deterministic-policy",
+      "prompt_id": "incident-remediation-agent-system-known-bad-symptom-driven-v1",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "agent_contract_id": "incident-remediation-agent-contract",
+      "agent_contract_version": "1.0.0",
+      "defect_id": "incident-symptom-driven-remediation-v1"
+    },
+    "baseline_agent_version": "1.0.0-known-bad-symptom-driven",
+    "policy_ref": {
+      "kind": "Quality Policy",
+      "policy_id": "rpf-incident-quality-policy",
+      "policy_version": "1.0.0",
+      "policy_identity": "rpf-incident-quality-policy@1.0.0"
+    },
+    "suite_ref": {
+      "kind": "Evaluation Suite",
+      "suite_id": "rpf-incident-remediation-suite",
+      "suite_version": "1.0.0",
+      "member_contract_digest": "5ef29f4922a92a5cd415e7f767edf8f9d0eb4a5f5f1df4bfeb1129e01230a446"
+    },
+    "candidate_evaluation_ref": {
+      "kind": "Evaluation Result",
+      "evaluation_id": "evaluation-rpf16-reviewed-candidate"
+    },
+    "baseline_evaluation_ref": {
+      "kind": "Evaluation Result",
+      "evaluation_id": "evaluation-rpf16-reviewed-baseline"
+    },
+    "comparison_ref": {
+      "kind": "Evaluation Comparison",
+      "comparison_id": "comparison-12421f28-9861-4a88-a17e-d33746d87e19"
+    },
+    "gate_evaluation_ref": {
+      "kind": "Quality Gate Evaluation",
+      "gate_evaluation_id": "gate-evaluation-rpf16-reviewed-baseline"
+    },
+    "regression_ref": {
+      "kind": "Regression",
+      "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+      "regression_version": "1.0.0"
+    },
+    "blocking_reasons": [
+      {
+        "rule_id": "required-member-agent-fail",
+        "rule_type": "NO_AGENT_FAIL_REQUIRED_MEMBERS",
+        "code": "REQUIRED_MEMBER_AGENT_FAIL",
+        "reason": "REQUIRED_MEMBER_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "local-recoverable"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3",
+              "event_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3",
+              "event_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "response-lost"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "fault",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:fault:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "external-dependency"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+          }
+        ],
+        "facts": {
+          "agent_fail_member_ids": [
+            "local-recoverable",
+            "response-lost",
+            "external-dependency"
+          ],
+          "required_member_count": 3
+        }
+      },
+      {
+        "rule_id": "historical-regression-pass",
+        "rule_type": "HISTORICAL_REGRESSION_PASS",
+        "code": "HISTORICAL_REGRESSION_FAIL",
+        "reason": "HISTORICAL_REGRESSION_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "external-dependency"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+          }
+        ],
+        "facts": {
+          "member_id": "external-dependency",
+          "item_result": "FAIL",
+          "regression_result": "FAIL",
+          "run_outcome": "FAIL",
+          "regression_ref": {
+            "kind": "Regression",
+            "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+            "regression_version": "1.0.0"
+          }
+        }
+      },
+      {
+        "rule_id": "recovery-pass",
+        "rule_type": "RECOVERY_PASS",
+        "code": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "reason": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "response-lost"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "fault",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:fault:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:actual_state_verification:001"
+            }
+          }
+        ],
+        "facts": {
+          "member_id": "response-lost",
+          "item_result": "FAIL",
+          "recovery_status": "UNRESOLVED",
+          "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": true,
+            "triggered": true,
+            "observed": true,
+            "reconciled": false
+          }
+        }
+      }
+    ],
+    "review_reasons": [],
+    "soft_warnings": [
+      {
+        "rule_id": "unknown-usage-warning",
+        "rule_type": "UNKNOWN_USAGE_WARNING",
+        "code": "PROVIDER_USAGE_OR_LATENCY_UNKNOWN",
+        "reason": "PROVIDER_USAGE_OR_LATENCY_UNKNOWN",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline"
+          }
+        ],
+        "facts": {
+          "unknown_metrics": {
+            "reported_tokens": true,
+            "derived_cost": true,
+            "latency": false
+          },
+          "unknown_values_are_not_zero": true
+        }
+      }
+    ],
+    "evidence_gap_reasons": [],
+    "valid_evidence_coverage": {
+      "required_item_count": 3,
+      "valid_evidence_item_count": 3,
+      "missing_or_invalid_item_count": 0,
+      "coverage_ratio": 1.0,
+      "gap_reasons": [],
+      "coverage_rule": "Valid quality evidence is an explicit Agent PASS/FAIL judgment for a required member."
+    },
+    "historical_regression": {
+      "member_count": 1,
+      "result_counts": {
+        "PASS": 0,
+        "FAIL": 1,
+        "ERROR": 0,
+        "INVALID": 0,
+        "INCONCLUSIVE": 0,
+        "CANCELLED": 0
+      },
+      "results": [
+        {
+          "member_id": "external-dependency",
+          "regression_ref": {
+            "kind": "Regression",
+            "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+            "regression_version": "1.0.0"
+          },
+          "result": "FAIL",
+          "run_outcome": "FAIL",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+          },
+          "result_ref": {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+          }
+        }
+      ]
+    },
+    "recovery_fault": {
+      "member_count": 1,
+      "planned_fault_count": 1,
+      "triggered_fault_count": 1,
+      "observed_fault_count": 1,
+      "reconciled_fault_count": 0,
+      "recovered_pass_count": 0,
+      "not_reached_count": 0,
+      "members": [
+        {
+          "member_id": "response-lost",
+          "run_ref": {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+          },
+          "run_outcome": "FAIL",
+          "item_result": "FAIL",
+          "recovery_status": "UNRESOLVED",
+          "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": true,
+            "triggered": true,
+            "observed": true,
+            "reconciled": false
+          }
+        }
+      ],
+      "fault_is_not_failure_rule": "A planned fault is only valid when actually triggered/observed; fault presence alone does not mean FAIL."
+    },
+    "evidence_refs": [
+      {
+        "rule_id": "required-member-agent-fail",
+        "rule_type": "NO_AGENT_FAIL_REQUIRED_MEMBERS",
+        "code": "REQUIRED_MEMBER_AGENT_FAIL",
+        "reason": "REQUIRED_MEMBER_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "local-recoverable"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3",
+              "event_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3",
+              "event_id": "run-incident-0c6c17cf-8fcb-4cd5-b191-86cdff6337f3:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "response-lost"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "fault",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:fault:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:actual_state_verification:001"
+            }
+          },
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "external-dependency"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+          }
+        ],
+        "facts": {
+          "agent_fail_member_ids": [
+            "local-recoverable",
+            "response-lost",
+            "external-dependency"
+          ],
+          "required_member_count": 3
+        }
+      },
+      {
+        "rule_id": "historical-regression-pass",
+        "rule_type": "HISTORICAL_REGRESSION_PASS",
+        "code": "HISTORICAL_REGRESSION_FAIL",
+        "reason": "HISTORICAL_REGRESSION_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "external-dependency"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7",
+              "event_id": "run-incident-782dcf80-9669-45ea-ad03-2854e48518f7:event:actual_state_verification:001"
+            }
+          },
+          {
+            "role": "regression_result",
+            "ref": {
+              "kind": "Regression Execution Result",
+              "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+            }
+          },
+          {
+            "kind": "Regression Execution Result",
+            "result_id": "regression-result-bb201d4f-604f-499f-ad49-ce2b3657b8c7"
+          }
+        ],
+        "facts": {
+          "member_id": "external-dependency",
+          "item_result": "FAIL",
+          "regression_result": "FAIL",
+          "run_outcome": "FAIL",
+          "regression_ref": {
+            "kind": "Regression",
+            "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+            "regression_version": "1.0.0"
+          }
+        }
+      },
+      {
+        "rule_id": "recovery-pass",
+        "rule_type": "RECOVERY_PASS",
+        "code": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "reason": "REQUIRED_RECOVERY_AGENT_FAIL",
+        "evidence_refs": [
+          {
+            "kind": "Evaluation Result",
+            "evaluation_id": "evaluation-rpf16-reviewed-baseline",
+            "member_id": "response-lost"
+          },
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df"
+          },
+          {
+            "role": "failing_event",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:environment_transition:001"
+            }
+          },
+          {
+            "role": "fault",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:fault:001"
+            }
+          },
+          {
+            "role": "actual_state_verification",
+            "ref": {
+              "kind": "Run Evidence",
+              "run_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df",
+              "event_id": "run-incident-04528a16-d9dc-4d0e-9af6-9f9698d2a2df:event:actual_state_verification:001"
+            }
+          }
+        ],
+        "facts": {
+          "member_id": "response-lost",
+          "item_result": "FAIL",
+          "recovery_status": "UNRESOLVED",
+          "fault": {
+            "fault_id": "side_effect_success_response_lost",
+            "planned": true,
+            "triggered": true,
+            "observed": true,
+            "reconciled": false
+          }
+        }
+      }
+    ],
+    "authorization_boundary": {
+      "release_executed": false,
+      "deployment_authorized": false,
+      "release_action": "DECISION_ONLY",
+      "authority_holder": "Quality Policy evaluation, not Agent/runtime"
+    },
+    "history": {
+      "immutable": true,
+      "supersedes_decision_id": null,
+      "superseding_rule": "Later evidence or Policy versions create a new Decision; this artifact is not overwritten."
+    },
+    "source_identity": {
+      "runtime_version": "rpf-08.v1",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494",
+      "builder": "rpf-release-decision-builder-v1"
+    }
+  }
+}

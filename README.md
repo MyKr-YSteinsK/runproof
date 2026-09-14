@@ -14,6 +14,7 @@ RunProof（`RPF`）是一个 **Agent Reliability & Release Engineering Platform*
 - RPF-12 已接入真实 GitHub Actions Canonical Release Gate：每次 main 代码变更在 hosted runner 上 fresh 执行 Baseline/Candidate Evaluation，并以 Control Plane canonical Release Decision read-back 作为 CI 结论；只上传脱敏 JSON/Job Summary，不执行 release/deploy。
 - RPF-14 已将 RPF-13 的候选边界落入正式 Control Plane：PostgreSQL durable Job/Attempt/Operation/Event/Evidence schema、fenced poll/claim/heartbeat、跨进程 UNKNOWN_OUTCOME reconcile、正式 Python worker、只读 Execution investigation surface，以及 RPF-12 的 Baseline/Candidate durable submit/poll/read 路径。仍不引入 broker、scheduler、生产 HA、Approval 或 release/deploy endpoint。
 - RPF-15 已完成 Production-readiness investigation：用真实 disposable production-like Candidate A 验证 Web、Control Plane、durable worker、PostgreSQL named-volume、immutable artifact backup/restore、replacement、迁移/回滚兼容性和 Release Identity 边界，并推荐 managed persistence/stateless Candidate B + explicit-release；项目仍保持 Stabilization，不执行真实 Production deploy/release。
+- RPF-16 已接入第二份独立真实 Agent contract：Incident Remediation Agent 在受控 Incident simulation 中覆盖 local recovery、external dependency safe stop 与 response-lost reconcile，建立真实 `FAIL_ERROR` 语料、Failure Case/Regression、独立 Evaluation Suite/Quality Gate，并通过正式 PostgreSQL durable worker 执行一次 Candidate Evaluation；新增 `/agents` 与 `/agents/:agentId` 只读调查面，未引入动态插件、真实 Production remediation、release/deploy authority 或第三 Agent。
 
 ## 核心方向
 

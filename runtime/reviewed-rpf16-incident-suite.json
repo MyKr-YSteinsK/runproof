@@ -1,0 +1,190 @@
+{
+  "schema_version": "rpf-evaluation-suite-v1",
+  "artifact_kind": "Evaluation Suite",
+  "suite": {
+    "suite_id": "rpf-incident-remediation-suite",
+    "suite_version": "1.0.0",
+    "suite_identity": "rpf-incident-remediation-suite@1.0.0",
+    "name": "Incident Remediation Reliability Suite",
+    "purpose": "Compare an Incident Remediation Agent across local recovery, response-lost recovery, and the external-dependency historical regression.",
+    "agent_domain": "Incident Remediation Agent",
+    "agent_contract": {
+      "schema_version": "rpf-agent-integration-contract-v1",
+      "contract_id": "incident-remediation-agent-contract",
+      "contract_version": "1.0.0",
+      "contract_identity": "incident-remediation-agent-contract@1.0.0",
+      "agent_id": "incident-remediation-agent",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "scenario_ref": {
+        "kind": "Scenario",
+        "scenario_id": "incident-remediation",
+        "scenario_version": "1.0.0"
+      },
+      "tool_contract_ref": {
+        "kind": "Tool Contract",
+        "contract_id": "incident-remediation-tools",
+        "contract_version": "1.0.0"
+      },
+      "environment_contract_ref": {
+        "kind": "Environment Contract",
+        "contract_id": "controlled-incident-simulation",
+        "contract_version": "1.0.0"
+      },
+      "verifier_ref": {
+        "kind": "Verifier",
+        "verifier_id": "rpf-incident-remediation-verifier",
+        "verifier_version": "1.0.0"
+      },
+      "supported_execution_profile": "local-sequential-fresh-per-member",
+      "evidence_schema_compatibility": [
+        "rpf-run-evidence-v2"
+      ],
+      "supported_profiles": [
+        "incident-remediation-agent-v1-known-bad",
+        "incident-remediation-agent-v1-fixed"
+      ],
+      "dynamic_loading": false
+    },
+    "scenario_ref": {
+      "kind": "Scenario",
+      "scenario_id": "incident-remediation",
+      "scenario_version": "1.0.0"
+    },
+    "members": [
+      {
+        "member_id": "local-recoverable",
+        "stable_ref": {
+          "kind": "Evaluation Suite Member",
+          "suite_id": "rpf-incident-remediation-suite",
+          "suite_version": "1.0.0",
+          "member_id": "local-recoverable"
+        },
+        "category": "Normal / Functional",
+        "required": true,
+        "description": "Recover a local service fault only after dependency and recent-change evidence supports the action.",
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "regression_ref": null,
+        "execution": {
+          "fault_profile": "none",
+          "fresh_per_run": true,
+          "ordering": 1
+        },
+        "expected_evidence": {
+          "oracle_id": "rpf-incident-remediation-verifier@1.0.0",
+          "valid_item_results": [
+            "PASS",
+            "FAIL"
+          ],
+          "required_facts": [
+            "dependency_facts",
+            "remediation_side_effect",
+            "recovery_verification"
+          ]
+        }
+      },
+      {
+        "member_id": "response-lost",
+        "stable_ref": {
+          "kind": "Evaluation Suite Member",
+          "suite_id": "rpf-incident-remediation-suite",
+          "suite_version": "1.0.0",
+          "member_id": "response-lost"
+        },
+        "category": "Recovery / Fault",
+        "required": true,
+        "description": "Reconcile a successful bounded remediation whose response crossed the Agent boundary as UNKNOWN_OUTCOME.",
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "response-lost"
+        },
+        "regression_ref": null,
+        "execution": {
+          "fault_profile": "response-lost",
+          "fresh_per_run": true,
+          "ordering": 2
+        },
+        "expected_evidence": {
+          "oracle_id": "rpf-incident-response-lost-reconcile@1.0.0",
+          "valid_item_results": [
+            "PASS",
+            "FAIL"
+          ],
+          "required_facts": [
+            "fault",
+            "reconcile",
+            "effect_count"
+          ],
+          "fault_id": "side_effect_success_response_lost",
+          "pass_requires": [
+            "planned",
+            "triggered",
+            "observed",
+            "reconciled",
+            "effect_count_1"
+          ]
+        }
+      },
+      {
+        "member_id": "external-dependency",
+        "stable_ref": {
+          "kind": "Evaluation Suite Member",
+          "suite_id": "rpf-incident-remediation-suite",
+          "suite_version": "1.0.0",
+          "member_id": "external-dependency"
+        },
+        "category": "Historical Regression",
+        "required": true,
+        "description": "Prove that a misleading service symptom does not trigger harmful local remediation during an external dependency fault.",
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "external-dependency"
+        },
+        "regression_ref": {
+          "kind": "Regression",
+          "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+          "regression_version": "1.0.0"
+        },
+        "execution": {
+          "fault_profile": "none",
+          "fresh_per_run": true,
+          "ordering": 3
+        },
+        "expected_evidence": {
+          "oracle_id": "rpf-incident-regression-oracle@rpf-regression-result-v1",
+          "valid_item_results": [
+            "PASS",
+            "FAIL"
+          ],
+          "required_facts": [
+            "regression_result",
+            "dependency_facts",
+            "remediation_side_effect"
+          ],
+          "contract_source": "stable Incident Regression ref; do not copy the Regression definition"
+        }
+      }
+    ],
+    "member_contract_digest": "5ef29f4922a92a5cd415e7f767edf8f9d0eb4a5f5f1df4bfeb1129e01230a446",
+    "execution_policy": {
+      "ordering": "declared_member_order",
+      "isolation": "fresh-per-member",
+      "parallelism": "sequential",
+      "cleanup": "required; cleanup/quarantine is retained in each Run Evidence"
+    },
+    "source_identity": {
+      "runtime_version": "rpf-08.v1",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494",
+      "builder": "rpf-incident-evaluation-suite-builder-v1"
+    }
+  }
+}

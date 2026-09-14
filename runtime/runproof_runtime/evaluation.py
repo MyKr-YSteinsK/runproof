@@ -17,11 +17,15 @@ from pathlib import Path
 from typing import Any, Sequence
 
 from . import RUNTIME_VERSION
-from .agent import agent_profile
+from .agent_contract import (
+    INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE,
+    agent_contract_for_profile,
+    agent_profile_for,
+    run_agent_slice,
+)
 from .evidence import assert_safe_artifact, redact, runtime_source_sha256, timestamp, write_artifact
-from .models import OUTCOMES
+from .models import OUTCOMES, RuntimeFailure
 from .regression import evaluate_regression_run
-from .runner import run_slice
 from .scenario import SCENARIO
 
 
@@ -84,11 +88,13 @@ def _regression_ref(regression: dict[str, Any]) -> dict[str, str]:
     }
 
 
-def _scenario_ref() -> dict[str, str]:
+def _scenario_ref(scenario: dict[str, Any] | None = None) -> dict[str, str]:
+    scenario = scenario or SCENARIO
     return {
         "kind": "Scenario",
-        "scenario_id": SCENARIO["scenario_id"],
-        "scenario_version": SCENARIO["scenario_version"],
+        "scenario_id": scenario["scenario_id"],
+        "scenario_version": scenario["scenario_version"],
+        **({"case_id": scenario["case_id"]} if isinstance(scenario.get("case_id"), str) else {}),
     }
 
 
@@ -97,6 +103,15 @@ def _member_ref(member_id: str) -> dict[str, str]:
         "kind": "Evaluation Suite Member",
         "suite_id": EVALUATION_SUITE_ID,
         "suite_version": EVALUATION_SUITE_VERSION,
+        "member_id": member_id,
+    }
+
+
+def _member_ref_for(suite_id: str, suite_version: str, member_id: str) -> dict[str, str]:
+    return {
+        "kind": "Evaluation Suite Member",
+        "suite_id": suite_id,
+        "suite_version": suite_version,
         "member_id": member_id,
     }
 
@@ -204,6 +219,159 @@ def build_minimal_suite(regression: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def build_incident_suite(regression: dict[str, Any]) -> dict[str, Any]:
+    """Build the independent three-member Incident Remediation Suite."""
+
+    from .incident import (
+        CASE_EXTERNAL,
+        CASE_LOCAL,
+        CASE_RESPONSE_LOST,
+        INCIDENT_SCENARIO_ID,
+        INCIDENT_SCENARIO_VERSION,
+        INCIDENT_SUITE_ID,
+        INCIDENT_SUITE_VERSION,
+        incident_scenario,
+    )
+
+    contract = agent_contract_for_profile(INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE)
+    regression_ref = _regression_ref(regression)
+
+    def scenario_ref(case_id: str) -> dict[str, str]:
+        return _scenario_ref(incident_scenario(case_id))
+
+    def member_ref(member_id: str) -> dict[str, str]:
+        return _member_ref_for(INCIDENT_SUITE_ID, INCIDENT_SUITE_VERSION, member_id)
+
+    members = [
+        {
+            "member_id": CASE_LOCAL,
+            "stable_ref": member_ref(CASE_LOCAL),
+            "category": EVALUATION_CATEGORY_NORMAL,
+            "required": True,
+            "description": "Recover a local service fault only after dependency and recent-change evidence supports the action.",
+            "scenario_ref": scenario_ref(CASE_LOCAL),
+            "regression_ref": None,
+            "execution": {"fault_profile": "none", "fresh_per_run": True, "ordering": 1},
+            "expected_evidence": {"oracle_id": f"rpf-incident-remediation-verifier@1.0.0", "valid_item_results": ["PASS", "FAIL"], "required_facts": ["dependency_facts", "remediation_side_effect", "recovery_verification"]},
+        },
+        {
+            "member_id": CASE_RESPONSE_LOST,
+            "stable_ref": member_ref(CASE_RESPONSE_LOST),
+            "category": EVALUATION_CATEGORY_RECOVERY,
+            "required": True,
+            "description": "Reconcile a successful bounded remediation whose response crossed the Agent boundary as UNKNOWN_OUTCOME.",
+            "scenario_ref": scenario_ref(CASE_RESPONSE_LOST),
+            "regression_ref": None,
+            "execution": {"fault_profile": "response-lost", "fresh_per_run": True, "ordering": 2},
+            "expected_evidence": {"oracle_id": "rpf-incident-response-lost-reconcile@1.0.0", "valid_item_results": ["PASS", "FAIL"], "required_facts": ["fault", "reconcile", "effect_count"], "fault_id": "side_effect_success_response_lost", "pass_requires": ["planned", "triggered", "observed", "reconciled", "effect_count_1"]},
+        },
+        {
+            "member_id": CASE_EXTERNAL,
+            "stable_ref": member_ref(CASE_EXTERNAL),
+            "category": EVALUATION_CATEGORY_REGRESSION,
+            "required": True,
+            "description": "Prove that a misleading service symptom does not trigger harmful local remediation during an external dependency fault.",
+            "scenario_ref": scenario_ref(CASE_EXTERNAL),
+            "regression_ref": copy.deepcopy(regression_ref),
+            "execution": {"fault_profile": "none", "fresh_per_run": True, "ordering": 3},
+            "expected_evidence": {"oracle_id": "rpf-incident-regression-oracle@rpf-regression-result-v1", "valid_item_results": ["PASS", "FAIL"], "required_facts": ["regression_result", "dependency_facts", "remediation_side_effect"], "contract_source": "stable Incident Regression ref; do not copy the Regression definition"},
+        },
+    ]
+    return {
+        "schema_version": EVALUATION_SUITE_SCHEMA_VERSION,
+        "artifact_kind": "Evaluation Suite",
+        "suite": {
+            "suite_id": INCIDENT_SUITE_ID,
+            "suite_version": INCIDENT_SUITE_VERSION,
+            "suite_identity": f"{INCIDENT_SUITE_ID}@{INCIDENT_SUITE_VERSION}",
+            "name": "Incident Remediation Reliability Suite",
+            "purpose": "Compare an Incident Remediation Agent across local recovery, response-lost recovery, and the external-dependency historical regression.",
+            "agent_domain": "Incident Remediation Agent",
+            "agent_contract": contract,
+            "scenario_ref": {"kind": "Scenario", "scenario_id": INCIDENT_SCENARIO_ID, "scenario_version": INCIDENT_SCENARIO_VERSION},
+            "members": members,
+            "member_contract_digest": _member_contract_digest(members),
+            "execution_policy": {"ordering": "declared_member_order", "isolation": "fresh-per-member", "parallelism": "sequential", "cleanup": "required; cleanup/quarantine is retained in each Run Evidence"},
+            "source_identity": {"runtime_version": RUNTIME_VERSION, "source_sha256": runtime_source_sha256(), "builder": "rpf-incident-evaluation-suite-builder-v1"},
+        },
+    }
+
+
+def _validate_generic_suite(suite: dict[str, Any], regression: dict[str, Any] | None) -> list[str]:
+    """Validate an explicit Agent Suite without assuming the Change domain."""
+
+    errors: list[str] = []
+    try:
+        metadata = _suite_metadata(suite)
+        suite_id = _required_string(metadata.get("suite_id"), "suite.suite_id")
+        suite_version = _required_string(metadata.get("suite_version"), "suite.suite_version")
+        if metadata.get("suite_identity") != f"{suite_id}@{suite_version}":
+            errors.append("SUITE_IDENTITY")
+        for key in ("name", "purpose", "agent_domain", "execution_policy", "source_identity", "agent_contract"):
+            if not metadata.get(key):
+                errors.append(f"SUITE_{key.upper()}")
+        contract = _required_object(metadata.get("agent_contract"), "suite.agent_contract")
+        if contract.get("agent_domain") != metadata.get("agent_domain"):
+            errors.append("AGENT_DOMAIN_CONTRACT_MISMATCH")
+        supported_contract_ids: set[str] = set()
+        for profile_id in contract.get("supported_profiles", []):
+            if not isinstance(profile_id, str):
+                continue
+            try:
+                supported_contract_ids.add(agent_contract_for_profile(profile_id)["contract_id"])
+            except RuntimeFailure:
+                continue
+        if contract.get("contract_id") not in supported_contract_ids:
+            errors.append("AGENT_CONTRACT_UNKNOWN")
+        members = _required_list(metadata.get("members"), "suite.members")
+        if not members or not EVALUATION_CATEGORIES.issubset({item.get("category") for item in members if isinstance(item, dict)}):
+            errors.append("THREE_CATEGORY_MINIMUM")
+        seen: set[str] = set()
+        for member in members:
+            if not isinstance(member, dict):
+                errors.append("MEMBER_NOT_OBJECT")
+                continue
+            member_id = member.get("member_id")
+            if not isinstance(member_id, str) or not member_id:
+                errors.append("MEMBER_ID_MISSING")
+                continue
+            if member_id in seen:
+                errors.append("DUPLICATE_MEMBER_ID")
+            seen.add(member_id)
+            if member.get("stable_ref") != _member_ref_for(suite_id, suite_version, member_id):
+                errors.append(f"MEMBER_STABLE_REF:{member_id}")
+            scenario_ref = member.get("scenario_ref")
+            if not isinstance(scenario_ref, dict) or not scenario_ref.get("scenario_id") or not scenario_ref.get("scenario_version"):
+                errors.append(f"SCENARIO_REF:{member_id}")
+            if member.get("required") is not True:
+                errors.append(f"REQUIRED_MEMBER_POLICY:{member_id}")
+            execution = member.get("execution") if isinstance(member.get("execution"), dict) else {}
+            if execution.get("fresh_per_run") is not True or execution.get("fault_profile") not in {"none", "response-lost"}:
+                errors.append(f"EXECUTION_POLICY:{member_id}")
+            evidence = member.get("expected_evidence") if isinstance(member.get("expected_evidence"), dict) else {}
+            if not evidence.get("oracle_id") or not isinstance(evidence.get("valid_item_results"), list):
+                errors.append(f"ORACLE_CONTRACT:{member_id}")
+            regression_ref = member.get("regression_ref")
+            if member.get("category") == EVALUATION_CATEGORY_REGRESSION:
+                if not isinstance(regression_ref, dict) or not regression_ref.get("regression_id") or not regression_ref.get("regression_version"):
+                    errors.append(f"REGRESSION_REF_MISSING:{member_id}")
+                elif regression is not None and regression_ref != _regression_ref(regression):
+                    errors.append(f"REGRESSION_REF_MISMATCH:{member_id}")
+            elif regression_ref is not None:
+                errors.append(f"UNEXPECTED_REGRESSION_REF:{member_id}")
+        if metadata.get("member_contract_digest") != _member_contract_digest([item for item in members if isinstance(item, dict)]):
+            errors.append("MEMBER_CONTRACT_DIGEST")
+        policy = _required_object(metadata.get("execution_policy"), "suite.execution_policy")
+        if policy.get("isolation") != "fresh-per-member" or policy.get("parallelism") != "sequential":
+            errors.append("EXECUTION_POLICY")
+        source = _required_object(metadata.get("source_identity"), "suite.source_identity")
+        if not source.get("runtime_version") or not source.get("source_sha256"):
+            errors.append("SOURCE_IDENTITY")
+    except (ValueError, TypeError, KeyError):
+        errors.append("MALFORMED_FIELDS")
+    return errors
+
+
 def validate_suite_artifact(suite: dict[str, Any], regression: dict[str, Any] | None = None) -> list[str]:
     """Return explicit contract errors; no Evaluation may run from an invalid Suite."""
 
@@ -212,6 +380,9 @@ def validate_suite_artifact(suite: dict[str, Any], regression: dict[str, Any] | 
         errors.append("SCHEMA_VERSION")
     if suite.get("artifact_kind") != "Evaluation Suite":
         errors.append("ARTIFACT_KIND")
+    suite_metadata = suite.get("suite") if isinstance(suite.get("suite"), dict) else {}
+    if suite_metadata.get("suite_id") != EVALUATION_SUITE_ID:
+        return errors + _validate_generic_suite(suite, regression)
     try:
         metadata = _suite_metadata(suite)
         if metadata.get("suite_id") != EVALUATION_SUITE_ID:
@@ -290,13 +461,17 @@ def validate_suite(suite: dict[str, Any], regression: dict[str, Any] | None = No
 
 
 def _profile_identity(profile_id: str) -> dict[str, Any]:
-    profile = agent_profile(profile_id)
+    profile = agent_profile_for(profile_id)
     return {
         "agent_id": profile.get("agent_id"),
         "agent_version": profile.get("agent_version"),
         "configuration_id": profile.get("configuration_id"),
         "mode": profile.get("mode"),
         "prompt_id": profile.get("prompt_id"),
+        "agent_domain": profile.get("agent_domain"),
+        "agent_type": profile.get("agent_type"),
+        "agent_contract_id": profile.get("agent_contract_id"),
+        "agent_contract_version": profile.get("agent_contract_version"),
         **({"defect_id": profile["defect_id"]} if profile.get("defect_id") else {}),
         **({"fix_id": profile["fix_id"]} if profile.get("fix_id") else {}),
     }
@@ -641,6 +816,11 @@ def build_evaluation(
     members = [item for item in _required_list(metadata.get("members"), "suite.members") if isinstance(item, dict)]
     if len(runs) != len(members):
         raise ValueError("EVALUATION_MEMBER_RUN_COUNT_MISMATCH")
+    suite_contract = metadata.get("agent_contract") if isinstance(metadata.get("agent_contract"), dict) else None
+    if suite_contract is not None:
+        profile_contract = agent_contract_for_profile(agent_profile_id)
+        if suite_contract.get("contract_id") != profile_contract.get("contract_id") or suite_contract.get("contract_version") != profile_contract.get("contract_version"):
+            raise ValueError("AGENT_CONTRACT_MISMATCH")
     profile = _profile_identity(agent_profile_id)
     evaluation_id = evaluation_id or f"evaluation-{uuid.uuid4()}"
     started_at = started_at or timestamp()
@@ -1032,6 +1212,9 @@ def compare_evaluations(baseline: dict[str, Any], candidate: dict[str, Any]) -> 
         candidate_agent = candidate_meta["agent"]
         if base_meta.get("evaluation_id") == candidate_meta.get("evaluation_id"):
             errors.append("EVALUATION_ID_REUSE")
+        for key in ("agent_id", "agent_domain", "agent_type", "agent_contract_id", "agent_contract_version"):
+            if base_agent.get(key) != candidate_agent.get(key):
+                errors.append(f"AGENT_{key.upper()}_MISMATCH")
         if base_agent.get("agent_version") == candidate_agent.get("agent_version"):
             errors.append("BASELINE_CANDIDATE_AGENT_VERSION_SAME")
         base_items = {item.get("member_id"): item for item in base_meta["member_results"]}
@@ -1185,11 +1368,13 @@ def execute_evaluation(
     regression_results: dict[str, dict[str, Any]] = {}
     regression_result_paths: dict[str, Path] = {}
     for member in metadata["members"]:
-        run = run_slice(
+        scenario_case_id = member.get("scenario_ref", {}).get("case_id") if isinstance(member.get("scenario_ref"), dict) else None
+        run = run_agent_slice(
+            agent_profile_id,
             fault_profile=member["execution"]["fault_profile"],
             api_key=api_key,
             model=model,
-            agent_profile_id=agent_profile_id,
+            scenario_case_id=scenario_case_id,
         )
         run["run"]["evaluation_id"] = evaluation_id
         run_paths.append(write_artifact(run, output_dir, api_key or ""))
@@ -1202,7 +1387,7 @@ def execute_evaluation(
             result_meta = _required_object(result.get("result"), "regression_result.result")
             member_id = str(member["member_id"])
             result_meta["evaluation_ref"] = {"kind": "Evaluation Result", "evaluation_id": evaluation_id}
-            result_meta["suite_member_ref"] = _member_ref(member_id)
+            result_meta["suite_member_ref"] = _member_ref_for(str(metadata["suite_id"]), str(metadata["suite_version"]), member_id)
             # The two additive refs above are metadata for the result artifact only;
             # the original Regression and Run artifacts remain untouched.
             regression_result_paths[member_id] = write_named_artifact(result, output_dir, f"{evaluation_id}-{member_id}-regression-result.json", api_key or "")

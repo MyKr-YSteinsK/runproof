@@ -29,6 +29,33 @@ import qualityGateBaselineArtifact from "../../../runtime/reviewed-quality-gate-
 import qualityGateCandidateArtifact from "../../../runtime/reviewed-quality-gate-candidate.json";
 import releaseDecisionBaselineArtifact from "../../../runtime/reviewed-release-decision-baseline.json";
 import releaseDecisionCandidateArtifact from "../../../runtime/reviewed-release-decision-candidate.json";
+import incidentSourceFailureRunArtifact from "../../../runtime/reviewed-rpf16-incident-source-failure-run.json";
+import incidentFailureReproductionRunArtifact from "../../../runtime/reviewed-rpf16-incident-failure-reproduction-run.json";
+import incidentStabilityOneRunArtifact from "../../../runtime/reviewed-rpf16-incident-stability-01-run.json";
+import incidentStabilityTwoRunArtifact from "../../../runtime/reviewed-rpf16-incident-stability-02-run.json";
+import incidentFixedFocusRunArtifact from "../../../runtime/reviewed-rpf16-incident-fixed-focus-run.json";
+import incidentFailureCaseArtifact from "../../../runtime/reviewed-rpf16-incident-failure-case.json";
+import incidentRegressionArtifact from "../../../runtime/reviewed-rpf16-incident-regression.json";
+import incidentRegressionCollectionArtifact from "../../../runtime/reviewed-rpf16-incident-regression-collection.json";
+import incidentKnownBadResultArtifact from "../../../runtime/reviewed-rpf16-incident-known-bad-regression-result.json";
+import incidentFixedResultArtifact from "../../../runtime/reviewed-rpf16-incident-fixed-regression-result.json";
+import incidentEvaluationSuiteArtifact from "../../../runtime/reviewed-rpf16-incident-suite.json";
+import incidentBaselineEvaluationArtifact from "../../../runtime/reviewed-rpf16-incident-baseline-evaluation.json";
+import incidentCandidateEvaluationArtifact from "../../../runtime/reviewed-rpf16-incident-candidate-evaluation.json";
+import incidentComparisonArtifact from "../../../runtime/reviewed-rpf16-incident-comparison.json";
+import incidentQualityPolicyArtifact from "../../../runtime/reviewed-rpf16-incident-quality-policy.json";
+import incidentBaselineGateArtifact from "../../../runtime/reviewed-rpf16-incident-baseline-gate.json";
+import incidentCandidateGateArtifact from "../../../runtime/reviewed-rpf16-incident-candidate-gate.json";
+import incidentBaselineDecisionArtifact from "../../../runtime/reviewed-rpf16-incident-baseline-decision.json";
+import incidentCandidateDecisionArtifact from "../../../runtime/reviewed-rpf16-incident-candidate-decision.json";
+import incidentBaselineLocalRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-baseline-local-run.json";
+import incidentBaselineRecoveryRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-baseline-response-lost-run.json";
+import incidentBaselineRegressionRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-baseline-external-regression-run.json";
+import incidentCandidateLocalRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-candidate-local-run.json";
+import incidentCandidateRecoveryRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-candidate-response-lost-run.json";
+import incidentCandidateRegressionRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-candidate-external-regression-run.json";
+import incidentBaselineEvaluationRegressionResultArtifact from "../../../runtime/reviewed-rpf16-incident-baseline-evaluation-regression-result.json";
+import incidentCandidateEvaluationRegressionResultArtifact from "../../../runtime/reviewed-rpf16-incident-candidate-evaluation-regression-result.json";
 
 export const ACTIVE_SCHEMA_VERSION = "rpf-run-evidence-v2";
 
@@ -382,6 +409,21 @@ export interface ReleaseDecision {
   };
 }
 
+export interface AgentSummary {
+  agentId: string;
+  domain: string;
+  agentType: string;
+  contractId: string;
+  versions: string[];
+  profiles: string[];
+  scenarioRefs: JsonRecord[];
+  runIds: string[];
+  failureCaseIds: string[];
+  regressionIds: string[];
+  evaluationIds: string[];
+  decisionIds: string[];
+}
+
 const asObject = (value: unknown, label: string): JsonRecord => {
   if (!value || typeof value !== "object" || Array.isArray(value)) {
     throw new Error(`Malformed evidence: ${label}`);
@@ -577,11 +619,16 @@ export let reviewedRuns: RunEvidence[] = [
   normalizeArtifact(regressionStabilityOneArtifact),
   normalizeArtifact(regressionStabilityTwoArtifact),
   normalizeArtifact(regressionFixedCandidateArtifact),
+  normalizeArtifact(incidentSourceFailureRunArtifact),
+  normalizeArtifact(incidentFailureReproductionRunArtifact),
+  normalizeArtifact(incidentStabilityOneRunArtifact),
+  normalizeArtifact(incidentStabilityTwoRunArtifact),
+  normalizeArtifact(incidentFixedFocusRunArtifact),
 ];
 
 export const historicalFailureCase: FailureCase = normalizeFailureCase(failureCaseArtifact);
 
-export let reviewedFailureCases: FailureCase[] = [normalizeFailureCase(promotedFailureCaseArtifact)];
+export let reviewedFailureCases: FailureCase[] = [normalizeFailureCase(promotedFailureCaseArtifact), normalizeFailureCase(incidentFailureCaseArtifact)];
 
 const normalizeRegression = (raw: unknown): Regression => {
   const artifact = asObject(raw, "regression artifact");
@@ -912,27 +959,51 @@ const normalizeReleaseDecision = (raw: unknown): ReleaseDecision => {
   };
 };
 
-export let reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact)];
+export let reviewedRegressions: Regression[] = [normalizeRegression(regressionArtifact), normalizeRegression(incidentRegressionArtifact)];
 export let reviewedRegressionResults: RegressionExecutionResult[] = [
   normalizeRegressionResult(regressionKnownBadResultArtifact),
   normalizeRegressionResult(regressionFixedCandidateResultArtifact),
+  normalizeRegressionResult(incidentKnownBadResultArtifact),
+  normalizeRegressionResult(incidentFixedResultArtifact),
 ];
 export let reviewedRegressionCollection: RegressionCollection = normalizeRegressionCollection(regressionCollectionArtifact);
+export let reviewedRegressionCollections: RegressionCollection[] = [
+  reviewedRegressionCollection,
+  normalizeRegressionCollection(incidentRegressionCollectionArtifact),
+];
 
 export let reviewedEvaluationSuite: EvaluationSuite = normalizeEvaluationSuite(evaluationSuiteArtifact);
+export let reviewedEvaluationSuites: EvaluationSuite[] = [
+  reviewedEvaluationSuite,
+  normalizeEvaluationSuite(incidentEvaluationSuiteArtifact),
+];
 export let reviewedEvaluations: EvaluationResult[] = [
   normalizeEvaluation(evaluationBaselineArtifact),
   normalizeEvaluation(evaluationCandidateArtifact),
+  normalizeEvaluation(incidentBaselineEvaluationArtifact),
+  normalizeEvaluation(incidentCandidateEvaluationArtifact),
 ];
 export let reviewedEvaluationComparison: EvaluationComparison = normalizeComparison(evaluationComparisonArtifact);
+export let reviewedEvaluationComparisons: EvaluationComparison[] = [
+  reviewedEvaluationComparison,
+  normalizeComparison(incidentComparisonArtifact),
+];
 export let reviewedQualityPolicy: QualityPolicy = normalizeQualityPolicy(qualityPolicyArtifact);
+export let reviewedQualityPolicies: QualityPolicy[] = [
+  reviewedQualityPolicy,
+  normalizeQualityPolicy(incidentQualityPolicyArtifact),
+];
 export let reviewedQualityGates: QualityGateEvaluation[] = [
   normalizeQualityGate(qualityGateBaselineArtifact),
   normalizeQualityGate(qualityGateCandidateArtifact),
+  normalizeQualityGate(incidentBaselineGateArtifact),
+  normalizeQualityGate(incidentCandidateGateArtifact),
 ];
 export let reviewedReleaseDecisions: ReleaseDecision[] = [
   normalizeReleaseDecision(releaseDecisionBaselineArtifact),
   normalizeReleaseDecision(releaseDecisionCandidateArtifact),
+  normalizeReleaseDecision(incidentBaselineDecisionArtifact),
+  normalizeReleaseDecision(incidentCandidateDecisionArtifact),
 ];
 export let reviewedEvaluationRuns: RunEvidence[] = [
   normalizeArtifact(evaluationBaselineNormalRunArtifact),
@@ -941,28 +1012,82 @@ export let reviewedEvaluationRuns: RunEvidence[] = [
   normalizeArtifact(evaluationCandidateNormalRunArtifact),
   normalizeArtifact(evaluationCandidateRecoveryRunArtifact),
   normalizeArtifact(evaluationCandidateRegressionRunArtifact),
+  normalizeArtifact(incidentBaselineLocalRunArtifact),
+  normalizeArtifact(incidentBaselineRecoveryRunArtifact),
+  normalizeArtifact(incidentBaselineRegressionRunArtifact),
+  normalizeArtifact(incidentCandidateLocalRunArtifact),
+  normalizeArtifact(incidentCandidateRecoveryRunArtifact),
+  normalizeArtifact(incidentCandidateRegressionRunArtifact),
 ];
 export let reviewedEvaluationRegressionResults: RegressionExecutionResult[] = [
   normalizeRegressionResult(evaluationBaselineRegressionResultArtifact),
   normalizeRegressionResult(evaluationCandidateRegressionResultArtifact),
+  normalizeRegressionResult(incidentBaselineEvaluationRegressionResultArtifact),
+  normalizeRegressionResult(incidentCandidateEvaluationRegressionResultArtifact),
 ];
 
 let allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
 let allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
+
+const agentText = (value: unknown, ...keys: string[]): string | null => {
+  const record = value && typeof value === "object" && !Array.isArray(value) ? value as JsonRecord : {};
+  for (const key of keys) if (typeof record[key] === "string" && record[key]) return String(record[key]);
+  return null;
+};
+
+const buildAgentSummaries = (): AgentSummary[] => {
+  const byId = new Map<string, AgentSummary>();
+  const ensure = (agent: unknown, scenario: unknown, refs: { runId?: string; failureCaseId?: string; regressionId?: string; evaluationId?: string; decisionId?: string }) => {
+    const agentId = agentText(agent, "agent_id", "agent_family") || "unknown-agent";
+    const domain = agentText(agent, "agent_domain") || (agentId === "incident-remediation-agent" ? "Incident Remediation Agent" : "Production Change Agent");
+    const current = byId.get(agentId) || {
+      agentId,
+      domain,
+      agentType: agentText(agent, "agent_type") || (domain === "Incident Remediation Agent" ? "INCIDENT_REMEDIATION" : "STATEFUL_CHANGE"),
+      contractId: agentText(agent, "agent_contract_id") || (agentId === "incident-remediation-agent" ? "incident-remediation-agent-contract" : "production-change-agent-contract"),
+      versions: [], profiles: [], scenarioRefs: [], runIds: [], failureCaseIds: [], regressionIds: [], evaluationIds: [], decisionIds: [],
+    };
+    const version = agentText(agent, "agent_version", "known_bad_version");
+    const profile = agentText(agent, "configuration_id");
+    const scenarioRecord = scenario && typeof scenario === "object" && !Array.isArray(scenario) ? scenario as JsonRecord : null;
+    if (version && !current.versions.includes(version)) current.versions.push(version);
+    if (profile && !current.profiles.includes(profile)) current.profiles.push(profile);
+    if (scenarioRecord && !current.scenarioRefs.some((item) => item.scenario_id === scenarioRecord.scenario_id && item.scenario_version === scenarioRecord.scenario_version && item.case_id === scenarioRecord.case_id)) current.scenarioRefs.push({ ...scenarioRecord });
+    if (refs.runId && !current.runIds.includes(refs.runId)) current.runIds.push(refs.runId);
+    if (refs.failureCaseId && !current.failureCaseIds.includes(refs.failureCaseId)) current.failureCaseIds.push(refs.failureCaseId);
+    if (refs.regressionId && !current.regressionIds.includes(refs.regressionId)) current.regressionIds.push(refs.regressionId);
+    if (refs.evaluationId && !current.evaluationIds.includes(refs.evaluationId)) current.evaluationIds.push(refs.evaluationId);
+    if (refs.decisionId && !current.decisionIds.includes(refs.decisionId)) current.decisionIds.push(refs.decisionId);
+    byId.set(agentId, current);
+  };
+  allReviewedRuns.forEach((run) => ensure(run.run.agent, run.scenario, { runId: run.run.runId }));
+  reviewedFailureCases.forEach((item) => ensure(item.agent, item.scenario, { failureCaseId: item.failureCase.failureCaseId, runId: item.sourceRun.runId }));
+  reviewedRegressions.forEach((item) => ensure(item.agent, item.scenario, { regressionId: item.regression.regressionId, failureCaseId: item.sourceFailureCase.failureCaseId }));
+  reviewedEvaluations.forEach((item) => {
+    ensure(item.evaluation.agent, undefined, { evaluationId: item.evaluation.evaluationId });
+    item.evaluation.memberResults.forEach((member) => ensure(item.evaluation.agent, member.scenarioRef, { evaluationId: item.evaluation.evaluationId }));
+  });
+  reviewedReleaseDecisions.forEach((item) => ensure(item.releaseDecision.evaluatedAgent, undefined, { decisionId: item.releaseDecision.releaseDecisionId, evaluationId: String(item.releaseDecision.candidateEvaluationRef.evaluation_id || "") || undefined }));
+  return [...byId.values()].sort((left, right) => left.domain.localeCompare(right.domain));
+};
+
+export let reviewedAgents: AgentSummary[] = buildAgentSummaries();
 
 export interface ControlPlaneCorpusPayload {
   runs: unknown[];
   failures: unknown[];
   regressions: unknown[];
   regressionResults: unknown[];
-  regressionCollection: unknown;
-  evaluationSuite: unknown;
+  regressionCollections: unknown[];
+  evaluationSuites: unknown[];
   evaluations: unknown[];
-  comparison: unknown;
-  qualityPolicy: unknown;
+  comparisons: unknown[];
+  qualityPolicies: unknown[];
   qualityGates: unknown[];
   releaseDecisions: unknown[];
 }
+
+const asCorpusList = (value: unknown): unknown[] => Array.isArray(value) ? value : value === null || value === undefined ? [] : [value];
 
 /** Replace the fixture-backed snapshot only after every API artifact resolves and normalizes. */
 export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): void => {
@@ -973,10 +1098,15 @@ export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): 
   const evaluations = payload.evaluations.map(normalizeEvaluation);
   const qualityGates = payload.qualityGates.map(normalizeQualityGate);
   const decisions = payload.releaseDecisions.map(normalizeReleaseDecision);
-  const suite = normalizeEvaluationSuite(payload.evaluationSuite);
-  const comparison = normalizeComparison(payload.comparison);
-  const policy = normalizeQualityPolicy(payload.qualityPolicy);
-  const collection = normalizeRegressionCollection(payload.regressionCollection);
+  const suites = asCorpusList(payload.evaluationSuites).map(normalizeEvaluationSuite);
+  const comparisons = asCorpusList(payload.comparisons).map(normalizeComparison);
+  const policies = asCorpusList(payload.qualityPolicies).map(normalizeQualityPolicy);
+  const collections = asCorpusList(payload.regressionCollections).map(normalizeRegressionCollection);
+  const suite = suites[0];
+  const comparison = comparisons[0];
+  const policy = policies[0];
+  const collection = collections[0];
+  if (!suite || !comparison || !policy || !collection) throw new Error("Malformed Control Plane corpus: required aggregate missing");
   const evaluationRunIds = new Set(
     evaluations.flatMap((evaluation) => evaluation.evaluation.memberResults
       .map((member) => member.runRef.run_id)
@@ -999,14 +1129,19 @@ export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): 
   reviewedRegressionResults = primaryRegressionResults;
   reviewedEvaluationRegressionResults = evaluationRegressionResults;
   reviewedRegressionCollection = collection;
+  reviewedRegressionCollections = collections;
   reviewedEvaluationSuite = suite;
+  reviewedEvaluationSuites = suites;
   reviewedEvaluations = evaluations;
   reviewedEvaluationComparison = comparison;
+  reviewedEvaluationComparisons = comparisons;
   reviewedQualityPolicy = policy;
+  reviewedQualityPolicies = policies;
   reviewedQualityGates = qualityGates;
   reviewedReleaseDecisions = decisions;
   allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
   allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
+  reviewedAgents = buildAgentSummaries();
 };
 
 export const getRun = (runId: string): RunEvidence | undefined => allReviewedRuns.find((run) => run.run.runId === runId);
@@ -1036,7 +1171,9 @@ export const getRegressionForRun = (runId: string): Regression | undefined => {
 
 export const getEvaluation = (evaluationId: string): EvaluationResult | undefined => reviewedEvaluations.find((item) => item.evaluation.evaluationId === evaluationId);
 
-export const getEvaluationComparison = (comparisonId: string): EvaluationComparison | undefined => reviewedEvaluationComparison.comparison.comparisonId === comparisonId ? reviewedEvaluationComparison : undefined;
+export const getEvaluationComparison = (comparisonId: string): EvaluationComparison | undefined => reviewedEvaluationComparisons.find((item) => item.comparison.comparisonId === comparisonId);
+
+export const getAgent = (agentId: string): AgentSummary | undefined => reviewedAgents.find((item) => item.agentId === agentId);
 
 export const getQualityGate = (gateEvaluationId: string): QualityGateEvaluation | undefined => reviewedQualityGates.find((item) => item.gateEvaluation.gateEvaluationId === gateEvaluationId);
 

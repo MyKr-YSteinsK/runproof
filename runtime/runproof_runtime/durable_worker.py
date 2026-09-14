@@ -20,6 +20,7 @@ from pathlib import Path
 from typing import Any
 
 from .agent import FIXED_CANDIDATE_AGENT_PROFILE, KNOWN_BAD_AGENT_PROFILE, NORMAL_AGENT_PROFILE
+from .agent_contract import INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE, INCIDENT_KNOWN_BAD_AGENT_PROFILE
 from .control_plane_client import ControlPlaneClient, ControlPlaneClientError
 from .evaluation import build_minimal_suite, execute_evaluation, validate_suite_artifact
 from .failure_case import load_json
@@ -30,6 +31,8 @@ SUPPORTED_PROFILES = {
     NORMAL_AGENT_PROFILE,
     KNOWN_BAD_AGENT_PROFILE,
     FIXED_CANDIDATE_AGENT_PROFILE,
+    INCIDENT_KNOWN_BAD_AGENT_PROFILE,
+    INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE,
 }
 UNRESOLVED_OPERATION_STATES = {"PREPARED", "IN_FLIGHT", "UNKNOWN_OUTCOME"}
 
@@ -51,7 +54,7 @@ def _safe_contract(job: dict[str, Any]) -> dict[str, Any]:
     payload = job.get("payload_ref")
     if not isinstance(payload, dict):
         raise WorkerFailure("INVALID_WORKER_CONTRACT:payload_ref")
-    allowed = {"contract", "agent_profile", "regression_path", "output_dir", "evaluation_id", "operation_environment_id"}
+    allowed = {"contract", "agent_profile", "regression_path", "suite_path", "output_dir", "evaluation_id", "operation_environment_id"}
     unknown = set(payload) - allowed
     if unknown:
         raise WorkerFailure("INVALID_WORKER_CONTRACT:unknown_field")
@@ -234,7 +237,14 @@ class DurableEvaluationWorker:
             if not regression_path.is_file():
                 raise WorkerFailure("REGRESSION_INPUT_MISSING")
             regression = load_json(regression_path)
-            suite = build_minimal_suite(regression)
+            suite_path_value = payload.get("suite_path")
+            if suite_path_value:
+                suite_path = _safe_path(str(suite_path_value), "suite_path", self.repo_root)
+                if not suite_path.is_file():
+                    raise WorkerFailure("SUITE_INPUT_MISSING")
+                suite = load_json(suite_path)
+            else:
+                suite = build_minimal_suite(regression)
             suite_errors = validate_suite_artifact(suite, regression)
             if suite_errors:
                 raise WorkerFailure("INVALID_EVALUATION_SUITE")

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Any
 
 from . import RUNTIME_VERSION
+from .agent_contract import run_agent_slice
 from .evidence import assert_safe_artifact, redact, timestamp, write_artifact
 from .models import FAILURE_CASE_SCHEMA_VERSION, FAILURE_SIGNATURE_VERSION, RuntimeFailure
 from .runner import run_slice
@@ -71,6 +72,20 @@ def _evidence_pattern(run_artifact: dict[str, Any]) -> dict[str, Any]:
     guard = next((event for event in events if isinstance(event, dict) and event.get("event_type") == "guard_blocked"), None)
     intent = next((event for event in events if isinstance(event, dict) and event.get("event_type") == "agent_tool_intent"), None)
     failure = _required_object(run_artifact.get("failure_attribution"), "failure_attribution")
+    agent = _required_object(_required_object(run_artifact.get("run"), "run").get("agent"), "run.agent")
+    if agent.get("agent_id") == "incident-remediation-agent":
+        verification = _required_object(run_artifact.get("verification"), "verification")
+        evidence = verification.get("evidence") if isinstance(verification.get("evidence"), dict) else {}
+        side_effect = evidence.get("remediation_side_effect") if isinstance(evidence.get("remediation_side_effect"), dict) else {}
+        return {
+            "first_divergence_event_type": failure.get("first_divergence_event_type"),
+            "dependency_health": (failure.get("dependency_facts") or {}).get("dependency_health"),
+            "cause_classification": (failure.get("dependency_facts") or {}).get("cause_classification"),
+            "remediation_executed": side_effect.get("executed"),
+            "remediation_harmful": side_effect.get("harmful"),
+            "effect_count": evidence.get("effect_count"),
+            "safe_stop_required": run_artifact.get("scenario", {}).get("required_outcome", {}).get("terminal_mode") == "SAFE_STOP_EXTERNAL_DEPENDENCY",
+        }
     return {
         "intent_tool": intent.get("tool_name") if intent else None,
         "intent_classification": intent.get("intent_classification") if intent else None,
@@ -98,6 +113,12 @@ def build_failure_case(source_run: dict[str, Any]) -> dict[str, Any]:
     verification = _required_object(source_run.get("verification"), "verification")
     case_id = f"failure-case-{uuid.uuid4()}"
     created = timestamp()
+    evidence_refs = [
+        {"role": "agent_intent", "run_id": run.get("run_id"), "event_id": event_ids["agent_intent_event_id"]},
+    ]
+    if event_ids["guard_event_id"] is not None:
+        evidence_refs.append({"role": "guard", "run_id": run.get("run_id"), "event_id": event_ids["guard_event_id"]})
+    evidence_refs.append({"role": "failure", "run_id": run.get("run_id"), "event_id": event_ids["failing_event_id"]})
     return {
         "schema_version": FAILURE_CASE_SCHEMA_VERSION,
         "artifact_kind": "Failure Case",
@@ -123,10 +144,12 @@ def build_failure_case(source_run: dict[str, Any]) -> dict[str, Any]:
             "agent_version": agent.get("agent_version"),
             "configuration_id": agent.get("configuration_id"),
             "defect_id": agent.get("defect_id"),
+            **{key: agent[key] for key in ("agent_domain", "agent_type", "agent_contract_id", "agent_contract_version", "defect_description", "fix_id", "fix_description") if key in agent},
         },
         "scenario": {
             "scenario_id": scenario.get("scenario_id"),
             "scenario_version": scenario.get("scenario_version"),
+            **({"case_id": scenario["case_id"]} if isinstance(scenario.get("case_id"), str) else {}),
         },
         "classification": {
             "outcome": "FAIL",
@@ -142,14 +165,12 @@ def build_failure_case(source_run: dict[str, Any]) -> dict[str, Any]:
             "violated_invariant": attribution.get("violated_invariant"),
             "expected": attribution.get("expected"),
             "actual": attribution.get("actual"),
+            **({"dependency_facts": copy.deepcopy(attribution.get("dependency_facts"))} if isinstance(attribution.get("dependency_facts"), dict) else {}),
+            **({"remediation_side_effect": copy.deepcopy(attribution.get("remediation_side_effect"))} if isinstance(attribution.get("remediation_side_effect"), dict) else {}),
             "state_diff": verification.get("state_diff"),
             "evidence_pattern": _evidence_pattern(source_run),
         },
-        "evidence_refs": [
-            {"role": "agent_intent", "run_id": run.get("run_id"), "event_id": event_ids["agent_intent_event_id"]},
-            {"role": "guard", "run_id": run.get("run_id"), "event_id": event_ids["guard_event_id"]},
-            {"role": "failure", "run_id": run.get("run_id"), "event_id": event_ids["failing_event_id"]},
-        ],
+        "evidence_refs": evidence_refs,
         "reproduction_attempts": [],
         "validation": None,
         "regression": {
@@ -157,6 +178,7 @@ def build_failure_case(source_run: dict[str, Any]) -> dict[str, Any]:
             "eligible": False,
             "reason": "Failure Case validation is complete, but Failure-to-Regression promotion is outside RPF-05.",
         },
+        **({"regression_collection_id": "incident-historical-regressions-v1"} if agent.get("agent_id") == "incident-remediation-agent" else {}),
     }
 
 
@@ -239,7 +261,13 @@ def reproduce_failure_case(case: dict[str, Any], *, api_key: str | None = None, 
     profile_id = agent.get("configuration_id")
     if not isinstance(profile_id, str) or not profile_id:
         raise RuntimeFailure("HARNESS", "FAILURE_CASE_AGENT_PROFILE_MISSING")
-    reproduction = run_slice(api_key=api_key, model=model, agent_profile_id=profile_id)
+    scenario = _required_object(case.get("scenario"), "scenario")
+    reproduction = run_agent_slice(
+        profile_id,
+        api_key=api_key,
+        model=model,
+        scenario_case_id=scenario.get("case_id") if isinstance(scenario.get("case_id"), str) else None,
+    )
     validation = validate_reproduction(case, reproduction)
     return reproduction, validation
 
