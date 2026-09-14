@@ -56,6 +56,15 @@ import incidentCandidateRecoveryRunArtifact from "../../../runtime/reviewed-rpf1
 import incidentCandidateRegressionRunArtifact from "../../../runtime/reviewed-rpf16-incident-evaluation-candidate-external-regression-run.json";
 import incidentBaselineEvaluationRegressionResultArtifact from "../../../runtime/reviewed-rpf16-incident-baseline-evaluation-regression-result.json";
 import incidentCandidateEvaluationRegressionResultArtifact from "../../../runtime/reviewed-rpf16-incident-candidate-evaluation-regression-result.json";
+import productionFailureIntelligenceArtifact from "../../../runtime/reviewed-rpf17-production-failure-intelligence.json";
+import incidentFailureIntelligenceArtifact from "../../../runtime/reviewed-rpf17-incident-failure-intelligence.json";
+import environmentNegativeIntelligenceArtifact from "../../../runtime/reviewed-rpf17-environment-negative-intelligence.json";
+import providerNegativeIntelligenceArtifact from "../../../runtime/reviewed-rpf17-provider-negative-intelligence.json";
+import invalidNegativeIntelligenceArtifact from "../../../runtime/reviewed-rpf17-invalid-negative-intelligence.json";
+import productionDomainClusterArtifact from "../../../runtime/reviewed-rpf17-production-domain-cluster.json";
+import incidentDomainClusterArtifact from "../../../runtime/reviewed-rpf17-incident-domain-cluster.json";
+import crossAgentClusterArtifact from "../../../runtime/reviewed-rpf17-cross-agent-cluster.json";
+import incidentVersionBisectArtifact from "../../../runtime/reviewed-rpf17-incident-version-bisect.json";
 
 export const ACTIVE_SCHEMA_VERSION = "rpf-run-evidence-v2";
 
@@ -158,6 +167,85 @@ export interface FailureCase {
   validation: JsonRecord | null;
   regression: JsonRecord;
   promotion: JsonRecord | null;
+}
+
+export interface FailureIntelligence {
+  schemaVersion: string;
+  artifactKind: string;
+  intelligence: {
+    intelligenceId: string;
+    intelligenceVersion: string;
+    status: string;
+    sourceLabel: string;
+    sourceFailureCaseRef: JsonRecord | null;
+    sourceRunRef: JsonRecord;
+    agent: JsonRecord;
+    scenario: JsonRecord;
+    sourceFacts: JsonRecord;
+    deterministicAttribution: JsonRecord;
+    agentFailureTaxonomy: JsonRecord;
+    firstMeaningfulDivergence: JsonRecord;
+    structuralFeatures: JsonRecord;
+    familySignatures: { domain: JsonRecord | null; crossAgent: JsonRecord | null };
+    recurrence: JsonRecord;
+    versionObservations: JsonRecord[];
+    regressionLinkage: JsonRecord;
+    recommendation: JsonRecord;
+    evidencePacket: JsonRecord;
+    sourceIdentity: JsonRecord;
+    derivationVersion: string;
+  };
+}
+
+export interface FailureCluster {
+  schemaVersion: string;
+  artifactKind: string;
+  cluster: {
+    clusterId: string;
+    clusterVersion: string;
+    status: string;
+    clusterLevel: string;
+    familySignature: JsonRecord;
+    taxonomyVersion: string;
+    memberRefs: JsonRecord[];
+    exactSignatureRefs: JsonRecord[];
+    agentDomains: string[];
+    invariantFamilies: string[];
+    occurrenceCount: number;
+    occurrenceRefs: JsonRecord[];
+    firstSeen: string;
+    lastSeen: string;
+    representativeFailureRef: JsonRecord | null;
+    regressionCoverage: JsonRecord[];
+    unresolvedMemberCount: number;
+    sourceIdentity: JsonRecord;
+    derivationVersion: string;
+  };
+}
+
+export interface VersionBisect {
+  schemaVersion: string;
+  artifactKind: string;
+  bisect: {
+    bisectId: string;
+    bisectVersion: string;
+    status: string;
+    agentDomain: string;
+    regressionRef: JsonRecord | null;
+    regressionVersion: string | null;
+    orderedCandidateLine: JsonRecord[];
+    knownGoodBoundary: JsonRecord | null;
+    knownBadBoundary: JsonRecord | null;
+    compatibleContract: JsonRecord;
+    monotonicity: JsonRecord;
+    probeHistory: JsonRecord[];
+    firstBadCandidate: JsonRecord | null;
+    stopReason: string | null;
+    fullScanRecommended: boolean;
+    evidenceRefs: JsonRecord[];
+    sourceIdentity: JsonRecord;
+    derivationVersion: string;
+  };
 }
 
 export interface Regression {
@@ -610,6 +698,103 @@ const normalizeFailureCase = (raw: unknown): FailureCase => {
   };
 };
 
+const normalizeFailureIntelligence = (raw: unknown): FailureIntelligence => {
+  const artifact = asObject(raw, "failure intelligence artifact");
+  const intelligence = asObject(artifact.intelligence, "failure intelligence");
+  const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
+  const families = asObject(intelligence.family_signatures, "intelligence.family_signatures");
+  return {
+    schemaVersion: asString(artifact.schema_version, "intelligence.schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "intelligence.artifact_kind"),
+    intelligence: {
+      intelligenceId: asString(intelligence.intelligence_id, "intelligence.intelligence_id"),
+      intelligenceVersion: asString(intelligence.intelligence_version, "intelligence.intelligence_version"),
+      status: asString(intelligence.status, "intelligence.status"),
+      sourceLabel: asString(intelligence.source_label, "intelligence.source_label"),
+      sourceFailureCaseRef: optionalObject(intelligence.source_failure_case_ref, "intelligence.source_failure_case_ref"),
+      sourceRunRef: asObject(intelligence.source_run_ref, "intelligence.source_run_ref"),
+      agent: asObject(intelligence.agent, "intelligence.agent"),
+      scenario: asObject(intelligence.scenario, "intelligence.scenario"),
+      sourceFacts: asObject(intelligence.source_facts, "intelligence.source_facts"),
+      deterministicAttribution: asObject(intelligence.deterministic_attribution, "intelligence.deterministic_attribution"),
+      agentFailureTaxonomy: asObject(intelligence.agent_failure_taxonomy, "intelligence.agent_failure_taxonomy"),
+      firstMeaningfulDivergence: asObject(intelligence.first_meaningful_divergence, "intelligence.first_meaningful_divergence"),
+      structuralFeatures: asObject(intelligence.structural_features, "intelligence.structural_features"),
+      familySignatures: {
+        domain: optionalObject(families.domain, "intelligence.family_signatures.domain"),
+        crossAgent: optionalObject(families.cross_agent, "intelligence.family_signatures.cross_agent"),
+      },
+      recurrence: asObject(intelligence.recurrence, "intelligence.recurrence"),
+      versionObservations: asArray(intelligence.version_observations, "intelligence.version_observations").map((value) => asObject(value, "intelligence version observation")),
+      regressionLinkage: asObject(intelligence.regression_linkage, "intelligence.regression_linkage"),
+      recommendation: asObject(intelligence.recommendation, "intelligence.recommendation"),
+      evidencePacket: asObject(intelligence.evidence_packet, "intelligence.evidence_packet"),
+      sourceIdentity: asObject(intelligence.source_identity, "intelligence.source_identity"),
+      derivationVersion: asString(intelligence.derivation_version, "intelligence.derivation_version"),
+    },
+  };
+};
+
+const normalizeFailureCluster = (raw: unknown): FailureCluster => {
+  const artifact = asObject(raw, "failure cluster artifact");
+  const cluster = asObject(artifact.cluster, "failure cluster");
+  return {
+    schemaVersion: asString(artifact.schema_version, "cluster.schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "cluster.artifact_kind"),
+    cluster: {
+      clusterId: asString(cluster.cluster_id, "cluster.cluster_id"),
+      clusterVersion: asString(cluster.cluster_version, "cluster.cluster_version"),
+      status: asString(cluster.status, "cluster.status"),
+      clusterLevel: asString(cluster.cluster_level, "cluster.cluster_level"),
+      familySignature: asObject(cluster.family_signature, "cluster.family_signature"),
+      taxonomyVersion: asString(cluster.taxonomy_version, "cluster.taxonomy_version"),
+      memberRefs: asArray(cluster.member_refs, "cluster.member_refs").map((value) => asObject(value, "cluster member ref")),
+      exactSignatureRefs: asArray(cluster.exact_signature_refs, "cluster.exact_signature_refs").map((value) => asObject(value, "cluster exact signature")),
+      agentDomains: asArray(cluster.agent_domains, "cluster.agent_domains").map((value) => asString(value, "cluster agent domain")),
+      invariantFamilies: asArray(cluster.invariant_families, "cluster.invariant_families").map((value) => asString(value, "cluster invariant family")),
+      occurrenceCount: asNumber(cluster.occurrence_count, "cluster.occurrence_count"),
+      occurrenceRefs: asArray(cluster.occurrence_refs, "cluster.occurrence_refs").map((value) => asObject(value, "cluster occurrence ref")),
+      firstSeen: asString(cluster.first_seen, "cluster.first_seen"),
+      lastSeen: asString(cluster.last_seen, "cluster.last_seen"),
+      representativeFailureRef: cluster.representative_failure_ref ? asObject(cluster.representative_failure_ref, "cluster representative") : null,
+      regressionCoverage: asArray(cluster.regression_coverage, "cluster.regression_coverage").map((value) => asObject(value, "cluster regression coverage")),
+      unresolvedMemberCount: asNumber(cluster.unresolved_member_count, "cluster.unresolved_member_count"),
+      sourceIdentity: asObject(cluster.source_identity, "cluster.source_identity"),
+      derivationVersion: asString(cluster.derivation_version, "cluster.derivation_version"),
+    },
+  };
+};
+
+const normalizeVersionBisect = (raw: unknown): VersionBisect => {
+  const artifact = asObject(raw, "version bisect artifact");
+  const bisect = asObject(artifact.bisect, "version bisect");
+  const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
+  return {
+    schemaVersion: asString(artifact.schema_version, "bisect.schema_version"),
+    artifactKind: asString(artifact.artifact_kind, "bisect.artifact_kind"),
+    bisect: {
+      bisectId: asString(bisect.bisect_id, "bisect.bisect_id"),
+      bisectVersion: asString(bisect.bisect_version, "bisect.bisect_version"),
+      status: asString(bisect.status, "bisect.status"),
+      agentDomain: asString(bisect.agent_domain, "bisect.agent_domain"),
+      regressionRef: optionalObject(bisect.regression_ref, "bisect.regression_ref"),
+      regressionVersion: typeof bisect.regression_version === "string" ? bisect.regression_version : null,
+      orderedCandidateLine: asArray(bisect.ordered_candidate_line, "bisect.ordered_candidate_line").map((value) => asObject(value, "bisect candidate")),
+      knownGoodBoundary: optionalObject(bisect.known_good_boundary, "bisect.known_good_boundary"),
+      knownBadBoundary: optionalObject(bisect.known_bad_boundary, "bisect.known_bad_boundary"),
+      compatibleContract: asObject(bisect.compatible_contract, "bisect.compatible_contract"),
+      monotonicity: asObject(bisect.monotonicity, "bisect.monotonicity"),
+      probeHistory: asArray(bisect.probe_history, "bisect.probe_history").map((value) => asObject(value, "bisect probe")),
+      firstBadCandidate: optionalObject(bisect.first_bad_candidate, "bisect.first_bad_candidate"),
+      stopReason: typeof bisect.stop_reason === "string" ? bisect.stop_reason : null,
+      fullScanRecommended: asBoolean(bisect.full_scan_recommended, "bisect.full_scan_recommended"),
+      evidenceRefs: asArray(bisect.evidence_refs, "bisect.evidence_refs").map((value) => asObject(value, "bisect evidence ref")),
+      sourceIdentity: asObject(bisect.source_identity, "bisect.source_identity"),
+      derivationVersion: asString(bisect.derivation_version, "bisect.derivation_version"),
+    },
+  };
+};
+
 export let reviewedRuns: RunEvidence[] = [
   normalizeArtifact(normalArtifact),
   normalizeArtifact(responseLostArtifact),
@@ -629,6 +814,20 @@ export let reviewedRuns: RunEvidence[] = [
 export const historicalFailureCase: FailureCase = normalizeFailureCase(failureCaseArtifact);
 
 export let reviewedFailureCases: FailureCase[] = [normalizeFailureCase(promotedFailureCaseArtifact), normalizeFailureCase(incidentFailureCaseArtifact)];
+
+export let reviewedFailureIntelligence: FailureIntelligence[] = [
+  normalizeFailureIntelligence(productionFailureIntelligenceArtifact),
+  normalizeFailureIntelligence(incidentFailureIntelligenceArtifact),
+  normalizeFailureIntelligence(environmentNegativeIntelligenceArtifact),
+  normalizeFailureIntelligence(providerNegativeIntelligenceArtifact),
+  normalizeFailureIntelligence(invalidNegativeIntelligenceArtifact),
+];
+export let reviewedFailureClusters: FailureCluster[] = [
+  normalizeFailureCluster(productionDomainClusterArtifact),
+  normalizeFailureCluster(incidentDomainClusterArtifact),
+  normalizeFailureCluster(crossAgentClusterArtifact),
+];
+export let reviewedVersionBisects: VersionBisect[] = [normalizeVersionBisect(incidentVersionBisectArtifact)];
 
 const normalizeRegression = (raw: unknown): Regression => {
   const artifact = asObject(raw, "regression artifact");
@@ -1076,6 +1275,9 @@ export let reviewedAgents: AgentSummary[] = buildAgentSummaries();
 export interface ControlPlaneCorpusPayload {
   runs: unknown[];
   failures: unknown[];
+  failureIntelligence: unknown[];
+  failureClusters: unknown[];
+  versionBisects: unknown[];
   regressions: unknown[];
   regressionResults: unknown[];
   regressionCollections: unknown[];
@@ -1093,6 +1295,9 @@ const asCorpusList = (value: unknown): unknown[] => Array.isArray(value) ? value
 export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): void => {
   const runs = payload.runs.map(normalizeArtifact);
   const failures = payload.failures.map(normalizeFailureCase);
+  const failureIntelligence = payload.failureIntelligence.map(normalizeFailureIntelligence);
+  const failureClusters = payload.failureClusters.map(normalizeFailureCluster);
+  const versionBisects = payload.versionBisects.map(normalizeVersionBisect);
   const regressions = payload.regressions.map(normalizeRegression);
   const regressionResults = payload.regressionResults.map(normalizeRegressionResult);
   const evaluations = payload.evaluations.map(normalizeEvaluation);
@@ -1125,6 +1330,9 @@ export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): 
   reviewedRuns = primaryRuns;
   reviewedEvaluationRuns = evaluationRuns;
   reviewedFailureCases = failures;
+  reviewedFailureIntelligence = failureIntelligence;
+  reviewedFailureClusters = failureClusters;
+  reviewedVersionBisects = versionBisects;
   reviewedRegressions = regressions;
   reviewedRegressionResults = primaryRegressionResults;
   reviewedEvaluationRegressionResults = evaluationRegressionResults;
@@ -1155,6 +1363,16 @@ export const isEnvironmentErrorRun = (run: RunEvidence): boolean => run.outcome.
 export const getFailureCase = (failureCaseId: string): FailureCase | undefined => reviewedFailureCases.find((item) => item.failureCase.failureCaseId === failureCaseId);
 
 export const getFailureCaseForRun = (runId: string): FailureCase | undefined => reviewedFailureCases.find((item) => item.sourceRun.runId === runId || item.reproductionAttempts.some((attempt) => attempt.runId === runId));
+
+export const getFailureIntelligence = (intelligenceId: string): FailureIntelligence | undefined => reviewedFailureIntelligence.find((item) => item.intelligence.intelligenceId === intelligenceId);
+
+export const getFailureIntelligenceForFailureCase = (failureCaseId: string): FailureIntelligence | undefined => reviewedFailureIntelligence.find((item) => item.intelligence.sourceFailureCaseRef?.failure_case_id === failureCaseId);
+
+export const getFailureIntelligenceForRun = (runId: string): FailureIntelligence | undefined => reviewedFailureIntelligence.find((item) => item.intelligence.sourceRunRef.run_id === runId);
+
+export const getFailureCluster = (clusterId: string): FailureCluster | undefined => reviewedFailureClusters.find((item) => item.cluster.clusterId === clusterId);
+
+export const getVersionBisect = (bisectId: string): VersionBisect | undefined => reviewedVersionBisects.find((item) => item.bisect.bisectId === bisectId);
 
 export const getRegression = (regressionId: string): Regression | undefined => reviewedRegressions.find((item) => item.regression.regressionId === regressionId);
 

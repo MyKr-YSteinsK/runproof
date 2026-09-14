@@ -199,6 +199,36 @@ public class ControlPlaneController {
         return get(request, "RELEASE_DECISION", entityId);
     }
 
+    @GetMapping("/failure-intelligence")
+    public ApiModels.MetadataList failureIntelligence(HttpServletRequest request) {
+        return list(request, "FAILURE_INTELLIGENCE");
+    }
+
+    @GetMapping("/failure-intelligence/{entityId}")
+    public ApiModels.MetadataView failureIntelligenceItem(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "FAILURE_INTELLIGENCE", entityId);
+    }
+
+    @GetMapping("/failure-clusters")
+    public ApiModels.MetadataList failureClusters(HttpServletRequest request) {
+        return list(request, "FAILURE_CLUSTER");
+    }
+
+    @GetMapping("/failure-clusters/{entityId}")
+    public ApiModels.MetadataView failureCluster(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "FAILURE_CLUSTER", entityId);
+    }
+
+    @GetMapping("/version-bisects")
+    public ApiModels.MetadataList versionBisects(HttpServletRequest request) {
+        return list(request, "VERSION_BISECT");
+    }
+
+    @GetMapping("/version-bisects/{entityId}")
+    public ApiModels.MetadataView versionBisect(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "VERSION_BISECT", entityId);
+    }
+
     @GetMapping("/artifacts/{entityType}/{entityId}")
     public ApiModels.ArtifactResponse artifact(HttpServletRequest request, @PathVariable String entityType, @PathVariable String entityId) {
         authService.require(request, "metadata:read");

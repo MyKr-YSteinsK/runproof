@@ -1,0 +1,235 @@
+{
+  "schema_version": "rpf-failure-intelligence-v1",
+  "artifact_kind": "Failure Intelligence",
+  "intelligence": {
+    "intelligence_id": "failure-intelligence-a05dbd799aea8f498043",
+    "intelligence_version": "1.0.0",
+    "status": "RESOLVED",
+    "source_label": "reviewed-negative-control",
+    "source_run_ref": {
+      "kind": "Run Evidence",
+      "run_id": "rpf17-invalid-input"
+    },
+    "agent": {
+      "agent_id": "controlled-negative-agent",
+      "agent_domain": "Negative Control",
+      "agent_type": "",
+      "agent_contract_id": ""
+    },
+    "scenario": {
+      "scenario_id": "rpf17-negative-control",
+      "scenario_version": "1.0.0"
+    },
+    "source_facts": {
+      "outcome": {
+        "status": "INVALID",
+        "source": "HARNESS",
+        "attribution": "Invalid Input",
+        "agent_quality_eligible": false,
+        "formal_run_started": false,
+        "agent_started": false
+      },
+      "health_boundary": {
+        "provider": {
+          "status": "NOT_IN_FAILURE_PATH",
+          "failure_source": false
+        },
+        "environment": {
+          "status": "HEALTHY",
+          "failure_source": false
+        }
+      },
+      "agent_started": false,
+      "failure_attribution": {
+        "category": "Invalid Input",
+        "domain": "INPUT",
+        "deterministic": true,
+        "reason_code": "RPF17_HARNESS_NEGATIVE_CONTROL",
+        "agent_started": false,
+        "failing_event_type": "boundary_check",
+        "failing_event_id": "rpf17-invalid-input:event:boundary_check:001",
+        "state_change_performed": false,
+        "agent_quality_excluded": true
+      },
+      "source_run_observation": {
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input"
+        },
+        "agent_id": "controlled-negative-agent",
+        "agent_version": "negative-control-v1",
+        "configuration_id": "negative-control-v1",
+        "scenario_id": "rpf17-negative-control",
+        "scenario_version": "1.0.0",
+        "outcome": "INVALID",
+        "outcome_source": "HARNESS"
+      }
+    },
+    "deterministic_attribution": {
+      "responsibility_layer": "INVALID_INPUT",
+      "resolved": true,
+      "status": "RESOLVED",
+      "taxonomy_version": "rpf-failure-attribution-taxonomy-v1",
+      "rule_id": "ATTR-INVALID-INPUT-OUTCOME",
+      "basis": "The evidence outcome is INVALID or explicitly attributed to input/harness validation.",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input"
+        }
+      ]
+    },
+    "agent_failure_taxonomy": {
+      "agent_failure_class": "UNRESOLVED",
+      "secondary_classes": [],
+      "phase": "unknown",
+      "rule_id": "CLASS-NON-AGENT-UNRESOLVED",
+      "basis": "Agent failure taxonomy is not applied to a non-Agent or non-FAIL outcome.",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input"
+        }
+      ]
+    },
+    "first_meaningful_divergence": {
+      "event_id": "rpf17-invalid-input:event:boundary_check:001",
+      "event_type": "boundary_check",
+      "phase": "terminal_decision",
+      "meaning": "first evidence-backed divergence before the terminal outcome",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input",
+          "event_id": "rpf17-invalid-input:event:boundary_check:001"
+        }
+      ]
+    },
+    "structural_features": {
+      "domain": {
+        "responsibility_layer": "INVALID_INPUT",
+        "reliability_pattern": "UNRESOLVED_FAILURE_PATTERN",
+        "decision_boundary": "STATE_CHANGING_ACTION",
+        "evidence_sufficiency": "UNKNOWN",
+        "recovery_obligation": "SAFE_STOP_OR_NO_HARM",
+        "agent_domain": "Negative Control",
+        "agent_failure_class": "UNRESOLVED",
+        "failure_phase": "unknown",
+        "side_effect_state": "UNKNOWN",
+        "reconcile_status": "NOT_RECONCILED",
+        "verification_status": "FAILED_OR_NOT_RUN",
+        "invariant_family": "UNSPECIFIED_INVARIANT",
+        "action_category": "UNKNOWN_ACTION"
+      },
+      "cross_agent": {
+        "responsibility_layer": "INVALID_INPUT",
+        "reliability_pattern": "UNRESOLVED_FAILURE_PATTERN",
+        "decision_boundary": "STATE_CHANGING_ACTION",
+        "evidence_sufficiency": "UNKNOWN",
+        "recovery_obligation": "SAFE_STOP_OR_NO_HARM"
+      }
+    },
+    "family_signatures": {},
+    "recurrence": {
+      "occurrence_count": 1,
+      "reproduction_count": 0,
+      "stability_count": 0,
+      "source_ref": {
+        "kind": "Run Evidence",
+        "run_id": "rpf17-invalid-input"
+      },
+      "occurrence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input"
+        }
+      ],
+      "reproduction_refs": [],
+      "stability_refs": [],
+      "exact_dedup": {
+        "compatible_reproduction_facts": false,
+        "occurrence_count": 1,
+        "occurrence_refs": [
+          {
+            "kind": "Run Evidence",
+            "run_id": "rpf17-invalid-input"
+          }
+        ],
+        "same_failure_case_identity": false,
+        "structural_related_is_not_exact": true
+      }
+    },
+    "version_observations": [
+      {
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input"
+        },
+        "agent_id": "controlled-negative-agent",
+        "agent_version": "negative-control-v1",
+        "configuration_id": "negative-control-v1",
+        "scenario_id": "rpf17-negative-control",
+        "scenario_version": "1.0.0",
+        "outcome": "INVALID",
+        "outcome_source": "HARNESS"
+      }
+    ],
+    "regression_linkage": {
+      "status": "UNCOVERED",
+      "result_refs": []
+    },
+    "recommendation": {
+      "value": "NOT_AGENT_FAILURE",
+      "basis": {
+        "responsibility_layer": "INVALID_INPUT",
+        "reproduction_count": 0,
+        "stability_count": 0,
+        "occurrence_count": 1,
+        "gate_status": {
+          "reproducibility": "INSUFFICIENT",
+          "relevance": "FAIL",
+          "stability": "INSUFFICIENT",
+          "non_duplicate": "PASS",
+          "expected_behavior_explicit": "INSUFFICIENT"
+        },
+        "structural_family_considered": true,
+        "existing_regression_overlap": []
+      },
+      "next_action": "Exclude from Agent failure quality metrics and retain as a negative control.",
+      "automatic_promotion": false,
+      "taxonomy_version": "rpf-failure-attribution-taxonomy-v1"
+    },
+    "evidence_packet": {
+      "source_fact_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input"
+        }
+      ],
+      "rule_refs": [
+        "ATTR-INVALID-INPUT-OUTCOME",
+        "CLASS-NON-AGENT-UNRESOLVED"
+      ],
+      "derived_field_groups": [
+        "deterministic_attribution",
+        "agent_failure_taxonomy",
+        "first_meaningful_divergence",
+        "structural_features",
+        "recommendation"
+      ],
+      "family_signature_refs": {},
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "rpf17-invalid-input",
+          "event_id": "rpf17-invalid-input:event:boundary_check:001"
+        }
+      ]
+    },
+    "source_identity": {
+      "runtime_version": "rpf-17.v1",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    "derivation_version": "rpf-failure-intelligence-derivation-v1"
+  }
+}

@@ -13,6 +13,9 @@ import {
   getEvaluationComparison,
   getFailureCase,
   getFailureCaseForRun,
+  getFailureCluster,
+  getFailureIntelligenceForFailureCase,
+  getVersionBisect,
   getQualityGate,
   getRegression,
   getRegressionResultForRun,
@@ -29,6 +32,9 @@ import {
   reviewedAgents,
   reviewedRuns,
   reviewedFailureCases,
+  reviewedFailureClusters,
+  reviewedFailureIntelligence,
+  reviewedVersionBisects,
   reviewedEvaluationComparison,
   reviewedEvaluationComparisons,
   reviewedEvaluations,
@@ -46,6 +52,9 @@ import {
   ReleaseDecision,
   RunEvidence,
   TrajectoryEvent,
+  FailureCluster,
+  FailureIntelligence,
+  VersionBisect,
 } from "./data/artifacts";
 import { ControlPlaneApiError, controlPlaneDataSourceMode, loadControlPlaneCorpus } from "./data/controlPlaneApi";
 import { ExecutionJobDto, loadExecutionJob, loadExecutionJobs, loadExecutionMetrics } from "./data/executions";
@@ -54,7 +63,7 @@ const DATA_SOURCE_MODE = controlPlaneDataSourceMode();
 const DATA_SOURCE_LABEL = DATA_SOURCE_MODE === "api" ? "Control Plane API" : "reviewed fixture corpus";
 const DATA_SOURCE_FOOTNOTE = DATA_SOURCE_MODE === "api" ? "Control Plane API + verified immutable artifact" : "reviewed fixture artifact";
 
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; agentId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null; executionJobId: string | null };
+type LocationState = { pathname: string; runId: string | null; eventId: string | null; agentId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null; executionJobId: string | null; clusterId: string | null; bisectId: string | null };
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -102,6 +111,8 @@ function readLocation(): LocationState {
   const comparisonMatch = pathname.match(/^\/comparisons\/([^/]+)$/);
   const releaseDecisionMatch = pathname.match(/^\/release-decisions\/([^/]+)$/);
   const executionMatch = pathname.match(/^\/executions\/([^/]+)$/);
+  const clusterMatch = pathname.match(/^\/failure-intelligence\/clusters\/([^/]+)$/);
+  const bisectMatch = pathname.match(/^\/version-bisects\/([^/]+)$/);
   return {
     pathname,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
@@ -113,6 +124,8 @@ function readLocation(): LocationState {
     comparisonId: comparisonMatch ? decodeURIComponent(comparisonMatch[1]) : null,
     releaseDecisionId: releaseDecisionMatch ? decodeURIComponent(releaseDecisionMatch[1]) : null,
     executionJobId: executionMatch ? decodeURIComponent(executionMatch[1]) : null,
+    clusterId: clusterMatch ? decodeURIComponent(clusterMatch[1]) : null,
+    bisectId: bisectMatch ? decodeURIComponent(bisectMatch[1]) : null,
   };
 }
 
@@ -241,7 +254,7 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, release = false, execution = false }: { children: React.ReactNode; detail?: boolean; agent?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean; execution?: boolean }) {
+function AppShell({ children, detail = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, release = false, execution = false, intelligence = false }: { children: React.ReactNode; detail?: boolean; agent?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; release?: boolean; execution?: boolean; intelligence?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
@@ -263,7 +276,7 @@ function AppShell({ children, detail = false, agent = false, failure = false, re
             <span>Agents</span>
             <span className="nav-count">{reviewedAgents.length}</span>
           </a>
-          <a className={!detail && !agent && !failure && !regression && !evaluation && !comparison && !release && !execution ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={!detail && !agent && !failure && !regression && !evaluation && !comparison && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -272,6 +285,11 @@ function AppShell({ children, detail = false, agent = false, failure = false, re
             <span className="nav-glyph">!</span>
             <span>Failure Cases</span>
             <span className="nav-count">{reviewedFailureCases.length}</span>
+          </a>
+          <a className={intelligence ? "active" : ""} href="/failure-intelligence" onClick={(event) => { event.preventDefault(); navigate("/failure-intelligence"); }}>
+            <span className="nav-glyph">⌁</span>
+            <span>Failure Intelligence</span>
+            <span className="nav-count">{reviewedFailureClusters.length}</span>
           </a>
           <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>
             <span className="nav-glyph">↗</span>
@@ -315,11 +333,11 @@ function AppShell({ children, detail = false, agent = false, failure = false, re
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{execution ? (detail ? "Durable execution detail" : "Durable executions") : agent ? (detail ? "Agent detail" : "Agent registry") : release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{execution ? (detail ? "Durable execution detail" : "Durable executions") : intelligence ? (detail ? "Failure Intelligence detail" : "Failure Intelligence") : agent ? (detail ? "Agent detail" : "Agent registry") : release ? (detail ? "Release Decision detail" : "Release Decisions") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
-            <span className="topbar-revision">RPF-16</span>
+            <span className="topbar-revision">RPF-17</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -556,6 +574,27 @@ function comparisonHref(comparisonId: string): string {
 
 function releaseDecisionHref(decisionId: string): string {
   return `/release-decisions/${encodeURIComponent(decisionId)}`;
+}
+
+function intelligenceHref(): string {
+  return "/failure-intelligence";
+}
+
+function clusterHref(clusterId: string): string {
+  return `/failure-intelligence/clusters/${encodeURIComponent(clusterId)}`;
+}
+
+function bisectHref(bisectId: string): string {
+  return `/version-bisects/${encodeURIComponent(bisectId)}`;
+}
+
+function intelligenceRecommendationTone(value: unknown): "success" | "fault" | "error" | "neutral" | "review" {
+  const status = String(value || "");
+  if (status === "ALREADY_COVERED") return "success";
+  if (status === "PROMOTE_CANDIDATE") return "review";
+  if (status === "NOT_AGENT_FAILURE") return "neutral";
+  if (status === "UNSTABLE") return "error";
+  return "fault";
 }
 
 function formatRate(value: unknown): string {
@@ -1410,6 +1449,109 @@ function ReleaseDecisionDetail({ decision }: { decision: ReleaseDecision }) {
   </AppShell>;
 }
 
+function failureCaseIdFromRef(value: unknown): string | null {
+  const ref = objectValue(value);
+  return typeof ref?.failure_case_id === "string" ? ref.failure_case_id : null;
+}
+
+function intelligenceClusterFor(analysis: FailureIntelligence): FailureCluster | undefined {
+  const familyValue = valueAt(analysis.intelligence.familySignatures.crossAgent, "value");
+  return reviewedFailureClusters.find((cluster) => valueAt(cluster.cluster.familySignature, "value") === familyValue);
+}
+
+function FailureIntelligenceIndex() {
+  const exactGroups = new Set(
+    reviewedFailureIntelligence
+      .map((item) => valueAt(valueAt(item.intelligence.recurrence, "exact_dedup"), "group_key"))
+      .filter((value): value is string => typeof value === "string"),
+  );
+  const agentAnalyses = reviewedFailureIntelligence.filter((item) => valueAt(item.intelligence.deterministicAttribution, "responsibility_layer") === "AGENT");
+  const domains = new Set(agentAnalyses.map((item) => agentDomain(item.intelligence.agent)));
+  const covered = agentAnalyses.filter((item) => valueAt(item.intelligence.regressionLinkage, "status") === "COVERED").length;
+  const recurring = agentAnalyses.filter((item) => Number(valueAt(item.intelligence.recurrence, "occurrence_count") || 0) > 1).length;
+  const unresolved = reviewedFailureIntelligence.filter((item) => valueAt(item.intelligence.deterministicAttribution, "status") === "UNRESOLVED").length;
+  return (
+    <AppShell intelligence>
+      <div className="page-header index-header">
+        <div>
+          <span className="eyebrow">FAILURE INTELLIGENCE · DETERMINISTIC DERIVATION</span>
+          <h1>Find the reliability pattern behind a failure.</h1>
+          <p className="lede">An evidence-first investigation index: deterministic attribution, exact recurrence identity, structural families, version localization, and a human-review recommendation.</p>
+        </div>
+        <div className="corpus-note"><span className="section-label">DERIVATION</span><strong>v1 deterministic</strong><span>no LLM attribution · no auto-promotion</span></div>
+      </div>
+      <section className="corpus-boundary intelligence-boundary" aria-label="Failure Intelligence boundary">
+        <span className="boundary-mark">⌁</span>
+        <p><strong>Derived index boundary.</strong> Facts remain in immutable Run, Failure Case, and Regression artifacts. This surface stores explainable derived values only; a recommendation is not a promotion or release decision.</p>
+      </section>
+      <section className="fi-metric-grid" aria-label="Failure Intelligence summary">
+        <div className="panel"><span className="eyebrow">TOTAL FAILURES</span><strong>{reviewedFailureIntelligence.length}</strong><span>including three negative controls</span></div>
+        <div className="panel"><span className="eyebrow">EXACT DEDUP</span><strong>{exactGroups.size}</strong><span>Agent recurrence identities</span></div>
+        <div className="panel"><span className="eyebrow">STRUCTURAL FAMILIES</span><strong>{reviewedFailureClusters.length}</strong><span>{domains.size} Agent domains · {recurring} recurring</span></div>
+        <div className="panel"><span className="eyebrow">REGRESSION COVERAGE</span><strong>{covered}/{agentAnalyses.length}</strong><span>{unresolved} unresolved attribution</span></div>
+      </section>
+      <section className="fi-investigation-section" aria-labelledby="fi-investigation-heading">
+        <div className="section-heading"><div><span className="eyebrow">INVESTIGATION QUEUE</span><h2 id="fi-investigation-heading">Failure records and derived recommendation</h2></div><span className="section-count">facts → derived analysis</span></div>
+        <div className="fi-table" role="table" aria-label="Failure Intelligence records">
+          <div className="fi-table-head" role="row"><span>FAILURE / DOMAIN</span><span>ATTRIBUTION / DIVERGENCE</span><span>FAMILY</span><span>RECURRENCE / REGRESSION</span><span>RECOMMENDATION</span></div>
+          {reviewedFailureIntelligence.map((item) => {
+            const metadata = item.intelligence;
+            const caseId = failureCaseIdFromRef(metadata.sourceFailureCaseRef);
+            const caseLink = caseId ? failureHref(caseId) : null;
+            const cluster = intelligenceClusterFor(item);
+            const clusterLink = cluster ? clusterHref(cluster.cluster.clusterId) : null;
+            const sourceRun = typeof metadata.sourceRunRef.run_id === "string" ? metadata.sourceRunRef.run_id : "";
+            const responsibility = displayValue(valueAt(metadata.deterministicAttribution, "responsibility_layer"));
+            const recommendation = displayValue(valueAt(metadata.recommendation, "value"));
+            return <div className="fi-table-row" key={metadata.intelligenceId} role="row">
+              <div><strong className="mono">{shortId(metadata.intelligenceId, 25)}</strong><span>{agentDomain(metadata.agent)} · {caseLink ? <a href={caseLink} onClick={(event) => { event.preventDefault(); navigate(caseLink); }}>Failure Case →</a> : "negative control"}</span></div>
+              <div><StatusTag status={responsibility} tone={responsibility === "AGENT" ? "fault" : "neutral"} /><strong>{displayValue(valueAt(metadata.agentFailureTaxonomy, "agent_failure_class"))}</strong><span>{displayValue(valueAt(metadata.firstMeaningfulDivergence, "phase"))} · {shortId(valueAt(metadata.firstMeaningfulDivergence, "event_id"), 24)}</span></div>
+              <div>{clusterLink ? <a className="action-link" href={clusterLink} onClick={(event) => { event.preventDefault(); navigate(clusterLink); }}>{displayValue(valueAt(valueAt(metadata.familySignatures.crossAgent, "features"), "reliability_pattern"))} →</a> : <span className="muted">No Agent family</span>}<small>{displayValue(valueAt(valueAt(metadata.familySignatures.domain, "features"), "invariant_family"))}</small></div>
+              <div><strong>{displayValue(valueAt(metadata.recurrence, "occurrence_count"))} occurrences</strong><span>{displayValue(valueAt(metadata.regressionLinkage, "status"))}</span><small className="mono">{shortId(sourceRun, 24)}</small></div>
+              <div><StatusTag status={recommendation} tone={intelligenceRecommendationTone(recommendation)} /><small>{displayValue(valueAt(metadata.recommendation, "next_action"))}</small></div>
+            </div>;
+          })}
+        </div>
+      </section>
+      <section className="fi-lower-grid" aria-label="Failure family and version localization index">
+        <div className="panel"><div className="panel-heading"><div><span className="eyebrow">STRUCTURAL FAMILY EXPLORER</span><h2>Clusters</h2></div><span className="section-count">{reviewedFailureClusters.length}</span></div><div className="fi-link-list">{reviewedFailureClusters.map((cluster) => { const href = clusterHref(cluster.cluster.clusterId); return <a key={cluster.cluster.clusterId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><span><strong>{displayValue(valueAt(cluster.cluster.familySignature, "features") && valueAt(valueAt(cluster.cluster.familySignature, "features"), "reliability_pattern"))}</strong><small>{cluster.cluster.clusterLevel} · {cluster.cluster.agentDomains.join(" · ")}</small></span><b>{cluster.cluster.occurrenceCount}</b><span className="row-arrow">→</span></a>; })}</div></div>
+        <div className="panel"><div className="panel-heading"><div><span className="eyebrow">VERSION LOCALIZATION</span><h2>Bisect evidence</h2></div><span className="section-count">{reviewedVersionBisects.length}</span></div><div className="fi-link-list">{reviewedVersionBisects.map((bisect) => { const href = bisectHref(bisect.bisect.bisectId); return <a key={bisect.bisect.bisectId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><span><strong>{bisect.bisect.agentDomain}</strong><small>{displayValue(valueAt(bisect.bisect.monotonicity, "status"))} · {bisect.bisect.probeHistory.length} probes</small></span><b>{bisect.bisect.firstBadCandidate ? "FIRST BAD" : "INCONCLUSIVE"}</b><span className="row-arrow">→</span></a>; })}</div></div>
+      </section>
+      <section className="evidence-separation fi-evidence-separation" aria-label="Failure Intelligence evidence layers"><div><span className="eyebrow">FACTS</span><p>Outcome, health boundary, event refs, exact signature, and Regression results are read from source artifacts.</p></div><div><span className="eyebrow">DERIVED DETERMINISTIC ANALYSIS</span><p>Taxonomy, first divergence phase, structural family, recurrence, bisect status, and recommendation are rule-backed and versioned.</p></div><div><span className="eyebrow">AI ANALYSIS</span><p>Not implemented in RPF-17. No probability or free-form root-cause claim is persisted.</p></div></section>
+      <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE} · {reviewedFailureIntelligence[0]?.intelligence.sourceIdentity.source_sha256 ? "source-bound" : "derived"}</span><span>Read-only investigation · no promote, rerun, or release action</span></footer>
+    </AppShell>
+  );
+}
+
+function FailureClusterDetail({ cluster }: { cluster: FailureCluster }) {
+  const features = objectValue(valueAt(cluster.cluster.familySignature, "features")) || {};
+  return <AppShell intelligence detail>
+    <div className="detail-breadcrumb"><a href={intelligenceHref()} onClick={(event) => { event.preventDefault(); navigate(intelligenceHref()); }}>Failure Intelligence</a><span aria-hidden="true">/</span><span>{shortId(cluster.cluster.clusterId, 36)}</span><span className="schema-chip">rpf-failure-cluster-v1</span></div>
+    <div className="detail-header"><div><span className="eyebrow">CLUSTER INVESTIGATION · {cluster.cluster.clusterLevel}</span><h1>{displayValue(features.reliability_pattern)}</h1><p className="detail-subtitle">Stable family identity is derived from normalized evidence features. Members retain separate exact Failure Case and Run identities.</p></div><div className="detail-header-status"><StatusTag status={cluster.cluster.status} tone="success" /><span className="status-note">{cluster.cluster.occurrenceCount} occurrences · {cluster.cluster.agentDomains.join(" · ")}</span></div></div>
+    <section className="identity-strip" aria-label="Cluster identity"><IdentityField label="Cluster ID" value={cluster.cluster.clusterId} mono /><IdentityField label="Family signature" value={String(valueAt(cluster.cluster.familySignature, "value") || "—")} mono note={String(valueAt(cluster.cluster.familySignature, "signature_version") || "—")} /><IdentityField label="Level" value={cluster.cluster.clusterLevel} /><IdentityField label="Occurrences" value={String(cluster.cluster.occurrenceCount)} note={`${cluster.cluster.firstSeen} → ${cluster.cluster.lastSeen}`} /><IdentityField label="Regression coverage" value={String(cluster.cluster.regressionCoverage.length)} note="linked canonical Regression refs" /></section>
+    <section className="fi-detail-grid"><div className="panel"><div className="panel-heading"><div><span className="eyebrow">NORMALIZED FEATURES</span><h2>Why these members relate</h2></div><span className="schema-chip">deterministic</span></div><div className="fact-list">{Object.entries(features).map(([key, value]) => <div className="fact-row" key={key}><span>{humanize(key)}</span><strong className="mono">{displayValue(value)}</strong></div>)}</div></div><div className="panel"><div className="panel-heading"><div><span className="eyebrow">ATTRIBUTION RULE</span><h2>Evidence boundary</h2></div><StatusTag status="RULE-BACKED" tone="success" /></div><p className="classification-copy">This cluster is only built for resolved Agent responsibility. Environment, Provider, Platform, and INVALID controls are excluded from Agent clusters and keep their own NOT_AGENT_FAILURE recommendation.</p><div className="fact-list"><div className="fact-row"><span>Taxonomy</span><strong>{cluster.cluster.taxonomyVersion}</strong></div><div className="fact-row"><span>Unresolved members</span><strong>{cluster.cluster.unresolvedMemberCount}</strong></div><div className="fact-row"><span>Invariant families</span><strong>{cluster.cluster.invariantFamilies.join(" · ")}</strong></div></div></div></section>
+    <section className="fi-members-section" aria-labelledby="fi-members-heading"><div className="section-heading"><div><span className="eyebrow">MEMBER FAILURE CASES</span><h2 id="fi-members-heading">Exact identities remain separate</h2></div><span className="section-count">{cluster.cluster.memberRefs.length} Intelligence members</span></div><div className="fi-member-list">{cluster.cluster.memberRefs.map((member, index) => { const caseId = failureCaseIdFromRef(member.failure_case_ref); const analysisId = typeof valueAt(member.intelligence_ref, "intelligence_id") === "string" ? String(valueAt(member.intelligence_ref, "intelligence_id")) : null; const analysis = analysisId ? reviewedFailureIntelligence.find((item) => item.intelligence.intelligenceId === analysisId) : undefined; const caseLink = caseId ? failureHref(caseId) : null; const runId = typeof valueAt(analysis?.intelligence.sourceRunRef, "run_id") === "string" ? String(valueAt(analysis?.intelligence.sourceRunRef, "run_id")) : null; const runLink = runId ? runHref(runId) : null; return <div className="fi-member-row" key={`${analysisId || "member"}-${index}`}><div><span className="field-label">MEMBER {index + 1}</span><strong>{caseId ? shortId(caseId, 34) : "negative / unresolved"}</strong><small>{analysis ? agentDomain(analysis.intelligence.agent) : "—"}</small></div><div><span>Exact signature</span><strong className="mono">{shortId(valueAt(member.exact_signature, "value"), 28)}</strong><small>not the family signature</small></div><div><span>First divergence</span><strong>{displayValue(valueAt(analysis?.intelligence.firstMeaningfulDivergence, "phase"))}</strong><small className="mono">{shortId(valueAt(analysis?.intelligence.firstMeaningfulDivergence, "event_id"), 30)}</small></div><div>{caseLink && <a className="action-link" href={caseLink} onClick={(event) => { event.preventDefault(); navigate(caseLink); }}>Open Failure Case →</a>}{runLink && <a className="action-link" href={runLink} onClick={(event) => { event.preventDefault(); navigate(runLink); }}>Open source Run →</a>}</div></div>; })}</div></section>
+    <section className="fi-detail-links panel"><div className="panel-heading"><div><span className="eyebrow">REGRESSION COVERAGE</span><h2>Canonical links</h2></div><span className="section-count">{cluster.cluster.regressionCoverage.length}</span></div>{cluster.cluster.regressionCoverage.length ? <div className="fi-link-list">{cluster.cluster.regressionCoverage.map((ref, index) => { const id = typeof ref.regression_id === "string" ? ref.regression_id : null; const href = id ? regressionHref(id) : null; return <div key={`${id || "regression"}-${index}`}>{id && href ? <a href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><span><strong>{shortId(id, 40)}</strong><small>existing immutable Regression coverage</small></span><span className="row-arrow">→</span></a> : <span>{displayValue(ref)}</span>}</div>; })}</div> : <p className="release-empty-note">No Regression coverage is linked; recommendation remains a derived suggestion.</p>}</section>
+    <footer className="detail-footer"><span>{cluster.cluster.clusterId} · {cluster.cluster.clusterLevel} · immutable members</span><span>Facts and derived deterministic analysis are shown separately · no AI Analysis</span></footer>
+  </AppShell>;
+}
+
+function VersionBisectDetail({ bisect }: { bisect: VersionBisect }) {
+  const monotonicStatus = String(valueAt(bisect.bisect.monotonicity, "status") || "INCONCLUSIVE");
+  const firstBad = bisect.bisect.firstBadCandidate;
+  const regressionId = typeof valueAt(bisect.bisect.regressionRef, "regression_id") === "string" ? String(valueAt(bisect.bisect.regressionRef, "regression_id")) : null;
+  const regressionLink = regressionId ? regressionHref(regressionId) : null;
+  return <AppShell intelligence detail>
+    <div className="detail-breadcrumb"><a href={intelligenceHref()} onClick={(event) => { event.preventDefault(); navigate(intelligenceHref()); }}>Failure Intelligence</a><span aria-hidden="true">/</span><span>{shortId(bisect.bisect.bisectId, 36)}</span><span className="schema-chip">rpf-version-bisect-v1</span></div>
+    <div className="detail-header"><div><span className="eyebrow">VERSION LOCALIZATION · CONTROLLED CANDIDATE LINE</span><h1>{bisect.bisect.agentDomain}</h1><p className="detail-subtitle">The candidate order and Regression oracle are explicit. Only a monotonic PASS/FAIL boundary can produce a first-bad candidate.</p></div><div className="detail-header-status"><StatusTag status={bisect.bisect.status} tone={monotonicStatus === "MONOTONIC_ASSUMPTION_HOLDS" ? "success" : "review"} /><span className="status-note">{bisect.bisect.probeHistory.length} probes · {monotonicStatus}</span></div></div>
+    <section className="identity-strip" aria-label="Bisect identity"><IdentityField label="Bisect ID" value={bisect.bisect.bisectId} mono /><IdentityField label="Regression" value={regressionId || "—"} mono note={bisect.bisect.regressionVersion || "—"} /><IdentityField label="Known good" value={String(valueAt(bisect.bisect.knownGoodBoundary, "agent_version") || "—")} /><IdentityField label="Known bad" value={String(valueAt(bisect.bisect.knownBadBoundary, "agent_version") || "—")} /><IdentityField label="First bad" value={String(valueAt(firstBad, "agent_version") || "INCONCLUSIVE")} note={firstBad ? "boundary proven under common oracle" : "fail closed"} /></section>
+    <section className="corpus-boundary bisect-boundary" aria-label="Bisect monotonicity boundary"><span className="boundary-mark">↕</span><p><strong>{monotonicStatus}.</strong> {displayValue(valueAt(bisect.bisect.monotonicity, "assumption"))}. {bisect.bisect.stopReason || "The first bad candidate is shown only because the observed line contains one PASS → FAIL transition."} {regressionLink && <><a className="action-link" href={regressionLink} onClick={(event) => { event.preventDefault(); navigate(regressionLink); }}>Open target Regression →</a></>}</p></section>
+    <section className="fi-bisect-section" aria-labelledby="fi-bisect-heading"><div className="section-heading"><div><span className="eyebrow">PROBE HISTORY</span><h2 id="fi-bisect-heading">Ordered Candidate Version / Profile line</h2></div><span className="section-count">same oracle · same contract</span></div><div className="fi-bisect-table"><div className="fi-table-head"><span>ORDER / CANDIDATE</span><span>VERSION / PROFILE</span><span>REGRESSION ORACLE</span><span>RUN EVIDENCE</span><span>RESULT</span></div>{bisect.bisect.probeHistory.map((probe, index) => { const candidate = objectValue(probe.candidate) || {}; const ref = runRef(probe.run_ref); const href = ref ? runHref(ref.runId) : null; const status = displayValue(probe.regression_result); return <div className="fi-table-row" key={`${String(valueAt(candidate, "candidate_id"))}-${index}`}><div><strong>{displayValue(probe.candidate_order)}</strong><span>{displayValue(valueAt(candidate, "candidate_id"))}</span></div><div><strong>{displayValue(valueAt(candidate, "agent_version"))}</strong><span className="mono">{displayValue(valueAt(candidate, "agent_profile"))}</span></div><div><strong>{displayValue(probe.oracle_id)}</strong><span>{displayValue(probe.probe_status)}</span></div><div>{href ? <a className="action-link" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open Run →</a> : <span className="muted">stable ref only</span>}<small className="mono">{shortId(ref?.runId, 25)}</small></div><div><StatusTag status={status} tone={status === "PASS" ? "success" : status === "FAIL" ? "fault" : "review"} /></div></div>; })}</div></section>
+    <section className="fi-detail-grid"><div className="panel"><div className="panel-heading"><div><span className="eyebrow">COMPATIBILITY</span><h2>Common oracle boundary</h2></div><StatusTag status={String(valueAt(bisect.bisect.compatibleContract, "same_regression_oracle") === true ? "COMPATIBLE" : "INCONCLUSIVE")} tone={valueAt(bisect.bisect.compatibleContract, "same_regression_oracle") === true ? "success" : "review"} /></div><div className="fact-list"><div className="fact-row"><span>Scenario</span><strong>{displayValue(valueAt(bisect.bisect.compatibleContract.scenario_ref, "scenario_id"))}@{displayValue(valueAt(bisect.bisect.compatibleContract.scenario_ref, "scenario_version"))}</strong></div><div className="fact-row"><span>Contract</span><strong className="mono">{displayValue(bisect.bisect.compatibleContract.contract_identity)}</strong></div><div className="fact-row"><span>Oracle</span><strong className="mono">{displayValue(bisect.bisect.compatibleContract.oracle_id)}</strong></div></div></div><div className="panel"><div className="panel-heading"><div><span className="eyebrow">STOP RULE</span><h2>Fail closed on uncertainty</h2></div><span className="schema-chip">no false first bad</span></div><p className="classification-copy">Platform ERROR, INVALID, INCONCLUSIVE, incompatible contract, or a non-monotonic line cannot be interpreted as PASS/FAIL. RPF-17 records the stop reason and recommends a full scan.</p><strong>{bisect.bisect.fullScanRecommended ? "Full scan recommended" : "Boundary localized under stated assumption"}</strong></div></section>
+    <footer className="detail-footer"><span>{bisect.bisect.bisectId} · {bisect.bisect.agentDomain}</span><span>Bisect is evidence localization only · no Agent code or Regression mutation</span></footer>
+  </AppShell>;
+}
+
 function FailureIndex() {
   return (
     <AppShell failure>
@@ -1454,6 +1596,8 @@ function FailureIndex() {
 
 function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
   const sourceRun = getRun(failureCase.sourceRun.runId);
+  const intelligence = getFailureIntelligenceForFailureCase(failureCase.failureCase.failureCaseId);
+  const intelligenceCluster = intelligence ? intelligenceClusterFor(intelligence) : undefined;
   const attempt = failureCase.reproductionAttempts[0];
   const reproductionRun = attempt ? getRun(attempt.runId) : undefined;
   const failingEventId = typeof failureCase.failureObservation.failing_event_id === "string" ? failureCase.failureObservation.failing_event_id : null;
@@ -1506,6 +1650,11 @@ function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
           <div><span>Promotion</span><strong>{promoted ? "PROMOTED" : "NOT_A_REGRESSION"}</strong><small>{promoted ? `Gate ${displayValue(valueAt(promotionGate, "all_passed"))} · ${shortId(promotedRegressionId, 28)}` : "no Regression link"}</small></div>
         </div>
       </section>
+      {intelligence && <section className="fi-case-analysis" aria-labelledby="fi-case-analysis-heading">
+        <div className="section-heading"><div><span className="eyebrow">DERIVED DETERMINISTIC ANALYSIS · RPF-17</span><h2 id="fi-case-analysis-heading">Failure Intelligence</h2></div><StatusTag status={String(valueAt(intelligence.intelligence.recommendation, "value"))} tone={intelligenceRecommendationTone(valueAt(intelligence.intelligence.recommendation, "value"))} /></div>
+        <div className="fi-case-analysis-grid"><div><span className="field-label">RESPONSIBILITY</span><strong>{displayValue(valueAt(intelligence.intelligence.deterministicAttribution, "responsibility_layer"))}</strong><small>{displayValue(valueAt(intelligence.intelligence.deterministicAttribution, "basis"))}</small></div><div><span className="field-label">FAILURE CLASS / PHASE</span><strong>{displayValue(valueAt(intelligence.intelligence.agentFailureTaxonomy, "agent_failure_class"))}</strong><small>{displayValue(valueAt(intelligence.intelligence.firstMeaningfulDivergence, "phase"))} · {shortId(valueAt(intelligence.intelligence.firstMeaningfulDivergence, "event_id"), 30)}</small></div><div><span className="field-label">RECURRENCE</span><strong>{displayValue(valueAt(intelligence.intelligence.recurrence, "occurrence_count"))} occurrences</strong><small>{displayValue(valueAt(valueAt(intelligence.intelligence.recurrence, "exact_dedup"), "compatible_reproduction_facts") === true ? "exact recurrence dedup" : "identity not proven" )}</small></div><div><span className="field-label">STRUCTURAL FAMILY</span><strong>{intelligenceCluster ? <a className="action-link" href={clusterHref(intelligenceCluster.cluster.clusterId)} onClick={(event) => { event.preventDefault(); navigate(clusterHref(intelligenceCluster.cluster.clusterId)); }}>{shortId(intelligenceCluster.cluster.clusterId, 30)} →</a> : "No Agent cluster"}</strong><small>{displayValue(valueAt(valueAt(intelligence.intelligence.familySignatures.crossAgent, "features"), "reliability_pattern"))}</small></div></div>
+        <div className="evidence-separation"><div><span className="eyebrow">FACTS</span><p>Exact signature, source Run, event refs, health boundary, and Regression linkage remain canonical references.</p></div><div><span className="eyebrow">DERIVED DETERMINISTIC ANALYSIS</span><p>{displayValue(valueAt(intelligence.intelligence.recommendation, "next_action"))}</p></div><div><span className="eyebrow">AI ANALYSIS</span><p>Not present in RPF-17.</p></div></div>
+      </section>}
       <section className="case-compare-section" aria-labelledby="case-compare-heading">
         <div className="section-heading"><div><span className="eyebrow">SOURCE ↔ REPRODUCTION</span><h2 id="case-compare-heading">Evidence path</h2></div><span className="section-count">fresh Run / fresh Environment</span></div>
         <div className="case-compare-grid">
@@ -1785,11 +1934,16 @@ export default function App() {
   const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
   const releaseDecision = useMemo(() => location.releaseDecisionId ? getReleaseDecision(location.releaseDecisionId) : undefined, [location.releaseDecisionId]);
   const agent = useMemo(() => location.agentId ? getAgent(location.agentId) : undefined, [location.agentId]);
+  const cluster = useMemo(() => location.clusterId ? getFailureCluster(location.clusterId) : undefined, [location.clusterId]);
+  const bisect = useMemo(() => location.bisectId ? getVersionBisect(location.bisectId) : undefined, [location.bisectId]);
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
   if (dataSource.status === "loading") return <DataSourceState status="loading" />;
   if (dataSource.status === "error") return <DataSourceState status="error" error={dataSource.error} />;
   if (agent) return <AgentDetail agent={agent} />;
   if (location.pathname === "/agents") return <AgentIndex />;
+  if (bisect) return <VersionBisectDetail bisect={bisect} />;
+  if (cluster) return <FailureClusterDetail cluster={cluster} />;
+  if (location.pathname === "/failure-intelligence") return <FailureIntelligenceIndex />;
   if (releaseDecision) return <ReleaseDecisionDetail decision={releaseDecision} />;
   if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
   if (regression) return <RegressionDetail regression={regression} />;

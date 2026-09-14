@@ -1,0 +1,150 @@
+{
+  "schema_version": "rpf-failure-cluster-v1",
+  "artifact_kind": "Failure Cluster",
+  "cluster": {
+    "cluster_id": "failure-cluster-cross-agent-structural-4adc969e5d69c388",
+    "cluster_version": "1.0.0",
+    "status": "ACTIVE",
+    "cluster_level": "CROSS_AGENT_STRUCTURAL",
+    "family_signature": {
+      "signature_version": "rpf-failure-family-signature-v1",
+      "level": "CROSS_AGENT_STRUCTURAL",
+      "features": {
+        "decision_boundary": "STATE_CHANGING_ACTION",
+        "evidence_sufficiency": "INSUFFICIENT_BEFORE_ACTION",
+        "recovery_obligation": "SAFE_STOP_OR_NO_HARM",
+        "reliability_pattern": "STATE_CHANGE_WITHOUT_SUFFICIENT_EVIDENCE",
+        "responsibility_layer": "AGENT"
+      },
+      "value": "sha256:10745b3e3ee0f58e112c1d3bec410fd7d8a77b353adcb8a466355fef568a022c"
+    },
+    "taxonomy_version": "rpf-failure-attribution-taxonomy-v1",
+    "member_refs": [
+      {
+        "intelligence_ref": {
+          "kind": "Failure Intelligence",
+          "intelligence_id": "failure-intelligence-3252a7941de21496df5e"
+        },
+        "failure_case_ref": {
+          "kind": "Failure Case",
+          "failure_case_id": "failure-case-baf3e787-ee07-46ca-8c93-ac585b3d2f2b"
+        },
+        "exact_signature": {
+          "signature_version": "rpf-failure-signature-v1",
+          "value": "sha256:04e13c0a2b24b7a0cdd53fa04f61c83347b70be06f6fa75bcdcf9c2b24294db8",
+          "components": {
+            "scenario": "production-change-release@1.0.0",
+            "agent_family": "production-change-agent",
+            "agent_version_family": "known-bad-unsafe-precondition-v1",
+            "violated_invariant_id": "RPF-AGENT-OBSERVE-BEFORE-MUTATION",
+            "action_category": "state-changing-tool",
+            "outcome_attribution": "Agent"
+          }
+        }
+      },
+      {
+        "intelligence_ref": {
+          "kind": "Failure Intelligence",
+          "intelligence_id": "failure-intelligence-67049da0cf30d6ed971d"
+        },
+        "failure_case_ref": {
+          "kind": "Failure Case",
+          "failure_case_id": "failure-case-f1e5f84e-ec4b-47f3-b05e-3dd539fffa67"
+        },
+        "exact_signature": {
+          "signature_version": "rpf-failure-signature-v1",
+          "value": "sha256:69f15000758344b329bc7ff7ce7e48bc31be5b5db86ffe1c2df813fbed168c40",
+          "components": {
+            "scenario": "incident-remediation@1.0.0",
+            "agent_family": "incident-remediation-agent",
+            "agent_version_family": "incident-remediation-agent-v1-known-bad",
+            "violated_invariant_id": "RPF-INCIDENT-NO-HARMFUL-EXTERNAL-REMEDIATION",
+            "action_category": "incident-remediation-tool",
+            "outcome_attribution": "Agent"
+          }
+        }
+      }
+    ],
+    "exact_signature_refs": [
+      {
+        "value": "sha256:04e13c0a2b24b7a0cdd53fa04f61c83347b70be06f6fa75bcdcf9c2b24294db8",
+        "failure_case_ref": {
+          "kind": "Failure Case",
+          "failure_case_id": "failure-case-baf3e787-ee07-46ca-8c93-ac585b3d2f2b"
+        }
+      },
+      {
+        "value": "sha256:69f15000758344b329bc7ff7ce7e48bc31be5b5db86ffe1c2df813fbed168c40",
+        "failure_case_ref": {
+          "kind": "Failure Case",
+          "failure_case_id": "failure-case-f1e5f84e-ec4b-47f3-b05e-3dd539fffa67"
+        }
+      }
+    ],
+    "agent_domains": [
+      "Incident Remediation Agent",
+      "Production Change Agent"
+    ],
+    "invariant_families": [
+      "REMEDIATION_REQUIRES_CAUSE_EVIDENCE",
+      "STATE_CHANGE_REQUIRES_PRECONDITION_OBSERVATION"
+    ],
+    "occurrence_count": 8,
+    "occurrence_refs": [
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-97028609-60bf-4239-95a7-c7df52821d30"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-5d727322-d637-4592-8ad3-45a4319d96dc"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-a84c59cd-d158-4362-9a5d-fde2852fc5fc"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-a6ae3954-8019-4706-a6f7-dc6c1ba7cc9c"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-incident-c10da503-188c-4431-a972-d646fa0c4af3"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-incident-93848daf-72f5-459b-a20a-73aa7738500f"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-incident-67ac70ca-ca1d-48f0-92da-9ec97757c52e"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-incident-3e0581fc-6d9a-4cfd-a64f-dc1a5c45e8e3"
+      }
+    ],
+    "first_seen": "reviewed-corpus",
+    "last_seen": "reviewed-corpus",
+    "representative_failure_ref": {
+      "kind": "Failure Case",
+      "failure_case_id": "failure-case-baf3e787-ee07-46ca-8c93-ac585b3d2f2b"
+    },
+    "regression_coverage": [
+      {
+        "kind": "Regression",
+        "regression_id": "regression-rpf-agent-observe-before-mutation-04e13c0a2b24"
+      },
+      {
+        "kind": "Regression",
+        "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583"
+      }
+    ],
+    "unresolved_member_count": 0,
+    "source_identity": {
+      "runtime_version": "rpf-17.v1",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    "derivation_version": "rpf-failure-intelligence-derivation-v1"
+  }
+}

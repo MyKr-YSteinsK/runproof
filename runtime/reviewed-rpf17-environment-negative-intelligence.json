@@ -1,0 +1,241 @@
+{
+  "schema_version": "rpf-failure-intelligence-v1",
+  "artifact_kind": "Failure Intelligence",
+  "intelligence": {
+    "intelligence_id": "failure-intelligence-abf74c88c1e211f0b009",
+    "intelligence_version": "1.0.0",
+    "status": "RESOLVED",
+    "source_label": "reviewed-negative-control",
+    "source_run_ref": {
+      "kind": "Run Evidence",
+      "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+    },
+    "agent": {
+      "agent_id": "production-change-agent",
+      "agent_domain": "Production Change Agent",
+      "agent_type": "",
+      "agent_contract_id": ""
+    },
+    "scenario": {
+      "scenario_id": "production-change-release",
+      "scenario_version": "1.0.0"
+    },
+    "source_facts": {
+      "outcome": {
+        "status": "ERROR",
+        "source": "ENVIRONMENT",
+        "agent_quality_eligible": false,
+        "formal_run_started": false,
+        "reason": "CONTROLLED_READINESS_FAILURE",
+        "attribution": "Platform/Environment",
+        "agent_started": false
+      },
+      "health_boundary": {
+        "provider": {
+          "status": "NOT_IN_FAILURE_PATH",
+          "failure_source": false,
+          "calls_observed": 0
+        },
+        "environment": {
+          "status": "CONTROLLED_FAILURE",
+          "failure_source": true,
+          "readiness": "CONTROLLED_FAILURE",
+          "initial_state_verified": false,
+          "cleanup_state": "CLEANED"
+        }
+      },
+      "agent_started": false,
+      "failure_attribution": {
+        "category": "Platform/Environment",
+        "domain": "ENVIRONMENT",
+        "deterministic": true,
+        "reason_code": "CONTROLLED_READINESS_FAILURE",
+        "agent_started": false,
+        "failing_event_type": "readiness",
+        "failing_event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:readiness:001",
+        "state_change_performed": false,
+        "agent_quality_excluded": true
+      },
+      "source_run_observation": {
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+        },
+        "agent_id": "production-change-agent",
+        "agent_version": "1.0.0",
+        "configuration_id": "production-change-agent-v1",
+        "scenario_id": "production-change-release",
+        "scenario_version": "1.0.0",
+        "outcome": "ERROR",
+        "outcome_source": "ENVIRONMENT"
+      }
+    },
+    "deterministic_attribution": {
+      "responsibility_layer": "ENVIRONMENT",
+      "resolved": true,
+      "status": "RESOLVED",
+      "taxonomy_version": "rpf-failure-attribution-taxonomy-v1",
+      "rule_id": "ATTR-ENVIRONMENT-FAILURE-SOURCE",
+      "basis": "Environment failure_source or Environment outcome attribution is explicit.",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+        }
+      ]
+    },
+    "agent_failure_taxonomy": {
+      "agent_failure_class": "UNRESOLVED",
+      "secondary_classes": [],
+      "phase": "unknown",
+      "rule_id": "CLASS-NON-AGENT-UNRESOLVED",
+      "basis": "Agent failure taxonomy is not applied to a non-Agent or non-FAIL outcome.",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+        }
+      ]
+    },
+    "first_meaningful_divergence": {
+      "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:readiness:001",
+      "event_type": "readiness",
+      "sequence": 2,
+      "phase": "observation",
+      "meaning": "first evidence-backed divergence before the terminal outcome",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+          "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:readiness:001"
+        }
+      ]
+    },
+    "structural_features": {
+      "domain": {
+        "responsibility_layer": "ENVIRONMENT",
+        "reliability_pattern": "UNRESOLVED_FAILURE_PATTERN",
+        "decision_boundary": "STATE_CHANGING_ACTION",
+        "evidence_sufficiency": "UNKNOWN",
+        "recovery_obligation": "SAFE_STOP_OR_NO_HARM",
+        "agent_domain": "Production Change Agent",
+        "agent_failure_class": "UNRESOLVED",
+        "failure_phase": "unknown",
+        "side_effect_state": "UNKNOWN",
+        "reconcile_status": "NOT_RECONCILED",
+        "verification_status": "FAILED_OR_NOT_RUN",
+        "invariant_family": "UNSPECIFIED_INVARIANT",
+        "action_category": "UNKNOWN_ACTION"
+      },
+      "cross_agent": {
+        "responsibility_layer": "ENVIRONMENT",
+        "reliability_pattern": "UNRESOLVED_FAILURE_PATTERN",
+        "decision_boundary": "STATE_CHANGING_ACTION",
+        "evidence_sufficiency": "UNKNOWN",
+        "recovery_obligation": "SAFE_STOP_OR_NO_HARM"
+      }
+    },
+    "family_signatures": {},
+    "recurrence": {
+      "occurrence_count": 1,
+      "reproduction_count": 0,
+      "stability_count": 0,
+      "source_ref": {
+        "kind": "Run Evidence",
+        "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+      },
+      "occurrence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+        }
+      ],
+      "reproduction_refs": [],
+      "stability_refs": [],
+      "exact_dedup": {
+        "compatible_reproduction_facts": false,
+        "occurrence_count": 1,
+        "occurrence_refs": [
+          {
+            "kind": "Run Evidence",
+            "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+          }
+        ],
+        "same_failure_case_identity": false,
+        "structural_related_is_not_exact": true
+      }
+    },
+    "version_observations": [
+      {
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+        },
+        "agent_id": "production-change-agent",
+        "agent_version": "1.0.0",
+        "configuration_id": "production-change-agent-v1",
+        "scenario_id": "production-change-release",
+        "scenario_version": "1.0.0",
+        "outcome": "ERROR",
+        "outcome_source": "ENVIRONMENT"
+      }
+    ],
+    "regression_linkage": {
+      "status": "UNCOVERED",
+      "result_refs": []
+    },
+    "recommendation": {
+      "value": "NOT_AGENT_FAILURE",
+      "basis": {
+        "responsibility_layer": "ENVIRONMENT",
+        "reproduction_count": 0,
+        "stability_count": 0,
+        "occurrence_count": 1,
+        "gate_status": {
+          "reproducibility": "INSUFFICIENT",
+          "relevance": "FAIL",
+          "stability": "INSUFFICIENT",
+          "non_duplicate": "PASS",
+          "expected_behavior_explicit": "INSUFFICIENT"
+        },
+        "structural_family_considered": true,
+        "existing_regression_overlap": []
+      },
+      "next_action": "Exclude from Agent failure quality metrics and retain as a negative control.",
+      "automatic_promotion": false,
+      "taxonomy_version": "rpf-failure-attribution-taxonomy-v1"
+    },
+    "evidence_packet": {
+      "source_fact_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a"
+        }
+      ],
+      "rule_refs": [
+        "ATTR-ENVIRONMENT-FAILURE-SOURCE",
+        "CLASS-NON-AGENT-UNRESOLVED"
+      ],
+      "derived_field_groups": [
+        "deterministic_attribution",
+        "agent_failure_taxonomy",
+        "first_meaningful_divergence",
+        "structural_features",
+        "recommendation"
+      ],
+      "family_signature_refs": {},
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a",
+          "event_id": "run-e7ef1fe8-dc36-4579-babb-7fd1b34a2e0a:event:readiness:001"
+        }
+      ]
+    },
+    "source_identity": {
+      "runtime_version": "rpf-17.v1",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    "derivation_version": "rpf-failure-intelligence-derivation-v1"
+  }
+}

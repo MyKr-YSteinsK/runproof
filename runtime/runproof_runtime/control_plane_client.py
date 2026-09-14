@@ -35,12 +35,16 @@ CONTRACTS: dict[str, tuple[str, str, str, str]] = {
     "Quality Policy": ("QUALITY_POLICY", "rpf-quality-policy-v1", "policy", "policy_id"),
     "Quality Gate Evaluation": ("QUALITY_GATE", "rpf-quality-gate-evaluation-v1", "gate_evaluation", "gate_evaluation_id"),
     "Release Decision": ("RELEASE_DECISION", "rpf-release-decision-v1", "release_decision", "release_decision_id"),
+    "Failure Intelligence": ("FAILURE_INTELLIGENCE", "rpf-failure-intelligence-v1", "intelligence", "intelligence_id"),
+    "Failure Cluster": ("FAILURE_CLUSTER", "rpf-failure-cluster-v1", "cluster", "cluster_id"),
+    "Version Bisect": ("VERSION_BISECT", "rpf-version-bisect-v1", "bisect", "bisect_id"),
 }
 
 KIND_TO_ENTITY = {kind: contract[0] for kind, contract in CONTRACTS.items()}
 REF_ID_FIELDS = (
     "run_id", "failure_case_id", "regression_id", "result_id", "collection_id", "suite_id",
     "evaluation_id", "comparison_id", "policy_id", "gate_evaluation_id", "release_decision_id",
+    "intelligence_id", "cluster_id", "bisect_id",
 )
 
 
@@ -542,6 +546,13 @@ def reviewed_product_corpus(root: Path) -> list[Path]:
         "reviewed-rpf16-incident-baseline-evaluation.json", "reviewed-rpf16-incident-candidate-evaluation.json", "reviewed-rpf16-incident-comparison.json",
         "reviewed-rpf16-incident-quality-policy.json", "reviewed-rpf16-incident-baseline-gate.json", "reviewed-rpf16-incident-candidate-gate.json",
         "reviewed-rpf16-incident-baseline-decision.json", "reviewed-rpf16-incident-candidate-decision.json",
+        # RPF-17 derived Failure Intelligence index. These artifacts are
+        # immutable views over the preceding Failure/Regression corpus.
+        "reviewed-rpf17-production-failure-intelligence.json", "reviewed-rpf17-incident-failure-intelligence.json",
+        "reviewed-rpf17-environment-negative-intelligence.json", "reviewed-rpf17-provider-negative-intelligence.json",
+        "reviewed-rpf17-invalid-negative-intelligence.json",
+        "reviewed-rpf17-production-domain-cluster.json", "reviewed-rpf17-incident-domain-cluster.json",
+        "reviewed-rpf17-cross-agent-cluster.json", "reviewed-rpf17-incident-version-bisect.json",
     ]
     paths = [runtime / name for name in names]
     missing = [path for path in paths if not path.is_file()]

@@ -257,6 +257,9 @@ public class LocalFileArtifactStore implements ArtifactStore {
         result.put("QUALITY_POLICY", new ArtifactContract("rpf-quality-policy-v1", "Quality Policy", "policy", "policy_id"));
         result.put("QUALITY_GATE", new ArtifactContract("rpf-quality-gate-evaluation-v1", "Quality Gate Evaluation", "gate_evaluation", "gate_evaluation_id"));
         result.put("RELEASE_DECISION", new ArtifactContract("rpf-release-decision-v1", "Release Decision", "release_decision", "release_decision_id"));
+        result.put("FAILURE_INTELLIGENCE", new ArtifactContract("rpf-failure-intelligence-v1", "Failure Intelligence", "intelligence", "intelligence_id"));
+        result.put("FAILURE_CLUSTER", new ArtifactContract("rpf-failure-cluster-v1", "Failure Cluster", "cluster", "cluster_id"));
+        result.put("VERSION_BISECT", new ArtifactContract("rpf-version-bisect-v1", "Version Bisect", "bisect", "bisect_id"));
         return Map.copyOf(result);
     }
 

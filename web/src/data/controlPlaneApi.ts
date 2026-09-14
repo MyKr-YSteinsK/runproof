@@ -142,9 +142,12 @@ export const loadControlPlaneCorpus = async (
   baseUrl = import.meta.env.VITE_CONTROL_PLANE_API_URL || "/api/v1",
   fetcher: FetchLike = fetch,
 ): Promise<ControlPlaneCorpusPayload> => {
-  const [runs, failures, regressions, regressionResults, regressionCollection, evaluationSuite, evaluations, comparisons, policies, qualityGates, releaseDecisions] = await Promise.all([
+  const [runs, failures, failureIntelligence, failureClusters, versionBisects, regressions, regressionResults, regressionCollection, evaluationSuite, evaluations, comparisons, policies, qualityGates, releaseDecisions] = await Promise.all([
     list(baseUrl, "RUN", fetcher),
     list(baseUrl, "FAILURE_CASE", fetcher),
+    list(baseUrl, "FAILURE_INTELLIGENCE", fetcher),
+    list(baseUrl, "FAILURE_CLUSTER", fetcher),
+    list(baseUrl, "VERSION_BISECT", fetcher),
     list(baseUrl, "REGRESSION", fetcher),
     list(baseUrl, "REGRESSION_RESULT", fetcher),
     list(baseUrl, "REGRESSION_COLLECTION", fetcher),
@@ -155,9 +158,12 @@ export const loadControlPlaneCorpus = async (
     list(baseUrl, "QUALITY_GATE", fetcher),
     list(baseUrl, "RELEASE_DECISION", fetcher),
   ]);
-  const [runArtifacts, failureArtifacts, regressionArtifacts, regressionResultArtifacts, collectionArtifacts, suiteArtifacts, evaluationArtifacts, comparisonArtifacts, policyArtifacts, gateArtifacts, decisionArtifacts] = await Promise.all([
+  const [runArtifacts, failureArtifacts, failureIntelligenceArtifacts, failureClusterArtifacts, versionBisectArtifacts, regressionArtifacts, regressionResultArtifacts, collectionArtifacts, suiteArtifacts, evaluationArtifacts, comparisonArtifacts, policyArtifacts, gateArtifacts, decisionArtifacts] = await Promise.all([
     resolveArtifacts(baseUrl, runs, fetcher),
     resolveArtifacts(baseUrl, failures, fetcher),
+    resolveArtifacts(baseUrl, failureIntelligence, fetcher),
+    resolveArtifacts(baseUrl, failureClusters, fetcher),
+    resolveArtifacts(baseUrl, versionBisects, fetcher),
     resolveArtifacts(baseUrl, regressions, fetcher),
     resolveArtifacts(baseUrl, regressionResults, fetcher),
     resolveArtifacts(baseUrl, regressionCollection, fetcher),
@@ -175,6 +181,9 @@ export const loadControlPlaneCorpus = async (
   return {
     runs: runArtifacts,
     failures: failureArtifacts,
+    failureIntelligence: required(failureIntelligenceArtifacts, "Failure Intelligence"),
+    failureClusters: required(failureClusterArtifacts, "Failure Cluster"),
+    versionBisects: required(versionBisectArtifacts, "Version Bisect"),
     regressions: regressionArtifacts,
     regressionResults: regressionResultArtifacts,
     regressionCollections: required(collectionArtifacts, "Regression Collection"),

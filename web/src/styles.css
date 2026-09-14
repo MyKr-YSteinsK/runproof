@@ -1213,3 +1213,67 @@ button:focus-visible, a:focus-visible, summary:focus-visible {
   .agent-card { grid-template-columns: 40px minmax(0, 1fr) auto; padding: 14px; }
   .agent-card-mark { width: 40px; height: 40px; }
 }
+
+/* RPF-17 Failure Intelligence investigation surfaces. */
+.intelligence-boundary { border-color: #496044; background: #151b17; }
+.bisect-boundary { border-color: #75603d; background: #1a1815; }
+.fi-metric-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 11px; margin-top: 14px; }
+.fi-metric-grid .panel { display: flex; min-height: 112px; flex-direction: column; padding: 15px; }
+.fi-metric-grid .panel strong { margin: 13px 0 5px; color: #e0ebe6; font-family: var(--mono); font-size: 25px; font-weight: 600; }
+.fi-metric-grid .panel > span:last-child { margin-top: auto; color: var(--muted); font-size: 9px; }
+.fi-investigation-section, .fi-bisect-section { margin-top: 33px; }
+.fi-table, .fi-bisect-table { margin-top: 14px; overflow-x: auto; border-top: 1px solid var(--line); }
+.fi-table-head, .fi-table-row { display: grid; grid-template-columns: minmax(180px, 1.05fr) minmax(190px, 1.15fr) minmax(170px, 1fr) minmax(145px, .85fr) minmax(170px, 1fr); gap: 14px; align-items: center; min-width: 980px; }
+.fi-table-head { min-height: 36px; padding: 0 14px; color: var(--dim); font-size: 8px; font-weight: 700; letter-spacing: .1em; }
+.fi-table-row { min-height: 112px; padding: 14px; border-top: 1px solid var(--line-soft); background: #11171a; }
+.fi-table-row:hover { background: #172124; }
+.fi-table-row > div { min-width: 0; }
+.fi-table-row strong, .fi-table-row span, .fi-table-row small { display: block; overflow: hidden; text-overflow: ellipsis; }
+.fi-table-row strong { color: #d8e5df; font-size: 10px; font-weight: 650; overflow-wrap: anywhere; }
+.fi-table-row span, .fi-table-row small { margin-top: 6px; color: var(--muted); font-size: 9px; line-height: 1.45; overflow-wrap: anywhere; }
+.fi-table-row .status-tag { display: inline-flex; margin-top: 0; }
+.fi-table-row a, .fi-link-list a, .fi-member-row a { color: var(--teal); }
+.fi-table-row .status-tag + strong { margin-top: 8px; }
+.fi-lower-grid, .fi-detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 14px; }
+.fi-lower-grid .panel, .fi-detail-grid .panel { min-width: 0; padding: 17px 18px; }
+.fi-link-list { display: grid; gap: 1px; margin-top: 14px; background: var(--line-soft); }
+.fi-link-list > a, .fi-link-list > div > a { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 14px; align-items: center; min-width: 0; padding: 13px; background: #11171a; color: var(--text); }
+.fi-link-list > a:hover, .fi-link-list > div > a:hover { background: #172124; }
+.fi-link-list strong, .fi-link-list small { display: block; overflow: hidden; text-overflow: ellipsis; overflow-wrap: anywhere; }
+.fi-link-list strong { color: #d8e5df; font-size: 10px; }
+.fi-link-list small { margin-top: 5px; color: var(--muted); font-size: 9px; line-height: 1.45; }
+.fi-link-list b { color: var(--teal); font-family: var(--mono); font-size: 10px; }
+.fi-link-list .row-arrow { color: var(--dim); font-size: 18px; }
+.fi-evidence-separation { margin-top: 22px; }
+.fi-case-analysis { margin-top: 25px; padding: 17px 18px 18px; border: 1px solid #496044; background: #131a17; }
+.fi-case-analysis-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1px; margin-top: 15px; background: #334532; }
+.fi-case-analysis-grid > div { min-width: 0; padding: 13px; background: #111817; }
+.fi-case-analysis-grid span, .fi-case-analysis-grid strong, .fi-case-analysis-grid small { display: block; }
+.fi-case-analysis-grid strong { margin-top: 8px; color: #dce9e2; font-size: 10px; overflow-wrap: anywhere; }
+.fi-case-analysis-grid small { margin-top: 5px; color: var(--muted); font-size: 9px; line-height: 1.45; overflow-wrap: anywhere; }
+.fi-members-section { margin-top: 33px; }
+.fi-member-list { display: grid; gap: 1px; margin-top: 14px; background: var(--line-soft); }
+.fi-member-row { display: grid; grid-template-columns: minmax(175px, 1fr) minmax(160px, .9fr) minmax(160px, .9fr) minmax(145px, .8fr); gap: 14px; align-items: center; min-width: 0; padding: 14px; border-top: 1px solid var(--line-soft); background: #11171a; }
+.fi-member-row > div { min-width: 0; }
+.fi-member-row span, .fi-member-row strong, .fi-member-row small { display: block; overflow: hidden; text-overflow: ellipsis; overflow-wrap: anywhere; }
+.fi-member-row span { color: var(--dim); font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
+.fi-member-row strong { margin-top: 6px; color: #d8e5df; font-size: 10px; }
+.fi-member-row small { margin-top: 5px; color: var(--muted); font-size: 9px; line-height: 1.4; }
+.fi-member-row a { display: block; margin-top: 5px; font-size: 9px; }
+.fi-detail-links { margin-top: 14px; }
+.fi-bisect-table .fi-table-row { grid-template-columns: minmax(170px, 1fr) minmax(190px, 1.1fr) minmax(190px, 1.1fr) minmax(145px, .8fr) minmax(90px, .5fr); min-height: 92px; }
+.fi-bisect-table .fi-table-row > div:last-child { text-align: right; }
+.fi-bisect-table .fi-table-row .status-tag { display: inline-flex; }
+.muted { color: var(--muted); font-size: 9px; }
+
+@media (max-width: 1080px) {
+  .fi-metric-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fi-case-analysis-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .fi-metric-grid, .fi-lower-grid, .fi-detail-grid, .fi-case-analysis-grid { grid-template-columns: 1fr; }
+  .fi-table, .fi-bisect-table { overflow-x: auto; }
+  .fi-member-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fi-evidence-separation { grid-template-columns: 1fr; }
+}

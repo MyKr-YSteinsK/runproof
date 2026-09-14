@@ -366,3 +366,20 @@ Web 提供 `/agents` 与 `/agents/:agentId` 只读 registry/detail；既有 Run�
 ### Supersedes
 
 - none（承接并细化 D-009、D-013、D-017～D-020；不替代既有 Agent/Run/Evaluation/Release 与 durable reconcile 语义）
+
+## D-022｜Failure Intelligence 采用确定性归因、结构族与 fail-closed 版本定位
+
+- Status: `Accepted`
+- Date: 2026-09-14
+### Decision
+RPF-17 的 Failure Intelligence 采用纯确定性、可重放的 `rpf-failure-intelligence-v1` derivation：保留既有 `failure_signature()` 作为 exact identity，不改写历史 Failure Case/Run bytes；在独立字段中记录责任归因（`AGENT`、`PROVIDER`、`ENVIRONMENT`、`PLATFORM`、`INVALID_INPUT`、`UNKNOWN`）、Agent failure class、first meaningful divergence、domain family 与 cross-Agent structural family。exact duplicate 与 structural recurrence 必须分开建模，使用 `rpf-failure-cluster-v1`；跨版本定位使用 `rpf-version-bisect-v1`，对非单调结果、兼容性错误和缺失 evidence fail closed。Recommendation 只能输出 `NOT_AGENT_FAILURE`、`ALREADY_COVERED`、`PROMOTE_CANDIDATE`、`COLLECT_MORE_EVIDENCE` 或 `NO_SAFE_ACTION`，不自动晋升 Regression、改变 canonical evidence 或触发 release/deploy。
+### Why
+RPF-17 的 Production Change 与 Incident Remediation 语料证明：相同结构性失败可跨 Agent 共享调查族，同时必须保留 domain/exact identity 的差异；历史 Failure Case signature 与新派生结果可以兼容共存。确定性字段、稳定 ID、source/reproduction/stability refs 与 evidence packet 使聚类和版本定位可审计、可重放，并避免把相似字符串或一次失败直接误报为同一缺陷。negative controls 证明 Provider/Environment/Invalid Input 不会被归因为 Agent failure。
+### Consequences
+Failure Intelligence、Cluster、Version Bisect 作为现有 Control Plane immutable artifact/metadata registry 的新 artifact kinds 登记，通过既有 authenticated HTTP/JSON read API 暴露；不新增数据库表、LLM、embedding、ML、第三 Agent 或自动 promotion。Web 只读显示 Facts、Verified、Derived、Inference、AI Analysis 分层，明确标注结构族与 exact grouping；非单调 bisect 保持 `ERROR`/`INCOMPATIBLE`/`NO_SAFE_ACTION`，不得盲目选版本。统计显著性、大规模聚类和真实 Production remediation 仍需新语料与新 Plan。
+### Reconsider when
+真实 Failure corpus 的规模、跨 Agent domain 数量、聚类误合并率、版本发布拓扑或调查延迟证明 deterministic structural features 不足，需要新的统计/语义方法，并且有可审计的解释性、回放与安全边界证据时重新评估。
+
+### Supersedes
+
+- none（承接并细化 D-009、D-013、D-021；不替代既有 Failure Case exact signature、Regression promotion 或 Release Decision authority 语义）

@@ -1,0 +1,177 @@
+{
+  "schema_version": "rpf-version-bisect-v1",
+  "artifact_kind": "Version Bisect",
+  "bisect": {
+    "bisect_id": "version-bisect-8ad1ee6051c564080255",
+    "bisect_version": "1.0.0",
+    "status": "COMPLETE",
+    "agent_domain": "Incident Remediation Agent",
+    "regression_ref": {
+      "kind": "Regression",
+      "regression_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583"
+    },
+    "regression_version": "1.0.0",
+    "ordered_candidate_line": [
+      {
+        "candidate_order": 0,
+        "candidate": {
+          "candidate_id": "incident-remediation-agent-v1-fixed",
+          "agent_profile": "incident-remediation-agent-v1-fixed",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "candidate_order": 0
+        },
+        "regression_result": "PASS",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-incident-0f4c7369-e8a4-4b91-8100-a0ecf96a9f60"
+        },
+        "result_ref": {
+          "kind": "Regression Execution Result",
+          "result_id": "regression-result-1fae7867-459b-4cfc-8a5a-498042b3d958"
+        },
+        "oracle_id": "rpf-incident-remediation-regression-oracle-v1",
+        "probe_status": "OBSERVED"
+      },
+      {
+        "candidate_order": 1,
+        "candidate": {
+          "candidate_id": "incident-remediation-agent-v1-known-bad",
+          "agent_profile": "incident-remediation-agent-v1-known-bad",
+          "agent_version": "1.0.0-known-bad-symptom-driven",
+          "candidate_order": 1
+        },
+        "regression_result": "FAIL",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-incident-c10da503-188c-4431-a972-d646fa0c4af3"
+        },
+        "result_ref": {
+          "kind": "Regression Execution Result",
+          "result_id": "regression-result-156cea67-08e0-4d43-9f8c-c0cf83df357f"
+        },
+        "oracle_id": "rpf-incident-remediation-regression-oracle-v1",
+        "probe_status": "OBSERVED"
+      }
+    ],
+    "known_good_boundary": {
+      "candidate_id": "incident-remediation-agent-v1-fixed",
+      "agent_profile": "incident-remediation-agent-v1-fixed",
+      "agent_version": "1.0.1-evidence-supported-remediation",
+      "candidate_order": 0
+    },
+    "known_bad_boundary": {
+      "candidate_id": "incident-remediation-agent-v1-known-bad",
+      "agent_profile": "incident-remediation-agent-v1-known-bad",
+      "agent_version": "1.0.0-known-bad-symptom-driven",
+      "candidate_order": 1
+    },
+    "compatible_contract": {
+      "same_regression_oracle": true,
+      "compatibility_errors": [],
+      "scenario_ref": {
+        "kind": "Scenario",
+        "scenario_id": "incident-remediation",
+        "scenario_version": "1.0.0",
+        "case_id": "external-dependency"
+      },
+      "contract_identity": "incident-remediation-agent-contract@1.0.0",
+      "oracle_id": "rpf-incident-remediation-regression-oracle-v1"
+    },
+    "monotonicity": {
+      "assumption": "candidate outcome is monotonic along the supplied ordered line",
+      "observed_statuses": [
+        "PASS",
+        "FAIL"
+      ],
+      "status": "MONOTONIC_ASSUMPTION_HOLDS",
+      "predicate": "Regression result FAIL identifies a bad candidate"
+    },
+    "probe_history": [
+      {
+        "candidate_order": 0,
+        "candidate": {
+          "candidate_id": "incident-remediation-agent-v1-fixed",
+          "agent_profile": "incident-remediation-agent-v1-fixed",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "candidate_order": 0
+        },
+        "regression_result": "PASS",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-incident-0f4c7369-e8a4-4b91-8100-a0ecf96a9f60"
+        },
+        "result_ref": {
+          "kind": "Regression Execution Result",
+          "result_id": "regression-result-1fae7867-459b-4cfc-8a5a-498042b3d958"
+        },
+        "oracle_id": "rpf-incident-remediation-regression-oracle-v1",
+        "probe_status": "OBSERVED"
+      },
+      {
+        "candidate_order": 1,
+        "candidate": {
+          "candidate_id": "incident-remediation-agent-v1-known-bad",
+          "agent_profile": "incident-remediation-agent-v1-known-bad",
+          "agent_version": "1.0.0-known-bad-symptom-driven",
+          "candidate_order": 1
+        },
+        "regression_result": "FAIL",
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-incident-c10da503-188c-4431-a972-d646fa0c4af3"
+        },
+        "result_ref": {
+          "kind": "Regression Execution Result",
+          "result_id": "regression-result-156cea67-08e0-4d43-9f8c-c0cf83df357f"
+        },
+        "oracle_id": "rpf-incident-remediation-regression-oracle-v1",
+        "probe_status": "OBSERVED"
+      }
+    ],
+    "first_bad_candidate": {
+      "candidate_id": "incident-remediation-agent-v1-known-bad",
+      "agent_profile": "incident-remediation-agent-v1-known-bad",
+      "agent_version": "1.0.0-known-bad-symptom-driven",
+      "candidate_order": 1,
+      "candidate_ref": {
+        "kind": "Agent Candidate",
+        "candidate_id": "incident-remediation-agent-v1-known-bad"
+      },
+      "regression_result": "FAIL",
+      "evidence_refs": [
+        {
+          "kind": "Run Evidence",
+          "run_id": "run-incident-c10da503-188c-4431-a972-d646fa0c4af3"
+        },
+        {
+          "kind": "Regression Execution Result",
+          "result_id": "regression-result-156cea67-08e0-4d43-9f8c-c0cf83df357f"
+        }
+      ]
+    },
+    "full_scan_recommended": false,
+    "evidence_refs": [
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-incident-0f4c7369-e8a4-4b91-8100-a0ecf96a9f60"
+      },
+      {
+        "kind": "Regression Execution Result",
+        "result_id": "regression-result-1fae7867-459b-4cfc-8a5a-498042b3d958"
+      },
+      {
+        "kind": "Run Evidence",
+        "run_id": "run-incident-c10da503-188c-4431-a972-d646fa0c4af3"
+      },
+      {
+        "kind": "Regression Execution Result",
+        "result_id": "regression-result-156cea67-08e0-4d43-9f8c-c0cf83df357f"
+      }
+    ],
+    "source_identity": {
+      "runtime_version": "rpf-17.v1",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    "derivation_version": "rpf-failure-intelligence-derivation-v1"
+  }
+}

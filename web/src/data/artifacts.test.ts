@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import historicalNormal from "../../../runtime/reviewed-normal-run.json";
-import { getAgent, getEvaluation, getEvaluationComparison, getFailureCaseForRun, getQualityGate, getRegression, getRegressionResultForRun, getRegressionResults, getReleaseDecision, getRun, normalizeArtifact, reviewedAgents, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedQualityGates, reviewedQualityPolicy, reviewedRegressionCollection, reviewedRegressions, reviewedReleaseDecisions, reviewedRuns } from "./artifacts";
+import { getAgent, getEvaluation, getEvaluationComparison, getFailureCaseForRun, getFailureCluster, getFailureIntelligenceForFailureCase, getQualityGate, getRegression, getRegressionResultForRun, getRegressionResults, getReleaseDecision, getRun, normalizeArtifact, reviewedAgents, reviewedEvaluationComparison, reviewedEvaluationRuns, reviewedEvaluationSuite, reviewedEvaluations, reviewedFailureCases, reviewedFailureClusters, reviewedFailureIntelligence, reviewedQualityGates, reviewedQualityPolicy, reviewedRegressionCollection, reviewedRegressions, reviewedReleaseDecisions, reviewedRuns, reviewedVersionBisects } from "./artifacts";
 
 describe("reviewed evidence adapter", () => {
   it("loads only the current v2 reviewed corpus", () => {
@@ -90,5 +90,21 @@ describe("reviewed evidence adapter", () => {
     expect(reviewedAgents.map((agent) => agent.agentId)).toEqual(["incident-remediation-agent", "production-change-agent"]);
     expect(getAgent("incident-remediation-agent")?.domain).toBe("Incident Remediation Agent");
     expect(getAgent("production-change-agent")?.domain).toBe("Production Change Agent");
+  });
+
+  it("loads deterministic Failure Intelligence, shared structural families, and fail-closed bisect evidence", () => {
+    expect(reviewedFailureIntelligence).toHaveLength(5);
+    expect(reviewedFailureClusters).toHaveLength(3);
+    expect(reviewedVersionBisects).toHaveLength(1);
+    const production = reviewedFailureIntelligence.find((item) => item.intelligence.sourceFailureCaseRef?.failure_case_id === "failure-case-baf3e787-ee07-46ca-8c93-ac585b3d2f2b");
+    const incident = reviewedFailureIntelligence.find((item) => item.intelligence.sourceFailureCaseRef?.failure_case_id === "failure-case-f1e5f84e-ec4b-47f3-b05e-3dd539fffa67");
+    expect(getFailureIntelligenceForFailureCase("failure-case-baf3e787-ee07-46ca-8c93-ac585b3d2f2b")?.intelligence.deterministicAttribution.responsibility_layer).toBe("AGENT");
+    expect(getFailureIntelligenceForFailureCase("failure-case-f1e5f84e-ec4b-47f3-b05e-3dd539fffa67")?.intelligence.deterministicAttribution.responsibility_layer).toBe("AGENT");
+    expect(production?.intelligence.familySignatures.crossAgent?.value).toBe(incident?.intelligence.familySignatures.crossAgent?.value);
+    expect(production?.intelligence.familySignatures.domain?.value).not.toBe(incident?.intelligence.familySignatures.domain?.value);
+    expect(reviewedFailureClusters.find((item) => item.cluster.clusterLevel === "CROSS_AGENT_STRUCTURAL")?.cluster.occurrenceCount).toBe(8);
+    expect(reviewedVersionBisects[0].bisect.status).toBe("COMPLETE");
+    expect(reviewedVersionBisects[0].bisect.firstBadCandidate?.agent_version).toBe("1.0.0-known-bad-symptom-driven");
+    expect(getFailureCluster("failure-cluster-cross-agent-structural-4adc969e5d69c388")?.cluster.clusterLevel).toBe("CROSS_AGENT_STRUCTURAL");
   });
 });
