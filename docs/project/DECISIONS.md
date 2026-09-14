@@ -330,3 +330,20 @@ RPF-14 将 RPF-13 的 PostgreSQL poll/claim/lease、operation reconcile 和 immu
 ### Supersedes
 
 - none（细化 D-015～D-018 的正式 execution authority，不替代既有 durable state/reconcile 语义）
+
+## D-020｜Production 目标采用 managed persistence/stateless，并保持显式 Release 边界
+
+- Status: `Accepted`
+- Date: `2026-09-14`
+### Decision
+RPF-15 的首个真实 Production 目标采用 Candidate B：stateless Web/Control Plane/Worker、managed PostgreSQL、S3-compatible object storage、platform-managed secrets，以及由 CI 产出证据、由受信任的人类/产品 Release principal 显式推进的 release 流程。Candidate A（单主机、容器化、PostgreSQL named volume、本地 immutable artifact path）保留为受控的本地 production-like reproduction profile 和恢复演练环境，不作为真实 Production 的 durability/HA 结论。Agent、worker、decision writer 与 `ELIGIBLE` Decision 均不能触发 deploy/release；本决定不授权真实 Production deploy/release。
+### Why
+RPF-15 的 Candidate A probe 在本机真实 Docker/PostgreSQL 环境通过 21 项检查：Web/Control Plane/Worker replacement、PostgreSQL named-volume replacement、custom-format `pg_dump` 与独立 `pg_restore`、artifact 独立备份恢复、active job 的 lease/reclaim/reconcile、migration/application rollback、release identity、secret rotation 与 authority/readiness 边界均保持可读回和 fail-closed。证据同时确认本地 artifact path 存在 host-loss 风险。Candidate B 的 provider、IAM、retention、restore SLA 与成本尚未执行，因为目标 provider/region/授权尚未确定；因此 Candidate B 是经证据约束的目标推荐，不是已完成的云端 Production 证明。
+### Consequences
+后续 Production implementation Plan 必须先明确 provider/region、managed PostgreSQL、object storage、secret manager、Product Release Identity registry、用户身份与 Approval authority、backup retention/restore SLA、rollout/rollback、capacity/backpressure 与 observability；main push 继续只产生 CI/evidence，真实 release/deploy 需要独立、可审计的显式 principal。Candidate A 的本地 artifact 必须保留 off-host backup/restore rehearsal；在新的吞吐、拓扑或故障证据出现前，不因该结论引入 broker、scheduler、autoscaling 或 HA。
+### Reconsider when
+目标 provider/region、租户/身份模型、恢复 SLA、容量/延迟或真实 Production side-effect 证据发生变化，或 managed persistence 的成本、IAM、restore 与 rollout 证据不能满足产品边界时重新评估。
+
+### Supersedes
+
+- none（细化 D-014、D-015、D-018、D-019 的 Production boundary，不改变 durable state/reconcile 或 decision-only 语义）
