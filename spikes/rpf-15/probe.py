@@ -505,7 +505,7 @@ def owner_from_claim(response: dict[str, Any], worker_id: str) -> dict[str, Any]
     }
 
 
-def run_formal_worker(base_url: str, token: str, artifact_root: Path, result_path: Path, worker_id: str, max_jobs: int = 1) -> tuple[subprocess.CompletedProcess[bytes], dict[str, Any]]:
+def run_formal_worker(base_url: str, token: str, artifact_root: Path, result_path: Path, worker_id: str, max_jobs: int = 1, lease_seconds: int = 30) -> tuple[subprocess.CompletedProcess[bytes], dict[str, Any]]:
     environment = os.environ.copy()
     environment["RPF_AUTH_WORKER_TOKEN"] = token
     process = run_bounded(
@@ -516,7 +516,7 @@ def run_formal_worker(base_url: str, token: str, artifact_root: Path, result_pat
             "--repo-root", str(ROOT),
             "--artifact-store-root", str(artifact_root.resolve()),
             "--worker-id", worker_id,
-            "--lease-seconds", "3",
+            "--lease-seconds", str(lease_seconds),
             "--max-jobs", str(max_jobs),
             "--idle-timeout", "45",
             "--once",
