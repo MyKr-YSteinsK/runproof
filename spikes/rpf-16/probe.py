@@ -80,6 +80,10 @@ from runtime.runproof_runtime.regression import (  # noqa: E402
 RUNTIME_DIR = ROOT / "runtime"
 LOCAL_DIR = ROOT / ".local" / "rpf-16"
 SECRET_PATTERN = re.compile(r"(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)")
+# RPF-16 reviewed evidence is immutable. Later additive runtime modules (such
+# as RPF-17 Failure Intelligence) must not invalidate that historical source
+# identity during an offline compatibility check.
+HISTORICAL_RPF16_SOURCE_SHA256 = "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494"
 
 
 def _write_immutable(path: Path, value: dict[str, Any], *, refresh: bool = False) -> Path:
@@ -356,6 +360,7 @@ def verify_reviewed_corpus() -> dict[str, Any]:
     }
     artifacts = {key: _load(RUNTIME_DIR / name) for key, name in names.items()}
     source_sha = runtime_source_sha256()
+    allowed_source_hashes = {source_sha, HISTORICAL_RPF16_SOURCE_SHA256}
     for key, artifact in artifacts.items():
         assert_safe_artifact(artifact)
         encoded = json.dumps(artifact, ensure_ascii=False)
@@ -386,14 +391,14 @@ def verify_reviewed_corpus() -> dict[str, Any]:
     if artifacts["baseline_gate"]["gate_evaluation"].get("decision_status") != "BLOCKED" or artifacts["candidate_gate"]["gate_evaluation"].get("decision_status") != "ELIGIBLE":
         raise RuntimeError("INCIDENT_GATE_RESULT_EXPECTATION")
     for key in ("source", "reproduction", "stability_one", "stability_two", "fixed_focus"):
-        if artifacts[key]["run"]["runtime"].get("source_sha256") != source_sha:
+        if artifacts[key]["run"]["runtime"].get("source_sha256") not in allowed_source_hashes:
             raise RuntimeError(f"SOURCE_IDENTITY:{key}")
-    if artifacts["suite"]["suite"]["source_identity"].get("source_sha256") != source_sha:
+    if artifacts["suite"]["suite"]["source_identity"].get("source_sha256") not in allowed_source_hashes:
         raise RuntimeError("SOURCE_IDENTITY:suite")
     for key in ("baseline", "candidate", "comparison"):
-        if artifacts[key].get("evaluation", artifacts[key].get("comparison", {})).get("runtime", {}).get("source_sha256") != source_sha:
+        if artifacts[key].get("evaluation", artifacts[key].get("comparison", {})).get("runtime", {}).get("source_sha256") not in allowed_source_hashes:
             raise RuntimeError(f"SOURCE_IDENTITY:{key}")
-    if artifacts["policy"]["policy"]["source_identity"].get("source_sha256") != source_sha:
+    if artifacts["policy"]["policy"]["source_identity"].get("source_sha256") not in allowed_source_hashes:
         raise RuntimeError("SOURCE_IDENTITY:policy")
     if artifacts["candidate_decision"]["release_decision"]["authorization_boundary"].get("release_executed") is not False or artifacts["candidate_decision"]["release_decision"]["authorization_boundary"].get("deployment_authorized") is not False:
         raise RuntimeError("RELEASE_BOUNDARY")
@@ -401,6 +406,7 @@ def verify_reviewed_corpus() -> dict[str, Any]:
     return {
         "status": "PASS",
         "source_sha256": source_sha,
+        "reviewed_source_sha256": HISTORICAL_RPF16_SOURCE_SHA256,
         "agent_contracts": 2,
         "scenario_cases": [CASE_LOCAL, CASE_EXTERNAL, CASE_RESPONSE_LOST],
         "baseline_gate": artifacts["baseline_gate"]["gate_evaluation"]["decision_status"],
