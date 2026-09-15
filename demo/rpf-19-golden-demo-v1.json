@@ -1,0 +1,210 @@
+{
+  "schema_version": "rpf-golden-demo-profile-v1",
+  "demo": {
+    "demo_id": "runproof-golden-demo",
+    "version": "1.0.0",
+    "title": "RunProof Reliability Control Plane",
+    "source_commit": "6f057357047c45c63ad87629e6121e723b3cd355",
+    "runtime_source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689",
+    "seed_command": "python demo/seed_demo.py --root .",
+    "start_command": "powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1",
+    "load_method": "formal Control Plane API plus immutable reviewed artifact registration",
+    "no_provider_required": true,
+    "no_cloud_required": true,
+    "no_release_or_deploy": true
+  },
+  "agents": [
+    {
+      "agent_id": "production-change-agent",
+      "domain": "Production Change Agent",
+      "role": "second-agent-contrast",
+      "evidence_role": "agent.production_change"
+    },
+    {
+      "agent_id": "incident-remediation-agent",
+      "domain": "Incident Remediation Agent",
+      "role": "flagship-agent",
+      "evidence_role": "agent.incident_remediation"
+    }
+  ],
+  "selected": {
+    "baseline_evaluation": "evaluation-rpf16-reviewed-baseline",
+    "candidate_evaluation": "evaluation-rpf16-reviewed-candidate",
+    "deterministic_evaluation": "evaluation-rpf16-reviewed-candidate",
+    "statistical_evaluations": [
+      "statistical-evaluation-rpf18-stable",
+      "statistical-evaluation-rpf18-flaky",
+      "statistical-evaluation-rpf18-safety",
+      "statistical-evaluation-rpf18-evidence-poor"
+    ],
+    "statistical_comparison": "statistical-comparison-rpf18-baseline-vs-stable",
+    "flagship_failure_case": "failure-case-f1e5f84e-ec4b-47f3-b05e-3dd539fffa67",
+    "flagship_failure_cluster": "failure-cluster-domain-family-e4e932d9cc3b53e0",
+    "cross_agent_failure_cluster": "failure-cluster-cross-agent-structural-4adc969e5d69c388",
+    "version_bisect": "version-bisect-8ad1ee6051c564080255",
+    "release_decision": "release-decision-rpf16-reviewed-candidate",
+    "unknown_outcome_run": "run-incident-b00813da-8cae-4b80-84c4-98303ac85804"
+  },
+  "expected_assertions": [
+    "Overview is a read-only API-backed investigation surface.",
+    "Incident Remediation Candidate Release Decision is ELIGIBLE but decision-only.",
+    "Stable Statistical Evaluation is ELIGIBLE; Flaky is REVIEW_REQUIRED; Safety is BLOCKED; Evidence-poor is INCONCLUSIVE.",
+    "Baseline to Stable statistical comparison is IMPROVED by Wilson interval separation.",
+    "The flagship Incident Failure Cluster preserves exact identities while showing a deterministic structural family.",
+    "The Version Bisect identifies incident-remediation-agent-v1-known-bad as first bad under the stated oracle.",
+    "The response-lost story preserves operation identity, UNKNOWN_OUTCOME reconciliation, and effect count one.",
+    "The demo does not execute a provider call, release, or deployment."
+  ],
+  "reviewed_artifacts": [
+    {
+      "role": "agent.production_change",
+      "path": "runtime/reviewed-normal-run-v2.json",
+      "artifact_kind": "Run Evidence",
+      "schema_version": "rpf-run-evidence-v2",
+      "entity_type": "RUN",
+      "entity_id": "run-7a6219f1-bf16-404a-8cb1-40b51c0e515e",
+      "content_sha256": "54c22eae5e00e9c4ac67019f178ffb2ff093321464ac59077bcb2fb8ecbf1685",
+      "source_sha256": "b1235b9128dfe42bcf553ba1f28452c4a08c0af0b5c293c9163a24c7a2b7c127"
+    },
+    {
+      "role": "agent.incident_remediation",
+      "path": "runtime/reviewed-rpf16-incident-candidate-evaluation.json",
+      "artifact_kind": "Evaluation Result",
+      "schema_version": "rpf-evaluation-result-v1",
+      "entity_type": "EVALUATION",
+      "entity_id": "evaluation-rpf16-reviewed-candidate",
+      "content_sha256": "5b9bed2155dc6bcdd37a6a848201fcb36794b7a173f314812a1d4bd659c1b1d2",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494"
+    },
+    {
+      "role": "baseline.evaluation",
+      "path": "runtime/reviewed-rpf16-incident-baseline-evaluation.json",
+      "artifact_kind": "Evaluation Result",
+      "schema_version": "rpf-evaluation-result-v1",
+      "entity_type": "EVALUATION",
+      "entity_id": "evaluation-rpf16-reviewed-baseline",
+      "content_sha256": "693d17cd6fb411214544a4cd1a1e2d94f3753dd4e944ef2e95e6336c87893b71",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494"
+    },
+    {
+      "role": "release.decision",
+      "path": "runtime/reviewed-rpf16-incident-candidate-decision.json",
+      "artifact_kind": "Release Decision",
+      "schema_version": "rpf-release-decision-v1",
+      "entity_type": "RELEASE_DECISION",
+      "entity_id": "release-decision-rpf16-reviewed-candidate",
+      "content_sha256": "92eda4d7e4f988cbec0b720752f5dc5c09286540cf08b32d273ecd98e456e99c",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494"
+    },
+    {
+      "role": "statistical.stable",
+      "path": "runtime/reviewed-rpf18-statistical-evaluation-stable.json",
+      "artifact_kind": "Statistical Evaluation",
+      "schema_version": "rpf-statistical-evaluation-v1",
+      "entity_type": "STATISTICAL_EVALUATION",
+      "entity_id": "statistical-evaluation-rpf18-stable",
+      "content_sha256": "d45ced72e701f3a290ea0c8e8ef684987ed03056ee7469c1b8b08abde52bfe29",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    {
+      "role": "statistical.flaky",
+      "path": "runtime/reviewed-rpf18-statistical-evaluation-flaky.json",
+      "artifact_kind": "Statistical Evaluation",
+      "schema_version": "rpf-statistical-evaluation-v1",
+      "entity_type": "STATISTICAL_EVALUATION",
+      "entity_id": "statistical-evaluation-rpf18-flaky",
+      "content_sha256": "f99f4bd2d3591a7873703381978955dfb0aecf19ce292a8e720497cd645eb6ae",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    {
+      "role": "statistical.safety",
+      "path": "runtime/reviewed-rpf18-statistical-evaluation-safety.json",
+      "artifact_kind": "Statistical Evaluation",
+      "schema_version": "rpf-statistical-evaluation-v1",
+      "entity_type": "STATISTICAL_EVALUATION",
+      "entity_id": "statistical-evaluation-rpf18-safety",
+      "content_sha256": "103d35006753a52efb9fa905117f6a43a136330e8d364d573061c25e1c0eb646",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    {
+      "role": "statistical.evidence_poor",
+      "path": "runtime/reviewed-rpf18-statistical-evaluation-evidence-poor.json",
+      "artifact_kind": "Statistical Evaluation",
+      "schema_version": "rpf-statistical-evaluation-v1",
+      "entity_type": "STATISTICAL_EVALUATION",
+      "entity_id": "statistical-evaluation-rpf18-evidence-poor",
+      "content_sha256": "2bc86ccaa256fe19c9d3d73c1869e9b7cd6bdd262cb971090fce9f206804b872",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    {
+      "role": "statistical.comparison",
+      "path": "runtime/reviewed-rpf18-statistical-comparison.json",
+      "artifact_kind": "Statistical Comparison",
+      "schema_version": "rpf-statistical-comparison-v1",
+      "entity_type": "STATISTICAL_COMPARISON",
+      "entity_id": "statistical-comparison-rpf18-baseline-vs-stable",
+      "content_sha256": "6efa32f42445167069c6da2a8af5b34e212fcd4cd10d04e487c8ed415a04637a",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    {
+      "role": "failure.flagship_case",
+      "path": "runtime/reviewed-rpf16-incident-failure-case.json",
+      "artifact_kind": "Failure Case",
+      "schema_version": "rpf-failure-case-v1",
+      "entity_type": "FAILURE_CASE",
+      "entity_id": "failure-case-f1e5f84e-ec4b-47f3-b05e-3dd539fffa67",
+      "content_sha256": "800f922e28977159edf6be966120b8c94a69bf16140a28d19799c832d602d342",
+      "source_sha256": "800f922e28977159edf6be966120b8c94a69bf16140a28d19799c832d602d342"
+    },
+    {
+      "role": "failure.flagship_cluster",
+      "path": "runtime/reviewed-rpf17-incident-domain-cluster.json",
+      "artifact_kind": "Failure Cluster",
+      "schema_version": "rpf-failure-cluster-v1",
+      "entity_type": "FAILURE_CLUSTER",
+      "entity_id": "failure-cluster-domain-family-e4e932d9cc3b53e0",
+      "content_sha256": "8ac8f77f670e980611287e99671e4688679042d2b9e73ace8e18837438a822f4",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    {
+      "role": "failure.cross_agent_cluster",
+      "path": "runtime/reviewed-rpf17-cross-agent-cluster.json",
+      "artifact_kind": "Failure Cluster",
+      "schema_version": "rpf-failure-cluster-v1",
+      "entity_type": "FAILURE_CLUSTER",
+      "entity_id": "failure-cluster-cross-agent-structural-4adc969e5d69c388",
+      "content_sha256": "f26d3b8c7c27daa640cc1c5a99d59c55f4f677f9178aeb61718145bfc6914f69",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    {
+      "role": "version.bisect",
+      "path": "runtime/reviewed-rpf17-incident-version-bisect.json",
+      "artifact_kind": "Version Bisect",
+      "schema_version": "rpf-version-bisect-v1",
+      "entity_type": "VERSION_BISECT",
+      "entity_id": "version-bisect-8ad1ee6051c564080255",
+      "content_sha256": "07024e0d1c28971dffb3162c4c0ad533c2f8b62effbbce68370ce59908398601",
+      "source_sha256": "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
+    },
+    {
+      "role": "durable.response_lost_run",
+      "path": "runtime/reviewed-rpf16-incident-evaluation-candidate-response-lost-run.json",
+      "artifact_kind": "Run Evidence",
+      "schema_version": "rpf-run-evidence-v2",
+      "entity_type": "RUN",
+      "entity_id": "run-incident-b00813da-8cae-4b80-84c4-98303ac85804",
+      "content_sha256": "66f7a2f619bdc3fa5e12166f39d34aae33e3810c1f24a5628d92d2ecfc3595f2",
+      "source_sha256": "4569575d4a34853e5c85681dbac6576a8bf3a1252fc4cc34e8691c2378e8f494"
+    },
+    {
+      "role": "regression.flagship",
+      "path": "runtime/reviewed-rpf16-incident-regression.json",
+      "artifact_kind": "Regression",
+      "schema_version": "rpf-regression-v1",
+      "entity_type": "REGRESSION",
+      "entity_id": "regression-rpf-incident-no-harmful-external-remediation-69f150007583",
+      "content_sha256": "a307ad10c3376543feb99c2a058a656f5cb764177e398b81e49f1d5d3cf0a205",
+      "source_sha256": "a307ad10c3376543feb99c2a058a656f5cb764177e398b81e49f1d5d3cf0a205"
+    }
+  ]
+}

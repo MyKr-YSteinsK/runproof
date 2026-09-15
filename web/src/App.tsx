@@ -70,6 +70,7 @@ import {
   StatisticalComparison,
   StatisticalEvaluation,
 } from "./data/statistical";
+import { goldenDemoProfile, goldenDemoRefId } from "./data/goldenDemo";
 
 const DATA_SOURCE_MODE = controlPlaneDataSourceMode();
 const DATA_SOURCE_LABEL = DATA_SOURCE_MODE === "api" ? "Control Plane API" : "reviewed fixture corpus";
@@ -270,11 +271,11 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false }: { children: React.ReactNode; detail?: boolean; agent?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; statistical?: boolean; release?: boolean; execution?: boolean; intelligence?: boolean }) {
+function AppShell({ children, detail = false, overview = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false }: { children: React.ReactNode; detail?: boolean; overview?: boolean; agent?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; statistical?: boolean; release?: boolean; execution?: boolean; intelligence?: boolean }) {
   return (
     <div className="app-frame">
       <aside className="rail" aria-label="RunProof navigation">
-        <a className="brand" href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+        <a className="brand" href="/overview" onClick={(event) => { event.preventDefault(); navigate("/overview"); }}>
           <span className="brand-mark">R</span>
           <span>
             <strong>RunProof</strong>
@@ -287,12 +288,17 @@ function AppShell({ children, detail = false, agent = false, failure = false, re
           <span className="workspace-status"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
         </div>
         <nav className="primary-nav" aria-label="Primary">
+          <a className={overview ? "active" : ""} href="/overview" onClick={(event) => { event.preventDefault(); navigate("/overview"); }}>
+            <span className="nav-glyph">⌂</span>
+            <span>Overview</span>
+            <span className="nav-count">RPF-19</span>
+          </a>
           <a className={agent ? "active" : ""} href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}>
             <span className="nav-glyph">◇</span>
             <span>Agents</span>
             <span className="nav-count">{reviewedAgents.length}</span>
           </a>
-          <a className={!detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
+          <a className={!overview && !detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
             <span className="nav-glyph">▤</span>
             <span>Run Evidence</span>
             <span className="nav-count">{reviewedRuns.length}</span>
@@ -354,11 +360,11 @@ function AppShell({ children, detail = false, agent = false, failure = false, re
           <div className="topbar-context">
             <span className="topbar-kicker">CONTROL PLANE</span>
             <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{execution ? (detail ? "Durable execution detail" : "Durable executions") : intelligence ? (detail ? "Failure Intelligence detail" : "Failure Intelligence") : agent ? (detail ? "Agent detail" : "Agent registry") : release ? (detail ? "Release Decision detail" : "Release Decisions") : statistical ? (detail ? "Statistical evaluation detail" : "Statistical reliability") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
+            <span>{overview ? "Golden Demo overview" : execution ? (detail ? "Durable execution detail" : "Durable executions") : intelligence ? (detail ? "Failure Intelligence detail" : "Failure Intelligence") : agent ? (detail ? "Agent detail" : "Agent registry") : release ? (detail ? "Release Decision detail" : "Release Decisions") : statistical ? (detail ? "Statistical evaluation detail" : "Statistical reliability") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
           </div>
           <div className="topbar-meta">
             <span className="live-indicator"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
-            <span className="topbar-revision">RPF-18</span>
+            <span className="topbar-revision">RPF-19</span>
           </div>
         </header>
         <div className="page-content">{children}</div>
@@ -369,6 +375,71 @@ function AppShell({ children, detail = false, agent = false, failure = false, re
 
 function StatusTag({ status, tone = "neutral" }: { status: string; tone?: "success" | "fault" | "error" | "neutral" | "review" }) {
   return <span className={`status-tag ${tone}`}><i aria-hidden="true" />{status}</span>;
+}
+
+function GoldenDemoOverview() {
+  const productionAgent = getAgent(goldenDemoProfile.agents[0].agent_id);
+  const incidentAgent = getAgent(goldenDemoProfile.agents[1].agent_id);
+  const candidateEvaluation = getEvaluation(goldenDemoProfile.selected.candidate_evaluation);
+  const candidateDecision = getReleaseDecision(goldenDemoProfile.selected.release_decision);
+  const flagshipFailureCase = getFailureCase(goldenDemoProfile.selected.flagship_failure_case);
+  const flagshipCluster = getFailureCluster(goldenDemoProfile.selected.flagship_failure_cluster);
+  const bisect = getVersionBisect(goldenDemoProfile.selected.version_bisect);
+  const unknownOutcomeRun = getRun(goldenDemoProfile.selected.unknown_outcome_run);
+  const statisticalComparison = getStatisticalComparison(goldenDemoProfile.selected.statistical_comparison);
+  const candidateMeta = candidateEvaluation?.evaluation;
+  const decisionMeta = candidateDecision?.releaseDecision;
+  const failureMeta = flagshipFailureCase?.failureCase;
+  const clusterMeta = flagshipCluster?.cluster;
+  const bisectMeta = bisect?.bisect;
+  const unknownReconcile = unknownOutcomeRun?.trajectory.find((event) => event.eventType === "reconcile");
+  const unknownMutation = unknownOutcomeRun?.trajectory.find((event) => event.eventType === "environment_transition");
+  const unknownEffectCount = valueAt(unknownMutation?.payload, "effect_count") || valueAt(unknownMutation?.payload.result, "effect_count") || valueAt(unknownOutcomeRun?.verification?.evidence, "effect_count") || "1";
+  const firstDivergence = valueAt(flagshipFailureCase?.failureObservation, "failing_event_id") || valueAt(flagshipFailureCase?.failureObservation, "first_meaningful_divergence") || "recorded in Failure Case";
+  const familySignature = valueAt(clusterMeta?.familySignature, "domain_family") || valueAt(clusterMeta?.familySignature, "value") || clusterMeta?.clusterId || "—";
+  const firstBadCandidate = valueAt(bisectMeta?.firstBadCandidate, "candidate_id") || valueAt(bisectMeta?.firstBadCandidate, "candidate_version") || valueAt(bisectMeta?.firstBadCandidate, "version") || "identified by RPF-17";
+  const comparisonClassification = statisticalComparison ? displayValue(valueAt(statisticalComparison.statisticalComparison.aggregate, "classification")) : "—";
+  const statisticalRows = [
+    { id: "statistical-evaluation-rpf18-stable", label: "Stable", description: "quality cohort", fallback: "ELIGIBLE" },
+    { id: "statistical-evaluation-rpf18-flaky", label: "Flaky", description: "observed instability", fallback: "REVIEW_REQUIRED" },
+    { id: "statistical-evaluation-rpf18-safety", label: "Safety", description: "zero-tolerance event", fallback: "BLOCKED" },
+    { id: "statistical-evaluation-rpf18-evidence-poor", label: "Evidence-poor", description: "insufficient evidence", fallback: "INCONCLUSIVE" },
+  ];
+  const decisionHref = `/release-decisions/${encodeURIComponent(goldenDemoRefId("release.decision"))}`;
+  const candidateHref = `/evaluations/${encodeURIComponent(goldenDemoProfile.selected.candidate_evaluation)}`;
+  const clusterHref = `/failure-intelligence/clusters/${encodeURIComponent(goldenDemoRefId("failure.flagship_cluster"))}`;
+  const bisectHref = `/version-bisects/${encodeURIComponent(goldenDemoRefId("version.bisect"))}`;
+  const failureHrefValue = `/failures/${encodeURIComponent(goldenDemoRefId("failure.flagship_case"))}`;
+  const regressionHrefValue = `/regressions/${encodeURIComponent(goldenDemoRefId("regression.flagship"))}`;
+  const comparisonHref = `/statistical-comparisons/${encodeURIComponent(goldenDemoRefId("statistical.comparison"))}`;
+  const runHrefValue = `/runs/${encodeURIComponent(goldenDemoRefId("durable.response_lost_run"))}`;
+  return (
+    <AppShell overview>
+      <div className="page-header index-header golden-demo-header">
+        <div><span className="eyebrow">RPF-19 · GOLDEN DEMO</span><h1>Reliability evidence you can follow.</h1><p className="lede">A compact, interview-ready path from two explicit Agents through durable evidence, failure intelligence, regression coverage, statistical reliability, and a decision-only quality gate.</p></div>
+        <div className="corpus-note golden-demo-identity"><span className="section-label">DEMO PROFILE</span><strong>{goldenDemoProfile.demo.demo_id} · v{goldenDemoProfile.demo.version}</strong><span className="mono">source {shortId(goldenDemoProfile.demo.source_commit, 18)}</span></div>
+      </div>
+      <section className="corpus-boundary golden-demo-boundary" aria-label="Golden Demo boundary"><span className="boundary-mark">R</span><p><strong>Reviewed evidence only.</strong> This demo is seeded from the formal Control Plane API and immutable reviewed artifacts. It requires no Provider, cloud resource, release, deployment, or live rerun.</p><span className="schema-chip">{DATA_SOURCE_FOOTNOTE}</span></section>
+      <section className="golden-story-track" aria-label="Golden Demo investigation path">
+        <a className="golden-story-card active" href={candidateHref} onClick={(event) => { event.preventDefault(); navigate(candidateHref); }}><span>01 · CANDIDATE</span><strong>{displayValue(candidateMeta?.evaluationId || goldenDemoProfile.selected.candidate_evaluation)}</strong><small>{displayValue(candidateMeta?.evaluationStatus || "reviewed evaluation")}</small></a>
+        <a className="golden-story-card" href={comparisonHref} onClick={(event) => { event.preventDefault(); navigate(comparisonHref); }}><span>02 · EVIDENCE</span><strong>{comparisonClassification}</strong><small>baseline ↔ candidate intervals</small></a>
+        <a className="golden-story-card" href={clusterHref} onClick={(event) => { event.preventDefault(); navigate(clusterHref); }}><span>03 · FAILURE</span><strong>{shortId(String(familySignature), 24)}</strong><small>first divergence is inspectable</small></a>
+        <a className="golden-story-card" href={bisectHref} onClick={(event) => { event.preventDefault(); navigate(bisectHref); }}><span>04 · REGRESSION</span><strong>{shortId(String(firstBadCandidate), 24)}</strong><small>known-bad boundary located</small></a>
+        <a className="golden-story-card" href={decisionHref} onClick={(event) => { event.preventDefault(); navigate(decisionHref); }}><span>05 · GATE</span><strong>{displayValue(decisionMeta?.decisionStatus || "ELIGIBLE")}</strong><small>decision-only · no release</small></a>
+      </section>
+      <section className="golden-overview-grid" aria-label="Golden Demo identity and decision">
+        <div className="panel golden-agents-panel"><div className="panel-heading"><div><span className="eyebrow">TWO EXPLICIT AGENTS</span><h2>Identity stays attached to evidence.</h2></div><span className="section-count">{goldenDemoProfile.agents.length} agents</span></div><div className="golden-agent-list">{[productionAgent, incidentAgent].map((agent, index) => agent ? <a className="golden-agent-row" key={agent.agentId} href={`/agents/${encodeURIComponent(agent.agentId)}`} onClick={(event) => { event.preventDefault(); navigate(`/agents/${encodeURIComponent(agent.agentId)}`); }}><span className={`golden-agent-mark ${index === 1 ? "incident" : ""}`}>{index === 1 ? "IR" : "PC"}</span><span><strong>{agent.agentId}</strong><small>{agent.domain} · {agent.agentType}</small></span><span className="row-arrow" aria-hidden="true">→</span></a> : null)}</div><p className="golden-panel-note">The Production Change Agent and Incident Remediation Agent share a narrow integration contract; neither owns Release Authority.</p></div>
+        <div className="panel golden-decision-panel"><div className="panel-heading"><div><span className="eyebrow">QUALITY DECISION</span><h2>Candidate outcome</h2></div><StatusTag status={displayValue(decisionMeta?.decisionStatus || "ELIGIBLE")} tone={statisticalStatusTone(displayValue(decisionMeta?.decisionStatus || "ELIGIBLE"))} /></div><div className="golden-decision-hero"><strong>{displayValue(decisionMeta?.decisionStatus || "ELIGIBLE")}</strong><span>{displayValue(decisionMeta?.decisionSubject || "Candidate quality gate")}</span></div><div className="golden-decision-facts"><div><span>Candidate evaluation</span><strong className="mono">{shortId(candidateMeta?.evaluationId || goldenDemoProfile.selected.candidate_evaluation, 28)}</strong></div><div><span>Gate boundary</span><strong>Decision only</strong></div><div><span>Release executed</span><strong>{displayValue(valueAt(decisionMeta?.authorizationBoundary, "release_executed"))}</strong></div></div><a className="action-link" href={decisionHref} onClick={(event) => { event.preventDefault(); navigate(decisionHref); }}>Open full Release Decision →</a></div>
+      </section>
+      <section className="golden-path-grid" aria-label="Golden Demo evidence paths">
+        <div className="panel golden-path-panel"><div className="panel-heading"><div><span className="eyebrow">RPF-18 · STATISTICAL RELIABILITY</span><h2>Four cohorts, four conclusions.</h2></div><a className="action-link" href="/statistical-evaluations" onClick={(event) => { event.preventDefault(); navigate("/statistical-evaluations"); }}>Open index →</a></div><div className="golden-stat-list">{statisticalRows.map((row) => { const evaluation = getStatisticalEvaluation(row.id); const meta = evaluation?.statisticalEvaluation; const decision = evaluation ? getStatisticalDecisionForEvaluation(row.id) : undefined; const status = decision?.statisticalReleaseDecision.decisionStatus || row.fallback; const quality = evaluation ? statisticalQuality(evaluation) : {}; const agentQuality = objectValue(quality.agent_quality) || {}; const href = `/statistical-evaluations/${encodeURIComponent(row.id)}`; return <a className="golden-stat-row" key={row.id} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><span className="golden-stat-label"><strong>{row.label}</strong><small>{row.description}</small></span><span><strong>{meta ? `${meta.validAgentTrialCount}/${meta.attemptedTrialCount}` : "—"}</strong><small>{statisticalPercent(agentQuality.success_rate)} pass</small></span><StatusTag status={status} tone={statisticalStatusTone(status)} /><span className="row-arrow" aria-hidden="true">→</span></a>; })}</div><p className="golden-panel-note">Denominators, Wilson intervals, evidence quality, flaky observation, and zero-tolerance rules remain visible in the drilldown.</p></div>
+        <div className="panel golden-path-panel golden-failure-panel"><div className="panel-heading"><div><span className="eyebrow">RPF-17 · FAILURE INTELLIGENCE</span><h2>One failure, fully traceable.</h2></div><a className="action-link" href={clusterHref} onClick={(event) => { event.preventDefault(); navigate(clusterHref); }}>Open cluster →</a></div><div className="golden-failure-hero"><StatusTag status={displayValue(failureMeta?.currentStatus || "FAILURE CASE")} tone="fault" /><strong>{shortId(String(familySignature), 34)}</strong><span>Incident external dependency misdiagnosis</span></div><div className="golden-failure-facts"><div><span>First divergence</span><strong className="mono">{shortId(String(firstDivergence), 28)}</strong></div><div><span>Cluster level</span><strong>{displayValue(clusterMeta?.clusterLevel || "domain")}</strong></div><div><span>Exact / structural</span><strong>{clusterMeta ? `${clusterMeta.exactSignatureRefs.length} / ${clusterMeta.memberRefs.length}` : "—"}</strong></div><div><span>Regression coverage</span><strong>{clusterMeta?.regressionCoverage.length ? "covered" : "inspect"}</strong></div></div><div className="golden-inline-links"><a href={failureHrefValue} onClick={(event) => { event.preventDefault(); navigate(failureHrefValue); }}>Failure Case</a><a href={bisectHref} onClick={(event) => { event.preventDefault(); navigate(bisectHref); }}>Version bisect</a><a href={regressionHrefValue} onClick={(event) => { event.preventDefault(); navigate(regressionHrefValue); }}>Regression</a></div></div>
+        <div className="panel golden-path-panel golden-durable-panel"><div className="panel-heading"><div><span className="eyebrow">RPF-14 · DURABLE EXECUTION</span><h2>Unknown outcome, then reconcile.</h2></div><a className="action-link" href={runHrefValue} onClick={(event) => { event.preventDefault(); navigate(runHrefValue); }}>Open Run →</a></div><div className="golden-durable-flow"><span>side effect succeeded</span><b>→</b><span>response lost</span><b>→</b><span className="warning">UNKNOWN_OUTCOME</span><b>→</b><span>reconcile</span></div><div className="golden-durable-facts"><div><span>Run status</span><strong>{displayValue(unknownOutcomeRun?.outcome.status || "—")}</strong></div><div><span>Effect count</span><strong>{displayValue(unknownEffectCount)}</strong></div><div><span>Reconcile event</span><strong>{unknownReconcile ? "recorded" : "—"}</strong></div><div><span>Retry boundary</span><strong>blind retry prohibited</strong></div></div><a className="golden-execution-link" href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}><span>Canonical job read model</span><strong>Inspect Attempts / Operations / Evidence →</strong></a></div>
+      </section>
+      <section className="golden-claim-strip" aria-label="Golden Demo evidence claims"><div><span className="eyebrow">FACTS</span><strong>Two Agent identities</strong><p>Each link opens the same verified Agent-bearing corpus used by the rest of the product.</p></div><div><span className="eyebrow">VERIFIED</span><strong>{goldenDemoProfile.reviewed_artifacts.length} immutable refs</strong><p>Profile hashes bind the demo to reviewed Run, Failure, Regression, Evaluation, Gate, and Decision artifacts.</p></div><div><span className="eyebrow">BOUNDARY</span><strong>No automatic action</strong><p>ELIGIBLE is a quality decision, not a release, deploy, or production authorization.</p></div></section>
+      <footer className="page-footnote"><span>{goldenDemoProfile.demo.demo_id} · profile v{goldenDemoProfile.demo.version} · source {shortId(goldenDemoProfile.demo.source_commit, 20)}</span><span>Read-only overview · formal API · no live Agent or release action</span></footer>
+    </AppShell>
+  );
 }
 
 function statusTone(run: RunEvidence): "success" | "fault" | "error" | "neutral" {
@@ -2071,6 +2142,7 @@ export default function App() {
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
   if (dataSource.status === "loading") return <DataSourceState status="loading" />;
   if (dataSource.status === "error") return <DataSourceState status="error" error={dataSource.error} />;
+  if (location.pathname === "/" || location.pathname === "/overview") return <GoldenDemoOverview />;
   if (agent) return <AgentDetail agent={agent} />;
   if (location.pathname === "/agents") return <AgentIndex />;
   if (bisect) return <VersionBisectDetail bisect={bisect} />;
