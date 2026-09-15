@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1")
@@ -116,7 +117,8 @@ public class ControlPlaneController {
     ) {
         mark(request, manifest);
         Principal principal = authService.require(request, "decision:write");
-        if (manifest == null || !"RELEASE_DECISION".equals(normalize(manifest.entityType()))) {
+        String decisionEntityType = manifest == null ? "" : normalize(manifest.entityType());
+        if (!Set.of("RELEASE_DECISION", "STATISTICAL_RELEASE_DECISION").contains(decisionEntityType)) {
             throw new ProbeExceptions.RequestValidationException("INVALID_DECISION_MANIFEST", "Only Release Decision manifests may use this endpoint.");
         }
         if (failAfterWrite && !probeEnabled) {
@@ -227,6 +229,66 @@ public class ControlPlaneController {
     @GetMapping("/version-bisects/{entityId}")
     public ApiModels.MetadataView versionBisect(HttpServletRequest request, @PathVariable String entityId) {
         return get(request, "VERSION_BISECT", entityId);
+    }
+
+    @GetMapping("/statistical-sampling-plans")
+    public ApiModels.MetadataList statisticalSamplingPlans(HttpServletRequest request) {
+        return list(request, "STATISTICAL_SAMPLING_PLAN");
+    }
+
+    @GetMapping("/statistical-sampling-plans/{entityId}")
+    public ApiModels.MetadataView statisticalSamplingPlan(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "STATISTICAL_SAMPLING_PLAN", entityId);
+    }
+
+    @GetMapping("/statistical-evaluations")
+    public ApiModels.MetadataList statisticalEvaluations(HttpServletRequest request) {
+        return list(request, "STATISTICAL_EVALUATION");
+    }
+
+    @GetMapping("/statistical-evaluations/{entityId}")
+    public ApiModels.MetadataView statisticalEvaluation(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "STATISTICAL_EVALUATION", entityId);
+    }
+
+    @GetMapping("/statistical-comparisons")
+    public ApiModels.MetadataList statisticalComparisons(HttpServletRequest request) {
+        return list(request, "STATISTICAL_COMPARISON");
+    }
+
+    @GetMapping("/statistical-comparisons/{entityId}")
+    public ApiModels.MetadataView statisticalComparison(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "STATISTICAL_COMPARISON", entityId);
+    }
+
+    @GetMapping("/statistical-policies")
+    public ApiModels.MetadataList statisticalPolicies(HttpServletRequest request) {
+        return list(request, "STATISTICAL_POLICY");
+    }
+
+    @GetMapping("/statistical-policies/{entityId}")
+    public ApiModels.MetadataView statisticalPolicy(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "STATISTICAL_POLICY", entityId);
+    }
+
+    @GetMapping("/statistical-gates")
+    public ApiModels.MetadataList statisticalGates(HttpServletRequest request) {
+        return list(request, "STATISTICAL_GATE");
+    }
+
+    @GetMapping("/statistical-gates/{entityId}")
+    public ApiModels.MetadataView statisticalGate(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "STATISTICAL_GATE", entityId);
+    }
+
+    @GetMapping("/statistical-release-decisions")
+    public ApiModels.MetadataList statisticalReleaseDecisions(HttpServletRequest request) {
+        return list(request, "STATISTICAL_RELEASE_DECISION");
+    }
+
+    @GetMapping("/statistical-release-decisions/{entityId}")
+    public ApiModels.MetadataView statisticalReleaseDecision(HttpServletRequest request, @PathVariable String entityId) {
+        return get(request, "STATISTICAL_RELEASE_DECISION", entityId);
     }
 
     @GetMapping("/artifacts/{entityType}/{entityId}")

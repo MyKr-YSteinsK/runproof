@@ -11,6 +11,7 @@ on:
       - "runtime/**"
       - "spikes/rpf-16/**"
       - "spikes/rpf-17/**"
+      - "spikes/rpf-18/**"
       - "web/**"
       - "package.json"
       - "package-lock.json"
@@ -25,6 +26,7 @@ on:
       - "runtime/**"
       - "spikes/rpf-16/**"
       - "spikes/rpf-17/**"
+      - "spikes/rpf-18/**"
       - "web/**"
       - "package.json"
       - "package-lock.json"
@@ -81,6 +83,7 @@ jobs:
           python runtime/verify-reviewed-artifacts.py
           python spikes/rpf-16/probe.py --verify
           python spikes/rpf-17/verify-evidence.py
+          python spikes/rpf-18/verify-evidence.py
           mvn -q test package -f control-plane/pom.xml
           npm test
           npm run typecheck

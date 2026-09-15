@@ -260,6 +260,12 @@ public class LocalFileArtifactStore implements ArtifactStore {
         result.put("FAILURE_INTELLIGENCE", new ArtifactContract("rpf-failure-intelligence-v1", "Failure Intelligence", "intelligence", "intelligence_id"));
         result.put("FAILURE_CLUSTER", new ArtifactContract("rpf-failure-cluster-v1", "Failure Cluster", "cluster", "cluster_id"));
         result.put("VERSION_BISECT", new ArtifactContract("rpf-version-bisect-v1", "Version Bisect", "bisect", "bisect_id"));
+        result.put("STATISTICAL_SAMPLING_PLAN", new ArtifactContract("rpf-statistical-sampling-plan-v1", "Statistical Sampling Plan", "sampling_plan", "sampling_plan_id"));
+        result.put("STATISTICAL_EVALUATION", new ArtifactContract("rpf-statistical-evaluation-v1", "Statistical Evaluation", "statistical_evaluation", "evaluation_id"));
+        result.put("STATISTICAL_COMPARISON", new ArtifactContract("rpf-statistical-comparison-v1", "Statistical Comparison", "statistical_comparison", "comparison_id"));
+        result.put("STATISTICAL_POLICY", new ArtifactContract("rpf-statistical-policy-v1", "Statistical Policy", "statistical_policy", "policy_id"));
+        result.put("STATISTICAL_GATE", new ArtifactContract("rpf-statistical-quality-gate-v1", "Statistical Quality Gate", "statistical_gate", "gate_evaluation_id"));
+        result.put("STATISTICAL_RELEASE_DECISION", new ArtifactContract("rpf-statistical-release-decision-v1", "Statistical Release Decision", "statistical_release_decision", "release_decision_id"));
         return Map.copyOf(result);
     }
 

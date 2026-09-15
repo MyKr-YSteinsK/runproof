@@ -53,7 +53,9 @@ public class DurableExecutionController {
     private static final Set<String> EVIDENCE_OUTCOMES = Set.of("PASS", "FAIL", "ERROR", "INVALID", "INCONCLUSIVE", "CANCELLED");
     private static final Set<String> EVIDENCE_TYPES = Set.of(
             "RUN", "FAILURE_CASE", "REGRESSION", "REGRESSION_RESULT", "REGRESSION_COLLECTION",
-            "EVALUATION_SUITE", "EVALUATION", "COMPARISON", "QUALITY_POLICY", "QUALITY_GATE", "RELEASE_DECISION"
+            "EVALUATION_SUITE", "EVALUATION", "COMPARISON", "QUALITY_POLICY", "QUALITY_GATE", "RELEASE_DECISION",
+            "FAILURE_INTELLIGENCE", "FAILURE_CLUSTER", "VERSION_BISECT",
+            "STATISTICAL_SAMPLING_PLAN", "STATISTICAL_EVALUATION", "STATISTICAL_COMPARISON", "STATISTICAL_POLICY", "STATISTICAL_GATE", "STATISTICAL_RELEASE_DECISION"
     );
     private static final Set<String> FORBIDDEN_KEYS = Set.of(
             "authorization", "token", "secret", "password", "credential", "api_key", "apikey",

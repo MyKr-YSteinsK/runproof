@@ -1,0 +1,264 @@
+{
+  "schema_version": "rpf-statistical-comparison-v1",
+  "artifact_kind": "Statistical Comparison",
+  "statistical_comparison": {
+    "comparison_id": "statistical-comparison-rpf18-baseline-vs-stable",
+    "status": "COMPLETE",
+    "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+    "baseline_ref": {
+      "kind": "Statistical Evaluation",
+      "evaluation_id": "statistical-evaluation-rpf18-baseline"
+    },
+    "candidate_ref": {
+      "kind": "Statistical Evaluation",
+      "evaluation_id": "statistical-evaluation-rpf18-stable"
+    },
+    "baseline_agent": {
+      "agent_id": "incident-remediation-agent",
+      "agent_version": "1.0.1-evidence-supported-remediation",
+      "configuration_id": "incident-remediation-agent-v1-fixed",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "agent_contract_id": "incident-remediation-agent-contract",
+      "agent_contract_version": "1.0.0",
+      "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+      "fix_id": "incident-evidence-supported-remediation-v1"
+    },
+    "candidate_agent": {
+      "agent_id": "incident-remediation-agent",
+      "agent_version": "1.0.1-evidence-supported-remediation",
+      "configuration_id": "incident-remediation-agent-v1-fixed",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "agent_contract_id": "incident-remediation-agent-contract",
+      "agent_contract_version": "1.0.0",
+      "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+      "fix_id": "incident-evidence-supported-remediation-v1"
+    },
+    "aggregate": {
+      "classification": "IMPROVED",
+      "reasons": [
+        "CANDIDATE_LOWER_BOUND_ABOVE_BASELINE_UPPER_BOUND"
+      ],
+      "success_rate": {
+        "baseline": 0.5,
+        "candidate": 1.0,
+        "delta": 0.5,
+        "status": "KNOWN"
+      },
+      "confidence_interval": {
+        "baseline": {
+          "method": "WILSON_SCORE",
+          "method_version": "wilson-score-v1",
+          "confidence_level": 0.95,
+          "successes": 10,
+          "trials": 20,
+          "point_estimate": 0.5,
+          "lower": 0.29929800819821234,
+          "upper": 0.7007019918017876,
+          "status": "COMPLETE"
+        },
+        "candidate": {
+          "method": "WILSON_SCORE",
+          "method_version": "wilson-score-v1",
+          "confidence_level": 0.95,
+          "successes": 20,
+          "trials": 20,
+          "point_estimate": 1.0,
+          "lower": 0.8388748419471808,
+          "upper": 1.0,
+          "status": "COMPLETE"
+        }
+      },
+      "valid_trial_count": {
+        "baseline": 20,
+        "candidate": 20,
+        "delta": 0,
+        "status": "KNOWN"
+      },
+      "evidence_valid_rate": {
+        "baseline": 1.0,
+        "candidate": 1.0,
+        "delta": 0.0,
+        "status": "KNOWN"
+      },
+      "platform_error_rate": {
+        "baseline": 0.0,
+        "candidate": 0.0,
+        "delta": 0.0,
+        "status": "KNOWN"
+      },
+      "flaky_state": {
+        "baseline": "OBSERVED_FLAKY",
+        "candidate": "NO_FAILURE_OBSERVED"
+      },
+      "zero_tolerance_event_count": {
+        "baseline": 0,
+        "candidate": 0,
+        "delta": 0,
+        "status": "KNOWN"
+      },
+      "failure_families": [
+        {
+          "family_signature": "sha256:59ad29533615052bdb5a08bcd20a75790b610a69c8bfccf83747ffea358da640",
+          "baseline": {
+            "family_signature": "sha256:59ad29533615052bdb5a08bcd20a75790b610a69c8bfccf83747ffea358da640",
+            "fail_count": 10,
+            "trial_refs": [
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-11"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-12"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-13"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-14"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-15"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-16"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-17"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-18"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-19"
+              },
+              {
+                "kind": "Statistical Trial",
+                "id": "baseline-trial-20"
+              }
+            ],
+            "failure_intelligence_refs": [
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-4d4f61f1b3250b98c473"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-6c56999b8d5a05fa89af"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-c9ebb7970ef6c89cb434"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-5010a79bee8472004b44"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-6e072ca38d96713caf77"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-39602ad099f26783766c"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-0f5be71b51613fec776e"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-aa268b7a82c04f101783"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-9f68690950d5cf6fb006"
+              },
+              {
+                "kind": "Failure Intelligence",
+                "intelligence_id": "failure-intelligence-3d7f8487074ff9e2f657"
+              }
+            ],
+            "regression_covered_count": 0,
+            "failure_rate": 0.5,
+            "denominator": 20,
+            "regression_covered": false
+          },
+          "candidate": {
+            "fail_count": 0,
+            "failure_rate": 0.0
+          },
+          "failure_rate": {
+            "baseline": 0.5,
+            "candidate": 0.0,
+            "delta": -0.5,
+            "status": "KNOWN"
+          }
+        }
+      ],
+      "cost_token_latency": {
+        "baseline": {
+          "tokens": {
+            "known_sum": null,
+            "known_count": 0,
+            "unknown_count": 20
+          },
+          "cost": {
+            "known_sum": null,
+            "known_count": 0,
+            "unknown_count": 20,
+            "currency": null,
+            "cost_is_provider_invoice": false
+          },
+          "latency": {
+            "known_count": 0,
+            "unknown_count": 20,
+            "p50_ms": null,
+            "p95_ms": null,
+            "max_ms": null,
+            "total_ms": null
+          },
+          "unknown_values_are_not_zero": true
+        },
+        "candidate": {
+          "tokens": {
+            "known_sum": null,
+            "known_count": 0,
+            "unknown_count": 20
+          },
+          "cost": {
+            "known_sum": null,
+            "known_count": 0,
+            "unknown_count": 20,
+            "currency": null,
+            "cost_is_provider_invoice": false
+          },
+          "latency": {
+            "known_count": 0,
+            "unknown_count": 20,
+            "p50_ms": null,
+            "p95_ms": null,
+            "max_ms": null,
+            "total_ms": null
+          },
+          "unknown_values_are_not_zero": true
+        }
+      }
+    },
+    "validation_errors": [],
+    "source_identity": {
+      "runtime_version": "rpf-18.v1",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    "non_release_boundary": "STATISTICAL_COMPARISON_ONLY_NO_DECISION"
+  }
+}

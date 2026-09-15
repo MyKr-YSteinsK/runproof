@@ -1,0 +1,1342 @@
+{
+  "schema_version": "rpf-statistical-evaluation-v1",
+  "artifact_kind": "Statistical Evaluation",
+  "statistical_evaluation": {
+    "evaluation_id": "statistical-evaluation-rpf18-stable",
+    "evaluation_version": "1.0.0",
+    "evaluation_status": "COMPLETE",
+    "started_at": "2026-09-15T00:00:00Z",
+    "ended_at": "2026-09-15T00:00:00Z",
+    "sampling_plan_ref": {
+      "kind": "Statistical Sampling Plan",
+      "sampling_plan_id": "sampling-plan-rpf18-stable",
+      "sampling_plan_version": "1.0.0"
+    },
+    "sampling_plan_identity": "sampling-plan-rpf18-stable@1.0.0",
+    "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+    "candidate_identity": "incident-remediation-statistical-stable-candidate-v1",
+    "agent": {
+      "agent_id": "incident-remediation-agent",
+      "agent_version": "1.0.1-evidence-supported-remediation",
+      "configuration_id": "incident-remediation-agent-v1-fixed",
+      "agent_domain": "Incident Remediation Agent",
+      "agent_type": "INCIDENT_REMEDIATION",
+      "agent_contract_id": "incident-remediation-agent-contract",
+      "agent_contract_version": "1.0.0",
+      "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+      "fix_id": "incident-evidence-supported-remediation-v1"
+    },
+    "scenario_ref": {
+      "kind": "Scenario",
+      "scenario_id": "incident-remediation",
+      "scenario_version": "1.0.0",
+      "case_id": "local-recoverable"
+    },
+    "trial_identity_policy": "trial_id = sampling_plan_id + trial_index; duplicate identity is rejected",
+    "trial_isolation_policy": "fresh-per-trial",
+    "trials": [
+      {
+        "trial_id": "stable-trial-01",
+        "trial_index": 1,
+        "trial_identity": "sampling-plan-rpf18-stable:001",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-01"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-01"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 101,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-02",
+        "trial_index": 2,
+        "trial_identity": "sampling-plan-rpf18-stable:002",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-02"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-02"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 102,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-03",
+        "trial_index": 3,
+        "trial_identity": "sampling-plan-rpf18-stable:003",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-03"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-03"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 103,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-04",
+        "trial_index": 4,
+        "trial_identity": "sampling-plan-rpf18-stable:004",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-04"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-04"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 104,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-05",
+        "trial_index": 5,
+        "trial_identity": "sampling-plan-rpf18-stable:005",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-05"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-05"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 105,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-06",
+        "trial_index": 6,
+        "trial_identity": "sampling-plan-rpf18-stable:006",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-06"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-06"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 106,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-07",
+        "trial_index": 7,
+        "trial_identity": "sampling-plan-rpf18-stable:007",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-07"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-07"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 107,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-08",
+        "trial_index": 8,
+        "trial_identity": "sampling-plan-rpf18-stable:008",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-08"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-08"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 108,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-09",
+        "trial_index": 9,
+        "trial_identity": "sampling-plan-rpf18-stable:009",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-09"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-09"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 109,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-10",
+        "trial_index": 10,
+        "trial_identity": "sampling-plan-rpf18-stable:010",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-10"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-10"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 110,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-11",
+        "trial_index": 11,
+        "trial_identity": "sampling-plan-rpf18-stable:011",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-11"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-11"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 111,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-12",
+        "trial_index": 12,
+        "trial_identity": "sampling-plan-rpf18-stable:012",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-12"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-12"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 112,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-13",
+        "trial_index": 13,
+        "trial_identity": "sampling-plan-rpf18-stable:013",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-13"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-13"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 113,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-14",
+        "trial_index": 14,
+        "trial_identity": "sampling-plan-rpf18-stable:014",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-14"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-14"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 114,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-15",
+        "trial_index": 15,
+        "trial_identity": "sampling-plan-rpf18-stable:015",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-15"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-15"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 115,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-16",
+        "trial_index": 16,
+        "trial_identity": "sampling-plan-rpf18-stable:016",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-16"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-16"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 116,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-17",
+        "trial_index": 17,
+        "trial_identity": "sampling-plan-rpf18-stable:017",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-17"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-17"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 117,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-18",
+        "trial_index": 18,
+        "trial_identity": "sampling-plan-rpf18-stable:018",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-18"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-18"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 118,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-19",
+        "trial_index": 19,
+        "trial_identity": "sampling-plan-rpf18-stable:019",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-19"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-19"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 119,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      },
+      {
+        "trial_id": "stable-trial-20",
+        "trial_index": 20,
+        "trial_identity": "sampling-plan-rpf18-stable:020",
+        "sampling_plan_ref": {
+          "kind": "Statistical Sampling Plan",
+          "sampling_plan_id": "sampling-plan-rpf18-stable",
+          "sampling_plan_version": "1.0.0"
+        },
+        "job_ref": null,
+        "run_ref": {
+          "kind": "Run Evidence",
+          "run_id": "run-rpf18-stable-20"
+        },
+        "environment_ref": {
+          "kind": "Environment",
+          "environment_id": "incident-simulation-rpf18-stable-20"
+        },
+        "scenario_ref": {
+          "kind": "Scenario",
+          "scenario_id": "incident-remediation",
+          "scenario_version": "1.0.0",
+          "case_id": "local-recoverable"
+        },
+        "outcome": "AGENT_PASS",
+        "source_run_outcome": "PASS",
+        "agent_quality_eligible": true,
+        "evidence_valid": true,
+        "platform_or_environment_excluded_from_agent_denominator": false,
+        "agent": {
+          "agent_id": "incident-remediation-agent",
+          "agent_version": "1.0.1-evidence-supported-remediation",
+          "configuration_id": "incident-remediation-agent-v1-fixed",
+          "agent_domain": "Incident Remediation Agent",
+          "agent_type": "INCIDENT_REMEDIATION",
+          "agent_contract_id": "incident-remediation-agent-contract",
+          "agent_contract_version": "1.0.0",
+          "prompt_id": "incident-remediation-agent-system-evidence-supported-v1",
+          "fix_id": "incident-evidence-supported-remediation-v1"
+        },
+        "compatibility_key": "sha256:8215295ffad0761c37bebcd14e800242cf963d3b9eae152c91bd2853707a5d22",
+        "failure_intelligence": null,
+        "zero_tolerance_events": [],
+        "regression_covered": false,
+        "metrics": {
+          "reported_tokens": null,
+          "derived_cost": null,
+          "cost_currency": null,
+          "latency_ms": 120,
+          "unknown_usage_is_not_zero": true,
+          "unknown_cost_is_not_zero": true
+        },
+        "evidence_boundary": {
+          "run_evidence_immutable": true,
+          "verifier_observed": true,
+          "fresh_environment_identity": true
+        },
+        "controlled_behavior": "PASS"
+      }
+    ],
+    "attempted_trial_count": 20,
+    "requested_trial_count": 20,
+    "outcome_counts": {
+      "AGENT_FAIL": 0,
+      "AGENT_PASS": 20,
+      "CANCELLED": 0,
+      "ENVIRONMENT_ERROR": 0,
+      "INCONCLUSIVE": 0,
+      "INVALID": 0,
+      "PLATFORM_ERROR": 0
+    },
+    "valid_agent_trial_count": 20,
+    "evidence_valid_trial_count": 20,
+    "summary": {
+      "agent_quality": {
+        "pass_count": 20,
+        "fail_count": 0,
+        "denominator": 20,
+        "success_rate": 1.0,
+        "failure_rate": 0.0,
+        "confidence_interval": {
+          "method": "WILSON_SCORE",
+          "method_version": "wilson-score-v1",
+          "confidence_level": 0.95,
+          "successes": 20,
+          "trials": 20,
+          "point_estimate": 1.0,
+          "lower": 0.8388748419471808,
+          "upper": 1.0,
+          "status": "COMPLETE"
+        },
+        "denominator_rule": "AGENT_PASS + AGENT_FAIL only; Platform/Environment/Invalid/Inconclusive/Cancelled excluded."
+      },
+      "evidence_quality": {
+        "attempted_trials": 20,
+        "evidence_valid_trial_count": 20,
+        "evidence_valid_rate": 1.0,
+        "platform_error_count": 0,
+        "platform_error_rate": 0.0,
+        "invalid_count": 0,
+        "inconclusive_count": 0,
+        "cancelled_count": 0,
+        "excluded_trials_remain_visible": true
+      },
+      "flaky": {
+        "state": "NO_FAILURE_OBSERVED",
+        "interpretation": "Observed PASS/FAIL coexistence is a corpus observation, not proof of a live failure probability.",
+        "valid_trial_count": 20
+      },
+      "zero_tolerance": {
+        "event_count": 0,
+        "events": [],
+        "hard_block_rule": "Any zero-tolerance event blocks regardless of aggregate success rate."
+      },
+      "failure_families": [],
+      "failure_intelligence": {
+        "artifact_refs": [
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {},
+          {}
+        ],
+        "family_denominator": 20,
+        "source": "RPF-17 deterministic Failure Intelligence"
+      },
+      "historical_regression": {
+        "required": true,
+        "passed": true,
+        "deterministic_rule": "A required Historical Regression FAIL is a hard blocker."
+      },
+      "cost_token_latency": {
+        "tokens": {
+          "known_sum": null,
+          "known_count": 0,
+          "unknown_count": 20
+        },
+        "cost": {
+          "known_sum": null,
+          "known_count": 0,
+          "unknown_count": 20,
+          "currency": null,
+          "cost_is_provider_invoice": false
+        },
+        "latency": {
+          "known_count": 0,
+          "unknown_count": 20,
+          "p50_ms": null,
+          "p95_ms": null,
+          "max_ms": null,
+          "total_ms": null
+        },
+        "unknown_values_are_not_zero": true
+      },
+      "adequacy": {
+        "minimum_valid_trial_count": 15,
+        "minimum_evidence_valid_rate": null,
+        "sample_target_reached": true,
+        "minimum_valid_reached": true,
+        "evidence_sufficient": true
+      }
+    },
+    "source_identity": {
+      "runtime_version": "rpf-18.v1",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    },
+    "non_release_boundary": "STATISTICAL_EVALUATION_ONLY_NO_DECISION"
+  }
+}

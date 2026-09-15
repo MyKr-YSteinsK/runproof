@@ -142,7 +142,7 @@ export const loadControlPlaneCorpus = async (
   baseUrl = import.meta.env.VITE_CONTROL_PLANE_API_URL || "/api/v1",
   fetcher: FetchLike = fetch,
 ): Promise<ControlPlaneCorpusPayload> => {
-  const [runs, failures, failureIntelligence, failureClusters, versionBisects, regressions, regressionResults, regressionCollection, evaluationSuite, evaluations, comparisons, policies, qualityGates, releaseDecisions] = await Promise.all([
+  const [runs, failures, failureIntelligence, failureClusters, versionBisects, regressions, regressionResults, regressionCollection, evaluationSuite, evaluations, comparisons, policies, qualityGates, releaseDecisions, statisticalSamplingPlans, statisticalEvaluations, statisticalComparisons, statisticalPolicies, statisticalGates, statisticalReleaseDecisions] = await Promise.all([
     list(baseUrl, "RUN", fetcher),
     list(baseUrl, "FAILURE_CASE", fetcher),
     list(baseUrl, "FAILURE_INTELLIGENCE", fetcher),
@@ -157,8 +157,14 @@ export const loadControlPlaneCorpus = async (
     list(baseUrl, "QUALITY_POLICY", fetcher),
     list(baseUrl, "QUALITY_GATE", fetcher),
     list(baseUrl, "RELEASE_DECISION", fetcher),
+    list(baseUrl, "STATISTICAL_SAMPLING_PLAN", fetcher),
+    list(baseUrl, "STATISTICAL_EVALUATION", fetcher),
+    list(baseUrl, "STATISTICAL_COMPARISON", fetcher),
+    list(baseUrl, "STATISTICAL_POLICY", fetcher),
+    list(baseUrl, "STATISTICAL_GATE", fetcher),
+    list(baseUrl, "STATISTICAL_RELEASE_DECISION", fetcher),
   ]);
-  const [runArtifacts, failureArtifacts, failureIntelligenceArtifacts, failureClusterArtifacts, versionBisectArtifacts, regressionArtifacts, regressionResultArtifacts, collectionArtifacts, suiteArtifacts, evaluationArtifacts, comparisonArtifacts, policyArtifacts, gateArtifacts, decisionArtifacts] = await Promise.all([
+  const [runArtifacts, failureArtifacts, failureIntelligenceArtifacts, failureClusterArtifacts, versionBisectArtifacts, regressionArtifacts, regressionResultArtifacts, collectionArtifacts, suiteArtifacts, evaluationArtifacts, comparisonArtifacts, policyArtifacts, gateArtifacts, decisionArtifacts, statisticalSamplingPlanArtifacts, statisticalEvaluationArtifacts, statisticalComparisonArtifacts, statisticalPolicyArtifacts, statisticalGateArtifacts, statisticalDecisionArtifacts] = await Promise.all([
     resolveArtifacts(baseUrl, runs, fetcher),
     resolveArtifacts(baseUrl, failures, fetcher),
     resolveArtifacts(baseUrl, failureIntelligence, fetcher),
@@ -173,6 +179,12 @@ export const loadControlPlaneCorpus = async (
     resolveArtifacts(baseUrl, policies, fetcher),
     resolveArtifacts(baseUrl, qualityGates, fetcher),
     resolveArtifacts(baseUrl, releaseDecisions, fetcher),
+    resolveArtifacts(baseUrl, statisticalSamplingPlans, fetcher),
+    resolveArtifacts(baseUrl, statisticalEvaluations, fetcher),
+    resolveArtifacts(baseUrl, statisticalComparisons, fetcher),
+    resolveArtifacts(baseUrl, statisticalPolicies, fetcher),
+    resolveArtifacts(baseUrl, statisticalGates, fetcher),
+    resolveArtifacts(baseUrl, statisticalReleaseDecisions, fetcher),
   ]);
   const required = (values: unknown[], label: string): unknown[] => {
     if (values.length === 0) throw new ControlPlaneApiError(`Control Plane corpus is missing ${label}.`, "CORPUS_INCOMPLETE", null, false);
@@ -193,6 +205,12 @@ export const loadControlPlaneCorpus = async (
     qualityPolicies: required(policyArtifacts, "Quality Policy"),
     qualityGates: gateArtifacts,
     releaseDecisions: decisionArtifacts,
+    statisticalSamplingPlans: statisticalSamplingPlanArtifacts,
+    statisticalEvaluations: statisticalEvaluationArtifacts,
+    statisticalComparisons: statisticalComparisonArtifacts,
+    statisticalPolicies: statisticalPolicyArtifacts,
+    statisticalGates: statisticalGateArtifacts,
+    statisticalReleaseDecisions: statisticalDecisionArtifacts,
   };
 };
 

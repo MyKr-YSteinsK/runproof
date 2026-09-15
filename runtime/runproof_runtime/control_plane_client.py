@@ -38,13 +38,19 @@ CONTRACTS: dict[str, tuple[str, str, str, str]] = {
     "Failure Intelligence": ("FAILURE_INTELLIGENCE", "rpf-failure-intelligence-v1", "intelligence", "intelligence_id"),
     "Failure Cluster": ("FAILURE_CLUSTER", "rpf-failure-cluster-v1", "cluster", "cluster_id"),
     "Version Bisect": ("VERSION_BISECT", "rpf-version-bisect-v1", "bisect", "bisect_id"),
+    "Statistical Sampling Plan": ("STATISTICAL_SAMPLING_PLAN", "rpf-statistical-sampling-plan-v1", "sampling_plan", "sampling_plan_id"),
+    "Statistical Evaluation": ("STATISTICAL_EVALUATION", "rpf-statistical-evaluation-v1", "statistical_evaluation", "evaluation_id"),
+    "Statistical Comparison": ("STATISTICAL_COMPARISON", "rpf-statistical-comparison-v1", "statistical_comparison", "comparison_id"),
+    "Statistical Policy": ("STATISTICAL_POLICY", "rpf-statistical-policy-v1", "statistical_policy", "policy_id"),
+    "Statistical Quality Gate": ("STATISTICAL_GATE", "rpf-statistical-quality-gate-v1", "statistical_gate", "gate_evaluation_id"),
+    "Statistical Release Decision": ("STATISTICAL_RELEASE_DECISION", "rpf-statistical-release-decision-v1", "statistical_release_decision", "release_decision_id"),
 }
 
 KIND_TO_ENTITY = {kind: contract[0] for kind, contract in CONTRACTS.items()}
 REF_ID_FIELDS = (
     "run_id", "failure_case_id", "regression_id", "result_id", "collection_id", "suite_id",
     "evaluation_id", "comparison_id", "policy_id", "gate_evaluation_id", "release_decision_id",
-    "intelligence_id", "cluster_id", "bisect_id",
+    "intelligence_id", "cluster_id", "bisect_id", "sampling_plan_id",
 )
 
 
@@ -358,7 +364,7 @@ class ControlPlaneClient:
 
     def ingest(self, manifest: dict[str, Any]) -> dict[str, Any]:
         entity_type = manifest.get("entity_type")
-        path = "/release-decisions" if entity_type == "RELEASE_DECISION" else "/ingest/completed-evidence"
+        path = "/release-decisions" if entity_type in {"RELEASE_DECISION", "STATISTICAL_RELEASE_DECISION"} else "/ingest/completed-evidence"
         return self.request("POST", path, manifest)
 
     # Durable execution API. These methods deliberately stay HTTP/JSON-only;
@@ -553,6 +559,19 @@ def reviewed_product_corpus(root: Path) -> list[Path]:
         "reviewed-rpf17-invalid-negative-intelligence.json",
         "reviewed-rpf17-production-domain-cluster.json", "reviewed-rpf17-incident-domain-cluster.json",
         "reviewed-rpf17-cross-agent-cluster.json", "reviewed-rpf17-incident-version-bisect.json",
+        # RPF-18 additive Statistical Evaluation corpus.  These are distinct
+        # from deterministic Evaluation/Quality artifacts and never replace
+        # the historical RPF-07/RPF-08 bytes.
+        "reviewed-rpf18-statistical-sampling-plan-stable.json", "reviewed-rpf18-statistical-evaluation-stable.json",
+        "reviewed-rpf18-statistical-sampling-plan-baseline.json", "reviewed-rpf18-statistical-evaluation-baseline.json",
+        "reviewed-rpf18-statistical-comparison.json", "reviewed-rpf18-statistical-policy.json",
+        "reviewed-rpf18-statistical-gate-stable.json", "reviewed-rpf18-statistical-decision-stable.json",
+        "reviewed-rpf18-statistical-sampling-plan-flaky.json", "reviewed-rpf18-statistical-evaluation-flaky.json",
+        "reviewed-rpf18-statistical-gate-flaky.json", "reviewed-rpf18-statistical-decision-flaky.json",
+        "reviewed-rpf18-statistical-sampling-plan-safety.json", "reviewed-rpf18-statistical-evaluation-safety.json",
+        "reviewed-rpf18-statistical-gate-safety.json", "reviewed-rpf18-statistical-decision-safety.json",
+        "reviewed-rpf18-statistical-sampling-plan-evidence-poor.json", "reviewed-rpf18-statistical-evaluation-evidence-poor.json",
+        "reviewed-rpf18-statistical-gate-evidence-poor.json", "reviewed-rpf18-statistical-decision-evidence-poor.json",
     ]
     paths = [runtime / name for name in names]
     missing = [path for path in paths if not path.is_file()]
@@ -574,7 +593,7 @@ def register_reviewed_corpus(
     decision_client = ControlPlaneClient(base_url, decision_token)
     for path in reviewed_product_corpus(root):
         artifact = build_artifact_manifest(path, artifact_store_root)
-        client = decision_client if artifact.entity_type == "RELEASE_DECISION" else evidence_client
+        client = decision_client if artifact.entity_type in {"RELEASE_DECISION", "STATISTICAL_RELEASE_DECISION"} else evidence_client
         response = client.ingest_with_reconcile(artifact.manifest)
         results.append({
             "file": path.name,

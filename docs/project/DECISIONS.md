@@ -383,3 +383,24 @@ Failure Intelligence、Cluster、Version Bisect 作为现有 Control Plane immut
 ### Supersedes
 
 - none（承接并细化 D-009、D-013、D-021；不替代既有 Failure Case exact signature、Regression promotion 或 Release Decision authority 语义）
+
+## D-023｜统计 Reliability 采用 additive sampling、Wilson 区间与 fail-closed Flaky Gate
+
+- Status: `Accepted`
+- Date: 2026-09-15
+### Decision
+RPF-18 在 deterministic Evaluation/Quality 旁新增独立的 `rpf-statistical-sampling-plan-v1`、`rpf-statistical-evaluation-v1` 与 `rpf-statistical-comparison-v1` 合同，并以独立 Statistical Policy/Gate/Decision 表达 repeated-trial reliability。Sampling Plan 冻结 trial 数、最大 attempt budget、fresh-per-trial、Agent/config、Scenario、controlled sequence、95% Wilson score method/version 与 metrics。`AGENT_PASS + AGENT_FAIL` 是 Agent quality denominator；Platform/Environment、Invalid、Inconclusive、Cancelled 保留在 attempted/evidence denominator 与 trial matrix 中但不进入 Agent denominator。低于 minimum valid sample 只能 `INCONCLUSIVE`，不能用 1/1 或 3/3 通过。
+
+统计 Gate 遵循 D-013 的 `HARD_BLOCKER → EVIDENCE_INSUFFICIENT → REVIEW_REQUIRED → ELIGIBLE` precedence。Historical Regression FAIL、zero-tolerance safety event、authority violation、harmful remediation、blind retry after `UNKNOWN_OUTCOME` 保持 hard blocker；`OBSERVED_FLAKY` 只产生 review observation，不被解释为 live failure probability。比较必须基于兼容 Plan、证据充分性与区间关系输出 `IMPROVED`、`REGRESSED`、`NO_CLEAR_DIFFERENCE` 或 `INCOMPARABLE`，不能只看 point estimate。任何 `ELIGIBLE` 仍是 decision-only，不授权 release/deploy。
+
+RPF-18 controlled corpus 使用现有 Incident Remediation Agent domain 的 deterministic sequence，不调用 Provider、不声称 live probability；正式多 trial 路径复用既有 PostgreSQL durable Job/Attempt/Operation/Evidence 与 worker，每个 Trial 独立 Job/Run/environment，replay 不增加样本计数，Platform attempts 不冒充 Agent trials。RPF-17 Failure Intelligence 是每个 Agent FAIL 的 deterministic derived linkage；统计 artifact 不新增数据库表。
+### Why
+小规模 deterministic Evaluation 只能证明合同和当前样本，不能证明 repeated reliability、evidence-poor 或 observed flaky 的边界。RPF-18 的 Stable Good、Flaky Reliability、High Pass + Safety Flake 与 Evidence-poor/Platform noisy cohorts 验证了 denominator separation、Wilson edge/small-sample semantics、interval-aware comparison、safety precedence 与 fail-closed decision。真实 PostgreSQL durable run 证明 20 个 Trial Job 的 claim/terminal/read-back、attempt identity、artifact replay 与 cleanup 边界。
+### Consequences
+Web 只读提供 Statistical Evaluation trial matrix/drilldown、Comparison、Gate/Decision reason 与 Facts/Verified/Derived/Inference/AI boundary；CI 只校验 reviewed statistical corpus，不把 controlled cohort 当 live provider probability。未来要引入 live stochastic cohort、Bayesian/p-value/adaptive sampling、ML/embedding、第三 Agent、broker/scheduler/HA 或 automatic promotion/release，必须有新 Plan、新授权和新证据；当前不引入这些范围。
+### Reconsider when
+真实 provider cohort、样本规模、成本/延迟、跨 Agent family 或 production capacity 证据显示 fixed sampling/Wilson/controlled corpus 不再足够，且有可审计的新统计方法、retention、身份与安全边界可验证时重新评估。
+
+### Supersedes
+
+- none（承接 D-013、D-021、D-022；不修改既有 deterministic Evaluation、Release Decision、Failure Intelligence 或 durable reconcile 语义）

@@ -24,6 +24,7 @@ from .agent_contract import INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE, INCIDENT_KNO
 from .control_plane_client import ControlPlaneClient, ControlPlaneClientError
 from .evaluation import build_minimal_suite, execute_evaluation, validate_suite_artifact
 from .failure_case import load_json
+from .incident import CASE_EXTERNAL, CASE_LOCAL, CASE_RESPONSE_LOST, run_incident_slice, write_incident_artifact
 
 
 WORKER_RESULT_SCHEMA = "rpf-durable-worker-result-v1"
@@ -54,11 +55,34 @@ def _safe_contract(job: dict[str, Any]) -> dict[str, Any]:
     payload = job.get("payload_ref")
     if not isinstance(payload, dict):
         raise WorkerFailure("INVALID_WORKER_CONTRACT:payload_ref")
-    allowed = {"contract", "agent_profile", "regression_path", "suite_path", "output_dir", "evaluation_id", "operation_environment_id"}
+    allowed = {
+        "contract", "agent_profile", "regression_path", "suite_path", "output_dir", "evaluation_id", "operation_environment_id",
+        "trial_id", "trial_index", "behavior", "scenario_case_id", "fault_profile", "regression_covered",
+    }
     unknown = set(payload) - allowed
     if unknown:
         raise WorkerFailure("INVALID_WORKER_CONTRACT:unknown_field")
-    if payload.get("contract") != "rpf-evaluation-execution-v1":
+    contract = payload.get("contract")
+    if contract == "rpf-statistical-trial-execution-v1":
+        if not isinstance(payload.get("trial_id"), str) or not payload["trial_id"] or not payload["trial_id"].replace("-", "").replace("_", "").isalnum():
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:trial_id")
+        if not isinstance(payload.get("trial_index"), int) or payload["trial_index"] < 1:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:trial_index")
+        if payload.get("behavior") not in {"PASS", "ORDINARY_FAIL", "SAFETY_FAIL"}:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:behavior")
+        if payload.get("scenario_case_id") not in {CASE_LOCAL, CASE_RESPONSE_LOST, CASE_EXTERNAL}:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:scenario_case_id")
+        if payload.get("fault_profile") not in {"none", "response-lost"}:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:fault_profile")
+        if payload.get("behavior") == "SAFETY_FAIL" and payload.get("scenario_case_id") != CASE_EXTERNAL:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:safety_scenario")
+        if payload.get("behavior") == "ORDINARY_FAIL" and payload.get("scenario_case_id") != CASE_LOCAL:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:ordinary_fail_scenario")
+        for key in ("output_dir",):
+            if not isinstance(payload.get(key), str) or not payload[key]:
+                raise WorkerFailure(f"INVALID_WORKER_CONTRACT:{key}")
+        return payload
+    if contract != "rpf-evaluation-execution-v1":
         raise WorkerFailure("UNSUPPORTED_WORKER_CONTRACT")
     profile = payload.get("agent_profile")
     if profile not in SUPPORTED_PROFILES:
@@ -206,6 +230,8 @@ class DurableEvaluationWorker:
         if cancelled is not None:
             return cancelled
         payload = _safe_contract(job)
+        if payload.get("contract") == "rpf-statistical-trial-execution-v1":
+            return self._execute_statistical_trial(job_id, owner, payload)
         evaluation_id = str(payload["evaluation_id"])
         operation_id = f"operation-{job_id}-evaluation-dispatch"
         environment_id = str(payload.get("operation_environment_id") or f"worker-environment-{job_id}")
@@ -286,6 +312,78 @@ class DurableEvaluationWorker:
             "operation_status": "CONFIRMED",
             "lease_renewal_errors": [],
             "evaluation": evaluation,
+        }
+
+    def _execute_statistical_trial(self, job_id: str, owner: dict[str, Any], payload: dict[str, Any]) -> dict[str, Any]:
+        """Execute one independent statistical Trial through the durable path."""
+
+        trial_id = str(payload["trial_id"])
+        behavior = str(payload["behavior"])
+        operation_id = f"operation-{job_id}-statistical-trial"
+        environment_id = str(payload.get("operation_environment_id") or f"worker-environment-{job_id}")
+        self.client.prepare_operation(
+            job_id,
+            owner,
+            operation_id=operation_id,
+            environment_id=environment_id,
+            operation_fingerprint=_fingerprint(f"{job_id}:{trial_id}:{behavior}:{payload['scenario_case_id']}"),
+        )
+        operation = self.client.get_operation(job_id, operation_id).get("operation", {})
+        if operation.get("status") in {"PREPARED", "NOT_SUBMITTED"}:
+            cancelled = self._cancel_if_requested(job_id, owner)
+            if cancelled is not None:
+                return cancelled
+            self.client.dispatch_operation(job_id, operation_id, owner)
+        cancelled = self._cancel_if_requested(job_id, owner)
+        if cancelled is not None:
+            return cancelled
+
+        output_dir = _safe_path(payload["output_dir"], "output_dir", self.repo_root)
+        trial_path = output_dir / f"{trial_id}.json"
+        if trial_path.is_file():
+            run = json.loads(trial_path.read_text(encoding="utf-8"))
+        else:
+            profile = INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE if behavior == "PASS" else INCIDENT_KNOWN_BAD_AGENT_PROFILE
+            run = run_incident_slice(
+                str(payload["scenario_case_id"]),
+                fault_profile=str(payload["fault_profile"]),
+                agent_profile_id=profile,
+            )
+            write_incident_artifact(run, output_dir, trial_path.name)
+        run_meta = run.get("run") if isinstance(run.get("run"), dict) else {}
+        run_id = str(run_meta.get("run_id") or "")
+        if not run_id:
+            raise WorkerFailure("STATISTICAL_TRIAL_RUN_ID_MISSING")
+        if operation.get("status") != "CONFIRMED":
+            self.client.confirm_operation(job_id, operation_id, owner, receipt_ref=run_id)
+        manifest = self.client_manifest(trial_path)
+        ingested = self.client.ingest_file(trial_path, self.artifact_store_root)
+        evidence_id = f"execution-evidence-{job_id}"
+        outcome = run.get("outcome") if isinstance(run.get("outcome"), dict) else {}
+        evidence = self.client.ingest_execution_evidence(job_id, {
+            "evidence_id": evidence_id,
+            "entity_type": "RUN",
+            "entity_id": run_id,
+            "outcome": str(outcome.get("status") or "INCONCLUSIVE"),
+            "content_sha256": manifest.content_sha256,
+            "artifact_ref": manifest.manifest["artifact_ref"],
+        })
+        completed = self.client.complete_job(job_id, owner, evidence_id)
+        return {
+            "job_id": job_id,
+            "trial_id": trial_id,
+            "trial_index": payload["trial_index"],
+            "behavior": behavior,
+            "run_id": run_id,
+            "run_path": str(trial_path),
+            "status": "COMPLETED",
+            "state": completed.get("job", {}).get("state"),
+            "attempt_number": completed.get("job", {}).get("attempt_number"),
+            "evidence": evidence.get("status"),
+            "ingest": ingested.get("status") if isinstance(ingested, dict) else None,
+            "operation_id": operation_id,
+            "operation_status": "CONFIRMED",
+            "outcome": outcome.get("status"),
         }
 
     def _cancel_if_requested(

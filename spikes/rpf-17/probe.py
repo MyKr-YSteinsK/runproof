@@ -58,6 +58,10 @@ REVIEWED_FILES = {
     "bisect": "reviewed-rpf17-incident-version-bisect.json",
 }
 SECRET_PATTERN = re.compile(r"(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)")
+# RPF-18 adds a new runtime module.  RPF-17 reviewed artifacts are immutable
+# historical evidence, so they remain valid against the source identity that
+# produced them instead of being silently regenerated.
+HISTORICAL_RPF17_SOURCE_SHA256 = "9654c309b427de8da42192f2cda79383c257a7680b46ce4ca2098feafc19dad6"
 
 
 def _load(path: Path) -> dict[str, Any]:
@@ -300,6 +304,7 @@ def verify_reviewed_corpus() -> dict[str, Any]:
     expected = _build_intelligences(inputs)
     artifacts = {key: _load(RUNTIME_DIR / filename) for key, filename in REVIEWED_FILES.items()}
     source_hash = runtime_source_sha256()
+    allowed_source_hashes = {source_hash, HISTORICAL_RPF17_SOURCE_SHA256}
     for key, artifact in artifacts.items():
         assert_safe_artifact(artifact)
         if SECRET_PATTERN.search(json.dumps(artifact, ensure_ascii=False)):
@@ -308,18 +313,18 @@ def verify_reviewed_corpus() -> dict[str, Any]:
         errors = validate_intelligence_artifact(artifacts[key])
         if errors:
             raise RuntimeError(f"INTELLIGENCE_INVALID:{key}:{','.join(errors)}")
-        if artifacts[key]["intelligence"].get("source_identity", {}).get("source_sha256") != source_hash:
+        if artifacts[key]["intelligence"].get("source_identity", {}).get("source_sha256") not in allowed_source_hashes:
             raise RuntimeError(f"SOURCE_IDENTITY:{key}")
     for key in ("production_cluster", "incident_cluster", "cross_agent_cluster"):
         errors = validate_cluster_artifact(artifacts[key])
         if errors:
             raise RuntimeError(f"CLUSTER_INVALID:{key}:{','.join(errors)}")
-        if artifacts[key]["cluster"].get("source_identity", {}).get("source_sha256") != source_hash:
+        if artifacts[key]["cluster"].get("source_identity", {}).get("source_sha256") not in allowed_source_hashes:
             raise RuntimeError(f"SOURCE_IDENTITY:{key}")
     errors = validate_bisect_artifact(artifacts["bisect"])
     if errors:
         raise RuntimeError(f"BISECT_INVALID:{','.join(errors)}")
-    if artifacts["bisect"]["bisect"].get("source_identity", {}).get("source_sha256") != source_hash:
+    if artifacts["bisect"]["bisect"].get("source_identity", {}).get("source_sha256") not in allowed_source_hashes:
         raise RuntimeError("SOURCE_IDENTITY:bisect")
 
     # Historical exact bytes/semantics are checked by value and by recomputing

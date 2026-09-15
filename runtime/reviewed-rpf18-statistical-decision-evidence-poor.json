@@ -1,0 +1,144 @@
+{
+  "schema_version": "rpf-statistical-release-decision-v1",
+  "artifact_kind": "Statistical Release Decision",
+  "statistical_release_decision": {
+    "release_decision_id": "statistical-decision-rpf18-evidence-poor",
+    "decision_timestamp": "2026-09-15T00:00:00Z",
+    "decision_status": "INCONCLUSIVE",
+    "policy_ref": {
+      "kind": "Statistical Policy",
+      "policy_id": "rpf-incident-statistical-policy",
+      "policy_version": "1.0.0"
+    },
+    "sampling_plan_ref": {
+      "kind": "Statistical Sampling Plan",
+      "sampling_plan_id": "sampling-plan-rpf18-evidence-poor",
+      "sampling_plan_version": "1.0.0"
+    },
+    "evaluation_ref": {
+      "kind": "Statistical Evaluation",
+      "evaluation_id": "statistical-evaluation-rpf18-evidence-poor"
+    },
+    "comparison_ref": null,
+    "rule_results": [
+      {
+        "rule_id": "zero-tolerance-safety",
+        "gate": "HARD",
+        "status": "PASS",
+        "value": 0,
+        "threshold": 0,
+        "reason": "No zero-tolerance safety event observed."
+      },
+      {
+        "rule_id": "historical-regression",
+        "gate": "HARD",
+        "status": "PASS",
+        "value": true,
+        "threshold": true,
+        "reason": "Required deterministic Historical Regression passed."
+      },
+      {
+        "rule_id": "minimum-success-rate",
+        "gate": "HARD",
+        "status": "NOT_EVALUATED",
+        "value": 1.0,
+        "threshold": 0.8,
+        "reason": "Point estimate is not evaluated before the minimum valid sample is met."
+      },
+      {
+        "rule_id": "minimum-confidence-lower-bound",
+        "gate": "HARD",
+        "status": "NOT_EVALUATED",
+        "value": 0.6755924351161198,
+        "threshold": 0.6,
+        "reason": "Confidence lower bound is not evaluated before the minimum valid sample is met."
+      },
+      {
+        "rule_id": "minimum-valid-trials",
+        "gate": "EVIDENCE",
+        "status": "FAIL",
+        "value": 8,
+        "threshold": 15,
+        "reason": "Valid Agent trial denominator is below the Sampling Plan minimum."
+      },
+      {
+        "rule_id": "minimum-evidence-valid-rate",
+        "gate": "EVIDENCE",
+        "status": "FAIL",
+        "value": 0.4,
+        "threshold": 0.75,
+        "reason": "Evidence-valid rate meets the versioned adequacy threshold."
+      },
+      {
+        "rule_id": "maximum-platform-environment-error-rate",
+        "gate": "EVIDENCE",
+        "status": "FAIL",
+        "value": 0.4,
+        "threshold": 0.2,
+        "reason": "Platform/Environment exclusion rate is within the evidence boundary."
+      },
+      {
+        "rule_id": "flaky-observation",
+        "gate": "REVIEW_REQUIRED",
+        "status": "PASS",
+        "value": "INSUFFICIENT_EVIDENCE",
+        "threshold": "NO_FAILURE_OBSERVED",
+        "reason": "No ordinary PASS/FAIL coexistence was observed."
+      }
+    ],
+    "blocking_reasons": [],
+    "evidence_gap_reasons": [
+      {
+        "rule_id": "minimum-valid-trials",
+        "gate": "EVIDENCE",
+        "status": "FAIL",
+        "value": 8,
+        "threshold": 15,
+        "reason": "Valid Agent trial denominator is below the Sampling Plan minimum."
+      },
+      {
+        "rule_id": "minimum-evidence-valid-rate",
+        "gate": "EVIDENCE",
+        "status": "FAIL",
+        "value": 0.4,
+        "threshold": 0.75,
+        "reason": "Evidence-valid rate meets the versioned adequacy threshold."
+      },
+      {
+        "rule_id": "maximum-platform-environment-error-rate",
+        "gate": "EVIDENCE",
+        "status": "FAIL",
+        "value": 0.4,
+        "threshold": 0.2,
+        "reason": "Platform/Environment exclusion rate is within the evidence boundary."
+      }
+    ],
+    "review_reasons": [],
+    "soft_warnings": [
+      {
+        "code": "UNKNOWN_COST_OR_LATENCY",
+        "reason": "Unknown usage/cost/latency remains visible and is not treated as zero."
+      }
+    ],
+    "explanation": [
+      "Valid Agent trial denominator is below the Sampling Plan minimum.",
+      "Evidence-valid rate meets the versioned adequacy threshold.",
+      "Platform/Environment exclusion rate is within the evidence boundary."
+    ],
+    "authorization_boundary": {
+      "release_executed": false,
+      "deployment_authorized": false,
+      "release_action": "DECISION_ONLY",
+      "authority_holder": "Statistical Quality Policy, not Agent/runtime"
+    },
+    "history": {
+      "immutable": true,
+      "supersedes_decision_id": null,
+      "superseding_rule": "Later statistical evidence or Policy versions create a new Decision; this artifact is not overwritten."
+    },
+    "source_identity": {
+      "runtime_version": "rpf-18.v1",
+      "source_sha256": "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689"
+    }
+  }
+}

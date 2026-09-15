@@ -65,6 +65,7 @@ import productionDomainClusterArtifact from "../../../runtime/reviewed-rpf17-pro
 import incidentDomainClusterArtifact from "../../../runtime/reviewed-rpf17-incident-domain-cluster.json";
 import crossAgentClusterArtifact from "../../../runtime/reviewed-rpf17-cross-agent-cluster.json";
 import incidentVersionBisectArtifact from "../../../runtime/reviewed-rpf17-incident-version-bisect.json";
+import { activateStatisticalCorpus } from "./statistical";
 
 export const ACTIVE_SCHEMA_VERSION = "rpf-run-evidence-v2";
 
@@ -1287,6 +1288,12 @@ export interface ControlPlaneCorpusPayload {
   qualityPolicies: unknown[];
   qualityGates: unknown[];
   releaseDecisions: unknown[];
+  statisticalSamplingPlans: unknown[];
+  statisticalEvaluations: unknown[];
+  statisticalComparisons: unknown[];
+  statisticalPolicies: unknown[];
+  statisticalGates: unknown[];
+  statisticalReleaseDecisions: unknown[];
 }
 
 const asCorpusList = (value: unknown): unknown[] => Array.isArray(value) ? value : value === null || value === undefined ? [] : [value];
@@ -1307,6 +1314,14 @@ export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): 
   const comparisons = asCorpusList(payload.comparisons).map(normalizeComparison);
   const policies = asCorpusList(payload.qualityPolicies).map(normalizeQualityPolicy);
   const collections = asCorpusList(payload.regressionCollections).map(normalizeRegressionCollection);
+  activateStatisticalCorpus({
+    samplingPlans: payload.statisticalSamplingPlans,
+    evaluations: payload.statisticalEvaluations,
+    comparisons: payload.statisticalComparisons,
+    policies: payload.statisticalPolicies,
+    gates: payload.statisticalGates,
+    decisions: payload.statisticalReleaseDecisions,
+  });
   const suite = suites[0];
   const comparison = comparisons[0];
   const policy = policies[0];
