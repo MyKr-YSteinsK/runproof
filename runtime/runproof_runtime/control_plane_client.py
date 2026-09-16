@@ -442,8 +442,9 @@ class ControlPlaneClient:
     def get_operation(self, job_id: str, operation_id: str) -> dict[str, Any]:
         return self.request("GET", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}")
 
-    def ingest_execution_evidence(self, job_id: str, payload: dict[str, Any]) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/evidence", payload)
+    def ingest_execution_evidence(self, job_id: str, payload: dict[str, Any], *, owner: dict[str, Any] | None = None) -> dict[str, Any]:
+        body = {**owner, **payload} if owner is not None else payload
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/evidence", body)
 
     def complete_job(self, job_id: str, owner: dict[str, Any], evidence_id: str) -> dict[str, Any]:
         return self.request("POST", f"/jobs/{quote(job_id, safe='')}/complete", {**owner, "evidence_id": evidence_id})

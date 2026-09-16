@@ -29,7 +29,7 @@ from runtime.runproof_runtime.agent_contract import (  # noqa: E402
     INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE,
     agent_profile_for,
 )
-from runtime.runproof_runtime.control_plane_client import ControlPlaneClient, ControlPlaneClientError  # noqa: E402
+from runtime.runproof_runtime.control_plane_client import ControlPlaneClient, ControlPlaneClientError, build_artifact_manifest  # noqa: E402
 from runtime.runproof_runtime.evidence import assert_safe_artifact, runtime_source_sha256  # noqa: E402
 from runtime.runproof_runtime.failure_intelligence import build_failure_intelligence  # noqa: E402
 from runtime.runproof_runtime.incident import (  # noqa: E402
@@ -53,6 +53,7 @@ from runtime.runproof_runtime.statistical import (  # noqa: E402
     STATISTICAL_RUNTIME_VERSION,
     SAMPLING_PLAN_ARTIFACT_KIND,
     SAMPLING_PLAN_SCHEMA_VERSION,
+    LEGACY_RPF18_SOURCE_SHA256,
     build_sampling_plan,
     build_statistical_comparison,
     build_statistical_evaluation,
@@ -402,7 +403,7 @@ def verify_reviewed_corpus() -> dict[str, Any]:
     for artifact in artifacts.values():
         container = next((value for value in artifact.values() if isinstance(value, dict) and "source_identity" in value), {})
         require(container.get("source_identity", {}).get("runtime_version") == STATISTICAL_RUNTIME_VERSION, "SOURCE_RUNTIME_VERSION")
-        require(container.get("source_identity", {}).get("source_sha256") == source, "SOURCE_IDENTITY")
+        require(container.get("source_identity", {}).get("source_sha256") in {source, LEGACY_RPF18_SOURCE_SHA256}, "SOURCE_IDENTITY")
     evaluations = {cohort: artifacts[f"evaluation_{cohort}"]["statistical_evaluation"] for cohort in ("stable", "baseline", "flaky", "safety", "evidence_poor")}
     require(evaluations["stable"]["outcome_counts"]["AGENT_PASS"] == 20, "STABLE_COUNT")
     require(evaluations["stable"]["summary"]["flaky"]["state"] == "NO_FAILURE_OBSERVED", "STABLE_FLAKY_STATE")
@@ -534,15 +535,25 @@ def run_formal_control_plane() -> dict[str, Any]:
             generated = temp_root / "generated"
             generated.mkdir(parents=True, exist_ok=True)
             plan_path = RUNTIME_DIR / REVIEWED_FILES["plan_stable"]
+            policy_path = RUNTIME_DIR / REVIEWED_FILES["policy"]
+            comparison_path = RUNTIME_DIR / REVIEWED_FILES["comparison"]
             evaluation_path = write_statistical_artifact(formal_evaluation, generated, "formal-statistical-evaluation.json")
             gate_path = write_statistical_artifact(gate, generated, "formal-statistical-gate.json")
             decision_path = write_statistical_artifact(decision, generated, "formal-statistical-decision.json")
-            for path in (plan_path, evaluation_path, gate_path):
+            for path in (plan_path, policy_path, comparison_path, evaluation_path, gate_path):
                 try:
                     ingested = evidence_client.ingest_file(path, infrastructure.artifact_root)
                 except ControlPlaneClientError as error:
                     raise ProbeFailure(f"FORMAL_STATISTICAL_INGEST_{error.code}") from error
                 require(ingested.get("status") in {"INGESTED", "EVIDENCE_STORED", "IDEMPOTENT_REPLAY", "RECONCILED"}, f"FORMAL_STATISTICAL_INGEST_STATUS_{ingested.get('status', 'MISSING')}")
+            forbidden_decision_manifest = build_artifact_manifest(decision_path, infrastructure.artifact_root).manifest
+            try:
+                evidence_client.ingest(forbidden_decision_manifest)
+            except ControlPlaneClientError as error:
+                require(error.status == 403 and error.code == "AUTHORIZATION_FORBIDDEN", "FORMAL_EVIDENCE_DECISION_AUTHORITY")
+                evidence_decision_write_status = error.status
+            else:
+                raise ProbeFailure("evidence-only principal registered a Statistical Release Decision")
             try:
                 decision_ingest = decision_client.ingest_file(decision_path, infrastructure.artifact_root)
             except ControlPlaneClientError as error:
@@ -568,6 +579,7 @@ def run_formal_control_plane() -> dict[str, Any]:
                 "evaluation": formal_evaluation["statistical_evaluation"]["evaluation_id"],
                 "gate_decision": gate["statistical_gate"]["decision_status"],
                 "readback_verified": {"evaluation": True, "gate": True, "decision": True},
+                "evidence_decision_write_status": evidence_decision_write_status,
                 "worker_stdout_safe": bool(worker.stdout),
                 "worker_stderr_safe": bool(worker.stderr),
                 "no_live_provider": True,

@@ -298,7 +298,7 @@ class DurableEvaluationWorker:
             "outcome": "PASS",
             "content_sha256": manifest.content_sha256,
             "artifact_ref": manifest.manifest["artifact_ref"],
-        })
+        }, owner=owner)
         completed = self.client.complete_job(job_id, owner, evidence_id)
         return {
             "job_id": job_id,
@@ -367,7 +367,7 @@ class DurableEvaluationWorker:
             "outcome": str(outcome.get("status") or "INCONCLUSIVE"),
             "content_sha256": manifest.content_sha256,
             "artifact_ref": manifest.manifest["artifact_ref"],
-        })
+        }, owner=owner)
         completed = self.client.complete_job(job_id, owner, evidence_id)
         return {
             "job_id": job_id,
@@ -433,7 +433,7 @@ class DurableEvaluationWorker:
                 "content_sha256": content_sha,
                 "runtime_version": WORKER_RESULT_SCHEMA,
             },
-        })
+        }, owner=owner)
         completed = self.client.acknowledge_cancel(job_id, owner, evidence_id)
         return {
             "job_id": job_id,
@@ -490,7 +490,7 @@ class DurableEvaluationWorker:
                 "outcome": "ERROR",
                 "content_sha256": content,
                 "artifact_ref": {"artifact_id": evidence_id, "artifact_kind": "Platform Execution Evidence", "schema_version": "rpf-execution-evidence-v1", "content_sha256": content},
-            })
+            }, owner=owner)
             self.client.fail_platform_job(job_id, owner, evidence_id, reason)
         except Exception:
             # A lost Control Plane connection is itself a platform boundary;

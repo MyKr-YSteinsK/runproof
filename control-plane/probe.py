@@ -360,10 +360,10 @@ def start_durable(base_url: str, token: str, job_id: str, lease: dict[str, Any])
     return status, response
 
 
-def evidence_body(job_id: str, outcome: str = "PASS", suffix: str = "terminal") -> dict[str, Any]:
+def evidence_body(job_id: str, outcome: str = "PASS", suffix: str = "terminal", lease: dict[str, Any] | None = None) -> dict[str, Any]:
     evidence_id = f"rpf14-evidence-{job_id}-{suffix}"
     content_sha = sha256(f"{evidence_id}:{outcome}:rpf14")
-    return {
+    body = {
         "evidence_id": evidence_id,
         "entity_type": "EVALUATION",
         "entity_id": f"evaluation-{job_id}",
@@ -379,10 +379,64 @@ def evidence_body(job_id: str, outcome: str = "PASS", suffix: str = "terminal") 
             "runtime_version": "rpf14-formal-probe-v1",
         },
     }
+    return (owner_payload(lease) | body) if lease is not None else body
 
 
-def ingest_durable_evidence(base_url: str, token: str, job_id: str, outcome: str = "PASS", suffix: str = "terminal") -> tuple[int, dict[str, Any], dict[str, Any]]:
-    body = evidence_body(job_id, outcome, suffix)
+def prepare_terminal_artifact(
+    base_url: str,
+    token: str,
+    artifact_root: Path,
+    run_dir: Path,
+    job_id: str,
+    suffix: str,
+) -> Any:
+    """Register a minimal canonical Run artifact for a synthetic PASS job."""
+
+    run_id = f"rpf14-terminal-{job_id}-{suffix}"
+    path = run_dir / f"{run_id}.json"
+    document = {
+        "artifact_kind": "Run Evidence",
+        "schema_version": "rpf-run-evidence-v2",
+        "source_sha256": sha256("rpf14-formal-probe-source"),
+        "runtime_version": "rpf14-formal-probe-v1",
+        "run": {
+            "run_id": run_id,
+            "agent": {"agent_id": "rpf14-probe-agent", "agent_version": "rpf14-probe-v1"},
+            "scenario": {"scenario_id": "rpf14-terminal-probe", "scenario_version": "1"},
+        },
+        "environment": {"environment_id": f"rpf14-terminal-environment-{job_id}-{suffix}"},
+        "outcome": {"status": "PASS"},
+        "verification": {"status": "PASS", "verifier": "rpf14-formal-probe"},
+        "trajectory": {"events": []},
+    }
+    path.write_text(json.dumps(document, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
+    client = ControlPlaneClient(base_url, token)
+    response = client.ingest_file(path, artifact_root)
+    if response.get("status") not in {"INGESTED", "RECONCILED", "IDEMPOTENT_REPLAY"}:
+        raise ProbeFailure(f"terminal artifact registration returned {response.get('status', 'MISSING')}")
+    return build_artifact_manifest(path, artifact_root)
+
+
+def ingest_durable_evidence(
+    base_url: str,
+    token: str,
+    job_id: str,
+    outcome: str = "PASS",
+    suffix: str = "terminal",
+    lease: dict[str, Any] | None = None,
+    *,
+    artifact_root: Path | None = None,
+    run_dir: Path | None = None,
+) -> tuple[int, dict[str, Any], dict[str, Any]]:
+    body = evidence_body(job_id, outcome, suffix, lease)
+    if outcome == "PASS" and artifact_root is not None and run_dir is not None:
+        artifact = prepare_terminal_artifact(base_url, token, artifact_root, run_dir, job_id, suffix)
+        body.update({
+            "entity_type": artifact.entity_type,
+            "entity_id": artifact.entity_id,
+            "content_sha256": artifact.content_sha256,
+            "artifact_ref": artifact.manifest["artifact_ref"],
+        })
     status, response = http_json(base_url, "POST", f"/jobs/{job_id}/evidence", token=token, body=body)
     return status, response, body
 
@@ -859,7 +913,10 @@ def main() -> int:
         race_lease.update(heartbeat_response.get("lease", {}))
         if race_lease.get("lease_version", 0) <= previous_version:
             raise ProbeFailure("heartbeat did not advance fencing version")
-        _, race_evidence_response, race_evidence = ingest_durable_evidence(base_url, credentials["worker"], race_job_id)
+        _, race_evidence_response, race_evidence = ingest_durable_evidence(
+            base_url, credentials["worker"], race_job_id, lease=race_lease,
+            artifact_root=artifact_root, run_dir=run_dir,
+        )
         race_complete_status, race_complete = http_json(
             base_url,
             "POST",
@@ -900,7 +957,20 @@ def main() -> int:
         require_status(new_claim_status, 200, new_claim, "safe reclaim")
         if new_claim.get("status") != "CLAIMED" or new_lease is None or new_claim.get("job", {}).get("attempt_number") != 2:
             raise ProbeFailure("expired safe reclaim did not create attempt two")
-        _, _, reclaim_evidence = ingest_durable_evidence(base_url, credentials["worker"], reclaim_job_id)
+        stale_evidence_status, stale_evidence_response = http_json(
+            base_url,
+            "POST",
+            f"/jobs/{reclaim_job_id}/evidence",
+            token=credentials["worker"],
+            body=evidence_body(reclaim_job_id, suffix="stale-attempt", lease=old_lease),
+        )
+        require_status(stale_evidence_status, 409, stale_evidence_response, "stale evidence ingest")
+        if stale_evidence_response.get("error") != "STALE_ATTEMPT":
+            raise ProbeFailure("stale evidence ingest code drifted")
+        _, _, reclaim_evidence = ingest_durable_evidence(
+            base_url, credentials["worker"], reclaim_job_id, lease=new_lease,
+            artifact_root=artifact_root, run_dir=run_dir,
+        )
         old_heartbeat_status, old_heartbeat = http_json(
             base_url,
             "POST",
@@ -937,6 +1007,7 @@ def main() -> int:
             "new_attempt_status": attempts[1].get("status"),
             "attempt_number": new_complete.get("job", {}).get("attempt_number"),
             "old_heartbeat": old_heartbeat.get("error"),
+            "old_evidence": stale_evidence_response.get("error"),
             "old_finalize": old_complete.get("error"),
             "agent_fail_created": False,
         }
@@ -981,7 +1052,10 @@ def main() -> int:
         require_status(applied_status, 200, applied, "operation apply")
         confirmed_status, confirmed = http_json(base_url, "POST", f"/jobs/{operation_job_id}/operations/{operation_id}/confirm", token=credentials["worker"], body=owner_payload(operation_new_lease))
         require_status(confirmed_status, 200, confirmed, "operation confirm")
-        _, _, operation_evidence = ingest_durable_evidence(base_url, credentials["worker"], operation_job_id)
+        _, _, operation_evidence = ingest_durable_evidence(
+            base_url, credentials["worker"], operation_job_id, lease=operation_new_lease,
+            artifact_root=artifact_root, run_dir=run_dir,
+        )
         operation_complete_status, operation_complete = http_json(
             base_url,
             "POST",
@@ -1035,7 +1109,10 @@ def main() -> int:
         require_status(confirmed_replay_status, 200, confirmed_replay, "confirmed operation prepare replay")
         no_blind_retry_status, no_blind_retry = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/operations/{unknown_operation_id}/apply", token=credentials["worker"], body=owner_payload(unknown_lease))
         require_status(no_blind_retry_status, 200, no_blind_retry, "confirmed operation no-op")
-        _, _, unknown_evidence = ingest_durable_evidence(base_url, credentials["worker"], unknown_job_id)
+        _, _, unknown_evidence = ingest_durable_evidence(
+            base_url, credentials["worker"], unknown_job_id, lease=unknown_lease,
+            artifact_root=artifact_root, run_dir=run_dir,
+        )
         unknown_complete_status, unknown_complete = http_json(base_url, "POST", f"/jobs/{unknown_job_id}/complete", token=credentials["worker"], body=owner_payload(unknown_lease) | {"evidence_id": unknown_evidence["evidence_id"]})
         require_status(unknown_complete_status, 200, unknown_complete, "unknown complete")
         unknown_snapshot = unknown_complete.get("job", {})
@@ -1092,6 +1169,7 @@ def main() -> int:
             "content_sha256": artifact_manifest.content_sha256,
             "artifact_ref": artifact_manifest.manifest["artifact_ref"],
         }
+        artifact_evidence = owner_payload(artifact_lease) | artifact_evidence
         artifact_evidence_status, artifact_evidence_response = http_json(base_url, "POST", f"/jobs/{artifact_job_id}/evidence", token=credentials["worker"], body=artifact_evidence)
         require_status(artifact_evidence_status, 200, artifact_evidence_response, "artifact execution evidence")
         artifact_replay_status, artifact_replay_response = http_json(base_url, "POST", f"/jobs/{artifact_job_id}/evidence", token=credentials["worker"], body=artifact_evidence)
@@ -1113,6 +1191,85 @@ def main() -> int:
             "agent_rerun": False,
         }
 
+        # A PASS evidence row without a registered canonical artifact is not
+        # allowed to terminalize a claimed/running job.  The row remains
+        # active so the worker can repair the missing artifact or report a
+        # platform failure without silently claiming success.
+        missing_artifact_job_id = "rpf14-terminal-missing-artifact-" + uuid.uuid4().hex[:8]
+        missing_submit_status, _, _ = submit_durable(base_url, credentials["ci"], missing_artifact_job_id)
+        require_status(missing_submit_status, 201, {}, "missing terminal artifact submit")
+        _, _, missing_artifact_lease = claim_durable(base_url, credentials["worker"], missing_artifact_job_id, "rpf14-missing-artifact-worker", 4)
+        if missing_artifact_lease is None:
+            raise ProbeFailure("missing terminal artifact lease missing")
+        start_durable(base_url, credentials["worker"], missing_artifact_job_id, missing_artifact_lease)
+        missing_evidence = evidence_body(missing_artifact_job_id, lease=missing_artifact_lease)
+        missing_evidence_status, missing_evidence_response = http_json(
+            base_url, "POST", f"/jobs/{missing_artifact_job_id}/evidence",
+            token=credentials["worker"], body=missing_evidence,
+        )
+        require_status(missing_evidence_status, 200, missing_evidence_response, "missing terminal artifact evidence")
+        missing_complete_status, missing_complete_response = http_json(
+            base_url, "POST", f"/jobs/{missing_artifact_job_id}/complete",
+            token=credentials["worker"],
+            body=owner_payload(missing_artifact_lease) | {"evidence_id": missing_evidence["evidence_id"]},
+        )
+        require_status(missing_complete_status, 422, missing_complete_response, "missing terminal artifact completion")
+        if missing_complete_response.get("error") != "TERMINAL_ARTIFACT_NOT_REGISTERED":
+            raise ProbeFailure("missing terminal artifact error code drifted")
+        missing_job_status, missing_job = http_json(base_url, "GET", f"/jobs/{missing_artifact_job_id}", token=credentials["read"])
+        require_status(missing_job_status, 200, missing_job, "missing terminal artifact read-back")
+        if missing_job.get("state") != "RUNNING" or missing_job.get("terminal_evidence_id") is not None:
+            raise ProbeFailure("missing terminal artifact changed the job to a false terminal success")
+
+        mismatch_artifact_job_id = "rpf14-terminal-mismatch-artifact-" + uuid.uuid4().hex[:8]
+        mismatch_submit_status, _, _ = submit_durable(base_url, credentials["ci"], mismatch_artifact_job_id)
+        require_status(mismatch_submit_status, 201, {}, "mismatched terminal artifact submit")
+        _, _, mismatch_lease = claim_durable(base_url, credentials["worker"], mismatch_artifact_job_id, "rpf14-mismatch-artifact-worker", 4)
+        if mismatch_lease is None:
+            raise ProbeFailure("mismatched terminal artifact lease missing")
+        start_durable(base_url, credentials["worker"], mismatch_artifact_job_id, mismatch_lease)
+        mismatch_artifact = prepare_terminal_artifact(
+            base_url, credentials["worker"], artifact_root, run_dir,
+            mismatch_artifact_job_id, "mismatch",
+        )
+        mismatch_evidence = evidence_body(mismatch_artifact_job_id, suffix="mismatch", lease=mismatch_lease)
+        mismatch_evidence.update({
+            "entity_type": mismatch_artifact.entity_type,
+            "entity_id": mismatch_artifact.entity_id,
+            "content_sha256": mismatch_artifact.content_sha256,
+            "artifact_ref": json.loads(json.dumps(mismatch_artifact.manifest["artifact_ref"])),
+        })
+        mismatch_evidence["artifact_ref"]["artifact_id"] = "tampered-terminal-artifact"
+        mismatch_evidence_status, mismatch_evidence_response = http_json(
+            base_url, "POST", f"/jobs/{mismatch_artifact_job_id}/evidence",
+            token=credentials["worker"], body=mismatch_evidence,
+        )
+        require_status(mismatch_evidence_status, 200, mismatch_evidence_response, "mismatched terminal artifact evidence")
+        mismatch_complete_status, mismatch_complete_response = http_json(
+            base_url, "POST", f"/jobs/{mismatch_artifact_job_id}/complete",
+            token=credentials["worker"],
+            body=owner_payload(mismatch_lease) | {"evidence_id": mismatch_evidence["evidence_id"]},
+        )
+        require_status(mismatch_complete_status, 422, mismatch_complete_response, "mismatched terminal artifact completion")
+        if mismatch_complete_response.get("error") != "INVALID_TERMINAL_ARTIFACT_REF":
+            raise ProbeFailure("mismatched terminal artifact error code drifted")
+        mismatch_job_status, mismatch_job = http_json(
+            base_url, "GET", f"/jobs/{mismatch_artifact_job_id}", token=credentials["read"],
+        )
+        require_status(mismatch_job_status, 200, mismatch_job, "mismatched terminal artifact read-back")
+        if mismatch_job.get("state") != "RUNNING" or mismatch_job.get("terminal_evidence_id") is not None:
+            raise ProbeFailure("mismatched terminal artifact changed the job to a false terminal success")
+        checks["terminal_artifact_binding"] = {
+            "status": "PASS",
+            "missing_artifact_http": missing_complete_status,
+            "missing_artifact_error": missing_complete_response.get("error"),
+            "job_state_after_rejection": missing_job.get("state"),
+            "terminal_evidence_after_rejection": missing_job.get("terminal_evidence_id"),
+            "mismatched_artifact_http": mismatch_complete_status,
+            "mismatched_artifact_error": mismatch_complete_response.get("error"),
+            "mismatched_job_state_after_rejection": mismatch_job.get("state"),
+        }
+
         # Cancellation and timeout remain platform/execution states, never
         # an Agent FAIL.  Queued cancellation/timeout terminalize directly;
         # running cancellation waits for owner acknowledgement.
@@ -1131,7 +1288,7 @@ def main() -> int:
         if running_cancel_lease is None:
             raise ProbeFailure("running cancel lease missing")
         start_durable(base_url, credentials["worker"], running_cancel_id, running_cancel_lease)
-        _, _, running_cancel_evidence = ingest_durable_evidence(base_url, credentials["worker"], running_cancel_id, "CANCELLED")
+        _, _, running_cancel_evidence = ingest_durable_evidence(base_url, credentials["worker"], running_cancel_id, "CANCELLED", lease=running_cancel_lease)
         cancel_request_status, cancel_request_response = http_json(base_url, "POST", f"/jobs/{running_cancel_id}/cancel", token=credentials["ci"], body={})
         require_status(cancel_request_status, 200, cancel_request_response, "running cancel request")
         if cancel_request_response.get("status") != "CANCEL_REQUESTED":
@@ -1154,7 +1311,7 @@ def main() -> int:
         require_status(timeout_operation_status, 200, timeout_operation_response, "timeout operation prepare")
         timeout_lost_status, timeout_lost_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/operations/{timeout_operation_id}/apply?simulate_response_lost=true", token=credentials["worker"], body=owner_payload(timeout_lease))
         require_status(timeout_lost_status, 503, timeout_lost_response, "timeout response-lost")
-        _, _, timeout_evidence = ingest_durable_evidence(base_url, credentials["worker"], timeout_job_id, "INCONCLUSIVE")
+        _, _, timeout_evidence = ingest_durable_evidence(base_url, credentials["worker"], timeout_job_id, "INCONCLUSIVE", lease=timeout_lease)
         timeout_request_status, timeout_request_response = http_json(base_url, "POST", f"/jobs/{timeout_job_id}/timeout", token=credentials["worker"], body=owner_payload(timeout_lease) | {"evidence_id": timeout_evidence["evidence_id"]})
         require_status(timeout_request_status, 200, timeout_request_response, "unknown timeout")
         if timeout_request_response.get("status") != "RECONCILE_REQUIRED":

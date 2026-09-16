@@ -33,6 +33,7 @@ import java.util.UUID;
 
 import static com.runproof.controlplane.ProbeExceptions.EntityNotFoundException;
 import static com.runproof.controlplane.ProbeExceptions.IdentityConflictException;
+import static com.runproof.controlplane.ProbeExceptions.InvalidEvidenceException;
 import static com.runproof.controlplane.ProbeExceptions.RequestValidationException;
 
 /**
@@ -65,6 +66,7 @@ public class DurableExecutionController {
     private final JdbcTemplate jdbc;
     private final ObjectMapper mapper;
     private final TransactionTemplate transactions;
+    private final CanonicalMetadataService canonicalMetadataService;
     private final AuthService authService;
     private final boolean probeEnabled;
 
@@ -72,12 +74,14 @@ public class DurableExecutionController {
             JdbcTemplate jdbc,
             ObjectMapper mapper,
             PlatformTransactionManager transactionManager,
+            CanonicalMetadataService canonicalMetadataService,
             AuthService authService,
             @Value("${rpf.probe.enabled:false}") boolean probeEnabled
     ) {
         this.jdbc = jdbc;
         this.mapper = mapper;
         this.transactions = new TransactionTemplate(transactionManager);
+        this.canonicalMetadataService = canonicalMetadataService;
         this.authService = authService;
         this.probeEnabled = probeEnabled;
     }
@@ -575,15 +579,32 @@ public class DurableExecutionController {
         String outcome = requiredId(body, "outcome").toUpperCase(Locale.ROOT);
         String contentSha = requiredId(body, "content_sha256").toLowerCase(Locale.ROOT);
         Map<String, Object> artifactRef = object(body.get("artifact_ref"), "artifact_ref");
-        ensureSafe(body);
+        Map<String, Object> safeEvidence = new LinkedHashMap<>(body);
+        // Lease credentials are accepted only as transient fencing inputs;
+        // they are never included in the persisted evidence payload.
+        safeEvidence.remove("attempt_id");
+        safeEvidence.remove("worker_id");
+        safeEvidence.remove("lease_token");
+        safeEvidence.remove("lease_version");
+        ensureSafe(safeEvidence);
         if (!EVIDENCE_TYPES.contains(entityType) || !EVIDENCE_OUTCOMES.contains(outcome)) {
             throw new RequestValidationException("INVALID_EVIDENCE_CONTRACT", "Execution evidence type or outcome is outside the RunProof contract.");
+        }
+        if (Set.of("RELEASE_DECISION", "STATISTICAL_RELEASE_DECISION").contains(entityType)) {
+            throw new ProbeExceptions.AuthorizationForbiddenException("decision:write");
         }
         if (!contentSha.matches("[0-9a-f]{64}")) {
             throw new RequestValidationException("INVALID_EVIDENCE_FINGERPRINT", "Execution evidence content_sha256 must be a SHA-256 fingerprint.");
         }
         return transactions.execute(status -> {
-            findJob(normalizedJobId, true, true);
+            Map<String, Object> job = findJob(normalizedJobId, true, true);
+            String attemptId = null;
+            if (OWNER_STATES.contains(text(job, "state"))) {
+                requireOwner(job, body);
+                attemptId = text(job, "active_attempt_id");
+            } else if (!"QUEUED".equals(text(job, "state"))) {
+                throw new RequestValidationException("EVIDENCE_NOT_ACCEPTED_AT_BOUNDARY", "Execution evidence is accepted only for a queued job or its active owner attempt.");
+            }
             Map<String, Object> byId = findEvidence(evidenceId, true);
             Map<String, Object> byNaturalKey = findEvidenceByNaturalKey(normalizedJobId, entityType, entityId, true);
             Map<String, Object> existing = byId != null ? byId : byNaturalKey;
@@ -591,7 +612,8 @@ public class DurableExecutionController {
                 if (!Objects.equals(existing.get("content_sha256"), contentSha)
                         || !Objects.equals(existing.get("entity_type"), entityType)
                         || !Objects.equals(existing.get("entity_id"), entityId)
-                        || !Objects.equals(existing.get("job_id"), normalizedJobId)) {
+                        || !Objects.equals(existing.get("job_id"), normalizedJobId)
+                        || !Objects.equals(existing.get("attempt_id"), attemptId)) {
                     throw new IdentityConflictException("IMMUTABLE_EVIDENCE_CONFLICT", "Evidence identity already exists with different immutable content.");
                 }
                 return evidenceResponse("IDEMPOTENT_REPLAY", true, existing);
@@ -599,20 +621,21 @@ public class DurableExecutionController {
             Instant now = Instant.now();
             int inserted = jdbc.update("""
                     INSERT INTO rpf_execution_evidence(
-                        evidence_id, job_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json, created_at
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                        evidence_id, job_id, attempt_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json, created_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     ON CONFLICT DO NOTHING
-                    """, evidenceId, normalizedJobId, entityType, entityId, outcome, contentSha, json(artifactRef), Timestamp.from(now));
+                    """, evidenceId, normalizedJobId, attemptId, entityType, entityId, outcome, contentSha, json(artifactRef), Timestamp.from(now));
             if (inserted == 0) {
                 Map<String, Object> winner = findEvidence(evidenceId, true);
                 if (winner == null) winner = findEvidenceByNaturalKey(normalizedJobId, entityType, entityId, true);
-                if (winner == null || !Objects.equals(winner.get("content_sha256"), contentSha)) {
+                if (winner == null || !Objects.equals(winner.get("content_sha256"), contentSha)
+                        || !Objects.equals(winner.get("attempt_id"), attemptId)) {
                     throw new IdentityConflictException("IMMUTABLE_EVIDENCE_CONFLICT", "Concurrent evidence ingest produced a different immutable winner.");
                 }
                 return evidenceResponse("IDEMPOTENT_REPLAY", true, winner);
             }
-            insertEvent(normalizedJobId, text(findJob(normalizedJobId, false, true), "state"), text(findJob(normalizedJobId, false, true), "state"),
-                    "EVIDENCE_INGESTED", null, null, version(findJob(normalizedJobId, false, true)), "IMMUTABLE_REF_STORED", now);
+            insertEvent(normalizedJobId, text(job, "state"), text(job, "state"),
+                    "EVIDENCE_INGESTED", attemptId, null, version(job), "IMMUTABLE_REF_STORED", now);
             return evidenceResponse("EVIDENCE_STORED", false, findEvidence(evidenceId, false));
         });
     }
@@ -640,6 +663,7 @@ public class DurableExecutionController {
             if (hasUnsafeOperation(normalizedJobId)) {
                 throw new RequestValidationException("RECONCILE_REQUIRED", "Completion is blocked until every unresolved operation is reconciled.");
             }
+            requireVerifiedTerminalEvidence(job, evidence);
             finishTerminal(job, "COMPLETED", "COMPLETED", text(evidence, "outcome"), evidenceId, "EVIDENCE_COMMITTED", "ATTEMPT_COMPLETED");
             return response("COMPLETED", false, normalizedJobId, snapshot(findJob(normalizedJobId, false, true)));
         });
@@ -905,7 +929,7 @@ public class DurableExecutionController {
         result.put("operations", operations);
         List<Map<String, Object>> evidence = new ArrayList<>();
         for (Map<String, Object> item : jdbc.queryForList("""
-                SELECT evidence_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json,
+                SELECT evidence_id, attempt_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json,
                        created_at::text AS created_at
                 FROM rpf_execution_evidence WHERE job_id=? ORDER BY created_at, evidence_id
                 """, job.get("job_id"))) {
@@ -966,7 +990,7 @@ public class DurableExecutionController {
 
     private Map<String, Object> findEvidence(String evidenceId, boolean forUpdate) {
         String sql = """
-                SELECT evidence_id, job_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json,
+                SELECT evidence_id, job_id, attempt_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json,
                        created_at::text AS created_at
                 FROM rpf_execution_evidence WHERE evidence_id=?
                 """ + (forUpdate ? " FOR UPDATE" : "");
@@ -976,7 +1000,7 @@ public class DurableExecutionController {
 
     private Map<String, Object> findEvidenceByNaturalKey(String jobId, String entityType, String entityId, boolean forUpdate) {
         String sql = """
-                SELECT evidence_id, job_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json,
+                SELECT evidence_id, job_id, attempt_id, entity_type, entity_id, outcome, content_sha256, artifact_ref_json,
                        created_at::text AS created_at
                 FROM rpf_execution_evidence WHERE job_id=? AND entity_type=? AND entity_id=?
                 """ + (forUpdate ? " FOR UPDATE" : "");
@@ -988,6 +1012,53 @@ public class DurableExecutionController {
         Map<String, Object> evidence = findEvidence(evidenceId, forUpdate);
         if (evidence == null || !Objects.equals(evidence.get("job_id"), jobId)) throw new EntityNotFoundException("Evidence does not exist for this durable job: " + evidenceId);
         return evidence;
+    }
+
+    private void requireVerifiedTerminalEvidence(Map<String, Object> job, Map<String, Object> evidence) {
+        if (!Objects.equals(text(job, "active_attempt_id"), text(evidence, "attempt_id"))) {
+            throw new IdentityConflictException("STALE_ATTEMPT", "Terminal evidence belongs to a different execution attempt.");
+        }
+        if (!"PASS".equals(text(evidence, "outcome"))) {
+            throw new RequestValidationException("TERMINAL_EVIDENCE_PASS_REQUIRED", "A completed durable job requires PASS execution evidence.");
+        }
+        Object storedReference = evidence.get("artifact_ref");
+        if (!(storedReference instanceof Map<?, ?>)) {
+            storedReference = parseJson(text(evidence, "artifact_ref_json"));
+        }
+        Map<String, Object> referenceMap = object(storedReference, "artifact_ref");
+        ApiModels.ArtifactRef evidenceReference;
+        try {
+            evidenceReference = mapper.convertValue(referenceMap, ApiModels.ArtifactRef.class);
+        } catch (IllegalArgumentException exception) {
+            throw new InvalidEvidenceException("INVALID_TERMINAL_ARTIFACT_REF", "Terminal evidence artifact reference is malformed.");
+        }
+        if (evidenceReference == null
+                || !Objects.equals(text(evidence, "content_sha256"), evidenceReference.contentSha256())
+                || evidenceReference.artifactId() == null
+                || evidenceReference.artifactKey() == null
+                || evidenceReference.artifactKind() == null
+                || evidenceReference.schemaVersion() == null
+                || evidenceReference.sourceSha256() == null
+                || evidenceReference.runtimeVersion() == null) {
+            throw new InvalidEvidenceException("INVALID_TERMINAL_ARTIFACT_REF", "Terminal evidence artifact reference does not match its immutable content identity.");
+        }
+        ApiModels.ArtifactResponse canonical;
+        try {
+            canonical = canonicalMetadataService.readArtifact(text(evidence, "entity_type"), text(evidence, "entity_id"));
+        } catch (EntityNotFoundException exception) {
+            throw new InvalidEvidenceException("TERMINAL_ARTIFACT_NOT_REGISTERED", "Terminal evidence must reference a registered canonical artifact.");
+        }
+        ApiModels.ArtifactSnapshot snapshot = canonical == null ? null : canonical.artifactRef();
+        if (snapshot == null || !snapshot.resolved()
+                || !Objects.equals(evidenceReference.artifactId(), snapshot.artifactId())
+                || !Objects.equals(evidenceReference.artifactKey(), snapshot.artifactKey())
+                || !Objects.equals(evidenceReference.artifactKind(), snapshot.artifactKind())
+                || !Objects.equals(evidenceReference.schemaVersion(), snapshot.schemaVersion())
+                || !evidenceReference.contentSha256().equalsIgnoreCase(snapshot.contentSha256())
+                || !Objects.equals(evidenceReference.sourceSha256(), snapshot.sourceSha256())
+                || !Objects.equals(evidenceReference.runtimeVersion(), snapshot.runtimeVersion())) {
+            throw new InvalidEvidenceException("INVALID_TERMINAL_ARTIFACT_REF", "Terminal evidence does not resolve to the registered immutable artifact.");
+        }
     }
 
     private boolean hasUnsafeOperation(String jobId) {

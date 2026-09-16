@@ -54,6 +54,12 @@ def _trials(plan: dict, statuses: list[str], *, safety_index: int | None = None)
     for index, status in enumerate(statuses, start=1):
         run_status = "PASS" if status == "PASS" else "FAIL"
         run = make_run(f"stat-{index}", f"stat-env-{index}", "production-change-agent-v1-fixed", run_status)
+        # The trial is bound to the Sampling Plan's Agent and Scenario.  The
+        # generic Run fixture starts with a Production Change identity, so the
+        # statistical test explicitly supplies the intended Incident Agent
+        # contract before classification.
+        run["run"]["agent"] = copy.deepcopy(plan["sampling_plan"]["agent"])
+        run["run"]["scenario"] = copy.deepcopy(plan["sampling_plan"]["scenario_ref"])
         if status == "ENVIRONMENT_ERROR":
             run["outcome"] = {"status": "ERROR", "source": "ENVIRONMENT", "attribution": "Platform/Environment", "agent_quality_eligible": False}
             run["health_context"]["environment"]["failure_source"] = True
@@ -149,6 +155,67 @@ class StatisticalContractTests(unittest.TestCase):
         duplicate = copy.deepcopy(trials[0])
         with self.assertRaisesRegex(ValueError, "DUPLICATE_TRIAL_ID"):
             build_statistical_evaluation(plan, [trials[0], duplicate], evaluation_id="stat-eval-duplicate")
+
+    def test_aggregate_summary_is_recomputed_from_raw_trials(self):
+        plan = _plan(3, ["PASS", "PASS", "PASS"], candidate="aggregate")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS", "FAIL"]), evaluation_id="stat-eval-aggregate")
+        forged = copy.deepcopy(evaluation)
+        forged["statistical_evaluation"]["summary"]["agent_quality"]["pass_count"] = 3
+        errors = validate_statistical_evaluation(forged)
+        self.assertIn("SUMMARY_AGENT_QUALITY:pass_count", errors)
+        gate = evaluate_statistical_gate(build_statistical_policy(), forged)
+        self.assertEqual(gate["statistical_gate"]["status"], "INVALID")
+        self.assertIsNone(gate["statistical_gate"]["decision_status"])
+
+    def test_invalid_evaluation_cannot_be_promoted(self):
+        plan = _plan(3, ["PASS", "PASS", "PASS"], candidate="invalid")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS", "PASS"]), evaluation_id="stat-eval-invalid")
+        evaluation["statistical_evaluation"]["evaluation_status"] = "INVALID"
+        self.assertIn("INVALID_EVALUATION", validate_statistical_evaluation(evaluation))
+        gate = evaluate_statistical_gate(build_statistical_policy(), evaluation)
+        self.assertEqual(gate["statistical_gate"]["status"], "INVALID")
+        self.assertIsNone(gate["statistical_gate"]["decision_status"])
+
+    def test_duplicate_run_or_environment_cannot_create_extra_trials(self):
+        plan = _plan(3, ["PASS", "PASS", "PASS"], candidate="duplicate-binding")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS", "PASS"]), evaluation_id="stat-eval-duplicate-binding")
+        evaluation["statistical_evaluation"]["trials"][1]["run_ref"] = copy.deepcopy(evaluation["statistical_evaluation"]["trials"][0]["run_ref"])
+        evaluation["statistical_evaluation"]["trials"][2]["environment_ref"] = copy.deepcopy(evaluation["statistical_evaluation"]["trials"][0]["environment_ref"])
+        errors = validate_statistical_evaluation(evaluation)
+        self.assertIn("DUPLICATE_RUN_REF", errors)
+        self.assertIn("DUPLICATE_ENVIRONMENT_REF", errors)
+
+    def test_flaky_policy_blocked_effect_is_hard_precedence(self):
+        plan = _plan(3, ["PASS", "PASS", "PASS"], candidate="flaky-block")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS", "FAIL"]), evaluation_id="stat-eval-flaky-block")
+        policy = build_statistical_policy()
+        policy["statistical_policy"]["rules"]["observed_flaky_effect"] = "BLOCKED"
+        gate = evaluate_statistical_gate(policy, evaluation)
+        self.assertEqual(gate["statistical_gate"]["decision_status"], "BLOCKED")
+        flaky_rule = next(item for item in gate["statistical_gate"]["rule_results"] if item["rule_id"] == "flaky-observation")
+        self.assertEqual(flaky_rule["gate"], "BLOCKED")
+
+    def test_policy_sampling_plan_incompatibility_fails_closed(self):
+        plan = _plan(3, ["PASS", "PASS", "PASS"], candidate="incompatible")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS", "PASS"]), evaluation_id="stat-eval-incompatible")
+        policy = build_statistical_policy()
+        policy["statistical_policy"]["compatible_sampling_plan"]["suite_id"] = "unrelated-suite"
+        self.assertEqual(validate_statistical_policy(policy), [])
+        gate = evaluate_statistical_gate(policy, evaluation)
+        self.assertEqual(gate["statistical_gate"]["status"], "INVALID")
+        self.assertIsNone(gate["statistical_gate"]["decision_status"])
+
+    def test_missing_trial_run_reference_fails_closed(self):
+        plan = _plan(2, ["PASS", "PASS"], candidate="missing-ref")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS"]), evaluation_id="stat-eval-missing-ref")
+        evaluation["statistical_evaluation"]["trials"][0]["run_ref"] = None
+        self.assertIn("TRIAL_RUN_REF", validate_statistical_evaluation(evaluation))
+
+    def test_trial_evidence_denominator_cannot_be_forged(self):
+        plan = _plan(2, ["PASS", "PASS"], candidate="denominator-forge")
+        evaluation = build_statistical_evaluation(plan, _trials(plan, ["PASS", "PASS"]), evaluation_id="stat-eval-denominator-forge")
+        evaluation["statistical_evaluation"]["trials"][0]["evidence_valid"] = False
+        self.assertIn("TRIAL_DENOMINATOR_SEMANTICS", validate_statistical_evaluation(evaluation))
 
 
 if __name__ == "__main__":

@@ -98,7 +98,7 @@ public class ControlPlaneController {
     ) {
         mark(request, manifest);
         String entityType = manifest == null ? "" : normalize(manifest.entityType());
-        if ("RELEASE_DECISION".equals(entityType)) {
+        if (Set.of("RELEASE_DECISION", "STATISTICAL_RELEASE_DECISION").contains(entityType)) {
             throw new ProbeExceptions.AuthorizationForbiddenException("decision:write");
         }
         Principal principal = authService.require(request, "evidence:write");
