@@ -498,6 +498,7 @@ def run_formal_control_plane() -> dict[str, Any]:
                 "--token-env", "RPF_AUTH_WORKER_TOKEN",
                 "--repo-root", str(ROOT),
                 "--artifact-store-root", str(infrastructure.artifact_root),
+                "--allowed-root", str(temp_root),
                 "--worker-id", "rpf18-formal-worker",
                 "--lease-seconds", "30", "--max-jobs", "20", "--idle-timeout", "180", "--once",
                 "--result-path", str(worker_result_path),

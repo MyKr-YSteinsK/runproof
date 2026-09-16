@@ -515,6 +515,7 @@ def run_formal_worker(base_url: str, token: str, artifact_root: Path, result_pat
             "--token-env", "RPF_AUTH_WORKER_TOKEN",
             "--repo-root", str(ROOT),
             "--artifact-store-root", str(artifact_root.resolve()),
+            "--allowed-root", str(result_path.resolve().parent),
             "--worker-id", worker_id,
             "--lease-seconds", str(lease_seconds),
             "--max-jobs", str(max_jobs),

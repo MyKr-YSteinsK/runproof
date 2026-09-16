@@ -4,7 +4,7 @@ RPF-19 将 RunProof 收敛为一条可离线复现的 5～10 分钟调查路径�
 
 ## 1. 启动
 
-前置条件：Windows、Docker Desktop（本地已有 `postgres:16-alpine`）、Java 17+、Python 3.11+、Node.js/npm、Maven。首次运行若正式 Control Plane JAR 不存在，入口脚本会执行一次 Maven package。
+前置条件：Windows、Docker Desktop（本地已有 `postgres:16-alpine`）、Java 17+、Python 3.11+、Node.js/npm、Maven。每次启动入口都会在本地日志中 fresh 执行正式 `control-plane/` 的 Maven test/package，避免复用过期 JAR。
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
@@ -17,6 +17,8 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 3. 通过 `runtime.runproof_runtime.control_plane_client` 注册全部 reviewed corpus；
 4. 对 Golden Demo refs 做 canonical metadata + verified artifact read-back；
 5. 以 API-backed mode 启动 Vite Web。
+
+RPF-23 将每个 child 的环境显式收窄：Control Plane 获得服务端 DB/校验配置，seed 只获得 seed 所需 read/evidence/decision credential，Web 只获得 proxy target 与 read token；Worker 只接受 worker token 和 `--allowed-root` 约束下的 IO 路径。启动 supervisor 不把这些 credential 写入调用方 shell，`.local/rpf-19/demo/demo-state.json` 使用 `rpf-23-demo-runtime-state-v2`，只保存公开运行身份和本地路径，不保存 secret。
 
 入口不会读取 `DEEPSEEK_API_KEY`，不会创建云资源，不会重新执行 20-trial 或 fault corpus。首次准备后的入口通常只需等待 PostgreSQL、Java readiness 和 Web ready；具体本机时长以当前运行实测为准。
 
@@ -42,6 +44,19 @@ powershell -ExecutionPolicy Bypass -File demo/stop-demo.ps1 -RemoveData
 ```
 
 `.local/rpf-19/demo/` 被 Git 忽略；其中的 credential 只用于本机 Control Plane service boundary，不进入 manifest、artifact、前端 bundle 或 Git。
+
+### 1.1 生命周期与 ownership 验证
+
+RPF-23 的 Windows-only fresh probe 会实际启动/停止临时资源，并在结束时验证 cleanup：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File demo/verify-lifecycle.ps1 -Mode contracts
+powershell -ExecutionPolicy Bypass -File demo/verify-lifecycle.ps1 -Mode lifecycle
+```
+
+新建 Demo PostgreSQL container/volume 带有 `com.runproof.owner=runproof`、`com.runproof.demo=rpf19-golden-demo`、`com.runproof.lifecycle=rpf-23` labels；只有 label、image、volume、port、ID 均匹配时才允许 `-RemoveData`。旧 RPF-19 无 label 的 exact resource 可以被验证后复用/停止，但不能被 `-RemoveData` 删除。state v2 对 child 保存 PID、start time、executable、command fingerprint、session marker 和 expected port；PID 或 port 单独匹配不会触发复用或 kill。损坏/旧 v1 state 只会 fail closed，不会驱动 destructive cleanup。
+
+启动中途的 Control Plane、seed、Web、state-write 失败会停止本次 session 已确认的 child，移除本次新建的 container，同时保留 named volume、reviewed artifact copies 和 local credentials，随后可重新执行同一入口恢复。普通 stop 保留数据；`-RemoveData` 只处理 label-verified、Demo-owned 的 exact resource 和其本地副本。
 
 ## 2. Versioned Golden Demo contract
 
@@ -144,6 +159,8 @@ The project remains `Stabilization`. Local production-like infrastructure, deter
 ## 7. Local acceptance measurements
 
 在 2026-09-15 的本机验证中，`demo/start-demo.ps1` 首次从现有 `postgres:16-alpine` image 启动 PostgreSQL、正式 Control Plane、seed 和 Web 到 ready 共约 21.56 秒；停止 Control Plane 后再次执行入口脚本，PostgreSQL named volume 保持不变、86 个 artifact registration 均为 `IDEMPOTENT_REPLAY`，恢复共约 13.93 秒。`demo/seed_demo.py --repeat 2` 的两轮 86-artifact registration 与 15 个 profile ref read-back 通过，耗时约 6.15 秒，未调用 Provider。
+
+2026-09-16 的 RPF-23 Windows fresh lifecycle probe 已通过：child environment contracts、worker IO root negative、foreign port/process/container ownership、Control Plane/seed/Web/state-write 四类失败 rollback、restart、verified stop/RemoveData、PID reuse negative、Golden Demo verifier 与 state/log secret scan 均 `PASS`。本机已有无 label 的 legacy RPF-19 container/volume 只被安全停止并保留；对它执行 `-RemoveData` 明确拒绝，未删除数据。该证据只覆盖当前 Windows 普通用户本机，不代表 Production process isolation、HA 或 off-host persistence。
 
 API-backed Overview、8 个关键 deep-link 页面（Agent、Statistical、Failure Cluster、Failure Case、Version Bisect、Release Decision、response-lost Run、Executions）均完成可访问性/overflow smoke；1440 与 1280 桌面 viewport 的 `scrollWidth` 未超过可视宽度。Control Plane 被停止时，Overview 显示 `Canonical data is unavailable.`，没有静默回退到 fixture；恢复后 API-backed Overview 再次加载。
 

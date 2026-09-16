@@ -553,6 +553,8 @@ def spawn_formal_worker(
             str(repo_root),
             "--artifact-store-root",
             str(artifact_root),
+            "--allowed-root",
+            str(result_path.parent),
             "--lease-seconds",
             "3",
             "--max-jobs",

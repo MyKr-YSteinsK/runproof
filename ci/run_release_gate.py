@@ -472,6 +472,8 @@ def _run_durable_evaluations(
         str(REPO_ROOT),
         "--artifact-store-root",
         str(infrastructure.artifact_root),
+        "--allowed-root",
+        str(infrastructure.temp_root),
         "--worker-id",
         f"ci-worker-{uuid.uuid4().hex[:10]}",
         "--lease-seconds",

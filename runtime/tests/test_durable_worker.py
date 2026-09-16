@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import unittest
+from tempfile import TemporaryDirectory
 from pathlib import Path
 from typing import Any
 
-from runtime.runproof_runtime.durable_worker import DurableEvaluationWorker
+from runtime.runproof_runtime.agent import NORMAL_AGENT_PROFILE
+from runtime.runproof_runtime.durable_worker import DurableEvaluationWorker, WorkerFailure, _safe_contract, _safe_path
 
 
 class DiscoveryClient:
@@ -64,6 +66,35 @@ class DurableWorkerDiscoveryTests(unittest.TestCase):
         result = worker.run_once(max_jobs=1)
         self.assertEqual(result, [{"job_id": "queued-after-terminal-history", "status": "COMPLETED"}])
         self.assertEqual(worker.claimed, ["queued-after-terminal-history"])
+
+
+class DurableWorkerAuthorityTests(unittest.TestCase):
+    def test_job_paths_are_limited_to_explicit_worker_roots(self) -> None:
+        with TemporaryDirectory() as temp_name:
+            root = Path(temp_name)
+            repo_root = root / "repo"
+            artifact_root = root / "artifacts"
+            execution_root = root / "execution"
+            foreign_root = root / "foreign"
+            for path in (repo_root, artifact_root, execution_root, foreign_root):
+                path.mkdir()
+
+            allowed = (repo_root, artifact_root, execution_root)
+            self.assertEqual(_safe_path("runtime/input.json", "input", repo_root, allowed), repo_root / "runtime/input.json")
+            self.assertEqual(_safe_path(str(execution_root / "out"), "output", repo_root, allowed), execution_root / "out")
+            with self.assertRaisesRegex(WorkerFailure, "WORKER_PATH_OUTSIDE_ALLOWED_ROOT"):
+                _safe_path(str(foreign_root / "secret.json"), "input", repo_root, allowed)
+
+    def test_evaluation_identity_cannot_become_a_path_segment(self) -> None:
+        payload = {
+            "contract": "rpf-evaluation-execution-v1",
+            "agent_profile": NORMAL_AGENT_PROFILE,
+            "regression_path": "runtime/reviewed-regression.json",
+            "output_dir": ".local/worker-output",
+            "evaluation_id": "../escape",
+        }
+        with self.assertRaisesRegex(WorkerFailure, "INVALID_WORKER_CONTRACT:evaluation_id"):
+            _safe_contract({"payload_ref": payload})
 
 
 if __name__ == "__main__":

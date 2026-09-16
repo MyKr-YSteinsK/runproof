@@ -300,6 +300,8 @@ def run_formal_durable_worker() -> dict[str, Any]:
                 str(ROOT),
                 "--artifact-store-root",
                 str(infrastructure.artifact_root),
+                "--allowed-root",
+                str(temp_root),
                 "--worker-id",
                 "rpf16-formal-worker",
                 "--lease-seconds",

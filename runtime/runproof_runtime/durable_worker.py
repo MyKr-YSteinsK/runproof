@@ -16,6 +16,7 @@ import sys
 import threading
 import time
 import uuid
+import re
 from pathlib import Path
 from typing import Any
 
@@ -42,13 +43,23 @@ class WorkerFailure(RuntimeError):
     """A bounded, non-secret worker failure classification."""
 
 
-def _safe_path(value: Any, label: str, base: Path | None = None) -> Path:
+def _safe_path(
+    value: Any,
+    label: str,
+    base: Path | None = None,
+    allowed_roots: tuple[Path, ...] = (),
+) -> Path:
     if not isinstance(value, str) or not value:
         raise WorkerFailure(f"INVALID_WORKER_CONTRACT:{label}")
     candidate = Path(value).expanduser()
     if not candidate.is_absolute() and base is not None:
         candidate = base / candidate
-    return candidate.resolve()
+    resolved = candidate.resolve()
+    if allowed_roots:
+        roots = tuple(root.resolve() for root in allowed_roots)
+        if not any(resolved == root or root in resolved.parents for root in roots):
+            raise WorkerFailure(f"WORKER_PATH_OUTSIDE_ALLOWED_ROOT:{label}")
+    return resolved
 
 
 def _safe_contract(job: dict[str, Any]) -> dict[str, Any]:
@@ -90,6 +101,8 @@ def _safe_contract(job: dict[str, Any]) -> dict[str, Any]:
     for key in ("regression_path", "output_dir", "evaluation_id"):
         if not isinstance(payload.get(key), str) or not payload[key]:
             raise WorkerFailure(f"INVALID_WORKER_CONTRACT:{key}")
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", str(payload["evaluation_id"])):
+        raise WorkerFailure("INVALID_WORKER_CONTRACT:evaluation_id")
     return payload
 
 
@@ -156,12 +169,16 @@ class DurableEvaluationWorker:
         worker_id: str | None = None,
         repo_root: Path | None = None,
         artifact_store_root: Path | None = None,
+        allowed_io_roots: tuple[Path, ...] = (),
         lease_seconds: int = 30,
     ) -> None:
         self.client = client
         self.worker_id = worker_id or f"worker-{uuid.uuid4()}"
         self.repo_root = (repo_root or Path.cwd()).resolve()
         self.artifact_store_root = (artifact_store_root or Path(os.environ.get("RPF_ARTIFACT_STORE_ROOT", ".local/control-plane/artifacts"))).resolve()
+        configured_roots = [self.repo_root, self.artifact_store_root]
+        configured_roots.extend(Path(root).resolve() for root in allowed_io_roots)
+        self.allowed_io_roots = tuple(dict.fromkeys(configured_roots))
         self.lease_seconds = lease_seconds
 
     def poll(self, limit: int = 20) -> list[dict[str, Any]]:
@@ -253,7 +270,7 @@ class DurableEvaluationWorker:
         cancelled = self._cancel_if_requested(job_id, owner)
         if cancelled is not None:
             return cancelled
-        output_dir = _safe_path(payload["output_dir"], "output_dir", self.repo_root)
+        output_dir = _safe_path(payload["output_dir"], "output_dir", self.repo_root, self.allowed_io_roots)
         evaluation_path = output_dir / f"{evaluation_id}.json"
         if evaluation_path.is_file():
             # A restarted worker resumes from the durable artifact boundary;
@@ -261,13 +278,13 @@ class DurableEvaluationWorker:
             evaluation = json.loads(evaluation_path.read_text(encoding="utf-8"))
             paths = self._existing_evaluation_paths(evaluation, output_dir)
         else:
-            regression_path = _safe_path(payload["regression_path"], "regression_path", self.repo_root)
+            regression_path = _safe_path(payload["regression_path"], "regression_path", self.repo_root, self.allowed_io_roots)
             if not regression_path.is_file():
                 raise WorkerFailure("REGRESSION_INPUT_MISSING")
             regression = load_json(regression_path)
             suite_path_value = payload.get("suite_path")
             if suite_path_value:
-                suite_path = _safe_path(str(suite_path_value), "suite_path", self.repo_root)
+                suite_path = _safe_path(str(suite_path_value), "suite_path", self.repo_root, self.allowed_io_roots)
                 if not suite_path.is_file():
                     raise WorkerFailure("SUITE_INPUT_MISSING")
                 suite = load_json(suite_path)
@@ -340,7 +357,7 @@ class DurableEvaluationWorker:
         if cancelled is not None:
             return cancelled
 
-        output_dir = _safe_path(payload["output_dir"], "output_dir", self.repo_root)
+        output_dir = _safe_path(payload["output_dir"], "output_dir", self.repo_root, self.allowed_io_roots)
         trial_path = output_dir / f"{trial_id}.json"
         if trial_path.is_file():
             run = json.loads(trial_path.read_text(encoding="utf-8"))
@@ -507,6 +524,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--worker-id", default=None)
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--artifact-store-root", type=Path, default=None)
+    parser.add_argument("--allowed-root", type=Path, action="append", default=[], help="Additional explicit worker IO root; repeat for each disposable execution root.")
     parser.add_argument("--lease-seconds", type=int, default=30)
     parser.add_argument("--max-jobs", type=int, default=1)
     parser.add_argument("--idle-timeout", type=float, default=30.0)
@@ -526,6 +544,7 @@ def main(argv: list[str] | None = None) -> int:
         worker_id=args.worker_id,
         repo_root=args.repo_root,
         artifact_store_root=args.artifact_store_root,
+        allowed_io_roots=tuple(args.allowed_root),
         lease_seconds=args.lease_seconds,
     )
     try:
