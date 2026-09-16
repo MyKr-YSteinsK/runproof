@@ -70,6 +70,21 @@ class ControlPlaneControllerTest {
         );
     }
 
+    @Test
+    void malformedEvidenceManifestReachesCanonicalValidationInsteadOfNullSetFailure() {
+        when(metadataService.ingest(any(), eq("evidence-ingest-service"), eq(false)))
+                .thenThrow(new ProbeExceptions.RequestValidationException("UNKNOWN_MANIFEST_SCHEMA", "Manifest schema is not accepted."));
+
+        var malformed = new ApiModels.IngestManifest(
+                "unknown", null, null, null, null, null, null, null, null, null, null, null, null
+        );
+
+        assertThrows(
+                ProbeExceptions.RequestValidationException.class,
+                () -> controller.ingest(request("evidence-token"), malformed, false)
+        );
+    }
+
     private static HttpServletRequest request(String token) {
         MockHttpServletRequest request = new MockHttpServletRequest();
         request.addHeader("Authorization", "Bearer " + token);
