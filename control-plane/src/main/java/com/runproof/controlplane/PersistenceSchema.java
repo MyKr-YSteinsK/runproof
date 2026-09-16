@@ -222,6 +222,7 @@ public class PersistenceSchema {
                 )
                 """);
         jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS rpf_execution_job_state_idx ON rpf_execution_job(state, lease_expires_at, created_at)");
+        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS rpf_execution_job_eligible_discovery_idx ON rpf_execution_job(created_at, job_id) WHERE state IN ('QUEUED', 'RECONCILE_REQUIRED', 'CLAIMED', 'RUNNING', 'CANCEL_REQUESTED')");
         jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS rpf_execution_event_job_idx ON rpf_execution_event(job_id, event_id)");
 
         if (versions.stream().noneMatch(EXECUTION_SCHEMA_VERSION::equals)) {

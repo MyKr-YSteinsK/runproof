@@ -1,11 +1,14 @@
 from __future__ import annotations
 
 import copy
+import json
+import tempfile
 import unittest
+from pathlib import Path
 
 from runtime.runproof_runtime.agent import ToolExecutor
 from runtime.runproof_runtime.deepseek_provider import DeepSeekProvider, validate_tool_arguments
-from runtime.runproof_runtime.evidence import assert_safe_artifact, redact
+from runtime.runproof_runtime.evidence import assert_safe_artifact, redact, write_artifact
 from runtime.runproof_runtime.models import EVIDENCE_SCHEMA_VERSION, INITIAL_STATE, RuntimeFailure, TARGET_STATE, ToolCall, TRAJECTORY_CONTRACT_VERSION, failure_record
 from runtime.runproof_runtime.runner import MAX_AGENT_STEPS, MAX_PROVIDER_CALLS, OVERALL_TIMEOUT_SECONDS, _normalize_trajectory
 from runtime.runproof_runtime.verifier import verify_run
@@ -80,6 +83,20 @@ class ContractTests(unittest.TestCase):
         value = redact({"authorization": "Bearer fake-value", "reasoning_content": "private", "messages": [{"content": "secret"}], "safe": "ok"})
         self.assertEqual(value, {"safe": "ok"})
         assert_safe_artifact(value)
+
+    def test_evidence_writer_is_immutable_and_does_not_create_verified_semantics(self):
+        artifact = {"run": {"run_id": "immutable-run"}, "observed": "candidate-bytes"}
+        changed = {"run": {"run_id": "immutable-run"}, "observed": "different-bytes"}
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory)
+            first = write_artifact(artifact, output)
+            replay = write_artifact(artifact, output)
+            self.assertEqual(first, replay)
+            self.assertNotIn("verified", json.loads(first.read_text(encoding="utf-8")))
+            with self.assertRaises(FileExistsError):
+                write_artifact(changed, output)
+            with self.assertRaises(ValueError):
+                write_artifact({"run": {"run_id": "../outside"}}, output)
 
     def test_provider_and_budget_failures_are_not_agent_failures(self):
         self.assertEqual(failure_record(RuntimeFailure("PROVIDER", "RATE_LIMIT"))["outcome"], "ERROR")

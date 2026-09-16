@@ -1,4 +1,4 @@
-"""Offline verifier for one RPF-14 formal Control Plane probe result."""
+"""Offline verifier for one RPF-14/RPF-22 formal Control Plane probe result."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ REQUIRED_CHECKS = {
     "health_readiness",
     "boundary",
     "formal_worker_process",
+    "eligible_discovery_starvation",
     "authentication",
     "authority_matrix",
     "rollback",
@@ -32,6 +33,7 @@ REQUIRED_CHECKS = {
     "operation_identity_not_submitted",
     "response_lost_unknown_reconcile_cross_process",
     "artifact_ingest_crash_recovery",
+    "terminal_artifact_binding",
     "cancellation_timeout_platform_semantics",
     "execution_read_api_metrics_retention",
     "decision_writer_history",
@@ -76,7 +78,7 @@ def source_identity() -> dict[str, Any]:
 
 
 def fail(message: str) -> int:
-    print(f"FAIL: RPF-14 evidence verification: {message}", file=sys.stderr)
+    print(f"FAIL: RPF-14/RPF-22 evidence verification: {message}", file=sys.stderr)
     return 1
 
 
@@ -107,6 +109,18 @@ def verify(path: Path) -> int:
     worker = checks["formal_worker_process"]
     if worker.get("terminal_state") != "COMPLETED" or worker.get("operation_status") != "CONFIRMED":
         return fail("formal worker terminal contract is incomplete")
+    discovery = checks["eligible_discovery_starvation"]
+    if (
+        discovery.get("terminal_history_count", 0) <= discovery.get("legacy_page_size", 0)
+        or discovery.get("server_side_predicate") is not True
+        or discovery.get("terminal_history_returned") is not False
+        or discovery.get("worker_processed") != discovery.get("queued_job")
+        or discovery.get("terminal_state") != "COMPLETED"
+    ):
+        return fail("eligible job discovery is not proven against terminal-history starvation")
+    artifact = checks["artifact_fail_closed"]
+    if artifact.get("absolute_path") != 422 or not isinstance(artifact.get("symlink_or_junction_parent"), dict) or artifact["symlink_or_junction_parent"].get("http") != 422:
+        return fail("artifact root absolute-path or reparse-point containment is incomplete")
     response_lost = checks["response_lost_unknown_reconcile_cross_process"]
     if response_lost.get("unknown") != "UNKNOWN_OUTCOME" or response_lost.get("reconcile") != "CONFIRMED" or response_lost.get("effect_count") != 1:
         return fail("response-lost reconcile contract is incomplete")
@@ -116,13 +130,15 @@ def verify(path: Path) -> int:
     retention = checks["execution_read_api_metrics_retention"].get("retention")
     if not isinstance(retention, dict) or retention.get("delete_endpoint") is not False:
         return fail("retention boundary is not fail-closed")
+    if checks["execution_read_api_metrics_retention"].get("eligible_discovery_index") != 1 or "eligible_jobs" not in checks["execution_read_api_metrics_retention"].get("metrics", []):
+        return fail("eligible discovery index/metric evidence is incomplete")
     boundary = checks["boundary"]
     if boundary.get("job_transport_resolved") is not True or boundary.get("queue") is not False or boundary.get("release_authorized") is not False:
         return fail("transport/release boundary is invalid")
     serialized = json.dumps(document, ensure_ascii=False)
     if any(forbidden in serialized for forbidden in FORBIDDEN_SERIALIZED_VALUES):
         return fail("forbidden credential or private protocol marker found")
-    print(f"PASS: RPF-14 formal Control Plane evidence ({path.as_posix()})")
+    print(f"PASS: RPF-14/RPF-22 formal Control Plane evidence ({path.as_posix()})")
     return 0
 
 

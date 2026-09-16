@@ -165,9 +165,11 @@ class DurableEvaluationWorker:
         self.lease_seconds = lease_seconds
 
     def poll(self, limit: int = 20) -> list[dict[str, Any]]:
-        # Include active rows so an expired lease can be safely reclaimed. The
-        # Control Plane decides whether the row is safe or needs reconcile.
-        return self.client.list_jobs(limit=limit)
+        # Discovery is a server-side eligible predicate, not a bounded history
+        # page followed by in-memory terminal-state filtering. The Control
+        # Plane includes queued/reconcile rows and expired active leases, so a
+        # growing terminal history cannot starve executable work.
+        return self.client.list_jobs(eligible=True, limit=limit)
 
     def run_once(self, *, max_jobs: int = 1) -> list[dict[str, Any]]:
         processed: list[dict[str, Any]] = []

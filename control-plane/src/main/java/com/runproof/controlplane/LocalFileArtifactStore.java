@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
@@ -27,6 +29,7 @@ public class LocalFileArtifactStore implements ArtifactStore {
 
     private final ObjectMapper objectMapper;
     private final Path root;
+    private final Path realRoot;
 
     public LocalFileArtifactStore(
             ObjectMapper objectMapper,
@@ -36,6 +39,7 @@ public class LocalFileArtifactStore implements ArtifactStore {
         this.root = Path.of(configuredRoot).toAbsolutePath().normalize();
         try {
             Files.createDirectories(root);
+            this.realRoot = root.toRealPath();
         } catch (IOException exception) {
             throw new IllegalStateException("Cannot create immutable artifact store.", exception);
         }
@@ -43,59 +47,56 @@ public class LocalFileArtifactStore implements ArtifactStore {
 
     @Override
     public ApiModels.ArtifactSnapshot verify(ApiModels.ArtifactRef reference, String entityType, String entityId) {
+        return readVerifiedArtifact(reference, entityType, entityId).snapshot();
+    }
+
+    @Override
+    public ArtifactStore.VerifiedArtifact readVerifiedArtifact(ApiModels.ArtifactRef reference, String entityType, String entityId) {
         ArtifactContract contract = CONTRACTS.get(entityType);
         if (contract == null) {
             throw new InvalidEvidenceException("INVALID_EVIDENCE_ENTITY_TYPE", "Entity type is not supported.");
         }
         validateReference(reference, entityType, entityId, contract);
         Path path = resolveInsideStore(reference.artifactKey());
-        if (!Files.isRegularFile(path)) {
-            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_MISSING", "Referenced artifact is missing.");
+        byte[] content = readCanonicalBytes(path);
+        String actualHash = sha256(content);
+        if (!actualHash.equalsIgnoreCase(reference.contentSha256())) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_HASH_MISMATCH", "Artifact content hash does not match its reference.");
         }
-        try {
-            Path realRoot = root.toRealPath();
-            Path realPath = path.toRealPath();
-            if (!realPath.startsWith(realRoot)) {
-                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact reference escapes the artifact store.");
-            }
-            byte[] content = Files.readAllBytes(realPath);
-            String actualHash = sha256(content);
-            if (!actualHash.equalsIgnoreCase(reference.contentSha256())) {
-                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_HASH_MISMATCH", "Artifact content hash does not match its reference.");
-            }
-            JsonNode document = parseObject(content);
-            if (!reference.schemaVersion().equals(text(document, "schema_version"))
-                    || !reference.artifactKind().equals(text(document, "artifact_kind"))) {
-                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_IDENTITY", "Artifact header does not match its reference.");
-            }
-            JsonNode entity = document.path(contract.entityContainer());
-            if (!entity.isObject() || !entityId.equals(text(entity, contract.entityIdField()))) {
-                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_IDENTITY", "Artifact entity identity does not match its reference.");
-            }
-            String embeddedSourceHash = findFirstText(document, "source_sha256");
-            if (!embeddedSourceHash.isBlank() && !reference.sourceSha256().equalsIgnoreCase(embeddedSourceHash)) {
-                throw new InvalidEvidenceException("INVALID_EVIDENCE_SOURCE_IDENTITY", "Artifact source identity does not match its reference.");
-            }
-            String embeddedRuntime = findFirstText(document, "runtime_version");
-            if (!embeddedRuntime.isBlank() && !reference.runtimeVersion().equals(embeddedRuntime)) {
-                throw new InvalidEvidenceException("INVALID_EVIDENCE_SOURCE_IDENTITY", "Artifact runtime identity does not match its reference.");
-            }
-            return new ApiModels.ArtifactSnapshot(
-                    reference.artifactId(), reference.artifactKey(), reference.artifactKind(), reference.schemaVersion(),
-                    actualHash, reference.sourceSha256(), reference.runtimeVersion(), true,
-                    "AVAILABLE", null, artifactUrl(entityType, entityId)
-            );
-        } catch (IOException exception) {
-            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_READ", "Artifact could not be read.");
+        JsonNode document = parseObject(content);
+        if (!reference.schemaVersion().equals(text(document, "schema_version"))
+                || !reference.artifactKind().equals(text(document, "artifact_kind"))) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_IDENTITY", "Artifact header does not match its reference.");
         }
+        JsonNode entity = document.path(contract.entityContainer());
+        if (!entity.isObject() || !entityId.equals(text(entity, contract.entityIdField()))) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_IDENTITY", "Artifact entity identity does not match its reference.");
+        }
+        String embeddedSourceHash = findFirstText(document, "source_sha256");
+        if (!embeddedSourceHash.isBlank() && !reference.sourceSha256().equalsIgnoreCase(embeddedSourceHash)) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_SOURCE_IDENTITY", "Artifact source identity does not match its reference.");
+        }
+        String embeddedRuntime = findFirstText(document, "runtime_version");
+        if (!embeddedRuntime.isBlank() && !reference.runtimeVersion().equals(embeddedRuntime)) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_SOURCE_IDENTITY", "Artifact runtime identity does not match its reference.");
+        }
+        ApiModels.ArtifactSnapshot snapshot = new ApiModels.ArtifactSnapshot(
+                reference.artifactId(), reference.artifactKey(), reference.artifactKind(), reference.schemaVersion(),
+                actualHash, reference.sourceSha256(), reference.runtimeVersion(), true,
+                "AVAILABLE", null, artifactUrl(entityType, entityId)
+        );
+        return new ArtifactStore.VerifiedArtifact(snapshot, document);
     }
 
-    @Override
-    public JsonNode readVerified(ApiModels.ArtifactRef reference, String entityType, String entityId) {
-        verify(reference, entityType, entityId);
-        Path path = resolveInsideStore(reference.artifactKey());
+    protected byte[] readCanonicalBytes(Path path) {
+        Path realPath = canonicalExistingFile(path);
         try {
-            return parseObject(Files.readAllBytes(path));
+            byte[] content = Files.readAllBytes(realPath);
+            Path afterRead = canonicalExistingFile(path);
+            if (!Files.isSameFile(realPath, afterRead)) {
+                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_CHANGED", "Artifact changed during verified read.");
+            }
+            return content;
         } catch (IOException exception) {
             throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_READ", "Artifact could not be read.");
         }
@@ -105,10 +106,13 @@ public class LocalFileArtifactStore implements ArtifactStore {
     public PathWriteResult put(String artifactKey, byte[] content) {
         Path path = resolveInsideStore(artifactKey);
         String hash = sha256(content);
+        ensureParentContained(path, true);
         try {
-            Files.createDirectories(path.getParent());
-            if (Files.exists(path)) {
-                byte[] existing = Files.readAllBytes(path);
+            if (Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+                if (Files.isSymbolicLink(path) || !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) {
+                    throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact target is not a regular file inside the artifact store.");
+                }
+                byte[] existing = readCanonicalBytes(path);
                 if (!MessageDigest.isEqual(existing, content)) {
                     throw new InvalidEvidenceException("ARTIFACT_OVERWRITE_REJECTED", "An immutable artifact key already contains different content.");
                 }
@@ -116,8 +120,9 @@ public class LocalFileArtifactStore implements ArtifactStore {
             }
             try {
                 Files.write(path, content, StandardOpenOption.CREATE_NEW);
-            } catch (java.nio.file.FileAlreadyExistsException race) {
-                byte[] existing = Files.readAllBytes(path);
+                canonicalExistingFile(path);
+            } catch (FileAlreadyExistsException race) {
+                byte[] existing = readCanonicalBytes(path);
                 if (!MessageDigest.isEqual(existing, content)) {
                     throw new InvalidEvidenceException("ARTIFACT_OVERWRITE_REJECTED", "An immutable artifact key already contains different content.");
                 }
@@ -178,6 +183,66 @@ public class LocalFileArtifactStore implements ArtifactStore {
             throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact reference escapes the artifact store.");
         }
         return resolved;
+    }
+
+    private Path canonicalExistingFile(Path path) {
+        if (!ensureParentContained(path, false)) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_MISSING", "Referenced artifact is missing.");
+        }
+        if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_MISSING", "Referenced artifact is missing.");
+        }
+        if (Files.isSymbolicLink(path) || !Files.isRegularFile(path, LinkOption.NOFOLLOW_LINKS)) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact target is not a regular file inside the artifact store.");
+        }
+        try {
+            Path realPath = path.toRealPath();
+            if (!realPath.startsWith(realRoot)) {
+                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact reference escapes the artifact store.");
+            }
+            return realPath;
+        } catch (java.nio.file.NoSuchFileException exception) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_MISSING", "Referenced artifact is missing.");
+        } catch (IOException exception) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_READ", "Artifact could not be resolved.");
+        }
+    }
+
+    private boolean ensureParentContained(Path path, boolean createMissing) {
+        Path parent = path.getParent();
+        if (parent == null) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact target has no parent directory.");
+        }
+        Path current = root;
+        try {
+            Path rootNow = root.toRealPath();
+            if (!rootNow.startsWith(realRoot)) {
+                throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact root changed outside its canonical boundary.");
+            }
+            for (Path segment : root.relativize(parent)) {
+                current = current.resolve(segment.toString()).normalize();
+                if (!Files.exists(current, LinkOption.NOFOLLOW_LINKS)) {
+                    if (!createMissing) return false;
+                    try {
+                        Files.createDirectory(current);
+                    } catch (FileAlreadyExistsException ignored) {
+                        // A concurrent creator is safe only after the same
+                        // no-link and canonical containment checks below.
+                    }
+                }
+                if (Files.isSymbolicLink(current) || !Files.isDirectory(current, LinkOption.NOFOLLOW_LINKS)) {
+                    throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact parent escapes or is not a directory.");
+                }
+                if (!current.toRealPath().startsWith(realRoot)) {
+                    throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_PATH", "Artifact parent escapes the artifact store.");
+                }
+            }
+            return true;
+        } catch (java.nio.file.NoSuchFileException exception) {
+            return false;
+        } catch (IOException exception) {
+            throw new InvalidEvidenceException("INVALID_EVIDENCE_ARTIFACT_READ", "Artifact parent could not be resolved.");
+        }
     }
 
     private JsonNode parseObject(byte[] content) {

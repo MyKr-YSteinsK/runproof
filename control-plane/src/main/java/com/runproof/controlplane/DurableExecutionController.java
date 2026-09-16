@@ -91,12 +91,19 @@ public class DurableExecutionController {
             HttpServletRequest request,
             @RequestParam(name = "state", required = false) String state,
             @RequestParam(name = "target_type", required = false) String targetType,
+            @RequestParam(name = "eligible", defaultValue = "false") boolean eligible,
             @RequestParam(name = "limit", defaultValue = "50") int limit
     ) {
         authService.require(request, "metadata:read");
         int boundedLimit = Math.max(1, Math.min(limit, 100));
         List<String> conditions = new ArrayList<>();
         List<Object> args = new ArrayList<>();
+        if (eligible && state != null && !state.isBlank()) {
+            throw new RequestValidationException("INCOMPATIBLE_JOB_DISCOVERY_FILTER", "Eligible discovery cannot be combined with an explicit state filter.");
+        }
+        if (eligible) {
+            conditions.add("(state IN ('QUEUED', 'RECONCILE_REQUIRED') OR (state IN ('CLAIMED', 'RUNNING', 'CANCEL_REQUESTED') AND lease_expires_at IS NOT NULL AND lease_expires_at <= CURRENT_TIMESTAMP))");
+        }
         if (state != null && !state.isBlank()) {
             conditions.add("state = ?");
             args.add(requiredState(state));
@@ -111,7 +118,7 @@ public class DurableExecutionController {
         for (Map<String, Object> row : jdbc.queryForList(sql, args.toArray())) {
             items.add(snapshot(findJob(text(row, "job_id"), false, true)));
         }
-        return Map.of("items", items, "limit", boundedLimit);
+        return Map.of("items", items, "limit", boundedLimit, "discovery", eligible ? "ELIGIBLE" : "HISTORY");
     }
 
     @GetMapping("/execution-metrics")
@@ -128,6 +135,7 @@ public class DurableExecutionController {
         result.put("reclaim_count", count("SELECT COUNT(*) FROM rpf_execution_event WHERE event_type='LEASE_EXPIRED_REQUEUED'"));
         result.put("stale_attempt_rejection_count", count("SELECT COUNT(*) FROM control_plane_audit WHERE reason_code='STALE_ATTEMPT'"));
         result.put("attempts_total", count("SELECT COUNT(*) FROM rpf_execution_attempt"));
+        result.put("eligible_jobs", count("SELECT COUNT(*) FROM rpf_execution_job WHERE state IN ('QUEUED', 'RECONCILE_REQUIRED') OR (state IN ('CLAIMED', 'RUNNING', 'CANCEL_REQUESTED') AND lease_expires_at IS NOT NULL AND lease_expires_at <= CURRENT_TIMESTAMP)"));
         result.put("observability_boundary", "READ_API_COUNTERS_NO_PROMETHEUS_BACKEND");
         return result;
     }

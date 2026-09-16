@@ -52,10 +52,9 @@ public class CanonicalMetadataService {
     @Transactional
     public ApiModels.IngestResponse ingest(ApiModels.IngestManifest manifest, String principalId, boolean failAfterWrite) {
         NormalizedManifest normalized = validate(manifest, principalId);
-        ApiModels.ArtifactSnapshot snapshot = artifactStore.verify(
+        JsonNode artifact = artifactStore.readVerifiedArtifact(
                 normalized.artifactRef(), normalized.entityType(), normalized.entityId()
-        );
-        JsonNode artifact = artifactStore.readVerified(normalized.artifactRef(), normalized.entityType(), normalized.entityId());
+        ).document();
         validateArtifactSemantics(artifact, normalized);
         if ("RELEASE_DECISION".equals(normalized.entityType())) {
             validateDecisionReferences(normalized.keyRefs());
@@ -142,8 +141,8 @@ public class CanonicalMetadataService {
     public ApiModels.ArtifactResponse readArtifact(String entityType, String entityId) {
         MetadataRow row = find(normalizeEntityType(entityType), entityId);
         if (row == null) throw new EntityNotFoundException("Canonical metadata was not found.");
-        ApiModels.ArtifactSnapshot snapshot = artifactStore.verify(row.artifactRef(), row.entityType(), row.entityId());
-        return new ApiModels.ArtifactResponse(snapshot, artifactStore.readVerified(row.artifactRef(), row.entityType(), row.entityId()));
+        ArtifactStore.VerifiedArtifact verified = artifactStore.readVerifiedArtifact(row.artifactRef(), row.entityType(), row.entityId());
+        return new ApiModels.ArtifactResponse(verified.snapshot(), verified.document());
     }
 
     public boolean has(String entityType, String entityId) {

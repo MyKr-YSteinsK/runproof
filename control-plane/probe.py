@@ -229,6 +229,24 @@ def cleanup(container: str | None, volume: str | None) -> None:
         subprocess.run(["docker", "volume", "rm", "-f", volume], capture_output=True, check=False, timeout=30)
 
 
+def create_directory_escape_link(link: Path, target: Path) -> str | None:
+    """Create a Windows symlink or junction for the containment probe."""
+
+    try:
+        link.symlink_to(target, target_is_directory=True)
+        return "SYMLINK"
+    except (OSError, NotImplementedError):
+        if os.name != "nt":
+            return None
+        result = subprocess.run(
+            ["cmd.exe", "/d", "/c", "mklink", "/J", str(link), str(target)],
+            capture_output=True,
+            check=False,
+            timeout=10,
+        )
+        return "JUNCTION" if result.returncode == 0 and link.is_dir() else None
+
+
 def sha256(value: str | bytes) -> str:
     data = value.encode("utf-8") if isinstance(value, str) else value
     return hashlib.sha256(data).hexdigest()
@@ -515,6 +533,10 @@ def spawn_formal_worker(
     artifact_root: Path,
     repo_root: Path,
     result_path: Path,
+    *,
+    worker_id: str = "rpf14-formal-worker",
+    max_jobs: int = 1,
+    idle_timeout: float = 180.0,
 ) -> tuple[subprocess.CompletedProcess[bytes], dict[str, Any]]:
     environment = os.environ.copy()
     environment["RPF_AUTH_WORKER_TOKEN"] = token
@@ -526,7 +548,7 @@ def spawn_formal_worker(
             "--base-url",
             base_url,
             "--worker-id",
-            "rpf14-formal-worker",
+            worker_id,
             "--repo-root",
             str(repo_root),
             "--artifact-store-root",
@@ -534,9 +556,9 @@ def spawn_formal_worker(
             "--lease-seconds",
             "3",
             "--max-jobs",
-            "1",
+            str(max_jobs),
             "--idle-timeout",
-            "180",
+            str(idle_timeout),
             "--result-path",
             str(result_path),
         ],
@@ -654,6 +676,102 @@ def main() -> int:
             "agent_fail_created": False,
         }
 
+        # F05 regression: terminal history must not occupy the bounded
+        # discovery page used by a worker.  Seed more terminal rows than the
+        # legacy page size, then submit one eligible job after that history.
+        terminal_history_count = 24
+        for index in range(terminal_history_count):
+            history_job_id = f"rpf22-terminal-history-{index:02d}-{uuid.uuid4().hex[:6]}"
+            history_submit_status, _, _ = submit_durable(base_url, credentials["ci"], history_job_id)
+            require_status(history_submit_status, 201, {}, "terminal history seed submit")
+            history_claim_status, _, history_lease = claim_durable(
+                base_url, credentials["worker"], history_job_id, f"rpf22-history-worker-{index:02d}", 4
+            )
+            require_status(history_claim_status, 200, {}, "terminal history seed claim")
+            if history_lease is None:
+                raise ProbeFailure("terminal history seed lease missing")
+            start_durable(base_url, credentials["worker"], history_job_id, history_lease)
+            history_evidence_status, _, history_evidence = ingest_durable_evidence(
+                base_url,
+                credentials["worker"],
+                history_job_id,
+                "ERROR",
+                suffix="terminal-history",
+                lease=history_lease,
+            )
+            require_status(history_evidence_status, 200, {}, "terminal history seed evidence")
+            history_fail_status, history_fail = http_json(
+                base_url,
+                "POST",
+                f"/jobs/{history_job_id}/fail-platform",
+                token=credentials["worker"],
+                body=owner_payload(history_lease)
+                | {"evidence_id": history_evidence["evidence_id"], "reason": "RPF22_TERMINAL_HISTORY_SEED"},
+            )
+            require_status(history_fail_status, 200, history_fail, "terminal history seed finalization")
+            if history_fail.get("job", {}).get("state") != "FAILED_PLATFORM":
+                raise ProbeFailure("terminal history seed did not become FAILED_PLATFORM")
+
+        discovery_job_id = "rpf22-eligible-after-history-" + uuid.uuid4().hex[:8]
+        discovery_output_dir = run_dir / "rpf22-discovery-output"
+        discovery_result_path = run_dir / "rpf22-discovery-result.json"
+        discovery_payload = durable_payload(
+            discovery_job_id,
+            profile="production-change-agent-v1",
+            output_dir=discovery_output_dir,
+        )
+        discovery_submit_status, discovery_submit, _ = submit_durable(
+            base_url,
+            credentials["ci"],
+            discovery_job_id,
+            target_id=f"evaluation-{discovery_job_id}",
+            payload_ref=discovery_payload,
+        )
+        require_status(discovery_submit_status, 201, discovery_submit, "eligible discovery submit")
+        eligible_status, eligible_response = http_json(
+            base_url, "GET", "/jobs?eligible=true&limit=20", token=credentials["read"]
+        )
+        require_status(eligible_status, 200, eligible_response, "eligible discovery API")
+        eligible_items = eligible_response.get("items") if isinstance(eligible_response.get("items"), list) else []
+        if eligible_response.get("discovery") != "ELIGIBLE":
+            raise ProbeFailure("eligible discovery response did not identify its server-side mode")
+        if discovery_job_id not in {item.get("job_id") for item in eligible_items if isinstance(item, dict)}:
+            raise ProbeFailure("eligible discovery omitted the queued job after terminal history")
+        if any(item.get("state") in {"COMPLETED", "FAILED_PLATFORM", "CANCELLED"} for item in eligible_items if isinstance(item, dict)):
+            raise ProbeFailure("eligible discovery returned terminal history")
+        discovery_worker_process, discovery_worker_result = spawn_formal_worker(
+            base_url,
+            credentials["worker"],
+            artifact_root,
+            ROOT,
+            discovery_result_path,
+            worker_id="rpf22-discovery-worker",
+            max_jobs=1,
+            idle_timeout=30.0,
+        )
+        if discovery_worker_process.returncode != 0 or discovery_worker_result.get("status") != "PASS":
+            raise ProbeFailure("eligible discovery worker process did not complete successfully")
+        discovery_jobs = discovery_worker_result.get("jobs")
+        if not isinstance(discovery_jobs, list) or len(discovery_jobs) != 1 or discovery_jobs[0].get("job_id") != discovery_job_id or discovery_jobs[0].get("status") != "COMPLETED":
+            raise ProbeFailure("eligible discovery worker did not process the queued job")
+        discovery_read_status, discovery_read = http_json(
+            base_url, "GET", f"/jobs/{discovery_job_id}", token=credentials["read"]
+        )
+        require_status(discovery_read_status, 200, discovery_read, "eligible discovery read-back")
+        if discovery_read.get("state") != "COMPLETED":
+            raise ProbeFailure("eligible discovery queued job did not complete")
+        checks["eligible_discovery_starvation"] = {
+            "status": "PASS",
+            "terminal_history_count": terminal_history_count,
+            "legacy_page_size": 20,
+            "queued_job": discovery_job_id,
+            "eligible_endpoint": "/jobs?eligible=true&limit=20",
+            "server_side_predicate": True,
+            "terminal_history_returned": False,
+            "worker_processed": discovery_jobs[0].get("job_id"),
+            "terminal_state": discovery_read.get("state"),
+        }
+
         status, body = http_json(base_url, "GET", "/metadata?entity_type=RUN")
         require_status(status, 401, body, "no credential")
         status, body = http_json(base_url, "GET", "/metadata?entity_type=RUN", token="invalid")
@@ -751,6 +869,28 @@ def main() -> int:
         path_traversal["artifact_ref"]["artifact_key"] = "../outside.json"
         status, body = http_json(base_url, "POST", "/ingest/completed-evidence", token=credentials["evidence"], body=path_traversal)
         require_status(status, 422, body, "path traversal")
+        absolute_path = json.loads(json.dumps(first.manifest))
+        absolute_path["artifact_ref"]["artifact_key"] = str((artifact_root / Path(*first.artifact_key.split("/"))).resolve())
+        status, body = http_json(base_url, "POST", "/ingest/completed-evidence", token=credentials["evidence"], body=absolute_path)
+        require_status(status, 422, body, "absolute artifact path")
+        escape_outside = run_dir / "artifact-escape-outside"
+        escape_parent = artifact_root / "escape-parent"
+        escape_outside.mkdir(parents=True, exist_ok=True)
+        escape_link_kind = create_directory_escape_link(escape_parent, escape_outside)
+        if escape_link_kind is None:
+            raise ProbeFailure("filesystem did not permit a symbolic-link or junction containment experiment")
+        try:
+            symlink_parent = json.loads(json.dumps(first.manifest))
+            symlink_parent["artifact_ref"]["artifact_key"] = "escape-parent/escaped.json"
+            status, body = http_json(base_url, "POST", "/ingest/completed-evidence", token=credentials["evidence"], body=symlink_parent)
+            require_status(status, 422, body, "symlink or junction parent escape")
+            if (escape_outside / "escaped.json").exists():
+                raise ProbeFailure("artifact ingest wrote through a symlink or junction parent")
+        finally:
+            try:
+                escape_parent.unlink()
+            except FileNotFoundError:
+                pass
         wrong_source = json.loads(json.dumps(first.manifest))
         wrong_source["artifact_ref"]["source_sha256"] = "0" * 64
         wrong_source["source_identity"]["source_sha256"] = "0" * 64
@@ -791,7 +931,7 @@ def main() -> int:
         else:
             raise ProbeFailure("artifact overwrite was not rejected")
         overwrite_target.write_bytes(original_first)
-        checks["artifact_fail_closed"] = {"status": "PASS", "path_traversal": 422, "source_mismatch": 422, "wrong_schema": 422, "wrong_identity": 422, "corrupt": 422, "missing": "UNAVAILABLE", "overwrite": "REJECTED"}
+        checks["artifact_fail_closed"] = {"status": "PASS", "path_traversal": 422, "absolute_path": 422, "symlink_or_junction_parent": {"kind": escape_link_kind, "http": 422}, "source_mismatch": 422, "wrong_schema": 422, "wrong_identity": 422, "corrupt": 422, "missing": "UNAVAILABLE", "overwrite": "REJECTED"}
 
         for entity_type in ("RUN", "FAILURE_CASE", "REGRESSION", "EVALUATION_SUITE", "EVALUATION", "COMPARISON", "QUALITY_POLICY", "QUALITY_GATE", "RELEASE_DECISION"):
             status, body = http_json(base_url, "GET", f"/metadata?entity_type={entity_type}", token=credentials["read"])
@@ -953,6 +1093,15 @@ def main() -> int:
         if old_lease is None:
             raise ProbeFailure("old reclaim attempt has no lease")
         time.sleep(1.4)
+        eligible_reclaim_status, eligible_reclaim_response = http_json(
+            base_url, "GET", "/jobs?eligible=true&limit=20", token=credentials["read"]
+        )
+        require_status(eligible_reclaim_status, 200, eligible_reclaim_response, "expired lease eligible discovery")
+        eligible_reclaim_ids = {
+            item.get("job_id") for item in eligible_reclaim_response.get("items", []) if isinstance(item, dict)
+        }
+        if reclaim_job_id not in eligible_reclaim_ids:
+            raise ProbeFailure("eligible discovery omitted the expired active lease")
         new_claim_status, new_claim, new_lease = claim_durable(base_url, credentials["worker"], reclaim_job_id, "rpf14-new-worker", 3)
         require_status(new_claim_status, 200, new_claim, "safe reclaim")
         if new_claim.get("status") != "CLAIMED" or new_lease is None or new_claim.get("job", {}).get("attempt_number") != 2:
@@ -1009,6 +1158,7 @@ def main() -> int:
             "old_heartbeat": old_heartbeat.get("error"),
             "old_evidence": stale_evidence_response.get("error"),
             "old_finalize": old_complete.get("error"),
+            "eligible_discovery_before_reclaim": reclaim_job_id in eligible_reclaim_ids,
             "agent_fail_created": False,
         }
 
@@ -1355,15 +1505,16 @@ def main() -> int:
         require_status(jobs_status, 200, jobs_response, "execution list API")
         metrics_status, metrics_response = http_json(base_url, "GET", "/execution-metrics", token=credentials["read"])
         require_status(metrics_status, 200, metrics_response, "execution metrics API")
-        required_metrics = {"queued_jobs", "claimed_or_running_jobs", "reconcile_required_jobs", "completed_jobs", "platform_failed_jobs", "cancelled_jobs", "lease_expiry_count", "reclaim_count", "stale_attempt_rejection_count", "attempts_total"}
+        required_metrics = {"queued_jobs", "claimed_or_running_jobs", "reconcile_required_jobs", "completed_jobs", "platform_failed_jobs", "cancelled_jobs", "lease_expiry_count", "reclaim_count", "stale_attempt_rejection_count", "attempts_total", "eligible_jobs"}
         if not required_metrics.issubset(metrics_response):
             raise ProbeFailure("execution metrics are incomplete")
         listed_jobs = jobs_response.get("items", [])
         if any(contains_key(item, "lease_token") for item in listed_jobs):
             raise ProbeFailure("execution list API exposed a raw lease token")
         schema_tables = psql(container, "runproof", "SELECT count(*) FROM information_schema.tables WHERE table_name IN ('rpf_execution_job','rpf_execution_attempt','rpf_execution_operation','rpf_execution_event','rpf_execution_evidence');")
+        eligible_index_count = psql(container, "runproof", "SELECT count(*) FROM pg_indexes WHERE indexname='rpf_execution_job_eligible_discovery_idx';")
         history_versions = psql(container, "runproof", "SELECT string_agg(version, ',') FROM rpf_schema_history;")
-        if int(schema_tables) != 5 or "rpf-11-postgresql-canonical-schema-v1" not in history_versions or SCHEMA_VERSION not in history_versions:
+        if int(schema_tables) != 5 or int(eligible_index_count) != 1 or "rpf-11-postgresql-canonical-schema-v1" not in history_versions or SCHEMA_VERSION not in history_versions:
             raise ProbeFailure("durable schema/history identity is incomplete")
         checks["execution_read_api_metrics_retention"] = {
             "status": "PASS",
@@ -1378,6 +1529,7 @@ def main() -> int:
                 "cleanup_policy": "OUT_OF_SCOPE_NO_SILENT_DELETE",
             },
             "execution_tables": int(schema_tables),
+            "eligible_discovery_index": int(eligible_index_count),
             "schema_history": history_versions.split(","),
         }
 

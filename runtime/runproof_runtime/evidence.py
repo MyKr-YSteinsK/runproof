@@ -55,10 +55,38 @@ def assert_safe_artifact(value: Any, secret: str = "") -> None:
 
 
 def write_artifact(artifact: dict[str, Any], output_dir: Path, secret: str = "") -> Path:
+    """Persist redacted candidate bytes without assigning canonical trust.
+
+    This writer owns local immutable candidate bytes only. Canonical identity,
+    verification and any ``verified`` read meaning remain the responsibility
+    of the Control Plane artifact registry.
+    """
     safe = redact(artifact, secret)
     assert_safe_artifact(safe, secret)
     output_dir.mkdir(parents=True, exist_ok=True)
     run_id = artifact.get("run", {}).get("run_id", "run")
     path = output_dir / f"{run_id}.json"
-    path.write_text(json.dumps(safe, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
+    if not _is_safe_path_component(run_id):
+        raise ValueError("INVALID_ARTIFACT_PATH")
+    content = (json.dumps(safe, ensure_ascii=False, indent=2) + "\n").encode("utf-8")
+    _write_immutable(path, content)
     return path
+
+
+def _write_immutable(path: Path, content: bytes) -> None:
+    if path.is_symlink():
+        raise ValueError("INVALID_ARTIFACT_PATH")
+    if path.exists():
+        if path.read_bytes() == content:
+            return
+        raise FileExistsError(f"IMMUTABLE_ARTIFACT_CONFLICT:{path.name}")
+    try:
+        with path.open("xb") as handle:
+            handle.write(content)
+    except FileExistsError:
+        if path.is_symlink() or path.read_bytes() != content:
+            raise FileExistsError(f"IMMUTABLE_ARTIFACT_CONFLICT:{path.name}")
+
+
+def _is_safe_path_component(value: Any) -> bool:
+    return isinstance(value, str) and bool(value) and value not in {".", ".."} and "/" not in value and "\\" not in value and "\x00" not in value

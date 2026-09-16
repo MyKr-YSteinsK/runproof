@@ -372,12 +372,21 @@ class ControlPlaneClient:
     def submit_job(self, payload: dict[str, Any]) -> dict[str, Any]:
         return self.request("POST", "/jobs", payload)
 
-    def list_jobs(self, *, state: str | None = None, target_type: str | None = None, limit: int = 50) -> list[dict[str, Any]]:
+    def list_jobs(
+        self,
+        *,
+        state: str | None = None,
+        target_type: str | None = None,
+        eligible: bool = False,
+        limit: int = 50,
+    ) -> list[dict[str, Any]]:
         query: list[str] = []
         if state:
             query.append(f"state={quote(state, safe='')}")
         if target_type:
             query.append(f"target_type={quote(target_type, safe='')}")
+        if eligible:
+            query.append("eligible=true")
         query.append(f"limit={max(1, min(limit, 100))}")
         response = self.request("GET", "/jobs" + ("?" + "&".join(query) if query else ""))
         items = response.get("items")
