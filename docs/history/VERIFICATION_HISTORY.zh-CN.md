@@ -23,6 +23,7 @@
 | RPF-21 / RPF-22 | 恢复了 fresh PostgreSQL 与 canonical gate trust chain，并硬化 eligible discovery starvation、artifact containment、single-read verification 和 writer/verifier authority。 | [hosted run 35071819220](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35071819220)、[hosted run 35077060386](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35077060386) |
 | RPF-23 | 验证了 Windows child environment、worker path containment、process/session identity、rollback、ownership label、restart 和 fail-closed cleanup。 | `demo/verify-lifecycle.ps1`；当前 Windows 本机 lifecycle evidence |
 | RPF-24 / RPF-25 | 在保留 Web canonical truth 和最小模块边界的同时，验证了 presentation-only `en-US`/`zh-CN` i18n、raw-status traceability、locale persistence 和 API-unavailable 行为。 | RPF-25 implementation `d2571754c89e50564084cafc369cccf477650133`；[hosted run 35179169378](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378) |
+| RPF-26 | 在不改变产品行为的前提下交付了双语公共文档、current/history Project-State 分离、公共本地链接/语义/命令/secret-path verifier 与 CI 集成。 | Implementation `e17745396bf58e54465d82a4b5cc0758c648bfa6`；[hosted run 35181115566](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35181115566) |
 
 ## 交付事实
 

@@ -23,6 +23,7 @@ This is a compact historical ledger of material verification facts. It keeps sou
 | RPF-21 / RPF-22 | Fresh PostgreSQL and canonical gate trust chain were restored; eligible discovery starvation, artifact containment, single-read verification, and writer/verifier authority were hardened. | [hosted run 35071819220](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35071819220), [hosted run 35077060386](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35077060386) |
 | RPF-23 | Windows child environment, worker path containment, process/session identity, rollback, ownership labels, restart, and fail-closed cleanup were verified. | `demo/verify-lifecycle.ps1`; current Windows local lifecycle evidence |
 | RPF-24 / RPF-25 | Web canonical truth and minimal module boundaries were preserved while presentation-only `en-US`/`zh-CN` i18n, raw-status traceability, locale persistence, and API-unavailable behavior were verified. | RPF-25 implementation `d2571754c89e50564084cafc369cccf477650133`; [hosted run 35179169378](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378) |
+| RPF-26 | Bilingual public docs, current/history Project-State split, public local-link/semantic/command/secret-path verifier, and CI integration were delivered without product behavior changes. | Implementation `e17745396bf58e54465d82a4b5cc0758c648bfa6`; [hosted run 35181115566](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35181115566) |
 
 ## Delivery facts
 
