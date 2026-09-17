@@ -1247,12 +1247,22 @@ def collector_spans(collector_output: Path) -> list[dict[str, Any]]:
 
 def wait_collector_file(collector: CollectorHandle, timeout: float = 15.0) -> list[dict[str, Any]]:
     deadline = time.monotonic() + timeout
+    latest: list[dict[str, Any]] = []
+    previous_count = -1
+    stable_polls = 0
     while time.monotonic() < deadline:
         spans = collector_spans(collector.output_dir)
         if spans:
-            return spans
+            latest = spans
+            if len(spans) == previous_count:
+                stable_polls += 1
+            else:
+                previous_count = len(spans)
+                stable_polls = 0
+            if stable_polls >= 4:
+                return spans
         time.sleep(0.25)
-    return collector_spans(collector.output_dir)
+    return latest
 
 
 def audit_attributes(span: dict[str, Any]) -> dict[str, Any]:
@@ -1469,6 +1479,7 @@ def run_probe(*, output_dir: Path, hosted: bool) -> dict[str, Any]:
             result["overhead"] = measure_overhead(output_dir, collector.endpoint, metrics)
         else:
             result["overhead"] = {"status": "SKIPPED_IN_HOSTED_FOCUSED_MODE", "local_measurement": "required_and_run_in_default_mode"}
+        collected = wait_collector_file(collector)
         stop_collector(collector)
         collector_stopped = True
         if java_process is not None:
@@ -1500,7 +1511,6 @@ def run_probe(*, output_dir: Path, hosted: bool) -> dict[str, Any]:
                 java_process.wait(timeout=6)
         audit_spans = read_audit_spans(output_dir)
         graph = graph_verification(audit_spans, result["scenarios"])
-        collected = collector_spans(collector.output_dir) if collector else []
         exported_audit = [item for item in audit_spans if item.get("collector_exported") is True]
         unavailable_audit = [item for item in audit_spans if item.get("collector_exported") is False]
         result["trace_export"] = {
