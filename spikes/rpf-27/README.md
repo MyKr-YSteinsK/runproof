@@ -49,10 +49,12 @@ is created and no Golden Demo/PostgreSQL resource is selected by name.
 
 ## Hosted candidate feasibility
 
-The optional `rpf-27-network-spike.yml` workflow runs the same disposable
-candidate with a smaller repeat count on a GitHub-hosted Linux runner. Its
-artifact is diagnostic evidence only; it is not the canonical Release Gate and
-does not run release/deploy.
+The optional `rpf-27-network-spike.yml` workflow runs the selected Toxiproxy
+candidate with a smaller repeat count on a GitHub-hosted Linux runner. The
+complete Toxiproxy / Envoy / custom-shim comparison remains a local matrix;
+hosted CI checks the selected formal candidate's full scenario contract and
+three response-loss repetitions. Its artifact is diagnostic evidence only; it
+is not the canonical Release Gate and does not run release/deploy.
 
 ## Candidate boundary
 

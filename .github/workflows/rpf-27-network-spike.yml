@@ -38,10 +38,13 @@ jobs:
           docker pull envoyproxy/envoy:v1.31-latest
 
       - name: Run fresh RPF-27 candidate
-        run: python spikes/rpf-27/probe.py --run --repeat 3
+        # The complete candidate comparison runs locally on Windows Docker.
+        # Hosted CI focuses on the selected Toxiproxy path so runner-specific
+        # feasibility of Envoy does not mask the formal-candidate evidence.
+        run: python spikes/rpf-27/probe.py --run --candidate toxiproxy --repeat 3
 
       - name: Verify disposable evidence
-        run: python spikes/rpf-27/verify-evidence.py
+        run: python spikes/rpf-27/verify-evidence.py --candidate toxiproxy
 
       - name: Write candidate summary
         if: ${{ always() }}

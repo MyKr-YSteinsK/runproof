@@ -142,7 +142,7 @@ def verify_envoy_candidate(value: dict[str, Any]) -> int:
     return len(response_trials)
 
 
-def verify_result(path: Path) -> dict[str, Any]:
+def verify_result(path: Path, required_candidates: set[str] | None = None) -> dict[str, Any]:
     try:
         value = json.loads(path.read_text(encoding="utf-8"))
     except (OSError, json.JSONDecodeError) as error:
@@ -159,9 +159,15 @@ def verify_result(path: Path) -> dict[str, Any]:
     require(value.get("cleanup_summary", {}).get("golden_demo_resources_touched") is False, "GOLDEN_DEMO_TOUCHED")
     require(value.get("cleanup_summary", {}).get("postgres_resources_touched") is False, "POSTGRES_TOUCHED")
     candidates = value.get("candidates", {})
-    require(REQUIRED_CANDIDATES.issubset(candidates), "CANDIDATES_MISSING")
-    repeat_counts = {candidate: verify_candidate(candidate, candidates[candidate]) for candidate in REQUIRED_CANDIDATES}
-    if "envoy" in candidates:
+    required = REQUIRED_CANDIDATES if required_candidates is None else required_candidates
+    require(required.issubset(candidates), "CANDIDATES_MISSING")
+    repeat_counts: dict[str, int] = {}
+    for candidate in sorted(required):
+        if candidate == "envoy":
+            repeat_counts[candidate] = verify_envoy_candidate(candidates[candidate])
+        else:
+            repeat_counts[candidate] = verify_candidate(candidate, candidates[candidate])
+    if required_candidates is None and "envoy" in candidates:
         repeat_counts["envoy"] = verify_envoy_candidate(candidates["envoy"])
     matrix = value.get("comparison_matrix", [])
     require({item.get("candidate") for item in matrix} >= {"Toxiproxy", "Envoy HTTP fault injection", "Narrow custom fault shim"}, "COMPARISON_MATRIX")
@@ -176,9 +182,11 @@ def verify_result(path: Path) -> dict[str, Any]:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Verify the ignored RPF-27 spike evidence")
     parser.add_argument("--result", type=Path, default=DEFAULT_RESULT)
+    parser.add_argument("--candidate", choices=("all", "toxiproxy", "envoy", "custom-shim"), default="all")
     args = parser.parse_args()
     try:
-        summary = verify_result(args.result)
+        required_candidates = None if args.candidate == "all" else {args.candidate}
+        summary = verify_result(args.result, required_candidates=required_candidates)
     except VerificationError as error:
         print(f"RPF27_VERIFY_FAIL {error}")
         return 1
