@@ -1,167 +1,113 @@
 # RunProof Golden Demo
 
-RPF-19 将 RunProof 收敛为一条可离线复现的 5～10 分钟调查路径。它使用正式 Control Plane/API 和 immutable reviewed corpus，不执行 DeepSeek 调用，不需要云账号，也不把 `ELIGIBLE` 解释为 release/deploy 授权。
+[English](DEMO.md) | [简体中文](DEMO.zh-CN.md) | [README](../README.md)
 
-## 1. 启动
+The Golden Demo is a local, reviewed-evidence walkthrough for the current RunProof product boundary. It is designed for a short interview or architecture review: Candidate → Evidence → Failure → Regression → Gate → Release Decision.
 
-前置条件：Windows、Docker Desktop（本地已有 `postgres:16-alpine`）、Java 17+、Python 3.11+、Node.js/npm、Maven。每次启动入口都会在本地日志中 fresh 执行正式 `control-plane/` 的 Maven test/package，避免复用过期 JAR。
+It does not call DeepSeek, require a Provider credential, create cloud resources, connect to real Production, or execute release/deploy.
+
+## Prerequisites
+
+- Windows with Docker Desktop and the existing `postgres:16-alpine` image available.
+- Java 17+, Maven, Python 3.11+, and Node.js/npm.
+- A free local port for PostgreSQL, the Control Plane, and Vite.
+
+The demo uses the repository's reviewed corpus. It does not require `DEEPSEEK_API_KEY`.
+
+## Start, inspect, stop, and resume
+
+Start the formal Control Plane, seed reviewed artifacts idempotently, and start the Web surface:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 ```
 
-启动脚本会按固定边界完成：
+Open <http://127.0.0.1:4173/overview>. The start script packages the formal `control-plane/`, starts or resumes the Demo-owned PostgreSQL resource, seeds through the formal HTTP/JSON client, reads back canonical metadata and verified artifacts, and then starts Vite in API-backed mode.
 
-1. 启动或恢复本地 named PostgreSQL container/volume；
-2. 启动正式 `control-plane/`；
-3. 通过 `runtime.runproof_runtime.control_plane_client` 注册全部 reviewed corpus；
-4. 对 Golden Demo refs 做 canonical metadata + verified artifact read-back；
-5. 以 API-backed mode 启动 Vite Web。
-
-RPF-23 将每个 child 的环境显式收窄：Control Plane 获得服务端 DB/校验配置，seed 只获得 seed 所需 read/evidence/decision credential，Web 只获得 proxy target 与 read token；Worker 只接受 worker token 和 `--allowed-root` 约束下的 IO 路径。启动 supervisor 不把这些 credential 写入调用方 shell，`.local/rpf-19/demo/demo-state.json` 使用 `rpf-23-demo-runtime-state-v2`，只保存公开运行身份和本地路径，不保存 secret。
-
-入口不会读取 `DEEPSEEK_API_KEY`，不会创建云资源，不会重新执行 20-trial 或 fault corpus。首次准备后的入口通常只需等待 PostgreSQL、Java readiness 和 Web ready；具体本机时长以当前运行实测为准。
-
-浏览器打开：<http://127.0.0.1:4173/overview>
-
-直接验证 profile 和 seed 幂等性：
-
-```powershell
-python demo/verify-golden-demo.py --root . --json
-python demo/seed_demo.py --root . --repeat 2 --json
-```
-
-停止并保留数据以便重启：
+Stop while preserving the named volume, reviewed artifact copies, and local Demo state:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/stop-demo.ps1
 ```
 
-停止并删除本 Demo 自己创建的 exact container、volume、artifact copy 和本地 credential：
+Run the same start command again to resume. A repeated seed is expected to produce idempotent replays, not duplicate canonical records.
+
+Remove only exact, Demo-owned resources and local copies after verifying that they are disposable:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/stop-demo.ps1 -RemoveData
 ```
 
-`.local/rpf-19/demo/` 被 Git 忽略；其中的 credential 只用于本机 Control Plane service boundary，不进入 manifest、artifact、前端 bundle 或 Git。
+Legacy resources without the current ownership label fail closed for destructive removal. A normal stop preserves data; removal is not a generic Docker cleanup command.
 
-### 1.1 生命周期与 ownership 验证
+## Lifecycle contract
 
-RPF-23 的 Windows-only fresh probe 会实际启动/停止临时资源，并在结束时验证 cleanup：
+The Windows lifecycle probe checks the child-specific environment, worker `--allowed-root` containment, state-v2 process/session identity, foreign process/port/container negatives, startup rollback, restart, stop, and ownership-gated `RemoveData`:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/verify-lifecycle.ps1 -Mode contracts
 powershell -ExecutionPolicy Bypass -File demo/verify-lifecycle.ps1 -Mode lifecycle
 ```
 
-新建 Demo PostgreSQL container/volume 带有 `com.runproof.owner=runproof`、`com.runproof.demo=rpf19-golden-demo`、`com.runproof.lifecycle=rpf-23` labels；只有 label、image、volume、port、ID 均匹配时才允许 `-RemoveData`。旧 RPF-19 无 label 的 exact resource 可以被验证后复用/停止，但不能被 `-RemoveData` 删除。state v2 对 child 保存 PID、start time、executable、command fingerprint、session marker 和 expected port；PID 或 port 单独匹配不会触发复用或 kill。损坏/旧 v1 state 只会 fail closed，不会驱动 destructive cleanup。
+The Web child receives only its read boundary. The Worker receives only its worker boundary and explicit IO roots. The local state/log/bundle boundary must not contain credentials. This is a Windows local lifecycle check, not an OS sandbox or Production isolation claim.
 
-启动中途的 Control Plane、seed、Web、state-write 失败会停止本次 session 已确认的 child，移除本次新建的 container，同时保留 named volume、reviewed artifact copies 和 local credentials，随后可重新执行同一入口恢复。普通 stop 保留数据；`-RemoveData` 只处理 label-verified、Demo-owned 的 exact resource 和其本地副本。
+## Three stories to show
 
-## 2. Versioned Golden Demo contract
+### 1. Incident remediation and failure intelligence
 
-唯一 profile 是 [`demo/rpf-19-golden-demo-v1.json`](../demo/rpf-19-golden-demo-v1.json)。它冻结：
+The Incident Remediation Agent sees a symptom while an external dependency is unhealthy. A known-bad version misdiagnoses the incident and performs a harmful local remediation. The controlled environment exposes the violated invariant; the failure is reproduced into a Failure Case, clustered by deterministic Failure Intelligence, and promoted into a Regression. The fixed candidate observes the dependency and safe-stops instead.
 
-- demo identity/version、reviewed corpus source commit 和 runtime source hash；
-- Production Change Agent 与 Incident Remediation Agent 两个 identity；
-- Baseline/Candidate deterministic Evaluation；
-- Stable / Flaky / Safety / Evidence-poor Statistical Evaluation；
-- Wilson interval comparison、Incident Failure Case/Cluster、cross-Agent structural Cluster；
-- Version Bisect、Release Decision、response-lost Run；
-- 每个 reviewed artifact 的 schema、entity identity、content hash、source hash；
-- Overview 期望断言、seed/start method 与 no-provider/no-cloud/no-release 边界。
+This story demonstrates why an Agent `FAIL` is different from a platform `ERROR`, why exact identity and structural family are separate, and why no automatic promotion or release follows from an analysis.
 
-`demo/verify-golden-demo.py` 在 seed 前检查 refs、schema、identity、bytes、source hash、commit 存在性和禁止的 secret/mock/production claim。它不生成数据，也不改写历史 reviewed bytes。
+### 2. Response loss after a side effect
 
-## 3. 5～10 分钟主路径
+The side effect succeeds, but the response is lost between the worker and the operation boundary:
 
-1. **Overview**：从 Candidate → Evidence → Failure → Regression → Gate 看到项目闭环，确认两个 Agent、四种 Statistical outcome、Failure Family、Bisect、Decision 和 durable evidence boundary。
-2. **Statistical**：打开 Stable、Flaky、Safety、Evidence-poor，展开 trial matrix；解释 Agent denominator 与 attempted/evidence denominator 的区别、Wilson interval、`OBSERVED_FLAKY` 和 zero-tolerance safety。
-3. **Failure**：进入 Incident domain Failure Cluster，说明 structural family 与 exact Failure Case identity 分开；继续进入 Failure Case、source/reproduction Run 和 first divergence。
-4. **Version**：进入 Version Bisect，确认相同 Regression oracle 下 `PASS → FAIL` boundary 与 first bad candidate，并说明非单调/不兼容时 fail closed。
-5. **Durable**：打开 response-lost Run；说明 `side effect succeeded → response lost → UNKNOWN_OUTCOME → reconcile → effect count = 1`。RPF-14/RPF-18 的 PostgreSQL durable worker probe 作为正式执行证据，页面只读。
-6. **Release**：打开 Incident Candidate Release Decision，说明 `ELIGIBLE` 仅是 decision-only evidence outcome，不是生产发布动作。
+```text
+effect succeeds → response lost → UNKNOWN_OUTCOME
+→ RECONCILE_REQUIRED → receipt/state proves one effect
+→ recovered PASS, effect count = 1
+```
 
-稳定 deep links：
+The worker does not blind-retry. The response-lost Run, operation identity, reconcile evidence, and final State Diff remain inspectable.
 
-| Story | Route |
+### 3. Statistical Reliability and safety precedence
+
+The Statistical surface contains controlled Stable, Flaky, Safety, and Evidence-poor cohorts. Expand the trial matrix to explain the valid Agent denominator, attempted/evidence denominator, Wilson interval, `OBSERVED_FLAKY`, and zero-tolerance safety precedence. A high pass rate cannot override a safety event or insufficient evidence.
+
+## Suggested path
+
+1. **Overview**: follow Candidate → Evidence → Failure → Regression → Gate and confirm both explicit Agents.
+2. **Statistical**: inspect the four cohorts and interval-aware Comparison.
+3. **Failure Intelligence**: open the Incident family, exact Failure Case, first divergence, and Version Bisect.
+4. **Durable execution**: open the response-lost Run and show reconcile-before-retry.
+5. **Release Decision**: show that `ELIGIBLE` is a decision-only outcome, not a deploy button.
+
+Useful routes:
+
+| Surface | Route |
 |---|---|
 | Overview | `/overview` |
-| Statistical cohort index | `/statistical-evaluations` |
-| Statistical detail | `/statistical-evaluations/statistical-evaluation-rpf18-flaky` |
-| Statistical comparison | `/statistical-comparisons/statistical-comparison-rpf18-baseline-vs-stable` |
+| Agents | `/agents` |
+| Statistical evaluations | `/statistical-evaluations` |
+| Statistical comparisons | `/statistical-comparisons` |
 | Failure Intelligence | `/failure-intelligence` |
-| Flagship cluster | `/failure-intelligence/clusters/failure-cluster-domain-family-e4e932d9cc3b53e0` |
-| Version Bisect | `/version-bisects/version-bisect-8ad1ee6051c564080255` |
-| Release Decision | `/release-decisions/release-decision-rpf16-reviewed-candidate` |
-| Response-lost Run | `/runs/run-incident-b00813da-8cae-4b80-84c4-98303ac85804` |
+| Version Bisects | `/version-bisects/version-bisect-8ad1ee6051c564080255` |
+| Release Decisions | `/release-decisions` |
+| Executions | `/executions` |
 
-## 4. Architecture overview
+When the Control Plane is stopped, the Overview must show canonical data unavailable and must not silently display fixture data. Restarting the formal service and rerunning the start/seed path restores the API-backed view.
 
-```mermaid
-flowchart LR
-    U[User / Interviewer] --> O[Web Overview]
-    CI[GitHub Actions] --> CP[Spring Boot Control Plane]
-    O --> CP
-    CP --> DB[(PostgreSQL\ncanonical metadata)]
-    CP --> AS[(Immutable Artifact Store)]
-    CP --> J[Durable Job]
-    J --> W[Python Durable Worker]
-    W --> E[Controlled Simulation\nEnvironment]
-    E --> EV[Run / Execution Evidence]
-    EV --> G[Quality / Statistical Gate]
-    G --> D[Release Decision\ndecision-only]
-    P[Provider boundary\noptional outside Golden Demo] -.-> W
-```
+## Integrity and evidence
 
-The primary path is HTTP/JSON through the formal Control Plane. The browser never connects to PostgreSQL, never holds worker/decision credentials, and never falls back silently to fixture data when API mode is unavailable.
+The versioned profile freezes Demo identity, two Agent identities, reviewed corpus refs, artifact/source hashes, expected assertions, and the no-Provider/no-cloud/no-release boundary:
 
-## 5. Reliability semantics
+- `demo/rpf-19-golden-demo-v1.json`
+- `demo/verify-golden-demo.py --root . --json`
+- `demo/seed_demo.py --root . --repeat 2 --json`
 
-```mermaid
-flowchart TD
-    S[Observed execution] --> AF{Agent behavior violated?}
-    AF -->|yes| FAIL[Agent FAIL]
-    AF -->|no, platform/readiness issue| PE[Platform / Environment ERROR]
-    S --> UN[Side effect + response transport uncertain]
-    UN --> UO[UNKNOWN_OUTCOME]
-    UO --> RR[RECONCILE_REQUIRED]
-    RR -->|receipt/state proves one effect| PASS[Recovered PASS\neffect count = 1]
-    FAIL --> FC[Failure Case]
-    FC --> REG[Regression]
-    REG --> FI[Failure Intelligence / Cluster / Bisect]
-    PASS --> EV[Immutable Evidence]
-    FI --> EV
-    EV --> STAT[Statistical cohort]
-    STAT --> FL[Observed Flaky / Evidence-poor]
-    STAT --> SAFE[Zero-tolerance safety]
-    STAT --> GATE[Quality Gate]
-    GATE --> DEC[Release Decision\nno automatic deploy]
-```
+The formal Control Plane, PostgreSQL durable worker, reviewed RPF-16/RPF-17/RPF-18 corpus, and hosted Release Gate provide the evidence behind the screens. Historical source identities and hosted run links are collected in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md).
 
-These states are intentionally not interchangeable: Platform ERROR is excluded from the Agent quality denominator; `UNKNOWN_OUTCOME` blocks blind retry until reconciliation; Regression is additive historical evidence; `OBSERVED_FLAKY` is not a live probability; safety events remain hard blockers.
+## Current limits
 
-## 6. Claim → Evidence
-
-| Claim | Repository evidence | Verification |
-|---|---|---|
-| Crash-safe durable execution | `control-plane/`, RPF-14 execution/reconcile evidence, response-lost reviewed Run | `python control-plane/probe.py`; RPF-14 verifier |
-| Two explicit Agent contracts | `runtime/reviewed-rpf16-incident-*`, Production Change reviewed Run | `python spikes/rpf-16/probe.py --verify` |
-| Failure Intelligence and structural identity | `runtime/reviewed-rpf17-*.json` | `python spikes/rpf-17/probe.py --verify` |
-| Statistical Reliability boundary | `runtime/reviewed-rpf18-statistical-*.json` | `python spikes/rpf-18/verify-evidence.py` |
-| Wilson interval comparison | `runtime/runproof_runtime/statistical.py` and RPF-18 comparison | runtime statistical tests |
-| Formal API-backed Web | `web/src/data/controlPlaneApi.ts`, `control-plane/` | Web tests/typecheck/build; API-unavailable fail-closed smoke |
-| Hosted CI gate | `.github/workflows/release-gate.yml` | GitHub Actions hosted run |
-| Golden Demo integrity | `demo/rpf-19-golden-demo-v1.json` and `demo/verify-golden-demo.py` | profile verifier + seed read-back |
-
-The project remains `Stabilization`. Local production-like infrastructure, deterministic controlled simulation and reviewed evidence are not claims of managed PostgreSQL HA, Production deploy readiness, OAuth/RBAC/Approval, broker/scheduler, or real Production remediation.
-
-## 7. Local acceptance measurements
-
-在 2026-09-15 的本机验证中，`demo/start-demo.ps1` 首次从现有 `postgres:16-alpine` image 启动 PostgreSQL、正式 Control Plane、seed 和 Web 到 ready 共约 21.56 秒；停止 Control Plane 后再次执行入口脚本，PostgreSQL named volume 保持不变、86 个 artifact registration 均为 `IDEMPOTENT_REPLAY`，恢复共约 13.93 秒。`demo/seed_demo.py --repeat 2` 的两轮 86-artifact registration 与 15 个 profile ref read-back 通过，耗时约 6.15 秒，未调用 Provider。
-
-2026-09-16 的 RPF-23 Windows fresh lifecycle probe 已通过：child environment contracts、worker IO root negative、foreign port/process/container ownership、Control Plane/seed/Web/state-write 四类失败 rollback、restart、verified stop/RemoveData、PID reuse negative、Golden Demo verifier 与 state/log secret scan 均 `PASS`。本机已有无 label 的 legacy RPF-19 container/volume 只被安全停止并保留；对它执行 `-RemoveData` 明确拒绝，未删除数据。该证据只覆盖当前 Windows 普通用户本机，不代表 Production process isolation、HA 或 off-host persistence。
-
-API-backed Overview、8 个关键 deep-link 页面（Agent、Statistical、Failure Cluster、Failure Case、Version Bisect、Release Decision、response-lost Run、Executions）均完成可访问性/overflow smoke；1440 与 1280 桌面 viewport 的 `scrollWidth` 未超过可视宽度。Control Plane 被停止时，Overview 显示 `Canonical data is unavailable.`，没有静默回退到 fixture；恢复后 API-backed Overview 再次加载。
-
-`npm run build` 当前仍报告单入口 chunk 约 `1,338.82 kB`（gzip 约 `192.26 kB`）的 Vite warning。原因是现有 reviewed corpus 为 API activation 与显式 fixture/test 共用的静态、可审查输入，当前仍集中在既有 read-model bundle；本 Plan 未做高风险全量 route-level lazy refactor。它不阻塞本地 Golden Demo 或 API contract，后续若进入产品规模化可单独以 bundle budget Plan 处理。
+The Demo is a local/interview delivery surface, not Production deployment. It does not prove managed PostgreSQL HA, object-storage durability, multi-host supervision, human Approval, tenant/RBAC identity, broker/scheduler/autoscaling, live Provider probability, or real destructive remediation. The Web build may still report a shared-bundle size warning; that warning is separate from the evidence and authority contracts.

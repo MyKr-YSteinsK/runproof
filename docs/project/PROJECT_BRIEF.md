@@ -71,6 +71,14 @@ Failure reproduction、focused rerun 与持续 Regression 是核心工作流；C
 - Desktop Web 的展示层支持 `en-US` 与 `zh-CN` 两个 locale：未持久化时按浏览器 `zh*` 选择中文、其他语言回落英文，用户选择持久化并覆盖浏览器推断；切换不改变 route、entity、scroll、canonical API、raw enum、ID、hash 或 evidence bytes。技术合同词与原始状态保持 English/raw 可追溯，纯 UI 文案翻译，状态同时显示 raw enum 与本地化解释。
 - 组件库、主题色、light/dark、图表库、字号与间距属于实现选择；已认可概念方向不等于已锁定视觉实现。
 
+## Public documentation baseline
+
+- 根 README 默认 English，并提供 `README.zh-CN.md`；公共架构、Reliability、Demo、Glossary 与 material history 使用 `FILE.md` / `FILE.zh-CN.md` 配对，内容须语义等价。
+- 公共文档的首要叙事是 What / Why、Candidate → Evidence → Failure → Regression → Gate 闭环、当前证据边界与 Golden Demo；不把 Plan 流水或未验证 Production 能力写成产品事实。
+- `AGENTS.md`、`docs/project/PROJECT_BRIEF.md`、`docs/project/DECISIONS.md`、`docs/project/CURRENT_STATE.md` 是 canonical governance/Project-State single source，不复制成英文或中文 governance 文件；历史验证放在 `docs/history/`。
+- Public claims 必须能回到仓库路径、verifier、reviewed artifact、workflow 或当前 state；公共文档不得保存 credential、私密协议、私有绝对路径或 raw evidence 的翻译副本。
+- `en-US`/`zh-CN` 是 Web presentation-only locale 合同的延伸；公共文档翻译不改变 route、entity、identifier、status enum、command、schema、hash 或 evidence bytes。
+
 ## Context ownership and update rule
 
 本文件是跨任务合同摘要，不替代完整 Requirements/Architecture/UX。完整 Bootstrap 上下文由 Architect 持有；每份 Plan 提取当前任务相关 MUST、Acceptance 和 UX invariant，不要求执行器依赖不可读取的外部材料。摘要遗漏不构成已确认需求被废除；具体取舍以有效决定及其适用范围判断。

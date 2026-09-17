@@ -1,0 +1,82 @@
+# RunProof Reliability Model
+
+[English](RELIABILITY_MODEL.md) | [简体中文](RELIABILITY_MODEL.zh-CN.md) | [Architecture](ARCHITECTURE.md)
+
+RunProof separates what the Agent did, what the platform could prove, and what a policy is allowed to conclude. This separation is the reliability contract.
+
+## Outcome vocabulary
+
+| Status | Meaning | Quality denominator |
+|---|---|---|
+| `PASS` | Required outcome and invariants were verified | Valid Agent result when attributable to the Agent |
+| `FAIL` | Agent behavior violated a Scenario invariant or expected outcome | Valid Agent result; may become a Failure Case or Regression |
+| `ERROR` | Platform, Provider, Environment, or execution infrastructure failed outside the Agent contract | Attempt/evidence history, not Agent quality success rate |
+| `INVALID` | Scenario, verifier, identity, or input was not valid for evaluation | Attempt history; not a valid Agent trial |
+| `INCONCLUSIVE` | Evidence is insufficient to decide safely | Blocks or requires review; never silently becomes PASS |
+| `CANCELLED` | Execution was intentionally stopped before a valid conclusion | Attempt history; not a valid Agent trial |
+| `UNKNOWN_OUTCOME` | A side-effecting operation may have happened but its response/receipt is uncertain | Must reconcile before retry |
+| `RECONCILE_REQUIRED` | The environment or receipt must be checked before a safe next action | Safety blocker until reconciled |
+
+`Agent FAIL != Platform ERROR`. A high Agent success rate plus a safety violation is still blocked: safety precedence is stronger than a point estimate.
+
+## Evidence and investigation chain
+
+```text
+Observed Fact
+    → Verified Result
+    → Failure Case (reproducible identity)
+    → Regression (explicit expected behavior)
+    → Failure Intelligence (attribution / family / first divergence)
+    → Statistical Evaluation (repeated observations)
+    → Quality Gate
+    → Release Decision (decision-only)
+```
+
+- **Run** is one execution with Agent, Scenario, Environment, Verifier, timeline, state, and outcome identity.
+- **Trajectory / State Diff** explain observable actions and state transitions; they do not depend on private model reasoning.
+- **Evidence** preserves verified raw facts and stable references. Derived conclusions link back to those facts.
+- **Failure Case** is a reproducible, validated failure identity. It is not automatically a Regression.
+- **Regression** adds an explicit expectation, reproduction, stability, and focused-rerun history.
+- **Failure Intelligence** is deterministic attribution, first meaningful divergence, exact grouping, structural family, and version location. It does not auto-promote or release.
+
+## Safety and recovery
+
+When a response is lost after a possible side effect:
+
+```text
+side effect may have happened
+        → UNKNOWN_OUTCOME
+        → RECONCILE_REQUIRED
+        → inspect receipt/state
+        → prove effect count and final invariant
+        → recover or stop safely
+```
+
+Lease expiry is not proof that a side effect did not happen. A worker must fence stale attempts, reconcile environment state, and preserve the operation identity. Blind whole-run retry is prohibited when safe recovery is unproven.
+
+## Statistical Reliability
+
+Statistical evaluation is separate from a single Evaluation/Comparison. A Sampling Plan freezes trial count, attempt budget, Agent/config, Scenario, environment sequence, metric definitions, and Wilson method/version.
+
+- The valid Agent denominator contains `AGENT_PASS + AGENT_FAIL` only.
+- Platform/Environment, Invalid, Inconclusive, and Cancelled observations remain in the attempted/evidence denominator and trial matrix, but do not become Agent successes or failures.
+- A minimum valid sample is required; `1/1` or `3/3` is not enough when the policy requires a larger denominator.
+- Wilson score intervals describe the controlled observation; the current deterministic corpus is not a live Provider probability estimate.
+- `OBSERVED_FLAKY` is a review observation, not an automatic probability claim.
+- A zero-tolerance safety event, harmful remediation, authority violation, Historical Regression failure, or blind retry after `UNKNOWN_OUTCOME` is a hard blocker.
+
+Comparison classifications are `IMPROVED`, `REGRESSED`, `NO_CLEAR_DIFFERENCE`, or `INCOMPARABLE`, based on compatible plans, evidence sufficiency, and interval relationship rather than point estimate alone.
+
+## Quality Policy and Release Decision
+
+The current precedence is:
+
+```text
+HARD_BLOCKER → EVIDENCE_INSUFFICIENT → REVIEW_REQUIRED → ELIGIBLE
+```
+
+`ELIGIBLE`, `BLOCKED`, `REVIEW_REQUIRED`, and `INCONCLUSIVE` belong to the Release Decision domain, not the Run outcome domain. The decision records why it reached its state and links to Evaluation, Comparison, Regression, Failure, and Evidence refs. It never grants deployment authority.
+
+## Current evidence boundary
+
+The reviewed corpus demonstrates deterministic controlled semantics across two explicit Agents, Failure Intelligence, statistical cohorts, and PostgreSQL durable Trial Jobs. It does not establish long-term live Provider reliability, statistical significance at Production scale, Production remediation safety, or HA. See [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md) for source identities and verification anchors.
