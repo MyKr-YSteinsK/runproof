@@ -28,6 +28,9 @@ node_modules/
 # Disposable RPF-13 Java/Spring durable execution probe build output
 /spikes/rpf-13/control-plane/target/
 
+# Disposable RPF-29 Java observability candidate build output
+/spikes/rpf-29/java/target/
+
 # Formal RPF-11 Java/Spring product build output
 /control-plane/target/
 /ci-results/

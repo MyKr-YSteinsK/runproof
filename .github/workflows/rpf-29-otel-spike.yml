@@ -1,0 +1,61 @@
+name: RPF-29 OpenTelemetry Spike
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "spikes/rpf-29/**"
+      - ".github/workflows/rpf-29-otel-spike.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "spikes/rpf-29/**"
+      - ".github/workflows/rpf-29-otel-spike.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  focused-otel-spike:
+    name: Focused propagation and Collector failure contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Pull disposable provider images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull ghcr.io/shopify/toxiproxy:2.12.0
+          docker pull otel/opentelemetry-collector-contrib:0.157.0
+
+      - name: Run focused RPF-29 probe
+        run: python spikes/rpf-29/probe.py --run --hosted --output-dir .local/rpf-29-hosted
+
+      - name: Verify RPF-29 evidence
+        run: python spikes/rpf-29/verify-evidence.py .local/rpf-29-hosted/rpf29-result.json
+
+      - name: Upload redacted diagnostic result
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-29-otel-spike-${{ github.run_id }}
+          path: |
+            .local/rpf-29-hosted/rpf29-result.json
+            .local/rpf-29-hosted/collector/traces.json
+          if-no-files-found: warn
+          retention-days: 7

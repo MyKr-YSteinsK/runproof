@@ -440,3 +440,22 @@ RPF-28 reviewed baseline、dependency-unavailable 和 response-lost Run 保持�
 ### Supersedes
 
 - none（承接 D-017～D-021 与 RPF-27 候选边界；不替代 `DockerEnvironment` 兼容路径、durable reconcile 或 decision-only authority）
+
+## D-026｜Observability 作为独立诊断信号，OTel 正式接入须保持 canonical authority 外置
+
+- Status: `Accepted`
+- Date: 2026-09-17
+### Decision
+RPF-29 证明 OpenTelemetry 可以作为独立的 operator/debug signal 关联 Java durable Job、Python Worker/Agent、RPF-28 multi-service HTTP、response-loss 与 reconcile，但 trace/span 不是 RunProof 的产品 identity、canonical Evidence、Quality Gate 或 Release Decision authority。`job_id`、`attempt_id`、`run_id`、`environment_id`、`operation_id` 在 OTel 关闭时仍必须完整存在；OTel 只通过 W3C `traceparent` 与 allowlisted W3C Baggage/attributes 做关联，不把完整 prompt、HTTP body、Authorization、credential、private reasoning 或本机私有路径写入 telemetry。
+
+Attempt reclaim 采用候选 v1 语义：同一 root trace 下创建新的 Attempt subtree，并以 span link 表达旧 Attempt 关系；最终正式实现仍需在 retention、long-running Job 与 SDK 选择确定后复核。正式 OTel candidate 只能使用可选 Collector/bounded exporter，export failure 必须记录 telemetry unavailable 但不得改变 canonical outcome、触发 blind retry 或阻塞 Release Gate。metrics 只允许有限、可定义的低 cardinality labels，canonical ID/trace ID 只能是 span attributes 或日志关联字段。
+### Why
+RPF-29 disposable Spike 在 Windows Docker 与 focused hosted-like 路径中验证了 PostgreSQL durable Job → Java candidate → Python worker/Agent → Toxiproxy target/dependency 的 propagation、response-lost `UNKNOWN_OUTCOME` → reconcile、missing propagation negative control 与 Collector failure isolation；canonical receipt/effect-count/verifier 仍是唯一 outcome authority。将 observability 与 evidence 分离保留了 backend 可替换性、重放能力和隐私边界，也避免用 trace 的不完整或采样数据替代可靠性判断。
+### Consequences
+下一份正式 OTel Plan 只能落地窄的 submit/claim/terminal、worker/agent/tool/environment/reconcile span 与低 cardinality metrics，并要求 bounded timeout、allowlist/redaction、SDK/exporter source identity、retention 与 failure-isolation evidence。当前不新增 canonical trace schema/ref，不引入 SaaS、长期 retention、alerting、S3/MinIO、capacity benchmark、Production deploy 或 Web Observability 页面；RPF-29 的手工 OTLP/HTTP JSON candidate 不是正式 Runtime OTel/SDK 支持。
+### Reconsider when
+需要审计级 trace retention、Web trace drilldown、跨环境/多租户 observability、真实 Provider latency/cost、生产告警或经测量的容量/采样需求时，必须以新 Plan 重新评估 trace ref、retention、权限、成本与 canonical artifact 边界。
+
+### Supersedes
+
+- none（承接 D-009、D-013、D-017、D-020、D-025；不替代 canonical identity/evidence、UNKNOWN_OUTCOME reconcile、Quality/Release authority 或 multi-service fault contract）
