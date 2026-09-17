@@ -17,6 +17,16 @@ from runtime.runproof_runtime.multi_service_environment import ENVIRONMENT_PROFI
 
 RESULT_SCHEMA = "rpf-28-formal-multi-service-evidence-v1"
 REQUIRED_PROFILES = {"none", "dependency-unavailable", "response-lost"}
+NEGATIVE_CONTROL_IDS = {
+    "planned-not-triggered",
+    "bad-toxic-config",
+    "proxy-down",
+    "missing-receipt",
+    "effect-count-2",
+    "blind-retry",
+    "reconcile-unavailable",
+    "cleanup-failure",
+}
 
 
 def probe_source_sha256() -> str:
@@ -37,6 +47,38 @@ def _errors_for_run(run: dict[str, Any], expected_profile: str) -> list[str]:
         errors.append("RUN_STATUS")
     if not isinstance(run.get("run_id"), str) or not run["run_id"]:
         errors.append("RUN_ID")
+    return errors
+
+
+def _negative_control_errors(negative: Any) -> list[str]:
+    if not isinstance(negative, list):
+        return ["NEGATIVE_CONTROLS_INCOMPLETE"]
+    by_id = {item.get("id"): item for item in negative if isinstance(item, dict)}
+    errors: list[str] = []
+    if set(by_id) != NEGATIVE_CONTROL_IDS or len(by_id) != len(negative):
+        errors.append("NEGATIVE_CONTROLS_INCOMPLETE")
+    for control_id in sorted(NEGATIVE_CONTROL_IDS & set(by_id)):
+        item = by_id[control_id]
+        observed = item.get("observed") if isinstance(item.get("observed"), dict) else {}
+        if item.get("status") != "PASS" or not item.get("expected") or not item.get("verified_by"):
+            errors.append(f"NEGATIVE_CONTROL_STATUS_{control_id}")
+            continue
+        if control_id == "planned-not-triggered" and not (observed.get("planned") is True and observed.get("triggered") is False and observed.get("observed") is False):
+            errors.append("NEGATIVE_CONTROL_PLANNED_TRIGGERED")
+        elif control_id == "bad-toxic-config" and not (observed.get("activation_error") == "FAULT_ACTIVATION_FAILED" and observed.get("fault_triggered") is False):
+            errors.append("NEGATIVE_CONTROL_BAD_TOXIC")
+        elif control_id == "proxy-down" and not (observed.get("client_transport_ok") is False and observed.get("target_ready") is True and observed.get("agent_failure") is False):
+            errors.append("NEGATIVE_CONTROL_PROXY_DOWN")
+        elif control_id == "missing-receipt" and not (observed.get("reconcile_error") == "RECONCILE_RECEIPT_MISSING" and observed.get("outcome") == "INCONCLUSIVE" and observed.get("receipt_present") is False):
+            errors.append("NEGATIVE_CONTROL_MISSING_RECEIPT")
+        elif control_id == "effect-count-2" and not (observed.get("mutation_count") == 2 and observed.get("receipt_count") == 2 and observed.get("verifier_exactly_one_mutation") is False and observed.get("verification_should_fail") is True):
+            errors.append("NEGATIVE_CONTROL_EFFECT_COUNT")
+        elif control_id == "blind-retry" and not (observed.get("outcome") == "PASS" and observed.get("unknown_outcome") is True and observed.get("no_blind_retry_after_unknown") is True and observed.get("blind_retry_attempts") == 0 and observed.get("duplicate_operation_requests") == 0):
+            errors.append("NEGATIVE_CONTROL_BLIND_RETRY")
+        elif control_id == "reconcile-unavailable" and not (observed.get("action_status") == "UNKNOWN_OUTCOME" and observed.get("reconcile_error") == "RECONCILE_RECEIPT_MISSING" and observed.get("blind_retry") is False):
+            errors.append("NEGATIVE_CONTROL_RECONCILE_UNAVAILABLE")
+        elif control_id == "cleanup-failure" and not (observed.get("cleanup_code") == "CLEANUP_UNVERIFIED" and observed.get("quarantined") is True and observed.get("lifecycle_state") == "QUARANTINED" and observed.get("residual_resources_removed") is True):
+            errors.append("NEGATIVE_CONTROL_CLEANUP_FAILURE")
     return errors
 
 
@@ -97,11 +139,7 @@ def verify_file(path: Path) -> list[str]:
             errors.append("FORMAL_WORKER_EVIDENCE")
         if worker.get("secrets_in_result") is not False:
             errors.append("FORMAL_WORKER_SECRET_BOUNDARY")
-    negative = result.get("negative_controls")
-    if not isinstance(negative, list) or {item.get("id") for item in negative if isinstance(item, dict)} != {
-        "planned-not-triggered", "bad-toxic-config", "proxy-down", "missing-receipt", "effect-count-2", "blind-retry", "reconcile-unavailable", "cleanup-failure",
-    }:
-        errors.append("NEGATIVE_CONTROLS_INCOMPLETE")
+    errors.extend(_negative_control_errors(result.get("negative_controls")))
     return sorted(set(errors))
 
 

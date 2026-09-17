@@ -8,18 +8,21 @@ import importlib.util
 import json
 import os
 import secrets
+import subprocess
 import sys
 import time
 import uuid
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from runtime.runproof_runtime.agent import FIXED_CANDIDATE_AGENT_PROFILE
 from runtime.runproof_runtime.evidence import write_artifact
-from runtime.runproof_runtime.multi_service_environment import ENVIRONMENT_PROFILE, FAULT_PROFILES, provider_snapshot
+from runtime.runproof_runtime import multi_service_environment as multi_service_environment_module
+from runtime.runproof_runtime.models import RuntimeFailure
+from runtime.runproof_runtime.multi_service_environment import ENVIRONMENT_PROFILE, FAULT_PROFILES, MultiServiceEnvironment, provider_snapshot
 from runtime.runproof_runtime.runner import run_slice
 
 
@@ -27,6 +30,16 @@ LOCAL_ROOT = ROOT / ".local" / "rpf-28"
 RESULT_NAME = "rpf28-formal-result.json"
 FORMAL_PROFILES = ["none", "latency", "timeout", "dependency-unavailable", "response-lost", "pre-side-effect-failure"]
 FOCUSED_HOSTED_PROFILES = ["none", "response-lost"]
+NEGATIVE_CONTROL_IDS = {
+    "planned-not-triggered",
+    "bad-toxic-config",
+    "proxy-down",
+    "missing-receipt",
+    "effect-count-2",
+    "blind-retry",
+    "reconcile-unavailable",
+    "cleanup-failure",
+}
 
 
 class ProbeFailure(RuntimeError):
@@ -93,6 +106,227 @@ def _assert_run(artifact: dict[str, Any], fault_profile: str) -> None:
         verification = artifact["verification"]
         if any(not verification["checks"].get(key) for key in ("unknown_outcome_observed", "client_did_not_receive_success", "side_effect_committed", "receipt_effect_count_1", "reconcile_read_back", "no_blind_retry_after_unknown")):
             raise ProbeFailure("RESPONSE_LOST_RECONCILIATION_NOT_PROVEN")
+
+
+def _negative_record(control_id: str, expected: str, verified_by: str, observed: dict[str, Any]) -> dict[str, Any]:
+    return {
+        "id": control_id,
+        "status": "PASS",
+        "expected": expected,
+        "verified_by": verified_by,
+        "observed": observed,
+    }
+
+
+def _run_ready_negative_control(
+    provider: dict[str, Any],
+    *,
+    role: str,
+    fault_profile: str,
+    callback: Callable[[MultiServiceEnvironment], dict[str, Any]],
+) -> dict[str, Any]:
+    """Run one negative control with the same readiness/cleanup boundary as a formal Run."""
+
+    environment = MultiServiceEnvironment(provider, role=role, fault_profile=fault_profile)
+    cleaned = False
+    try:
+        environment.provision()
+        readiness = environment.readiness()
+        if not readiness.get("ok"):
+            raise ProbeFailure(f"NEGATIVE_CONTROL_READINESS:{role}")
+        initial = environment.verify_initial()
+        if not initial.get("ok"):
+            raise ProbeFailure(f"NEGATIVE_CONTROL_INITIAL_STATE:{role}")
+        observed = callback(environment)
+        cleanup = environment.cleanup()
+        if not cleanup.get("ok"):
+            raise ProbeFailure(f"NEGATIVE_CONTROL_CLEANUP:{role}")
+        cleaned = True
+        observed["environment_id"] = environment.environment_id
+        observed["cleanup_state"] = cleanup.get("cleanup_state")
+        return observed
+    finally:
+        if not cleaned:
+            try:
+                cleanup = environment.cleanup()
+                if not cleanup.get("ok"):
+                    environment.force_cleanup()
+            except Exception:
+                try:
+                    environment.force_cleanup()
+                except Exception:
+                    pass
+
+
+def _planned_not_triggered_control(provider: dict[str, Any]) -> dict[str, Any]:
+    environment = MultiServiceEnvironment(provider, role="negative-planned", fault_profile="response-lost")
+    state = environment.snapshot()["fault_state"]
+    if not state.get("planned") or state.get("triggered") or state.get("observed"):
+        raise ProbeFailure("NEGATIVE_CONTROL_PLANNED_TRIGGERED")
+    return _negative_record(
+        "planned-not-triggered",
+        "not-valid",
+        "fault_state.planned!=triggered!=observed",
+        {"planned": state.get("planned"), "triggered": state.get("triggered"), "observed": state.get("observed")},
+    )
+
+
+def _bad_toxic_config_control(provider: dict[str, Any]) -> dict[str, Any]:
+    def callback(environment: MultiServiceEnvironment) -> dict[str, Any]:
+        try:
+            environment._activate_toxic("rpf28-invalid-toxic", ["--attribute", "invalid=1"], "rpf28-negative-bad-toxic")
+        except RuntimeFailure as error:
+            if error.domain != "ENVIRONMENT" or error.code != "FAULT_ACTIVATION_FAILED":
+                raise ProbeFailure(f"NEGATIVE_CONTROL_BAD_TOXIC_WRONG_ERROR:{error.code}") from error
+            state = environment.snapshot()["fault_state"]
+            return {"activation_error": error.code, "fault_triggered": state.get("triggered"), "active_toxics": list(environment.active_toxics)}
+        raise ProbeFailure("NEGATIVE_CONTROL_BAD_TOXIC_ACCEPTED")
+
+    observed = _run_ready_negative_control(provider, role="negative-bad-toxic", fault_profile="latency", callback=callback)
+    if observed.get("activation_error") != "FAULT_ACTIVATION_FAILED" or observed.get("fault_triggered"):
+        raise ProbeFailure("NEGATIVE_CONTROL_BAD_TOXIC_NOT_FAIL_CLOSED")
+    return _negative_record("bad-toxic-config", "activation-fails-closed", "FAULT_ACTIVATION_FAILED", observed)
+
+
+def _proxy_down_control(provider: dict[str, Any]) -> dict[str, Any]:
+    def callback(environment: MultiServiceEnvironment) -> dict[str, Any]:
+        multi_service_environment_module._docker(["stop", "--time", "1", environment.boundary], timeout=10.0, code="NEGATIVE_PROXY_STOP_FAILED")
+        client = environment.client_request("/health", timeout=0.5)
+        target = environment._observer_request("/health")
+        if client.get("transport_ok") is True or target.get("status") != 200:
+            raise ProbeFailure("NEGATIVE_CONTROL_PROXY_DOWN_NOT_ISOLATED")
+        return {
+            "client_transport_ok": client.get("transport_ok"),
+            "client_error_kind": client.get("error_kind"),
+            "target_ready": target.get("status") == 200,
+            "agent_failure": False,
+        }
+
+    observed = _run_ready_negative_control(provider, role="negative-proxy-down", fault_profile="none", callback=callback)
+    return _negative_record("proxy-down", "environment-error-not-agent-fail", "data-plane transport failure with target observer healthy", observed)
+
+
+def _missing_receipt_control(provider: dict[str, Any]) -> dict[str, Any]:
+    def callback(environment: MultiServiceEnvironment) -> dict[str, Any]:
+        try:
+            environment.reconcile("rpf28-missing-receipt")
+        except RuntimeFailure as error:
+            if error.domain != "ENVIRONMENT" or error.code != "RECONCILE_RECEIPT_MISSING" or error.outcome != "INCONCLUSIVE":
+                raise ProbeFailure(f"NEGATIVE_CONTROL_MISSING_RECEIPT_WRONG_ERROR:{error.code}") from error
+            return {"reconcile_error": error.code, "outcome": error.outcome, "receipt_present": False}
+        raise ProbeFailure("NEGATIVE_CONTROL_MISSING_RECEIPT_ACCEPTED")
+
+    observed = _run_ready_negative_control(provider, role="negative-missing-receipt", fault_profile="none", callback=callback)
+    return _negative_record("missing-receipt", "reconcile-inconclusive", "RECONCILE_RECEIPT_MISSING", observed)
+
+
+def _effect_count_two_control(provider: dict[str, Any]) -> dict[str, Any]:
+    def callback(environment: MultiServiceEnvironment) -> dict[str, Any]:
+        first = environment.client_request("/mutate", method="POST", payload={"operation_id": "rpf28-effect-one"}, timeout=2.0)
+        second = environment.client_request("/mutate", method="POST", payload={"operation_id": "rpf28-effect-two"}, timeout=2.0)
+        full = environment._full_state()
+        mutation_count = full.get("mutation_count")
+        if first.get("status") != 200 or second.get("status") != 200 or mutation_count != 2 or len(full.get("receipts", {})) != 2:
+            raise ProbeFailure(f"NEGATIVE_CONTROL_EFFECT_COUNT_TWO_NOT_CREATED:{first.get('status')}:{second.get('status')}:{mutation_count}:{len(full.get('receipts', {}))}")
+        return {
+            "mutation_count": mutation_count,
+            "receipt_count": len(full.get("receipts", {})),
+            "verifier_exactly_one_mutation": False,
+            "verification_should_fail": True,
+        }
+
+    observed = _run_ready_negative_control(provider, role="negative-effect-count-two", fault_profile="none", callback=callback)
+    return _negative_record("effect-count-2", "verification-fails", "exactly_one_mutation", observed)
+
+
+def _blind_retry_control() -> dict[str, Any]:
+    artifact = run_slice(
+        fault_profile="response-lost",
+        agent_profile_id=FIXED_CANDIDATE_AGENT_PROFILE,
+        environment_profile=ENVIRONMENT_PROFILE,
+    )
+    checks = artifact.get("verification", {}).get("checks", {})
+    evidence = artifact.get("verification", {}).get("evidence", {})
+    observed = {
+        "outcome": artifact.get("outcome", {}).get("status"),
+        "unknown_outcome": checks.get("unknown_outcome_observed"),
+        "no_blind_retry_after_unknown": checks.get("no_blind_retry_after_unknown"),
+        "blind_retry_attempts": evidence.get("blind_retry_attempts"),
+        "duplicate_operation_requests": evidence.get("duplicate_operation_requests"),
+    }
+    if observed["outcome"] != "PASS" or observed["unknown_outcome"] is not True or observed["no_blind_retry_after_unknown"] is not True or observed["blind_retry_attempts"] != 0 or observed["duplicate_operation_requests"] != 0:
+        raise ProbeFailure("NEGATIVE_CONTROL_BLIND_RETRY_NOT_BLOCKED")
+    return _negative_record("blind-retry", "agent-guard-blocks", "RPF-NO-BLIND-RETRY-AFTER-UNKNOWN-OUTCOME", observed)
+
+
+def _reconcile_unavailable_control(provider: dict[str, Any]) -> dict[str, Any]:
+    def callback(environment: MultiServiceEnvironment) -> dict[str, Any]:
+        action = environment.apply_change("change-001")
+        if action.get("status") != "UNKNOWN_OUTCOME":
+            raise ProbeFailure("NEGATIVE_CONTROL_RECONCILE_UNAVAILABLE_NOT_UNKNOWN")
+        multi_service_environment_module._docker(["stop", "--time", "1", environment.target], timeout=10.0, code="NEGATIVE_TARGET_STOP_FAILED")
+        try:
+            environment.reconcile("change-001")
+        except RuntimeFailure as error:
+            if error.domain != "ENVIRONMENT" or error.code != "RECONCILE_RECEIPT_MISSING":
+                raise ProbeFailure(f"NEGATIVE_CONTROL_RECONCILE_UNAVAILABLE_WRONG_ERROR:{error.code}") from error
+            return {"action_status": action.get("status"), "reconcile_error": error.code, "blind_retry": False}
+        raise ProbeFailure("NEGATIVE_CONTROL_RECONCILE_UNAVAILABLE_ACCEPTED")
+
+    observed = _run_ready_negative_control(provider, role="negative-reconcile-unavailable", fault_profile="response-lost", callback=callback)
+    return _negative_record("reconcile-unavailable", "environment-error-not-blind-retry", "RECONCILE_RECEIPT_MISSING", observed)
+
+
+def _cleanup_failure_control(provider: dict[str, Any]) -> dict[str, Any]:
+    environment = MultiServiceEnvironment(provider, role="negative-cleanup-failure", fault_profile="none")
+    stray = f"rpf28-negative-stray-{uuid.uuid4().hex[:10]}"
+    observed: dict[str, Any] | None = None
+    try:
+        environment.provision()
+        if not environment.readiness().get("ok") or not environment.verify_initial().get("ok"):
+            raise ProbeFailure("NEGATIVE_CONTROL_CLEANUP_SETUP")
+        args = ["run", "--detach", "--pull=never", "--name", stray, "--network", environment.network]
+        args += environment._labels("negative-stray")
+        args += [multi_service_environment_module.PYTHON_IMAGE, "python", "-c", "import time; time.sleep(3600)"]
+        multi_service_environment_module._docker(args, timeout=15.0, code="NEGATIVE_STRAY_START_FAILED")
+        cleanup = environment.cleanup()
+        if cleanup.get("ok") or cleanup.get("code") != "CLEANUP_UNVERIFIED" or not cleanup.get("quarantine"):
+            raise ProbeFailure("NEGATIVE_CONTROL_CLEANUP_FAILURE_NOT_QUARANTINED")
+        observed = {
+            "cleanup_code": cleanup.get("code"),
+            "quarantined": cleanup.get("quarantine"),
+            "lifecycle_state": environment.contract.get("lifecycle_state"),
+            "residual_stray_created": True,
+        }
+    finally:
+        multi_service_environment_module._docker(["rm", "--force", stray], timeout=15.0, check=False)
+        environment.force_cleanup()
+        if multi_service_environment_module._docker_optional(["inspect", stray]) is not None:
+            raise ProbeFailure("NEGATIVE_CONTROL_STRAY_REMAINS")
+        if multi_service_environment_module._docker_optional(["network", "inspect", environment.network]) is not None:
+            multi_service_environment_module._docker(["network", "rm", environment.network], timeout=15.0, check=False)
+            if multi_service_environment_module._docker_optional(["network", "inspect", environment.network]) is not None:
+                raise ProbeFailure("NEGATIVE_CONTROL_NETWORK_REMAINS")
+    if observed is None:
+        raise ProbeFailure("NEGATIVE_CONTROL_CLEANUP_NO_OBSERVATION")
+    observed["residual_resources_removed"] = True
+    return _negative_record("cleanup-failure", "quarantine-and-fail-closed", "CLEANUP_UNVERIFIED", observed)
+
+
+def run_negative_controls(provider: dict[str, Any]) -> list[dict[str, Any]]:
+    controls = [
+        _planned_not_triggered_control(provider),
+        _bad_toxic_config_control(provider),
+        _proxy_down_control(provider),
+        _missing_receipt_control(provider),
+        _effect_count_two_control(provider),
+        _blind_retry_control(),
+        _reconcile_unavailable_control(provider),
+        _cleanup_failure_control(provider),
+    ]
+    if {item.get("id") for item in controls} != NEGATIVE_CONTROL_IDS or any(item.get("status") != "PASS" for item in controls):
+        raise ProbeFailure("NEGATIVE_CONTROLS_INCOMPLETE")
+    return controls
 
 
 def run_direct(*, repeat: int, profiles: list[str], output_dir: Path) -> dict[str, Any]:
@@ -236,6 +470,7 @@ def run_probe(*, hosted: bool, repeat: int | None, output_dir: Path, build_revie
     output_dir = output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     direct = run_direct(repeat=actual_repeat, profiles=profiles, output_dir=output_dir)
+    negative_controls = run_negative_controls(direct["provider"])
     worker = None if hosted else run_formal_worker(output_dir)
     result = {
         "schema_version": "rpf-28-formal-multi-service-evidence-v1",
@@ -250,16 +485,7 @@ def run_probe(*, hosted: bool, repeat: int | None, output_dir: Path, build_revie
         "profiles": profiles,
         "runs": direct["runs"],
         "formal_worker": worker,
-        "negative_controls": [
-            {"id": "planned-not-triggered", "expected": "not-valid", "verified_by": "fault_state.triggered"},
-            {"id": "bad-toxic-config", "expected": "activation-fails-closed", "verified_by": "FAULT_ACTIVATION_FAILED"},
-            {"id": "proxy-down", "expected": "environment-error-not-agent-fail", "verified_by": "ENVIRONMENT"},
-            {"id": "missing-receipt", "expected": "reconcile-inconclusive", "verified_by": "RECONCILE_RECEIPT_MISSING"},
-            {"id": "effect-count-2", "expected": "verification-fails", "verified_by": "exactly_one_mutation"},
-            {"id": "blind-retry", "expected": "agent-guard-blocks", "verified_by": "RPF-NO-BLIND-RETRY-AFTER-UNKNOWN-OUTCOME"},
-            {"id": "reconcile-unavailable", "expected": "environment-error-not-blind-retry", "verified_by": "RECONCILE_RECEIPT_MISSING"},
-            {"id": "cleanup-failure", "expected": "quarantine-and-fail-closed", "verified_by": "CLEANUP_UNVERIFIED"},
-        ],
+        "negative_controls": negative_controls,
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
     if build_reviewed:

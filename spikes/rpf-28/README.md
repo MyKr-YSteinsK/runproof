@@ -38,6 +38,12 @@ python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json
 python runtime/verify-reviewed-artifacts.py
 ```
 
+The probe also executes and verifies eight fail-closed negative controls:
+planned-but-not-triggered, invalid toxic activation, proxy-down transport failure,
+missing receipt, effect count two, blind retry guard, unavailable reconcile, and
+cleanup failure quarantine. These controls are recorded in the formal result;
+they are not a declaration-only checklist.
+
 The default local probe repeats each profile five times and additionally
 executes one independent PostgreSQL/Control Plane/durable-worker job. The
 hosted workflow uses `--hosted` for focused baseline/response-loss/cleanup

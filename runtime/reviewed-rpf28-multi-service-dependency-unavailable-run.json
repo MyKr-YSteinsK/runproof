@@ -7,9 +7,9 @@
     "identity": "run-scoped event_id; immutable once evidence is written"
   },
   "run": {
-    "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-    "evaluation_id": "evaluation-6f77c89e-9e0f-4e67-839d-f8c66261b4f4",
-    "started_at": "2026-09-17T07:09:47.498680Z",
+    "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+    "evaluation_id": "evaluation-1706b484-6785-4a26-a751-cef1092c7b3f",
+    "started_at": "2026-09-17T07:35:48.366848Z",
     "agent": {
       "agent_id": "production-change-agent",
       "agent_version": "1.0.1-observe-before-mutation-fix",
@@ -35,7 +35,7 @@
       "runtime_version": "rpf-28.v1",
       "source_sha256": "b5f2c22fce21d0c14455a2ee076d1d12df31f5dbc10c9fe8aef9ea97d7fcfaa6"
     },
-    "ended_at": "2026-09-17T07:10:04.180992Z"
+    "ended_at": "2026-09-17T07:36:04.366053Z"
   },
   "llm_provider": {
     "provider_id": "deepseek",
@@ -78,7 +78,7 @@
     }
   },
   "environment": {
-    "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+    "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
     "environment_profile": "multi-service-toxiproxy-v1",
     "environment_contract": "rpf-multi-service-controlled-environment-v1",
     "fault_profile_contract": "rpf-network-fault-profile-v1",
@@ -95,51 +95,51 @@
     "seed_id": "rpf28-multi-service-seed",
     "seed_revision": "rpf28-seed-v1",
     "provenance": {
-      "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+      "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
       "environment_profile": "multi-service-toxiproxy-v1",
       "network": {
-        "name": "rpf28-net-75b02d3c7c",
-        "id": "4079f121ed7d01763e04aa9e678384ed0da67d89d57b250a1d25141a43414aa6",
+        "name": "rpf28-net-6629e6a3cf",
+        "id": "fe5c762870a5076c8e58b183a963fdfcf030cdb365d919e2761326556f716bab",
         "internal": true,
         "container_count": 4
       },
       "service_identities": {
-        "target": "rpf28-formal-run-target-75b02d3c7c",
-        "dependency": "rpf28-formal-run-dependency-75b02d3c7c",
-        "fault_boundary": "rpf28-formal-run-toxiproxy-75b02d3c7c",
-        "agent_client": "rpf28-formal-run-client-75b02d3c7c"
+        "target": "rpf28-formal-run-target-6629e6a3cf",
+        "dependency": "rpf28-formal-run-dependency-6629e6a3cf",
+        "fault_boundary": "rpf28-formal-run-toxiproxy-6629e6a3cf",
+        "agent_client": "rpf28-formal-run-client-6629e6a3cf"
       },
       "containers": [
         {
-          "id": "94f47280b59d45ea7eabf15e6f2c1717d54bd359e9e12999989bff1940673699",
-          "name": "rpf28-formal-run-dependency-75b02d3c7c",
+          "id": "24eb1afb8e14353edc62d3faba64b6d81ec2303e599701d0fb3ea0b3659a6016",
+          "name": "rpf28-formal-run-dependency-6629e6a3cf",
           "role": "dependency",
           "running": true,
-          "network_mode": "rpf28-net-75b02d3c7c",
+          "network_mode": "rpf28-net-6629e6a3cf",
           "mounts": []
         },
         {
-          "id": "38eb583a3aa1b4301d795c44968628ef32812ce5bafcb3eff73471e89964d719",
-          "name": "rpf28-formal-run-target-75b02d3c7c",
+          "id": "fc482dd91f2ce37e406ffa184a1408ebc79b97337dcf6517cb77aa3e83a3f83c",
+          "name": "rpf28-formal-run-target-6629e6a3cf",
           "role": "target",
           "running": true,
-          "network_mode": "rpf28-net-75b02d3c7c",
+          "network_mode": "rpf28-net-6629e6a3cf",
           "mounts": []
         },
         {
-          "id": "25f251bd304799fe3233ca3da88ef5e5620b2da88515cf781068efcb1b72df7f",
-          "name": "rpf28-formal-run-toxiproxy-75b02d3c7c",
+          "id": "c1ca249657d38b05ddfde537473f3f9050fbc63be83d381dd02a9911190d1205",
+          "name": "rpf28-formal-run-toxiproxy-6629e6a3cf",
           "role": "fault-boundary",
           "running": true,
-          "network_mode": "rpf28-net-75b02d3c7c",
+          "network_mode": "rpf28-net-6629e6a3cf",
           "mounts": []
         },
         {
-          "id": "874acb75477f3a324f8f486dd9ba364a42feabfce07428767db2897d85635306",
-          "name": "rpf28-formal-run-client-75b02d3c7c",
+          "id": "b90df5319206747011c66609fbdbafdfe6345e22ffb2bb7c895545c3bbb15e67",
+          "name": "rpf28-formal-run-client-6629e6a3cf",
           "role": "agent-client",
           "running": true,
-          "network_mode": "rpf28-net-75b02d3c7c",
+          "network_mode": "rpf28-net-6629e6a3cf",
           "mounts": []
         }
       ],
@@ -188,51 +188,51 @@
     "lifecycle_trace": [
       {
         "state": "UNPROVISIONED",
-        "at": "2026-09-17T07:09:48Z"
+        "at": "2026-09-17T07:35:49Z"
       },
       {
         "state": "NETWORK_ALLOCATED",
-        "at": "2026-09-17T07:09:49Z"
+        "at": "2026-09-17T07:35:49Z"
       },
       {
         "state": "SERVICES_ALLOCATED",
-        "at": "2026-09-17T07:09:50Z"
+        "at": "2026-09-17T07:35:50Z"
       },
       {
         "state": "PROXY_READY",
-        "at": "2026-09-17T07:09:50Z"
+        "at": "2026-09-17T07:35:51Z"
       },
       {
         "state": "CLIENT_READY",
-        "at": "2026-09-17T07:09:51Z"
+        "at": "2026-09-17T07:35:52Z"
       },
       {
         "state": "SEEDED",
-        "at": "2026-09-17T07:09:52Z"
+        "at": "2026-09-17T07:35:52Z"
       },
       {
         "state": "PROVISIONED",
-        "at": "2026-09-17T07:09:52Z"
+        "at": "2026-09-17T07:35:52Z"
       },
       {
         "state": "READY_UNVERIFIED",
-        "at": "2026-09-17T07:09:53Z"
+        "at": "2026-09-17T07:35:53Z"
       },
       {
         "state": "READY_VERIFIED",
-        "at": "2026-09-17T07:09:53Z"
+        "at": "2026-09-17T07:35:54Z"
       },
       {
         "state": "EXECUTING",
-        "at": "2026-09-17T07:09:54Z"
+        "at": "2026-09-17T07:35:54Z"
       },
       {
         "state": "TERMINAL_EVIDENCE",
-        "at": "2026-09-17T07:10:01Z"
+        "at": "2026-09-17T07:36:01Z"
       },
       {
         "state": "CLEANED",
-        "at": "2026-09-17T07:10:04Z"
+        "at": "2026-09-17T07:36:04Z"
       }
     ],
     "fault_state": {
@@ -241,7 +241,7 @@
       "observed": true,
       "reconciled": false,
       "activation": {
-        "at": "2026-09-17T07:09:55Z",
+        "at": "2026-09-17T07:35:56Z",
         "fault_id": "dependency-unavailable-v1",
         "controller": "formal-environment-adapter",
         "mechanism": {
@@ -253,7 +253,7 @@
     },
     "active_toxics": [],
     "fault_provenance": {
-      "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+      "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
       "fault_profile_id": "dependency-unavailable-v1",
       "fault_profile_version": "1.0.0",
       "direction": "target-to-dependency",
@@ -270,7 +270,7 @@
         "observed": true,
         "reconciled": false,
         "activation": {
-          "at": "2026-09-17T07:09:55Z",
+          "at": "2026-09-17T07:35:56Z",
           "fault_id": "dependency-unavailable-v1",
           "controller": "formal-environment-adapter",
           "mechanism": {
@@ -346,7 +346,7 @@
     "reconciled": false,
     "reset": false,
     "provenance": {
-      "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+      "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
       "fault_profile_id": "dependency-unavailable-v1",
       "fault_profile_version": "1.0.0",
       "direction": "target-to-dependency",
@@ -363,7 +363,7 @@
         "observed": true,
         "reconciled": false,
         "activation": {
-          "at": "2026-09-17T07:09:55Z",
+          "at": "2026-09-17T07:35:56Z",
           "fault_id": "dependency-unavailable-v1",
           "controller": "formal-environment-adapter",
           "mechanism": {
@@ -378,55 +378,55 @@
   "trajectory": [
     {
       "event_type": "environment_provisioned",
-      "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+      "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
       "seed_id": "rpf28-multi-service-seed",
       "seed_revision": "rpf28-seed-v1",
       "provenance": {
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "environment_profile": "multi-service-toxiproxy-v1",
         "network": {
-          "name": "rpf28-net-75b02d3c7c",
-          "id": "4079f121ed7d01763e04aa9e678384ed0da67d89d57b250a1d25141a43414aa6",
+          "name": "rpf28-net-6629e6a3cf",
+          "id": "fe5c762870a5076c8e58b183a963fdfcf030cdb365d919e2761326556f716bab",
           "internal": true,
           "container_count": 4
         },
         "service_identities": {
-          "target": "rpf28-formal-run-target-75b02d3c7c",
-          "dependency": "rpf28-formal-run-dependency-75b02d3c7c",
-          "fault_boundary": "rpf28-formal-run-toxiproxy-75b02d3c7c",
-          "agent_client": "rpf28-formal-run-client-75b02d3c7c"
+          "target": "rpf28-formal-run-target-6629e6a3cf",
+          "dependency": "rpf28-formal-run-dependency-6629e6a3cf",
+          "fault_boundary": "rpf28-formal-run-toxiproxy-6629e6a3cf",
+          "agent_client": "rpf28-formal-run-client-6629e6a3cf"
         },
         "containers": [
           {
-            "id": "94f47280b59d45ea7eabf15e6f2c1717d54bd359e9e12999989bff1940673699",
-            "name": "rpf28-formal-run-dependency-75b02d3c7c",
+            "id": "24eb1afb8e14353edc62d3faba64b6d81ec2303e599701d0fb3ea0b3659a6016",
+            "name": "rpf28-formal-run-dependency-6629e6a3cf",
             "role": "dependency",
             "running": true,
-            "network_mode": "rpf28-net-75b02d3c7c",
+            "network_mode": "rpf28-net-6629e6a3cf",
             "mounts": []
           },
           {
-            "id": "38eb583a3aa1b4301d795c44968628ef32812ce5bafcb3eff73471e89964d719",
-            "name": "rpf28-formal-run-target-75b02d3c7c",
+            "id": "fc482dd91f2ce37e406ffa184a1408ebc79b97337dcf6517cb77aa3e83a3f83c",
+            "name": "rpf28-formal-run-target-6629e6a3cf",
             "role": "target",
             "running": true,
-            "network_mode": "rpf28-net-75b02d3c7c",
+            "network_mode": "rpf28-net-6629e6a3cf",
             "mounts": []
           },
           {
-            "id": "25f251bd304799fe3233ca3da88ef5e5620b2da88515cf781068efcb1b72df7f",
-            "name": "rpf28-formal-run-toxiproxy-75b02d3c7c",
+            "id": "c1ca249657d38b05ddfde537473f3f9050fbc63be83d381dd02a9911190d1205",
+            "name": "rpf28-formal-run-toxiproxy-6629e6a3cf",
             "role": "fault-boundary",
             "running": true,
-            "network_mode": "rpf28-net-75b02d3c7c",
+            "network_mode": "rpf28-net-6629e6a3cf",
             "mounts": []
           },
           {
-            "id": "874acb75477f3a324f8f486dd9ba364a42feabfce07428767db2897d85635306",
-            "name": "rpf28-formal-run-client-75b02d3c7c",
+            "id": "b90df5319206747011c66609fbdbafdfe6345e22ffb2bb7c895545c3bbb15e67",
+            "name": "rpf28-formal-run-client-6629e6a3cf",
             "role": "agent-client",
             "running": true,
-            "network_mode": "rpf28-net-75b02d3c7c",
+            "network_mode": "rpf28-net-6629e6a3cf",
             "mounts": []
           }
         ],
@@ -459,12 +459,12 @@
           }
         }
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:environment_provisioned:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:environment_provisioned:001",
       "sequence": 1,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c"
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e"
       }
     },
     {
@@ -473,14 +473,14 @@
         "ok": true,
         "readiness": "READY",
         "services_ready": true,
-        "readiness_ms": 4689.66
+        "readiness_ms": 4398.62
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:readiness:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:readiness:001",
       "sequence": 2,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c"
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e"
       }
     },
     {
@@ -495,12 +495,12 @@
           "operation_id": null
         }
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:initial_state_verification:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:initial_state_verification:001",
       "sequence": 3,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c"
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e"
       }
     },
     {
@@ -511,12 +511,12 @@
       "validated_arguments": {},
       "intent_classification": "OBSERVE_BEFORE_MUTATION",
       "agent_profile_id": "production-change-agent-v1-fixed",
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:agent_tool_intent:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:agent_tool_intent:001",
       "sequence": 4,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "tool_call_id": "rpf28-1-read_state"
       }
     },
@@ -534,12 +534,12 @@
           "operation_id": null
         }
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:tool_result:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:tool_result:001",
       "sequence": 5,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "tool_call_id": "rpf28-1-read_state"
       }
     },
@@ -555,12 +555,12 @@
       },
       "intent_classification": "OBSERVE_BEFORE_MUTATION",
       "agent_profile_id": "production-change-agent-v1-fixed",
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:agent_tool_intent:002",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:agent_tool_intent:002",
       "sequence": 6,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "tool_call_id": "rpf28-2-apply_change"
       }
     },
@@ -580,12 +580,12 @@
       },
       "operation_id": "change-001",
       "state_owner": "target-service-private-state",
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:environment_transition:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:environment_transition:001",
       "sequence": 7,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "operation_id": "change-001"
       }
     },
@@ -597,12 +597,12 @@
       "observed": true,
       "side_effect_status": "NOT_APPLIED",
       "response_to_agent": "DEPENDENCY_UNAVAILABLE",
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:fault:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:fault:001",
       "sequence": 8,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "fault_id": "dependency-unavailable-v1"
       }
     },
@@ -626,12 +626,12 @@
           "operation_id": null
         }
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:tool_result:002",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:tool_result:002",
       "sequence": 9,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c",
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e",
         "tool_call_id": "rpf28-2-apply_change"
       }
     },
@@ -643,12 +643,12 @@
         "mutation_count": 0,
         "operation_id": null
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:actual_state_verification:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:actual_state_verification:001",
       "sequence": 10,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c"
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e"
       }
     },
     {
@@ -663,12 +663,12 @@
         "toxics_remaining": false,
         "volume_count": 0
       },
-      "event_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d:event:cleanup:001",
+      "event_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346:event:cleanup:001",
       "sequence": 11,
       "evidence_layer": "Observed Fact",
       "entity_refs": {
-        "run_id": "run-8f86d000-7705-41fa-b1b6-197f85a0f30d",
-        "environment_id": "rpf28-1a9bb8ef-ffb1-4a8f-86fb-e59e215cd53c"
+        "run_id": "run-9557ef8d-8663-444c-b0a2-1e6b0276e346",
+        "environment_id": "rpf28-cf2f5e72-5483-4bbf-a69c-7215c130af9e"
       }
     }
   ],
@@ -773,5 +773,5 @@
     "automatic_provider_retries": 0,
     "automatic_tool_retries": 0
   },
-  "duration_ms": 16682
+  "duration_ms": 15999
 }
