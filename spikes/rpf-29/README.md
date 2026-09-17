@@ -27,6 +27,10 @@ The candidate deliberately uses a small manual OTLP/HTTP JSON emitter rather tha
 changing the formal Java/Python Runtime. This isolates the wire contract and makes
 the SDK/auto-instrumentation decision explicit for a later RPF-30.
 
+The disposable Collector is run as `0:0` only so its bind-mounted diagnostic file
+exporter is writable on both the Linux hosted runner and Windows Docker Desktop.
+That is a Spike portability measure, not a Production container security model.
+
 ## Commands
 
 The probe requires Java 17, Maven, Python 3.12, Docker Desktop, and the existing

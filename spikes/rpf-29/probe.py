@@ -752,6 +752,12 @@ def start_collector(output_dir: Path) -> CollectorHandle:
             "--label", "com.runproof.owner=runproof",
             "--label", "com.runproof.plan=rpf-29",
             "--label", "com.runproof.lifecycle=rpf-29-spike",
+            # The official Collector image runs as a non-root user. The
+            # disposable host bind mount is runner-owned on Linux and Docker
+            # Desktop-owned on Windows, so root is used only to make this
+            # diagnostic file exporter portable; this is not a product
+            # container security recommendation.
+            "--user", "0:0",
             "--publish", "127.0.0.1::4318",
             "--mount", f"type=bind,source={OTEL_CONFIG.resolve()},target=/etc/otelcol-contrib/config.yaml,readonly",
             "--mount", f"type=bind,source={collector_output.resolve()},target=/var/lib/rpf29",
