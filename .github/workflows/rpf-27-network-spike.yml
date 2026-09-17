@@ -1,0 +1,72 @@
+name: RPF-27 Multi-service Network Fault Spike
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/rpf-27-network-spike.yml"
+      - "spikes/rpf-27/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: rpf27-network-spike-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  disposable-network-spike:
+    name: Disposable multi-service network candidate
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prepare candidate images
+        run: |
+          docker pull python:3.12-alpine
+          docker pull ghcr.io/shopify/toxiproxy:2.12.0
+          docker pull envoyproxy/envoy:v1.31-latest
+
+      - name: Run fresh RPF-27 candidate
+        run: python spikes/rpf-27/probe.py --run --repeat 3
+
+      - name: Verify disposable evidence
+        run: python spikes/rpf-27/verify-evidence.py
+
+      - name: Write candidate summary
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "## RPF-27 disposable network spike" >> "$GITHUB_STEP_SUMMARY"
+          echo "Candidate evidence only; no formal Runtime or release/deploy path was changed." >> "$GITHUB_STEP_SUMMARY"
+          if test -f .local/rpf-27/result.json; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          result = json.loads(Path('.local/rpf-27/result.json').read_text(encoding='utf-8'))
+          print(f"- Selected candidate: `{result['recommendation']['selected_candidate']}`")
+          for name, value in result['candidates'].items():
+              summary = value.get('summary', {})
+              print(f"- {name}: response-lost {summary.get('response_lost_pass_count', 0)}/{summary.get('response_lost_repeat_count', 0)}; cleanup={summary.get('cleanup_pass')}")
+          PY
+          fi
+
+      - name: Upload disposable evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-27-network-spike-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .local/rpf-27/result.json
+          if-no-files-found: error
+          retention-days: 14

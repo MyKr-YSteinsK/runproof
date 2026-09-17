@@ -24,6 +24,7 @@
 | RPF-23 | 验证了 Windows child environment、worker path containment、process/session identity、rollback、ownership label、restart 和 fail-closed cleanup。 | `demo/verify-lifecycle.ps1`；当前 Windows 本机 lifecycle evidence |
 | RPF-24 / RPF-25 | 在保留 Web canonical truth 和最小模块边界的同时，验证了 presentation-only `en-US`/`zh-CN` i18n、raw-status traceability、locale persistence 和 API-unavailable 行为。 | RPF-25 implementation `d2571754c89e50564084cafc369cccf477650133`；[hosted run 35179169378](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378) |
 | RPF-26 | 在不改变产品行为的前提下交付了双语公共文档、current/history Project-State 分离、公共本地链接/语义/命令/secret-path verifier 与 CI 集成。 | Implementation `e17745396bf58e54465d82a4b5cc0758c648bfa6`；[hosted run 35181115566](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35181115566) |
+| RPF-27 | Disposable Docker `--internal` 多服务拓扑复现了 baseline、latency/timeout、dependency-unavailable，以及下游 side-effect-success + response-lost/reconcile 语义。Toxiproxy 与窄 custom shim 的核心路径均五次通过；Envoy delay/abort 可行但结果是 commit 前 abort，因此正式化仍取决于 hosted evidence。 | `spikes/rpf-27/`；本地 ignored candidate result；hosted candidate workflow 待验证 |
 
 ## 交付事实
 
