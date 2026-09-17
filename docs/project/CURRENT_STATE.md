@@ -73,6 +73,8 @@
 
 - RPF-24 remote delivery：实现与状态提交 `fcaf0260514229d3ccee32644cef490623e6e5fe` 已普通 push 到 `origin/main`；真实 GitHub-hosted [RPF-12 run `35175091806`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35175091806) / [job `105054934450`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35175091806/job/105054934450) 已 `success`（约 1m03s），生成脱敏 artifact `rpf-12-release-gate-35175091806-1`（digest `sha256:38d75ed15383154a5541d1c264ff81a6068ffb1dc271fb9fe5908ab25a1bab58`）；workflow 未执行 release/deploy，仅报告 Node.js 20 forced-to-24 与 `setup-java@v4` 弃用 warning。
 
+- RPF-25 remote delivery：实现 commit `d2571754c89e50564084cafc369cccf477650133` 与状态 commit `e0d59c7cf491ea5035ad4621885d361ac9142a56` 已普通 push 到 `origin/main`；真实 GitHub-hosted [RPF-12 run `35179169378`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378) / [job `105067408840`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378/job/105067408840) 已 `success`（约 1m05s），生成脱敏 artifact `rpf-12-release-gate-35179169378-1`（digest `sha256:6a8496d4eb12136000f664b4cc90ca17b455a3e07bf4e36c5c732a050a3e0fd8`）；workflow 未执行 release/deploy，仅报告 Node.js 20 forced-to-24 与 `setup-java@v4` 弃用 warning。
+
 ## Known limitations / risks
 
 - TU-001 最小 non-streaming/single-turn Tool-Using 合同获得实验支持，建议首个 Prototype 默认 non-thinking。thinking 的跨 user turn、fault/restart/continuation 恢复及 streaming 未验证；有限样本不证明长期稳定性。
