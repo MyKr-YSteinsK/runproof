@@ -1296,10 +1296,52 @@ export interface ControlPlaneCorpusPayload {
   statisticalReleaseDecisions: unknown[];
 }
 
+export interface ControlPlaneCorpusSnapshot {
+  runs: RunEvidence[];
+  evaluationRuns: RunEvidence[];
+  allRuns: RunEvidence[];
+  failures: FailureCase[];
+  failureIntelligence: FailureIntelligence[];
+  failureClusters: FailureCluster[];
+  versionBisects: VersionBisect[];
+  regressions: Regression[];
+  regressionResults: RegressionExecutionResult[];
+  evaluationRegressionResults: RegressionExecutionResult[];
+  regressionCollections: RegressionCollection[];
+  evaluationSuites: EvaluationSuite[];
+  evaluations: EvaluationResult[];
+  comparisons: EvaluationComparison[];
+  qualityPolicies: QualityPolicy[];
+  qualityGates: QualityGateEvaluation[];
+  releaseDecisions: ReleaseDecision[];
+  agents: AgentSummary[];
+}
+
+export const getControlPlaneSnapshot = (): ControlPlaneCorpusSnapshot => ({
+  runs: reviewedRuns,
+  evaluationRuns: reviewedEvaluationRuns,
+  allRuns: allReviewedRuns,
+  failures: reviewedFailureCases,
+  failureIntelligence: reviewedFailureIntelligence,
+  failureClusters: reviewedFailureClusters,
+  versionBisects: reviewedVersionBisects,
+  regressions: reviewedRegressions,
+  regressionResults: reviewedRegressionResults,
+  evaluationRegressionResults: reviewedEvaluationRegressionResults,
+  regressionCollections: reviewedRegressionCollections,
+  evaluationSuites: reviewedEvaluationSuites,
+  evaluations: reviewedEvaluations,
+  comparisons: reviewedEvaluationComparisons,
+  qualityPolicies: reviewedQualityPolicies,
+  qualityGates: reviewedQualityGates,
+  releaseDecisions: reviewedReleaseDecisions,
+  agents: reviewedAgents,
+});
+
 const asCorpusList = (value: unknown): unknown[] => Array.isArray(value) ? value : value === null || value === undefined ? [] : [value];
 
 /** Replace the fixture-backed snapshot only after every API artifact resolves and normalizes. */
-export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): void => {
+export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): ControlPlaneCorpusSnapshot => {
   const runs = payload.runs.map(normalizeArtifact);
   const failures = payload.failures.map(normalizeFailureCase);
   const failureIntelligence = payload.failureIntelligence.map(normalizeFailureIntelligence);
@@ -1365,6 +1407,7 @@ export const activateControlPlaneCorpus = (payload: ControlPlaneCorpusPayload): 
   allReviewedRuns = [...reviewedRuns, ...reviewedEvaluationRuns];
   allRegressionResults = [...reviewedRegressionResults, ...reviewedEvaluationRegressionResults];
   reviewedAgents = buildAgentSummaries();
+  return getControlPlaneSnapshot();
 };
 
 export const getRun = (runId: string): RunEvidence | undefined => allReviewedRuns.find((run) => run.run.runId === runId);

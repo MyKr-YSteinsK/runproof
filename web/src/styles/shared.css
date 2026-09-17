@@ -1,0 +1,8 @@
+/* Shared evidence-state and status presentation ownership. */
+.data-source-state-card code {
+  overflow-wrap: anywhere;
+}
+
+.status-tag {
+  white-space: nowrap;
+}

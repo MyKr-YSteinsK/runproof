@@ -1,0 +1,6 @@
+/* Global reset and legacy visual tokens remain in one stable compatibility layer. */
+@import "../styles.css";
+@import "./shared.css";
+@import "./features/overview.css";
+@import "./features/statistical.css";
+@import "./features/failure.css";

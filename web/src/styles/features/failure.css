@@ -1,0 +1,6 @@
+/* Failure feature-owned hook for explicit unavailable related evidence. */
+.failure-evidence-unavailable {
+  color: var(--amber);
+  font-family: var(--mono);
+  font-size: 9px;
+}

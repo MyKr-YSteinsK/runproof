@@ -1,0 +1,9 @@
+/* Golden Demo Overview feature-owned refinements. */
+.golden-story-card strong,
+.golden-stat-row strong {
+  min-height: 1.2em;
+}
+
+.golden-demo-boundary .schema-chip {
+  white-space: nowrap;
+}

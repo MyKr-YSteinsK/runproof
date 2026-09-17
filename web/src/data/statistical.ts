@@ -367,7 +367,25 @@ export interface StatisticalCorpusPayload {
   decisions: unknown[];
 }
 
-export const activateStatisticalCorpus = (payload: StatisticalCorpusPayload): void => {
+export interface StatisticalCorpusSnapshot {
+  samplingPlans: StatisticalSamplingPlan[];
+  evaluations: StatisticalEvaluation[];
+  comparisons: StatisticalComparison[];
+  policies: StatisticalPolicy[];
+  gates: StatisticalGate[];
+  decisions: StatisticalDecision[];
+}
+
+export const getStatisticalSnapshot = (): StatisticalCorpusSnapshot => ({
+  samplingPlans: reviewedStatisticalSamplingPlans,
+  evaluations: reviewedStatisticalEvaluations,
+  comparisons: reviewedStatisticalComparisons,
+  policies: reviewedStatisticalPolicies,
+  gates: reviewedStatisticalGates,
+  decisions: reviewedStatisticalDecisions,
+});
+
+export const activateStatisticalCorpus = (payload: StatisticalCorpusPayload): StatisticalCorpusSnapshot => {
   const plans = payload.samplingPlans.map(normalizeStatisticalSamplingPlan);
   const evaluations = payload.evaluations.map(normalizeStatisticalEvaluation);
   const comparisons = payload.comparisons.map(normalizeStatisticalComparison);
@@ -383,6 +401,7 @@ export const activateStatisticalCorpus = (payload: StatisticalCorpusPayload): vo
   reviewedStatisticalPolicies = policies;
   reviewedStatisticalGates = gates;
   reviewedStatisticalDecisions = decisions;
+  return getStatisticalSnapshot();
 };
 
 export const getStatisticalSamplingPlan = (id: string): StatisticalSamplingPlan | undefined => reviewedStatisticalSamplingPlans.find((item) => item.samplingPlan.samplingPlanId === id);

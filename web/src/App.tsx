@@ -14,7 +14,6 @@ import {
   getFailureCase,
   getFailureCaseForRun,
   getFailureCluster,
-  getFailureIntelligenceForFailureCase,
   getVersionBisect,
   getQualityGate,
   getRegression,
@@ -56,27 +55,24 @@ import {
   FailureIntelligence,
   VersionBisect,
 } from "./data/artifacts";
-import { ControlPlaneApiError, controlPlaneDataSourceMode, loadControlPlaneCorpus } from "./data/controlPlaneApi";
+import { ControlPlaneApiError, loadControlPlaneCorpus } from "./data/controlPlaneApi";
 import { ExecutionJobDto, loadExecutionJob, loadExecutionJobs, loadExecutionMetrics } from "./data/executions";
+import { AppShell } from "./components/AppShell";
+import { DataSourceState as SharedDataSourceState, NotFoundState } from "./components/DataSourceState";
+import { IdentityField } from "./components/IdentityField";
+import { StatusTag } from "./components/StatusTag";
+import { DATA_SOURCE_FOOTNOTE, DATA_SOURCE_MODE } from "./app/dataSource";
+import { navigate, readLocation, type LocationState } from "./app/navigation";
+import { createCanonicalSnapshot, type CanonicalSnapshot } from "./data/canonicalSnapshot";
 import {
-  getStatisticalComparison,
-  getStatisticalDecisionForEvaluation,
-  getStatisticalEvaluation,
-  getStatisticalGateForEvaluation,
-  getStatisticalSamplingPlan,
-  reviewedStatisticalComparisons,
-  reviewedStatisticalEvaluations,
-  reviewedStatisticalGates,
-  StatisticalComparison,
-  StatisticalEvaluation,
-} from "./data/statistical";
-import { goldenDemoProfile, goldenDemoRefId } from "./data/goldenDemo";
-
-const DATA_SOURCE_MODE = controlPlaneDataSourceMode();
-const DATA_SOURCE_LABEL = DATA_SOURCE_MODE === "api" ? "Control Plane API" : "reviewed fixture corpus";
-const DATA_SOURCE_FOOTNOTE = DATA_SOURCE_MODE === "api" ? "Control Plane API + verified immutable artifact" : "reviewed fixture artifact";
-
-type LocationState = { pathname: string; runId: string | null; eventId: string | null; agentId: string | null; failureCaseId: string | null; regressionId: string | null; evaluationId: string | null; comparisonId: string | null; releaseDecisionId: string | null; executionJobId: string | null; clusterId: string | null; bisectId: string | null; statisticalEvaluationId: string | null; statisticalComparisonId: string | null };
+  StatisticalComparisonDetail as StatisticalComparisonDetailFeature,
+  StatisticalComparisonIndex as StatisticalComparisonIndexFeature,
+  StatisticalEvaluationDetail as StatisticalEvaluationDetailFeature,
+  StatisticalEvaluationIndex as StatisticalEvaluationIndexFeature,
+} from "./features/statistical/StatisticalPages";
+import { GoldenDemoOverview as GoldenDemoOverviewFeature } from "./features/overview/GoldenDemoOverview";
+import { FailureCaseDetail as FailureCaseDetailFeature } from "./features/failure/FailureCaseDetail";
+import { resolveCanonicalRouteState } from "./app/canonicalRouteState";
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -113,43 +109,6 @@ const CHECK_LABELS: Record<string, string> = {
   planned_fault_triggered_and_observed: "Planned fault observed",
   planned_fault_reconciled: "Fault reconciled",
 };
-
-function readLocation(): LocationState {
-  const pathname = window.location.pathname.replace(/\/+$/, "") || "/";
-  const agentMatch = pathname.match(/^\/agents\/([^/]+)$/);
-  const runMatch = pathname.match(/^\/runs\/([^/]+)$/);
-  const failureMatch = pathname.match(/^\/failures\/([^/]+)$/);
-  const regressionMatch = pathname.match(/^\/regressions\/([^/]+)$/);
-  const evaluationMatch = pathname.match(/^\/evaluations\/([^/]+)$/);
-  const comparisonMatch = pathname.match(/^\/comparisons\/([^/]+)$/);
-  const statisticalEvaluationMatch = pathname.match(/^\/statistical-evaluations\/([^/]+)$/);
-  const statisticalComparisonMatch = pathname.match(/^\/statistical-comparisons\/([^/]+)$/);
-  const releaseDecisionMatch = pathname.match(/^\/release-decisions\/([^/]+)$/);
-  const executionMatch = pathname.match(/^\/executions\/([^/]+)$/);
-  const clusterMatch = pathname.match(/^\/failure-intelligence\/clusters\/([^/]+)$/);
-  const bisectMatch = pathname.match(/^\/version-bisects\/([^/]+)$/);
-  return {
-    pathname,
-    runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
-    eventId: new URLSearchParams(window.location.search).get("event"),
-    agentId: agentMatch ? decodeURIComponent(agentMatch[1]) : null,
-    failureCaseId: failureMatch ? decodeURIComponent(failureMatch[1]) : null,
-    regressionId: regressionMatch ? decodeURIComponent(regressionMatch[1]) : null,
-    evaluationId: evaluationMatch ? decodeURIComponent(evaluationMatch[1]) : null,
-    comparisonId: comparisonMatch ? decodeURIComponent(comparisonMatch[1]) : null,
-    releaseDecisionId: releaseDecisionMatch ? decodeURIComponent(releaseDecisionMatch[1]) : null,
-    executionJobId: executionMatch ? decodeURIComponent(executionMatch[1]) : null,
-    clusterId: clusterMatch ? decodeURIComponent(clusterMatch[1]) : null,
-    bisectId: bisectMatch ? decodeURIComponent(bisectMatch[1]) : null,
-    statisticalEvaluationId: statisticalEvaluationMatch ? decodeURIComponent(statisticalEvaluationMatch[1]) : null,
-    statisticalComparisonId: statisticalComparisonMatch ? decodeURIComponent(statisticalComparisonMatch[1]) : null,
-  };
-}
-
-function navigate(to: string): void {
-  window.history.pushState({}, "", to);
-  window.dispatchEvent(new PopStateEvent("popstate"));
-}
 
 function objectValue(value: unknown): JsonRecord | null {
   return value && typeof value === "object" && !Array.isArray(value) ? (value as JsonRecord) : null;
@@ -271,177 +230,6 @@ function eventSummary(event: TrajectoryEvent): string {
   }
 }
 
-function AppShell({ children, detail = false, overview = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false }: { children: React.ReactNode; detail?: boolean; overview?: boolean; agent?: boolean; failure?: boolean; regression?: boolean; evaluation?: boolean; comparison?: boolean; statistical?: boolean; release?: boolean; execution?: boolean; intelligence?: boolean }) {
-  return (
-    <div className="app-frame">
-      <aside className="rail" aria-label="RunProof navigation">
-        <a className="brand" href="/overview" onClick={(event) => { event.preventDefault(); navigate("/overview"); }}>
-          <span className="brand-mark">R</span>
-          <span>
-            <strong>RunProof</strong>
-            <small>reliability control plane</small>
-          </span>
-        </a>
-        <div className="workspace-switcher">
-          <span className="section-label">WORKSPACE</span>
-          <span className="workspace-name">RPF / Stabilization</span>
-          <span className="workspace-status"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
-        </div>
-        <nav className="primary-nav" aria-label="Primary">
-          <a className={overview ? "active" : ""} href="/overview" onClick={(event) => { event.preventDefault(); navigate("/overview"); }}>
-            <span className="nav-glyph">⌂</span>
-            <span>Overview</span>
-            <span className="nav-count">RPF-19</span>
-          </a>
-          <a className={agent ? "active" : ""} href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}>
-            <span className="nav-glyph">◇</span>
-            <span>Agents</span>
-            <span className="nav-count">{reviewedAgents.length}</span>
-          </a>
-          <a className={!overview && !detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}>
-            <span className="nav-glyph">▤</span>
-            <span>Run Evidence</span>
-            <span className="nav-count">{reviewedRuns.length}</span>
-          </a>
-          <a className={failure ? "active" : ""} href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}>
-            <span className="nav-glyph">!</span>
-            <span>Failure Cases</span>
-            <span className="nav-count">{reviewedFailureCases.length}</span>
-          </a>
-          <a className={intelligence ? "active" : ""} href="/failure-intelligence" onClick={(event) => { event.preventDefault(); navigate("/failure-intelligence"); }}>
-            <span className="nav-glyph">⌁</span>
-            <span>Failure Intelligence</span>
-            <span className="nav-count">{reviewedFailureClusters.length}</span>
-          </a>
-          <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>
-            <span className="nav-glyph">↗</span>
-            <span>Regressions</span>
-            <span className="nav-count">{reviewedRegressions.length}</span>
-          </a>
-          <a className={evaluation ? "active" : ""} href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}>
-            <span className="nav-glyph">◎</span>
-            <span>Evaluations</span>
-            <span className="nav-count">{reviewedEvaluations.length}</span>
-          </a>
-          <a className={statistical ? "active" : ""} href="/statistical-evaluations" onClick={(event) => { event.preventDefault(); navigate("/statistical-evaluations"); }}>
-            <span className="nav-glyph">∿</span>
-            <span>Statistical</span>
-            <span className="nav-count">{reviewedStatisticalEvaluations.length}</span>
-          </a>
-          <a className={comparison ? "active" : ""} href={`/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`} onClick={(event) => { event.preventDefault(); navigate(`/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`); }}>
-            <span className="nav-glyph">⇄</span>
-            <span>Comparisons</span>
-            <span className="nav-count">{2}</span>
-          </a>
-          <a className={release ? "active" : ""} href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}>
-            <span className="nav-glyph">✓</span>
-            <span>Release Decisions</span>
-            <span className="nav-count">{reviewedReleaseDecisions.length}</span>
-          </a>
-          <a className={execution ? "active" : ""} href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}>
-            <span className="nav-glyph">◇</span>
-            <span>Executions</span>
-            <span className="nav-count">API</span>
-          </a>
-        </nav>
-        <div className="rail-note">
-          <span className="section-label">CURRENT SURFACE</span>
-          <p>Evidence-first investigation for the first Reliability vertical slice.</p>
-          <span className="schema-chip">v2 evidence · v1 evals · v1 gates</span>
-        </div>
-        <div className="rail-footer">
-          <span>Stabilization</span>
-          <span className="footer-dot" aria-hidden="true" />
-          <span>{DATA_SOURCE_MODE === "api" ? "canonical read model" : "fixture mode"}</span>
-        </div>
-      </aside>
-      <main className="app-main">
-        <header className="topbar">
-          <div className="topbar-context">
-            <span className="topbar-kicker">CONTROL PLANE</span>
-            <span className="topbar-divider" aria-hidden="true">/</span>
-            <span>{overview ? "Golden Demo overview" : execution ? (detail ? "Durable execution detail" : "Durable executions") : intelligence ? (detail ? "Failure Intelligence detail" : "Failure Intelligence") : agent ? (detail ? "Agent detail" : "Agent registry") : release ? (detail ? "Release Decision detail" : "Release Decisions") : statistical ? (detail ? "Statistical evaluation detail" : "Statistical reliability") : comparison ? "Baseline / Candidate comparison" : evaluation ? (detail ? "Evaluation detail" : "Evaluation suite") : regression ? "Regression investigation" : failure ? "Failure Case investigation" : detail ? "Run investigation" : "Run evidence"}</span>
-          </div>
-          <div className="topbar-meta">
-            <span className="live-indicator"><i aria-hidden="true" /> {DATA_SOURCE_LABEL}</span>
-            <span className="topbar-revision">RPF-19</span>
-          </div>
-        </header>
-        <div className="page-content">{children}</div>
-      </main>
-    </div>
-  );
-}
-
-function StatusTag({ status, tone = "neutral" }: { status: string; tone?: "success" | "fault" | "error" | "neutral" | "review" }) {
-  return <span className={`status-tag ${tone}`}><i aria-hidden="true" />{status}</span>;
-}
-
-function GoldenDemoOverview() {
-  const productionAgent = getAgent(goldenDemoProfile.agents[0].agent_id);
-  const incidentAgent = getAgent(goldenDemoProfile.agents[1].agent_id);
-  const candidateEvaluation = getEvaluation(goldenDemoProfile.selected.candidate_evaluation);
-  const candidateDecision = getReleaseDecision(goldenDemoProfile.selected.release_decision);
-  const flagshipFailureCase = getFailureCase(goldenDemoProfile.selected.flagship_failure_case);
-  const flagshipCluster = getFailureCluster(goldenDemoProfile.selected.flagship_failure_cluster);
-  const bisect = getVersionBisect(goldenDemoProfile.selected.version_bisect);
-  const unknownOutcomeRun = getRun(goldenDemoProfile.selected.unknown_outcome_run);
-  const statisticalComparison = getStatisticalComparison(goldenDemoProfile.selected.statistical_comparison);
-  const candidateMeta = candidateEvaluation?.evaluation;
-  const decisionMeta = candidateDecision?.releaseDecision;
-  const failureMeta = flagshipFailureCase?.failureCase;
-  const clusterMeta = flagshipCluster?.cluster;
-  const bisectMeta = bisect?.bisect;
-  const unknownReconcile = unknownOutcomeRun?.trajectory.find((event) => event.eventType === "reconcile");
-  const unknownMutation = unknownOutcomeRun?.trajectory.find((event) => event.eventType === "environment_transition");
-  const unknownEffectCount = valueAt(unknownMutation?.payload, "effect_count") || valueAt(unknownMutation?.payload.result, "effect_count") || valueAt(unknownOutcomeRun?.verification?.evidence, "effect_count") || "1";
-  const firstDivergence = valueAt(flagshipFailureCase?.failureObservation, "failing_event_id") || valueAt(flagshipFailureCase?.failureObservation, "first_meaningful_divergence") || "recorded in Failure Case";
-  const familySignature = valueAt(clusterMeta?.familySignature, "domain_family") || valueAt(clusterMeta?.familySignature, "value") || clusterMeta?.clusterId || "—";
-  const firstBadCandidate = valueAt(bisectMeta?.firstBadCandidate, "candidate_id") || valueAt(bisectMeta?.firstBadCandidate, "candidate_version") || valueAt(bisectMeta?.firstBadCandidate, "version") || "identified by RPF-17";
-  const comparisonClassification = statisticalComparison ? displayValue(valueAt(statisticalComparison.statisticalComparison.aggregate, "classification")) : "—";
-  const statisticalRows = [
-    { id: "statistical-evaluation-rpf18-stable", label: "Stable", description: "quality cohort", fallback: "ELIGIBLE" },
-    { id: "statistical-evaluation-rpf18-flaky", label: "Flaky", description: "observed instability", fallback: "REVIEW_REQUIRED" },
-    { id: "statistical-evaluation-rpf18-safety", label: "Safety", description: "zero-tolerance event", fallback: "BLOCKED" },
-    { id: "statistical-evaluation-rpf18-evidence-poor", label: "Evidence-poor", description: "insufficient evidence", fallback: "INCONCLUSIVE" },
-  ];
-  const decisionHref = `/release-decisions/${encodeURIComponent(goldenDemoRefId("release.decision"))}`;
-  const candidateHref = `/evaluations/${encodeURIComponent(goldenDemoProfile.selected.candidate_evaluation)}`;
-  const clusterHref = `/failure-intelligence/clusters/${encodeURIComponent(goldenDemoRefId("failure.flagship_cluster"))}`;
-  const bisectHref = `/version-bisects/${encodeURIComponent(goldenDemoRefId("version.bisect"))}`;
-  const failureHrefValue = `/failures/${encodeURIComponent(goldenDemoRefId("failure.flagship_case"))}`;
-  const regressionHrefValue = `/regressions/${encodeURIComponent(goldenDemoRefId("regression.flagship"))}`;
-  const comparisonHref = `/statistical-comparisons/${encodeURIComponent(goldenDemoRefId("statistical.comparison"))}`;
-  const runHrefValue = `/runs/${encodeURIComponent(goldenDemoRefId("durable.response_lost_run"))}`;
-  return (
-    <AppShell overview>
-      <div className="page-header index-header golden-demo-header">
-        <div><span className="eyebrow">RPF-19 · GOLDEN DEMO</span><h1>Reliability evidence you can follow.</h1><p className="lede">A compact, interview-ready path from two explicit Agents through durable evidence, failure intelligence, regression coverage, statistical reliability, and a decision-only quality gate.</p></div>
-        <div className="corpus-note golden-demo-identity"><span className="section-label">DEMO PROFILE</span><strong>{goldenDemoProfile.demo.demo_id} · v{goldenDemoProfile.demo.version}</strong><span className="mono">source {shortId(goldenDemoProfile.demo.source_commit, 18)}</span></div>
-      </div>
-      <section className="corpus-boundary golden-demo-boundary" aria-label="Golden Demo boundary"><span className="boundary-mark">R</span><p><strong>Reviewed evidence only.</strong> This demo is seeded from the formal Control Plane API and immutable reviewed artifacts. It requires no Provider, cloud resource, release, deployment, or live rerun.</p><span className="schema-chip">{DATA_SOURCE_FOOTNOTE}</span></section>
-      <section className="golden-story-track" aria-label="Golden Demo investigation path">
-        <a className="golden-story-card active" href={candidateHref} onClick={(event) => { event.preventDefault(); navigate(candidateHref); }}><span>01 · CANDIDATE</span><strong>{displayValue(candidateMeta?.evaluationId || goldenDemoProfile.selected.candidate_evaluation)}</strong><small>{displayValue(candidateMeta?.evaluationStatus || "reviewed evaluation")}</small></a>
-        <a className="golden-story-card" href={comparisonHref} onClick={(event) => { event.preventDefault(); navigate(comparisonHref); }}><span>02 · EVIDENCE</span><strong>{comparisonClassification}</strong><small>baseline ↔ candidate intervals</small></a>
-        <a className="golden-story-card" href={clusterHref} onClick={(event) => { event.preventDefault(); navigate(clusterHref); }}><span>03 · FAILURE</span><strong>{shortId(String(familySignature), 24)}</strong><small>first divergence is inspectable</small></a>
-        <a className="golden-story-card" href={bisectHref} onClick={(event) => { event.preventDefault(); navigate(bisectHref); }}><span>04 · REGRESSION</span><strong>{shortId(String(firstBadCandidate), 24)}</strong><small>known-bad boundary located</small></a>
-        <a className="golden-story-card" href={decisionHref} onClick={(event) => { event.preventDefault(); navigate(decisionHref); }}><span>05 · GATE</span><strong>{displayValue(decisionMeta?.decisionStatus || "ELIGIBLE")}</strong><small>decision-only · no release</small></a>
-      </section>
-      <section className="golden-overview-grid" aria-label="Golden Demo identity and decision">
-        <div className="panel golden-agents-panel"><div className="panel-heading"><div><span className="eyebrow">TWO EXPLICIT AGENTS</span><h2>Identity stays attached to evidence.</h2></div><span className="section-count">{goldenDemoProfile.agents.length} agents</span></div><div className="golden-agent-list">{[productionAgent, incidentAgent].map((agent, index) => agent ? <a className="golden-agent-row" key={agent.agentId} href={`/agents/${encodeURIComponent(agent.agentId)}`} onClick={(event) => { event.preventDefault(); navigate(`/agents/${encodeURIComponent(agent.agentId)}`); }}><span className={`golden-agent-mark ${index === 1 ? "incident" : ""}`}>{index === 1 ? "IR" : "PC"}</span><span><strong>{agent.agentId}</strong><small>{agent.domain} · {agent.agentType}</small></span><span className="row-arrow" aria-hidden="true">→</span></a> : null)}</div><p className="golden-panel-note">The Production Change Agent and Incident Remediation Agent share a narrow integration contract; neither owns Release Authority.</p></div>
-        <div className="panel golden-decision-panel"><div className="panel-heading"><div><span className="eyebrow">QUALITY DECISION</span><h2>Candidate outcome</h2></div><StatusTag status={displayValue(decisionMeta?.decisionStatus || "ELIGIBLE")} tone={statisticalStatusTone(displayValue(decisionMeta?.decisionStatus || "ELIGIBLE"))} /></div><div className="golden-decision-hero"><strong>{displayValue(decisionMeta?.decisionStatus || "ELIGIBLE")}</strong><span>{displayValue(decisionMeta?.decisionSubject || "Candidate quality gate")}</span></div><div className="golden-decision-facts"><div><span>Candidate evaluation</span><strong className="mono">{shortId(candidateMeta?.evaluationId || goldenDemoProfile.selected.candidate_evaluation, 28)}</strong></div><div><span>Gate boundary</span><strong>Decision only</strong></div><div><span>Release executed</span><strong>{displayValue(valueAt(decisionMeta?.authorizationBoundary, "release_executed"))}</strong></div></div><a className="action-link" href={decisionHref} onClick={(event) => { event.preventDefault(); navigate(decisionHref); }}>Open full Release Decision →</a></div>
-      </section>
-      <section className="golden-path-grid" aria-label="Golden Demo evidence paths">
-        <div className="panel golden-path-panel"><div className="panel-heading"><div><span className="eyebrow">RPF-18 · STATISTICAL RELIABILITY</span><h2>Four cohorts, four conclusions.</h2></div><a className="action-link" href="/statistical-evaluations" onClick={(event) => { event.preventDefault(); navigate("/statistical-evaluations"); }}>Open index →</a></div><div className="golden-stat-list">{statisticalRows.map((row) => { const evaluation = getStatisticalEvaluation(row.id); const meta = evaluation?.statisticalEvaluation; const decision = evaluation ? getStatisticalDecisionForEvaluation(row.id) : undefined; const status = decision?.statisticalReleaseDecision.decisionStatus || row.fallback; const quality = evaluation ? statisticalQuality(evaluation) : {}; const agentQuality = objectValue(quality.agent_quality) || {}; const href = `/statistical-evaluations/${encodeURIComponent(row.id)}`; return <a className="golden-stat-row" key={row.id} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><span className="golden-stat-label"><strong>{row.label}</strong><small>{row.description}</small></span><span><strong>{meta ? `${meta.validAgentTrialCount}/${meta.attemptedTrialCount}` : "—"}</strong><small>{statisticalPercent(agentQuality.success_rate)} pass</small></span><StatusTag status={status} tone={statisticalStatusTone(status)} /><span className="row-arrow" aria-hidden="true">→</span></a>; })}</div><p className="golden-panel-note">Denominators, Wilson intervals, evidence quality, flaky observation, and zero-tolerance rules remain visible in the drilldown.</p></div>
-        <div className="panel golden-path-panel golden-failure-panel"><div className="panel-heading"><div><span className="eyebrow">RPF-17 · FAILURE INTELLIGENCE</span><h2>One failure, fully traceable.</h2></div><a className="action-link" href={clusterHref} onClick={(event) => { event.preventDefault(); navigate(clusterHref); }}>Open cluster →</a></div><div className="golden-failure-hero"><StatusTag status={displayValue(failureMeta?.currentStatus || "FAILURE CASE")} tone="fault" /><strong>{shortId(String(familySignature), 34)}</strong><span>Incident external dependency misdiagnosis</span></div><div className="golden-failure-facts"><div><span>First divergence</span><strong className="mono">{shortId(String(firstDivergence), 28)}</strong></div><div><span>Cluster level</span><strong>{displayValue(clusterMeta?.clusterLevel || "domain")}</strong></div><div><span>Exact / structural</span><strong>{clusterMeta ? `${clusterMeta.exactSignatureRefs.length} / ${clusterMeta.memberRefs.length}` : "—"}</strong></div><div><span>Regression coverage</span><strong>{clusterMeta?.regressionCoverage.length ? "covered" : "inspect"}</strong></div></div><div className="golden-inline-links"><a href={failureHrefValue} onClick={(event) => { event.preventDefault(); navigate(failureHrefValue); }}>Failure Case</a><a href={bisectHref} onClick={(event) => { event.preventDefault(); navigate(bisectHref); }}>Version bisect</a><a href={regressionHrefValue} onClick={(event) => { event.preventDefault(); navigate(regressionHrefValue); }}>Regression</a></div></div>
-        <div className="panel golden-path-panel golden-durable-panel"><div className="panel-heading"><div><span className="eyebrow">RPF-14 · DURABLE EXECUTION</span><h2>Unknown outcome, then reconcile.</h2></div><a className="action-link" href={runHrefValue} onClick={(event) => { event.preventDefault(); navigate(runHrefValue); }}>Open Run →</a></div><div className="golden-durable-flow"><span>side effect succeeded</span><b>→</b><span>response lost</span><b>→</b><span className="warning">UNKNOWN_OUTCOME</span><b>→</b><span>reconcile</span></div><div className="golden-durable-facts"><div><span>Run status</span><strong>{displayValue(unknownOutcomeRun?.outcome.status || "—")}</strong></div><div><span>Effect count</span><strong>{displayValue(unknownEffectCount)}</strong></div><div><span>Reconcile event</span><strong>{unknownReconcile ? "recorded" : "—"}</strong></div><div><span>Retry boundary</span><strong>blind retry prohibited</strong></div></div><a className="golden-execution-link" href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}><span>Canonical job read model</span><strong>Inspect Attempts / Operations / Evidence →</strong></a></div>
-      </section>
-      <section className="golden-claim-strip" aria-label="Golden Demo evidence claims"><div><span className="eyebrow">FACTS</span><strong>Two Agent identities</strong><p>Each link opens the same verified Agent-bearing corpus used by the rest of the product.</p></div><div><span className="eyebrow">VERIFIED</span><strong>{goldenDemoProfile.reviewed_artifacts.length} immutable refs</strong><p>Profile hashes bind the demo to reviewed Run, Failure, Regression, Evaluation, Gate, and Decision artifacts.</p></div><div><span className="eyebrow">BOUNDARY</span><strong>No automatic action</strong><p>ELIGIBLE is a quality decision, not a release, deploy, or production authorization.</p></div></section>
-      <footer className="page-footnote"><span>{goldenDemoProfile.demo.demo_id} · profile v{goldenDemoProfile.demo.version} · source {shortId(goldenDemoProfile.demo.source_commit, 20)}</span><span>Read-only overview · formal API · no live Agent or release action</span></footer>
-    </AppShell>
-  );
-}
-
 function statusTone(run: RunEvidence): "success" | "fault" | "error" | "neutral" {
   if (run.outcome.status === "PASS") return "success";
   if (run.outcome.status === "FAIL") return "fault";
@@ -455,16 +243,6 @@ function runSignal(run: RunEvidence): string {
   if (isFaultedRun(run)) return "Fault observed · reconciled PASS";
   if (run.outcome.status === "PASS") return "Normal transition · verified PASS";
   return `${run.outcome.source} · ${run.outcome.reason || "review required"}`;
-}
-
-function IdentityField({ label, value, mono = false, note }: { label: string; value: string; mono?: boolean; note?: string }) {
-  return (
-    <div className="identity-field">
-      <span className="field-label">{label}</span>
-      <strong className={mono ? "mono" : ""} title={value}>{value}</strong>
-      {note && <small>{note}</small>}
-    </div>
-  );
 }
 
 function RunIndex() {
@@ -1686,200 +1464,6 @@ function FailureIndex() {
   );
 }
 
-function FailureCaseDetail({ failureCase }: { failureCase: FailureCase }) {
-  const sourceRun = getRun(failureCase.sourceRun.runId);
-  const intelligence = getFailureIntelligenceForFailureCase(failureCase.failureCase.failureCaseId);
-  const intelligenceCluster = intelligence ? intelligenceClusterFor(intelligence) : undefined;
-  const attempt = failureCase.reproductionAttempts[0];
-  const reproductionRun = attempt ? getRun(attempt.runId) : undefined;
-  const failingEventId = typeof failureCase.failureObservation.failing_event_id === "string" ? failureCase.failureObservation.failing_event_id : null;
-  const sourceLink = sourceRun ? runHref(sourceRun.run.runId, failingEventId) : runHref(failureCase.sourceRun.runId);
-  const reproductionEventId = typeof valueAt(attempt?.run_ref, "event_id") === "string" ? String(valueAt(attempt?.run_ref, "event_id")) : null;
-  const reproductionLink = reproductionRun ? runHref(reproductionRun.run.runId, reproductionEventId) : attempt ? runHref(attempt.runId) : null;
-  const promotedRegressionId = typeof valueAt(failureCase.promotion?.regression_ref, "regression_id") === "string" ? String(valueAt(failureCase.promotion?.regression_ref, "regression_id")) : null;
-  const promotedRegression = promotedRegressionId ? getRegression(promotedRegressionId) : undefined;
-  const promoted = Boolean(promotedRegression && failureCase.promotion);
-  const incident = agentDomain(failureCase.agent) === "Incident Remediation Agent";
-  const incidentExpected = objectValue(failureCase.failureObservation.expected) || {};
-  const incidentActual = objectValue(failureCase.failureObservation.actual) || {};
-  const incidentFacts = objectValue(failureCase.failureObservation.dependency_facts) || {};
-  const incidentSideEffect = objectValue(failureCase.failureObservation.remediation_side_effect) || {};
-  const promotionGate = valueAt(failureCase.promotion, "gate_ref");
-  return (
-    <AppShell detail failure>
-      <div className="detail-breadcrumb">
-        <a href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}>Failure Cases</a>
-        <span aria-hidden="true">/</span>
-        <span>{shortId(failureCase.failureCase.failureCaseId, 32)}</span>
-        <span className="schema-chip">rpf-failure-case-v1</span>
-      </div>
-      <div className="detail-header case-detail-header">
-        <div>
-          <span className="eyebrow">FAILURE CASE INVESTIGATION</span>
-          <h1>{incident ? "External dependency remediation failure" : "Unsafe precondition failure"}</h1>
-          <p className="detail-subtitle">{incident ? "The source Incident Remediation Agent acted before dependency disambiguation; the failure was reproduced in a fresh controlled simulation with the same signature and harmful side-effect evidence." : "The source Agent FAIL was reproduced in a fresh Environment with the same failure signature and evidence pattern."}</p>
-        </div>
-        <div className="detail-header-status"><StatusTag status={promoted ? "PROMOTED" : "VALIDATED"} tone="success" /><span className="status-note">{promoted ? "validated history retained · Regression linked" : "Not a Regression"}</span></div>
-      </div>
-      <section className="case-identity-grid" aria-label="Failure Case identity">
-        <IdentityField label="Failure Case" value={failureCase.failureCase.failureCaseId} mono />
-        <IdentityField label="Agent / domain" value={agentIdentity(failureCase.agent)} note={agentDomain(failureCase.agent)} />
-        <IdentityField label="Agent type / contract" value={`${agentType(failureCase.agent)} / ${displayValue(failureCase.agent.agent_contract_id || "—")}`} mono />
-        <IdentityField label="Scenario" value={`${displayValue(failureCase.scenario.scenario_id)}@${displayValue(failureCase.scenario.scenario_version)}`} mono />
-        <IdentityField label="Attribution" value={displayValue(failureCase.classification.attribution)} note={displayValue(failureCase.classification.reason_code)} />
-        <IdentityField label="Signature" value={shortId(failureCase.failureSignature.value, 28)} mono note={failureCase.failureSignature.signatureVersion} />
-        <IdentityField label="Workflow" value={failureCase.failureCase.currentStatus} note={promoted ? "validated · promoted additively" : "validated · no promotion"} />
-      </section>
-      <section className="classification-panel case-summary-panel" aria-label="Failure Case validation summary">
-        <div className="classification-heading"><div><span className="eyebrow">{promoted ? "PROMOTION EVIDENCE · VALIDATED → REGRESSION" : "REPRODUCTION EVIDENCE · VALIDATED"}</span><h2>{promoted ? "Failure Case promoted to Regression" : "Same failure, independently reproduced"}</h2></div>{promoted && promotedRegression ? <a className="action-link" href={regressionHref(promotedRegression.regression.regressionId)} onClick={(event) => { event.preventDefault(); navigate(regressionHref(promotedRegression.regression.regressionId)); }}>Open Regression →</a> : <span className="classification-badge">NOT A REGRESSION</span>}</div>
-        <p className="classification-copy">{incident ? "Validation matched the stable signature, violated invariant, Incident Agent attribution, dependency facts, side-effect evidence, and healthy Provider/Environment boundary." : "Validation matched the stable signature, violated invariant, Agent attribution, key guard evidence, and healthy Provider/Environment boundary."} {promoted ? `The explicit promotion gate passed and recorded ${displayValue(valueAt(failureCase.promotion, "promoted_at"))}; the original Run Evidence and validated history remain unchanged.` : "The original Run Evidence remains unchanged."}</p>
-        <div className="classification-grid case-summary-grid">
-          <div><span>Violated invariant</span><strong className="mono">{displayValue(failureCase.failureObservation.violated_invariant_id)}</strong><small>{displayValue(failureCase.failureObservation.violated_invariant)}</small></div>
-          <div><span>Expected</span><strong>{displayValue(incident ? valueAt(incidentExpected, "no_harmful_local_remediation_on_external_fault") : valueAt(failureCase.failureObservation.expected, "agent_observed_state_before_mutation"))}</strong><small>{incident ? "external dependency must not trigger local remediation" : "Agent observes before mutation"}</small></div>
-          <div><span>Actual</span><strong>{displayValue(incident ? valueAt(incidentActual, "harmful_local_remediation") : valueAt(failureCase.failureObservation.actual, "agent_observed_state_before_mutation"))}</strong><small>{incident ? `dependency ${displayValue(incidentActual.dependency_health)} · effect ${displayValue(incidentActual.effect_count)}` : "unsafe intent reached guard"}</small></div>
-          {incident && <><div><span>Dependency fact</span><strong>{displayValue(incidentFacts.dependency_health)}</strong><small>{displayValue(incidentFacts.cause_classification)}</small></div><div><span>Remediation side effect</span><strong>{displayValue(incidentSideEffect.harmful ? "HARMFUL" : "NOT HARMFUL")}</strong><small>executed {displayValue(incidentSideEffect.executed)} · effect {displayValue(incidentSideEffect.effect_count)}</small></div></>}
-          <div><span>Validation</span><strong>{displayValue(valueAt(failureCase.validation, "status"))}</strong><small>{displayValue(valueAt(failureCase.validation, "observed_run_id"))}</small></div>
-          <div><span>Promotion</span><strong>{promoted ? "PROMOTED" : "NOT_A_REGRESSION"}</strong><small>{promoted ? `Gate ${displayValue(valueAt(promotionGate, "all_passed"))} · ${shortId(promotedRegressionId, 28)}` : "no Regression link"}</small></div>
-        </div>
-      </section>
-      {intelligence && <section className="fi-case-analysis" aria-labelledby="fi-case-analysis-heading">
-        <div className="section-heading"><div><span className="eyebrow">DERIVED DETERMINISTIC ANALYSIS · RPF-17</span><h2 id="fi-case-analysis-heading">Failure Intelligence</h2></div><StatusTag status={String(valueAt(intelligence.intelligence.recommendation, "value"))} tone={intelligenceRecommendationTone(valueAt(intelligence.intelligence.recommendation, "value"))} /></div>
-        <div className="fi-case-analysis-grid"><div><span className="field-label">RESPONSIBILITY</span><strong>{displayValue(valueAt(intelligence.intelligence.deterministicAttribution, "responsibility_layer"))}</strong><small>{displayValue(valueAt(intelligence.intelligence.deterministicAttribution, "basis"))}</small></div><div><span className="field-label">FAILURE CLASS / PHASE</span><strong>{displayValue(valueAt(intelligence.intelligence.agentFailureTaxonomy, "agent_failure_class"))}</strong><small>{displayValue(valueAt(intelligence.intelligence.firstMeaningfulDivergence, "phase"))} · {shortId(valueAt(intelligence.intelligence.firstMeaningfulDivergence, "event_id"), 30)}</small></div><div><span className="field-label">RECURRENCE</span><strong>{displayValue(valueAt(intelligence.intelligence.recurrence, "occurrence_count"))} occurrences</strong><small>{displayValue(valueAt(valueAt(intelligence.intelligence.recurrence, "exact_dedup"), "compatible_reproduction_facts") === true ? "exact recurrence dedup" : "identity not proven" )}</small></div><div><span className="field-label">STRUCTURAL FAMILY</span><strong>{intelligenceCluster ? <a className="action-link" href={clusterHref(intelligenceCluster.cluster.clusterId)} onClick={(event) => { event.preventDefault(); navigate(clusterHref(intelligenceCluster.cluster.clusterId)); }}>{shortId(intelligenceCluster.cluster.clusterId, 30)} →</a> : "No Agent cluster"}</strong><small>{displayValue(valueAt(valueAt(intelligence.intelligence.familySignatures.crossAgent, "features"), "reliability_pattern"))}</small></div></div>
-        <div className="evidence-separation"><div><span className="eyebrow">FACTS</span><p>Exact signature, source Run, event refs, health boundary, and Regression linkage remain canonical references.</p></div><div><span className="eyebrow">DERIVED DETERMINISTIC ANALYSIS</span><p>{displayValue(valueAt(intelligence.intelligence.recommendation, "next_action"))}</p></div><div><span className="eyebrow">AI ANALYSIS</span><p>Not present in RPF-17.</p></div></div>
-      </section>}
-      <section className="case-compare-section" aria-labelledby="case-compare-heading">
-        <div className="section-heading"><div><span className="eyebrow">SOURCE ↔ REPRODUCTION</span><h2 id="case-compare-heading">Evidence path</h2></div><span className="section-count">fresh Run / fresh Environment</span></div>
-        <div className="case-compare-grid">
-          <div className="case-run-card"><span className="field-label">SOURCE FAIL</span><strong className="mono">{shortId(failureCase.sourceRun.runId, 30)}</strong><span>Agent · {displayValue(failureCase.sourceRun.environment_id)}</span>{sourceLink && <a className="action-link" href={sourceLink} onClick={(event) => { event.preventDefault(); navigate(sourceLink); }}>Open source event →</a>}</div>
-          <div className="case-compare-arrow" aria-hidden="true">→</div>
-          <div className="case-run-card accent"><span className="field-label">VALIDATED REPRODUCTION</span><strong className="mono">{shortId(attempt?.runId, 30)}</strong><span>Agent · {displayValue(attempt?.environment_id)}</span>{reproductionLink && <a className="action-link" href={reproductionLink} onClick={(event) => { event.preventDefault(); navigate(reproductionLink); }}>Open reproduction event →</a>}</div>
-        </div>
-      </section>
-      <section className="case-evidence-section" aria-labelledby="case-evidence-heading">
-        <div className="section-heading"><div><span className="eyebrow">STABLE REFERENCES</span><h2 id="case-evidence-heading">Key evidence refs</h2></div><span className="section-count">source artifact remains immutable</span></div>
-        <div className="case-ref-list">
-          {failureCase.evidenceRefs.map((ref, index) => {
-            const refRunId = typeof ref.run_id === "string" ? ref.run_id : failureCase.sourceRun.runId;
-            const refEventId = typeof ref.event_id === "string" ? ref.event_id : null;
-            const href = runHref(refRunId, refEventId);
-            return <div className="case-ref-row" key={`${displayValue(ref.role)}-${index}`}><span>{displayValue(ref.role)}</span><strong className="mono">{shortId(refEventId, 35)}</strong><a href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open evidence →</a></div>;
-          })}
-        </div>
-      </section>
-      <footer className="detail-footer"><span>Case {failureCase.failureCase.failureCaseId} · {failureCase.failureCase.workflowState}</span><span>{promoted ? "Failure Case history retained · Regression is a separate artifact." : "Failure Case validated ≠ Regression."}</span></footer>
-    </AppShell>
-  );
-}
-
-function statisticalStatusTone(status: string): "success" | "fault" | "error" | "neutral" | "review" {
-  if (status === "ELIGIBLE" || status === "PASS" || status === "IMPROVED") return "success";
-  if (status === "BLOCKED" || status === "REGRESSED") return "fault";
-  if (status === "REVIEW_REQUIRED" || status === "INCONCLUSIVE" || status === "OBSERVED_FLAKY" || status === "NO_CLEAR_DIFFERENCE") return "review";
-  return "neutral";
-}
-
-function statisticalPercent(value: unknown, digits = 1): string {
-  return typeof value === "number" && Number.isFinite(value) ? `${(value * 100).toFixed(digits)}%` : "—";
-}
-
-function statisticalNumber(value: unknown): string {
-  return typeof value === "number" && Number.isFinite(value) ? value.toLocaleString("en-US") : "—";
-}
-
-function statisticalRefId(value: unknown, key: string): string | null {
-  const record = objectValue(value);
-  return typeof record?.[key] === "string" ? String(record[key]) : null;
-}
-
-function statisticalQuality(evaluation: StatisticalEvaluation): JsonRecord {
-  return objectValue(evaluation.statisticalEvaluation.summary) || {};
-}
-
-function StatisticalEvaluationIndex() {
-  return (
-    <AppShell statistical>
-      <div className="page-header index-header">
-        <div>
-          <span className="eyebrow">RPF-18 · STATISTICAL RELIABILITY</span>
-          <h1>Repeated trials, visible denominators, bounded conclusions.</h1>
-          <p className="lede">A read-only investigation surface for controlled statistical evidence. Agent quality, evidence quality, flaky observation, and deterministic safety remain separate signals.</p>
-        </div>
-        <div className="corpus-note"><span className="section-label">ACTIVE CORPUS</span><strong>{reviewedStatisticalEvaluations.length} evaluations</strong><span>rpf-statistical-evaluation-v1</span></div>
-      </div>
-      <section className="corpus-boundary statistical-boundary" aria-label="Statistical evidence boundary">
-        <span className="boundary-mark">∿</span>
-        <p><strong>Controlled evidence boundary.</strong> These cohorts use a deterministic controlled sequence over the Incident Remediation Agent contract. They are reproducible corpus observations, not a live provider probability or an automatic release action.</p>
-      </section>
-      <section className="statistical-summary-grid" aria-label="Statistical cohort summary">
-        {reviewedStatisticalEvaluations.map((evaluation) => {
-          const meta = evaluation.statisticalEvaluation;
-          const summary = statisticalQuality(evaluation);
-          const quality = objectValue(summary.agent_quality) || {};
-          const flaky = objectValue(summary.flaky) || {};
-          const gate = getStatisticalGateForEvaluation(meta.evaluationId);
-          const decision = getStatisticalDecisionForEvaluation(meta.evaluationId);
-          const decisionStatus = decision?.statisticalReleaseDecision.decisionStatus || gate?.statisticalGate.decisionStatus || "COMPARISON_ONLY";
-          const href = `/statistical-evaluations/${encodeURIComponent(meta.evaluationId)}`;
-          return <a className="statistical-evaluation-card" data-evaluation-id={meta.evaluationId} key={meta.evaluationId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
-            <div className="stat-card-top"><span className="eyebrow">{meta.evaluationId.replace("statistical-evaluation-rpf18-", "").toUpperCase()}</span><StatusTag status={decisionStatus} tone={statisticalStatusTone(decisionStatus)} /></div>
-            <strong>{agentIdentity(meta.agent)}</strong><span>{displayValue(meta.scenarioRef.case_id)} · {meta.candidateIdentity}</span>
-            <div className="stat-card-metrics"><div><span>VALID AGENT</span><strong>{meta.validAgentTrialCount}/{meta.attemptedTrialCount}</strong></div><div><span>PASS RATE</span><strong>{statisticalPercent(quality.success_rate)}</strong></div><div><span>WILSON LOWER</span><strong>{statisticalPercent(valueAt(quality.confidence_interval, "lower"))}</strong></div></div>
-            <div className="stat-card-footer"><span>{displayValue(flaky.state)}</span><span>{meta.evaluationStatus}</span><span aria-hidden="true">→</span></div>
-          </a>;
-        })}
-      </section>
-      <section className="statistical-comparison-callout" aria-label="Statistical comparison entry">
-        <div><span className="eyebrow">COMPARISON</span><h2>Baseline versus candidate</h2><p>Interval-aware classification is available with family deltas and evidence adequacy reasons.</p></div>
-        {reviewedStatisticalComparisons.map((comparison) => { const href = `/statistical-comparisons/${encodeURIComponent(comparison.statisticalComparison.comparisonId)}`; const classification = String(valueAt(comparison.statisticalComparison.aggregate, "classification") || "UNKNOWN"); return <a className="action-link" key={comparison.statisticalComparison.comparisonId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}> <StatusTag status={classification} tone={statisticalStatusTone(classification)} /> Open comparison →</a>; })}
-      </section>
-      <footer className="page-footnote"><span>Source: {DATA_SOURCE_FOOTNOTE} · controlled statistical corpus</span><span>Read-only · no evaluate, rerun, promote, release, or deploy action</span></footer>
-    </AppShell>
-  );
-}
-
-function StatisticalEvaluationDetail({ evaluation }: { evaluation: StatisticalEvaluation }) {
-  const meta = evaluation.statisticalEvaluation;
-  const summary = statisticalQuality(evaluation);
-  const quality = objectValue(summary.agent_quality) || {};
-  const evidence = objectValue(summary.evidence_quality) || {};
-  const flaky = objectValue(summary.flaky) || {};
-  const zero = objectValue(summary.zero_tolerance) || {};
-  const planId = statisticalRefId(meta.samplingPlanRef, "sampling_plan_id");
-  const plan = planId ? getStatisticalSamplingPlan(planId) : undefined;
-  const gate = getStatisticalGateForEvaluation(meta.evaluationId);
-  const decision = getStatisticalDecisionForEvaluation(meta.evaluationId);
-  const decisionStatus = decision?.statisticalReleaseDecision.decisionStatus || gate?.statisticalGate.decisionStatus || "UNKNOWN";
-  const families = Array.isArray(summary.failure_families) ? summary.failure_families : [];
-  return (
-    <AppShell detail statistical>
-      <div className="detail-breadcrumb"><a href="/statistical-evaluations" onClick={(event) => { event.preventDefault(); navigate("/statistical-evaluations"); }}>Statistical Evaluations</a><span aria-hidden="true">/</span><span>{shortId(meta.evaluationId, 34)}</span><span className="schema-chip">rpf-statistical-evaluation-v1</span></div>
-      <div className="detail-header"><div><span className="eyebrow">STATISTICAL EVALUATION · CONTROLLED COHORT</span><h1>{humanize(meta.evaluationId.replace("statistical-evaluation-rpf18-", ""))}</h1><p className="detail-subtitle">{agentIdentity(meta.agent)} · {displayValue(meta.scenarioRef.case_id)}. Agent denominator and attempted/evidence denominator are reported separately; excluded trials remain visible.</p></div><div className="detail-header-status"><StatusTag status={decisionStatus} tone={statisticalStatusTone(decisionStatus)} /><span className="status-note">decision-only · no release action</span></div></div>
-      <section className="identity-strip" aria-label="Statistical evaluation identity"><IdentityField label="Evaluation" value={meta.evaluationId} mono /><IdentityField label="Sampling plan" value={planId || "—"} mono note={plan ? `${plan.samplingPlan.requestedTrialCount} requested · ${plan.samplingPlan.minimumValidTrialCount} minimum valid` : "plan ref unavailable"} /><IdentityField label="Agent / domain" value={agentIdentity(meta.agent)} note={agentDomain(meta.agent)} /><IdentityField label="Scenario" value={`${displayValue(meta.scenarioRef.scenario_id)}@${displayValue(meta.scenarioRef.scenario_version)}`} mono /><IdentityField label="Confidence" value={`${displayValue(valueAt(plan?.samplingPlan.confidence, "method"))} · ${statisticalPercent(valueAt(plan?.samplingPlan.confidence, "level"))}`} note={displayValue(valueAt(plan?.samplingPlan.confidence, "method_version"))} /><IdentityField label="Source" value={shortId(valueAt(meta.sourceIdentity, "source_sha256"), 26)} mono note={displayValue(valueAt(meta.sourceIdentity, "runtime_version"))} /></section>
-      <section className="statistical-fact-grid" aria-label="Statistical facts"><div><span>PASS / FAIL</span><strong>{statisticalNumber(valueAt(quality, "pass_count"))} / {statisticalNumber(valueAt(quality, "fail_count"))}</strong><small>Agent denominator {statisticalNumber(valueAt(quality, "denominator"))}</small></div><div><span>SUCCESS RATE</span><strong>{statisticalPercent(quality.success_rate)}</strong><small>point estimate only</small></div><div><span>WILSON 95% CI</span><strong>{statisticalPercent(valueAt(quality.confidence_interval, "lower"))} — {statisticalPercent(valueAt(quality.confidence_interval, "upper"))}</strong><small>{displayValue(valueAt(quality.confidence_interval, "method_version"))}</small></div><div><span>EVIDENCE VALID</span><strong>{statisticalPercent(evidence.evidence_valid_rate)}</strong><small>{statisticalNumber(evidence.evidence_valid_trial_count)} / {statisticalNumber(evidence.attempted_trials)} attempts</small></div><div><span>FLAKY OBSERVATION</span><strong>{displayValue(flaky.state)}</strong><small>observation, not live probability</small></div><div><span>ZERO TOLERANCE</span><strong>{statisticalNumber(zero.event_count)} events</strong><small>{zero.event_count ? "hard blocker" : "no event observed"}</small></div></section>
-      <section className="evidence-separation statistical-separation"><div><span className="eyebrow">FACTS</span><p>{meta.attemptedTrialCount} attempted trials, {meta.validAgentTrialCount} valid Agent trials, and excluded outcomes retained in the matrix.</p></div><div><span className="eyebrow">VERIFIED / DERIVED</span><p>Wilson interval, denominator rates, failure families, and gate rule results are deterministic derived values over immutable Run Evidence refs.</p></div><div><span className="eyebrow">INFERENCE / AI ANALYSIS</span><p>None. RPF-18 does not call LLM analysis or make an automatic promotion/release decision.</p></div></section>
-      <section className="statistical-gate-panel" aria-label="Statistical gate decision"><div className="section-heading"><div><span className="eyebrow">QUALITY POLICY · D-013 PRECEDENCE</span><h2>Gate and decision reasons</h2></div><StatusTag status={decisionStatus} tone={statisticalStatusTone(decisionStatus)} /></div><div className="statistical-rule-list">{(gate?.statisticalGate.ruleResults || decision?.statisticalReleaseDecision.ruleResults || []).map((rule) => <div className="statistical-rule" key={`${displayValue(rule.rule_id)}-${displayValue(rule.status)}`}><span className="rule-status"><StatusTag status={displayValue(rule.status)} tone={statisticalStatusTone(displayValue(rule.status))} /></span><div><strong>{humanize(displayValue(rule.rule_id))}</strong><p>{displayValue(rule.reason)}</p></div><span className="mono">{displayValue(rule.value)} / {displayValue(rule.threshold)}</span></div>)}</div>{decision && <div className="statistical-decision-explanation"><span className="eyebrow">DECISION EXPLANATION</span><p>{decision.statisticalReleaseDecision.explanation.join(" ")}</p><small>Release executed: {displayValue(valueAt(decision.statisticalReleaseDecision.authorizationBoundary, "release_executed"))} · deployment authorized: {displayValue(valueAt(decision.statisticalReleaseDecision.authorizationBoundary, "deployment_authorized"))}</small></div>}</section>
-      <section className="statistical-family-panel" aria-label="Failure family distribution"><div className="section-heading"><div><span className="eyebrow">RPF-17 LINKAGE</span><h2>Failure families</h2></div><span className="section-count">{families.length} families · denominator {statisticalNumber(valueAt(summary.failure_intelligence, "family_denominator"))}</span></div>{families.length === 0 ? <p className="execution-muted">No Agent FAIL family observed in this cohort.</p> : <div className="statistical-family-list">{families.map((family, index) => { const item = objectValue(family) || {}; return <div className="statistical-family-row" key={`${displayValue(item.family_signature)}-${index}`}><strong className="mono">{shortId(item.family_signature, 32)}</strong><span>{statisticalNumber(item.fail_count)} failures · {statisticalPercent(item.failure_rate)}</span><span>{item.regression_covered ? "Regression covered" : "Regression uncovered"}</span><a className="action-link" href="/failure-intelligence" onClick={(event) => { event.preventDefault(); navigate("/failure-intelligence"); }}>Open RPF-17 index →</a></div>; })}</div>}</section>
-      <section className="statistical-trials-panel" aria-label="Trial matrix"><div className="section-heading"><div><span className="eyebrow">TRIAL MATRIX · FRESH PER TRIAL</span><h2>Every attempted trial</h2></div><span className="section-count">{meta.trials.length.toString().padStart(2, "0")} records</span></div><div className="statistical-trial-table"><div className="statistical-trial-head" aria-hidden="true"><span>TRIAL</span><span>OUTCOME</span><span>RUN / ENVIRONMENT</span><span>FAILURE INTELLIGENCE</span><span>LATENCY / BOUNDARY</span></div>{meta.trials.map((trial) => { const runId = statisticalRefId(trial.runRef, "run_id"); const environmentId = statisticalRefId(trial.environmentRef, "environment_id"); const intelligenceId = statisticalRefId(trial.failureIntelligence, "intelligence_id"); return <details className="statistical-trial-row" key={trial.trialId}><summary><span><strong>{trial.trialIndex.toString().padStart(2, "0")}</strong><small>{trial.trialId}</small></span><span><StatusTag status={trial.outcome} tone={trial.outcome === "AGENT_PASS" ? "success" : trial.outcome === "AGENT_FAIL" ? "fault" : "review"} /><small>{trial.controlledBehavior}</small></span><span className="mono">{shortId(runId, 20)}<small>{shortId(environmentId, 22)}</small></span><span className="mono">{shortId(intelligenceId, 22)}<small>{intelligenceId ? "RPF-17 derived ref" : "none"}</small></span><span>{displayValue(valueAt(trial.metrics, "latency_ms"))} ms<small>{trial.agentQualityEligible ? "Agent denominator" : "excluded from Agent denominator"}</small></span></summary><div className="trial-drilldown"><div><span className="field-label">SOURCE RUN REF</span><strong className="mono">{runId || "—"}</strong></div><div><span className="field-label">ENVIRONMENT REF</span><strong className="mono">{environmentId || "—"}</strong></div><div><span className="field-label">FAILURE FAMILY / FI</span><strong className="mono">{displayValue(valueAt(trial.failureIntelligence, "cross_agent_family") || valueAt(trial.failureIntelligence, "domain_family") || intelligenceId || "—")}</strong></div><div><span className="field-label">SAFETY EVENTS</span><strong>{trial.zeroToleranceEvents.length ? `${trial.zeroToleranceEvents.length} hard event(s)` : "none"}</strong></div><div><span className="field-label">EVIDENCE BOUNDARY</span><strong>{trial.evidenceValid ? "verified Agent evidence" : "excluded / needs review"}</strong></div></div></details>; })}</div></section>
-      <footer className="detail-footer"><span>{meta.evaluationId} · {meta.evaluationStatus} · STATISTICAL_EVALUATION_ONLY_NO_DECISION</span><span>Historical deterministic corpus remains separate · no release/deploy action</span></footer>
-    </AppShell>
-  );
-}
-
-function StatisticalComparisonIndex() {
-  return <AppShell statistical comparison><div className="page-header index-header"><div><span className="eyebrow">RPF-18 · INTERVAL-AWARE COMPARISON</span><h1>Compare cohorts with evidence boundaries intact.</h1><p className="lede">A comparison is directional only when compatible sampling plans, adequate evidence, and confidence intervals establish a difference.</p></div><div className="corpus-note"><span className="section-label">COMPARISONS</span><strong>{reviewedStatisticalComparisons.length} comparison</strong><span>not a release action</span></div></div><section className="statistical-comparison-list">{reviewedStatisticalComparisons.map((comparison) => { const meta = comparison.statisticalComparison; const classification = displayValue(valueAt(meta.aggregate, "classification")); const href = `/statistical-comparisons/${encodeURIComponent(meta.comparisonId)}`; return <a className="comparison-card statistical-comparison-card" key={meta.comparisonId} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}><div><span className="eyebrow">BASELINE ↔ CANDIDATE</span><h2>{shortId(meta.comparisonId, 42)}</h2><p>{statisticalRefId(meta.baselineRef, "evaluation_id")} → {statisticalRefId(meta.candidateRef, "evaluation_id")}</p></div><StatusTag status={classification} tone={statisticalStatusTone(classification)} /><span className="row-arrow" aria-hidden="true">→</span></a>; })}</section><footer className="page-footnote"><span>Wilson score intervals · RPF-18</span><span>Read-only · no automatic promotion/release</span></footer></AppShell>;
-}
-
-function StatisticalComparisonDetail({ comparison }: { comparison: StatisticalComparison }) {
-  const meta = comparison.statisticalComparison;
-  const aggregate = meta.aggregate;
-  const intervals = objectValue(aggregate.confidence_interval) || {};
-  const baselineInterval = objectValue(intervals.baseline) || {};
-  const candidateInterval = objectValue(intervals.candidate) || {};
-  const classification = displayValue(aggregate.classification);
-  const families = Array.isArray(aggregate.failure_families) ? aggregate.failure_families : [];
-  return <AppShell detail statistical comparison><div className="detail-breadcrumb"><a href="/statistical-comparisons" onClick={(event) => { event.preventDefault(); navigate("/statistical-comparisons"); }}>Statistical Comparisons</a><span aria-hidden="true">/</span><span>{shortId(meta.comparisonId, 34)}</span><span className="schema-chip">rpf-statistical-comparison-v1</span></div><div className="detail-header"><div><span className="eyebrow">STATISTICAL COMPARISON · BASELINE ↔ CANDIDATE</span><h1>{humanize(classification)}</h1><p className="detail-subtitle">{statisticalRefId(meta.baselineRef, "evaluation_id")} versus {statisticalRefId(meta.candidateRef, "evaluation_id")}. Direction is established by interval separation, not point estimate alone.</p></div><div className="detail-header-status"><StatusTag status={classification} tone={statisticalStatusTone(classification)} /><span className="status-note">comparison-only · no decision mutation</span></div></div><section className="comparison-hero statistical-comparison-hero"><div><span className="eyebrow">BASELINE</span><strong>{statisticalPercent(valueAt(baselineInterval, "point_estimate"))}</strong><small>{statisticalPercent(valueAt(baselineInterval, "lower"))} — {statisticalPercent(valueAt(baselineInterval, "upper"))} Wilson 95%</small></div><div className="comparison-hero-arrow" aria-hidden="true">→</div><div className="accent"><span className="eyebrow">CANDIDATE</span><strong>{statisticalPercent(valueAt(candidateInterval, "point_estimate"))}</strong><small>{statisticalPercent(valueAt(candidateInterval, "lower"))} — {statisticalPercent(valueAt(candidateInterval, "upper"))} Wilson 95%</small></div></section><section className="comparison-reason-panel"><div className="section-heading"><div><span className="eyebrow">CLASSIFICATION BASIS</span><h2>Why this comparison is {classification}</h2></div></div><ul>{(Array.isArray(aggregate.reasons) ? aggregate.reasons : []).map((reason, index) => <li key={`${String(reason)}-${index}`}>{humanize(String(reason))}</li>)}</ul><div className="comparison-metrics-grid"><div><span>SUCCESS RATE Δ</span><strong>{statisticalPercent(valueAt(aggregate.success_rate, "delta"))}</strong></div><div><span>VALID TRIALS</span><strong>{statisticalNumber(valueAt(aggregate.valid_trial_count, "baseline"))} → {statisticalNumber(valueAt(aggregate.valid_trial_count, "candidate"))}</strong></div><div><span>EVIDENCE VALID Δ</span><strong>{statisticalPercent(valueAt(aggregate.evidence_valid_rate, "delta"))}</strong></div><div><span>PLATFORM / ENV Δ</span><strong>{statisticalPercent(valueAt(aggregate.platform_error_rate, "delta"))}</strong></div></div></section><section className="statistical-family-panel"><div className="section-heading"><div><span className="eyebrow">FAMILY DELTAS</span><h2>Failure family comparison</h2></div><span className="section-count">{families.length} families</span></div>{families.length ? <div className="statistical-family-list">{families.map((family, index) => { const item = objectValue(family) || {}; const baseline = objectValue(item.baseline) || {}; const candidate = objectValue(item.candidate) || {}; return <div className="statistical-family-row" key={`${displayValue(item.family_signature)}-${index}`}><strong className="mono">{shortId(item.family_signature, 32)}</strong><span>{statisticalNumber(baseline.fail_count)} → {statisticalNumber(candidate.fail_count)} failures</span><span>{statisticalPercent(valueAt(item.failure_rate, "delta"))} rate Δ</span></div>; })}</div> : <p className="execution-muted">No failure family deltas.</p>}</section><details className="raw-details"><summary>Expert escape hatch · normalized comparison JSON</summary><pre>{JSON.stringify(meta.raw, null, 2)}</pre></details><footer className="detail-footer"><span>{meta.comparisonId} · compatible plan {shortId(String(valueAt(meta.raw, "compatibility_key") || ""), 30)}</span><span>Comparison does not produce Release Decision</span></footer></AppShell>;
-}
-
 function executionStatusTone(state: string): "success" | "fault" | "error" | "neutral" | "review" {
   if (state === "COMPLETED") return "success";
   if (state === "FAILED_PLATFORM") return "error";
@@ -2066,22 +1650,9 @@ function ExecutionSurfaceState({ loading = false, error }: { loading?: boolean; 
   return <main className="data-source-state" aria-live="polite"><div className={"data-source-state-card" + (unavailable ? " error" : "")}><span className="eyebrow">DURABLE EXECUTION API · RPF-14</span><h1>{unavailable ? "Execution data is unavailable." : loading ? "Loading durable job…" : "Execution data is API-only."}</h1><p>{unavailable ? "The Web surface did not receive a canonical execution response. It does not invent a fixture or retry a mutation." : "Use the Control Plane read API to inspect PostgreSQL-backed jobs, attempts, operations, evidence refs, and events."}</p>{unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}</div></main>;
 }
 
-function DataSourceState({ status, error }: { status: "loading" | "error"; error?: ControlPlaneApiError }) {
-  const unavailable = status === "error";
-  return (
-    <main className="data-source-state" aria-live="polite">
-      <div className={"data-source-state-card" + (unavailable ? " error" : "")}>
-        <span className="eyebrow">CONTROL PLANE API · RPF-11</span>
-        <h1>{unavailable ? "Canonical data is unavailable." : "Loading canonical data…"}</h1>
-        <p>{unavailable ? "The Web surface did not receive a complete API-backed snapshot. Static fixtures are not used as a silent fallback." : "Resolving metadata and verified immutable artifacts before rendering the investigation surface."}</p>
-        {unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}
-      </div>
-    </main>
-  );
-}
-
 export default function App() {
   const [location, setLocation] = useState<LocationState>(() => readLocation());
+  const [snapshot, setSnapshot] = useState<CanonicalSnapshot>(() => createCanonicalSnapshot(DATA_SOURCE_MODE));
   const [dataSource, setDataSource] = useState<{ status: "loading" | "ready" | "error"; error?: ControlPlaneApiError }>(() => ({
     status: DATA_SOURCE_MODE === "fixture" ? "ready" : "loading",
   }));
@@ -2102,6 +1673,7 @@ export default function App() {
         if (!active) return;
         try {
           activateControlPlaneCorpus(payload);
+          setSnapshot((current) => createCanonicalSnapshot("api", current.revision + 1));
           setDataSource({ status: "ready" });
         } catch {
           setDataSource({
@@ -2128,40 +1700,37 @@ export default function App() {
       active = false;
     };
   }, [executionRoute]);
-  const run = useMemo(() => location.runId ? getRun(location.runId) : undefined, [location.runId]);
-  const failureCase = useMemo(() => location.failureCaseId ? getFailureCase(location.failureCaseId) : undefined, [location.failureCaseId]);
-  const regression = useMemo(() => location.regressionId ? getRegression(location.regressionId) : undefined, [location.regressionId]);
-  const evaluation = useMemo(() => location.evaluationId ? getEvaluation(location.evaluationId) : undefined, [location.evaluationId]);
-  const comparison = useMemo(() => location.comparisonId ? getEvaluationComparison(location.comparisonId) : undefined, [location.comparisonId]);
-  const statisticalEvaluation = useMemo(() => location.statisticalEvaluationId ? getStatisticalEvaluation(location.statisticalEvaluationId) : undefined, [location.statisticalEvaluationId]);
-  const statisticalComparison = useMemo(() => location.statisticalComparisonId ? getStatisticalComparison(location.statisticalComparisonId) : undefined, [location.statisticalComparisonId]);
-  const releaseDecision = useMemo(() => location.releaseDecisionId ? getReleaseDecision(location.releaseDecisionId) : undefined, [location.releaseDecisionId]);
-  const agent = useMemo(() => location.agentId ? getAgent(location.agentId) : undefined, [location.agentId]);
-  const cluster = useMemo(() => location.clusterId ? getFailureCluster(location.clusterId) : undefined, [location.clusterId]);
-  const bisect = useMemo(() => location.bisectId ? getVersionBisect(location.bisectId) : undefined, [location.bisectId]);
+  const canonicalRouteState = useMemo(() => resolveCanonicalRouteState(dataSource.status, snapshot, location), [dataSource.status, snapshot, location]);
+  const selected = canonicalRouteState.kind === "ready" || canonicalRouteState.kind === "not-found"
+    ? canonicalRouteState.selection
+    : {};
+  const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
-  if (dataSource.status === "loading") return <DataSourceState status="loading" />;
-  if (dataSource.status === "error") return <DataSourceState status="error" error={dataSource.error} />;
-  if (location.pathname === "/" || location.pathname === "/overview") return <GoldenDemoOverview />;
+  if (canonicalRouteState.kind === "loading") return <SharedDataSourceState status="loading" />;
+  if (canonicalRouteState.kind === "unavailable") return <SharedDataSourceState status="error" error={dataSource.error} />;
+  if (location.pathname === "/" || location.pathname === "/overview") return <GoldenDemoOverviewFeature snapshot={snapshot} />;
   if (agent) return <AgentDetail agent={agent} />;
   if (location.pathname === "/agents") return <AgentIndex />;
   if (bisect) return <VersionBisectDetail bisect={bisect} />;
   if (cluster) return <FailureClusterDetail cluster={cluster} />;
   if (location.pathname === "/failure-intelligence") return <FailureIntelligenceIndex />;
   if (releaseDecision) return <ReleaseDecisionDetail decision={releaseDecision} />;
-  if (failureCase) return <FailureCaseDetail failureCase={failureCase} />;
+  if (failureCase) return <FailureCaseDetailFeature failureCase={failureCase} snapshot={snapshot} />;
   if (regression) return <RegressionDetail regression={regression} />;
-  if (statisticalComparison) return <StatisticalComparisonDetail comparison={statisticalComparison} />;
-  if (statisticalEvaluation) return <StatisticalEvaluationDetail evaluation={statisticalEvaluation} />;
+  if (statisticalEvaluation) return <StatisticalEvaluationDetailFeature evaluation={statisticalEvaluation} snapshot={snapshot} />;
+  if (statisticalComparison) return <StatisticalComparisonDetailFeature comparison={statisticalComparison} />;
   if (comparison) return <ComparisonDetail comparison={comparison} />;
   if (evaluation) return <EvaluationDetail evaluation={evaluation} />;
   if (location.pathname === "/failures") return <FailureIndex />;
   if (location.pathname === "/regressions") return <RegressionIndex />;
   if (location.pathname === "/evaluations") return <EvaluationIndex />;
-  if (location.pathname === "/statistical-evaluations") return <StatisticalEvaluationIndex />;
-  if (location.pathname === "/statistical-comparisons") return <StatisticalComparisonIndex />;
+  if (location.pathname === "/statistical-evaluations") return <StatisticalEvaluationIndexFeature snapshot={snapshot} />;
+  if (location.pathname === "/statistical-comparisons") return <StatisticalComparisonIndexFeature snapshot={snapshot} />;
   if (location.pathname === "/comparisons") return <ComparisonIndex />;
   if (location.pathname === "/release-decisions") return <ReleaseDecisionIndex />;
   if (run) return <RunDetail run={run} eventId={location.eventId} />;
+  if (canonicalRouteState.kind === "not-found") {
+    return <NotFoundState path={location.pathname} />;
+  }
   return <RunIndex />;
 }
