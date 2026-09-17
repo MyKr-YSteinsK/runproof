@@ -54,6 +54,12 @@ Observed Fact
 
 Lease 过期不能证明副作用没有发生。Worker 必须 fence stale attempt、reconcile environment state，并保留 operation identity。无法证明安全恢复时，禁止盲目 whole-run retry。
 
+## 正式 Network Fault Profile
+
+RPF-28 新增正式 `multi-service-toxiproxy-v1` Environment，但不替换单容器 Environment。每次 Run 拥有 fresh 的 Docker internal network，包含 target、dependency、Toxiproxy boundary 和 Agent-shaped client。Client 只能访问 data-plane proxy；fault activation 和 toxic configuration 始终属于 harness authority。
+
+versioned `rpf-network-fault-profile-v1` 区分 `none`、`latency`、`timeout`、`dependency-unavailable`、`response-lost` 与 `pre-side-effect-failure`。Evidence 分开记录 `planned`、`triggered`、`observed`、`reconciled`。side effect 已提交但响应丢失时，必须证明 client 没有收到成功响应、存在稳定 operation receipt、effect 恰好一次，并先 reconcile 再 retry。依赖或 side-effect 前失败则必须证明对照关系：没有 receipt 且 effect 为零。Readiness、initial state、fault reset 和 cleanup 都属于 terminal proof；cleanup 无法验证时 Environment 必须 quarantine。
+
 ## Statistical Reliability
 
 Statistical evaluation 与单次 Evaluation/Comparison 分离。Sampling Plan 固定 trial 数、attempt budget、Agent/config、Scenario、environment sequence、metric 定义以及 Wilson method/version。
@@ -79,4 +85,4 @@ HARD_BLOCKER → EVIDENCE_INSUFFICIENT → REVIEW_REQUIRED → ELIGIBLE
 
 ## 当前证据边界
 
-reviewed corpus 在两个显式 Agent、Failure Intelligence、统计 cohort 和 PostgreSQL durable Trial Job 上证明了 deterministic controlled semantics，但没有证明长期 live Provider reliability、Production 规模的统计显著性、Production remediation safety 或 HA。source identity 和 verification anchor 见 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)。
+reviewed corpus 在两个显式 Agent、正式多服务网络故障 Environment、Failure Intelligence、统计 cohort 和 PostgreSQL durable Trial Job 上证明了 deterministic controlled semantics，但没有证明长期 live Provider reliability、Production 规模的统计显著性、Production remediation safety 或 HA。source identity 和 verification anchor 见 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)。

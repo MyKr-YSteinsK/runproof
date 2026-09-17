@@ -193,10 +193,22 @@ def run_agent_slice(
     model: str | None = None,
     scenario_case_id: str | None = None,
     environment_failure: str | None = None,
+    environment_profile: str | None = None,
 ) -> dict[str, Any]:
     """Execute one of the explicitly registered Agent adapters."""
 
     contract = agent_contract_for_profile(profile_id)
+    if environment_profile == "multi-service-toxiproxy-v1":
+        from .runner import run_slice
+
+        return run_slice(
+            fault_profile=fault_profile,
+            api_key=api_key,
+            model=model,
+            agent_profile_id=profile_id,
+            environment_failure=environment_failure,
+            environment_profile=environment_profile,
+        )
     if contract["contract_id"] == INCIDENT_REMEDIATION_CONTRACT_ID:
         from .incident import run_incident_slice
 
@@ -213,6 +225,7 @@ def run_agent_slice(
         model=model,
         agent_profile_id=profile_id,
         environment_failure=environment_failure,
+        environment_profile=environment_profile,
     )
 
 

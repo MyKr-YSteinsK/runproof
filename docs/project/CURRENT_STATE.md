@@ -5,8 +5,8 @@
 ## Current snapshot
 
 - Lifecycle: `Stabilization`。
-- Active plan: `RPF-27` real multi-service/network-fault Investigation / Spike is complete after local candidate comparison and hosted selected-candidate confirmation. The repository remains in `Feature Freeze / Portfolio Maintenance` for product behavior。
-- Plan status: `RPF-00` through `RPF-27` are `Complete`。RPF-27 only adds a disposable Spike and diagnostic workflow; it does not replace formal Runtime/Environment behavior, Control Plane schema, Web behavior, or reviewed artifact bytes。
+- Active plan: `RPF-28` formal Multi-service Controlled Environment / Network Fault Profiles is complete locally after the full six-profile five-repeat matrix and independent PostgreSQL/Control Plane/durable-worker verification; the pushed focused hosted workflow is pending its remote run. The repository remains in `Feature Freeze / Portfolio Maintenance` for unrelated product behavior。
+- Plan status: `RPF-00` through `RPF-27` are `Complete`; RPF-28 implementation and local evidence are complete, with hosted focused confirmation pending. RPF-28 adds an additive `multi-service-toxiproxy-v1` Runtime Environment and does not replace the single-container path, rewrite historical reviewed bytes, or add Production authority。
 - Branch: `main`；repository: public `MyKr-YSteinsK/runproof`；默认交付模型仍为 commit → push，未执行 release/deploy。
 - Product / published version: none。`0.1.0-rc.1` remains a historical production-like probe recommendation, not a tag or release。
 - Current source of truth: `PROJECT_BRIEF.md` 持有稳定产品与 UX 合同；`DECISIONS.md` 持有 canonical decisions；本文持有当前快照；`VERIFICATION_HISTORY.md` 持有重要历史证据。
@@ -20,6 +20,7 @@
 - Golden Demo provides a local, interview-grade, API-backed path with reviewed corpus seed/read-back and ownership-aware Windows process/container lifecycle checks。
 - GitHub Actions provides a hosted canonical Release Gate with fresh PostgreSQL/Control Plane execution, redacted result artifacts, Job Summary verification, and canonical Decision read-back。
 - RPF-27 provides a disposable real multi-service candidate topology: an Agent-shaped client container reaches a private Docker fault boundary, which reaches an incident target and dependency; the harness independently reads target receipt/state. Local Windows Docker evidence repeats Toxiproxy and the narrow custom shim response-loss path five times each; Envoy HTTP delay/abort is exercised only as a feasibility comparison。
+- RPF-28 formally integrates `multi-service-toxiproxy-v1`: each Run owns a fresh Docker `--internal` network with target, dependency, Toxiproxy, and Agent-shaped client; the client sees only the data-plane proxy, while the harness owns fault activation and target receipt/state observation. Existing `DockerEnvironment` remains supported。
 
 ## RPF-26 public documentation surface
 
@@ -35,6 +36,7 @@
 - RPF-25 local verification passed Web tests/typecheck/build, runtime 77-test suite, reviewed-artifact and Golden Demo verifiers, formal Control Plane Maven package, RPF-16/RPF-17/RPF-18 evidence verifiers, and the local canonical gate. The Web build retained a shared-bundle warning; real-device verification was not executed。
 - RPF-26 local verification passed the public-docs contract, runtime `77/77`, Web `11` files/`40` tests, `npm run build` (including typecheck), formal Control Plane Maven package, reviewed-artifact verifier, Golden Demo verifier, and RPF-16/RPF-17/RPF-18 evidence verifiers. The build retained the known shared-bundle warning; no product runtime behavior changed。
 - RPF-27 local verification passed `python spikes/rpf-27/verify-evidence.py` after a fresh three-candidate Windows Docker matrix: Toxiproxy response-lost `5/5`, custom shim response-lost `5/5`, Envoy response-lost `0/5` with deterministic `ABORT_BEFORE_SIDE_EFFECT` limitation; all baseline/latency/dependency scenarios and all trial cleanup checks passed. The ignored result records source identity, per-run environment/network/container identity, target receipt/effect count, reconcile, no-blind-retry, fault provenance, timings, and security boundary; it is not a reviewed corpus artifact。Hosted selected-candidate verification passed in [run `35186899267`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35186899267) after the initial all-candidate hosted attempt [run `35185942172`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35185942172) failed at the disposable evidence verifier; the hosted workflow was then explicitly scoped to Toxiproxy, while the full comparison remained local。
+- RPF-28 local verification passed the full `6 profiles × 5 repeats` Docker matrix (`none`, `latency`, `timeout`, `dependency-unavailable`, `response-lost`, `pre-side-effect-failure`), lifecycle/fault/effect-count/cleanup checks, independent PostgreSQL + formal Control Plane + durable worker canonical completion, `python spikes/rpf-28/verify-evidence.py`, and `python runtime/verify-reviewed-artifacts.py`. Current RPF-28 source identity is `b5f2c22fce21d0c14455a2ee076d1d12df31f5dbc10c9fe8aef9ea97d7fcfaa6`; reviewed baseline/dependency/response-loss artifacts are bound to `rpf-28.v1` and remain separate from RPF-27。
 - RPF-26 hosted delivery: GitHub Actions [run `35181115566`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35181115566) for commit `e177453` succeeded in `1m21s`; the fresh canonical gate job succeeded in `1m17s` and uploaded redacted artifact `rpf-12-release-gate-35181115566-1` with digest `sha256:e6c29d3af1d5ac582f92bec47199695404b0a0c367305235592aca00dcab1762`。The workflow did not execute release/deploy; GitHub reported only existing Node.js 20/setup-java v4 deprecation warnings。
 - The RPF-25 implementation and state commits were pushed to `origin/main`; hosted Release Gate run [35179169378](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378) succeeded and uploaded the redacted artifact `rpf-12-release-gate-35179169378-1`。It did not execute release/deploy。
 - RPF-14/RPF-15/RPF-16/RPF-17 source identities, RPF-19 lifecycle measurements, RPF-21/RPF-22/RPF-23 hosted/local evidence, and older compatibility facts are preserved in [VERIFICATION_HISTORY.md](../history/VERIFICATION_HISTORY.md)。They are not duplicated here as command logs。
@@ -47,15 +49,15 @@
 - Statistical corpus and Agent corpus are deterministic/controlled and small. They do not establish live Provider probability, Production-scale significance, or long-term cost/latency distribution。
 - Desktop/in-app browser evidence is representative where recorded; real device/iOS/mobile/PWA verification was not executed。The Web build may report a shared chunk-size warning。
 - `ELIGIBLE` remains decision-only. `Agent FAIL` is not `Platform ERROR`; `UNKNOWN_OUTCOME` requires reconcile before retry。
-- RPF-27 does not establish a formal multi-service Environment, Production isolation/HA, OTel instrumentation, S3/MinIO artifact storage, capacity behavior, or cross-platform CI equivalence. Toxiproxy is a conditional RPF-28 candidate; Envoy's tested HTTP abort does not prove response-lost-after-side-effect; the custom shim remains a narrow fallback, not a general chaos framework。
+- RPF-28 still does not establish Production isolation/HA, OTel instrumentation, S3/MinIO artifact storage, capacity behavior, cross-platform equivalence, broker/scheduler/autoscaling, human Approval, tenant/RBAC, real destructive remediation, or release/deploy authorization. Toxiproxy is the formal RPF-28 provider boundary, not a general Production chaos framework; the Agent-shaped client is not a live Provider reliability claim。
 
 ## Active work
 
-RPF-27 Spike implementation and hosted selected-candidate evidence are complete. No product feature implementation is active. Existing Golden Demo and hosted gate maintenance remains available, but does not expand authority or deployment scope。
+RPF-28 implementation and local evidence are complete; the focused hosted workflow is the remaining delivery confirmation. No unrelated product feature implementation is active. Existing Golden Demo and hosted gate maintenance remains available, but does not expand authority or deployment scope。
 
 ## Next likely boundary
 
-The next evidence-led boundary is conditional RPF-28: formal Multi-service Controlled Environment + Network Fault Profiles, using Toxiproxy as the selected candidate and requiring a fresh formal adapter revalidation. OpenTelemetry-compatible observability, S3/MinIO-style artifact durability, and capacity/large-trace behavior remain later boundaries. This state does not infer Production HA, Approval, broker, scheduler, autoscaling, or release authority。
+The next evidence-led boundary is OpenTelemetry-compatible observability, persistent/object-backed artifact durability, or capacity/large-trace behavior only if measured need justifies it. This state does not infer Production HA, Approval, broker, scheduler, autoscaling, or release authority。
 
 ## Update rule
 

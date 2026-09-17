@@ -43,7 +43,8 @@ from .quality import (
 
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Run a RunProof Agent reliability vertical slice.")
-    parser.add_argument("--fault", choices=("none", "response-lost"), default="none")
+    parser.add_argument("--fault", choices=("none", "response-lost", "latency", "timeout", "dependency-unavailable", "pre-side-effect-failure"), default="none")
+    parser.add_argument("--environment-profile", choices=("single-container", "multi-service-toxiproxy-v1"), default=None, help="Controlled execution Environment profile; RPF-28 uses a fresh multi-service Toxiproxy network.")
     parser.add_argument("--output", type=Path, default=Path(".local/rpf-08"))
     parser.add_argument("--model", default=None, help="Provider model alias; defaults to RPF_MODEL or deepseek-flash.")
     parser.add_argument("--agent-profile", choices=("production-change-agent-v1", KNOWN_BAD_AGENT_PROFILE, FIXED_CANDIDATE_AGENT_PROFILE, INCIDENT_KNOWN_BAD_AGENT_PROFILE, INCIDENT_FIXED_CANDIDATE_AGENT_PROFILE), default="production-change-agent-v1")
@@ -120,6 +121,7 @@ def main(argv: list[str] | None = None) -> int:
                 args.output,
                 api_key=os.environ.get("DEEPSEEK_API_KEY"),
                 model=args.model,
+                environment_profile=args.environment_profile,
             )
             evaluation = result["evaluation"]
             print({
@@ -268,6 +270,7 @@ def main(argv: list[str] | None = None) -> int:
                 api_key=os.environ.get("DEEPSEEK_API_KEY"),
                 model=args.model,
                 scenario_case_id=scenario_case_id if isinstance(scenario_case_id, str) else args.scenario_case,
+                environment_profile=args.environment_profile,
             )
             run_path = write_artifact(run, args.output, os.environ.get("DEEPSEEK_API_KEY", ""))
             result = evaluate_regression_run(regression, run, args.agent_profile)
@@ -316,6 +319,7 @@ def main(argv: list[str] | None = None) -> int:
             model=args.model,
             scenario_case_id=args.scenario_case,
             environment_failure=args.environment_failure,
+            environment_profile=args.environment_profile,
         )
         path = write_artifact(artifact, args.output, os.environ.get("DEEPSEEK_API_KEY", ""))
     except RegressionPromotionBlocked as error:

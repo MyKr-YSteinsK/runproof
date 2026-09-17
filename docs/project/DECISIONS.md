@@ -421,3 +421,22 @@ Web 必须集中管理 locale/provider、semantic message keys、technical vocab
 ### Supersedes
 
 - none（细化 D-014、D-021、D-023 的只读 Web 展示边界，不改变 canonical evidence、统计、Agent authority 或 durable execution 语义）
+
+## D-025｜正式 Multi-service Controlled Environment 采用 Toxiproxy 数据面与显式 Network Fault Profiles
+
+- Status: `Accepted`
+- Date: 2026-09-17
+### Decision
+RPF-28 将多服务故障环境正式接入 RunProof Runtime，新增 additive `multi-service-toxiproxy-v1` Environment profile，同时保留既有单容器 `DockerEnvironment`。每次 Run 创建 fresh 的 Docker `--internal` network、target service、dependency service、Toxiproxy fault boundary 和 Agent-shaped client；Agent client 只获得数据面入口，不获得 Control Plane、Docker socket、Toxiproxy control API 或 Production credential。故障语义采用 versioned `rpf-network-fault-profile-v1`，至少包括 no fault、latency、timeout、dependency unavailable、response-lost-after-side-effect 与 pre-side-effect failure；Toxiproxy toxic 细节只存在 Environment adapter 内。
+
+Environment lifecycle 必须按 allocation → network → services → proxy → readiness → seed → initial verification → ready → execute → terminal/evidence → reset → cleanup 记录，并在 readiness、initial state、fault provenance、receipt/effect count 或 cleanup 任一点无法证明时 fail closed / quarantine。`planned`、`triggered`、`observed` 与 `reconciled` 分开记录；response-lost 必须进入 `UNKNOWN_OUTCOME`，使用稳定 `operation_id` 和 target receipt/state reconcile 后才可 terminalize，禁止 blind retry。正式 durable worker 通过显式 `environment_profile` contract 复用该环境，保留 PostgreSQL job/attempt/lease/fencing 与 canonical evidence ingest 边界。
+### Why
+RPF-27 的候选 Spike 证明单容器之外需要真实 network boundary 才能区分 downstream response-lost、dependency unavailable 和 pre-side-effect failure，并显示 Envoy HTTP abort 不能替代 side-effect-success response-loss 证明。RPF-28 的正式 adapter 使用真实 Toxiproxy transport、独立 target/dependency/client、fresh cleanup，以及 baseline、latency/timeout、dependency、response-lost 和 pre-side-effect 对照，能够把 fault provenance、effect count、receipt 与 Agent/Environment attribution 收敛为同一 Run Evidence v2。独立 PostgreSQL Control Plane/worker smoke 证明 `environment_profile` 可以穿过 durable Job 而不扩大 worker authority。
+### Consequences
+RPF-28 reviewed baseline、dependency-unavailable 和 response-lost Run 保持与 RPF-27 分离并绑定当前 source identity；本地完整 probe 默认每类 profile 至少重复 5 次，hosted workflow 聚焦 baseline/response-lost/cleanup，继续不替代 canonical Release Gate。正式边界仍不包含 broker、scheduler、autoscaling、service mesh、OpenTelemetry、S3/MinIO、Production HA、真实 destructive remediation、OAuth/OIDC/SSO、tenant/RBAC 或 release/deploy authorization。Toxiproxy 是当前正式 network fault provider，不代表任意 chaos framework 或 Production isolation。
+### Reconsider when
+真实容量/背压、多主机拓扑、跨平台 Docker 语义、需要持久化 artifact durability、或新的 Agent/Production remediation authority 要求改变 Environment ownership、fault transport 或 durable dispatch 时，基于新的 Plan 和 source/cleanup/effect-count evidence 重新评估。
+
+### Supersedes
+
+- none（承接 D-017～D-021 与 RPF-27 候选边界；不替代 `DockerEnvironment` 兼容路径、durable reconcile 或 decision-only authority）

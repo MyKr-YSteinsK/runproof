@@ -27,6 +27,7 @@ from runproof_runtime.quality import (
     validate_quality_policy,
     validate_release_decision_artifact,
 )
+from runproof_runtime.multi_service_runner import FORMAL_VERIFIER_ID, RPF28_RUNTIME_VERSION
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -73,6 +74,9 @@ RPF08_BASELINE_GATE = ROOT / "runtime" / "reviewed-quality-gate-baseline.json"
 RPF08_CANDIDATE_GATE = ROOT / "runtime" / "reviewed-quality-gate-candidate.json"
 RPF08_BASELINE_DECISION = ROOT / "runtime" / "reviewed-release-decision-baseline.json"
 RPF08_CANDIDATE_DECISION = ROOT / "runtime" / "reviewed-release-decision-candidate.json"
+RPF28_BASELINE = ROOT / "runtime" / "reviewed-rpf28-multi-service-baseline-run.json"
+RPF28_DEPENDENCY_UNAVAILABLE = ROOT / "runtime" / "reviewed-rpf28-multi-service-dependency-unavailable-run.json"
+RPF28_RESPONSE_LOST = ROOT / "runtime" / "reviewed-rpf28-multi-service-response-lost-run.json"
 HISTORICAL_RPF03_SOURCE_SHA256 = "c586242817bb03971807b8f44d5e0ebc16c4851519f6f94a9a017c49614a3832"
 HISTORICAL_RPF04_SOURCE_SHA256 = "b1235b9128dfe42bcf553ba1f28452c4a08c0af0b5c293c9163a24c7a2b7c127"
 HISTORICAL_RPF05_SOURCE_SHA256 = "198194adbefbad5b7b7b89e1119fbac2f10af0231001f8dee5b5e916f1f5c715"
@@ -684,6 +688,61 @@ def assert_rpf08_decision(path: Path, expected_status: str, expected_evaluated_v
     return decision
 
 
+def assert_rpf28_artifact(path: Path, expected_profile: str, source_hash: str) -> dict[str, Any]:
+    artifact = json.loads(path.read_text(encoding="utf-8"))
+    assert artifact["schema_version"] == "rpf-run-evidence-v2"
+    assert artifact["artifact_kind"] == "Run Evidence"
+    assert artifact["run"]["runtime"]["runtime_version"] == RPF28_RUNTIME_VERSION
+    assert artifact["run"]["runtime"]["source_sha256"] == source_hash
+    assert artifact["run"]["verifier"]["verifier_id"] == FORMAL_VERIFIER_ID
+    assert artifact["environment"]["environment_profile"] == "multi-service-toxiproxy-v1"
+    assert artifact["environment"]["lifecycle_state"] == "CLEANED"
+    assert artifact["environment"]["cleanup_state"] == "CLEANED"
+    provenance = artifact["environment"]["provenance"]
+    assert provenance["network"]["internal"] is True
+    assert provenance["resource_scope"] == {
+        "network": "private-controlled",
+        "network_internal": True,
+        "volume_count": 0,
+        "host_docker_socket_mounted": False,
+        "production_credentials": False,
+    }
+    assert {item["role"] for item in provenance["containers"]} == {"target", "dependency", "fault-boundary", "agent-client"}
+    assert artifact["fault"]["fault_profile"] == expected_profile
+    assert artifact["outcome"]["status"] == "PASS"
+    assert artifact["verification"]["passed"] is True
+    assert artifact["verification"]["evidence"]["blind_retry_attempts"] == 0
+    lifecycle_states = [item["state"] for item in artifact["environment"].get("lifecycle_trace", [])]
+    required_lifecycle = ["UNPROVISIONED", "NETWORK_ALLOCATED", "SERVICES_ALLOCATED", "PROXY_READY", "CLIENT_READY", "SEEDED", "PROVISIONED", "READY_UNVERIFIED", "READY_VERIFIED", "EXECUTING", "TERMINAL_EVIDENCE", "CLEANED"]
+    assert all(state in lifecycle_states for state in required_lifecycle)
+    assert lifecycle_states.index("UNPROVISIONED") < lifecycle_states.index("NETWORK_ALLOCATED") < lifecycle_states.index("SERVICES_ALLOCATED") < lifecycle_states.index("PROXY_READY") < lifecycle_states.index("CLIENT_READY") < lifecycle_states.index("SEEDED") < lifecycle_states.index("READY_VERIFIED") < lifecycle_states.index("CLEANED")
+    if expected_profile == "response-lost":
+        assert lifecycle_states.index("UNKNOWN_OUTCOME") < lifecycle_states.index("TERMINAL_EVIDENCE")
+    events = [item["event_type"] for item in artifact["trajectory"]]
+    assert "environment_provisioned" in events and "initial_state_verification" in events and "cleanup" in events
+    if expected_profile == "none":
+        assert artifact["verification"]["evidence"]["mutation_count"] == 1
+        assert artifact["verification"]["evidence"]["mutation_requests"] == 1
+        assert "fault" not in events
+    elif expected_profile == "dependency-unavailable":
+        assert artifact["verification"]["evidence"]["mutation_count"] == 0
+        assert artifact["verification"]["checks"]["dependency_failure_classified"] is True
+        assert artifact["fault"]["observed"] is True
+    elif expected_profile == "response-lost":
+        assert artifact["verification"]["evidence"]["mutation_count"] == 1
+        assert artifact["verification"]["evidence"]["mutation_requests"] == 1
+        assert artifact["verification"]["evidence"]["duplicate_operation_requests"] == 0
+        assert artifact["fault"]["triggered"] is True
+        assert artifact["fault"]["observed"] is True
+        assert artifact["fault"]["reconciled"] is True
+        assert "fault" in events and "reconcile" in events
+    else:
+        raise AssertionError(f"unexpected RPF-28 reviewed profile: {expected_profile}")
+    assert_event_contract(artifact)
+    assert_private_boundary(artifact)
+    return artifact
+
+
 def main() -> None:
     source_hash = runtime_source_sha256()
     assert_legacy_artifact(LEGACY_ARTIFACTS[0], expected_fault=False)
@@ -757,7 +816,10 @@ def main() -> None:
     candidate_decision = assert_rpf08_decision(RPF08_CANDIDATE_DECISION, "ELIGIBLE", "1.0.1-observe-before-mutation-fix", source_hash)
     assert {item["code"] for item in baseline_decision["release_decision"]["blocking_reasons"]} >= {"REQUIRED_MEMBER_AGENT_FAIL", "HISTORICAL_REGRESSION_FAIL"}
     assert candidate_decision["release_decision"]["soft_warnings"]
-    print(f"PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison + 1 Policy/2 Gates/2 Decisions; source={source_hash}")
+    assert_rpf28_artifact(RPF28_BASELINE, "none", source_hash)
+    assert_rpf28_artifact(RPF28_DEPENDENCY_UNAVAILABLE, "dependency-unavailable", source_hash)
+    assert_rpf28_artifact(RPF28_RESPONSE_LOST, "response-lost", source_hash)
+    print(f"PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison + 1 Policy/2 Gates/2 Decisions + 3 RPF-28 runs; source={source_hash}")
 
 
 if __name__ == "__main__":

@@ -54,6 +54,12 @@ side effect may have happened
 
 Lease expiry is not proof that a side effect did not happen. A worker must fence stale attempts, reconcile environment state, and preserve the operation identity. Blind whole-run retry is prohibited when safe recovery is unproven.
 
+## Formal network fault profiles
+
+RPF-28 adds the formal `multi-service-toxiproxy-v1` Environment without replacing the single-container Environment. Each run owns a fresh internal Docker network containing a target, dependency, Toxiproxy boundary, and Agent-shaped client. The client can reach only the data-plane proxy; fault activation and toxic configuration remain harness authority.
+
+The versioned `rpf-network-fault-profile-v1` distinguishes `none`, `latency`, `timeout`, `dependency-unavailable`, `response-lost`, and `pre-side-effect-failure`. Evidence records `planned`, `triggered`, `observed`, and `reconciled` separately. A response lost after the target commits must show no successful client response, a stable operation receipt, exactly one effect, and reconcile-before-retry. A dependency or pre-side-effect failure must show the contrast: no receipt and zero effect. Readiness, initial state, fault reset, and cleanup are part of the terminal proof; an unverified cleanup quarantines the Environment.
+
 ## Statistical Reliability
 
 Statistical evaluation is separate from a single Evaluation/Comparison. A Sampling Plan freezes trial count, attempt budget, Agent/config, Scenario, environment sequence, metric definitions, and Wilson method/version.
@@ -79,4 +85,4 @@ HARD_BLOCKER → EVIDENCE_INSUFFICIENT → REVIEW_REQUIRED → ELIGIBLE
 
 ## Current evidence boundary
 
-The reviewed corpus demonstrates deterministic controlled semantics across two explicit Agents, Failure Intelligence, statistical cohorts, and PostgreSQL durable Trial Jobs. It does not establish long-term live Provider reliability, statistical significance at Production scale, Production remediation safety, or HA. See [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md) for source identities and verification anchors.
+The reviewed corpus demonstrates deterministic controlled semantics across two explicit Agents, the formal multi-service network fault Environment, Failure Intelligence, statistical cohorts, and PostgreSQL durable Trial Jobs. It does not establish long-term live Provider reliability, statistical significance at Production scale, Production remediation safety, or HA. See [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md) for source identities and verification anchors.

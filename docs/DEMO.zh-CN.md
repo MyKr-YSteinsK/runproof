@@ -75,6 +75,17 @@ Worker 不会盲目 retry。response-lost Run、operation identity、reconcile e
 
 Statistical surface 包含受控的 Stable、Flaky、Safety 和 Evidence-poor cohort。展开 trial matrix，解释 valid Agent denominator、attempted/evidence denominator、Wilson interval、`OBSERVED_FLAKY` 和 zero-tolerance safety precedence。高 pass rate 不能覆盖 safety event 或 evidence 不足。
 
+### 4. 正式多服务网络故障 slice
+
+RPF-28 正式 Environment 是独立于 Golden Demo UI 的工程探针。它启动 fresh internal Docker network，包含 target、dependency、Toxiproxy boundary 和 Agent-shaped client，然后证明 baseline、dependency-unavailable 以及 response-lost 的 receipt/effect-count 语义。运行本机完整矩阵：
+
+```powershell
+python spikes/rpf-28/probe.py --run
+python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json
+```
+
+本机 probe 每类 profile 重复五次，并运行独立 PostgreSQL/Control Plane/durable-worker 路径。Hosted CI 只聚焦 baseline、response-loss 和 cleanup；它不是 canonical Release Gate，也不执行 release/deploy。
+
 ## 推荐路径
 
 1. **Overview**：沿 Candidate → Evidence → Failure → Regression → Gate，确认两个显式 Agent。

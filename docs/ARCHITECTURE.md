@@ -34,7 +34,7 @@ The primary path is HTTP/JSON through the formal Control Plane. The browser does
 | Immutable Artifact Store | Schema-, kind-, identity-, source-, and hash-verified evidence bytes | Candidate writers cannot create canonical verified/release authority |
 | Python Agent/Evaluation Runtime | Agent contracts, controlled evaluation, evidence, regression, statistics, and HTTP client | Does not expose Provider credentials or release authority to the Web |
 | Durable Worker | Claim, heartbeat, reconcile, execute an explicit profile, and report evidence | `UNKNOWN_OUTCOME` must reconcile before retry; worker cannot write Release Decision |
-| Controlled Simulation Environment | Fresh, observable stateful environment for side-effect tools and fault scenarios | No real Production destructive credentials |
+| Controlled Simulation Environment | Fresh, observable stateful environment for side-effect tools and fault scenarios; formal RPF-28 can compose target, dependency, Toxiproxy, and Agent-shaped client on a private network | No real Production destructive credentials; Agent sees only the data-plane boundary |
 | Provider boundary | Optional model/provider call boundary; DeepSeek is the first reference Provider | Credentials stay outside Git, browser, evidence, and default traces |
 | GitHub Actions Release Gate | Fresh CI checks, durable evaluation path, canonical Decision read-back, and redacted artifacts | CI records evidence; it does not execute release or deployment |
 
@@ -42,7 +42,7 @@ The primary path is HTTP/JSON through the formal Control Plane. The browser does
 
 1. A versioned Agent, Scenario, Environment, Verifier, and Evaluation identity define the candidate.
 2. The Control Plane submits a durable Job. A worker claims it with lease and fencing identity.
-3. The Agent operates only inside the Controlled Simulation Environment. Observable actions, transitions, receipts, and verification facts become Run and Evidence records.
+3. The Agent operates only inside the Controlled Simulation Environment. The single-container path remains supported; the formal RPF-28 path uses a fresh Docker `--internal` network and keeps fault activation/observation in the Environment adapter. Observable actions, transitions, receipts, fault provenance, and verification facts become Run and Evidence records.
 4. The Control Plane stores canonical metadata and accepts only verified immutable artifact references.
 5. Failure investigation may derive Failure Case, Regression, Failure Intelligence, Statistical Evaluation, and Comparison artifacts without rewriting source evidence.
 6. Quality Policy produces a Gate and Release Decision. `ELIGIBLE` is a decision-only outcome; it is not a release command.
@@ -80,11 +80,12 @@ Module READMEs remain implementation-facing. Public claims are centralized here 
 | Bilingual Control Plane presentation | `web/src/i18n/`, locale-aware view models, and RPF-25 compatibility tests | Web tests/typecheck/build; locale/API-unavailable checks |
 | Hosted canonical Release Gate | `.github/workflows/release-gate.yml`, `ci/run_release_gate.py` | GitHub-hosted workflow and Job Summary contract |
 | Golden Demo integrity and lifecycle | `demo/rpf-19-golden-demo-v1.json`, `demo/verify-golden-demo.py`, lifecycle verifier | `python demo/verify-golden-demo.py --root . --json` |
+| Formal multi-service network faults | RPF-28 reviewed baseline/dependency/response-loss Runs, `multi-service-toxiproxy-v1`, and durable-worker focused result | `python spikes/rpf-28/probe.py --run`; `python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
 
 The detailed source identities, hosted runs, and historical compatibility facts are kept in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md), not repeated in the current snapshot.
 
 ## Production boundary
 
-The current repository proves a controlled simulation, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, object-storage durability, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
+The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, object-storage durability, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
 
-The next architectural boundary should be selected from measured need: realistic multi-service/network faults, OpenTelemetry-compatible observability, managed or S3-compatible artifact storage, and capacity/large-trace evidence. Those are investigations, not implicit additions to this architecture.
+The next architectural boundary should be selected from measured need: OpenTelemetry-compatible observability, managed or S3-compatible artifact storage, and capacity/large-trace evidence. Those are investigations, not implicit additions to this architecture.

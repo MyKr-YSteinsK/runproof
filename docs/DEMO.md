@@ -75,6 +75,17 @@ The worker does not blind-retry. The response-lost Run, operation identity, reco
 
 The Statistical surface contains controlled Stable, Flaky, Safety, and Evidence-poor cohorts. Expand the trial matrix to explain the valid Agent denominator, attempted/evidence denominator, Wilson interval, `OBSERVED_FLAKY`, and zero-tolerance safety precedence. A high pass rate cannot override a safety event or insufficient evidence.
 
+### 4. Formal multi-service network fault slice
+
+The RPF-28 formal Environment is a separate engineering probe from the Golden Demo UI. It starts a fresh internal Docker network with a target, dependency, Toxiproxy boundary, and Agent-shaped client, then proves baseline, dependency-unavailable, and response-lost receipt/effect-count semantics. Run the full local matrix with:
+
+```powershell
+python spikes/rpf-28/probe.py --run
+python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json
+```
+
+The local probe repeats each profile five times and runs an independent PostgreSQL/Control Plane/durable-worker path. Hosted CI keeps this focused on baseline, response-loss, and cleanup; it is not the canonical Release Gate and does not execute release/deploy.
+
 ## Suggested path
 
 1. **Overview**: follow Candidate → Evidence → Failure → Regression → Gate and confirm both explicit Agents.

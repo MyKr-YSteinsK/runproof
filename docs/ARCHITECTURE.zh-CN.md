@@ -34,7 +34,7 @@ Immutable Artifact Store ── 由 Control Plane 引用的经验证据字节
 | Immutable Artifact Store | 保存经过 schema、kind、identity、source、hash 验证的 evidence bytes | candidate writer 不能创建 canonical verified/release authority |
 | Python Agent/Evaluation Runtime | Agent contract、受控评测、evidence、regression、统计和 HTTP client | 不把 Provider credential 或 release authority 暴露给 Web |
 | Durable Worker | claim、heartbeat、reconcile、执行显式 profile、报告 evidence | `UNKNOWN_OUTCOME` 必须先 reconcile；worker 不能写 Release Decision |
-| Controlled Simulation Environment | 为副作用 Tool 和 fault scenario 提供 fresh、可观察的有状态环境 | 不连接真实 Production destructive credential |
+| Controlled Simulation Environment | 为副作用 Tool 和 fault scenario 提供 fresh、可观察的有状态环境；RPF-28 正式路径可在 private network 组合 target、dependency、Toxiproxy 和 Agent-shaped client | 不连接真实 Production destructive credential；Agent 只能看到 data-plane boundary |
 | Provider boundary | 可选的模型/provider 调用边界；DeepSeek 是首个参考 Provider | credential 不进入 Git、浏览器、evidence 或默认 trace |
 | GitHub Actions Release Gate | fresh CI 检查、durable evaluation、canonical Decision read-back 和脱敏 artifact | CI 记录 evidence，不执行 release/deployment |
 
@@ -42,7 +42,7 @@ Immutable Artifact Store ── 由 Control Plane 引用的经验证据字节
 
 1. Agent、Scenario、Environment、Verifier 和 Evaluation identity 共同定义候选版本。
 2. Control Plane 提交 durable Job；worker 使用 lease 和 fencing identity claim。
-3. Agent 只在 Controlled Simulation Environment 内操作。可观察 action、transition、receipt 和 verification fact 成为 Run/Evidence 记录。
+3. Agent 只在 Controlled Simulation Environment 内操作。既有单容器路径继续支持；RPF-28 正式路径使用 fresh Docker `--internal` network，并把 fault activation/observation 保留在 Environment adapter 内。可观察 action、transition、receipt、fault provenance 和 verification fact 成为 Run/Evidence 记录。
 4. Control Plane 保存 canonical metadata，只接受经过验证的 immutable artifact 引用。
 5. Failure investigation 可以派生 Failure Case、Regression、Failure Intelligence、Statistical Evaluation 和 Comparison，但不能改写源 evidence。
 6. Quality Policy 产生 Gate 和 Release Decision。`ELIGIBLE` 是只读决策结果，不是 release command。
@@ -80,11 +80,12 @@ Immutable Artifact Store ── 由 Control Plane 引用的经验证据字节
 | 双语 Control Plane presentation | `web/src/i18n/`、locale-aware view model 与 RPF-25 compatibility tests | Web tests/typecheck/build；locale/API-unavailable checks |
 | Hosted canonical Release Gate | `.github/workflows/release-gate.yml`、`ci/run_release_gate.py` | GitHub-hosted workflow 和 Job Summary contract |
 | Golden Demo integrity 与生命周期 | `demo/rpf-19-golden-demo-v1.json`、`demo/verify-golden-demo.py`、lifecycle verifier | `python demo/verify-golden-demo.py --root . --json` |
+| 正式多服务网络故障 | RPF-28 reviewed baseline/dependency/response-loss Run、`multi-service-toxiproxy-v1` 与 durable-worker focused result | `python spikes/rpf-28/probe.py --run`；`python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
 ## Production 边界
 
-当前仓库证明了 Controlled Simulation、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、object-storage durability、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
+当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、object-storage durability、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界应从测量需要中选择：真实多服务/网络故障、OpenTelemetry-compatible observability、托管或 S3-compatible artifact storage、capacity/large-trace evidence。这些是调查方向，不是自动加入当前架构的组件。
+下一架构边界应从测量需要中选择：OpenTelemetry-compatible observability、托管或 S3-compatible artifact storage、capacity/large-trace evidence。这些是调查方向，不是自动加入当前架构的组件。

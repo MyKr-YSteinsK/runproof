@@ -100,7 +100,20 @@ def run_slice(
     *,
     agent_profile_id: str = "production-change-agent-v1",
     environment_failure: str | None = None,
+    environment_profile: str | None = None,
 ) -> dict[str, Any]:
+    if environment_profile == "multi-service-toxiproxy-v1":
+        from .multi_service_runner import run_multi_service_slice
+
+        return run_multi_service_slice(
+            fault_profile=fault_profile,
+            api_key=api_key,
+            model=model,
+            agent_profile_id=agent_profile_id,
+            environment_failure=environment_failure,
+        )
+    if environment_profile not in {None, "single-container"}:
+        raise RuntimeFailure("HARNESS", "UNKNOWN_ENVIRONMENT_PROFILE")
     if fault_profile not in {"none", "response-lost"}:
         raise RuntimeFailure("HARNESS", "UNKNOWN_FAULT_PROFILE")
     profile = agent_profile(agent_profile_id)

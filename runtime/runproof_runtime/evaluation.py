@@ -1354,6 +1354,7 @@ def execute_evaluation(
     api_key: str | None = None,
     model: str | None = None,
     evaluation_id: str | None = None,
+    environment_profile: str | None = None,
 ) -> dict[str, Any]:
     """Run every member sequentially with a fresh environment and write local artifacts."""
 
@@ -1375,6 +1376,7 @@ def execute_evaluation(
             api_key=api_key,
             model=model,
             scenario_case_id=scenario_case_id,
+            environment_profile=environment_profile,
         )
         run["run"]["evaluation_id"] = evaluation_id
         run_paths.append(write_artifact(run, output_dir, api_key or ""))

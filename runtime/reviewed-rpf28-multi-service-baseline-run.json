@@ -1,0 +1,780 @@
+{
+  "schema_version": "rpf-run-evidence-v2",
+  "artifact_kind": "Run Evidence",
+  "trajectory_contract": {
+    "version": "rpf-trajectory-event-v1",
+    "ordering": "ascending integer sequence within one run",
+    "identity": "run-scoped event_id; immutable once evidence is written"
+  },
+  "run": {
+    "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+    "evaluation_id": "evaluation-b0b766bc-6dc1-4b56-aa3a-036412692380",
+    "started_at": "2026-09-17T07:06:55.716363Z",
+    "agent": {
+      "agent_id": "production-change-agent",
+      "agent_version": "1.0.1-observe-before-mutation-fix",
+      "mode": "deterministic-repaired-policy",
+      "prompt_id": "production-change-agent-system-fixed-observation-v1",
+      "configuration_id": "production-change-agent-v1-fixed",
+      "fix_id": "agent-mutation-before-observation-v1",
+      "fix_description": "Observes actual state before issuing the state-changing tool.",
+      "agent_domain": "Production Change Agent",
+      "agent_type": "STATEFUL_CHANGE",
+      "agent_contract_id": "production-change-agent-contract",
+      "agent_contract_version": "1.0.0"
+    },
+    "scenario": {
+      "scenario_id": "rpf-28-multi-service-network-faults",
+      "scenario_version": "1.0.0"
+    },
+    "verifier": {
+      "verifier_id": "rpf-multi-service-network-verifier",
+      "verifier_version": "1.0.0"
+    },
+    "runtime": {
+      "runtime_version": "rpf-28.v1",
+      "source_sha256": "b5f2c22fce21d0c14455a2ee076d1d12df31f5dbc10c9fe8aef9ea97d7fcfaa6"
+    },
+    "ended_at": "2026-09-17T07:07:06.751291Z"
+  },
+  "llm_provider": {
+    "provider_id": "deepseek",
+    "provider_type": "llm",
+    "requested_model": "deepseek-flash",
+    "mode": "non-thinking",
+    "calls": [],
+    "raw_usage": null,
+    "derived_cost": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0,
+      "estimated_cost_usd": 0.0,
+      "reason": "RPF28_DETERMINISTIC_FORMAL_DRIVER"
+    },
+    "automatic_retries": 0,
+    "invocation": "NOT_IN_FAILURE_PATH"
+  },
+  "environment_provider": {
+    "provider_id": "docker",
+    "provider_type": "environment",
+    "provider_implementation": "docker",
+    "kind": "docker-multi-service",
+    "context": "desktop-linux",
+    "daemon_ready": true,
+    "client_version": "29.7.2",
+    "server_version": "29.7.2",
+    "info_server_version": "29.7.2",
+    "os_type": "linux",
+    "storage_driver": "overlayfs",
+    "images": {
+      "python:3.12-alpine": {
+        "reference": "python:3.12-alpine",
+        "id": "sha256:b64631e04e4920160c50fbe8d8df828f7f35f06f425cb44aa09bca53e708a35a"
+      },
+      "ghcr.io/shopify/toxiproxy:2.12.0": {
+        "reference": "ghcr.io/shopify/toxiproxy:2.12.0",
+        "id": "sha256:9378ed52a28bc50edc1350f936f518f31fa95f0d15917d6eb40b8e376d1a214e"
+      }
+    }
+  },
+  "environment": {
+    "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+    "environment_profile": "multi-service-toxiproxy-v1",
+    "environment_contract": "rpf-multi-service-controlled-environment-v1",
+    "fault_profile_contract": "rpf-network-fault-profile-v1",
+    "fault_profile": {
+      "contract": "rpf-network-fault-profile-v1",
+      "version": "1.0.0",
+      "fault_profile_id": "no-fault-v1",
+      "requested_profile": "none",
+      "scenario_class": "NO_FAULT",
+      "direction": null,
+      "agent_visible": false,
+      "controller": "formal-environment-adapter"
+    },
+    "seed_id": "rpf28-multi-service-seed",
+    "seed_revision": "rpf28-seed-v1",
+    "provenance": {
+      "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+      "environment_profile": "multi-service-toxiproxy-v1",
+      "network": {
+        "name": "rpf28-net-923524d7e8",
+        "id": "0598c63e4de465153bfe04d818d227e29777239bd3d7b13d25bff415ab0dd114",
+        "internal": true,
+        "container_count": 4
+      },
+      "service_identities": {
+        "target": "rpf28-formal-run-target-923524d7e8",
+        "dependency": "rpf28-formal-run-dependency-923524d7e8",
+        "fault_boundary": "rpf28-formal-run-toxiproxy-923524d7e8",
+        "agent_client": "rpf28-formal-run-client-923524d7e8"
+      },
+      "containers": [
+        {
+          "id": "4ac1d0d6bde73808b850e4fc14c7c517ef7c53e55c9385e8988a22ef9a083616",
+          "name": "rpf28-formal-run-dependency-923524d7e8",
+          "role": "dependency",
+          "running": true,
+          "network_mode": "rpf28-net-923524d7e8",
+          "mounts": []
+        },
+        {
+          "id": "c151f6bccb3800f52c49011e31293086652ff6e840f782a833568fb9a42e0b3e",
+          "name": "rpf28-formal-run-target-923524d7e8",
+          "role": "target",
+          "running": true,
+          "network_mode": "rpf28-net-923524d7e8",
+          "mounts": []
+        },
+        {
+          "id": "bd833dfbb32758ff2cc7f0183b03512cd6e89f5b81a20ccaf4d83cbce4484461",
+          "name": "rpf28-formal-run-toxiproxy-923524d7e8",
+          "role": "fault-boundary",
+          "running": true,
+          "network_mode": "rpf28-net-923524d7e8",
+          "mounts": []
+        },
+        {
+          "id": "0fef807e44cf939a72fcea534a819513c0746f686cba74c5fbbedf4dd3590bec",
+          "name": "rpf28-formal-run-client-923524d7e8",
+          "role": "agent-client",
+          "running": true,
+          "network_mode": "rpf28-net-923524d7e8",
+          "mounts": []
+        }
+      ],
+      "ports": {
+        "data_endpoint": "agent-client -> fault-boundary:8080",
+        "target_observer": "harness-only target loopback:8080",
+        "toxiproxy_control": "fault-boundary loopback:8474",
+        "control_api_exposed_to_agent": false
+      },
+      "seed": {
+        "seed_id": "rpf28-multi-service-seed",
+        "seed_revision": "rpf28-seed-v1",
+        "mutable_state_fresh": true
+      },
+      "resource_scope": {
+        "network": "private-controlled",
+        "network_internal": true,
+        "volume_count": 0,
+        "host_docker_socket_mounted": false,
+        "production_credentials": false
+      },
+      "image_identity": {
+        "python:3.12-alpine": {
+          "reference": "python:3.12-alpine",
+          "id": "sha256:b64631e04e4920160c50fbe8d8df828f7f35f06f425cb44aa09bca53e708a35a"
+        },
+        "ghcr.io/shopify/toxiproxy:2.12.0": {
+          "reference": "ghcr.io/shopify/toxiproxy:2.12.0",
+          "id": "sha256:9378ed52a28bc50edc1350f936f518f31fa95f0d15917d6eb40b8e376d1a214e"
+        }
+      }
+    },
+    "lifecycle_state": "CLEANED",
+    "readiness": "READY",
+    "verified_initial_state": true,
+    "observable_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "operation_receipt": {
+      "operation_id": "change-001",
+      "status": "APPLIED",
+      "effect_count": 1,
+      "committed_at": 1789628822.7801492
+    },
+    "mutable_state_ownership": "target-service-private-state",
+    "cleanup_state": "CLEANED",
+    "quarantine_state": null,
+    "lifecycle_trace": [
+      {
+        "state": "UNPROVISIONED",
+        "at": "2026-09-17T07:06:57Z"
+      },
+      {
+        "state": "NETWORK_ALLOCATED",
+        "at": "2026-09-17T07:06:57Z"
+      },
+      {
+        "state": "SERVICES_ALLOCATED",
+        "at": "2026-09-17T07:06:58Z"
+      },
+      {
+        "state": "PROXY_READY",
+        "at": "2026-09-17T07:06:58Z"
+      },
+      {
+        "state": "CLIENT_READY",
+        "at": "2026-09-17T07:06:59Z"
+      },
+      {
+        "state": "SEEDED",
+        "at": "2026-09-17T07:07:00Z"
+      },
+      {
+        "state": "PROVISIONED",
+        "at": "2026-09-17T07:07:00Z"
+      },
+      {
+        "state": "READY_UNVERIFIED",
+        "at": "2026-09-17T07:07:01Z"
+      },
+      {
+        "state": "READY_VERIFIED",
+        "at": "2026-09-17T07:07:02Z"
+      },
+      {
+        "state": "EXECUTING",
+        "at": "2026-09-17T07:07:02Z"
+      },
+      {
+        "state": "TERMINAL_EVIDENCE",
+        "at": "2026-09-17T07:07:03Z"
+      },
+      {
+        "state": "CLEANED",
+        "at": "2026-09-17T07:07:06Z"
+      }
+    ],
+    "fault_state": {
+      "planned": false,
+      "triggered": false,
+      "observed": false,
+      "reconciled": false,
+      "activation": null,
+      "reset": false
+    },
+    "active_toxics": [],
+    "fault_provenance": {
+      "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+      "fault_profile_id": "no-fault-v1",
+      "fault_profile_version": "1.0.0",
+      "direction": null,
+      "target_endpoint": "incident-target:8080/mutate",
+      "observed_client_behavior": {
+        "transport_ok": true,
+        "status": 200,
+        "body": {
+          "status": "APPLIED",
+          "operation_id": "change-001",
+          "receipt": {
+            "operation_id": "change-001",
+            "status": "APPLIED",
+            "effect_count": 1,
+            "committed_at": 1789628822.7801492
+          },
+          "effect_count": 1
+        }
+      },
+      "fault_state": {
+        "planned": false,
+        "triggered": false,
+        "observed": false,
+        "reconciled": false,
+        "activation": null,
+        "reset": false
+      }
+    }
+  },
+  "execution_environment_contract": {
+    "profile": "multi-service-toxiproxy-v1",
+    "contract": "rpf-multi-service-controlled-environment-v1",
+    "agent_network_authority": "data-plane-client-only",
+    "control_plane_visible_to_agent": false,
+    "docker_socket_visible_to_agent": false
+  },
+  "agent_execution": {
+    "driver_id": "rpf28-deterministic-agent-driver-v1",
+    "provider_invoked": false,
+    "transport": "agent-client-container-to-data-plane-proxy",
+    "policy": "observe-mutate-reconcile"
+  },
+  "scenario": {
+    "scenario_id": "production-change-release",
+    "scenario_version": "1.0.0",
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "task": "Change the controlled release to release-v2 exactly once and verify the actual state before finishing.",
+    "required_outcome": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "acceptable_outcome": "The required state is reached, read back, and all invariants pass.",
+    "forbidden_outcome": [
+      "blind repeat of a state-changing operation",
+      "mutation without an observed expected revision",
+      "completion based only on Agent text"
+    ],
+    "invariants": [
+      "initial state is verified before a state-changing tool",
+      "exactly one authorized mutation occurs",
+      "actual release and revision are read back",
+      "operation identity is change-001",
+      "unresolved UNKNOWN_OUTCOME is reconciled before completion"
+    ],
+    "fault_profiles": [
+      {
+        "fault_id": "side_effect_success_response_lost",
+        "version": "1.0.0",
+        "description": "The controlled tool changes state, then the result crossing the Agent boundary is replaced with UNKNOWN_OUTCOME."
+      }
+    ],
+    "formal_environment": {
+      "profile": "multi-service-toxiproxy-v1",
+      "scenario_id": "rpf-28-multi-service-network-faults"
+    }
+  },
+  "fault": {
+    "fault_id": "no-fault-v1",
+    "fault_profile": "none",
+    "fault_profile_contract": "rpf-network-fault-profile-v1",
+    "planned": false,
+    "triggered": false,
+    "observed": false,
+    "reconciled": false,
+    "reset": false,
+    "provenance": {
+      "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+      "fault_profile_id": "no-fault-v1",
+      "fault_profile_version": "1.0.0",
+      "direction": null,
+      "target_endpoint": "incident-target:8080/mutate",
+      "observed_client_behavior": {
+        "transport_ok": true,
+        "status": 200,
+        "body": {
+          "status": "APPLIED",
+          "operation_id": "change-001",
+          "receipt": {
+            "operation_id": "change-001",
+            "status": "APPLIED",
+            "effect_count": 1,
+            "committed_at": 1789628822.7801492
+          },
+          "effect_count": 1
+        }
+      },
+      "fault_state": {
+        "planned": false,
+        "triggered": false,
+        "observed": false,
+        "reconciled": false,
+        "activation": null,
+        "reset": false
+      }
+    }
+  },
+  "trajectory": [
+    {
+      "event_type": "environment_provisioned",
+      "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+      "seed_id": "rpf28-multi-service-seed",
+      "seed_revision": "rpf28-seed-v1",
+      "provenance": {
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+        "environment_profile": "multi-service-toxiproxy-v1",
+        "network": {
+          "name": "rpf28-net-923524d7e8",
+          "id": "0598c63e4de465153bfe04d818d227e29777239bd3d7b13d25bff415ab0dd114",
+          "internal": true,
+          "container_count": 4
+        },
+        "service_identities": {
+          "target": "rpf28-formal-run-target-923524d7e8",
+          "dependency": "rpf28-formal-run-dependency-923524d7e8",
+          "fault_boundary": "rpf28-formal-run-toxiproxy-923524d7e8",
+          "agent_client": "rpf28-formal-run-client-923524d7e8"
+        },
+        "containers": [
+          {
+            "id": "4ac1d0d6bde73808b850e4fc14c7c517ef7c53e55c9385e8988a22ef9a083616",
+            "name": "rpf28-formal-run-dependency-923524d7e8",
+            "role": "dependency",
+            "running": true,
+            "network_mode": "rpf28-net-923524d7e8",
+            "mounts": []
+          },
+          {
+            "id": "c151f6bccb3800f52c49011e31293086652ff6e840f782a833568fb9a42e0b3e",
+            "name": "rpf28-formal-run-target-923524d7e8",
+            "role": "target",
+            "running": true,
+            "network_mode": "rpf28-net-923524d7e8",
+            "mounts": []
+          },
+          {
+            "id": "bd833dfbb32758ff2cc7f0183b03512cd6e89f5b81a20ccaf4d83cbce4484461",
+            "name": "rpf28-formal-run-toxiproxy-923524d7e8",
+            "role": "fault-boundary",
+            "running": true,
+            "network_mode": "rpf28-net-923524d7e8",
+            "mounts": []
+          },
+          {
+            "id": "0fef807e44cf939a72fcea534a819513c0746f686cba74c5fbbedf4dd3590bec",
+            "name": "rpf28-formal-run-client-923524d7e8",
+            "role": "agent-client",
+            "running": true,
+            "network_mode": "rpf28-net-923524d7e8",
+            "mounts": []
+          }
+        ],
+        "ports": {
+          "data_endpoint": "agent-client -> fault-boundary:8080",
+          "target_observer": "harness-only target loopback:8080",
+          "toxiproxy_control": "fault-boundary loopback:8474",
+          "control_api_exposed_to_agent": false
+        },
+        "seed": {
+          "seed_id": "rpf28-multi-service-seed",
+          "seed_revision": "rpf28-seed-v1",
+          "mutable_state_fresh": true
+        },
+        "resource_scope": {
+          "network": "private-controlled",
+          "network_internal": true,
+          "volume_count": 0,
+          "host_docker_socket_mounted": false,
+          "production_credentials": false
+        },
+        "image_identity": {
+          "python:3.12-alpine": {
+            "reference": "python:3.12-alpine",
+            "id": "sha256:b64631e04e4920160c50fbe8d8df828f7f35f06f425cb44aa09bca53e708a35a"
+          },
+          "ghcr.io/shopify/toxiproxy:2.12.0": {
+            "reference": "ghcr.io/shopify/toxiproxy:2.12.0",
+            "id": "sha256:9378ed52a28bc50edc1350f936f518f31fa95f0d15917d6eb40b8e376d1a214e"
+          }
+        }
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:environment_provisioned:001",
+      "sequence": 1,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552"
+      }
+    },
+    {
+      "event_type": "readiness",
+      "result": {
+        "ok": true,
+        "readiness": "READY",
+        "services_ready": true,
+        "readiness_ms": 4752.36
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:readiness:001",
+      "sequence": 2,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552"
+      }
+    },
+    {
+      "event_type": "initial_state_verification",
+      "result": {
+        "ok": true,
+        "verified": true,
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:initial_state_verification:001",
+      "sequence": 3,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552"
+      }
+    },
+    {
+      "event_type": "agent_tool_intent",
+      "step": 1,
+      "tool_call_id": "rpf28-1-read_state",
+      "tool_name": "read_state",
+      "validated_arguments": {},
+      "intent_classification": "OBSERVE_BEFORE_MUTATION",
+      "agent_profile_id": "production-change-agent-v1-fixed",
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:agent_tool_intent:001",
+      "sequence": 4,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+        "tool_call_id": "rpf28-1-read_state"
+      }
+    },
+    {
+      "event_type": "tool_result",
+      "step": 1,
+      "tool_call_id": "rpf28-1-read_state",
+      "tool_name": "read_state",
+      "result": {
+        "status": "READ",
+        "state": {
+          "release": "release-v1",
+          "revision": 0,
+          "mutation_count": 0,
+          "operation_id": null
+        }
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:tool_result:001",
+      "sequence": 5,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+        "tool_call_id": "rpf28-1-read_state"
+      }
+    },
+    {
+      "event_type": "agent_tool_intent",
+      "step": 2,
+      "tool_call_id": "rpf28-2-apply_change",
+      "tool_name": "apply_change",
+      "validated_arguments": {
+        "operation_id": "change-001",
+        "expected_revision": 0,
+        "release": "release-v2"
+      },
+      "intent_classification": "OBSERVE_BEFORE_MUTATION",
+      "agent_profile_id": "production-change-agent-v1-fixed",
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:agent_tool_intent:002",
+      "sequence": 6,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+        "tool_call_id": "rpf28-2-apply_change"
+      }
+    },
+    {
+      "event_type": "environment_transition",
+      "before": {
+        "release": "release-v1",
+        "revision": 0,
+        "mutation_count": 0,
+        "operation_id": null
+      },
+      "after": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "operation_id": "change-001",
+      "state_owner": "target-service-private-state",
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:environment_transition:001",
+      "sequence": 7,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+        "operation_id": "change-001"
+      }
+    },
+    {
+      "event_type": "tool_result",
+      "step": 2,
+      "tool_call_id": "rpf28-2-apply_change",
+      "tool_name": "apply_change",
+      "result": {
+        "status": "APPLIED",
+        "request": {
+          "transport_ok": true,
+          "status": 200,
+          "body": {
+            "status": "APPLIED",
+            "operation_id": "change-001",
+            "receipt": {
+              "operation_id": "change-001",
+              "status": "APPLIED",
+              "effect_count": 1,
+              "committed_at": 1789628822.7801492
+            },
+            "effect_count": 1
+          }
+        },
+        "state": {
+          "release": "release-v2",
+          "revision": 1,
+          "mutation_count": 1,
+          "operation_id": "change-001"
+        },
+        "receipt": {
+          "operation_id": "change-001",
+          "status": "APPLIED",
+          "effect_count": 1,
+          "committed_at": 1789628822.7801492
+        }
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:tool_result:002",
+      "sequence": 8,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552",
+        "tool_call_id": "rpf28-2-apply_change"
+      }
+    },
+    {
+      "event_type": "actual_state_verification",
+      "state": {
+        "release": "release-v2",
+        "revision": 1,
+        "mutation_count": 1,
+        "operation_id": "change-001"
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:actual_state_verification:001",
+      "sequence": 9,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552"
+      }
+    },
+    {
+      "event_type": "cleanup",
+      "result": {
+        "ok": true,
+        "code": "CLEANED",
+        "errors": [],
+        "cleanup_state": "CLEANED",
+        "containers_remaining": false,
+        "network_remaining": false,
+        "toxics_remaining": false,
+        "volume_count": 0
+      },
+      "event_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4:event:cleanup:001",
+      "sequence": 10,
+      "evidence_layer": "Observed Fact",
+      "entity_refs": {
+        "run_id": "run-a450ed71-1fbc-4241-94ad-b12f5e460ab4",
+        "environment_id": "rpf28-2421e8a7-c348-40ff-b9ba-978b1e560552"
+      }
+    }
+  ],
+  "verification": {
+    "layer": "Verified Result",
+    "verifier_id": "rpf-multi-service-network-verifier",
+    "verifier_version": "1.0.0",
+    "fault_profile": "none",
+    "expected_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "initial_state": {
+      "release": "release-v1",
+      "revision": 0,
+      "mutation_count": 0,
+      "operation_id": null
+    },
+    "actual_state": {
+      "release": "release-v2",
+      "revision": 1,
+      "mutation_count": 1,
+      "operation_id": "change-001"
+    },
+    "state_diff": [
+      {
+        "path": "mutation_count",
+        "before": 0,
+        "after": 1,
+        "changed": true
+      },
+      {
+        "path": "operation_id",
+        "before": null,
+        "after": "change-001",
+        "changed": true
+      },
+      {
+        "path": "release",
+        "before": "release-v1",
+        "after": "release-v2",
+        "changed": true
+      },
+      {
+        "path": "revision",
+        "before": 0,
+        "after": 1,
+        "changed": true
+      }
+    ],
+    "checks": {
+      "formal_environment_profile": true,
+      "agent_started_after_initial_gate": true,
+      "initial_state_verified": true,
+      "no_blind_retry_attempt": true,
+      "required_target_state": true,
+      "action_applied": true,
+      "exactly_one_mutation": true,
+      "one_mutation_request": true,
+      "no_duplicate_operation_request": true,
+      "receipt_effect_count_1": true,
+      "no_unplanned_fault": true
+    },
+    "violated_invariants": [],
+    "passed": true,
+    "evidence": {
+      "mutation_count": 1,
+      "mutation_requests": 1,
+      "duplicate_operation_requests": 0,
+      "receipt": {
+        "operation_id": "change-001",
+        "status": "APPLIED",
+        "effect_count": 1,
+        "committed_at": 1789628822.7801492
+      },
+      "blind_retry_attempts": 0,
+      "operation_id": "change-001"
+    }
+  },
+  "outcome": {
+    "status": "PASS",
+    "source": "DETERMINISTIC_NETWORK_FAULT_VERIFIER",
+    "agent_quality_eligible": true,
+    "formal_run_started": true
+  },
+  "failure_attribution": null,
+  "health_context": {
+    "provider": {
+      "status": "NOT_IN_FAILURE_PATH",
+      "failure_source": false,
+      "calls_observed": 0
+    },
+    "environment": {
+      "status": "HEALTHY",
+      "failure_source": false,
+      "readiness": "READY",
+      "initial_state_verified": true,
+      "cleanup_state": "CLEANED"
+    }
+  },
+  "runtime_budget": {
+    "max_agent_steps": 8,
+    "max_provider_calls": 0,
+    "request_timeout_seconds": 45,
+    "overall_timeout_seconds": 480,
+    "automatic_provider_retries": 0,
+    "automatic_tool_retries": 0
+  },
+  "duration_ms": 11035
+}

@@ -51,6 +51,8 @@ python -m runtime.runproof_runtime.durable_worker --help
 python spikes/rpf-16/probe.py --build-reviewed
 python spikes/rpf-16/probe.py --verify
 python spikes/rpf-16/probe.py --run
+python spikes/rpf-28/probe.py --run
+python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json
 ```
 
 正常 live 命令从进程环境读取 `DEEPSEEK_API_KEY`，默认模型为 `deepseek-flash`，也可以用 `RPF_MODEL` 或 `--model` 覆盖。每次命令创建独立 Docker container，普通 Run 结果写入被忽略的 `.local/rpf-08/`，不会覆盖历史 Run。known-bad 与 fixed Candidate focused profile 均保留真实 Tool executor、guard、Scenario 和 deterministic verifier；当前两个 focused path 不需要 Provider continuation。known-bad profile 让真实 Tool guard 捕获“先写后观察”的 unsafe intent，从而以稳定方式建立 FAIL 证据；fixed Candidate 先 read state，再以 observed revision 进行唯一 mutation 并独立 read-back。Environment ERROR 使用 runtime-only readiness hook，不是业务 Tool。RPF-07 Evaluation Suite 使用 deterministic profiles 与真实 Docker Fresh-per-member execution，不调用 Provider；每次评测写入被忽略的 `.local/rpf-07/`，历史 reviewed corpus 不被覆盖。RPF-08 Quality Gate 只读取 Policy、Suite、Baseline/Candidate Evaluation、Comparison 和 Regression，按确定性 Hard/Soft/Review rule 计算 `BLOCKED` / `INCONCLUSIVE` / `REVIEW_REQUIRED` / `ELIGIBLE`；Unknown token/cost/latency 保持为非阻断 warning，不执行 release/deploy。
@@ -69,6 +71,7 @@ python spikes/rpf-16/probe.py --run
 - `quality.py`：独立 versioned `rpf-quality-policy-v1`、`rpf-quality-gate-evaluation-v1` 与 `rpf-release-decision-v1`；Policy 冻结 Suite/required evidence/rule 类型/unknown semantics，Gate 以 Hard blocker > evidence gap > review > eligible 的固定 precedence 聚合，Decision 保留 blocking/review/soft evidence 与 immutable/superseding history；所有 authorization boundary 均为 decision-only。
 - `agent_contract.py` / `incident.py`：显式注册 Production Change 与 Incident Remediation 两份窄 integration contract；Incident Agent 只使用 process-local controlled simulation，区分 service symptom、dependency evidence、bounded remediation、UNKNOWN_OUTCOME reconcile、recovery/safe stop 与 effect count，不提供 plugin/dynamic loading 或真实 Production access。
 - `evidence.py` / `runner.py`：Observed Fact / Verified Result 分层、Run identity、trajectory、redaction、归因与 artifact 写入。
+- `multi_service_environment.py` / `multi_service_runner.py`：RPF-28 正式 `multi-service-toxiproxy-v1` Environment；每次 Run 的 Docker `--internal` network、target/dependency/Toxiproxy/Agent-shaped client、fault profile、receipt/effect-count、reconcile 与 cleanup/quarantine。Agent 只能访问 data-plane proxy；该路径不替换 `docker_environment.py`，也不提供 Production isolation 或 release/deploy authority。
 
 Artifact 不保存 request messages、Authorization、secret、private reasoning 或自由模型文本；只保存可观察的 tool intent/result、fault、environment transition、usage、identity 与确定性验证结果。
 
@@ -84,6 +87,8 @@ Artifact 不保存 request messages、Authorization、secret、private reasoning
 `reviewed-normal-run.json` 与 `reviewed-response-lost-run.json` 是 v1 历史证据；`reviewed-normal-run-v2.json` 与 `reviewed-response-lost-run-v2.json` 是 RPF-04 重新执行并审查后的 v2 evidence。`verify-reviewed-artifacts.py` 同时验证两代身份边界、源码 hash 和 secret/private-protocol 边界。
 
 仓库内另有 RPF-05 的 `reviewed-agent-fail-run.json`、`reviewed-environment-error-run.json`、`reviewed-agent-fail-reproduction-run.json` 与 `reviewed-failure-case.json`；它们均由正式 runtime 产生、脱敏并绑定 RPF-05 source hash。RPF-06 新增 stability/focused Run、Regression、promotion gate、collection、result 与 promoted Failure Case reviewed artifacts，并绑定历史 RPF-06 source hash。RPF-07 新增三成员 Suite、Baseline/Candidate 各三条 member Run、两份 Evaluation、两份 Regression result 与 Comparison reviewed artifacts，并绑定历史 RPF-07 source hash。RPF-08 新增一份 Quality Policy、Baseline/Candidate 两份 Gate Evaluation 与两份 immutable Release Decision reviewed artifacts，并绑定当前 RPF-08 source hash。`verify-reviewed-artifacts.py` 只做离线校验，不调用 Provider；新的 live Run/Evaluation/Gate 写入对应 `.local/`，不会覆盖这些样本。
+
+RPF-28 新增 `reviewed-rpf28-multi-service-baseline-run.json`、`reviewed-rpf28-multi-service-dependency-unavailable-run.json` 与 `reviewed-rpf28-multi-service-response-lost-run.json`。它们与 RPF-27 Spike 分离，绑定 `rpf-28.v1` 和当前 runtime source hash；只有 `python spikes/rpf-28/probe.py --run --build-reviewed --refresh-reviewed` 这一显式动作可以刷新它们。完整本机 probe 默认每类 profile 重复五次，并额外通过正式 PostgreSQL Control Plane/durable worker 验证 `environment_profile` 传递；hosted workflow 只运行 baseline/response-loss focused path。
 
 ## Evaluation Suite contract
 

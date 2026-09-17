@@ -1,0 +1,89 @@
+name: RPF-28 Formal Multi-service Environment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/rpf-28-multi-service.yml"
+      - "runtime/runproof_runtime/multi_service_environment.py"
+      - "runtime/runproof_runtime/multi_service_runner.py"
+      - "runtime/runproof_runtime/runner.py"
+      - "runtime/runproof_runtime/agent_contract.py"
+      - "runtime/runproof_runtime/evaluation.py"
+      - "runtime/runproof_runtime/durable_worker.py"
+      - "spikes/rpf-28/**"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/rpf-28-multi-service.yml"
+      - "runtime/runproof_runtime/multi_service_environment.py"
+      - "runtime/runproof_runtime/multi_service_runner.py"
+      - "runtime/runproof_runtime/runner.py"
+      - "runtime/runproof_runtime/agent_contract.py"
+      - "runtime/runproof_runtime/evaluation.py"
+      - "runtime/runproof_runtime/durable_worker.py"
+      - "spikes/rpf-28/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: rpf28-formal-multi-service-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  focused-network-contract:
+    name: Focused baseline and response-loss contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prepare selected provider images
+        run: |
+          docker pull python:3.12-alpine
+          docker pull ghcr.io/shopify/toxiproxy:2.12.0
+
+      - name: Run focused formal RPF-28 probe
+        run: python spikes/rpf-28/probe.py --run --hosted
+
+      - name: Verify focused evidence and cleanup
+        run: python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json
+
+      - name: Write RPF-28 summary
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "## RPF-28 formal multi-service Environment" >> "$GITHUB_STEP_SUMMARY"
+          echo "Focused hosted evidence: baseline + real response-loss/reconcile + cleanup; no release/deploy." >> "$GITHUB_STEP_SUMMARY"
+          if test -f .local/rpf-28/rpf28-formal-result.json; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+          result = json.loads(Path('.local/rpf-28/rpf28-formal-result.json').read_text(encoding='utf-8'))
+          print(f"- Environment profile: `{result['environment_profile']}`")
+          print(f"- Profiles: {', '.join(f'`{item}`' for item in result['profiles'])}")
+          print(f"- Repeat: `{result['repeat']}`")
+          print(f"- Runs: `{len(result['runs'])}`")
+          PY
+          fi
+
+      - name: Upload focused evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-28-multi-service-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .local/rpf-28/rpf28-formal-result.json
+          if-no-files-found: error
+          retention-days: 14

@@ -68,13 +68,15 @@ def _safe_contract(job: dict[str, Any]) -> dict[str, Any]:
         raise WorkerFailure("INVALID_WORKER_CONTRACT:payload_ref")
     allowed = {
         "contract", "agent_profile", "regression_path", "suite_path", "output_dir", "evaluation_id", "operation_environment_id",
-        "trial_id", "trial_index", "behavior", "scenario_case_id", "fault_profile", "regression_covered",
+        "trial_id", "trial_index", "behavior", "scenario_case_id", "fault_profile", "regression_covered", "environment_profile",
     }
     unknown = set(payload) - allowed
     if unknown:
         raise WorkerFailure("INVALID_WORKER_CONTRACT:unknown_field")
     contract = payload.get("contract")
     if contract == "rpf-statistical-trial-execution-v1":
+        if payload.get("environment_profile") is not None:
+            raise WorkerFailure("INVALID_WORKER_CONTRACT:environment_profile")
         if not isinstance(payload.get("trial_id"), str) or not payload["trial_id"] or not payload["trial_id"].replace("-", "").replace("_", "").isalnum():
             raise WorkerFailure("INVALID_WORKER_CONTRACT:trial_id")
         if not isinstance(payload.get("trial_index"), int) or payload["trial_index"] < 1:
@@ -103,6 +105,8 @@ def _safe_contract(job: dict[str, Any]) -> dict[str, Any]:
             raise WorkerFailure(f"INVALID_WORKER_CONTRACT:{key}")
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9._-]{0,127}", str(payload["evaluation_id"])):
         raise WorkerFailure("INVALID_WORKER_CONTRACT:evaluation_id")
+    if payload.get("environment_profile") not in {None, "single-container", "multi-service-toxiproxy-v1"}:
+        raise WorkerFailure("INVALID_WORKER_CONTRACT:environment_profile")
     return payload
 
 
@@ -300,6 +304,7 @@ class DurableEvaluationWorker:
                 output_dir,
                 api_key=None,
                 evaluation_id=evaluation_id,
+                environment_profile=payload.get("environment_profile"),
             )
             evaluation = result["evaluation"]
             paths = [Path(path) for path in [*result["paths"]["runs"], *result["paths"]["regression_results"].values(), result["paths"]["evaluation"]]]
