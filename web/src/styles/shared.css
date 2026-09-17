@@ -3,6 +3,58 @@
   overflow-wrap: anywhere;
 }
 
+.data-source-state-card > .locale-switcher {
+  justify-content: flex-end;
+  margin: -10px 0 12px;
+}
+
 .status-tag {
   white-space: nowrap;
+}
+
+.locale-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--dim);
+  font-family: var(--mono);
+  font-size: 10px;
+}
+
+.locale-switcher button {
+  min-width: 31px;
+  padding: 4px 6px;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  color: var(--muted);
+  background: transparent;
+  cursor: pointer;
+}
+
+.locale-switcher button:hover,
+.locale-switcher button:focus-visible,
+.locale-switcher button.active {
+  border-color: var(--line);
+  color: var(--paper);
+  background: #182126;
+}
+
+.status-tag {
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.status-tag-description {
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 9px;
+  font-weight: 500;
+  letter-spacing: 0;
+  white-space: normal;
+}
+
+[lang="zh-CN"] .page-content,
+[lang="zh-CN"] .rail,
+[lang="zh-CN"] .topbar {
+  overflow-wrap: anywhere;
 }

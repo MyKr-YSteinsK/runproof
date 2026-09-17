@@ -404,3 +404,20 @@ Web 只读提供 Statistical Evaluation trial matrix/drilldown、Comparison、Ga
 ### Supersedes
 
 - none（承接 D-013、D-021、D-022；不修改既有 deterministic Evaluation、Release Decision、Failure Intelligence 或 durable reconcile 语义）
+
+## D-024｜Control Plane Web 采用 presentation-only 中英双语 locale 合同
+
+- Status: `Accepted`
+- Date: 2026-09-17
+### Decision
+RPF-25 的产品级 i18n 只覆盖 Desktop Web presentation layer，正式支持 `en-US` 与 `zh-CN`。首次 locale 解析为浏览器语言 `zh*` → `zh-CN`、其他或不支持语言 → `en-US`；用户显式选择写入本地持久化并覆盖浏览器推断。语言切换必须是当前页面内的低摩擦展示切换，不改变 route、entity、scroll、canonical API、Control Plane metadata、raw JSON/schema/enum、ID、hash、command、error code 或 evidence bytes。`Agent`、`Run`、`Regression`、`Evidence`、`Control Plane`、状态 enum 与其他 reliability contract 术语保持 English/raw 可追溯；纯 UI copy 翻译，状态同时展示 raw enum 与 locale explanation。
+### Why
+RPF-24 已建立 API-backed canonical snapshot、feature ownership 与 read-only evidence surface；双语需求属于人机展示契约，不应把语言状态写入 canonical data 或让翻译层改变审计身份。集中字典、terminology map、locale formatter、persisted selection、completeness test 与 pseudo expansion harness 能在不改变 backend/schema/reviewed corpus 的前提下覆盖 Golden Demo、调查面与 legacy read-only surface。
+### Consequences
+Web 必须集中管理 locale/provider、semantic message keys、technical vocabulary、date/number/percent/duration formatter、status accessibility label 与 missing-key/key-symmetry checks；API unavailable、not-found、raw JSON、expert escape hatch 与 deep links 也必须在两个 locale 下 fail closed 且保持可读。RPF-25 不引入第三 locale、backend/API locale negotiation、public docs translation、mobile/PWA 或 release/deploy 能力；legacy surface 的兼容文案桥只能作用于 presentation text，不能触碰 identifiers、enums、mono evidence 或 raw payload。
+### Reconsider when
+需要新的受支持 locale、服务端用户偏好/tenant locale、公共文档本地化、SSR/SEO、Mobile/PWA 或 locale-sensitive canonical/report export 时，先以新 Plan 与新的产品/数据边界证据重新评估。
+
+### Supersedes
+
+- none（细化 D-014、D-021、D-023 的只读 Web 展示边界，不改变 canonical evidence、统计、Agent authority 或 durable execution 语义）

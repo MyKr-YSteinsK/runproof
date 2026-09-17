@@ -68,6 +68,7 @@ Failure reproduction、focused rerun 与持续 Regression 是核心工作流；C
 - Observed Fact / Verified Result / Inference / AI Analysis 有明确视觉层级；Evidence 缺失明确展示，不补造。关键证据默认可见，raw payload 渐进展开。
 - Evaluation 组织进度/矩阵/分布；Failure 组织时间线/diff/evidence；Release 组织 policy/gates/blocking evidence。不得把所有页面套成 KPI cards + chart + table，也不为丰富而强行图表化。
 - 核心状态不能只靠颜色；核心动作不依赖 hover，有明确 focus 与键盘可达性；长 Trace/矩阵在大数据量下可操作，局部滚动不破坏整体页面。
+- Desktop Web 的展示层支持 `en-US` 与 `zh-CN` 两个 locale：未持久化时按浏览器 `zh*` 选择中文、其他语言回落英文，用户选择持久化并覆盖浏览器推断；切换不改变 route、entity、scroll、canonical API、raw enum、ID、hash 或 evidence bytes。技术合同词与原始状态保持 English/raw 可追溯，纯 UI 文案翻译，状态同时显示 raw enum 与本地化解释。
 - 组件库、主题色、light/dark、图表库、字号与间距属于实现选择；已认可概念方向不等于已锁定视觉实现。
 
 ## Context ownership and update rule

@@ -61,6 +61,7 @@ import { AppShell } from "./components/AppShell";
 import { DataSourceState as SharedDataSourceState, NotFoundState } from "./components/DataSourceState";
 import { IdentityField } from "./components/IdentityField";
 import { StatusTag } from "./components/StatusTag";
+import { LocaleSwitcher } from "./components/LocaleSwitcher";
 import { DATA_SOURCE_FOOTNOTE, DATA_SOURCE_MODE } from "./app/dataSource";
 import { navigate, readLocation, type LocationState } from "./app/navigation";
 import { createCanonicalSnapshot, type CanonicalSnapshot } from "./data/canonicalSnapshot";
@@ -73,6 +74,7 @@ import {
 import { GoldenDemoOverview as GoldenDemoOverviewFeature } from "./features/overview/GoldenDemoOverview";
 import { FailureCaseDetail as FailureCaseDetailFeature } from "./features/failure/FailureCaseDetail";
 import { resolveCanonicalRouteState } from "./app/canonicalRouteState";
+import { useI18n } from "./i18n";
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -118,9 +120,13 @@ function valueAt(value: unknown, key: string): unknown {
   return objectValue(value)?.[key];
 }
 
+function uiLocale(): "en-US" | "zh-CN" {
+  return typeof document !== "undefined" && document.documentElement.lang === "zh-CN" ? "zh-CN" : "en-US";
+}
+
 function displayValue(value: unknown): string {
   if (value === null || value === undefined || value === "") return "—";
-  if (typeof value === "boolean") return value ? "Yes" : "No";
+  if (typeof value === "boolean") return value ? (uiLocale() === "zh-CN" ? "是" : "Yes") : (uiLocale() === "zh-CN" ? "否" : "No");
   if (typeof value === "object") return JSON.stringify(value);
   return String(value);
 }
@@ -164,14 +170,14 @@ function shortId(value: unknown, length = 18): string {
 function formatDuration(value: unknown): string {
   const milliseconds = typeof value === "number" ? value : 0;
   if (milliseconds < 1000) return `${milliseconds} ms`;
-  return `${(milliseconds / 1000).toFixed(1)} s`;
+  return `${new Intl.NumberFormat(uiLocale(), { maximumFractionDigits: 1 }).format(milliseconds / 1000)} s`;
 }
 
 function formatDate(value: unknown): string {
   if (typeof value !== "string") return "—";
   const date = new Date(value);
   if (Number.isNaN(date.valueOf())) return value;
-  return new Intl.DateTimeFormat("en-GB", {
+  return new Intl.DateTimeFormat(uiLocale(), {
     day: "2-digit",
     month: "short",
     year: "numeric",
@@ -246,52 +252,55 @@ function runSignal(run: RunEvidence): string {
 }
 
 function RunIndex() {
+  const { t, locale } = useI18n();
+  const commaSpace = locale === "zh-CN" ? "，" : ", ";
+  const periodSpace = locale === "zh-CN" ? "。" : ". ";
   return (
     <AppShell>
       <div className="page-header index-header">
         <div>
-          <span className="eyebrow">RUN EVIDENCE · REVIEWED CORPUS</span>
-          <h1>Investigate a run from the evidence trail.</h1>
-          <p className="lede">A compact control plane for reconstructing Agent behavior, environment transitions, and verified outcomes.</p>
+          <span className="eyebrow">{t("runIndex.eyebrow")}</span>
+          <h1>{t("runIndex.title")}</h1>
+          <p className="lede">{t("runIndex.lede")}</p>
         </div>
         <div className="corpus-note">
-          <span className="section-label">ACTIVE CORPUS</span>
-          <strong>{reviewedRuns.length} reviewed runs</strong>
-          <span>v2 schema · source-bound</span>
+          <span className="section-label">{t("runIndex.activeCorpus")}</span>
+          <strong>{t("runIndex.reviewedRuns", { count: reviewedRuns.length })}</strong>
+          <span>{t("runIndex.sourceBound")}</span>
         </div>
       </div>
-      <section className="corpus-boundary" aria-label="Evidence boundary">
+      <section className="corpus-boundary" aria-label={t("runIndex.boundaryLabel")}>
         <span className="boundary-mark">i</span>
-        <p><strong>Evidence boundary.</strong> The corpus contains normal <strong>PASS</strong>, recovered faulted <strong>PASS</strong>, deterministic Agent <strong>FAIL</strong>, and Platform/Environment <strong>ERROR</strong>. Failure Cases are separate artifacts; historical v1 evidence remains preserved.</p>
+        <p><strong>{t("runIndex.boundaryLabel")}</strong> {t("runIndex.boundaryIntro")} <strong>PASS</strong>{commaSpace}{t("runIndex.boundaryRecovered")} <strong>PASS</strong>{commaSpace}{t("runIndex.boundaryDeterministic")} <strong>FAIL</strong>{commaSpace}{t("runIndex.boundaryPlatform")} <strong>ERROR</strong>{periodSpace}{t("runIndex.boundarySuffix")}</p>
       </section>
       <a className="failure-entry" href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}>
         <span className="failure-entry-mark">!</span>
-        <span><strong>Failure Case investigation</strong><small>Promoted Agent failure · source and reproduction evidence remain linked</small></span>
+        <span><strong>{t("runIndex.failureInvestigation")}</strong><small>{t("runIndex.failureInvestigationNote")}</small></span>
         <span aria-hidden="true">→</span>
       </a>
       <a className="failure-entry regression-entry" href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}>
         <span className="failure-entry-mark">↗</span>
-        <span><strong>Historical Regression</strong><small>Known-bad FAIL reproduced · fixed Candidate PASS · not a Release decision</small></span>
+        <span><strong>{t("runIndex.historicalRegression")}</strong><small>{t("runIndex.historicalRegressionNote")}</small></span>
         <span aria-hidden="true">→</span>
       </a>
       <section className="run-section" aria-labelledby="run-list-heading">
         <div className="section-heading">
           <div>
-            <span className="eyebrow">SELECT A RUN</span>
-            <h2 id="run-list-heading">Reviewed run evidence</h2>
+            <span className="eyebrow">{t("runIndex.selectRun")}</span>
+            <h2 id="run-list-heading">{t("runIndex.heading")}</h2>
           </div>
-          <span className="section-count">{reviewedRuns.length.toString().padStart(2, "0")} records</span>
+          <span className="section-count">{t("runIndex.records", { count: reviewedRuns.length.toString().padStart(2, "0") })}</span>
         </div>
         <div className="run-list">
           <div className="run-list-head" aria-hidden="true">
-            <span>OUTCOME / SIGNAL</span><span>AGENT / SCENARIO</span><span>PROVIDER / ENVIRONMENT</span><span>RUN / COST</span><span />
+            <span>{t("runIndex.outcomeSignal")}</span><span>{t("runIndex.agentScenario")}</span><span>{t("runIndex.providerEnvironment")}</span><span>{t("runIndex.runCost")}</span><span />
           </div>
           {reviewedRuns.map((run) => <RunRow key={run.run.runId} run={run} />)}
         </div>
       </section>
       <footer className="page-footnote">
-        <span>Source: {DATA_SOURCE_FOOTNOTE}</span>
-        <span>Read-only API adapter · no live run action</span>
+        <span>{t("common.source")}: {DATA_SOURCE_FOOTNOTE}</span>
+        <span>{t("runIndex.readOnlyNoLiveRun")}</span>
       </footer>
     </AppShell>
   );
@@ -468,12 +477,12 @@ function intelligenceRecommendationTone(value: unknown): "success" | "fault" | "
 }
 
 function formatRate(value: unknown): string {
-  return typeof value === "number" ? `${Math.round(value * 100)}%` : "UNKNOWN";
+  return typeof value === "number" ? new Intl.NumberFormat(uiLocale(), { style: "percent", maximumFractionDigits: 0 }).format(value) : "UNKNOWN";
 }
 
 function formatMetric(value: unknown, suffix = ""): string {
   if (typeof value !== "number" || !Number.isFinite(value)) return "UNKNOWN";
-  return `${value.toLocaleString("en-US")}${suffix}`;
+  return `${value.toLocaleString(uiLocale())}${suffix}`;
 }
 
 function evaluationTone(status: string): "success" | "fault" | "error" | "neutral" {
@@ -1646,11 +1655,14 @@ function ExecutionDetail({ jobId }: { jobId: string }) {
 }
 
 function ExecutionSurfaceState({ loading = false, error }: { loading?: boolean; error?: ControlPlaneApiError }) {
+  const { t } = useI18n();
   const unavailable = Boolean(error);
-  return <main className="data-source-state" aria-live="polite"><div className={"data-source-state-card" + (unavailable ? " error" : "")}><span className="eyebrow">DURABLE EXECUTION API · RPF-14</span><h1>{unavailable ? "Execution data is unavailable." : loading ? "Loading durable job…" : "Execution data is API-only."}</h1><p>{unavailable ? "The Web surface did not receive a canonical execution response. It does not invent a fixture or retry a mutation." : "Use the Control Plane read API to inspect PostgreSQL-backed jobs, attempts, operations, evidence refs, and events."}</p>{unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}</div></main>;
+  return <main className="data-source-state" aria-live="polite"><div className={"data-source-state-card" + (unavailable ? " error" : "")}><LocaleSwitcher /><span className="eyebrow">{t("state.executionEyebrow")}</span><h1>{unavailable ? t("state.executionUnavailableTitle") : loading ? t("state.executionLoadingTitle") : t("state.executionApiOnlyTitle")}</h1><p>{unavailable ? t("state.executionUnavailableDescription") : t("state.executionApiOnlyDescription")}</p>{unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}</div></main>;
 }
 
 export default function App() {
+  const { locale } = useI18n();
+  void locale;
   const [location, setLocation] = useState<LocationState>(() => readLocation());
   const [snapshot, setSnapshot] = useState<CanonicalSnapshot>(() => createCanonicalSnapshot(DATA_SOURCE_MODE));
   const [dataSource, setDataSource] = useState<{ status: "loading" | "ready" | "error"; error?: ControlPlaneApiError }>(() => ({

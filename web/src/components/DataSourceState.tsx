@@ -1,26 +1,34 @@
 import type { ControlPlaneApiError } from "../data/controlPlaneApi";
+import { useI18n } from "../i18n";
+import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export const DataSourceState = ({ status, error }: { status: "loading" | "error"; error?: ControlPlaneApiError }) => {
+  const { t } = useI18n();
   const unavailable = status === "error";
   return (
     <main className="data-source-state" aria-live="polite">
       <div className={`data-source-state-card${unavailable ? " error" : ""}`}>
-        <span className="eyebrow">CONTROL PLANE API · RPF-11</span>
-        <h1>{unavailable ? "Canonical data is unavailable." : "Loading canonical data…"}</h1>
-        <p>{unavailable ? "The Web surface did not receive a complete API-backed snapshot. Static fixtures are not used as a silent fallback." : "Resolving metadata and verified immutable artifacts before rendering the investigation surface."}</p>
+        <LocaleSwitcher />
+        <span className="eyebrow">{t("state.apiEyebrow")}</span>
+        <h1>{unavailable ? t("state.unavailableTitle") : t("state.loadingTitle")}</h1>
+        <p>{unavailable ? t("state.unavailableDescription") : t("state.loadingDescription")}</p>
         {unavailable && <code>{error?.code || "API_UNAVAILABLE"}{error?.status ? " · HTTP " + error.status : ""}</code>}
       </div>
     </main>
   );
 };
 
-export const NotFoundState = ({ path }: { path: string }) => (
-  <main className="data-source-state" aria-live="polite">
-    <div className="data-source-state-card error">
-      <span className="eyebrow">CANONICAL SNAPSHOT · READY</span>
-      <h1>Entity not found.</h1>
-      <p>The current canonical snapshot is loaded, but no entity matches this deep link.</p>
-      <code>{path}</code>
-    </div>
-  </main>
-);
+export const NotFoundState = ({ path }: { path: string }) => {
+  const { t } = useI18n();
+  return (
+    <main className="data-source-state" aria-live="polite">
+      <div className="data-source-state-card error">
+        <LocaleSwitcher />
+        <span className="eyebrow">{t("state.notFoundEyebrow")}</span>
+        <h1>{t("state.notFoundTitle")}</h1>
+        <p>{t("state.notFoundDescription")}</p>
+        <code>{path}</code>
+      </div>
+    </main>
+  );
+};
