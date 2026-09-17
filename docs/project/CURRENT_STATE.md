@@ -5,8 +5,8 @@
 ## Current snapshot
 
 - Lifecycle: `Stabilization`。
-- Active plan: `RPF-28` formal Multi-service Controlled Environment / Network Fault Profiles is complete locally after the full six-profile five-repeat matrix and independent PostgreSQL/Control Plane/durable-worker verification; the pushed focused hosted workflow is pending its remote run. The repository remains in `Feature Freeze / Portfolio Maintenance` for unrelated product behavior。
-- Plan status: `RPF-00` through `RPF-27` are `Complete`; RPF-28 implementation and local evidence are complete, with hosted focused confirmation pending. RPF-28 adds an additive `multi-service-toxiproxy-v1` Runtime Environment and does not replace the single-container path, rewrite historical reviewed bytes, or add Production authority。
+- Active plan: `RPF-28` formal Multi-service Controlled Environment / Network Fault Profiles is complete after the full six-profile five-repeat matrix, independent PostgreSQL/Control Plane/durable-worker verification, and successful focused hosted run [35193864967](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35193864967). The repository remains in `Feature Freeze / Portfolio Maintenance` for unrelated product behavior。
+- Plan status: `RPF-00` through `RPF-28` are `Complete`; RPF-28 adds an additive `multi-service-toxiproxy-v1` Runtime Environment and does not replace the single-container path, rewrite historical reviewed bytes, or add Production authority。
 - Branch: `main`；repository: public `MyKr-YSteinsK/runproof`；默认交付模型仍为 commit → push，未执行 release/deploy。
 - Product / published version: none。`0.1.0-rc.1` remains a historical production-like probe recommendation, not a tag or release。
 - Current source of truth: `PROJECT_BRIEF.md` 持有稳定产品与 UX 合同；`DECISIONS.md` 持有 canonical decisions；本文持有当前快照；`VERIFICATION_HISTORY.md` 持有重要历史证据。
@@ -37,10 +37,11 @@
 - RPF-26 local verification passed the public-docs contract, runtime `77/77`, Web `11` files/`40` tests, `npm run build` (including typecheck), formal Control Plane Maven package, reviewed-artifact verifier, Golden Demo verifier, and RPF-16/RPF-17/RPF-18 evidence verifiers. The build retained the known shared-bundle warning; no product runtime behavior changed。
 - RPF-27 local verification passed `python spikes/rpf-27/verify-evidence.py` after a fresh three-candidate Windows Docker matrix: Toxiproxy response-lost `5/5`, custom shim response-lost `5/5`, Envoy response-lost `0/5` with deterministic `ABORT_BEFORE_SIDE_EFFECT` limitation; all baseline/latency/dependency scenarios and all trial cleanup checks passed. The ignored result records source identity, per-run environment/network/container identity, target receipt/effect count, reconcile, no-blind-retry, fault provenance, timings, and security boundary; it is not a reviewed corpus artifact。Hosted selected-candidate verification passed in [run `35186899267`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35186899267) after the initial all-candidate hosted attempt [run `35185942172`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35185942172) failed at the disposable evidence verifier; the hosted workflow was then explicitly scoped to Toxiproxy, while the full comparison remained local。
 - RPF-28 local verification passed the full `6 profiles × 5 repeats` Docker matrix (`none`, `latency`, `timeout`, `dependency-unavailable`, `response-lost`, `pre-side-effect-failure`), lifecycle/fault/effect-count/cleanup checks, independent PostgreSQL + formal Control Plane + durable worker canonical completion, `python spikes/rpf-28/verify-evidence.py`, and `python runtime/verify-reviewed-artifacts.py`. Current RPF-28 source identity is `b5f2c22fce21d0c14455a2ee076d1d12df31f5dbc10c9fe8aef9ea97d7fcfaa6`; reviewed baseline/dependency/response-loss artifacts are bound to `rpf-28.v1` and remain separate from RPF-27。
+- RPF-28 hosted focused verification succeeded in [run `35193864967`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35193864967) for commit `6e0e2f6`: GitHub-hosted Ubuntu executed the baseline and response-loss transport paths, cleanup checks, evidence verifier, and uploaded artifact `rpf-28-multi-service-35193864967-1` with digest `sha256:85f82392427d8a26815237e4339fe2d77d0e0aac6fa0684d3fbe4164c06148c4`。The focused workflow did not execute release/deploy; GitHub reported only the existing action Node.js 20 deprecation warning。
 - RPF-26 hosted delivery: GitHub Actions [run `35181115566`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35181115566) for commit `e177453` succeeded in `1m21s`; the fresh canonical gate job succeeded in `1m17s` and uploaded redacted artifact `rpf-12-release-gate-35181115566-1` with digest `sha256:e6c29d3af1d5ac582f92bec47199695404b0a0c367305235592aca00dcab1762`。The workflow did not execute release/deploy; GitHub reported only existing Node.js 20/setup-java v4 deprecation warnings。
 - The RPF-25 implementation and state commits were pushed to `origin/main`; hosted Release Gate run [35179169378](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35179169378) succeeded and uploaded the redacted artifact `rpf-12-release-gate-35179169378-1`。It did not execute release/deploy。
 - RPF-14/RPF-15/RPF-16/RPF-17 source identities, RPF-19 lifecycle measurements, RPF-21/RPF-22/RPF-23 hosted/local evidence, and older compatibility facts are preserved in [VERIFICATION_HISTORY.md](../history/VERIFICATION_HISTORY.md)。They are not duplicated here as command logs。
-- This RPF-26 task preserves historical reviewed bytes, runtime/web/control-plane implementation, and the user-owned untracked `docs/reviews/` material。
+- This RPF-28 task preserves historical reviewed bytes, runtime/web/control-plane implementation, and the user-owned untracked `docs/reviews/` material。
 
 ## Known limits and risks
 
@@ -53,7 +54,7 @@
 
 ## Active work
 
-RPF-28 implementation and local evidence are complete; the focused hosted workflow is the remaining delivery confirmation. No unrelated product feature implementation is active. Existing Golden Demo and hosted gate maintenance remains available, but does not expand authority or deployment scope。
+RPF-28 implementation, local evidence, and focused hosted confirmation are complete. No unrelated product feature implementation is active. Existing Golden Demo and hosted gate maintenance remains available, but does not expand authority or deployment scope。
 
 ## Next likely boundary
 
