@@ -451,11 +451,17 @@ def tier_ranges(name: str) -> tuple[str, int, int, list[str]]:
 def process_rss(pid: int | None) -> int | None:
     if not pid:
         return None
-    command = f"$p=Get-Process -Id {int(pid)} -ErrorAction SilentlyContinue; if ($p) {{ $p.WorkingSet64 }}"
-    result = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", command], capture_output=True, text=True, check=False, timeout=10)
-    value = result.stdout.strip()
+    if os.name == "nt":
+        command = f"$p=Get-Process -Id {int(pid)} -ErrorAction SilentlyContinue; if ($p) {{ $p.WorkingSet64 }}"
+        result = subprocess.run(["powershell", "-NoProfile", "-NonInteractive", "-Command", command], capture_output=True, text=True, check=False, timeout=10)
+        value = result.stdout.strip()
+        multiplier = 1
+    else:
+        result = subprocess.run(["ps", "-o", "rss=", "-p", str(int(pid))], capture_output=True, text=True, check=False, timeout=10)
+        value = result.stdout.strip()
+        multiplier = 1024
     try:
-        return int(value)
+        return int(value) * multiplier
     except ValueError:
         return None
 
