@@ -127,6 +127,7 @@ release authority。
 | 正式多服务网络故障 | RPF-28 reviewed baseline/dependency/response-loss Run、`multi-service-toxiproxy-v1` 与 durable-worker focused result | `python spikes/rpf-28/probe.py --run`；`python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
 | 正式诊断 Observability | RPF-30 SDK instrumentation、三模式 durable probe、Collector trace file 与 span/cardinality verifier | `python spikes/rpf-30/probe.py --run`；`python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
 | 正式 S3-compatible ArtifactStore | `S3ArtifactStore`、显式 backend wiring、SeaweedFS 4.47 proof、PostgreSQL canonical ingest 与 HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`；`python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
+| 有界 Execution read model | RPF-34 summary list、opaque keyset cursor、有界 detail/timeline、query/payload budget 与 eligible-discovery 兼容性 proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`；`python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
@@ -134,7 +135,9 @@ source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATI
 
 当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界应从测量需要中选择：托管对象存储运维、capacity/large-trace
-evidence，或 Production topology 调查。正式 OpenTelemetry 仍是可选诊断
-边界；S3-compatible adapter 也仍是单节点兼容性 proof，不代表 durability、
-HA 或 release authority。
+下一架构边界应从测量需要中选择：完整 `/metadata` read-model/streaming
+行为、托管对象存储运维，或 Production topology 调查。RPF-34 只约束
+Execution surface，不解决完整 `/metadata` 读取、artifact streaming、
+virtualization、retention/GC 或 Production capacity。正式 OpenTelemetry
+仍是可选诊断边界；S3-compatible adapter 也仍是单节点兼容性 proof，不代表
+durability、HA 或 release authority。

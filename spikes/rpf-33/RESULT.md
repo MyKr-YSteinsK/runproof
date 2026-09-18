@@ -37,3 +37,12 @@ Desktop/in-app observation confirmed 100 rendered list rows and no pagination co
 ## Recommended RPF-34 boundary
 
 Introduce a bounded server-side read model/cursor contract for the Execution list and per-Run timeline, remove the measured N+1 snapshot shape, and set query/payload budgets. Re-evaluate formal indexes after that boundary; decide virtualization and artifact streaming from measured UI/heap budgets. Do not introduce a broker or real GC from this evidence alone.
+
+## RPF-34 compatibility note
+
+The RPF-33 disposable probe's timeline consumer now follows the bounded
+`/jobs/{jobId}/events?limit=500` path and aggregates pages, while retaining the
+same tier-level event totals. The evidence above remains historical evidence
+for its recorded source identity; new RPF-33 executions must produce a fresh
+source identity and are not allowed to overwrite those ignored historical
+results.

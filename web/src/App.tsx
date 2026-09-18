@@ -56,7 +56,7 @@ import {
   VersionBisect,
 } from "./data/artifacts";
 import { ControlPlaneApiError, loadControlPlaneCorpus } from "./data/controlPlaneApi";
-import { ExecutionJobDto, loadExecutionJob, loadExecutionJobs, loadExecutionMetrics } from "./data/executions";
+import { ExecutionEventDto, ExecutionJobDto, ExecutionJobSummaryDto, loadExecutionJob, loadExecutionJobs, loadExecutionMetrics, loadExecutionTimeline } from "./data/executions";
 import { AppShell } from "./components/AppShell";
 import { DataSourceState as SharedDataSourceState, NotFoundState } from "./components/DataSourceState";
 import { IdentityField } from "./components/IdentityField";
@@ -1511,7 +1511,7 @@ function executionEvidenceHref(evidence: { entity_type: string; entity_id: strin
   return executionTargetHref({ type: evidence.entity_type, id: evidence.entity_id });
 }
 
-function executionLeaseState(job: ExecutionJobDto): string {
+function executionLeaseState(job: ExecutionJobDto | ExecutionJobSummaryDto): string {
   if (job.state === "RECONCILE_REQUIRED") return "RECONCILE REQUIRED";
   if (!job.active_attempt_id) return job.state === "QUEUED" ? "NOT CLAIMED" : "NO ACTIVE LEASE";
   const expiry = job.lease.lease_expires_at ? Date.parse(job.lease.lease_expires_at) : Number.NaN;
@@ -1520,17 +1520,25 @@ function executionLeaseState(job: ExecutionJobDto): string {
 }
 
 function ExecutionIndex() {
+  const { t } = useI18n();
+  const initialQuery = typeof window === "undefined" ? new URLSearchParams() : new URLSearchParams(window.location.search);
   const [state, setState] = useState<"loading" | "ready" | "error">(DATA_SOURCE_MODE === "fixture" ? "ready" : "loading");
-  const [jobs, setJobs] = useState<ExecutionJobDto[]>([]);
+  const [jobs, setJobs] = useState<ExecutionJobSummaryDto[]>([]);
   const [metrics, setMetrics] = useState<Record<string, number> | null>(null);
   const [error, setError] = useState<ControlPlaneApiError | undefined>();
+  const [cursor, setCursor] = useState<string | null>(initialQuery.get("cursor"));
+  const [cursorStack, setCursorStack] = useState<string[]>(initialQuery.get("previous_cursor") ? [initialQuery.get("previous_cursor") as string] : []);
+  const [nextCursor, setNextCursor] = useState<string | null>(null);
+  const pageSize = 50;
   useEffect(() => {
     if (DATA_SOURCE_MODE === "fixture") return;
     let active = true;
-    Promise.all([loadExecutionJobs(), loadExecutionMetrics()])
-      .then(([nextJobs, nextMetrics]) => {
+    setState("loading");
+    Promise.all([loadExecutionJobs(undefined, undefined, { cursor, limit: pageSize }), loadExecutionMetrics()])
+      .then(([nextPage, nextMetrics]) => {
         if (!active) return;
-        setJobs(nextJobs);
+        setJobs(nextPage.items);
+        setNextCursor(nextPage.next_cursor);
         setMetrics(nextMetrics as unknown as Record<string, number>);
         setState("ready");
       })
@@ -1540,7 +1548,29 @@ function ExecutionIndex() {
         setState("error");
       });
     return () => { active = false; };
-  }, []);
+  }, [cursor]);
+  const updateListUrl = (next: string | null, previous: string | null) => {
+    if (typeof window === "undefined") return;
+    const query = new URLSearchParams();
+    if (next) query.set("cursor", next);
+    if (previous) query.set("previous_cursor", previous);
+    const suffix = query.toString();
+    window.history.replaceState({}, "", suffix ? `/executions?${suffix}` : "/executions");
+  };
+  const goNext = () => {
+    if (!nextCursor) return;
+    setCursorStack((current) => [...current, cursor || ""]);
+    setCursor(nextCursor);
+    updateListUrl(nextCursor, cursor);
+  };
+  const goPrevious = () => {
+    if (cursorStack.length === 0) return;
+    const previous = cursorStack[cursorStack.length - 1] || null;
+    const remaining = cursorStack.slice(0, -1);
+    setCursorStack(remaining);
+    setCursor(previous);
+    updateListUrl(previous, remaining[remaining.length - 1] || null);
+  };
   if (state === "error") return <ExecutionSurfaceState error={error} />;
   return (
     <AppShell execution>
@@ -1552,8 +1582,8 @@ function ExecutionIndex() {
         </div>
         <div className="corpus-note">
           <span className="section-label">CURRENT VIEW</span>
-          <strong>{DATA_SOURCE_MODE === "fixture" ? "API only" : `${jobs.length} jobs`}</strong>
-          <span>{DATA_SOURCE_MODE === "fixture" ? "fixture mode has no jobs" : "canonical job snapshots"}</span>
+          <strong>{DATA_SOURCE_MODE === "fixture" ? "API only" : t("execution.pageRecords", { count: jobs.length })}</strong>
+          <span>{DATA_SOURCE_MODE === "fixture" ? "fixture mode has no jobs" : t("execution.summaryReadModel")}</span>
         </div>
       </div>
       <section className="corpus-boundary execution-boundary" aria-label="Execution boundary">
@@ -1576,21 +1606,28 @@ function ExecutionIndex() {
             <div><span>Platform failed</span><strong>{metrics?.platform_failed_jobs ?? "—"}</strong><small>not Agent FAIL</small></div>
           </section>
           <section className="execution-list-section" aria-labelledby="execution-list-heading">
-            <div className="section-heading"><div><span className="eyebrow">SELECT A JOB</span><h2 id="execution-list-heading">Canonical execution jobs</h2></div><span className="section-count">{jobs.length.toString().padStart(2, "0")} records</span></div>
+            <div className="section-heading"><div><span className="eyebrow">SELECT A JOB</span><h2 id="execution-list-heading">Canonical execution jobs</h2></div><span className="section-count">{t("execution.pageRecords", { count: jobs.length })}</span></div>
             {jobs.length === 0 ? <div className="execution-empty compact"><h2>No durable jobs in the current Control Plane.</h2><p>Submission and worker mutation are intentionally unavailable from this read-only surface.</p></div> : (
-              <div className="execution-list">
-                <div className="execution-list-head" aria-hidden="true"><span>STATE / SIGNAL</span><span>JOB / TARGET</span><span>ATTEMPT / WORKER</span><span>LEASE / UPDATED</span><span /></div>
-                {jobs.map((job) => {
-                  const href = `/executions/${encodeURIComponent(job.job_id)}`;
-                  return <a className="execution-row" key={job.job_id} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
-                    <div><StatusTag status={job.state} tone={executionStatusTone(job.state)} /><span className="signal-label">{executionStateNote(job.state)}</span></div>
-                    <div><strong className="mono">{shortId(job.job_id, 25)}</strong><span>{displayValue(job.job_type)} · {displayValue(job.target?.type)} / {shortId(job.target?.id, 26)}</span></div>
-                    <div><strong>{job.attempt_number ? `Attempt ${job.attempt_number}` : "No attempt"}</strong><span>{displayValue(job.active_worker_id || "—")} · v{displayValue(job.version)}</span></div>
-                    <div><strong>{executionLeaseState(job)}</strong><span>{formatDate(job.updated_at)} UTC</span></div>
-                    <span className="row-arrow" aria-hidden="true">→</span>
-                  </a>;
-                })}
-              </div>
+              <>
+                <div className="execution-list">
+                  <div className="execution-list-head" aria-hidden="true"><span>STATE / SIGNAL</span><span>JOB / TARGET</span><span>ATTEMPT / WORKER</span><span>LEASE / UPDATED</span><span /></div>
+                  {jobs.map((job) => {
+                    const href = `/executions/${encodeURIComponent(job.job_id)}`;
+                    return <a className="execution-row" key={job.job_id} href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>
+                      <div><StatusTag status={job.state} tone={executionStatusTone(job.state)} /><span className="signal-label">{executionStateNote(job.state)}</span></div>
+                      <div><strong className="mono">{shortId(job.job_id, 25)}</strong><span>{displayValue(job.job_type)} · {displayValue(job.target?.type)} / {shortId(job.target?.id, 26)}</span></div>
+                      <div><strong>{job.attempt_number ? `Attempt ${job.attempt_number}` : "No attempt"}</strong><span>{displayValue(job.active_worker_id || "—")} · v{displayValue(job.version)}</span></div>
+                      <div><strong>{executionLeaseState(job)}</strong><span>{formatDate(job.updated_at)} UTC</span></div>
+                      <span className="row-arrow" aria-hidden="true">→</span>
+                    </a>;
+                  })}
+                </div>
+                <nav className="execution-pagination" aria-label={t("execution.paginationLabel")}>
+                  <button type="button" onClick={goPrevious} disabled={cursorStack.length === 0}>{t("execution.previousPage")}</button>
+                  <span>{t("execution.pagePosition", { page: cursorStack.length + 1 })} · {t("execution.pageRecords", { count: jobs.length })}</span>
+                  <button type="button" onClick={goNext} disabled={!nextCursor}>{t("execution.nextPage")}</button>
+                </nav>
+              </>
             )}
           </section>
         </>
@@ -1601,21 +1638,49 @@ function ExecutionIndex() {
 }
 
 function ExecutionDetail({ jobId }: { jobId: string }) {
+  const { t } = useI18n();
   const [state, setState] = useState<"loading" | "ready" | "error">(DATA_SOURCE_MODE === "fixture" ? "ready" : "loading");
   const [job, setJob] = useState<ExecutionJobDto | null>(null);
+  const [events, setEvents] = useState<ExecutionEventDto[]>([]);
+  const [timelineNextCursor, setTimelineNextCursor] = useState<string | null>(null);
+  const [timelineHasMore, setTimelineHasMore] = useState(false);
+  const [timelineLoading, setTimelineLoading] = useState(false);
   const [error, setError] = useState<ControlPlaneApiError | undefined>();
   useEffect(() => {
     if (DATA_SOURCE_MODE === "fixture") return;
     let active = true;
-    loadExecutionJob(jobId)
-      .then((nextJob) => { if (active) { setJob(nextJob); setState("ready"); } })
+    Promise.all([loadExecutionJob(jobId), loadExecutionTimeline(jobId)])
+      .then(([nextJob, timeline]) => {
+        if (!active) return;
+        setJob({ ...nextJob, events: timeline.items });
+        setEvents(timeline.items);
+        setTimelineNextCursor(timeline.next_cursor);
+        setTimelineHasMore(timeline.has_more);
+        setState("ready");
+      })
       .catch((cause: unknown) => {
         if (!active) return;
         setError(cause instanceof ControlPlaneApiError ? cause : new ControlPlaneApiError("Execution API is unavailable.", "API_UNAVAILABLE", null, true));
         setState("error");
-      });
+    });
     return () => { active = false; };
   }, [jobId]);
+  const loadMoreTimeline = () => {
+    if (!timelineNextCursor || timelineLoading) return;
+    setTimelineLoading(true);
+    loadExecutionTimeline(jobId, undefined, undefined, { cursor: timelineNextCursor })
+      .then((timeline) => {
+        setEvents((current) => [...current, ...timeline.items]);
+        setTimelineNextCursor(timeline.next_cursor);
+        setTimelineHasMore(timeline.has_more);
+        setJob((current) => current ? { ...current, events: [...(current.events || []), ...timeline.items] } : current);
+      })
+      .catch((cause: unknown) => {
+        setError(cause instanceof ControlPlaneApiError ? cause : new ControlPlaneApiError("Execution timeline API is unavailable.", "API_UNAVAILABLE", null, true));
+        setState("error");
+      })
+      .finally(() => setTimelineLoading(false));
+  };
   if (DATA_SOURCE_MODE === "fixture") return <ExecutionSurfaceState />;
   if (state === "error") return <ExecutionSurfaceState error={error} />;
   if (state === "loading" || !job) return <ExecutionSurfaceState loading />;
@@ -1647,8 +1712,8 @@ function ExecutionDetail({ jobId }: { jobId: string }) {
       <section className="execution-panel" aria-labelledby="attempt-history-heading"><div className="panel-heading"><div><span className="eyebrow">APPEND-ONLY HISTORY</span><h2 id="attempt-history-heading">Attempts and lease changes</h2></div><span className="section-count">{job.attempts.length} attempts</span></div><div className="execution-attempts">{job.attempts.map((attempt) => <div className="execution-attempt" key={attempt.attempt_id}><div><span className="execution-index">{attempt.attempt_number.toString().padStart(2, "0")}</span><strong>{attempt.status}</strong><small className="mono">{attempt.attempt_id}</small></div><div><span>Worker</span><strong>{attempt.worker_id}</strong><small>lease version v{attempt.lease_version}</small></div><div><span>Window</span><strong>{formatDate(attempt.started_at || attempt.created_at)}</strong><small>{attempt.ended_at ? `ended ${formatDate(attempt.ended_at)}` : `expires ${formatDate(attempt.lease_expires_at)}`}</small></div><div><span>Reason</span><strong>{displayValue(attempt.reason)}</strong><small>{attempt.heartbeat_at ? `heartbeat ${formatDate(attempt.heartbeat_at)}` : "no heartbeat recorded"}</small></div></div>)}</div></section>
       <section className="execution-panel" aria-labelledby="operation-heading"><div className="panel-heading"><div><span className="eyebrow">SIDE-EFFECT IDENTITY</span><h2 id="operation-heading">Operations and reconcile status</h2></div><span className="section-count">stable operation_id · at-least-once delivery</span></div>{job.operations.length === 0 ? <p className="execution-muted">No state-changing operation has been prepared for this job.</p> : <div className="execution-operation-list">{job.operations.map((operation) => <div className={`execution-operation ${operation.status === "UNKNOWN_OUTCOME" ? "warning" : ""}`} key={operation.operation_id}><div><span className="field-label">OPERATION</span><strong className="mono">{operation.operation_id}</strong><small>{operation.environment_id}</small></div><div><span className="field-label">STATUS</span><StatusTag status={operation.status} tone={operation.status === "CONFIRMED" ? "success" : operation.status === "UNKNOWN_OUTCOME" ? "review" : "neutral"} /><small>{operation.status === "UNKNOWN_OUTCOME" ? "reconcile before retry" : executionStateNote(operation.status)}</small></div><div><span className="field-label">EFFECT COUNT</span><strong>{operation.effect_count}</strong><small>{operation.receipt_ref || "receipt withheld / pending"}</small></div><div><span className="field-label">FINGERPRINT</span><strong className="mono">{shortId(operation.operation_fingerprint, 22)}</strong><small>{formatDate(operation.updated_at)}</small></div></div>)}</div>}</section>
       <section className="execution-panel" aria-labelledby="evidence-heading"><div className="panel-heading"><div><span className="eyebrow">IMMUTABLE REFERENCES</span><h2 id="evidence-heading">Terminal and execution evidence</h2></div><span className="section-count">{job.evidence.length} refs · bytes not editable here</span></div>{job.evidence.length === 0 ? <p className="execution-muted">No execution evidence has been registered yet.</p> : <div className="execution-evidence-list">{job.evidence.map((evidence) => { const href = executionEvidenceHref(evidence); return <div className="execution-evidence-row" key={evidence.evidence_id}><div><span className="field-label">{evidence.entity_type}</span><strong>{evidence.outcome}</strong><small className="mono">{evidence.evidence_id}</small></div><div><span>Entity</span><strong className="mono">{shortId(evidence.entity_id, 30)}</strong><small>{shortId(evidence.content_sha256, 26)}</small></div>{href ? <a className="action-link" href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>Open canonical evidence →</a> : <span className="execution-muted">stable ref only</span>}</div>; })}</div>}</section>
-      <section className="execution-panel" aria-labelledby="event-history-heading"><div className="panel-heading"><div><span className="eyebrow">TRANSITION AUDIT</span><h2 id="event-history-heading">Append-only event history</h2></div><span className="section-count">{job.events.length} events</span></div><ol className="execution-event-list">{job.events.map((event) => <li key={event.event_id}><span className="execution-event-number">{event.event_id}</span><div><strong>{event.event_type}</strong><span>{displayValue(event.from_state)} → <b>{event.to_state}</b> · version {event.version}</span><small>{displayValue(event.reason)} · {formatDate(event.occurred_at)} UTC · {displayValue(event.attempt_id || event.operation_id || "job")}</small></div></li>)}</ol></section>
-      <details className="raw-details execution-raw"><summary>Expert escape hatch · normalized durable job JSON</summary><pre>{JSON.stringify(job, null, 2)}</pre></details>
+      <section className="execution-panel" aria-labelledby="event-history-heading"><div className="panel-heading"><div><span className="eyebrow">TRANSITION AUDIT</span><h2 id="event-history-heading">Append-only event history</h2></div><span className="section-count">{t("execution.timelineLoaded", { count: events.length })}</span></div><ol className="execution-event-list">{events.map((event) => <li key={event.event_id}><span className="execution-event-number">{event.event_id}</span><div><strong>{event.event_type}</strong><span>{displayValue(event.from_state)} → <b>{event.to_state}</b> · version {event.version}</span><small>{displayValue(event.reason)} · {formatDate(event.occurred_at)} UTC · {displayValue(event.attempt_id || event.operation_id || "job")}</small></div></li>)}</ol><div className="execution-timeline-controls"><span>{timelineHasMore ? t("execution.timelineMore") : t("execution.timelineComplete")}</span>{timelineHasMore && <button type="button" onClick={loadMoreTimeline} disabled={timelineLoading}>{timelineLoading ? t("common.loading") : t("execution.loadMoreTimeline")}</button>}</div></section>
+      <details className="raw-details execution-raw"><summary>Expert escape hatch · normalized durable job JSON</summary><pre>{JSON.stringify({ ...job, events, timeline: { ...job.timeline, loaded_event_count: events.length, has_more: timelineHasMore, partial: timelineHasMore } }, null, 2)}</pre></details>
       <footer className="detail-footer"><span>{job.job_id} · {job.state} · correlation {job.correlation_id}</span><span>{job.outcome_status || "outcome pending"} · no mutation available from Web</span></footer>
     </AppShell>
   );

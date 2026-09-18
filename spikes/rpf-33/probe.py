@@ -550,6 +550,42 @@ def measure_api(base: str, token: str, path: str, *, process: subprocess.Popen[b
     return result
 
 
+def measure_timeline_api(base: str, token: str, job_id: str, *, process: subprocess.Popen[bytes] | None = None, pg_container: str | None = None) -> dict[str, Any]:
+    """Measure the bounded RPF-34 timeline path while preserving RPF-33 totals."""
+
+    statement_count_before = statement_count(pg_container) if pg_container else None
+    cursor: str | None = None
+    pages = 0
+    events = 0
+    response_bytes = 0
+    elapsed_ms = 0
+    status = 200
+    while pages < 1000:
+        query = urlencode({"limit": 500, **({"cursor": cursor} if cursor else {})})
+        status, body, raw, elapsed = http_request(base, "GET", f"/jobs/{job_id}/events?{query}", token=token, timeout=600)
+        if status != 200:
+            break
+        page_items = body.get("items") if isinstance(body.get("items"), list) else []
+        events += len(page_items)
+        response_bytes += len(raw)
+        elapsed_ms += elapsed
+        pages += 1
+        cursor = body.get("next_cursor") if isinstance(body.get("next_cursor"), str) else None
+        if cursor is None:
+            break
+    if pages >= 1000 and cursor is not None:
+        status = 599
+    result: dict[str, Any] = {"path": f"/jobs/{job_id}/events?limit=500", "status": status, "elapsed_ms": elapsed_ms, "response_bytes": response_bytes, "events": events, "pages": pages, "process_rss_after": process_rss(process.pid if process else None)}
+    if pg_container:
+        time.sleep(0.5)
+        statement_count_after = statement_count(pg_container)
+        if statement_count_before is not None and statement_count_after is not None:
+            result["observed_sql_statements"] = max(0, statement_count_after - statement_count_before)
+        else:
+            result["observed_sql_statements"] = None
+    return result
+
+
 def table_sizes(container: str) -> dict[str, Any]:
     rows = psql(container, "SELECT relname||E'\\t'||pg_total_relation_size(relid)||E'\\t'||pg_relation_size(relid)||E'\\t'||pg_indexes_size(relid) FROM pg_catalog.pg_statio_user_tables WHERE schemaname='public' ORDER BY relname;")
     result: dict[str, Any] = {}
@@ -843,7 +879,7 @@ def main(argv: list[str] | None = None) -> int:
                 measure_api(base, credentials["read"], f"/jobs/rpf33-job-{last_job:05d}", process=service_process, pg_container=names["postgres"]),
                 measure_api(base, credentials["read"], f"/artifacts/RUN/rpf33-run-{last_job:05d}", process=service_process, pg_container=names["postgres"]),
             ]
-            timeline_api = measure_api(base, credentials["read"], f"/jobs/{timeline_job_id}", process=service_process, pg_container=names["postgres"])
+            timeline_api = measure_timeline_api(base, credentials["read"], timeline_job_id, process=service_process, pg_container=names["postgres"])
             eligible_plan = explain(names["postgres"], "SELECT job_id FROM rpf_execution_job WHERE state IN ('QUEUED','RECONCILE_REQUIRED') OR (state IN ('CLAIMED','RUNNING','CANCEL_REQUESTED') AND lease_expires_at IS NOT NULL AND lease_expires_at <= CURRENT_TIMESTAMP) ORDER BY created_at, job_id LIMIT 100")
             event_plan = explain(names["postgres"], f"SELECT event_id, event_type, occurred_at FROM rpf_execution_event WHERE job_id='rpf33-job-{last_job:05d}' ORDER BY event_id")
             list_plan_before = explain(names["postgres"], "SELECT * FROM canonical_metadata WHERE entity_type='RUN' ORDER BY created_at, entity_id")

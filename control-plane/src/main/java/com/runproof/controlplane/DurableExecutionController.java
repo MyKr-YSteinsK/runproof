@@ -2,6 +2,7 @@ package com.runproof.controlplane;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.NullNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -18,10 +19,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.sql.Timestamp;
 import java.time.Instant;
+import java.util.Base64;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -62,6 +65,12 @@ public class DurableExecutionController {
             "authorization", "token", "secret", "password", "credential", "api_key", "apikey",
             "prompt", "message", "messages", "reasoning", "chain_of_thought", "private_thought", "private_reasoning"
     );
+    private static final String CURSOR_CONTRACT = "rpf-execution-cursor-v1";
+    private static final String CURSOR_ORDER = "created_at,job_id:asc";
+    private static final int HISTORY_DEFAULT_LIMIT = 50;
+    private static final int HISTORY_MAX_LIMIT = 100;
+    private static final int TIMELINE_DEFAULT_LIMIT = 200;
+    private static final int TIMELINE_MAX_LIMIT = 500;
 
     private final JdbcTemplate jdbc;
     private final ObjectMapper mapper;
@@ -95,11 +104,17 @@ public class DurableExecutionController {
             @RequestParam(name = "state", required = false) String state,
             @RequestParam(name = "target_type", required = false) String targetType,
             @RequestParam(name = "eligible", defaultValue = "false") boolean eligible,
-            @RequestParam(name = "limit", defaultValue = "50") int limit
+            @RequestParam(name = "limit", defaultValue = "50") int limit,
+            @RequestParam(name = "cursor", required = false) String cursor
     ) {
         authService.require(request, "metadata:read");
         try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.read", Map.of("runproof.target.type", targetType == null ? "ANY" : targetType.toUpperCase(Locale.ROOT)))) {
-        int boundedLimit = Math.max(1, Math.min(limit, 100));
+        int boundedLimit = boundedLimit(limit, HISTORY_DEFAULT_LIMIT, HISTORY_MAX_LIMIT);
+        String normalizedState = state == null || state.isBlank() ? null : requiredState(state);
+        String normalizedTargetType = targetType == null || targetType.isBlank()
+                ? null
+                : requiredIdValue(targetType.trim().toUpperCase(Locale.ROOT), "target_type");
+        JobCursor position = decodeJobCursor(cursor, eligible, normalizedState, normalizedTargetType, boundedLimit);
         List<String> conditions = new ArrayList<>();
         List<Object> args = new ArrayList<>();
         if (eligible && state != null && !state.isBlank()) {
@@ -110,19 +125,44 @@ public class DurableExecutionController {
         }
         if (state != null && !state.isBlank()) {
             conditions.add("state = ?");
-            args.add(requiredState(state));
+            args.add(normalizedState);
         }
         if (targetType != null && !targetType.isBlank()) {
             conditions.add("target_type = ?");
-            args.add(requiredIdValue(targetType.trim().toUpperCase(Locale.ROOT), "target_type"));
+            args.add(normalizedTargetType);
+        }
+        if (position != null) {
+            conditions.add("(created_at > CAST(? AS TIMESTAMPTZ) OR (created_at = CAST(? AS TIMESTAMPTZ) AND job_id > ?))");
+            args.add(position.createdAt());
+            args.add(position.createdAt());
+            args.add(position.jobId());
         }
         String where = conditions.isEmpty() ? "" : " WHERE " + String.join(" AND ", conditions);
-        String sql = "SELECT job_id FROM rpf_execution_job" + where + " ORDER BY created_at, job_id LIMIT " + boundedLimit;
+        String sql = """
+                SELECT job_id, job_type, target_type, target_id, state, version, attempt_number,
+                       active_attempt_id, active_worker_id, active_lease_token_hash,
+                       lease_expires_at::text AS lease_expires_at, cancel_requested, timeout_requested,
+                       outcome_status, platform_reason, terminal_evidence_id, last_operation_id,
+                       created_at::text AS created_at, updated_at::text AS updated_at
+                FROM rpf_execution_job
+                """ + where + " ORDER BY created_at, job_id LIMIT " + (boundedLimit + 1);
+        List<Map<String, Object>> rows = jdbc.queryForList(sql, args.toArray());
+        boolean hasMore = rows.size() > boundedLimit;
         List<Map<String, Object>> items = new ArrayList<>();
-        for (Map<String, Object> row : jdbc.queryForList(sql, args.toArray())) {
-            items.add(snapshot(findJob(text(row, "job_id"), false, true)));
-        }
-        return Map.of("items", items, "limit", boundedLimit, "discovery", eligible ? "ELIGIBLE" : "HISTORY");
+        rows.stream().limit(boundedLimit).forEach(row -> items.add(summary(row)));
+        String nextCursor = hasMore && !items.isEmpty()
+                ? encodeJobCursor(eligible, normalizedState, normalizedTargetType, boundedLimit, rows.get(boundedLimit - 1))
+                : null;
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("items", items);
+        result.put("limit", boundedLimit);
+        result.put("has_more", hasMore);
+        result.put("next_cursor", nextCursor == null ? NullNode.getInstance() : nextCursor);
+        result.put("discovery", eligible ? "ELIGIBLE" : "HISTORY");
+        result.put("cursor_contract", CURSOR_CONTRACT);
+        result.put("ordering", CURSOR_ORDER);
+        result.put("new_record_visibility", "Rows created after the cursor boundary appear later in the created_at,job_id keyset order.");
+        return result;
         }
     }
 
@@ -150,7 +190,51 @@ public class DurableExecutionController {
         authService.require(request, "metadata:read");
         mark(request, "EXECUTION_JOB", jobId);
         try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.read", Map.of("runproof.job.id", requiredIdValue(jobId, "job_id")))) {
-            return snapshot(findJob(requiredIdValue(jobId, "job_id"), false, true));
+            return detailSnapshot(findJob(requiredIdValue(jobId, "job_id"), false, true));
+        }
+    }
+
+    @GetMapping("/jobs/{jobId}/events")
+    public Map<String, Object> listJobEvents(
+            HttpServletRequest request,
+            @PathVariable String jobId,
+            @RequestParam(name = "limit", defaultValue = "200") int limit,
+            @RequestParam(name = "cursor", required = false) String cursor
+    ) {
+        authService.require(request, "metadata:read");
+        String normalizedJobId = requiredIdValue(jobId, "job_id");
+        int boundedLimit = boundedLimit(limit, TIMELINE_DEFAULT_LIMIT, TIMELINE_MAX_LIMIT);
+        EventCursor position = decodeEventCursor(cursor, normalizedJobId, boundedLimit);
+        mark(request, "EXECUTION_JOB_EVENTS", normalizedJobId);
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.timeline.read", Map.of("runproof.job.id", normalizedJobId))) {
+            String sql = """
+                    SELECT event_id, from_state, to_state, event_type, attempt_id, operation_id, reason, version,
+                           occurred_at::text AS occurred_at
+                    FROM rpf_execution_event
+                    WHERE job_id=?
+                    """ + (position == null ? "" : " AND event_id > ?") + " ORDER BY event_id LIMIT " + (boundedLimit + 1);
+            List<Object> args = new ArrayList<>();
+            args.add(normalizedJobId);
+            if (position != null) args.add(position.eventId());
+            List<Map<String, Object>> rows = jdbc.queryForList(sql, args.toArray());
+            if (rows.isEmpty() && count("SELECT COUNT(*) FROM rpf_execution_job WHERE job_id=?", normalizedJobId) == 0) {
+                throw new EntityNotFoundException("Durable job does not exist: " + normalizedJobId);
+            }
+            boolean hasMore = rows.size() > boundedLimit;
+            List<Map<String, Object>> items = new ArrayList<>(rows.stream().limit(boundedLimit).toList());
+            String nextCursor = hasMore && !items.isEmpty()
+                    ? encodeEventCursor(normalizedJobId, boundedLimit, rows.get(boundedLimit - 1))
+                    : null;
+            Map<String, Object> result = new LinkedHashMap<>();
+            result.put("job_id", normalizedJobId);
+            result.put("items", items);
+            result.put("limit", boundedLimit);
+            result.put("has_more", hasMore);
+            result.put("next_cursor", nextCursor == null ? NullNode.getInstance() : nextCursor);
+            result.put("cursor_contract", CURSOR_CONTRACT);
+            result.put("ordering", "event_id:asc");
+            result.put("partial", hasMore || position != null);
+            return result;
         }
     }
 
@@ -935,7 +1019,37 @@ public class DurableExecutionController {
         return lease;
     }
 
+    private Map<String, Object> summary(Map<String, Object> job) {
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("job_id", job.get("job_id"));
+        result.put("job_type", job.get("job_type"));
+        result.put("target", Map.of("type", job.get("target_type"), "id", job.get("target_id")));
+        result.put("state", job.get("state"));
+        result.put("version", job.get("version"));
+        result.put("attempt_number", job.get("attempt_number"));
+        result.put("active_attempt_id", job.get("active_attempt_id"));
+        result.put("active_worker_id", job.get("active_worker_id"));
+        result.put("lease", leaseDetails(job, null, version(job), null));
+        result.put("cancel_requested", job.get("cancel_requested"));
+        result.put("timeout_requested", job.get("timeout_requested"));
+        result.put("outcome_status", job.get("outcome_status"));
+        result.put("platform_reason", job.get("platform_reason"));
+        result.put("terminal_evidence_id", job.get("terminal_evidence_id"));
+        result.put("last_operation_id", job.get("last_operation_id"));
+        result.put("created_at", job.get("created_at"));
+        result.put("updated_at", job.get("updated_at"));
+        return result;
+    }
+
     private Map<String, Object> snapshot(Map<String, Object> job) {
+        return snapshot(job, true);
+    }
+
+    private Map<String, Object> detailSnapshot(Map<String, Object> job) {
+        return snapshot(job, false);
+    }
+
+    private Map<String, Object> snapshot(Map<String, Object> job, boolean includeEvents) {
         Map<String, Object> result = new LinkedHashMap<>();
         result.put("job_id", job.get("job_id"));
         result.put("idempotency_key", job.get("idempotency_key"));
@@ -985,11 +1099,21 @@ public class DurableExecutionController {
             evidence.add(copy);
         }
         result.put("evidence", evidence);
-        result.put("events", jdbc.queryForList("""
-                SELECT event_id, from_state, to_state, event_type, attempt_id, operation_id, reason, version,
-                       occurred_at::text AS occurred_at
-                FROM rpf_execution_event WHERE job_id=? ORDER BY event_id
-                """, job.get("job_id")));
+        if (includeEvents) {
+            result.put("events", jdbc.queryForList("""
+                    SELECT event_id, from_state, to_state, event_type, attempt_id, operation_id, reason, version,
+                           occurred_at::text AS occurred_at
+                    FROM rpf_execution_event WHERE job_id=? ORDER BY event_id
+                    """, job.get("job_id")));
+        } else {
+            Map<String, Object> timeline = new LinkedHashMap<>();
+            timeline.put("path", "/jobs/{jobId}/events");
+            timeline.put("cursor_contract", CURSOR_CONTRACT);
+            timeline.put("default_limit", TIMELINE_DEFAULT_LIMIT);
+            timeline.put("max_limit", TIMELINE_MAX_LIMIT);
+            timeline.put("partial", true);
+            result.put("timeline", timeline);
+        }
         return result;
     }
 
@@ -1226,6 +1350,125 @@ public class DurableExecutionController {
 
     private static long version(Map<String, Object> row) {
         return ((Number) row.get("version")).longValue();
+    }
+
+    private static int boundedLimit(int requested, int fallback, int maximum) {
+        return requested <= 0 ? fallback : Math.min(requested, maximum);
+    }
+
+    private JobCursor decodeJobCursor(String raw, boolean eligible, String state, String targetType, int limit) {
+        if (raw == null || raw.isBlank()) return null;
+        Map<String, Object> document = decodeCursorDocument(raw);
+        if (!"JOB".equals(document.get("kind"))) throw incompatibleCursor();
+        if (!Objects.equals(document.get("discovery"), eligible ? "ELIGIBLE" : "HISTORY")
+                || !Objects.equals(document.get("state"), state)
+                || !Objects.equals(document.get("target_type"), targetType)
+                || !Objects.equals(number(document.get("limit")), (long) limit)
+                || !Objects.equals(document.get("order"), CURSOR_ORDER)) {
+            throw incompatibleCursor();
+        }
+        String createdAt = cursorText(document, "created_at");
+        String jobId = cursorText(document, "job_id");
+        return new JobCursor(createdAt, jobId);
+    }
+
+    private EventCursor decodeEventCursor(String raw, String jobId, int limit) {
+        if (raw == null || raw.isBlank()) return null;
+        Map<String, Object> document = decodeCursorDocument(raw);
+        if (!"EVENT".equals(document.get("kind"))
+                || !Objects.equals(document.get("job_id"), jobId)
+                || !Objects.equals(number(document.get("limit")), (long) limit)
+                || !Objects.equals(document.get("order"), "event_id:asc")) {
+            throw incompatibleCursor();
+        }
+        Object eventId = document.get("event_id");
+        if (eventId == null) throw invalidCursor();
+        try {
+            long parsed = eventId instanceof Number number ? number.longValue() : Long.parseLong(String.valueOf(eventId));
+            if (parsed < 0) throw invalidCursor();
+            return new EventCursor(parsed);
+        } catch (NumberFormatException exception) {
+            throw invalidCursor();
+        }
+    }
+
+    private Map<String, Object> decodeCursorDocument(String raw) {
+        if (raw.length() > 4096) throw invalidCursor();
+        try {
+            byte[] decoded = Base64.getUrlDecoder().decode(raw);
+            Map<?, ?> parsed = mapper.readValue(decoded, Map.class);
+            if (parsed == null || !CURSOR_CONTRACT.equals(parsed.get("version"))) throw invalidCursor();
+            Map<String, Object> document = new LinkedHashMap<>();
+            parsed.forEach((key, value) -> {
+                if (key instanceof String name) document.put(name, value);
+            });
+            return document;
+        } catch (IllegalArgumentException | IOException exception) {
+            throw invalidCursor();
+        }
+    }
+
+    private String encodeJobCursor(boolean eligible, String state, String targetType, int limit, Map<String, Object> row) {
+        Map<String, Object> document = new LinkedHashMap<>();
+        document.put("version", CURSOR_CONTRACT);
+        document.put("kind", "JOB");
+        document.put("discovery", eligible ? "ELIGIBLE" : "HISTORY");
+        document.put("state", state);
+        document.put("target_type", targetType);
+        document.put("limit", limit);
+        document.put("order", CURSOR_ORDER);
+        document.put("created_at", text(row, "created_at"));
+        document.put("job_id", text(row, "job_id"));
+        return encodeCursor(document);
+    }
+
+    private String encodeEventCursor(String jobId, int limit, Map<String, Object> row) {
+        Map<String, Object> document = new LinkedHashMap<>();
+        document.put("version", CURSOR_CONTRACT);
+        document.put("kind", "EVENT");
+        document.put("job_id", jobId);
+        document.put("limit", limit);
+        document.put("order", "event_id:asc");
+        document.put("event_id", ((Number) row.get("event_id")).longValue());
+        return encodeCursor(document);
+    }
+
+    private String encodeCursor(Map<String, Object> document) {
+        try {
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(mapper.writeValueAsBytes(document));
+        } catch (JsonProcessingException exception) {
+            throw new IllegalStateException("Cannot encode execution cursor.", exception);
+        }
+    }
+
+    private static String cursorText(Map<String, Object> document, String key) {
+        Object value = document.get(key);
+        if (!(value instanceof String text) || text.isBlank()) throw invalidCursor();
+        return text;
+    }
+
+    private static Long number(Object value) {
+        if (value instanceof Number number) return number.longValue();
+        if (value == null) return null;
+        try {
+            return Long.parseLong(String.valueOf(value));
+        } catch (NumberFormatException exception) {
+            return null;
+        }
+    }
+
+    private static RequestValidationException invalidCursor() {
+        return new RequestValidationException("INVALID_EXECUTION_CURSOR", "The execution cursor is malformed or expired.");
+    }
+
+    private static RequestValidationException incompatibleCursor() {
+        return new RequestValidationException("INCOMPATIBLE_EXECUTION_CURSOR", "The execution cursor cannot be used with this filter, order, page size, or entity.");
+    }
+
+    private record JobCursor(String createdAt, String jobId) {
+    }
+
+    private record EventCursor(long eventId) {
     }
 
     @SuppressWarnings("unchecked")

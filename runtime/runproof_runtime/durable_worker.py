@@ -209,7 +209,12 @@ class DurableEvaluationWorker:
             if state in {"COMPLETED", "FAILED_PLATFORM", "CANCELLED"}:
                 continue
             if state == "RECONCILE_REQUIRED":
-                processed.append(self._reconcile_job(job))
+                # Eligible discovery is intentionally a bounded summary read.
+                # Reconciliation is the one path that needs operation details,
+                # so fetch the canonical detail only after the candidate is
+                # selected instead of making discovery construct snapshots.
+                detail = self.client.get_job(str(job["job_id"]))
+                processed.append(self._reconcile_job(detail if isinstance(detail, dict) else job))
                 continue
             try:
                 outcome = self._claim_and_execute(str(job["job_id"]))

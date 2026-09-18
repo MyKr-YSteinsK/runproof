@@ -1,0 +1,56 @@
+name: RPF-34 bounded execution read model
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-34-read-model.yml"
+      - "control-plane/**"
+      - "runtime/**"
+      - "spikes/rpf-34/**"
+      - "web/src/**"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-34-read-model.yml"
+      - "control-plane/**"
+      - "runtime/**"
+      - "spikes/rpf-34/**"
+      - "web/src/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bounded-read-proof:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Package formal Control Plane
+        run: mvn -q test package -f control-plane/pom.xml
+      - name: Run RPF-34 hosted-focused proof
+        run: python spikes/rpf-34/probe.py --run --hosted --output-dir ci-results/rpf34
+      - name: Verify RPF-34 evidence
+        shell: bash
+        run: python spikes/rpf-34/verify-evidence.py "$(find ci-results/rpf34 -name rpf34-result.json -print -quit)"
+      - name: Upload RPF-34 diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-34-bounded-read-${{ github.run_id }}
+          path: ci-results/rpf34/
+          if-no-files-found: error
+          retention-days: 14

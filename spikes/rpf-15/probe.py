@@ -944,7 +944,9 @@ def main() -> int:
         require(replacement_job.get("state") == "COMPLETED", "replacement job did not complete")
         require(replacement_operations and replacement_operations[0].get("status") == "CONFIRMED", "replacement operation was not confirmed")
         require(replacement_operations[0].get("effect_count") == 1, "replacement operation effect count was not exactly one")
-        event_types = {event.get("event_type") for event in replacement_job.get("events", []) if isinstance(event, dict)}
+        timeline_status, timeline_page = http_json(service["base_url"], "GET", f"/jobs/{replacement_job_id}/events?limit=500", token=credentials["read"])
+        expect(timeline_status, 200, timeline_page, "replacement event timeline read")
+        event_types = {event.get("event_type") for event in timeline_page.get("items", []) if isinstance(event, dict)}
         checks["active_job_worker_replacement"] = {
             "status": "PASS",
             "worker_a": {"process_exit": crashed.returncode, "state_before_expiry": after_crash.get("state"), "operation": "IN_FLIGHT"},

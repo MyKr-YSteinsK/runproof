@@ -56,13 +56,10 @@ export interface ExecutionEventDto {
   occurred_at: string;
 }
 
-export interface ExecutionJobDto {
+export interface ExecutionJobSummaryDto {
   job_id: string;
-  idempotency_key: string;
-  request_fingerprint: string;
   job_type: string;
   target: { type: string; id: string };
-  correlation_id: string;
   state: string;
   version: number;
   attempt_number: number;
@@ -75,18 +72,49 @@ export interface ExecutionJobDto {
   platform_reason: string | null;
   terminal_evidence_id: string | null;
   last_operation_id: string | null;
-  payload_ref: Record<string, unknown>;
   created_at: string;
   updated_at: string;
+}
+
+export interface ExecutionTimelineDescriptorDto {
+  path: string;
+  cursor_contract: string;
+  default_limit: number;
+  max_limit: number;
+  partial: boolean;
+}
+
+export interface ExecutionJobDto extends ExecutionJobSummaryDto {
+  idempotency_key: string;
+  request_fingerprint: string;
+  correlation_id: string;
+  payload_ref: Record<string, unknown>;
   attempts: ExecutionAttemptDto[];
   operations: ExecutionOperationDto[];
   evidence: ExecutionEvidenceDto[];
-  events: ExecutionEventDto[];
+  events?: ExecutionEventDto[];
+  timeline: ExecutionTimelineDescriptorDto;
 }
 
-export interface ExecutionListResponse {
-  items: ExecutionJobDto[];
+export interface ExecutionListPage {
+  items: ExecutionJobSummaryDto[];
   limit: number;
+  has_more: boolean;
+  next_cursor: string | null;
+  discovery?: "HISTORY" | "ELIGIBLE";
+  cursor_contract?: string;
+  ordering?: string;
+}
+
+export interface ExecutionTimelinePage {
+  job_id: string;
+  items: ExecutionEventDto[];
+  limit: number;
+  has_more: boolean;
+  next_cursor: string | null;
+  cursor_contract?: string;
+  ordering?: string;
+  partial: boolean;
 }
 
 export interface ExecutionMetricsDto {
@@ -141,12 +169,34 @@ const apiBaseUrl = (): string => import.meta.env.VITE_CONTROL_PLANE_API_URL || "
 export const loadExecutionJobs = async (
   baseUrl = apiBaseUrl(),
   fetcher: FetchLike = fetch,
-): Promise<ExecutionJobDto[]> => {
-  const response = await requestJson<ExecutionListResponse>(baseUrl, "/jobs?limit=100", fetcher);
-  if (!Array.isArray(response.items)) {
+  options: { cursor?: string | null; limit?: number; state?: string; targetType?: string } = {},
+): Promise<ExecutionListPage> => {
+  const query = new URLSearchParams();
+  query.set("limit", String(options.limit ?? 50));
+  if (options.cursor) query.set("cursor", options.cursor);
+  if (options.state) query.set("state", options.state);
+  if (options.targetType) query.set("target_type", options.targetType);
+  const response = await requestJson<ExecutionListPage>(baseUrl, `/jobs?${query.toString()}`, fetcher);
+  if (!Array.isArray(response.items) || typeof response.limit !== "number" || typeof response.has_more !== "boolean" || !validCursor(response.next_cursor)) {
     throw new ControlPlaneApiError("Control Plane execution list response is malformed.", "INVALID_API_RESPONSE", null, false);
   }
-  return response.items;
+  return response;
+};
+
+export const loadExecutionTimeline = async (
+  jobId: string,
+  baseUrl = apiBaseUrl(),
+  fetcher: FetchLike = fetch,
+  options: { cursor?: string | null; limit?: number } = {},
+): Promise<ExecutionTimelinePage> => {
+  const query = new URLSearchParams();
+  query.set("limit", String(options.limit ?? 200));
+  if (options.cursor) query.set("cursor", options.cursor);
+  const response = await requestJson<ExecutionTimelinePage>(baseUrl, `/jobs/${encodeURIComponent(jobId)}/events?${query.toString()}`, fetcher);
+  if (response.job_id !== jobId || !Array.isArray(response.items) || typeof response.limit !== "number" || typeof response.has_more !== "boolean" || !validCursor(response.next_cursor) || typeof response.partial !== "boolean") {
+    throw new ControlPlaneApiError("Control Plane timeline response is malformed.", "INVALID_API_RESPONSE", null, false);
+  }
+  return response;
 };
 
 export const loadExecutionJob = async (
@@ -155,7 +205,7 @@ export const loadExecutionJob = async (
   fetcher: FetchLike = fetch,
 ): Promise<ExecutionJobDto> => {
   const response = await requestJson<ExecutionJobDto>(baseUrl, `/jobs/${encodeURIComponent(jobId)}`, fetcher);
-  if (!response || typeof response.job_id !== "string" || !Array.isArray(response.events)) {
+  if (!response || typeof response.job_id !== "string" || !Array.isArray(response.attempts) || !Array.isArray(response.operations) || !Array.isArray(response.evidence) || !response.timeline || typeof response.timeline.path !== "string") {
     throw new ControlPlaneApiError("Control Plane execution detail response is malformed.", "INVALID_API_RESPONSE", null, false);
   }
   return response;
@@ -171,3 +221,5 @@ export const loadExecutionMetrics = async (
   }
   return response;
 };
+
+const validCursor = (value: unknown): value is string | null => value === null || typeof value === "string";

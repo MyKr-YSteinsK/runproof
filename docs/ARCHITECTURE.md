@@ -133,6 +133,7 @@ Module READMEs remain implementation-facing. Public claims are centralized here 
 | Formal multi-service network faults | RPF-28 reviewed baseline/dependency/response-loss Runs, `multi-service-toxiproxy-v1`, and durable-worker focused result | `python spikes/rpf-28/probe.py --run`; `python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
 | Formal diagnostic observability | RPF-30 SDK instrumentation, three-mode durable probe, Collector trace file, and span/cardinality verifier | `python spikes/rpf-30/probe.py --run`; `python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
 | Formal S3-compatible ArtifactStore | `S3ArtifactStore`, explicit backend wiring, SeaweedFS 4.47 proof, PostgreSQL canonical ingest, and HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`; `python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
+| Bounded Execution read model | RPF-34 summary list, opaque keyset cursors, bounded detail/timeline, query/payload budgets, and eligible-discovery compatibility proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`; `python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
 
 The detailed source identities, hosted runs, and historical compatibility facts are kept in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md), not repeated in the current snapshot.
 
@@ -140,8 +141,10 @@ The detailed source identities, hosted runs, and historical compatibility facts 
 
 The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, a formal S3-compatible object-store adapter, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
 
-The next architectural boundary should be selected from measured need: managed
-object-storage operations, capacity/large-trace evidence, or a production
-topology investigation. Formal OpenTelemetry remains an optional diagnostic
-boundary, and the S3-compatible adapter remains a single-node compatibility
-proof rather than a durability, HA, or release authority claim.
+The next architectural boundary should be selected from measured need: full
+metadata read-model/streaming behavior, managed object-storage operations, or
+a production topology investigation. RPF-34 bounds the Execution surface but
+does not solve full `/metadata` reads, artifact streaming, virtualization,
+retention/GC, or Production capacity. Formal OpenTelemetry remains an optional
+diagnostic boundary, and the S3-compatible adapter remains a single-node
+compatibility proof rather than a durability, HA, or release authority claim.
