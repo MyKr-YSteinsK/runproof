@@ -8,6 +8,7 @@ Status: Complete as a disposable Investigation / Spike. Lifecycle remains `Stabi
 - Local Full: `.local/rpf-33/final-local-v6/run-200e30e9e7/rpf33-result.json`
 - Hosted Medium: `.local/rpf-33/final-hosted-v8/run-ba9edc9e25/rpf33-result.json`
 - Both results passed `spikes/rpf-33/verify-evidence.py` with `historical_bytes_unchanged=true` and exact disposable cleanup.
+- GitHub Hosted: [run 35334236409](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35334236409) passed on commit `5d08b39`; uploaded artifact `rpf-33-capacity-35334236409-1` with digest `sha256:70a4e8f9f1803fbccf2e078e6ce8e385b4de2b37c1b33f20c055c29f0e77611d`.
 
 ## Measured boundary
 
