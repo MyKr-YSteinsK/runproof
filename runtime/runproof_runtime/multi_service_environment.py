@@ -15,10 +15,11 @@ import re
 import subprocess
 import time
 import uuid
-from typing import Any
+from typing import Any, Mapping
 from urllib.parse import urlencode
 
 from .models import INITIAL_STATE, TARGET_STATE, RuntimeFailure
+from .observability import canonical_attributes, get_observability
 
 
 ENVIRONMENT_PROFILE = "multi-service-toxiproxy-v1"
@@ -68,7 +69,7 @@ FAULT_PROFILES: dict[str, dict[str, Any]] = {
 }
 
 TARGET_SERVICE = r'''
-import json, time
+import json, time, urllib.request
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
 from urllib.request import urlopen
@@ -83,6 +84,13 @@ STATE = {
     "duplicate_operation_requests": 0,
     "last_dependency_result": "NOT_CHECKED",
 }
+TRACE_CONTEXT = {
+    "target_received": {},
+    "dependency_received": {},
+}
+
+def propagation_headers(headers):
+    return {key.lower(): value for key, value in headers.items() if key.lower() in {"traceparent", "baggage"} and isinstance(value, str)}
 
 def reply(handler, status, value):
     body = json.dumps(value, separators=(",", ":")).encode()
@@ -92,11 +100,13 @@ def reply(handler, status, value):
     handler.end_headers()
     handler.wfile.write(body)
 
-def dependency_ok():
+def dependency_ok(headers):
     try:
-        with urlopen("http://incident-dependency:8081/health", timeout=0.35) as response:
+        request = urllib.request.Request("http://incident-dependency:8081/health", headers=propagation_headers(headers))
+        with urlopen(request, timeout=0.35) as response:
             response.read()
         STATE["last_dependency_result"] = "HEALTHY"
+        TRACE_CONTEXT["target_to_dependency"] = propagation_headers(headers)
         return True
     except Exception:
         STATE["last_dependency_result"] = "UNAVAILABLE"
@@ -107,6 +117,9 @@ class Handler(BaseHTTPRequestHandler):
         return
 
     def do_GET(self):
+        incoming = propagation_headers(self.headers)
+        if incoming:
+            TRACE_CONTEXT["target_received"] = incoming
         parsed = urlparse(self.path)
         if parsed.path == "/health":
             reply(self, 200, {"status": "HEALTHY", "service": "incident-target"})
@@ -122,9 +135,15 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 reply(self, 200, {"status": "APPLIED", "operation_id": operation_id, "receipt": receipt, "effect_count": STATE["mutation_count"]})
             return
+        if parsed.path == "/telemetry-context":
+            reply(self, 200, TRACE_CONTEXT)
+            return
         reply(self, 404, {"status": "NOT_FOUND"})
 
     def do_POST(self):
+        incoming = propagation_headers(self.headers)
+        if incoming:
+            TRACE_CONTEXT["target_received"] = incoming
         if self.path != "/mutate":
             reply(self, 404, {"status": "NOT_FOUND"})
             return
@@ -144,7 +163,7 @@ class Handler(BaseHTTPRequestHandler):
             STATE["duplicate_operation_requests"] += 1
             reply(self, 200, {"status": "ALREADY_APPLIED", "operation_id": operation_id, "receipt": existing, "effect_count": STATE["mutation_count"]})
             return
-        if not dependency_ok():
+        if not dependency_ok(self.headers):
             reply(self, 503, {"status": "DEPENDENCY_UNAVAILABLE", "operation_id": operation_id, "effect_count": STATE["mutation_count"]})
             return
         STATE["release"] = "release-v2"
@@ -162,12 +181,18 @@ HTTPServer(("0.0.0.0", 8080), Handler).serve_forever()
 '''
 
 DEPENDENCY_SERVICE = r'''
+import json
 from http.server import BaseHTTPRequestHandler, HTTPServer
+TRACE_CONTEXT = {}
 class Handler(BaseHTTPRequestHandler):
     def log_message(self, *_):
         return
     def do_GET(self):
-        body = b'{"status":"HEALTHY","service":"incident-dependency"}'
+        global TRACE_CONTEXT
+        TRACE_CONTEXT = {key.lower(): value for key, value in self.headers.items() if key.lower() in {"traceparent", "baggage"}}
+        body = json.dumps({"status":"HEALTHY","service":"incident-dependency"}, separators=(",", ":")).encode()
+        if self.path == "/telemetry-context":
+            body = json.dumps({"dependency_received": TRACE_CONTEXT}, separators=(",", ":")).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
         self.send_header("Content-Length", str(len(body)))
@@ -270,12 +295,24 @@ def provider_snapshot() -> dict[str, Any]:
     }
 
 
-def _request_script(method: str, path: str, payload: dict[str, Any] | None, timeout: float) -> str:
+def _request_script(
+    method: str,
+    path: str,
+    payload: dict[str, Any] | None,
+    timeout: float,
+    headers: Mapping[str, str] | None = None,
+) -> str:
     body = json.dumps(payload or {}, separators=(",", ":"))
+    forwarded_headers = json.dumps(
+        {key.lower(): value for key, value in (headers or {}).items() if key.lower() in {"traceparent", "baggage"} and isinstance(value, str)},
+        separators=(",", ":"),
+    )
     return f'''
 import json, urllib.request, urllib.error
 body = {body!r}.encode()
-request = urllib.request.Request("http://fault-boundary:8080{path}", data=body if {method!r} == "POST" else None, method={method!r}, headers={{"Content-Type":"application/json"}})
+headers = {{"Content-Type":"application/json"}}
+headers.update(json.loads({forwarded_headers!r}))
+request = urllib.request.Request("http://fault-boundary:8080{path}", data=body if {method!r} == "POST" else None, method={method!r}, headers=headers)
 try:
     with urllib.request.urlopen(request, timeout={timeout!r}) as response:
         raw = response.read().decode("utf-8", "replace")
@@ -295,13 +332,20 @@ class MultiServiceEnvironment:
 
     SUPPORTED_PROFILES = set(FAULT_PROFILES)
 
-    def __init__(self, provider: dict[str, Any], role: str = "formal-run", fault_profile: str = "none") -> None:
+    def __init__(
+        self,
+        provider: dict[str, Any],
+        role: str = "formal-run",
+        fault_profile: str = "none",
+        run_id: str | None = None,
+    ) -> None:
         if fault_profile not in self.SUPPORTED_PROFILES:
             raise RuntimeFailure("HARNESS", "INVALID_FAULT_PROFILE")
         token = uuid.uuid4().hex[:10]
         self.provider = provider
         self.role = role
         self.fault_profile = fault_profile
+        self.run_id = run_id
         self.profile = copy.deepcopy(FAULT_PROFILES[fault_profile])
         self.environment_id = f"rpf28-{uuid.uuid4()}"
         self.network = f"rpf28-net-{token}"
@@ -315,6 +359,12 @@ class MultiServiceEnvironment:
         self.started_at = time.perf_counter()
         self.readiness_ms: float | None = None
         self.last_request: dict[str, Any] | None = None
+        self.last_propagation: dict[str, Any] = {
+            "protocol": "W3C_TRACE_CONTEXT_BAGGAGE",
+            "target_received": False,
+            "target_to_dependency": False,
+            "baggage_allowlisted": True,
+        }
         self.last_full_state: dict[str, Any] | None = None
         self.contract: dict[str, Any] = {
             "environment_id": self.environment_id,
@@ -342,6 +392,7 @@ class MultiServiceEnvironment:
                 "activation": None,
                 "reset": False,
             },
+            "propagation": copy.deepcopy(self.last_propagation),
         }
 
     def _trace(self, state: str) -> None:
@@ -377,6 +428,19 @@ class MultiServiceEnvironment:
         self.created.append(name)
 
     def provision(self) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.environment.provision",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id)
+            | {"runproof.target.type": ENVIRONMENT_PROFILE},
+        ) as scope:
+            try:
+                return self._provision_impl()
+            except Exception as error:
+                scope.error(error, "environment_provision_error")
+                raise
+
+    def _provision_impl(self) -> dict[str, Any]:
         _docker(["network", "create", "--internal", "--label", "com.runproof.owner=runproof", "--label", "com.runproof.plan=rpf-28", self.network], code="NETWORK_CREATE_FAILED")
         self.network_created = True
         self._trace("NETWORK_ALLOCATED")
@@ -454,14 +518,38 @@ class MultiServiceEnvironment:
             return {"transport_ok": False, "error": "OBSERVER_INVALID_JSON"}
 
     def client_request(self, path: str, *, method: str = "GET", payload: dict[str, Any] | None = None, timeout: float = 2.0) -> dict[str, Any]:
-        script = _request_script(method, path, payload, timeout)
-        raw = _docker(["exec", self.client, "python", "-c", _encoded_python_command(script)[2]], timeout=max(8.0, timeout + 5.0), check=False)
-        try:
-            return json.loads(raw.splitlines()[-1]) if raw else {"transport_ok": False, "error": "CLIENT_EMPTY"}
-        except json.JSONDecodeError:
-            return {"transport_ok": False, "error": "CLIENT_INVALID_JSON"}
+        observability = get_observability()
+        with observability.span(
+            "runproof.target.request",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id, fault_profile=self.fault_profile)
+            | {"http.method": method, "http.route": path.split("?", 1)[0]},
+        ) as scope:
+            headers: dict[str, str] = {}
+            observability.inject(headers)
+            script = _request_script(method, path, payload, timeout, headers)
+            raw = _docker(["exec", self.client, "python", "-c", _encoded_python_command(script)[2]], timeout=max(8.0, timeout + 5.0), check=False)
+            try:
+                result = json.loads(raw.splitlines()[-1]) if raw else {"transport_ok": False, "error": "CLIENT_EMPTY"}
+            except json.JSONDecodeError:
+                result = {"transport_ok": False, "error": "CLIENT_INVALID_JSON"}
+            if result.get("transport_ok") is not True:
+                scope.attribute("runproof.error.type", str(result.get("error") or "transport_failure"))
+                scope.error(RuntimeError(str(result.get("error") or "transport_failure")), "target_transport_failure")
+            return result
 
     def readiness(self, timeout_seconds: float = 15.0) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.environment.readiness",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id),
+        ) as scope:
+            try:
+                return self._readiness_impl(timeout_seconds)
+            except Exception as error:
+                scope.error(error, "environment_readiness_error")
+                raise
+
+    def _readiness_impl(self, timeout_seconds: float = 15.0) -> dict[str, Any]:
         deadline = time.monotonic() + timeout_seconds
         while time.monotonic() < deadline:
             target = self._observer_request("/health")
@@ -482,6 +570,25 @@ class MultiServiceEnvironment:
             raise RuntimeFailure("ENVIRONMENT", "TARGET_STATE_READ_FAILED")
         self.last_full_state = copy.deepcopy(response["body"])
         return response["body"]
+
+    def _record_propagation(self) -> None:
+        """Record only a boolean propagation result, never raw trace identity."""
+
+        context_response = self._observer_request("/telemetry-context")
+        body = context_response.get("body") if isinstance(context_response, dict) else None
+        target = body.get("target_received") if isinstance(body, dict) else None
+        dependency = body.get("target_to_dependency") if isinstance(body, dict) else None
+        target_trace = target.get("traceparent") if isinstance(target, dict) else None
+        dependency_trace = dependency.get("traceparent") if isinstance(dependency, dict) else None
+        target_baggage = target.get("baggage") if isinstance(target, dict) else None
+        dependency_baggage = dependency.get("baggage") if isinstance(dependency, dict) else None
+        self.last_propagation = {
+            "protocol": "W3C_TRACE_CONTEXT_BAGGAGE",
+            "target_received": isinstance(target_trace, str) and bool(target_trace),
+            "target_to_dependency": isinstance(target_trace, str) and target_trace == dependency_trace,
+            "baggage_allowlisted": all(value is None or isinstance(value, str) for value in (target_baggage, dependency_baggage)),
+        }
+        self.contract["propagation"] = copy.deepcopy(self.last_propagation)
 
     @staticmethod
     def public_state(full_state: dict[str, Any]) -> dict[str, Any]:
@@ -526,6 +633,18 @@ class MultiServiceEnvironment:
         })
 
     def activate_fault(self) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.fault.activate",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id, fault_profile=self.fault_profile),
+        ) as scope:
+            try:
+                return self._activate_fault_impl()
+            except Exception as error:
+                scope.error(error, "fault_activation_error")
+                raise
+
+    def _activate_fault_impl(self) -> dict[str, Any]:
         if self.fault_profile == "none":
             return copy.deepcopy(self.contract["fault_state"])
         if self.contract["fault_state"].get("triggered"):
@@ -553,6 +672,19 @@ class MultiServiceEnvironment:
         return request
 
     def apply_change(self, operation_id: str = "change-001") -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.tool.call",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id, operation_id=operation_id, fault_profile=self.fault_profile)
+            | {"runproof.target.type": "mutation"},
+        ) as scope:
+            try:
+                return self._apply_change_impl(operation_id)
+            except Exception as error:
+                scope.error(error, "tool_call_error")
+                raise
+
+    def _apply_change_impl(self, operation_id: str = "change-001") -> dict[str, Any]:
         if not re.fullmatch(r"[a-z0-9-]+", operation_id):
             raise RuntimeFailure("HARNESS", "INVALID_OPERATION_ID")
         if not self.contract["verified_initial_state"]:
@@ -563,11 +695,25 @@ class MultiServiceEnvironment:
         timeout = 1.5 if self.fault_profile == "response-lost" else 0.35 if self.fault_profile in {"latency", "timeout"} else 4.0
         request = self.client_request("/mutate", method="POST", payload={"operation_id": operation_id, "hold_response_ms": 650 if self.fault_profile == "response-lost" else 0}, timeout=timeout)
         self.last_request = copy.deepcopy(request)
+        if get_observability().enabled:
+            with get_observability().span(
+                "runproof.dependency.request",
+                canonical_attributes(run_id=self.run_id, environment_id=self.environment_id, operation_id=operation_id, fault_profile=self.fault_profile),
+            ) as dependency_scope:
+                self._record_propagation()
+                if not self.last_propagation["target_to_dependency"]:
+                    dependency_scope.error(RuntimeError("W3C propagation was not observed"), "propagation_missing")
         full = self._full_state() if self.fault_profile != "pre-side-effect-failure" else None
         if full:
             receipt = full.get("receipts", {}).get(operation_id)
             if receipt:
                 self.contract["operation_receipt"] = copy.deepcopy(receipt)
+                with get_observability().span(
+                    "runproof.target.commit",
+                    canonical_attributes(run_id=self.run_id, environment_id=self.environment_id, operation_id=operation_id, fault_profile=self.fault_profile)
+                    | {"runproof.effect.count": str(full.get("mutation_count", 0))},
+                ) as commit_scope:
+                    commit_scope.event("target.commit")
         if self.fault_profile == "response-lost":
             committed = bool(full and full.get("mutation_count") == 1 and operation_id in full.get("receipts", {}))
             self.contract["fault_state"]["observed"] = request.get("transport_ok") is not True and committed
@@ -589,6 +735,18 @@ class MultiServiceEnvironment:
         return {"status": "ERROR", "request": request, "state": self.public_state(full or {})}
 
     def reconcile(self, operation_id: str) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.operation.reconcile",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id, operation_id=operation_id, fault_profile=self.fault_profile),
+        ) as scope:
+            try:
+                return self._reconcile_impl(operation_id)
+            except Exception as error:
+                scope.error(error, "reconcile_error")
+                raise
+
+    def _reconcile_impl(self, operation_id: str) -> dict[str, Any]:
         response = self._observer_request("/reconcile?" + urlencode({"operation_id": operation_id}))
         if response.get("status") != 200:
             raise RuntimeFailure("ENVIRONMENT", "RECONCILE_RECEIPT_MISSING", "INCONCLUSIVE")
@@ -620,6 +778,18 @@ class MultiServiceEnvironment:
         self.contract["quarantine_state"] = {"status": "QUARANTINED", "reason": reason, "source": "ENVIRONMENT", "at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())}
 
     def cleanup(self) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.environment.cleanup",
+            canonical_attributes(run_id=self.run_id, environment_id=self.environment_id),
+        ) as scope:
+            try:
+                return self._cleanup_impl()
+            except Exception as error:
+                scope.error(error, "environment_cleanup_error")
+                raise
+
+    def _cleanup_impl(self) -> dict[str, Any]:
         errors: list[str] = []
         try:
             if self.active_toxics:

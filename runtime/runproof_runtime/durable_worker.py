@@ -26,6 +26,7 @@ from .control_plane_client import ControlPlaneClient, ControlPlaneClientError
 from .evaluation import build_minimal_suite, execute_evaluation, validate_suite_artifact
 from .failure_case import load_json
 from .incident import CASE_EXTERNAL, CASE_LOCAL, CASE_RESPONSE_LOST, run_incident_slice, write_incident_artifact
+from .observability import canonical_attributes, get_observability, reset_observability
 
 
 WORKER_RESULT_SCHEMA = "rpf-durable-worker-result-v1"
@@ -126,12 +127,18 @@ def _owner_from_claim(claim: dict[str, Any], worker_id: str) -> dict[str, Any]:
         raise WorkerFailure("CLAIM_LEASE_MALFORMED")
     if lease.get("worker_id") != worker_id or job.get("active_attempt_id") != attempt_id:
         raise WorkerFailure("CLAIM_LEASE_IDENTITY_MISMATCH")
-    return {
+    owner = {
         "attempt_id": attempt_id,
         "worker_id": worker_id,
         "lease_token": token,
         "lease_version": version,
     }
+    context = claim.get("observability_context") if isinstance(claim.get("observability_context"), dict) else {}
+    if isinstance(context.get("job"), dict):
+        owner["_job_observability_context"] = context["job"]
+    if isinstance(context.get("previous_attempt"), dict):
+        owner["_previous_observability_context"] = context["previous_attempt"]
+    return owner
 
 
 class LeaseRenewer:
@@ -190,7 +197,8 @@ class DurableEvaluationWorker:
         # page followed by in-memory terminal-state filtering. The Control
         # Plane includes queued/reconcile rows and expired active leases, so a
         # growing terminal history cannot starve executable work.
-        return self.client.list_jobs(eligible=True, limit=limit)
+        with get_observability().span("runproof.worker.poll", {"runproof.target.type": "DURABLE_JOB"}):
+            return self.client.list_jobs(eligible=True, limit=limit)
 
     def run_once(self, *, max_jobs: int = 1) -> list[dict[str, Any]]:
         processed: list[dict[str, Any]] = []
@@ -232,20 +240,39 @@ class DurableEvaluationWorker:
         if status != "CLAIMED":
             return {"job_id": job_id, "status": status or "NOT_CLAIMED"}
         owner = _owner_from_claim(claim, self.worker_id)
-        self.client.start_job(job_id, owner)
-        renewer = LeaseRenewer(self.client, job_id, owner, self.lease_seconds)
-        renewer.start()
-        try:
-            return self._execute_claimed(job_id, owner)
-        except ControlPlaneClientError:
-            raise
-        except Exception as error:
-            self._fail_platform_if_possible(job_id, owner, f"WORKER_EXCEPTION_{type(error).__name__}")
-            raise WorkerFailure("WORKER_EXECUTION_FAILED") from error
-        finally:
-            renewer.stop()
+        observability = get_observability()
+        parent = owner.get("_job_observability_context")
+        previous = owner.get("_previous_observability_context")
+        link = observability.span_link(previous) if isinstance(previous, dict) else None
+        links = [link] if link is not None else []
+        with observability.span(
+                "runproof.job.execute",
+                canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], agent_id=self.worker_id)
+                | {"runproof.attempt.model": "stable_job_trace_new_attempt_subtree"},
+                parent=parent,
+                links=links,
+        ) as execute_span:
+            owner["_observability_context"] = execute_span.context_document()
+            self.client.start_job(job_id, owner)
+            renewer = LeaseRenewer(self.client, job_id, owner, self.lease_seconds)
+            renewer.start()
+            try:
+                return self._execute_claimed(job_id, owner)
+            except ControlPlaneClientError:
+                raise
+            except Exception as error:
+                execute_span.error(error, "worker_execution_error")
+                self._fail_platform_if_possible(job_id, owner, f"WORKER_EXCEPTION_{type(error).__name__}")
+                raise WorkerFailure("WORKER_EXECUTION_FAILED") from error
+            finally:
+                renewer.stop()
 
     def _execute_claimed(self, job_id: str, owner: dict[str, Any]) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span("runproof.agent.run", canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], agent_id=self.worker_id)):
+            return self._execute_claimed_inner(job_id, owner)
+
+    def _execute_claimed_inner(self, job_id: str, owner: dict[str, Any]) -> dict[str, Any]:
         job = self.client.get_job(job_id)
         if not isinstance(job, dict):
             raise WorkerFailure("JOB_READBACK_MISSING")
@@ -297,33 +324,53 @@ class DurableEvaluationWorker:
             suite_errors = validate_suite_artifact(suite, regression)
             if suite_errors:
                 raise WorkerFailure("INVALID_EVALUATION_SUITE")
-            result = execute_evaluation(
-                suite,
-                regression,
-                str(payload["agent_profile"]),
-                output_dir,
-                api_key=None,
-                evaluation_id=evaluation_id,
-                environment_profile=payload.get("environment_profile"),
-            )
+            with get_observability().span(
+                "runproof.verifier.evaluate",
+                canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], agent_id=str(payload["agent_profile"])),
+            ) as verifier_scope:
+                try:
+                    result = execute_evaluation(
+                        suite,
+                        regression,
+                        str(payload["agent_profile"]),
+                        output_dir,
+                        api_key=None,
+                        evaluation_id=evaluation_id,
+                        environment_profile=payload.get("environment_profile"),
+                    )
+                except Exception as error:
+                    verifier_scope.error(error, "verifier_error")
+                    raise
             evaluation = result["evaluation"]
             paths = [Path(path) for path in [*result["paths"]["runs"], *result["paths"]["regression_results"].values(), result["paths"]["evaluation"]]]
         self.client.confirm_operation(job_id, operation_id, owner, receipt_ref=evaluation_id)
         ingested: list[dict[str, Any]] = []
         for path in paths:
-            artifact = self.client.ingest_file(path, self.artifact_store_root)
+            with get_observability().span(
+                "runproof.evidence.ingest",
+                canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], operation_id=operation_id),
+            ):
+                artifact = self.client.ingest_file(path, self.artifact_store_root)
             ingested.append({"entity_type": artifact.get("metadata", {}).get("canonical_metadata", {}).get("entity_type") if isinstance(artifact.get("metadata"), dict) else None, "path": str(path)})
         manifest = self.client_manifest(evaluation_path)
         evidence_id = f"execution-evidence-{job_id}"
-        evidence = self.client.ingest_execution_evidence(job_id, {
-            "evidence_id": evidence_id,
-            "entity_type": "EVALUATION",
-            "entity_id": evaluation_id,
-            "outcome": "PASS",
-            "content_sha256": manifest.content_sha256,
-            "artifact_ref": manifest.manifest["artifact_ref"],
-        }, owner=owner)
-        completed = self.client.complete_job(job_id, owner, evidence_id)
+        with get_observability().span(
+            "runproof.evidence.ingest",
+            canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], operation_id=operation_id),
+        ):
+            evidence = self.client.ingest_execution_evidence(job_id, {
+                "evidence_id": evidence_id,
+                "entity_type": "EVALUATION",
+                "entity_id": evaluation_id,
+                "outcome": "PASS",
+                "content_sha256": manifest.content_sha256,
+                "artifact_ref": manifest.manifest["artifact_ref"],
+            }, owner=owner)
+        with get_observability().span(
+            "runproof.job.completion",
+            canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], outcome="PASS"),
+        ):
+            completed = self.client.complete_job(job_id, owner, evidence_id)
         return {
             "job_id": job_id,
             "evaluation_id": evaluation_id,
@@ -381,18 +428,30 @@ class DurableEvaluationWorker:
         if operation.get("status") != "CONFIRMED":
             self.client.confirm_operation(job_id, operation_id, owner, receipt_ref=run_id)
         manifest = self.client_manifest(trial_path)
-        ingested = self.client.ingest_file(trial_path, self.artifact_store_root)
+        with get_observability().span(
+            "runproof.evidence.ingest",
+            canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], operation_id=operation_id),
+        ):
+            ingested = self.client.ingest_file(trial_path, self.artifact_store_root)
         evidence_id = f"execution-evidence-{job_id}"
         outcome = run.get("outcome") if isinstance(run.get("outcome"), dict) else {}
-        evidence = self.client.ingest_execution_evidence(job_id, {
-            "evidence_id": evidence_id,
-            "entity_type": "RUN",
-            "entity_id": run_id,
-            "outcome": str(outcome.get("status") or "INCONCLUSIVE"),
-            "content_sha256": manifest.content_sha256,
-            "artifact_ref": manifest.manifest["artifact_ref"],
-        }, owner=owner)
-        completed = self.client.complete_job(job_id, owner, evidence_id)
+        with get_observability().span(
+            "runproof.evidence.ingest",
+            canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], operation_id=operation_id, outcome=str(outcome.get("status") or "INCONCLUSIVE")),
+        ):
+            evidence = self.client.ingest_execution_evidence(job_id, {
+                "evidence_id": evidence_id,
+                "entity_type": "RUN",
+                "entity_id": run_id,
+                "outcome": str(outcome.get("status") or "INCONCLUSIVE"),
+                "content_sha256": manifest.content_sha256,
+                "artifact_ref": manifest.manifest["artifact_ref"],
+            }, owner=owner)
+        with get_observability().span(
+            "runproof.job.completion",
+            canonical_attributes(job_id=job_id, attempt_id=owner["attempt_id"], outcome=str(outcome.get("status") or "INCONCLUSIVE")),
+        ):
+            completed = self.client.complete_job(job_id, owner, evidence_id)
         return {
             "job_id": job_id,
             "trial_id": trial_id,
@@ -487,6 +546,15 @@ class DurableEvaluationWorker:
 
     def _reconcile_job(self, job: dict[str, Any]) -> dict[str, Any]:
         job_id = str(job.get("job_id"))
+        with get_observability().span("runproof.operation.reconcile", canonical_attributes(job_id=job_id)) as scope:
+            try:
+                return self._reconcile_job_impl(job)
+            except Exception as error:
+                scope.error(error, "reconcile_error")
+                raise
+
+    def _reconcile_job_impl(self, job: dict[str, Any]) -> dict[str, Any]:
+        job_id = str(job.get("job_id"))
         operations = job.get("operations") if isinstance(job.get("operations"), list) else []
         results: list[str] = []
         for operation in operations:
@@ -555,14 +623,20 @@ def main(argv: list[str] | None = None) -> int:
     try:
         results = worker.run_until_idle(max_jobs=args.max_jobs, idle_timeout=args.idle_timeout)
     except ControlPlaneClientError as error:
-        result = {"schema_version": WORKER_RESULT_SCHEMA, "status": "PLATFORM_ERROR", "worker_id": worker.worker_id, "jobs": [], "error": error.code}
+        telemetry = get_observability()
+        telemetry.flush(1000)
+        result = {"schema_version": WORKER_RESULT_SCHEMA, "status": "PLATFORM_ERROR", "worker_id": worker.worker_id, "jobs": [], "error": error.code, "observability": telemetry.diagnostics()}
         print(json.dumps(result, ensure_ascii=False))
+        reset_observability()
         return 1
-    result = {"schema_version": WORKER_RESULT_SCHEMA, "status": "PASS", "worker_id": worker.worker_id, "jobs": results, "processed_jobs": len(results)}
+    telemetry = get_observability()
+    telemetry.flush(1000)
+    result = {"schema_version": WORKER_RESULT_SCHEMA, "status": "PASS", "worker_id": worker.worker_id, "jobs": results, "processed_jobs": len(results), "observability": telemetry.diagnostics()}
     if args.result_path:
         args.result_path.parent.mkdir(parents=True, exist_ok=True)
         args.result_path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
     print(json.dumps(result, ensure_ascii=False))
+    reset_observability()
     return 0
 
 

@@ -22,7 +22,9 @@ public class PersistenceSchema {
     public static final String EXECUTION_SCHEMA_VERSION = SCHEMA_VERSION;
     /** Additive RPF-21 evidence/attempt binding; the outward execution schema remains RPF-14 compatible. */
     public static final String TERMINAL_EVIDENCE_SCHEMA_VERSION = "rpf-21-terminal-evidence-attempt-binding-v1";
-    private static final Set<String> SUPPORTED_HISTORY = Set.of(CANONICAL_SCHEMA_VERSION, EXECUTION_SCHEMA_VERSION, TERMINAL_EVIDENCE_SCHEMA_VERSION);
+    /** Additive RPF-30 diagnostic context; canonical metadata remains trace-free. */
+    public static final String OBSERVABILITY_SCHEMA_VERSION = "rpf-30-observability-context-v1";
+    private static final Set<String> SUPPORTED_HISTORY = Set.of(CANONICAL_SCHEMA_VERSION, EXECUTION_SCHEMA_VERSION, TERMINAL_EVIDENCE_SCHEMA_VERSION, OBSERVABILITY_SCHEMA_VERSION);
 
     private final JdbcTemplate jdbcTemplate;
     private final DataSource dataSource;
@@ -135,6 +137,7 @@ public class PersistenceSchema {
                     heartbeat_at TIMESTAMPTZ,
                     cancel_requested BOOLEAN NOT NULL,
                     timeout_requested BOOLEAN NOT NULL,
+                    otel_context_json TEXT NOT NULL DEFAULT '{}',
                     outcome_status VARCHAR(64),
                     platform_reason VARCHAR(256),
                     terminal_evidence_id VARCHAR(256),
@@ -156,6 +159,7 @@ public class PersistenceSchema {
                     lease_version BIGINT NOT NULL,
                     status VARCHAR(64) NOT NULL,
                     lease_expires_at TIMESTAMPTZ NOT NULL,
+                    otel_context_json TEXT,
                     heartbeat_at TIMESTAMPTZ,
                     started_at TIMESTAMPTZ,
                     ended_at TIMESTAMPTZ,
@@ -206,6 +210,8 @@ public class PersistenceSchema {
         // deliberately additive and idempotent; no historical evidence bytes
         // or rows are rewritten.
         jdbcTemplate.execute("ALTER TABLE rpf_execution_evidence ADD COLUMN IF NOT EXISTS attempt_id VARCHAR(256)");
+        jdbcTemplate.execute("ALTER TABLE rpf_execution_job ADD COLUMN IF NOT EXISTS otel_context_json TEXT NOT NULL DEFAULT '{}'");
+        jdbcTemplate.execute("ALTER TABLE rpf_execution_attempt ADD COLUMN IF NOT EXISTS otel_context_json TEXT");
         jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS rpf_execution_evidence_attempt_idx ON rpf_execution_evidence(attempt_id)");
         jdbcTemplate.execute("""
                 CREATE TABLE IF NOT EXISTS rpf_execution_event (
@@ -237,6 +243,14 @@ public class PersistenceSchema {
             jdbcTemplate.update(
                     "INSERT INTO rpf_schema_history(version, applied_at) VALUES (?, ?)",
                     TERMINAL_EVIDENCE_SCHEMA_VERSION,
+                    Timestamp.from(Instant.now())
+            );
+        }
+        if (versions.stream().noneMatch(OBSERVABILITY_SCHEMA_VERSION::equals)
+                && jdbcTemplate.queryForObject("SELECT COUNT(*) FROM rpf_schema_history WHERE version=?", Integer.class, OBSERVABILITY_SCHEMA_VERSION) == 0) {
+            jdbcTemplate.update(
+                    "INSERT INTO rpf_schema_history(version, applied_at) VALUES (?, ?)",
+                    OBSERVABILITY_SCHEMA_VERSION,
                     Timestamp.from(Instant.now())
             );
         }

@@ -47,6 +47,31 @@ The primary path is HTTP/JSON through the formal Control Plane. The browser does
 5. Failure investigation may derive Failure Case, Regression, Failure Intelligence, Statistical Evaluation, and Comparison artifacts without rewriting source evidence.
 6. Quality Policy produces a Gate and Release Decision. `ELIGIBLE` is a decision-only outcome; it is not a release command.
 
+## Formal diagnostic observability
+
+The formal RPF-30 slice adds optional OpenTelemetry instrumentation across the
+Java Control Plane, PostgreSQL durable Job/Attempt boundary, Python Worker,
+Agent, Tool, Environment, RPF-28 target/dependency transport, reconcile, and
+verifier. The SDK path uses W3C `traceparent` plus a small allowlisted W3C
+Baggage set. `job_id`, `attempt_id`, `run_id`, `environment_id`, and
+`operation_id` remain canonical RunProof identities; `trace_id` and `span_id`
+are diagnostic identities only.
+
+The three supported modes have the same canonical semantics: disabled/no-op,
+enabled with a healthy external Collector, and enabled with an unavailable
+Collector. Export is bounded and asynchronous; queue drops and export failures
+are diagnostic counters/logs, never Agent outcomes. A response-lost Run can
+therefore show the Job → Attempt → Agent → Tool → target/dependency → reconcile
+graph while receipt, effect count, `UNKNOWN_OUTCOME`, verifier, Evidence, Gate,
+and Decision remain owned by the canonical execution path.
+
+The Collector is an optional pinned verification fixture, not a startup
+dependency or authority. RPF-30 does not add a canonical trace field, trace
+artifact, Web trace UI, Jaeger/Tempo/Grafana dependency, SaaS backend, or
+long-term retention promise. Telemetry attributes and metric labels are
+allowlisted and exclude credentials, prompts, bodies, private reasoning,
+private paths, and high-cardinality IDs as metric labels.
+
 ## Authority and recovery boundaries
 
 - Agent and worker authority is narrower than decision-writer authority.
@@ -81,6 +106,7 @@ Module READMEs remain implementation-facing. Public claims are centralized here 
 | Hosted canonical Release Gate | `.github/workflows/release-gate.yml`, `ci/run_release_gate.py` | GitHub-hosted workflow and Job Summary contract |
 | Golden Demo integrity and lifecycle | `demo/rpf-19-golden-demo-v1.json`, `demo/verify-golden-demo.py`, lifecycle verifier | `python demo/verify-golden-demo.py --root . --json` |
 | Formal multi-service network faults | RPF-28 reviewed baseline/dependency/response-loss Runs, `multi-service-toxiproxy-v1`, and durable-worker focused result | `python spikes/rpf-28/probe.py --run`; `python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
+| Formal diagnostic observability | RPF-30 SDK instrumentation, three-mode durable probe, Collector trace file, and span/cardinality verifier | `python spikes/rpf-30/probe.py --run`; `python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
 
 The detailed source identities, hosted runs, and historical compatibility facts are kept in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md), not repeated in the current snapshot.
 
@@ -88,4 +114,8 @@ The detailed source identities, hosted runs, and historical compatibility facts 
 
 The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, object-storage durability, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
 
-The next architectural boundary should be selected from measured need: OpenTelemetry-compatible observability, managed or S3-compatible artifact storage, and capacity/large-trace evidence. Those are investigations, not implicit additions to this architecture.
+The next architectural boundary should be selected from measured need: managed
+or S3-compatible artifact storage, capacity/large-trace evidence, or a
+production topology investigation. Formal OpenTelemetry is now an optional
+diagnostic boundary, but it still does not imply trace retention, HA, or
+release authority.

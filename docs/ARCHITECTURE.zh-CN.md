@@ -47,6 +47,29 @@ Immutable Artifact Store ── 由 Control Plane 引用的经验证据字节
 5. Failure investigation 可以派生 Failure Case、Regression、Failure Intelligence、Statistical Evaluation 和 Comparison，但不能改写源 evidence。
 6. Quality Policy 产生 Gate 和 Release Decision。`ELIGIBLE` 是只读决策结果，不是 release command。
 
+## 正式诊断 Observability
+
+正式 RPF-30 在 Java Control Plane、PostgreSQL durable Job/Attempt 边界、
+Python Worker、Agent、Tool、Environment、RPF-28 target/dependency transport、
+reconcile 和 verifier 上增加了可选 OpenTelemetry instrumentation。SDK 路径
+使用 W3C `traceparent` 与一组严格 allowlisted 的 W3C Baggage。`job_id`、
+`attempt_id`、`run_id`、`environment_id`、`operation_id` 仍是 RunProof
+canonical identity；`trace_id` 与 `span_id` 仅是诊断 identity。
+
+三种正式模式保持相同 canonical 语义：disabled/no-op、enabled 且外置
+Collector 健康、enabled 但 Collector 不可用。Export 使用有界异步路径；
+queue drop 和 export failure 只形成 telemetry diagnostic counter/log，不会
+成为 Agent outcome。response-lost Run 因此可以显示 Job → Attempt → Agent →
+Tool → target/dependency → reconcile 链，而 receipt、effect count、
+`UNKNOWN_OUTCOME`、verifier、Evidence、Gate 和 Decision 仍由 canonical
+execution path 持有 authority。
+
+Collector 是可选且 pinned 的验证 fixture，不是启动依赖或 authority。RPF-30
+不新增 canonical trace 字段或 trace artifact，不引入 Web trace UI、
+Jaeger/Tempo/Grafana、SaaS backend 或长期 retention 承诺。Telemetry attribute
+和 metric label 采用 allowlist，并排除 credential、prompt、body、private
+reasoning、本机私有路径，以及作为 metric label 的高 cardinality ID。
+
 ## Authority 与恢复边界
 
 - Agent 和 worker 的 authority 小于 decision-writer authority。
@@ -81,6 +104,7 @@ Immutable Artifact Store ── 由 Control Plane 引用的经验证据字节
 | Hosted canonical Release Gate | `.github/workflows/release-gate.yml`、`ci/run_release_gate.py` | GitHub-hosted workflow 和 Job Summary contract |
 | Golden Demo integrity 与生命周期 | `demo/rpf-19-golden-demo-v1.json`、`demo/verify-golden-demo.py`、lifecycle verifier | `python demo/verify-golden-demo.py --root . --json` |
 | 正式多服务网络故障 | RPF-28 reviewed baseline/dependency/response-loss Run、`multi-service-toxiproxy-v1` 与 durable-worker focused result | `python spikes/rpf-28/probe.py --run`；`python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
+| 正式诊断 Observability | RPF-30 SDK instrumentation、三模式 durable probe、Collector trace file 与 span/cardinality verifier | `python spikes/rpf-30/probe.py --run`；`python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
@@ -88,4 +112,7 @@ source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATI
 
 当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、object-storage durability、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界应从测量需要中选择：OpenTelemetry-compatible observability、托管或 S3-compatible artifact storage、capacity/large-trace evidence。这些是调查方向，不是自动加入当前架构的组件。
+下一架构边界应从测量需要中选择：托管或 S3-compatible artifact storage、
+capacity/large-trace evidence，或 Production topology 调查。正式
+OpenTelemetry 现在是可选诊断边界，但仍不意味着 trace retention、HA 或
+release authority。

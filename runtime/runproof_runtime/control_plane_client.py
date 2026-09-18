@@ -13,10 +13,12 @@ import os
 import uuid
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Callable, Iterable
+from typing import Any, Callable, Iterable, Mapping
 from urllib.error import HTTPError, URLError
 from urllib.parse import quote
 from urllib.request import Request, urlopen
+
+from .observability import get_observability
 
 
 INGEST_MANIFEST_SCHEMA = "rpf-canonical-ingest-v1"
@@ -52,6 +54,33 @@ REF_ID_FIELDS = (
     "evaluation_id", "comparison_id", "policy_id", "gate_evaluation_id", "release_decision_id",
     "intelligence_id", "cluster_id", "bisect_id", "sampling_plan_id",
 )
+
+
+def _route_template(path: str) -> str:
+    """Keep client span names/attributes free of canonical IDs and queries."""
+
+    route = path.split("?", 1)[0]
+    parts = [part for part in route.split("/") if part]
+    if len(parts) >= 4 and parts[0:2] == ["api", "v1"] and parts[2] == "jobs":
+        suffix = parts[4:] if len(parts) > 4 else []
+        return "/api/v1/jobs/{job_id}" + ("/" + "/".join("{operation}" for _ in suffix) if suffix else "")
+    if len(parts) >= 4 and parts[0:2] == ["api", "v1"] and parts[2] == "metadata":
+        return "/api/v1/metadata/{entity_type}/{entity_id}"
+    return "/" + "/".join(parts[:3]) if parts[:3] == ["api", "v1", "metadata"] else "/api/v1/endpoint"
+
+
+_OWNER_FIELDS = frozenset({"attempt_id", "worker_id", "lease_token", "lease_version"})
+
+
+def _public_owner(owner: Mapping[str, Any]) -> dict[str, Any]:
+    """Return only transient lease-fencing fields for mutating job calls.
+
+    Claim responses also contain derived/read-only fields such as
+    ``lease_token_present``.  Forwarding an arbitrary mapping would both
+    widen the request contract and trip the server's sensitive-field guard.
+    """
+
+    return {key: value for key, value in owner.items() if key in _OWNER_FIELDS}
 
 
 class ControlPlaneClientError(RuntimeError):
@@ -310,17 +339,27 @@ class ControlPlaneClient:
         self._opener = opener
 
     def request(self, method: str, path: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
+        observability = get_observability()
+        with observability.span(
+            "runproof.control-plane.http",
+            {"http.method": method, "http.route": _route_template(path)},
+        ):
+            return self._request_raw(method, path, payload)
+
+    def _request_raw(self, method: str, path: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
         body = None if payload is None else json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {self.token}",
+            "X-Request-Id": f"rpf-client-{uuid.uuid4()}",
+        }
+        get_observability().inject(headers)
         request = Request(
             f"{self.base_url}{path}",
             data=body,
             method=method,
-            headers={
-                "Accept": "application/json",
-                "Content-Type": "application/json",
-                "Authorization": f"Bearer {self.token}",
-                "X-Request-Id": f"rpf-client-{uuid.uuid4()}",
-            },
+            headers=headers,
         )
         try:
             with self._opener(request, timeout=self.timeout) as response:
@@ -409,35 +448,39 @@ class ControlPlaneClient:
         })
 
     def start_job(self, job_id: str, owner: dict[str, Any]) -> dict[str, Any]:
-        response = self.request("POST", f"/jobs/{quote(job_id, safe='')}/start", owner)
+        body = _public_owner(owner)
+        context = owner.get("_observability_context")
+        if isinstance(context, dict) and context:
+            body["observability_context"] = context
+        response = self.request("POST", f"/jobs/{quote(job_id, safe='')}/start", body)
         job = response.get("job")
         if isinstance(job, dict) and isinstance(job.get("version"), int):
             owner["lease_version"] = job["version"]
         return response
 
     def heartbeat_job(self, job_id: str, owner: dict[str, Any], *, lease_seconds: int = 15) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/heartbeat", {**owner, "lease_seconds": lease_seconds})
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/heartbeat", {**_public_owner(owner), "lease_seconds": lease_seconds})
 
     def prepare_operation(self, job_id: str, owner: dict[str, Any], *, operation_id: str, environment_id: str, operation_fingerprint: str) -> dict[str, Any]:
         return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations", {
-            **owner,
+            **_public_owner(owner),
             "operation_id": operation_id,
             "environment_id": environment_id,
             "operation_fingerprint": operation_fingerprint,
         })
 
     def dispatch_operation(self, job_id: str, operation_id: str, owner: dict[str, Any]) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/dispatch", owner)
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/dispatch", _public_owner(owner))
 
     def mark_operation_not_submitted(self, job_id: str, operation_id: str, owner: dict[str, Any]) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/not-submitted", owner)
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/not-submitted", _public_owner(owner))
 
     def apply_operation(self, job_id: str, operation_id: str, owner: dict[str, Any], *, simulate_response_lost: bool = False) -> dict[str, Any]:
         suffix = "?simulate_response_lost=true" if simulate_response_lost else ""
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/apply{suffix}", owner)
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/apply{suffix}", _public_owner(owner))
 
     def confirm_operation(self, job_id: str, operation_id: str, owner: dict[str, Any], *, receipt_ref: str | None = None) -> dict[str, Any]:
-        body = dict(owner)
+        body = _public_owner(owner)
         if receipt_ref:
             body["receipt_ref"] = receipt_ref
         return self.request("POST", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}/confirm", body)
@@ -452,20 +495,20 @@ class ControlPlaneClient:
         return self.request("GET", f"/jobs/{quote(job_id, safe='')}/operations/{quote(operation_id, safe='')}")
 
     def ingest_execution_evidence(self, job_id: str, payload: dict[str, Any], *, owner: dict[str, Any] | None = None) -> dict[str, Any]:
-        body = {**owner, **payload} if owner is not None else payload
+        body = {**_public_owner(owner), **payload} if owner is not None else payload
         return self.request("POST", f"/jobs/{quote(job_id, safe='')}/evidence", body)
 
     def complete_job(self, job_id: str, owner: dict[str, Any], evidence_id: str) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/complete", {**owner, "evidence_id": evidence_id})
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/complete", {**_public_owner(owner), "evidence_id": evidence_id})
 
     def fail_platform_job(self, job_id: str, owner: dict[str, Any], evidence_id: str, reason: str) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/fail-platform", {**owner, "evidence_id": evidence_id, "reason": reason})
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/fail-platform", {**_public_owner(owner), "evidence_id": evidence_id, "reason": reason})
 
     def cancel_job(self, job_id: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
         return self.request("POST", f"/jobs/{quote(job_id, safe='')}/cancel", payload or {})
 
     def acknowledge_cancel(self, job_id: str, owner: dict[str, Any], evidence_id: str) -> dict[str, Any]:
-        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/cancel/ack", {**owner, "evidence_id": evidence_id})
+        return self.request("POST", f"/jobs/{quote(job_id, safe='')}/cancel/ack", {**_public_owner(owner), "evidence_id": evidence_id})
 
     def timeout_job(self, job_id: str, payload: dict[str, Any]) -> dict[str, Any]:
         return self.request("POST", f"/jobs/{quote(job_id, safe='')}/timeout", payload)

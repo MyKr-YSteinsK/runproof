@@ -60,6 +60,31 @@ RPF-28 新增正式 `multi-service-toxiproxy-v1` Environment，但不替换单�
 
 versioned `rpf-network-fault-profile-v1` 区分 `none`、`latency`、`timeout`、`dependency-unavailable`、`response-lost` 与 `pre-side-effect-failure`。Evidence 分开记录 `planned`、`triggered`、`observed`、`reconciled`。side effect 已提交但响应丢失时，必须证明 client 没有收到成功响应、存在稳定 operation receipt、effect 恰好一次，并先 reconcile 再 retry。依赖或 side-effect 前失败则必须证明对照关系：没有 receipt 且 effect 为零。Readiness、initial state、fault reset 和 cleanup 都属于 terminal proof；cleanup 无法验证时 Environment 必须 quarantine。
 
+## 可选 OpenTelemetry 诊断合同
+
+RPF-30 增加正式但可选的 OpenTelemetry 路径。Telemetry disabled、外置
+Collector 健康、Collector 不可用三种情况下，canonical execution semantics
+必须一致。disabled 路径是真正 no-op，不启动 exporter thread；enabled export
+使用有界异步路径，queue drop/export failure 只形成诊断健康信号。它们不能
+把 Run 改成 `FAIL`、阻止 terminal Evidence、触发盲目 retry，也不能阻塞
+`UNKNOWN_OUTCOME` reconcile。
+
+W3C `traceparent` 和有限 allowlist 的 W3C Baggage 用来关联 Java Control
+Plane、durable Job/Attempt、Python Worker、Agent/Tool、RPF-28
+target/dependency 与 verifier。canonical `job_id`、`attempt_id`、`run_id`、
+`environment_id`、`operation_id` 仍是独立 identity；trace/span ID 不能成为
+业务主键。Attempt reclaim 保留 Job correlation、创建新的 Attempt subtree，
+并可用 link 关联旧 Attempt，但不能伪装为同一次执行。
+
+response-lost trace 只用于调查：当 target receipt、effect count、reconcile
+和 verifier 证明 Scenario 时，error span 可以与 Agent `PASS` 同时存在。
+Telemetry completeness 可以是 `COMPLETE`、`PROPAGATION_MISSING` 或
+`EXPORT_UNAVAILABLE`；缺失 propagation 会被检测，但对 canonical Run
+fail-open。Attribute 与 metric label 均采用低 cardinality allowlist，不能
+包含 credential、prompt、body、private reasoning、本机私有路径，也不能把
+canonical ID 用作 metric label。Collector 是可选的 pinned 验证 fixture；
+没有 trace UI、长期 retention 或 Jaeger/Tempo/Grafana 产品依赖。
+
 ## Statistical Reliability
 
 Statistical evaluation 与单次 Evaluation/Comparison 分离。Sampling Plan 固定 trial 数、attempt budget、Agent/config、Scenario、environment sequence、metric 定义以及 Wilson method/version。

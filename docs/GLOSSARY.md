@@ -35,6 +35,10 @@ RunProof keeps the following technical terms in English in identifiers, raw evid
 | Control Plane | The formal Java/Spring API and canonical metadata authority used by Web, worker, seed, and CI boundaries. |
 | Artifact Store | The immutable storage boundary for verified evidence bytes. |
 | Durable Worker | The independent process that claims Jobs, fences attempts, reconciles uncertain operations, and reports evidence. |
+| Observability signal | Optional diagnostic telemetry produced by the formal OpenTelemetry boundary; it is not canonical Evidence, a Quality Gate input, or Release authority. |
+| Trace identity | OpenTelemetry `trace_id` / `span_id` used for correlation only; it is separate from RunProof Job, Attempt, Run, Environment, and Operation identity. |
+| Telemetry completeness | A bounded diagnostic state such as `COMPLETE`, `PROPAGATION_MISSING`, or `EXPORT_UNAVAILABLE`; it does not change the canonical Run outcome. |
+| W3C Baggage allowlist | The small set of low-risk correlation keys allowed to cross service boundaries; it excludes secrets, prompts, bodies, reasoning, and error narratives. |
 | Golden Demo | The local reviewed-evidence walkthrough and lifecycle boundary; not a Production deployment. |
 
 ## Naming rule

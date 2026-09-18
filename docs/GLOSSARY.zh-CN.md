@@ -35,6 +35,10 @@ RunProof 在 identifier、raw evidence、route 和 status value 中保留下面�
 | Control Plane | 正式 Java/Spring API 与 canonical metadata authority，供 Web、worker、seed 和 CI 使用。 |
 | Artifact Store | 保存经验证 evidence bytes 的 immutable storage boundary。 |
 | Durable Worker | 独立进程，负责 claim Job、fence attempt、reconcile uncertain operation 和报告 evidence。 |
+| Observability signal | 正式 OpenTelemetry boundary 产生的可选诊断 telemetry；不是 canonical Evidence、Quality Gate input 或 Release authority。 |
+| Trace identity | 用于关联的 OpenTelemetry `trace_id` / `span_id`；与 RunProof 的 Job、Attempt、Run、Environment、Operation identity 分离。 |
+| Telemetry completeness | 有界诊断状态，例如 `COMPLETE`、`PROPAGATION_MISSING` 或 `EXPORT_UNAVAILABLE`；不会改变 canonical Run outcome。 |
+| W3C Baggage allowlist | 允许跨服务传播的少量低风险 correlation key；排除 secret、prompt、body、reasoning 和 error narrative。 |
 | Golden Demo | 本地 reviewed-evidence walkthrough 与 lifecycle boundary，不是 Production deployment。 |
 
 ## 命名规则

@@ -19,6 +19,7 @@ from .deepseek_provider import DEFAULT_MODEL
 from .evidence import runtime_source_sha256, timestamp
 from .models import EVIDENCE_SCHEMA_VERSION, INITIAL_STATE, NO_BLIND_RETRY_AFTER_UNKNOWN_OUTCOME, RuntimeFailure, state_diff, TRAJECTORY_CONTRACT_VERSION
 from .multi_service_environment import ENVIRONMENT_PROFILE, FAULT_PROFILES, MultiServiceEnvironment, provider_snapshot
+from .observability import canonical_attributes, get_observability
 from .scenario import SCENARIO
 from .verifier import VERIFIER_VERSION
 
@@ -338,7 +339,7 @@ def run_multi_service_slice(
     try:
         provider_info = provider_snapshot()
         artifact["environment_provider"] = {"provider_id": "docker", "provider_type": "environment", "provider_implementation": "docker", **provider_info}
-        environment = MultiServiceEnvironment(provider_info, role="formal-run", fault_profile=fault_profile)
+        environment = MultiServiceEnvironment(provider_info, role="formal-run", fault_profile=fault_profile, run_id=run_id)
         environment.provision()
         artifact["environment"] = environment.snapshot()
         _event(trajectory, "environment_provisioned", environment_id=environment.environment_id, seed_id=environment.contract["seed_id"], seed_revision=environment.contract["seed_revision"], provenance=environment.contract["provenance"])
@@ -352,7 +353,21 @@ def run_multi_service_slice(
             raise RuntimeFailure("ENVIRONMENT", initial.get("code", "INITIAL_STATE_MISMATCH"), "INVALID")
         initial_state = copy.deepcopy(initial["state"])
         formal_run_started = True
-        action, health, recovered_health, reconcile, _blind_retry_attempts, agent_failure = _run_agent_driver(environment, agent_profile_id, fault_profile, trajectory)
+        observability = get_observability()
+        with observability.span(
+            "runproof.agent.run",
+            canonical_attributes(
+                run_id=run_id,
+                environment_id=environment.environment_id,
+                agent_id=agent_profile_id,
+                fault_profile=fault_profile,
+            ),
+        ) as agent_scope:
+            try:
+                action, health, recovered_health, reconcile, _blind_retry_attempts, agent_failure = _run_agent_driver(environment, agent_profile_id, fault_profile, trajectory)
+            except Exception as error:
+                agent_scope.error(error, "agent_driver_error")
+                raise
         if fault_profile == "pre-side-effect-failure":
             actual_state = copy.deepcopy((action or {}).get("state") or INITIAL_STATE)
             _event(trajectory, "actual_state_verification", state=actual_state, observation="pre-side-effect-transport-failure-contrast")
@@ -364,7 +379,15 @@ def run_multi_service_slice(
             _event(trajectory, "actual_state_verification", state=actual_state)
         full_state = copy.deepcopy(environment.full_state()) if fault_profile != "pre-side-effect-failure" else {}
         fault = _fault_document(environment)
-        verification = _formal_verification(fault_profile, initial_state, actual_state, full_state, action, health, recovered_health, reconcile, fault, agent_started=formal_run_started, blind_retry_attempts=_blind_retry_attempts)
+        with get_observability().span(
+            "runproof.verifier.evaluate",
+            canonical_attributes(run_id=run_id, environment_id=environment.environment_id, fault_profile=fault_profile),
+        ) as verifier_scope:
+            try:
+                verification = _formal_verification(fault_profile, initial_state, actual_state, full_state, action, health, recovered_health, reconcile, fault, agent_started=formal_run_started, blind_retry_attempts=_blind_retry_attempts)
+            except Exception as error:
+                verifier_scope.error(error, "verifier_error")
+                raise
         artifact["verification"] = verification
         artifact["fault"] = fault
         if agent_failure:

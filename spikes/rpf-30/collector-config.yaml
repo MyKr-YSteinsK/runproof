@@ -1,0 +1,24 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  file:
+    path: /var/lib/rpf30/traces.json
+    flush_interval: 1s
+  file/metrics:
+    path: /var/lib/rpf30/metrics.json
+    flush_interval: 1s
+  debug:
+    verbosity: basic
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      exporters: [file, debug]
+    metrics:
+      receivers: [otlp]
+      exporters: [file/metrics, debug]

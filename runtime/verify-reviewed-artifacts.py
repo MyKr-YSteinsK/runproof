@@ -86,6 +86,7 @@ HISTORICAL_RPF06_RUNTIME_VERSION = "rpf-06.v1"
 CURRENT_RPF07_RUNTIME_VERSION = "rpf-07.v1"
 HISTORICAL_RPF07_SOURCE_SHA256 = "c607e5e38015c99fedcbba3efbcdc20834953f2fec7543313ead3ce0211d3adf"
 HISTORICAL_RPF08_SOURCE_SHA256 = "d6313e5849b2662d9badafa7be25d568e84ab6cc4912c9587495a5f9427bfd69"
+HISTORICAL_RPF28_SOURCE_SHA256 = "b5f2c22fce21d0c14455a2ee076d1d12df31f5dbc10c9fe8aef9ea97d7fcfaa6"
 SECRET_VALUE = re.compile(
     r"(?:sk-[A-Za-z0-9_-]{12,}|gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|Bearer\s+\S+)"
 )
@@ -693,7 +694,11 @@ def assert_rpf28_artifact(path: Path, expected_profile: str, source_hash: str) -
     assert artifact["schema_version"] == "rpf-run-evidence-v2"
     assert artifact["artifact_kind"] == "Run Evidence"
     assert artifact["run"]["runtime"]["runtime_version"] == RPF28_RUNTIME_VERSION
-    assert artifact["run"]["runtime"]["source_sha256"] == source_hash
+    # RPF-28 reviewed bytes remain immutable.  RPF-30 adds optional
+    # instrumentation to the runtime package, so the historical RPF-28
+    # corpus is accepted by its recorded source identity while newly built
+    # RPF-30 evidence must bind the current hash.
+    assert artifact["run"]["runtime"]["source_sha256"] in {HISTORICAL_RPF28_SOURCE_SHA256, source_hash}
     assert artifact["run"]["verifier"]["verifier_id"] == FORMAL_VERIFIER_ID
     assert artifact["environment"]["environment_profile"] == "multi-service-toxiproxy-v1"
     assert artifact["environment"]["lifecycle_state"] == "CLEANED"

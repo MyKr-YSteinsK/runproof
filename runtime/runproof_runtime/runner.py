@@ -17,6 +17,7 @@ from .evidence import runtime_source_sha256, timestamp
 from .models import AGENT_OBSERVE_BEFORE_MUTATION, EVIDENCE_SCHEMA_VERSION, RuntimeFailure, TRAJECTORY_CONTRACT_VERSION
 from .scenario import SCENARIO, system_prompt
 from .verifier import VERIFIER_ID, VERIFIER_VERSION, verify_run
+from .observability import canonical_attributes, get_observability
 from . import RUNTIME_VERSION
 
 
@@ -28,6 +29,20 @@ OVERALL_TIMEOUT_SECONDS = 8 * 60
 
 def _event(trajectory: list[dict[str, Any]], event_type: str, **values: Any) -> None:
     trajectory.append({"layer": "Observed Fact", "event_type": event_type, **values})
+
+
+def _execute_tool_with_observability(executor: ToolExecutor, call: Any, run_id: str, environment_id: str, fault_profile: str) -> dict[str, Any]:
+    observability = get_observability()
+    with observability.span(
+        "runproof.tool.call",
+        canonical_attributes(run_id=run_id, environment_id=environment_id, operation_id=str(getattr(call, "call_id", "tool-call")), fault_profile=fault_profile)
+        | {"runproof.target.type": str(getattr(call, "name", "tool"))},
+    ) as scope:
+        try:
+            return executor.execute(call)
+        except Exception as error:
+            scope.error(error, "tool_execution_error")
+            raise
 
 
 def _normalize_trajectory(trajectory: list[dict[str, Any]], run_id: str, environment_id: str | None) -> None:
@@ -192,7 +207,9 @@ def run_slice(
             provider = DeepSeekProvider(api_key or os.environ.get("DEEPSEEK_API_KEY", ""), model=model, max_calls=MAX_PROVIDER_CALLS)
             artifact["llm_provider"] = {"provider_id": "deepseek", "provider_type": "llm", "requested_model": provider.model, "mode": "non-thinking"}
         environment = DockerEnvironment(provider_info, "agent-run", failure_hook=environment_failure)
-        environment.provision()
+        environment_id = str(environment.contract["environment_id"])
+        with get_observability().span("runproof.environment.provision", canonical_attributes(run_id=run_id, environment_id=environment_id)):
+            environment.provision()
         artifact["environment"] = environment.snapshot()
         _event(
             trajectory,
@@ -203,7 +220,8 @@ def run_slice(
             provenance=environment.contract["provenance"],
         )
 
-        readiness = environment.readiness()
+        with get_observability().span("runproof.environment.readiness", canonical_attributes(run_id=run_id, environment_id=environment_id)):
+            readiness = environment.readiness()
         _event(trajectory, "readiness", result=readiness)
         if not readiness.get("ok"):
             raise RuntimeFailure("ENVIRONMENT", readiness.get("code", "READINESS_FAILED"))
@@ -228,7 +246,7 @@ def run_slice(
             )
             before_events = len(executor.events)
             try:
-                executor.execute(call)
+                _execute_tool_with_observability(executor, call, run_id, environment_id, fault_profile)
             except RuntimeFailure as error:
                 trajectory.extend(copy.deepcopy(executor.events[before_events:]))
                 _event(
@@ -263,7 +281,7 @@ def run_slice(
                 )
                 before_events = len(executor.events)
                 try:
-                    executor.execute(call)
+                    _execute_tool_with_observability(executor, call, run_id, environment_id, fault_profile)
                 except RuntimeFailure as error:
                     trajectory.extend(copy.deepcopy(executor.events[before_events:]))
                     _event(
@@ -315,7 +333,7 @@ def run_slice(
                 )
                 before_events = len(executor.events)
                 try:
-                    result = executor.execute(call)
+                    result = _execute_tool_with_observability(executor, call, run_id, environment_id, fault_profile)
                 except RuntimeFailure as error:
                     trajectory.extend(copy.deepcopy(executor.events[before_events:]))
                     _event(
@@ -341,16 +359,17 @@ def run_slice(
         actual_state = environment.read_state()
         _event(trajectory, "actual_state_verification", state=actual_state)
         executor_snapshot = executor.snapshot()
-        verification = verify_run(
-            initial_state,
-            actual_state,
-            initial_verified=True,
-            mutation_count=executor_snapshot["mutation_count"],
-            readback_observed=executor_snapshot["readback_observed"],
-            unresolved_unknown=executor_snapshot["unresolved_unknown"],
-            blind_retry_attempts=executor_snapshot["blind_retry_attempts"],
-            fault=executor_snapshot["fault"],
-        )
+        with get_observability().span("runproof.verifier.evaluate", canonical_attributes(run_id=run_id, environment_id=environment_id, fault_profile=fault_profile)):
+            verification = verify_run(
+                initial_state,
+                actual_state,
+                initial_verified=True,
+                mutation_count=executor_snapshot["mutation_count"],
+                readback_observed=executor_snapshot["readback_observed"],
+                unresolved_unknown=executor_snapshot["unresolved_unknown"],
+                blind_retry_attempts=executor_snapshot["blind_retry_attempts"],
+                fault=executor_snapshot["fault"],
+            )
         artifact["verification"] = verification
         artifact["fault"] = executor_snapshot["fault"]
         if agent_failure:
@@ -369,7 +388,8 @@ def run_slice(
                 pass
     finally:
         if environment:
-            cleanup = environment.cleanup()
+            with get_observability().span("runproof.environment.cleanup", canonical_attributes(run_id=run_id, environment_id=environment.contract.get("environment_id"))):
+                cleanup = environment.cleanup()
             _event(trajectory, "cleanup", result=cleanup)
             if not cleanup.get("ok") and not (cleanup.get("code") == "QUARANTINED" and terminal_error is not None):
                 terminal_error = RuntimeFailure("ENVIRONMENT", cleanup.get("code", "CLEANUP_FAILED"))

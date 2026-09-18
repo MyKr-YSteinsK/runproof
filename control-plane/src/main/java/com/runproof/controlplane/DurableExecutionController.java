@@ -68,6 +68,7 @@ public class DurableExecutionController {
     private final TransactionTemplate transactions;
     private final CanonicalMetadataService canonicalMetadataService;
     private final AuthService authService;
+    private final ObservabilityService observability;
     private final boolean probeEnabled;
 
     public DurableExecutionController(
@@ -76,6 +77,7 @@ public class DurableExecutionController {
             PlatformTransactionManager transactionManager,
             CanonicalMetadataService canonicalMetadataService,
             AuthService authService,
+            ObservabilityService observability,
             @Value("${rpf.probe.enabled:false}") boolean probeEnabled
     ) {
         this.jdbc = jdbc;
@@ -83,6 +85,7 @@ public class DurableExecutionController {
         this.transactions = new TransactionTemplate(transactionManager);
         this.canonicalMetadataService = canonicalMetadataService;
         this.authService = authService;
+        this.observability = observability;
         this.probeEnabled = probeEnabled;
     }
 
@@ -95,6 +98,7 @@ public class DurableExecutionController {
             @RequestParam(name = "limit", defaultValue = "50") int limit
     ) {
         authService.require(request, "metadata:read");
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.read", Map.of("runproof.target.type", targetType == null ? "ANY" : targetType.toUpperCase(Locale.ROOT)))) {
         int boundedLimit = Math.max(1, Math.min(limit, 100));
         List<String> conditions = new ArrayList<>();
         List<Object> args = new ArrayList<>();
@@ -119,6 +123,7 @@ public class DurableExecutionController {
             items.add(snapshot(findJob(text(row, "job_id"), false, true)));
         }
         return Map.of("items", items, "limit", boundedLimit, "discovery", eligible ? "ELIGIBLE" : "HISTORY");
+        }
     }
 
     @GetMapping("/execution-metrics")
@@ -144,7 +149,9 @@ public class DurableExecutionController {
     public Map<String, Object> getJob(HttpServletRequest request, @PathVariable String jobId) {
         authService.require(request, "metadata:read");
         mark(request, "EXECUTION_JOB", jobId);
-        return snapshot(findJob(requiredIdValue(jobId, "job_id"), false, true));
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.read", Map.of("runproof.job.id", requiredIdValue(jobId, "job_id")))) {
+            return snapshot(findJob(requiredIdValue(jobId, "job_id"), false, true));
+        }
     }
 
     @PostMapping("/jobs")
@@ -160,6 +167,12 @@ public class DurableExecutionController {
         String correlationId = optionalId(body, "correlation_id", "rpf14-" + UUID.randomUUID());
         Map<String, Object> payloadRef = payloadRef(body.get("payload_ref"));
         mark(request, "EXECUTION_JOB", jobId);
+        try (ObservabilityService.SpanScope submitSpan = observability.span("runproof.job.submit", Map.of(
+                "runproof.job.id", jobId,
+                "runproof.job.type", jobType,
+                "runproof.target.type", targetType
+        ))) {
+        String observabilityContext = json(submitSpan.contextDocument());
         Map<String, Object> result = transactions.execute(status -> {
             Map<String, Object> existing = findJobByIdempotency(idempotencyKey, true);
             if (existing != null) {
@@ -176,12 +189,12 @@ public class DurableExecutionController {
                     INSERT INTO rpf_execution_job(
                         job_id, idempotency_key, request_fingerprint, job_type, target_type, target_id,
                         payload_ref_json, correlation_id, state, version, attempt_number,
-                        cancel_requested, timeout_requested, created_at, updated_at
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'QUEUED', 0, 0, FALSE, FALSE, ?, ?)
+                        cancel_requested, timeout_requested, otel_context_json, created_at, updated_at
+                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'QUEUED', 0, 0, FALSE, FALSE, ?, ?, ?)
                     ON CONFLICT DO NOTHING
                     """,
                     jobId, idempotencyKey, fingerprint, jobType, targetType, targetId,
-                    json(payloadRef), correlationId, Timestamp.from(now), Timestamp.from(now)
+                    json(payloadRef), correlationId, observabilityContext, Timestamp.from(now), Timestamp.from(now)
             );
             if (inserted == 0) {
                 Map<String, Object> winner = findJobByIdempotency(idempotencyKey, true);
@@ -194,6 +207,7 @@ public class DurableExecutionController {
             return response("SUBMITTED", false, jobId, snapshot(findJob(jobId, false, true)));
         });
         return ResponseEntity.status(Boolean.TRUE.equals(result.get("already_exists")) ? HttpStatus.OK : HttpStatus.CREATED).body(result);
+        }
     }
 
     @PostMapping("/jobs/{jobId}/claim")
@@ -208,7 +222,9 @@ public class DurableExecutionController {
         int leaseSeconds = integer(body, "lease_seconds", 1, 60, 15);
         String normalizedJobId = requiredIdValue(jobId, "job_id");
         mark(request, "EXECUTION_JOB", normalizedJobId);
-        return ResponseEntity.ok(transactions.execute(status -> claimLocked(normalizedJobId, workerId, leaseSeconds)));
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.claim", Map.of("runproof.job.id", normalizedJobId))) {
+            return ResponseEntity.ok(transactions.execute(status -> claimLocked(normalizedJobId, workerId, leaseSeconds)));
+        }
     }
 
     @PostMapping("/jobs/{jobId}/start")
@@ -221,6 +237,7 @@ public class DurableExecutionController {
         Map<String, Object> body = requiredBody(rawBody);
         String normalizedJobId = requiredIdValue(jobId, "job_id");
         mark(request, "EXECUTION_JOB", normalizedJobId);
+        String attemptObservabilityContext = safeDiagnosticContext(body.get("observability_context"));
         return transactions.execute(status -> {
             Map<String, Object> job = findJob(normalizedJobId, true, true);
             if ("RUNNING".equals(job.get("state"))) {
@@ -234,7 +251,7 @@ public class DurableExecutionController {
             Instant now = Instant.now();
             long nextVersion = version(job) + 1;
             jdbc.update("UPDATE rpf_execution_job SET state='RUNNING', version=?, updated_at=? WHERE job_id=?", nextVersion, Timestamp.from(now), normalizedJobId);
-            jdbc.update("UPDATE rpf_execution_attempt SET status='RUNNING', lease_version=?, started_at=COALESCE(started_at, ?) WHERE attempt_id=?", nextVersion, Timestamp.from(now), job.get("active_attempt_id"));
+            jdbc.update("UPDATE rpf_execution_attempt SET status='RUNNING', lease_version=?, otel_context_json=COALESCE(?, otel_context_json), started_at=COALESCE(started_at, ?) WHERE attempt_id=?", nextVersion, attemptObservabilityContext, Timestamp.from(now), job.get("active_attempt_id"));
             insertEvent(normalizedJobId, "CLAIMED", "RUNNING", "ATTEMPT_STARTED", text(job, "active_attempt_id"), null, nextVersion, "WORKER_STARTED", now);
             return response("RUNNING", false, normalizedJobId, snapshot(findJob(normalizedJobId, false, true)));
         });
@@ -470,6 +487,9 @@ public class DurableExecutionController {
         requiredId(body, "worker_id");
         String normalizedJobId = requiredIdValue(jobId, "job_id");
         String normalizedOperationId = requiredIdValue(operationId, "operation_id");
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.operation.unknown", Map.of(
+                "runproof.job.id", normalizedJobId, "runproof.operation.id", normalizedOperationId
+        ))) {
         return transactions.execute(status -> {
             Map<String, Object> job = findJob(normalizedJobId, true, true);
             Map<String, Object> operation = ownedOperation(normalizedJobId, normalizedOperationId, true);
@@ -506,6 +526,7 @@ public class DurableExecutionController {
             }
             return operationResponse("UNKNOWN_OUTCOME", false, findOperation(normalizedOperationId, false));
         });
+        }
     }
 
     @PostMapping("/jobs/{jobId}/operations/{operationId}/reconcile")
@@ -520,6 +541,9 @@ public class DurableExecutionController {
         requiredId(body, "worker_id");
         String normalizedJobId = requiredIdValue(jobId, "job_id");
         String normalizedOperationId = requiredIdValue(operationId, "operation_id");
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.operation.reconcile", Map.of(
+                "runproof.job.id", normalizedJobId, "runproof.operation.id", normalizedOperationId
+        ))) {
         return transactions.execute(status -> {
             Map<String, Object> job = findJob(normalizedJobId, true, true);
             Map<String, Object> operation = ownedOperation(normalizedJobId, normalizedOperationId, true);
@@ -559,6 +583,7 @@ public class DurableExecutionController {
             }
             return reconcileResponse(nextStatus, "NOT_SUBMITTED".equals(nextStatus), false, findOperation(normalizedOperationId, false), findJob(normalizedJobId, false, true));
         });
+        }
     }
 
     @GetMapping("/jobs/{jobId}/operations/{operationId}")
@@ -658,6 +683,7 @@ public class DurableExecutionController {
         Map<String, Object> body = requiredBody(rawBody);
         String normalizedJobId = requiredIdValue(jobId, "job_id");
         String evidenceId = requiredId(body, "evidence_id");
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.terminalize", Map.of("runproof.job.id", normalizedJobId, "runproof.outcome", "COMPLETED"))) {
         return transactions.execute(status -> {
             Map<String, Object> job = findJob(normalizedJobId, true, true);
             if ("COMPLETED".equals(job.get("state")) && Objects.equals(job.get("terminal_evidence_id"), evidenceId)) {
@@ -675,6 +701,7 @@ public class DurableExecutionController {
             finishTerminal(job, "COMPLETED", "COMPLETED", text(evidence, "outcome"), evidenceId, "EVIDENCE_COMMITTED", "ATTEMPT_COMPLETED");
             return response("COMPLETED", false, normalizedJobId, snapshot(findJob(normalizedJobId, false, true)));
         });
+        }
     }
 
     @PostMapping("/jobs/{jobId}/fail-platform")
@@ -688,6 +715,7 @@ public class DurableExecutionController {
         String normalizedJobId = requiredIdValue(jobId, "job_id");
         String evidenceId = requiredId(body, "evidence_id");
         String reason = requiredId(body, "reason");
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.job.terminalize", Map.of("runproof.job.id", normalizedJobId, "runproof.outcome", "FAILED_PLATFORM"))) {
         return transactions.execute(status -> {
             Map<String, Object> job = findJob(normalizedJobId, true, true);
             requireOwner(job, body);
@@ -698,6 +726,7 @@ public class DurableExecutionController {
             finishTerminal(job, "FAILED_PLATFORM", "FAILED_PLATFORM", text(evidence, "outcome"), evidenceId, reason, "ATTEMPT_FAILED_PLATFORM");
             return response("FAILED_PLATFORM", false, normalizedJobId, snapshot(findJob(normalizedJobId, false, true)));
         });
+        }
     }
 
     @PostMapping("/jobs/{jobId}/cancel")
@@ -803,7 +832,9 @@ public class DurableExecutionController {
         if ("RECONCILE_REQUIRED".equals(state)) return response("RECONCILE_REQUIRED", false, jobId, snapshot(job));
         if ("CANCEL_REQUESTED".equals(state)) return response("CANCEL_REQUESTED", false, jobId, snapshot(job));
         String activeAttempt = text(job, "active_attempt_id");
+        String previousAttemptContext = null;
         if (activeAttempt != null) {
+            previousAttemptContext = text(jdbc.queryForMap("SELECT otel_context_json FROM rpf_execution_attempt WHERE attempt_id=?", activeAttempt), "otel_context_json");
             boolean expired = Boolean.TRUE.equals(jdbc.queryForObject("SELECT lease_expires_at <= CURRENT_TIMESTAMP FROM rpf_execution_job WHERE job_id=?", Boolean.class, jobId));
             if (!expired) throw new IdentityConflictException("ACTIVE_LEASE", "Another worker currently owns the job lease.");
             Instant now = Instant.now();
@@ -831,8 +862,8 @@ public class DurableExecutionController {
         jdbc.update("""
                 INSERT INTO rpf_execution_attempt(
                     attempt_id, job_id, attempt_number, worker_id, lease_token_hash, lease_version,
-                    status, lease_expires_at, created_at
-                ) VALUES (?, ?, ?, ?, ?, ?, 'CLAIMED', ?, ?)
+                    status, lease_expires_at, otel_context_json, created_at
+                ) VALUES (?, ?, ?, ?, ?, ?, 'CLAIMED', ?, NULL, ?)
                 """, attemptId, jobId, attemptNumber, workerId, tokenHash, nextVersion, Timestamp.from(expires), Timestamp.from(now));
         jdbc.update("""
                 UPDATE rpf_execution_job
@@ -844,6 +875,13 @@ public class DurableExecutionController {
         Map<String, Object> updated = findJob(jobId, false, true);
         Map<String, Object> result = response("CLAIMED", false, jobId, snapshot(updated));
         result.put("lease", leaseDetails(updated, leaseToken, nextVersion, expires));
+        Map<String, Object> observabilityContext = new LinkedHashMap<>();
+        observabilityContext.put("schema_version", ObservabilityService.CONTEXT_SCHEMA);
+        observabilityContext.put("job", parseJson(text(updated, "otel_context_json")));
+        if (previousAttemptContext != null && !previousAttemptContext.isBlank()) {
+            observabilityContext.put("previous_attempt", parseJson(previousAttemptContext));
+        }
+        result.put("observability_context", observabilityContext);
         return result;
     }
 
@@ -962,7 +1000,7 @@ public class DurableExecutionController {
                        active_attempt_id, active_worker_id, active_lease_token_hash,
                        lease_expires_at::text AS lease_expires_at, heartbeat_at::text AS heartbeat_at,
                        cancel_requested, timeout_requested, outcome_status, platform_reason,
-                       terminal_evidence_id, last_operation_id, created_at::text AS created_at,
+                       terminal_evidence_id, last_operation_id, otel_context_json, created_at::text AS created_at,
                        updated_at::text AS updated_at
                 FROM rpf_execution_job WHERE job_id=?
                 """ + (forUpdate ? " FOR UPDATE" : "");
@@ -1198,6 +1236,46 @@ public class DurableExecutionController {
         Map<String, Object> result = new LinkedHashMap<>((Map<String, Object>) map);
         if (json(result).length() > 16_384) throw new RequestValidationException("PAYLOAD_REF_TOO_LARGE", "Execution payload references must remain bounded.");
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    private String safeDiagnosticContext(Object value) {
+        if (value == null) return null;
+        if (!(value instanceof Map<?, ?> raw)) {
+            throw new RequestValidationException("INVALID_OBSERVABILITY_CONTEXT", "Observability context must be a bounded object.");
+        }
+        Map<String, Object> input = new LinkedHashMap<>((Map<String, Object>) raw);
+        if (!Objects.equals(input.get("schema_version"), ObservabilityService.CONTEXT_SCHEMA)) {
+            throw new RequestValidationException("INVALID_OBSERVABILITY_CONTEXT", "Unsupported observability context schema.");
+        }
+        Object traceparent = input.get("traceparent");
+        if (!(traceparent instanceof String valueText) || !valueText.matches("00-[0-9a-f]{32}-[0-9a-f]{16}-[0-9a-f]{2}")) {
+            throw new RequestValidationException("INVALID_OBSERVABILITY_CONTEXT", "Observability context traceparent is malformed.");
+        }
+        Object baggage = input.get("baggage");
+        Map<String, Object> safeBaggage = new LinkedHashMap<>();
+        if (baggage != null) {
+            if (!(baggage instanceof Map<?, ?> baggageMap)) {
+                throw new RequestValidationException("INVALID_OBSERVABILITY_CONTEXT", "Observability baggage must be an object.");
+            }
+            for (Map.Entry<?, ?> entry : baggageMap.entrySet()) {
+                String key = String.valueOf(entry.getKey());
+                if (!ObservabilityService.BAGGAGE_ALLOWLIST.contains(key)
+                        || !(entry.getValue() instanceof String safeValue)
+                        || !safeValue.matches("[A-Za-z0-9._:-]{1,200}")) {
+                    throw new RequestValidationException("INVALID_OBSERVABILITY_CONTEXT", "Observability baggage contains a forbidden or malformed field.");
+                }
+                safeBaggage.put(key, safeValue);
+            }
+        }
+        Map<String, Object> result = new LinkedHashMap<>();
+        result.put("schema_version", ObservabilityService.CONTEXT_SCHEMA);
+        result.put("traceparent", valueText);
+        result.put("baggage", safeBaggage);
+        if (json(result).length() > 2_048) {
+            throw new RequestValidationException("INVALID_OBSERVABILITY_CONTEXT", "Observability context is too large.");
+        }
+        return json(result);
     }
 
     @SuppressWarnings("unchecked")

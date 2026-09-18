@@ -1,6 +1,7 @@
 package com.runproof.controlplane;
 
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,15 +26,18 @@ public class ControlPlaneController {
     private final CanonicalMetadataService metadataService;
     private final AuditService auditService;
     private final AuthService authService;
+    private final ObservabilityService observability;
     private final boolean probeEnabled;
 
+    @Autowired
     public ControlPlaneController(
             PersistenceSchema schema,
             LocalFileArtifactStore artifactStore,
             CanonicalMetadataService metadataService,
             AuditService auditService,
             AuthService authService,
-            @Value("${rpf.probe.enabled:false}") boolean probeEnabled
+            @Value("${rpf.probe.enabled:false}") boolean probeEnabled,
+            ObservabilityService observability
     ) {
         this.schema = schema;
         this.artifactStore = artifactStore;
@@ -41,6 +45,20 @@ public class ControlPlaneController {
         this.auditService = auditService;
         this.authService = authService;
         this.probeEnabled = probeEnabled;
+        this.observability = observability;
+    }
+
+    /** Compatibility constructor for focused unit tests that predate RPF-30. */
+    public ControlPlaneController(
+            PersistenceSchema schema,
+            LocalFileArtifactStore artifactStore,
+            CanonicalMetadataService metadataService,
+            AuditService auditService,
+            AuthService authService,
+            boolean probeEnabled
+    ) {
+        this(schema, artifactStore, metadataService, auditService, authService, probeEnabled,
+                new ObservabilityService(false, "", "runproof-control-plane-test"));
     }
 
     @GetMapping("/health")
@@ -105,8 +123,12 @@ public class ControlPlaneController {
         if (failAfterWrite && !probeEnabled) {
             throw new ProbeExceptions.RequestValidationException("PROBE_MODE_REQUIRED", "Controlled rollback mode is disabled.");
         }
-        ApiModels.IngestResponse response = metadataService.ingest(manifest, principal.id(), failAfterWrite);
-        return ResponseEntity.status(response.alreadyExists() ? HttpStatus.OK : HttpStatus.CREATED).body(response);
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.evidence.ingest", Map.of(
+                "runproof.outcome", manifest == null || manifest.outcome() == null ? "UNKNOWN" : manifest.outcome()
+        ))) {
+            ApiModels.IngestResponse response = metadataService.ingest(manifest, principal.id(), failAfterWrite);
+            return ResponseEntity.status(response.alreadyExists() ? HttpStatus.OK : HttpStatus.CREATED).body(response);
+        }
     }
 
     @PostMapping("/release-decisions")
@@ -124,8 +146,12 @@ public class ControlPlaneController {
         if (failAfterWrite && !probeEnabled) {
             throw new ProbeExceptions.RequestValidationException("PROBE_MODE_REQUIRED", "Controlled rollback mode is disabled.");
         }
-        ApiModels.IngestResponse response = metadataService.ingest(manifest, principal.id(), failAfterWrite);
-        return ResponseEntity.status(response.alreadyExists() ? HttpStatus.OK : HttpStatus.CREATED).body(response);
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.decision.write", Map.of(
+                "runproof.outcome", manifest == null || manifest.outcome() == null ? "UNKNOWN" : manifest.outcome()
+        ))) {
+            ApiModels.IngestResponse response = metadataService.ingest(manifest, principal.id(), failAfterWrite);
+            return ResponseEntity.status(response.alreadyExists() ? HttpStatus.OK : HttpStatus.CREATED).body(response);
+        }
     }
 
     @GetMapping("/metadata")
@@ -312,13 +338,21 @@ public class ControlPlaneController {
 
     private ApiModels.MetadataList list(HttpServletRequest request, String entityType) {
         authService.require(request, "metadata:read");
-        return metadataService.list(entityType);
+        String spanName = "RELEASE_DECISION".equals(entityType) || "STATISTICAL_RELEASE_DECISION".equals(entityType)
+                ? "runproof.decision.read" : "runproof.canonical.read";
+        try (ObservabilityService.SpanScope ignored = observability.span(spanName, Map.of("runproof.target.type", entityType))) {
+            return metadataService.list(entityType);
+        }
     }
 
     private ApiModels.MetadataView get(HttpServletRequest request, String entityType, String entityId) {
         authService.require(request, "metadata:read");
         mark(request, entityType, entityId);
-        return metadataService.get(entityType, entityId);
+        String spanName = "RELEASE_DECISION".equals(entityType) || "STATISTICAL_RELEASE_DECISION".equals(entityType)
+                ? "runproof.decision.read" : "runproof.canonical.read";
+        try (ObservabilityService.SpanScope ignored = observability.span(spanName, Map.of("runproof.target.type", entityType))) {
+            return metadataService.get(entityType, entityId);
+        }
     }
 
     private static void mark(HttpServletRequest request, ApiModels.IngestManifest manifest) {

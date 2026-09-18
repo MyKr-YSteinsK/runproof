@@ -60,6 +60,34 @@ RPF-28 adds the formal `multi-service-toxiproxy-v1` Environment without replacin
 
 The versioned `rpf-network-fault-profile-v1` distinguishes `none`, `latency`, `timeout`, `dependency-unavailable`, `response-lost`, and `pre-side-effect-failure`. Evidence records `planned`, `triggered`, `observed`, and `reconciled` separately. A response lost after the target commits must show no successful client response, a stable operation receipt, exactly one effect, and reconcile-before-retry. A dependency or pre-side-effect failure must show the contrast: no receipt and zero effect. Readiness, initial state, fault reset, and cleanup are part of the terminal proof; an unverified cleanup quarantines the Environment.
 
+## Optional OpenTelemetry diagnostic contract
+
+RPF-30 adds a formal but optional OpenTelemetry path. The same canonical
+execution semantics must hold when telemetry is disabled, when an external
+Collector is healthy, and when the configured Collector is unavailable. The
+disabled path is a no-op with no exporter thread; enabled export is bounded and
+asynchronous, and queue drops/export failures are diagnostic health signals.
+They must not turn a Run into `FAIL`, prevent terminal Evidence, introduce
+blind retry, or block `UNKNOWN_OUTCOME` reconciliation.
+
+W3C `traceparent` and a bounded allowlist of W3C Baggage correlate the Java
+Control Plane, durable Job/Attempt, Python Worker, Agent/Tool, RPF-28
+target/dependency, and verifier. Canonical `job_id`, `attempt_id`, `run_id`,
+`environment_id`, and `operation_id` remain independent identities; trace/span
+IDs are never business keys. Attempt reclaim keeps the Job correlation, starts a
+new Attempt subtree, and may link the previous Attempt without pretending it is
+the same execution.
+
+The response-lost trace is useful for investigation only: an error span may
+coexist with an Agent `PASS` when the target receipt, effect count, reconcile,
+and verifier prove the Scenario. Telemetry completeness can be `COMPLETE`,
+`PROPAGATION_MISSING`, or `EXPORT_UNAVAILABLE`; missing propagation is detected
+but fails open for the canonical Run. Attributes and metric labels are
+allowlisted, low-cardinality, and never contain credentials, prompts, bodies,
+private reasoning, private paths, or canonical IDs as metric labels. The
+Collector is an optional pinned verification fixture; there is no trace UI,
+long-term retention, or Jaeger/Tempo/Grafana product dependency.
+
 ## Statistical Reliability
 
 Statistical evaluation is separate from a single Evaluation/Comparison. A Sampling Plan freezes trial count, attempt budget, Agent/config, Scenario, environment sequence, metric definitions, and Wilson method/version.

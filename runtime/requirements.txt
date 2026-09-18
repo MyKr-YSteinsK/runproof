@@ -1,0 +1,6 @@
+# RPF-30 formal optional observability dependencies.  The runtime remains
+# usable without an endpoint; these pinned packages provide the SDK path when
+# formal OTel verification is requested.
+opentelemetry-api==1.44.0
+opentelemetry-sdk==1.44.0
+opentelemetry-exporter-otlp-proto-http==1.44.0
