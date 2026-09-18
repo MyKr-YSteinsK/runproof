@@ -33,3 +33,11 @@ Desktop browser observation used the disposable `--hold-web` mode and confirmed
 History page 2/Previous, direct detail deep-link, 200-event Timeline first
 page, incremental loading to 400 events, and locale switching. Real-device
 verification was not executed.
+
+The hosted-focused workflow passed in run `35340391355` for commit `c7343e4`
+with artifact `rpf-34-bounded-read-35340391355` (digest
+`sha256:c233e8a1669fa6d7a4664bf1a201cbc962c564f96503a78b5e152c174c0f438c`).
+The same commit passed the hosted canonical Release Gate in run `35340391286`
+with artifact `rpf-12-release-gate-35340391286-1` (digest
+`sha256:291dddd493f632bf05c1f7d70ffeef068ea0ad87b9ea59b0a0ecd0ab248a706f`).
+Neither workflow executed release or deploy.
