@@ -1,0 +1,66 @@
+name: RPF-31 S3-compatible Artifact Store Spike
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-31-s3-spike.yml"
+      - "spikes/rpf-31/**"
+      - "AGENTS.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-31-s3-spike.yml"
+      - "spikes/rpf-31/**"
+      - "AGENTS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rpf31-s3-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  focused-s3-contract:
+    name: Hosted S3-compatible immutability and durability boundary
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Prepare pinned disposable object-store images
+        run: |
+          docker pull chrislusf/seaweedfs:4.47
+          docker pull rustfs/rustfs:1.0.0
+
+      - name: Package Java S3 probe
+        run: mvn -q package -f spikes/rpf-31/java/pom.xml
+
+      - name: Run hosted-focused S3 probe
+        run: python spikes/rpf-31/probe.py --run --hosted --output-dir ci-results/rpf31
+
+      - name: Verify S3 probe evidence
+        run: python spikes/rpf-31/verify-evidence.py ci-results/rpf31/rpf31-result.json
+
+      - name: Upload disposable S3 evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-31-s3-spike-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf31
+          if-no-files-found: error
+          retention-days: 14
