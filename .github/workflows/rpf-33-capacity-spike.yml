@@ -1,0 +1,84 @@
+name: RPF-33 Capacity and Large-Trace Spike
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-33-capacity-spike.yml"
+      - "control-plane/**"
+      - "runtime/**"
+      - "spikes/rpf-33/**"
+      - "spikes/rpf-30/collector-config.yaml"
+      - "AGENTS.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-33-capacity-spike.yml"
+      - "control-plane/**"
+      - "runtime/**"
+      - "spikes/rpf-33/**"
+      - "spikes/rpf-30/collector-config.yaml"
+      - "AGENTS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: rpf33-capacity-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  hosted-medium-capacity:
+    name: Hosted Medium capacity evidence
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install formal Runtime requirements
+        run: python -m pip install --requirement runtime/requirements.txt
+
+      - name: Prepare pinned disposable images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull chrislusf/seaweedfs:4.47
+          docker pull otel/opentelemetry-collector-contrib:0.157.0
+
+      - name: Package formal Control Plane and capacity helper
+        run: |
+          mvn -q test package -f control-plane/pom.xml
+          mvn -q package -f spikes/rpf-33/java/pom.xml
+
+      - name: Run hosted Medium capacity proof
+        run: python spikes/rpf-33/probe.py --run --hosted --output-dir ci-results/rpf33
+
+      - name: Verify capacity evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="$(find ci-results/rpf33 -type f -name 'rpf33-result.json' -print -quit)"
+          test -n "$result"
+          python spikes/rpf-33/verify-evidence.py --result "$result"
+
+      - name: Upload capacity evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-33-capacity-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf33
+          if-no-files-found: error
+          retention-days: 14
