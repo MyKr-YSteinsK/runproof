@@ -363,7 +363,9 @@ def main(argv: list[str] | None = None) -> int:
     output_dir = (args.output_dir or (ROOT / ".local" / "rpf-31" / ("hosted" if args.hosted else "local"))).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     result_path = output_dir / "rpf31-result.json"
-    secret_dir = Path(tempfile.mkdtemp(prefix="rpf31-secrets-", dir=str((ROOT / ".local").resolve())))
+    local_state_root = (ROOT / ".local").resolve()
+    local_state_root.mkdir(parents=True, exist_ok=True)
+    secret_dir = Path(tempfile.mkdtemp(prefix="rpf31-secrets-", dir=str(local_state_root)))
     candidate_results: list[dict[str, Any]] = []
     failure: str | None = None
     try:
