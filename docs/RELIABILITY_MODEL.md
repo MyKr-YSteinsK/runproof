@@ -39,6 +39,22 @@ Observed Fact
 - **Regression** adds an explicit expectation, reproduction, stability, and focused-rerun history.
 - **Failure Intelligence** is deterministic attribution, first meaningful divergence, exact grouping, structural family, and version location. It does not auto-promote or release.
 
+## Artifact integrity and storage
+
+Artifact bytes and canonical metadata are separate reliability boundaries.
+PostgreSQL remains the canonical registration for identity, schema, source
+identity, and RunProof SHA-256. The formal `S3ArtifactStore` is an explicit
+additive backend; `LocalFileArtifactStore` remains the default and invalid
+backend selection fails closed. Conditional immutable create, same-byte replay,
+different-byte conflict, and bounded unknown-write reconcile preserve the
+artifact identity contract. A verified object read performs one GET and checks
+the body, rather than treating ETag or object existence as evidence.
+
+An object uploaded before metadata commit is an orphan, not canonical evidence.
+The HTTP/JSON Worker upload path is authenticated and separate from Agent
+authority. SeaweedFS `4.47` is a disposable compatibility proof, not a live
+Production durability, HA, replication, or release claim.
+
 ## Safety and recovery
 
 When a response is lost after a possible side effect:

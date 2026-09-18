@@ -162,14 +162,14 @@ public class CanonicalMetadataService {
             throw new RequestValidationException("UNKNOWN_MANIFEST_SCHEMA", "Manifest schema is not accepted.");
         }
         String entityType = normalizeEntityType(manifest.entityType());
-        if (entityType == null || !LocalFileArtifactStore.supports(entityType)) {
+        if (entityType == null || !ArtifactStoreSupport.supports(entityType)) {
             throw new RequestValidationException("UNSUPPORTED_ENTITY_TYPE", "Entity type is not supported.");
         }
         requireText(manifest.entityId(), "entity_id");
         requireText(manifest.entitySchemaVersion(), "entity_schema_version");
         requireText(manifest.outcome(), "outcome");
         requireText(manifest.idempotencyKey(), "idempotency_key");
-        if (manifest.entitySchemaVersion() == null || !manifest.entitySchemaVersion().equals(LocalFileArtifactStore.expectedSchema(entityType))) {
+        if (manifest.entitySchemaVersion() == null || !manifest.entitySchemaVersion().equals(ArtifactStoreSupport.expectedSchema(entityType))) {
             throw new InvalidEvidenceException("INVALID_EVIDENCE_UNKNOWN_SCHEMA", "Entity schema does not match its artifact contract.");
         }
         ApiModels.ArtifactRef artifactRef = manifest.artifactRef();

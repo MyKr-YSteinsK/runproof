@@ -34,6 +34,9 @@ node_modules/
 # Disposable RPF-31 Java S3-compatible object-store probe build output
 /spikes/rpf-31/java/target/
 
+# Disposable RPF-32 Java bucket bootstrap build output
+/spikes/rpf-32/java/target/
+
 # Formal RPF-11 Java/Spring product build output
 /control-plane/target/
 /ci-results/

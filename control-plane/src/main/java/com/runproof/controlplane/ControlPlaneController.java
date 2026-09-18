@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,7 +23,7 @@ import java.util.Set;
 public class ControlPlaneController {
 
     private final PersistenceSchema schema;
-    private final LocalFileArtifactStore artifactStore;
+    private final ArtifactStore artifactStore;
     private final CanonicalMetadataService metadataService;
     private final AuditService auditService;
     private final AuthService authService;
@@ -32,7 +33,7 @@ public class ControlPlaneController {
     @Autowired
     public ControlPlaneController(
             PersistenceSchema schema,
-            LocalFileArtifactStore artifactStore,
+            ArtifactStore artifactStore,
             CanonicalMetadataService metadataService,
             AuditService auditService,
             AuthService authService,
@@ -51,7 +52,7 @@ public class ControlPlaneController {
     /** Compatibility constructor for focused unit tests that predate RPF-30. */
     public ControlPlaneController(
             PersistenceSchema schema,
-            LocalFileArtifactStore artifactStore,
+            ArtifactStore artifactStore,
             CanonicalMetadataService metadataService,
             AuditService auditService,
             AuthService authService,
@@ -106,6 +107,30 @@ public class ControlPlaneController {
                 List.of("metadata:read", "evidence:write", "decision:write", "agent:observe", "execution:submit", "execution:worker"),
                 false, false, false, false, false, true, "DURABLE_SUBMIT_POLL_CANONICAL_READBACK"
         );
+    }
+
+    /**
+     * Upload immutable bytes before canonical metadata is ingested.  This is
+     * additive to the manifest API and is used by cross-process workers when
+     * the selected backend is an object store; it never creates metadata.
+     */
+    @PostMapping(path = "/artifact-bytes", consumes = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ArtifactStore.PathWriteResult putArtifactBytes(
+            HttpServletRequest request,
+            @RequestParam(name = "artifact_key") String artifactKey,
+            @RequestBody byte[] content
+    ) {
+        authService.requireAny(request, "evidence:write", "decision:write");
+        mark(request, "ARTIFACT_BYTES", artifactKey);
+        if (content == null || content.length == 0) {
+            throw new ProbeExceptions.RequestValidationException("EMPTY_ARTIFACT", "Artifact content is required.");
+        }
+        if (content.length > 16 * 1024 * 1024) {
+            throw new ProbeExceptions.RequestValidationException("ARTIFACT_TOO_LARGE", "Artifact exceeds the bounded upload size.");
+        }
+        try (ObservabilityService.SpanScope ignored = observability.span("runproof.artifact.put", Map.of("runproof.store.operation", "conditional_create"))) {
+            return artifactStore.put(artifactKey, content);
+        }
     }
 
     @PostMapping("/ingest/completed-evidence")

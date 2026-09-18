@@ -39,6 +39,21 @@ Observed Fact
 - **Regression** 增加显式预期、复现、稳定性和 focused-rerun 历史。
 - **Failure Intelligence** 提供确定性归因、first meaningful divergence、exact grouping、structural family 和版本定位，不自动 promotion 或 release。
 
+## Artifact integrity 与存储
+
+Artifact bytes 与 canonical metadata 是分开的 reliability boundary。
+PostgreSQL 仍是 identity、schema、source identity 与 RunProof SHA-256 的
+canonical 注册来源。正式 `S3ArtifactStore` 是 additive 且必须显式选择的
+backend；`LocalFileArtifactStore` 仍是默认路径，错误 backend 配置 fail closed。
+Conditional immutable create、同 bytes replay、不同 bytes conflict 和 bounded
+unknown-write reconcile 共同保持 artifact identity contract。Verified object
+read 只做一次 GET 并验证 body；ETag 或对象存在本身不能当作 evidence。
+
+metadata commit 之前上传的对象是 orphan，不是 canonical evidence。HTTP/JSON
+Worker upload 需要认证，并与 Agent authority 分离。SeaweedFS `4.47` 是
+disposable compatibility proof，不是 live Production durability、HA、replication
+或 release 结论。
+
 ## Safety 与恢复
 
 可能发生副作用后丢失 response 时：

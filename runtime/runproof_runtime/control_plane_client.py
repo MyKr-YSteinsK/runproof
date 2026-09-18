@@ -330,6 +330,7 @@ class ControlPlaneClient:
         *,
         timeout: float = 8.0,
         opener: Callable[..., Any] = urlopen,
+        artifact_store_backend: str | None = None,
     ) -> None:
         self.base_url = (base_url or os.environ.get("RPF_CONTROL_PLANE_URL") or DEFAULT_BASE_URL).rstrip("/")
         self.token = token or os.environ.get("RPF_CONTROL_PLANE_TOKEN")
@@ -337,6 +338,9 @@ class ControlPlaneClient:
             raise ControlPlaneClientError("Control Plane token is not configured", code="CLIENT_CREDENTIAL_MISSING")
         self.timeout = timeout
         self._opener = opener
+        self.artifact_store_backend = (artifact_store_backend or os.environ.get("RPF_ARTIFACT_STORE_BACKEND", "local")).strip().lower()
+        if self.artifact_store_backend not in {"local", "s3"}:
+            raise ControlPlaneClientError("Unsupported artifact-store backend", code="INVALID_ARTIFACT_STORE_BACKEND")
 
     def request(self, method: str, path: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
         observability = get_observability()
@@ -358,6 +362,38 @@ class ControlPlaneClient:
         request = Request(
             f"{self.base_url}{path}",
             data=body,
+            method=method,
+            headers=headers,
+        )
+        try:
+            with self._opener(request, timeout=self.timeout) as response:
+                raw = response.read()
+                status = getattr(response, "status", 200)
+        except HTTPError as error:
+            raw = error.read()
+            status = error.code
+            self._raise_api_error(status, raw, error.headers.get("X-Request-Id") if error.headers else None)
+        except (URLError, TimeoutError, OSError) as error:
+            raise TransportUncertainError() from error
+        try:
+            document = json.loads(raw.decode("utf-8")) if raw else {}
+        except (UnicodeDecodeError, json.JSONDecodeError) as error:
+            raise ControlPlaneClientError("Control Plane returned invalid JSON", status=status, code="INVALID_API_RESPONSE") from error
+        if not isinstance(document, dict):
+            raise ControlPlaneClientError("Control Plane returned a non-object JSON response", status=status, code="INVALID_API_RESPONSE")
+        return document
+
+    def _request_bytes(self, method: str, path: str, content: bytes) -> dict[str, Any]:
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/octet-stream",
+            "Authorization": f"Bearer {self.token}",
+            "X-Request-Id": f"rpf-client-{uuid.uuid4()}",
+        }
+        get_observability().inject(headers)
+        request = Request(
+            f"{self.base_url}{path}",
+            data=content,
             method=method,
             headers=headers,
         )
@@ -532,6 +568,15 @@ class ControlPlaneClient:
     def get_artifact(self, entity_type: str, entity_id: str) -> dict[str, Any]:
         return self.request("GET", f"/artifacts/{quote(entity_type, safe='')}/{quote(entity_id, safe='')}")
 
+    def put_artifact_bytes(self, artifact_key: str, content: bytes) -> dict[str, Any]:
+        if not artifact_key or not isinstance(content, bytes) or not content:
+            raise ControlPlaneClientError("Artifact key and content are required", code="INVALID_ARTIFACT_UPLOAD")
+        with get_observability().span(
+            "runproof.control-plane.artifact-upload",
+            {"http.method": "POST", "http.route": "/artifact-bytes"},
+        ):
+            return self._request_bytes("POST", f"/artifact-bytes?artifact_key={quote(artifact_key, safe='')}", content)
+
     def ingest_with_reconcile(self, manifest: dict[str, Any]) -> dict[str, Any]:
         try:
             return self.ingest(manifest)
@@ -567,6 +612,12 @@ class ControlPlaneClient:
             raise ControlPlaneClientError("Explicit entity type does not match artifact", code="INVALID_ARTIFACT_IDENTITY")
         if idempotency_key:
             manifest["idempotency_key"] = idempotency_key
+        if self.artifact_store_backend == "s3":
+            # The worker may stage the bytes locally, but the Control Plane is
+            # the only process allowed to write the configured object store.
+            # A repeated upload is conditional/idempotent before metadata
+            # ingest, so response-lost retries remain bounded and safe.
+            self.put_artifact_bytes(artifact.artifact_key, artifact.content)
         return self.ingest_with_reconcile(manifest)
 
 

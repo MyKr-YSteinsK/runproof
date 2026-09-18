@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.runproof.controlplane.ProbeExceptions.AuthenticationRequiredException;
+import static com.runproof.controlplane.ProbeExceptions.ArtifactStoreException;
 import static com.runproof.controlplane.ProbeExceptions.AuthorizationForbiddenException;
 import static com.runproof.controlplane.ProbeExceptions.EntityNotFoundException;
 import static com.runproof.controlplane.ProbeExceptions.IdentityConflictException;
@@ -43,6 +44,12 @@ public class ApiExceptionHandler {
     ResponseEntity<ApiModels.ApiError> invalidEvidence(InvalidEvidenceException exception, HttpServletRequest request) {
         request.setAttribute("rpf.control-plane.reason", exception.code());
         return error(HttpStatus.UNPROCESSABLE_ENTITY, exception.code(), exception.getMessage(), false, false, request);
+    }
+
+    @ExceptionHandler(ArtifactStoreException.class)
+    ResponseEntity<ApiModels.ApiError> artifactStore(ArtifactStoreException exception, HttpServletRequest request) {
+        request.setAttribute("rpf.control-plane.reason", exception.code());
+        return error(HttpStatus.SERVICE_UNAVAILABLE, exception.code(), exception.getMessage(), exception.retriable(), null, request);
     }
 
     @ExceptionHandler(IdentityConflictException.class)

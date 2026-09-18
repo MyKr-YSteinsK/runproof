@@ -70,6 +70,27 @@ Jaeger/Tempo/Grafana、SaaS backend 或长期 retention 承诺。Telemetry attri
 和 metric label 采用 allowlist，并排除 credential、prompt、body、private
 reasoning、本机私有路径，以及作为 metric label 的高 cardinality ID。
 
+## 正式 S3-compatible ArtifactStore
+
+RPF-32 在同一个 provider-neutral `ArtifactStore` contract 后新增
+`S3ArtifactStore` adapter。`local` 仍是默认 backend；必须显式选择 `s3`，
+错误 backend 配置会 fail closed。Control Plane、canonical metadata service、
+Web read model 与 durable worker 不依赖 AWS 或 SeaweedFS 类型。
+
+对象存储只保存 immutable bytes。PostgreSQL 仍是 artifact 注册、entity identity、
+schema、source identity、RunProof SHA-256 和 metadata relationship 的 canonical
+来源。跨进程 Worker 通过 authenticated Control Plane 先上传 bytes，再 ingest
+manifest；对象存在本身不是 evidence。首次写入使用带 `If-None-Match: *` 的
+conditional `PutObject`；相同 bytes 是幂等 replay，不同 bytes 是 immutable
+conflict。未知写入结果只允许 bounded GET/retry reconcile，不能静默回退到 local。
+
+Verified read 只做一次 object GET，然后验证 body hash、JSON header、schema、
+artifact kind、entity identity、source identity 和 runtime identity。ETag、
+versioning、Object Lock 都不是 RunProof identity。SeaweedFS `4.47` 是当前
+disposable compatibility proof 的 pinned provider；该证据不代表托管对象存储
+durability、HA、replication、lifecycle/GC、capacity、migration 或 Production
+release authority。
+
 ## Authority 与恢复边界
 
 - Agent 和 worker 的 authority 小于 decision-writer authority。
@@ -105,14 +126,15 @@ reasoning、本机私有路径，以及作为 metric label 的高 cardinality ID
 | Golden Demo integrity 与生命周期 | `demo/rpf-19-golden-demo-v1.json`、`demo/verify-golden-demo.py`、lifecycle verifier | `python demo/verify-golden-demo.py --root . --json` |
 | 正式多服务网络故障 | RPF-28 reviewed baseline/dependency/response-loss Run、`multi-service-toxiproxy-v1` 与 durable-worker focused result | `python spikes/rpf-28/probe.py --run`；`python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
 | 正式诊断 Observability | RPF-30 SDK instrumentation、三模式 durable probe、Collector trace file 与 span/cardinality verifier | `python spikes/rpf-30/probe.py --run`；`python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
+| 正式 S3-compatible ArtifactStore | `S3ArtifactStore`、显式 backend wiring、SeaweedFS 4.47 proof、PostgreSQL canonical ingest 与 HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`；`python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
 ## Production 边界
 
-当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、object-storage durability、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
+当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界应从测量需要中选择：托管或 S3-compatible artifact storage、
-capacity/large-trace evidence，或 Production topology 调查。正式
-OpenTelemetry 现在是可选诊断边界，但仍不意味着 trace retention、HA 或
-release authority。
+下一架构边界应从测量需要中选择：托管对象存储运维、capacity/large-trace
+evidence，或 Production topology 调查。正式 OpenTelemetry 仍是可选诊断
+边界；S3-compatible adapter 也仍是单节点兼容性 proof，不代表 durability、
+HA 或 release authority。

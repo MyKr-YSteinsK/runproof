@@ -16,6 +16,6 @@
 | Delivery surface | Golden Demo、API-backed Overview、lifecycle ownership check 和 hosted canonical CI Gate | 本地/面试交付面不是 Production release |
 | Presentation 与公共文档 | Web `en-US`/`zh-CN` presentation-only i18n，以及双语公共文档与 current/history 分离 | canonical governance 保持 single-source；raw evidence 和 identifier 保持 English/不变 |
 | 正式诊断可观测性 | 可选的官方 Java/Python OpenTelemetry SDK、W3C propagation、allowlisted correlation context、有界异步 export、Collector 健康/不可用诊断，以及跨服务 durable-run trace correlation | Telemetry 仅是诊断信号：trace/span identity 不是 canonical evidence、release authority、Web schema、retention、SaaS observability 或 Production capacity 证明 |
-| 对象存储耐久性调查 | Disposable 标准 S3-compatible client 边界、conditional immutable create、replay/conflict 分类、verified read、credential/fail-closed 检查、restart/unavailable observation，以及 SeaweedFS/RustFS 候选比较 | 这仍是调查边界：正式 `LocalFileArtifactStore` 未替换，不建立托管对象存储、HA/replication/lifecycle authority 或 Production durability 结论 |
+| 对象存储能力 | 正式 provider-neutral `S3ArtifactStore`、显式 local/S3 backend wiring、conditional immutable create/replay/conflict、verified one-GET read、bounded unknown-write reconcile、PostgreSQL canonical ingest、认证的 HTTP/JSON Worker upload 与 SeaweedFS 4.47 compatibility proof | `LocalFileArtifactStore` 仍是默认路径，历史 bytes 不迁移；不建立托管对象存储、HA/replication/lifecycle authority、2PC 或 Production durability 结论 |
 
 当前活跃模式是 `Stabilization` 中的 `Feature Freeze / Portfolio Maintenance`。新能力必须经过新 Plan 和新 evidence，不能从本文历史推断出来。

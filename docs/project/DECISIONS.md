@@ -459,3 +459,22 @@ RPF-29 disposable Spike 在 Windows Docker 与 focused hosted-like 路径中验�
 ### Supersedes
 
 - none（承接 D-009、D-013、D-017、D-020、D-025；不替代 canonical identity/evidence、UNKNOWN_OUTCOME reconcile、Quality/Release authority 或 multi-service fault contract）
+
+## D-027｜ArtifactStore 采用显式 additive S3-compatible backend，PostgreSQL 保持 canonical
+
+- Status: `Accepted`
+- Date: 2026-09-18
+### Decision
+RPF-32 在 provider-neutral `ArtifactStore` contract 后正式接入 `S3ArtifactStore`，并保留 `LocalFileArtifactStore` 为默认 backend。`local` 与 `s3` 必须通过显式配置选择；无效配置 fail closed，禁止自动 fallback，禁止本 Plan 迁移历史 reviewed bytes、删除 local artifact 或改变既有 canonical corpus。PostgreSQL 继续是 artifact registration、entity identity、schema、source identity、RunProof SHA-256 与 metadata relationship 的 canonical authority；S3-compatible provider identity 不是 artifact identity。
+
+S3 写入使用条件 `PutObject` (`If-None-Match: *`)。同 key 同 bytes 只能幂等 replay，不同 bytes 必须 conflict 且不可覆盖；response-lost/unknown write outcome 只能通过 bounded GET/retry reconcile。Verified read 只做一次 object GET，并由 RunProof 验证 body SHA-256、JSON/schema/kind/entity/source/runtime identity；ETag、versioning、Object Lock 不成为 canonical identity。跨进程 Worker 通过 authenticated HTTP/JSON Control Plane 上传 bytes 后再 ingest metadata，object existence alone 不是 evidence。
+### Why
+RPF-31 的 SeaweedFS `4.47` 选择证据证明了标准 S3-compatible conditional immutability、replay/conflict、race、verified read、restart/unavailable 与 credential boundary 的可行性。RPF-32 的 fresh Windows proof 进一步证明了正式 Java/Spring adapter、PostgreSQL canonical ingest、孤儿对象回放、对象/数据库重启和独立 durable Worker 的跨进程闭环，同时验证 Agent 不能获得 artifact write authority。明确 local/S3 wiring 与 provider-neutral verification boundary 可以避免把 disposable provider 细节泄露到 canonical metadata、runtime 或 Web，也避免把单节点兼容性 proof 误写为 Production durability。
+### Consequences
+正式配置需要 S3 endpoint、region、bucket、prefix、timeout 与外部 credential injection；credential 不进入 Git、manifest、evidence、普通日志或前端。S3 backend 不提供 2PC：metadata rollback 可能留下 orphan，必须由未来独立 retention/GC Plan 处理；没有自动删除或 silent recovery。SeaweedFS `4.47` 只作为当前 disposable/hosted compatibility provider，不证明 managed object-storage durability、HA/replication、capacity、lifecycle、multi-node supervision、真实云账户、Production deploy/release 或 Web upload。Canonical Release Gate 仍保留 local/default path；RPF-32 focused workflow 只产生受控 proof artifact。
+### Reconsider when
+真实容量/大对象内存压力、provider-specific consistency/retention/restore SLA、multi-node/HA、managed IAM、跨区域恢复或 Production rollout 需要改变 byte transport、metadata consistency、GC/retention 或 authority boundary 时，以新的 Plan 和新的 source/restore/operational evidence 重新评估。
+
+### Supersedes
+
+- none（承接 D-014、D-020、D-026；把 RPF-31 的 additive follow-up 收敛为正式 backend，不替代 local backend、canonical PostgreSQL、durable reconcile 或 decision-only release authority）

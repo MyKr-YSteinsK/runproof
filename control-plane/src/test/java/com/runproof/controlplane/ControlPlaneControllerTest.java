@@ -32,7 +32,7 @@ class ControlPlaneControllerTest {
         metadataService = mock(CanonicalMetadataService.class);
         controller = new ControlPlaneController(
                 mock(PersistenceSchema.class),
-                mock(LocalFileArtifactStore.class),
+                mock(ArtifactStore.class),
                 metadataService,
                 mock(AuditService.class),
                 authService,

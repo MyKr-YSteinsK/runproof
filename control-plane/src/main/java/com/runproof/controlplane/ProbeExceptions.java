@@ -31,6 +31,25 @@ final class ProbeExceptions {
         }
     }
 
+    static class ArtifactStoreException extends RuntimeException {
+        private final String code;
+        private final boolean retriable;
+
+        ArtifactStoreException(String code, String message, boolean retriable) {
+            super(message);
+            this.code = code;
+            this.retriable = retriable;
+        }
+
+        String code() {
+            return code;
+        }
+
+        boolean retriable() {
+            return retriable;
+        }
+    }
+
     static class IdentityConflictException extends RuntimeException {
         private final String code;
 

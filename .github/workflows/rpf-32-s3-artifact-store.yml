@@ -1,0 +1,86 @@
+name: RPF-32 Formal S3-compatible Artifact Store
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-32-s3-artifact-store.yml"
+      - "control-plane/**"
+      - "runtime/runproof_runtime/control_plane_client.py"
+      - "runtime/runproof_runtime/durable_worker.py"
+      - "runtime/requirements.txt"
+      - "spikes/rpf-32/**"
+      - "AGENTS.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-32-s3-artifact-store.yml"
+      - "control-plane/**"
+      - "runtime/runproof_runtime/control_plane_client.py"
+      - "runtime/runproof_runtime/durable_worker.py"
+      - "runtime/requirements.txt"
+      - "spikes/rpf-32/**"
+      - "AGENTS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: write
+
+concurrency:
+  group: rpf32-s3-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  formal-s3-artifact-store:
+    name: Hosted S3-compatible ArtifactStore contract
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install formal Runtime requirements
+        run: python -m pip install --requirement runtime/requirements.txt
+
+      - name: Prepare pinned disposable images
+        run: |
+          docker pull postgres:16-alpine
+          docker pull chrislusf/seaweedfs:4.47
+
+      - name: Test and package formal Control Plane
+        run: mvn -q test package -f control-plane/pom.xml
+
+      - name: Package bucket bootstrap helper
+        run: mvn -q package -f spikes/rpf-32/java/pom.xml
+
+      - name: Run hosted-focused formal S3 proof
+        run: python spikes/rpf-32/probe.py --run --hosted --output-dir ci-results/rpf32
+
+      - name: Verify formal S3 proof
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="$(find ci-results/rpf32 -type f -name 'rpf32-result.json' -print -quit)"
+          test -n "$result"
+          python spikes/rpf-32/verify-evidence.py --result "$result"
+
+      - name: Upload formal S3 proof
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-32-s3-artifact-store-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf32
+          if-no-files-found: error
+          retention-days: 14

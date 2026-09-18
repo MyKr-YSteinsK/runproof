@@ -72,6 +72,31 @@ long-term retention promise. Telemetry attributes and metric labels are
 allowlisted and exclude credentials, prompts, bodies, private reasoning,
 private paths, and high-cardinality IDs as metric labels.
 
+## Formal S3-compatible artifact storage
+
+RPF-32 adds `S3ArtifactStore` as an explicit provider adapter behind the same
+provider-neutral `ArtifactStore` contract. `local` remains the default
+backend; `s3` must be selected explicitly and an invalid backend fails closed.
+The Control Plane, canonical metadata service, Web read model, and durable
+worker do not depend on AWS or SeaweedFS types.
+
+The object store holds immutable bytes only. PostgreSQL remains canonical for
+artifact registration, entity identity, schema, source identity, RunProof
+SHA-256, and metadata relationships. A cross-process Worker uploads bytes
+through the authenticated Control Plane before manifest ingest; object
+existence alone is never evidence. Conditional `PutObject` with
+`If-None-Match: *` provides the first-create boundary. Same bytes reconcile as
+an idempotent replay; different bytes are an immutable conflict. Unknown write
+outcomes use bounded GET/retry reconciliation and never silently fall back to
+the local store.
+
+Verified reads use one object GET and then validate the body hash, JSON header,
+schema, artifact kind, entity identity, source identity, and runtime identity.
+ETag, versioning, and Object Lock are not RunProof identity. SeaweedFS `4.47`
+is the pinned disposable compatibility provider for the current proof; the
+result does not establish managed-object-store durability, HA, replication,
+lifecycle/GC, capacity, migration, or Production release authority.
+
 ## Authority and recovery boundaries
 
 - Agent and worker authority is narrower than decision-writer authority.
@@ -107,15 +132,16 @@ Module READMEs remain implementation-facing. Public claims are centralized here 
 | Golden Demo integrity and lifecycle | `demo/rpf-19-golden-demo-v1.json`, `demo/verify-golden-demo.py`, lifecycle verifier | `python demo/verify-golden-demo.py --root . --json` |
 | Formal multi-service network faults | RPF-28 reviewed baseline/dependency/response-loss Runs, `multi-service-toxiproxy-v1`, and durable-worker focused result | `python spikes/rpf-28/probe.py --run`; `python spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json` |
 | Formal diagnostic observability | RPF-30 SDK instrumentation, three-mode durable probe, Collector trace file, and span/cardinality verifier | `python spikes/rpf-30/probe.py --run`; `python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
+| Formal S3-compatible ArtifactStore | `S3ArtifactStore`, explicit backend wiring, SeaweedFS 4.47 proof, PostgreSQL canonical ingest, and HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`; `python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 
 The detailed source identities, hosted runs, and historical compatibility facts are kept in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md), not repeated in the current snapshot.
 
 ## Production boundary
 
-The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, object-storage durability, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
+The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, a formal S3-compatible object-store adapter, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
 
 The next architectural boundary should be selected from measured need: managed
-or S3-compatible artifact storage, capacity/large-trace evidence, or a
-production topology investigation. Formal OpenTelemetry is now an optional
-diagnostic boundary, but it still does not imply trace retention, HA, or
-release authority.
+object-storage operations, capacity/large-trace evidence, or a production
+topology investigation. Formal OpenTelemetry remains an optional diagnostic
+boundary, and the S3-compatible adapter remains a single-node compatibility
+proof rather than a durability, HA, or release authority claim.

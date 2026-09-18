@@ -594,6 +594,7 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Run the formal RunProof durable Evaluation worker.")
     parser.add_argument("--base-url", default=os.environ.get("RPF_CONTROL_PLANE_URL", "http://127.0.0.1:8081/api/v1"))
     parser.add_argument("--token-env", default="RPF_AUTH_WORKER_TOKEN")
+    parser.add_argument("--artifact-store-backend", choices=("local", "s3"), default=None)
     parser.add_argument("--worker-id", default=None)
     parser.add_argument("--repo-root", type=Path, default=Path.cwd())
     parser.add_argument("--artifact-store-root", type=Path, default=None)
@@ -611,7 +612,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.lease_seconds < 3 or args.lease_seconds > 60 or args.max_jobs < 1 or args.max_jobs > 20:
         print(json.dumps({"status": "BLOCKED", "error": "INVALID_WORKER_LIMIT"}))
         return 2
-    client = ControlPlaneClient(args.base_url, token)
+    client = ControlPlaneClient(args.base_url, token, artifact_store_backend=args.artifact_store_backend)
     worker = DurableEvaluationWorker(
         client,
         worker_id=args.worker_id,
