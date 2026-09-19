@@ -20,6 +20,8 @@ The same commit passed the hosted canonical Release Gate in
 [run `35412615613`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35412615613),
 uploading `rpf-12-release-gate-35412615613-1` with digest
 `sha256:02f35f124c0e852cfa31bbb6a627c0d5061ee4fd0311ae17f4a913c39eb3cac8`.
+The local canonical Release Gate also passed with `status=PASS` at
+`.local/rpf-35/local-gate/rpf12-release-gate-result.json` (ignored).
 
 This file summarizes the current delivery rather than acting as a second
 mutable evidence corpus; the JSON result and offline verifier are authoritative.
