@@ -6,7 +6,7 @@
 - `Lifecycle: Stabilization / Feature Freeze / Portfolio Maintenance`
 - `Plan: RPF-37 Investigation / Checkpoint Review`
 - `starting HEAD: d2945e00e16254563364303d73a5e8f3f8451725`
-- `resulting HEAD: 由本次交付提交记录；不以本报告中的历史 HEAD 冒充最终 HEAD`
+- `resulting HEAD: 9f029f5952a3b1cf9a0c48124148fab5ab5f084d`
 - `audit-only: YES`
 - `product behavior changed: NO`
 - `release/deploy: NOT EXECUTED`
@@ -58,7 +58,9 @@ python spikes/rpf-37/audit.py --root . --output .local/rpf-37/audit.json
 | **合计** | **376** | **5,228,288** | 与 Plan 基线一致 |
 
 本轮新增的 RPF-37 入口和报告属于审计交付资产；它们不会被误算为历史基线的
-产品能力或 reviewed evidence。
+产品能力或 reviewed evidence。交付后的 tree 为 `379 tracked files / 5,273,530
+bytes`、`20` 个 Spike、`11` 个 workflow；`.local/rpf-37/` 仍被忽略，用户
+`docs/reviews/` 仍未跟踪。
 
 ### Top large files
 
