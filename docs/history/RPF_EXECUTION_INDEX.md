@@ -2,7 +2,7 @@
 
 [Current State](../project/CURRENT_STATE.md) | [Verification History](VERIFICATION_HISTORY.md)
 
-这是 RPF-00 至 RPF-38 的执行导航，不是第二套产品合同或证据真相源：
+这是 RPF-00 至 RPF-39 的执行导航，不是第二套产品合同或证据真相源：
 
 - 稳定产品与 UX 合同以 [`PROJECT_BRIEF.md`](../project/PROJECT_BRIEF.md) 为准；
 - 长期决定以 [`DECISIONS.md`](../project/DECISIONS.md) 为准；
@@ -20,6 +20,7 @@
 | KEEP / manual-heavyweight | RPF-33 |
 | KEEP / deferred future topology evidence | RPF-36 |
 | KEEP / current closure audit | RPF-37 |
+| KEEP / GenAI interoperability investigation | RPF-39 |
 
 RPF-28/30/32/34/35 与 RPF-33 仍是正式或风险扩展验证边界，但在普通 push/PR 上不自动运行；它们保留 manual-only 入口。RPF-12 canonical Release Gate 是唯一 always-on workflow。
 
@@ -68,6 +69,7 @@ RPF-28/30/32/34/35 与 RPF-33 仍是正式或风险扩展验证边界，但在�
 | RPF-36 | KEEP / deferred future topology evidence | `spikes/rpf-36/README.md` | `spikes/rpf-36/probe.py`, `spikes/rpf-36/verify-evidence.py` | Production Cloud remains Deferred; manual-only |
 | RPF-37 | KEEP / current closure audit | `spikes/rpf-37/README.md`, `spikes/rpf-37/audit.py` | `spikes/rpf-37/RESULT.md`, ignored audit JSON | Established the RPF-38 low-risk cleanup contract |
 | RPF-38 | KEEP / portfolio maintenance cleanup | This Plan and repository maintenance files | Workflow matrix, core regression, audit before/after, canonical gate | No product behavior, cloud operation, release or deploy |
+| RPF-39 | KEEP / GenAI semantic-convention interoperability investigation | `spikes/rpf-39/README.md`, `spikes/rpf-39/RESULT.md` | `spikes/rpf-39/probe.py`, `spikes/rpf-39/verify-evidence.py` | Diagnostic-only; bounded dual emit is a future opt-in boundary, not a formal RPF-30 migration |
 
 ## Workflow routing after RPF-38
 

@@ -7,7 +7,7 @@
 - RunProof (`RPF`)；repository name：`runproof`；主分支：`main`。
 - GitHub identity：`MyKr-YSteinsK/runproof`，visibility：`Public`（用户明确确认）；实际 remote/upstream 接入状态见 `docs/project/CURRENT_STATE.md`。
 - 唯一 Project State 位置：`docs/project/PROJECT_BRIEF.md`（稳定产品/UX 合同）、`docs/project/DECISIONS.md`（canonical decisions）、`docs/project/CURRENT_STATE.md`（当前阶段、能力、限制与交付事实）。
-- 历史验证事实保存在 `docs/history/`；RPF-00 至 RPF-38 的执行入口和生命周期导航见 [`docs/history/RPF_EXECUTION_INDEX.md`](docs/history/RPF_EXECUTION_INDEX.md)。具体参数仍以对应 Spike/模块 README 与脚本为准。
+- 历史验证事实保存在 `docs/history/`；RPF-00 至 RPF-39 的执行入口和生命周期导航见 [`docs/history/RPF_EXECUTION_INDEX.md`](docs/history/RPF_EXECUTION_INDEX.md)。具体参数仍以对应 Spike/模块 README 与脚本为准。
 - 完整 Bootstrap 由 Architect 持有；后续 Plan 必须带入相关 MUST、Acceptance、UX invariant。当前实现或摘要遗漏不能自行废除目标需求；事实冲突核对环境/版本，产品取舍按明确决定处理。
 
 ## 2. Protected / private / external boundaries
@@ -63,12 +63,13 @@ python spikes/rpf-35/verify-evidence.py <rpf35-result.json>
 - RPF-27、RPF-29、RPF-31、RPF-36 是保留原路径的 historical/manual workflows；它们可以从 GitHub `workflow_dispatch` 或 README 的本地入口复现。
 - RPF-37 audit：`python spikes/rpf-37/audit.py --root . --output .local/rpf-37/audit.json`。它只盘点 tracked tree/workflows/spikes/reference/hash/Git hygiene，不删除任何内容。
 - RPF-38 的触发矩阵、权限变化、审计前后对比和剩余候选以 `docs/history/RPF_EXECUTION_INDEX.md`、`docs/history/VERIFICATION_HISTORY.md` 与 `CURRENT_STATE.md` 为准。
+- RPF-39 的 GenAI semantic-convention 结论以 `spikes/rpf-39/RESULT.md` 和其 disposable probe/verifier 为准；它不改变 RPF-30 正式 boundary、canonical evidence 或 Release authority。
 
 ### Evidence and runtime boundaries
 
 - reviewed artifact 是不可变历史证据；不得静默覆盖、rename、move、format、regenerate、normalize、merge 或 delete。源码改变时必须显式刷新、审查并记录新的 source identity。
 - `.local/`、`ci-results/`、构建/覆盖率输出和 provider 临时资源只属于 ignored local/CI runtime；不要提交。
-- RPF-01/RPF-02 的 disposable probes 不代表正式 Runtime；RPF-27/RPF-29/RPF-31 的 candidate probes 不代表正式 Environment/OTel/ArtifactStore。RPF-28/RPF-30/RPF-32/RPF-34/RPF-35 的正式边界仍不自动推导 Production HA、managed cloud、broker、scheduler、GC、真实 destructive remediation 或 release/deploy authorization。
+- RPF-01/RPF-02 的 disposable probes 不代表正式 Runtime；RPF-27/RPF-29/RPF-31 的 candidate probes 不代表正式 Environment/OTel/ArtifactStore；RPF-39 的 compatibility probe 不代表正式 GenAI schema mapping。RPF-28/RPF-30/RPF-32/RPF-34/RPF-35 的正式边界仍不自动推导 Production HA、managed cloud、broker、scheduler、GC、真实 destructive remediation 或 release/deploy authorization。
 - Runtime live/provider 命令只有在当前任务明确授权 API 调用、费用与副作用时运行；从 `DEEPSEEK_API_KEY` 读取 secret，绝不打印 key、Authorization、private reasoning 或自由模型文本。
 - `python -m runtime.runproof_runtime`、正式 worker、Control Plane client 及 Web read model 必须保持 secret/private-protocol redaction、UNKNOWN_OUTCOME reconcile、fail-closed artifact verification 和 Agent/Release authority 分离。
 - Python runtime 当前无独立 lint/build 命令；Web `npm run build` 已包含 TypeScript/build 检查。验证应按真实 failure mode 选择，不用重复命令制造“证据数量”。
