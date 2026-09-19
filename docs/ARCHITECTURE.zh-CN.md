@@ -127,10 +127,11 @@ topology 或 release/deploy authority。
 
 RPF-36 是调查边界，不是云部署。它按 `2026-09-19` 的 Provider 资料比较了
 AWS ECS/Fargate + RDS + S3、Render + Cloudflare R2、Railway + Cloudflare R2。
-当前首选 candidate 是单 region AWS topology，首个 Region candidate 为
+当前首选 candidate 是单 region AWS topology，未来 Region candidate 为
 `ap-southeast-1`（Singapore）。Region、latency、data residency、account quota
-和 cost 仍须在 RPF-37 做 preflight 并取得授权；RPF-36 没有使用 provider
-account、paid resource 或 cloud API。
+和 cost 仍属于授权/preflight 事实；RPF-36 与 RPF-37 都没有使用 provider
+account、paid resource 或 cloud API，真实 Production Cloud deployment 保持
+Deferred。
 
 候选数据流为：
 
@@ -163,12 +164,14 @@ expand/contract migration，以及带 circuit-breaker/alarm rollback 的 ECS
 rolling deployment。这些是 candidate operation，不是 Production SLA。初始
 sizing 只复用 RPF-33 的方向性 evidence；`BROKER_REQUIRED=NOT_YET` 不变。
 
-生命周期判断是
+RPF-36 的历史生命周期判断是
 `READY_FOR_PRODUCTION_IMPLEMENTATION = CONDITIONAL`：仍需证明 per-run
 Simulation hosting、provider/account/region/budget preflight、独立 restore、
 human Approval/Release principal 配置，以及 Product Release Identity
 read-back/rollback。完整矩阵、日期来源和离线 proof 见
-[`spikes/rpf-36/`](../spikes/rpf-36/README.md)。
+[`spikes/rpf-36/`](../spikes/rpf-36/README.md)。当前 Lifecycle 是
+`Stabilization / Portfolio Maintenance`；RPF-37 是全仓收束审计，下一边界是
+低风险、可回滚的 RPF-38 cleanup，而不是 Production implementation。
 
 ## Authority 与恢复边界
 
@@ -208,7 +211,7 @@ read-back/rollback。完整矩阵、日期来源和离线 proof 见
 | 正式 S3-compatible ArtifactStore | `S3ArtifactStore`、显式 backend wiring、SeaweedFS 4.47 proof、PostgreSQL canonical ingest 与 HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`；`python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 | 有界 Execution read model | RPF-34 summary list、opaque keyset cursor、有界 detail/timeline、query/payload budget 与 eligible-discovery 兼容性 proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`；`python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
 | 有界 canonical metadata read model | RPF-35 metadata cursor contract、registered-reference list、verified Local/S3 detail、route-scoped Web loader、no-auto-crawl budget 与 Large fixture proof | `python spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>`；`python spikes/rpf-35/verify-evidence.py <rpf35-result.json>` |
-| Production topology 与 Managed Operations 边界 | RPF-36 dated provider matrix、candidate region/topology、managed persistence/secrets、Simulation hosting boundary、Release Identity/Approval chain、restore/rollback/cost model 与 conditional RPF-37 scope | `python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run>`；`python spikes/rpf-36/verify-evidence.py <rpf36-result.json>` |
+| Production topology 与 Managed Operations 边界 | RPF-36 dated provider matrix、future candidate region/topology、managed persistence/secrets、Simulation hosting boundary、Release Identity/Approval chain、restore/rollback/cost model 与 RPF-37 Deferred/maintenance calibration | `python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run>`；`python spikes/rpf-36/verify-evidence.py <rpf36-result.json>`；`python spikes/rpf-37/audit.py --root . --output .local/rpf-37/audit.json` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
@@ -216,9 +219,9 @@ source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATI
 
 当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。RPF-36 增加的是 conditional managed-topology 调查，不是云部署；它仍没有证明或授权 Production HA、托管云 operations、多主机 supervisor、human Approval 配置、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界是 conditional RPF-37 slice：取得 provider/account/region/budget
-授权，证明一个 managed RDS/S3 connection 和一个 scoped RPF-28 Simulation
-task，再验证 Product Release Identity、restore 和 rollback。RPF-36 不授权实际
+下一架构边界是可回滚的 RPF-38 repository cleanup：先收敛历史 workflow
+fan-out，澄清 governance/history ownership，同时保留全部 formal contract 与
+reviewed evidence。Production Cloud boundary 保持 Deferred；RPF-36 不授权实际
 Production deployment，也不引入 Kubernetes、broker、multiregion、完整
 tenant/RBAC 或自动 `ELIGIBLE` deployment。RPF-35 仍不证明 Production capacity、
 artifact streaming、virtualization、retention/GC 或 managed durability；S3

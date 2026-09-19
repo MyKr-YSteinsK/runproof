@@ -137,9 +137,11 @@ release/deploy authority.
 RPF-36 is an investigation-only boundary. It compares AWS ECS/Fargate + RDS +
 S3, Render + Cloudflare R2, and Railway + Cloudflare R2 using dated provider
 sources. The preferred candidate is a single-region AWS topology with
-`ap-southeast-1` (Singapore) as the first region candidate. Region, latency,
+`ap-southeast-1` (Singapore) as a future region candidate. Region, latency,
 data-residency, account quota, and cost remain authorization/preflight facts;
-no provider account, paid resource, or cloud API operation was used by RPF-36.
+no provider account, paid resource, or cloud API operation was used by RPF-36,
+and RPF-37 did not authorize one. Real Production Cloud deployment remains
+Deferred.
 
 The candidate flow is:
 
@@ -178,12 +180,15 @@ Control Plane task, one Worker task at concurrency one, a small production-
 eligible database tier, bounded connection pools, and explicit backlog/object/
 log cost thresholds. `BROKER_REQUIRED=NOT_YET` remains unchanged.
 
-The RPF-36 lifecycle gate is
+The historical RPF-36 lifecycle gate was
 `READY_FOR_PRODUCTION_IMPLEMENTATION = CONDITIONAL`: per-run Simulation
 hosting, provider/account/region/budget preflight, independent restore, human
 Approval/release-principal configuration, and Product Release Identity
 read-back/rollback are still required. The full comparison, dated sources and
-offline proof are in [`spikes/rpf-36/`](../spikes/rpf-36/README.md).
+offline proof are in [`spikes/rpf-36/`](../spikes/rpf-36/README.md). The current
+lifecycle is `Stabilization / Portfolio Maintenance`; RPF-37 is a repository
+closure audit, and the next boundary is the low-risk, reversible RPF-38 cleanup
+contract rather than Production implementation.
 
 ## Authority and recovery boundaries
 
@@ -223,7 +228,7 @@ Module READMEs remain implementation-facing. Public claims are centralized here 
 | Formal S3-compatible ArtifactStore | `S3ArtifactStore`, explicit backend wiring, SeaweedFS 4.47 proof, PostgreSQL canonical ingest, and HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`; `python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 | Bounded Execution read model | RPF-34 summary list, opaque keyset cursors, bounded detail/timeline, query/payload budgets, and eligible-discovery compatibility proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`; `python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
 | Bounded canonical metadata read model | RPF-35 metadata cursor contract, registered-reference list, verified Local/S3 detail, route-scoped Web loaders, no-auto-crawl budget, and Large fixture proof | `python spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>`; `python spikes/rpf-35/verify-evidence.py <rpf35-result.json>` |
-| Production topology and managed operations boundary | RPF-36 dated provider matrix, candidate region/topology, managed persistence/secrets, Simulation-hosting boundary, Release Identity/Approval chain, restore/rollback/cost model, and conditional RPF-37 scope | `python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run>`; `python spikes/rpf-36/verify-evidence.py <rpf36-result.json>` |
+| Production topology and managed operations boundary | RPF-36 dated provider matrix, future candidate region/topology, managed persistence/secrets, Simulation-hosting boundary, Release Identity/Approval chain, restore/rollback/cost model, and RPF-37 Deferred/maintenance calibration | `python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run>`; `python spikes/rpf-36/verify-evidence.py <rpf36-result.json>`; `python spikes/rpf-37/audit.py --root . --output .local/rpf-37/audit.json` |
 
 The detailed source identities, hosted runs, and historical compatibility facts are kept in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md), not repeated in the current snapshot.
 
@@ -231,12 +236,12 @@ The detailed source identities, hosted runs, and historical compatibility facts 
 
 The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, a formal S3-compatible object-store adapter, hosted CI checks, and a Windows local Golden Demo lifecycle. RPF-36 adds a conditional managed-topology investigation, not a cloud deployment. The repository still does not prove or authorize Production HA, managed cloud operations, multi-host supervision, human Approval configuration, tenant/RBAC identity, or real destructive remediation.
 
-The next architectural boundary is the conditional RPF-37 slice: authorize a
-provider/account/region/budget, prove one managed RDS/S3 connection and one
-scoped RPF-28 Simulation task, then verify Product Release Identity, restore and
-rollback. RPF-36 does not authorize actual Production deployment and does not
-introduce Kubernetes, a broker, multiregion, full tenant/RBAC or automatic
-`ELIGIBLE` deployment. RPF-35 still does not prove Production capacity,
-artifact streaming, virtualization, retention/GC or managed durability; the
-S3 adapter remains a compatibility boundary rather than a durability, HA or
-release-authority claim.
+The next architectural boundary is the reversible RPF-38 repository cleanup:
+first reduce historical workflow fan-out and clarify governance/history
+ownership, while preserving all formal contracts and reviewed evidence. The
+Production Cloud boundary remains Deferred; RPF-36 does not authorize actual
+Production deployment and does not introduce Kubernetes, a broker,
+multiregion, full tenant/RBAC or automatic `ELIGIBLE` deployment. RPF-35 still
+does not prove Production capacity, artifact streaming, virtualization,
+retention/GC or managed durability; the S3 adapter remains a compatibility
+boundary rather than a durability, HA or release-authority claim.
