@@ -1,6 +1,6 @@
 # RPF-35 Result — bounded Canonical Metadata read model
 
-Status: Local proof complete; hosted focused proof and canonical gate pending.
+Status: Complete.
 Lifecycle remains `Stabilization`; no Release authority, historical reviewed
 artifact bytes, Production deployment, or release/deploy action changed.
 
@@ -9,7 +9,17 @@ with source identity `ad829f15de5e513d6c9278cbfa390ae27ab2d580761f6fe435bc5d2444
 The offline verifier passed with 13,502 metadata rows, 2 SQL statements and
 139,940 bytes for the 100-row page, zero list artifact-body reads, one verified
 15,202-byte detail artifact read, and 10,002 concurrent rows without duplicate
-cursor results. Hosted run and gate links will be added after remote delivery.
+cursor results.
+
+Hosted focused proof passed in
+[run `35412615607`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35412615607)
+for commit `7ffc4a7dc5e9837f1bc9bd42e2ef1302c0a0a934`, uploading
+`rpf-35-canonical-read-35412615607-1` with digest
+`sha256:fce9e50fc7800335095d293a297ba8bd288179fd589ef6cf6647281c16ab0056`.
+The same commit passed the hosted canonical Release Gate in
+[run `35412615613`](https://github.com/MyKr-YSteinsK/runproof/actions/runs/35412615613),
+uploading `rpf-12-release-gate-35412615613-1` with digest
+`sha256:02f35f124c0e852cfa31bbb6a627c0d5061ee4fd0311ae17f4a913c39eb3cac8`.
 
 This file summarizes the current delivery rather than acting as a second
 mutable evidence corpus; the JSON result and offline verifier are authoritative.
