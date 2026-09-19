@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import {
-  activateControlPlaneCorpus,
   EvidenceLayer,
   EvaluationComparison,
   EvaluationComparisonMember,
@@ -55,7 +54,8 @@ import {
   FailureIntelligence,
   VersionBisect,
 } from "./data/artifacts";
-import { ControlPlaneApiError, loadControlPlaneCorpus } from "./data/controlPlaneApi";
+import { ControlPlaneApiError } from "./data/controlPlaneApi";
+import { loadRouteScopedControlPlaneData, type ApiRouteData } from "./data/routeScopedControlPlane";
 import { ExecutionEventDto, ExecutionJobDto, ExecutionJobSummaryDto, loadExecutionJob, loadExecutionJobs, loadExecutionMetrics, loadExecutionTimeline } from "./data/executions";
 import { AppShell } from "./components/AppShell";
 import { DataSourceState as SharedDataSourceState, NotFoundState } from "./components/DataSourceState";
@@ -75,6 +75,7 @@ import { GoldenDemoOverview as GoldenDemoOverviewFeature } from "./features/over
 import { FailureCaseDetail as FailureCaseDetailFeature } from "./features/failure/FailureCaseDetail";
 import { resolveCanonicalRouteState } from "./app/canonicalRouteState";
 import { useI18n } from "./i18n";
+import { ApiRouteLoadingState, CanonicalApiAgentDetailPage, CanonicalApiDetailPage, CanonicalApiIndexPage } from "./features/canonical/CanonicalApiPages";
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -1733,6 +1734,10 @@ export default function App() {
   const [dataSource, setDataSource] = useState<{ status: "loading" | "ready" | "error"; error?: ControlPlaneApiError }>(() => ({
     status: DATA_SOURCE_MODE === "fixture" ? "ready" : "loading",
   }));
+  const [apiRoute, setApiRoute] = useState<ApiRouteData | null>(null);
+  const [apiRouteState, setApiRouteState] = useState<{ status: "loading" | "ready" | "error"; error?: ControlPlaneApiError }>({
+    status: DATA_SOURCE_MODE === "fixture" ? "ready" : "loading",
+  });
   useEffect(() => {
     const update = () => setLocation(readLocation());
     window.addEventListener("popstate", update);
@@ -1742,31 +1747,21 @@ export default function App() {
   useEffect(() => {
     if (DATA_SOURCE_MODE === "fixture" || executionRoute) {
       setDataSource({ status: "ready" });
+      setApiRouteState({ status: "ready" });
       return;
     }
     let active = true;
-    loadControlPlaneCorpus()
-      .then((payload) => {
+    setApiRoute(null);
+    setApiRouteState({ status: "loading" });
+    loadRouteScopedControlPlaneData(location.pathname, location.search)
+      .then((route) => {
         if (!active) return;
-        try {
-          activateControlPlaneCorpus(payload);
-          setSnapshot((current) => createCanonicalSnapshot("api", current.revision + 1));
-          setDataSource({ status: "ready" });
-        } catch {
-          setDataSource({
-            status: "error",
-            error: new ControlPlaneApiError(
-              "Control Plane artifact normalization failed.",
-              "INVALID_API_CORPUS",
-              null,
-              false,
-            ),
-          });
-        }
+        setApiRoute(route);
+        setApiRouteState({ status: "ready" });
       })
       .catch((error: unknown) => {
         if (!active) return;
-        setDataSource({
+        setApiRouteState({
           status: "error",
           error: error instanceof ControlPlaneApiError
             ? error
@@ -1776,13 +1771,20 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, [executionRoute]);
+  }, [executionRoute, location.pathname, location.search]);
   const canonicalRouteState = useMemo(() => resolveCanonicalRouteState(dataSource.status, snapshot, location), [dataSource.status, snapshot, location]);
   const selected = canonicalRouteState.kind === "ready" || canonicalRouteState.kind === "not-found"
     ? canonicalRouteState.selection
     : {};
   const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
+  if (DATA_SOURCE_MODE === "api") {
+    if (apiRouteState.status !== "ready" || !apiRoute) return <ApiRouteLoadingState status={apiRouteState.status === "error" ? "error" : "loading"} error={apiRouteState.error} />;
+    if (apiRoute.kind === "overview") return <GoldenDemoOverviewFeature snapshot={apiRoute.snapshot} />;
+    if (apiRoute.kind === "index") return <CanonicalApiIndexPage data={apiRoute} />;
+    if (apiRoute.kind === "agent") return <CanonicalApiAgentDetailPage data={apiRoute} />;
+    return <CanonicalApiDetailPage data={apiRoute} />;
+  }
   if (canonicalRouteState.kind === "loading") return <SharedDataSourceState status="loading" />;
   if (canonicalRouteState.kind === "unavailable") return <SharedDataSourceState status="error" error={dataSource.error} />;
   if (location.pathname === "/" || location.pathname === "/overview") return <GoldenDemoOverviewFeature snapshot={snapshot} />;

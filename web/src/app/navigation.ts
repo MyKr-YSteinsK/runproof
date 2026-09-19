@@ -1,5 +1,6 @@
 export type LocationState = {
   pathname: string;
+  search: string;
   runId: string | null;
   eventId: string | null;
   agentId: string | null;
@@ -31,6 +32,7 @@ export const readLocation = (): LocationState => {
   const bisectMatch = pathname.match(/^\/version-bisects\/([^/]+)$/);
   return {
     pathname,
+    search: window.location.search,
     runId: runMatch ? decodeURIComponent(runMatch[1]) : null,
     eventId: new URLSearchParams(window.location.search).get("event"),
     agentId: agentMatch ? decodeURIComponent(agentMatch[1]) : null,

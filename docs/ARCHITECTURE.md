@@ -97,6 +97,41 @@ is the pinned disposable compatibility provider for the current proof; the
 result does not establish managed-object-store durability, HA, replication,
 lifecycle/GC, capacity, migration, or Production release authority.
 
+## Bounded canonical metadata read model
+
+RPF-35 separates canonical metadata discovery from verified artifact detail.
+`GET /api/v1/metadata` is bounded by default to 50 rows and capped at 100. Its
+opaque `rpf-metadata-cursor-v1` keyset cursor binds the entity scope, ordering,
+page size, and cursor version; malformed or incompatible cursors fail closed.
+The primary type order is `created_at,entity_id:asc`, while bounded cross-type
+discovery uses `created_at,entity_type,entity_id:asc`. The implementation uses
+keyset predicates rather than `OFFSET`; the cross-type EXPLAIN is recorded and
+its sequential scan is intentionally deferred to a future focused index plan.
+
+Metadata pages return registered identity, summary, references, and ArtifactRef
+facts with `REGISTERED_REFERENCE` availability. They do not read every artifact
+body and do not claim that current bytes were re-verified. A canonical detail
+read first obtains one metadata row with `verify=false`, then reads the selected
+artifact through the existing Local/S3 verification authority. Hash, schema,
+kind, entity, source, and runtime identity checks remain mandatory on that
+detail path.
+
+API-mode Web ownership is route-scoped: each canonical index requests one
+bounded metadata page, each detail deep link requests only its entity metadata
+and verified artifact, and Overview uses fixed reviewed Golden Demo references
+and bounded aggregate dependencies. The App root no longer bootstraps a full
+corpus or automatically crawls every metadata cursor. The legacy complete-corpus
+adapter remains only for explicit fixture/compatibility callers. Previous/Next
+cursor state is URL-backed, while raw/expert views identify the current bounded
+page or entity rather than pretending to be a full historical snapshot.
+
+The local RPF-35 proof measured 13,502 metadata rows: a 100-row page used at
+most two SQL statements and 139,940 bytes, list artifact-body reads were zero,
+and a verified detail read used one artifact body of 15,202 bytes. This is a
+repository regression budget, not a Production SLA. RPF-35 does not add
+artifact streaming, browser virtualization, retention/GC, broker, topology, or
+release/deploy authority.
+
 ## Authority and recovery boundaries
 
 - Agent and worker authority is narrower than decision-writer authority.
@@ -134,6 +169,7 @@ Module READMEs remain implementation-facing. Public claims are centralized here 
 | Formal diagnostic observability | RPF-30 SDK instrumentation, three-mode durable probe, Collector trace file, and span/cardinality verifier | `python spikes/rpf-30/probe.py --run`; `python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
 | Formal S3-compatible ArtifactStore | `S3ArtifactStore`, explicit backend wiring, SeaweedFS 4.47 proof, PostgreSQL canonical ingest, and HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`; `python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 | Bounded Execution read model | RPF-34 summary list, opaque keyset cursors, bounded detail/timeline, query/payload budgets, and eligible-discovery compatibility proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`; `python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
+| Bounded canonical metadata read model | RPF-35 metadata cursor contract, registered-reference list, verified Local/S3 detail, route-scoped Web loaders, no-auto-crawl budget, and Large fixture proof | `python spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>`; `python spikes/rpf-35/verify-evidence.py <rpf35-result.json>` |
 
 The detailed source identities, hosted runs, and historical compatibility facts are kept in [VERIFICATION_HISTORY.md](history/VERIFICATION_HISTORY.md), not repeated in the current snapshot.
 
@@ -141,10 +177,12 @@ The detailed source identities, hosted runs, and historical compatibility facts 
 
 The current repository proves a controlled simulation, a formal fresh multi-service network fault Environment, local production-like persistence/recovery, an explicit PostgreSQL durable workflow, immutable evidence, a formal S3-compatible object-store adapter, hosted CI checks, and a Windows local Golden Demo lifecycle. It does not prove or authorize Production HA, managed cloud deployment, multi-host supervision, human Approval, tenant/RBAC identity, or real destructive remediation.
 
-The next architectural boundary should be selected from measured need: full
-metadata read-model/streaming behavior, managed object-storage operations, or
-a production topology investigation. RPF-34 bounds the Execution surface but
-does not solve full `/metadata` reads, artifact streaming, virtualization,
-retention/GC, or Production capacity. Formal OpenTelemetry remains an optional
+The next architectural boundary should be selected through a checkpoint review
+of the RPF-33→RPF-35 capacity/read-model milestone: a focused PostgreSQL index
+plan if the cross-type EXPLAIN shows repeatable benefit, artifact
+streaming/retention work, managed object-storage operations, or a production
+topology investigation. RPF-35 bounds ordinary canonical metadata reads but
+does not prove Production capacity, artifact streaming, virtualization,
+retention/GC, or managed durability. Formal OpenTelemetry remains an optional
 diagnostic boundary, and the S3-compatible adapter remains a single-node
 compatibility proof rather than a durability, HA, or release authority claim.

@@ -180,21 +180,31 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/metadata")
-    public ApiModels.MetadataList metadataList(HttpServletRequest request, @RequestParam(name = "entity_type", required = false) String entityType) {
+    public ApiModels.MetadataList metadataList(
+            HttpServletRequest request,
+            @RequestParam(name = "entity_type", required = false) String entityType,
+            @RequestParam(name = "limit", required = false) Integer limit,
+            @RequestParam(name = "cursor", required = false) String cursor
+    ) {
         authService.require(request, "metadata:read");
-        return metadataService.list(entityType);
+        return metadataService.list(entityType, limit, cursor);
     }
 
     @GetMapping("/metadata/{entityType}/{entityId}")
-    public ApiModels.MetadataView metadata(HttpServletRequest request, @PathVariable String entityType, @PathVariable String entityId) {
+    public ApiModels.MetadataView metadata(
+            HttpServletRequest request,
+            @PathVariable String entityType,
+            @PathVariable String entityId,
+            @RequestParam(name = "verify", defaultValue = "true") boolean verifyArtifact
+    ) {
         authService.require(request, "metadata:read");
         mark(request, entityType, entityId);
-        return metadataService.get(entityType, entityId);
+        return metadataService.get(entityType, entityId, verifyArtifact);
     }
 
     @GetMapping("/runs")
-    public ApiModels.MetadataList runs(HttpServletRequest request) {
-        return list(request, "RUN");
+    public ApiModels.MetadataList runs(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "RUN", limit, cursor);
     }
 
     @GetMapping("/runs/{entityId}")
@@ -203,8 +213,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/failures")
-    public ApiModels.MetadataList failures(HttpServletRequest request) {
-        return list(request, "FAILURE_CASE");
+    public ApiModels.MetadataList failures(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "FAILURE_CASE", limit, cursor);
     }
 
     @GetMapping("/failures/{entityId}")
@@ -213,8 +223,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/regressions")
-    public ApiModels.MetadataList regressions(HttpServletRequest request) {
-        return list(request, "REGRESSION");
+    public ApiModels.MetadataList regressions(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "REGRESSION", limit, cursor);
     }
 
     @GetMapping("/regressions/{entityId}")
@@ -223,8 +233,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/evaluations")
-    public ApiModels.MetadataList evaluations(HttpServletRequest request) {
-        return list(request, "EVALUATION");
+    public ApiModels.MetadataList evaluations(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "EVALUATION", limit, cursor);
     }
 
     @GetMapping("/evaluations/{entityId}")
@@ -233,8 +243,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/comparisons")
-    public ApiModels.MetadataList comparisons(HttpServletRequest request) {
-        return list(request, "COMPARISON");
+    public ApiModels.MetadataList comparisons(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "COMPARISON", limit, cursor);
     }
 
     @GetMapping("/comparisons/{entityId}")
@@ -243,8 +253,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/release-decisions")
-    public ApiModels.MetadataList releaseDecisions(HttpServletRequest request) {
-        return list(request, "RELEASE_DECISION");
+    public ApiModels.MetadataList releaseDecisions(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "RELEASE_DECISION", limit, cursor);
     }
 
     @GetMapping("/release-decisions/{entityId}")
@@ -253,8 +263,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/failure-intelligence")
-    public ApiModels.MetadataList failureIntelligence(HttpServletRequest request) {
-        return list(request, "FAILURE_INTELLIGENCE");
+    public ApiModels.MetadataList failureIntelligence(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "FAILURE_INTELLIGENCE", limit, cursor);
     }
 
     @GetMapping("/failure-intelligence/{entityId}")
@@ -263,8 +273,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/failure-clusters")
-    public ApiModels.MetadataList failureClusters(HttpServletRequest request) {
-        return list(request, "FAILURE_CLUSTER");
+    public ApiModels.MetadataList failureClusters(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "FAILURE_CLUSTER", limit, cursor);
     }
 
     @GetMapping("/failure-clusters/{entityId}")
@@ -273,8 +283,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/version-bisects")
-    public ApiModels.MetadataList versionBisects(HttpServletRequest request) {
-        return list(request, "VERSION_BISECT");
+    public ApiModels.MetadataList versionBisects(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "VERSION_BISECT", limit, cursor);
     }
 
     @GetMapping("/version-bisects/{entityId}")
@@ -283,8 +293,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/statistical-sampling-plans")
-    public ApiModels.MetadataList statisticalSamplingPlans(HttpServletRequest request) {
-        return list(request, "STATISTICAL_SAMPLING_PLAN");
+    public ApiModels.MetadataList statisticalSamplingPlans(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "STATISTICAL_SAMPLING_PLAN", limit, cursor);
     }
 
     @GetMapping("/statistical-sampling-plans/{entityId}")
@@ -293,8 +303,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/statistical-evaluations")
-    public ApiModels.MetadataList statisticalEvaluations(HttpServletRequest request) {
-        return list(request, "STATISTICAL_EVALUATION");
+    public ApiModels.MetadataList statisticalEvaluations(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "STATISTICAL_EVALUATION", limit, cursor);
     }
 
     @GetMapping("/statistical-evaluations/{entityId}")
@@ -303,8 +313,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/statistical-comparisons")
-    public ApiModels.MetadataList statisticalComparisons(HttpServletRequest request) {
-        return list(request, "STATISTICAL_COMPARISON");
+    public ApiModels.MetadataList statisticalComparisons(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "STATISTICAL_COMPARISON", limit, cursor);
     }
 
     @GetMapping("/statistical-comparisons/{entityId}")
@@ -313,8 +323,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/statistical-policies")
-    public ApiModels.MetadataList statisticalPolicies(HttpServletRequest request) {
-        return list(request, "STATISTICAL_POLICY");
+    public ApiModels.MetadataList statisticalPolicies(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "STATISTICAL_POLICY", limit, cursor);
     }
 
     @GetMapping("/statistical-policies/{entityId}")
@@ -323,8 +333,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/statistical-gates")
-    public ApiModels.MetadataList statisticalGates(HttpServletRequest request) {
-        return list(request, "STATISTICAL_GATE");
+    public ApiModels.MetadataList statisticalGates(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "STATISTICAL_GATE", limit, cursor);
     }
 
     @GetMapping("/statistical-gates/{entityId}")
@@ -333,8 +343,8 @@ public class ControlPlaneController {
     }
 
     @GetMapping("/statistical-release-decisions")
-    public ApiModels.MetadataList statisticalReleaseDecisions(HttpServletRequest request) {
-        return list(request, "STATISTICAL_RELEASE_DECISION");
+    public ApiModels.MetadataList statisticalReleaseDecisions(HttpServletRequest request, @RequestParam(name = "limit", required = false) Integer limit, @RequestParam(name = "cursor", required = false) String cursor) {
+        return list(request, "STATISTICAL_RELEASE_DECISION", limit, cursor);
     }
 
     @GetMapping("/statistical-release-decisions/{entityId}")
@@ -361,12 +371,12 @@ public class ControlPlaneController {
         return capabilities();
     }
 
-    private ApiModels.MetadataList list(HttpServletRequest request, String entityType) {
+    private ApiModels.MetadataList list(HttpServletRequest request, String entityType, Integer limit, String cursor) {
         authService.require(request, "metadata:read");
         String spanName = "RELEASE_DECISION".equals(entityType) || "STATISTICAL_RELEASE_DECISION".equals(entityType)
                 ? "runproof.decision.read" : "runproof.canonical.read";
         try (ObservabilityService.SpanScope ignored = observability.span(spanName, Map.of("runproof.target.type", entityType))) {
-            return metadataService.list(entityType);
+            return metadataService.list(entityType, limit, cursor);
         }
     }
 

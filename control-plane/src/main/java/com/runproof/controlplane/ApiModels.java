@@ -80,6 +80,14 @@ final class ApiModels {
                     "UNAVAILABLE_OR_INVALID", code, "/artifacts/" + entityType + "/" + entityId
             );
         }
+
+        static ArtifactSnapshot registered(ArtifactRef ref, String entityType, String entityId) {
+            return new ArtifactSnapshot(
+                    ref.artifactId(), ref.artifactKey(), ref.artifactKind(), ref.schemaVersion(),
+                    ref.contentSha256(), ref.sourceSha256(), ref.runtimeVersion(), false,
+                    "REGISTERED_REFERENCE", null, "/artifacts/" + entityType + "/" + entityId
+            );
+        }
     }
 
     record MetadataRecord(
@@ -106,7 +114,16 @@ final class ApiModels {
     ) {
     }
 
-    record MetadataList(List<MetadataView> items) {
+    record MetadataList(
+            List<MetadataView> items,
+            int limit,
+            @JsonProperty("has_more") boolean hasMore,
+            @JsonProperty("next_cursor") JsonNode nextCursor,
+            @JsonProperty("cursor_contract") String cursorContract,
+            String ordering,
+            @JsonProperty("entity_type") String entityType,
+            @JsonProperty("artifact_resolution") String artifactResolution
+    ) {
     }
 
     record IngestResponse(

@@ -1074,6 +1074,26 @@ button:focus-visible, a:focus-visible, summary:focus-visible {
 .execution-pagination button, .execution-timeline-controls button { min-height: 30px; padding: 0 12px; border: 1px solid #3c5d5e; background: #162124; color: var(--teal); cursor: pointer; font-size: 9px; }
 .execution-pagination button:hover:not(:disabled), .execution-timeline-controls button:hover:not(:disabled) { border-color: var(--teal); background: #1b3030; }
 .execution-pagination button:disabled, .execution-timeline-controls button:disabled { border-color: var(--line-soft); color: var(--dim); cursor: not-allowed; opacity: .7; }
+.canonical-api-list-section { margin-top: 34px; }
+.canonical-api-list { margin-top: 15px; border-top: 1px solid var(--line); }
+.canonical-api-row { display: grid; grid-template-columns: 1.1fr 1.8fr 1.15fr 1.05fr auto; gap: 18px; align-items: center; min-height: 82px; padding: 16px 18px; border-bottom: 1px solid var(--line-soft); color: var(--text); text-decoration: none; background: rgba(16, 22, 25, .72); }
+.canonical-api-row:hover { background: #172326; }
+.canonical-api-row > div { display: grid; gap: 5px; min-width: 0; }
+.canonical-api-row strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.canonical-api-row span { color: var(--muted); font-size: 10px; line-height: 1.45; }
+.canonical-api-row .signal-label { color: var(--teal); text-transform: uppercase; letter-spacing: .08em; font-size: 8px; }
+.canonical-detail-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: 18px; margin-top: 24px; }
+.canonical-ref-list { display: grid; gap: 0; }
+.canonical-ref-row { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 13px 19px; border-top: 1px solid var(--line-soft); }
+.canonical-ref-row span { display: grid; gap: 4px; min-width: 0; }
+.canonical-ref-row small { color: var(--muted); overflow: hidden; text-overflow: ellipsis; }
+.canonical-artifact-panel { margin-top: 18px; }
+.canonical-artifact-panel pre { max-height: 600px; overflow: auto; }
+@media (max-width: 1000px) {
+  .canonical-api-row { grid-template-columns: 1fr 1.5fr auto; }
+  .canonical-api-row > div:nth-child(3), .canonical-api-row > div:nth-child(4) { display: none; }
+  .canonical-detail-grid { grid-template-columns: 1fr; }
+}
 .execution-row .execution-row-target { color: var(--teal); font-family: var(--mono); font-size: 9px; }
 .execution-empty { margin-top: 14px; padding: 24px; border: 1px dashed #3a4b50; color: var(--muted); font-size: 11px; line-height: 1.6; }
 .execution-empty strong { color: #d4e2dd; }

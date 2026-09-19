@@ -651,7 +651,7 @@ export const normalizeArtifact = (raw: unknown): RunEvidence => {
   };
 };
 
-const normalizeFailureCase = (raw: unknown): FailureCase => {
+export const normalizeFailureCase = (raw: unknown): FailureCase => {
   const artifact = asObject(raw, "failure case artifact");
   const metadata = asObject(artifact.failure_case, "failure_case");
   const sourceRun = asObject(artifact.source_run, "source_run");
@@ -699,7 +699,7 @@ const normalizeFailureCase = (raw: unknown): FailureCase => {
   };
 };
 
-const normalizeFailureIntelligence = (raw: unknown): FailureIntelligence => {
+export const normalizeFailureIntelligence = (raw: unknown): FailureIntelligence => {
   const artifact = asObject(raw, "failure intelligence artifact");
   const intelligence = asObject(artifact.intelligence, "failure intelligence");
   const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
@@ -736,7 +736,7 @@ const normalizeFailureIntelligence = (raw: unknown): FailureIntelligence => {
   };
 };
 
-const normalizeFailureCluster = (raw: unknown): FailureCluster => {
+export const normalizeFailureCluster = (raw: unknown): FailureCluster => {
   const artifact = asObject(raw, "failure cluster artifact");
   const cluster = asObject(artifact.cluster, "failure cluster");
   return {
@@ -766,7 +766,7 @@ const normalizeFailureCluster = (raw: unknown): FailureCluster => {
   };
 };
 
-const normalizeVersionBisect = (raw: unknown): VersionBisect => {
+export const normalizeVersionBisect = (raw: unknown): VersionBisect => {
   const artifact = asObject(raw, "version bisect artifact");
   const bisect = asObject(artifact.bisect, "version bisect");
   const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
@@ -830,7 +830,7 @@ export let reviewedFailureClusters: FailureCluster[] = [
 ];
 export let reviewedVersionBisects: VersionBisect[] = [normalizeVersionBisect(incidentVersionBisectArtifact)];
 
-const normalizeRegression = (raw: unknown): Regression => {
+export const normalizeRegression = (raw: unknown): Regression => {
   const artifact = asObject(raw, "regression artifact");
   const metadata = asObject(artifact.regression, "regression");
   const source = asObject(artifact.source_failure_case, "source_failure_case");
@@ -870,7 +870,7 @@ const normalizeRegression = (raw: unknown): Regression => {
   };
 };
 
-const normalizeRegressionResult = (raw: unknown): RegressionExecutionResult => {
+export const normalizeRegressionResult = (raw: unknown): RegressionExecutionResult => {
   const artifact = asObject(raw, "regression result artifact");
   const result = asObject(artifact.result, "regression result");
   return {
@@ -894,7 +894,7 @@ const normalizeRegressionResult = (raw: unknown): RegressionExecutionResult => {
   };
 };
 
-const normalizeRegressionCollection = (raw: unknown): RegressionCollection => {
+export const normalizeRegressionCollection = (raw: unknown): RegressionCollection => {
   const artifact = asObject(raw, "regression collection artifact");
   const collection = asObject(artifact.collection, "collection");
   const members = asArray(artifact.members, "collection.members").map((item) => {
@@ -922,7 +922,7 @@ const normalizeRegressionCollection = (raw: unknown): RegressionCollection => {
   };
 };
 
-const normalizeEvaluationSuite = (raw: unknown): EvaluationSuite => {
+export const normalizeEvaluationSuite = (raw: unknown): EvaluationSuite => {
   const artifact = asObject(raw, "evaluation suite artifact");
   const suite = asObject(artifact.suite, "evaluation suite");
   const members = asArray(suite.members, "evaluation suite.members").map((rawMember) => {
@@ -984,7 +984,7 @@ const normalizeEvaluationMember = (raw: unknown): EvaluationMemberResult => {
   };
 };
 
-const normalizeEvaluation = (raw: unknown): EvaluationResult => {
+export const normalizeEvaluation = (raw: unknown): EvaluationResult => {
   const artifact = asObject(raw, "evaluation result artifact");
   const evaluation = asObject(artifact.evaluation, "evaluation result");
   return {
@@ -1038,7 +1038,7 @@ const normalizeComparisonMember = (raw: unknown): EvaluationComparisonMember => 
   };
 };
 
-const normalizeComparison = (raw: unknown): EvaluationComparison => {
+export const normalizeComparison = (raw: unknown): EvaluationComparison => {
   const artifact = asObject(raw, "evaluation comparison artifact");
   const comparison = asObject(artifact.comparison, "evaluation comparison");
   return {
@@ -1059,7 +1059,7 @@ const normalizeComparison = (raw: unknown): EvaluationComparison => {
   };
 };
 
-const normalizeQualityPolicy = (raw: unknown): QualityPolicy => {
+export const normalizeQualityPolicy = (raw: unknown): QualityPolicy => {
   const artifact = asObject(raw, "quality policy artifact");
   const policy = asObject(artifact.policy, "quality policy");
   return {
@@ -1081,7 +1081,7 @@ const normalizeQualityPolicy = (raw: unknown): QualityPolicy => {
   };
 };
 
-const normalizeQualityGate = (raw: unknown): QualityGateEvaluation => {
+export const normalizeQualityGate = (raw: unknown): QualityGateEvaluation => {
   const artifact = asObject(raw, "quality gate artifact");
   const gate = asObject(artifact.gate_evaluation, "quality gate evaluation");
   const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);
@@ -1119,7 +1119,7 @@ const normalizeQualityGate = (raw: unknown): QualityGateEvaluation => {
   };
 };
 
-const normalizeReleaseDecision = (raw: unknown): ReleaseDecision => {
+export const normalizeReleaseDecision = (raw: unknown): ReleaseDecision => {
   const artifact = asObject(raw, "release decision artifact");
   const decision = asObject(artifact.release_decision, "release decision");
   const optionalObject = (value: unknown, label: string): JsonRecord | null => value === null || value === undefined ? null : asObject(value, label);

@@ -91,6 +91,38 @@ disposable compatibility proof 的 pinned provider；该证据不代表托管对
 durability、HA、replication、lifecycle/GC、capacity、migration 或 Production
 release authority。
 
+## 有界 Canonical Metadata read model
+
+RPF-35 将 canonical metadata discovery 与经验证 artifact detail 分离。
+`GET /api/v1/metadata` 默认只返回 50 行，hard maximum 为 100。其 opaque
+`rpf-metadata-cursor-v1` keyset cursor 绑定 entity scope、排序、page size 和
+cursor version；malformed 或不兼容 cursor 会 fail closed。主要 entity order
+是 `created_at,entity_id:asc`；有界 cross-type discovery 使用
+`created_at,entity_type,entity_id:asc`。实现使用 keyset predicate，不以
+`OFFSET` 为主方案；cross-type EXPLAIN 已记录，当前 sequential scan 有意留给
+后续 focused index plan。
+
+Metadata page 只返回 registered identity、summary、refs 和 ArtifactRef
+事实，并用 `REGISTERED_REFERENCE` 表示 availability。它不会逐项读取完整
+artifact body，也不声称当前 bytes 已重新验证。Canonical detail 先以
+`verify=false` 读取一条 metadata，再通过现有 Local/S3 verification authority
+读取选中的 artifact；detail 仍必须执行 hash、schema、kind、entity、source 和
+runtime identity 校验。
+
+API mode Web 使用 route-scoped ownership：canonical index 每次只请求当前一页
+有界 metadata，detail deep link 只请求该 entity 的 metadata 与 verified artifact，
+Overview 使用固定 reviewed Golden Demo refs 与有界 aggregate 依赖。App root 不再
+启动 full corpus bootstrap，也不自动爬取全部 metadata cursor。旧的完整 corpus
+adapter 仅保留给显式 fixture/compatibility caller。Previous/Next cursor state
+写入 URL；raw/expert view 会标明当前有界 page 或 entity，不把局部内容冒充完整
+历史 snapshot。
+
+RPF-35 本地 proof 在 13,502 条 metadata 上测得：100-row page 最多 2 条 SQL、
+139,940 bytes；list artifact-body read 为 0；verified detail 使用一次、
+15,202-byte artifact body。这是仓库 regression budget，不是 Production SLA。
+RPF-35 不引入 artifact streaming、浏览器 virtualization、retention/GC、broker、
+topology 或 release/deploy authority。
+
 ## Authority 与恢复边界
 
 - Agent 和 worker 的 authority 小于 decision-writer authority。
@@ -128,6 +160,7 @@ release authority。
 | 正式诊断 Observability | RPF-30 SDK instrumentation、三模式 durable probe、Collector trace file 与 span/cardinality verifier | `python spikes/rpf-30/probe.py --run`；`python spikes/rpf-30/verify-evidence.py .local/rpf-30/local/rpf30-result.json` |
 | 正式 S3-compatible ArtifactStore | `S3ArtifactStore`、显式 backend wiring、SeaweedFS 4.47 proof、PostgreSQL canonical ingest 与 HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`；`python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 | 有界 Execution read model | RPF-34 summary list、opaque keyset cursor、有界 detail/timeline、query/payload budget 与 eligible-discovery 兼容性 proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`；`python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
+| 有界 canonical metadata read model | RPF-35 metadata cursor contract、registered-reference list、verified Local/S3 detail、route-scoped Web loader、no-auto-crawl budget 与 Large fixture proof | `python spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>`；`python spikes/rpf-35/verify-evidence.py <rpf35-result.json>` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
@@ -135,9 +168,10 @@ source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATI
 
 当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界应从测量需要中选择：完整 `/metadata` read-model/streaming
-行为、托管对象存储运维，或 Production topology 调查。RPF-34 只约束
-Execution surface，不解决完整 `/metadata` 读取、artifact streaming、
-virtualization、retention/GC 或 Production capacity。正式 OpenTelemetry
-仍是可选诊断边界；S3-compatible adapter 也仍是单节点兼容性 proof，不代表
-durability、HA 或 release authority。
+下一架构边界应通过 RPF-33→RPF-35 capacity/read-model milestone 的 checkpoint
+review 选择：如果 cross-type EXPLAIN 显示可重复收益，再做 focused PostgreSQL
+index plan；也可以选择 artifact streaming/retention、托管对象存储运维或
+Production topology 调查。RPF-35 已约束普通 canonical metadata 读取，但不证明
+Production capacity、artifact streaming、virtualization、retention/GC 或托管
+durability。正式 OpenTelemetry 仍是可选诊断边界；S3-compatible adapter 也仍是
+单节点兼容性 proof，不代表 durability、HA 或 release authority。

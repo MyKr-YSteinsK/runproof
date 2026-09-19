@@ -15,7 +15,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Callable, Iterable, Mapping
 from urllib.error import HTTPError, URLError
-from urllib.parse import quote
+from urllib.parse import quote, urlencode
 from urllib.request import Request, urlopen
 
 from .observability import get_observability
@@ -558,12 +558,26 @@ class ControlPlaneClient:
             raise
 
     def list(self, entity_type: str | None = None) -> list[dict[str, Any]]:
-        suffix = "" if entity_type is None else f"?entity_type={entity_type}"
-        response = self.request("GET", f"/metadata{suffix}")
-        items = response.get("items")
-        if not isinstance(items, list):
-            raise ControlPlaneClientError("Control Plane list response is malformed", code="INVALID_API_RESPONSE")
-        return [item for item in items if isinstance(item, dict)]
+        items: list[dict[str, Any]] = []
+        cursor: str | None = None
+        for _ in range(10_000):
+            query: dict[str, str] = {"limit": "100"}
+            if entity_type is not None:
+                query["entity_type"] = entity_type
+            if cursor:
+                query["cursor"] = cursor
+            response = self.request("GET", f"/metadata?{urlencode(query)}")
+            page = response.get("items")
+            if not isinstance(page, list):
+                raise ControlPlaneClientError("Control Plane list response is malformed", code="INVALID_API_RESPONSE")
+            items.extend(item for item in page if isinstance(item, dict))
+            next_cursor = response.get("next_cursor")
+            if not response.get("has_more"):
+                return items
+            if not isinstance(next_cursor, str) or not next_cursor or next_cursor == cursor:
+                raise ControlPlaneClientError("Control Plane metadata cursor did not advance", code="INVALID_API_RESPONSE")
+            cursor = next_cursor
+        raise ControlPlaneClientError("Control Plane metadata pagination exceeded its safety bound", code="INVALID_API_RESPONSE")
 
     def get_artifact(self, entity_type: str, entity_id: str) -> dict[str, Any]:
         return self.request("GET", f"/artifacts/{quote(entity_type, safe='')}/{quote(entity_id, safe='')}")

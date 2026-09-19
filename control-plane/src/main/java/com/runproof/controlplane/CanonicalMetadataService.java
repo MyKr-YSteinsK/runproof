@@ -3,6 +3,8 @@ package com.runproof.controlplane;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.NullNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -10,8 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -31,6 +35,11 @@ import static com.runproof.controlplane.ProbeExceptions.RequestValidationExcepti
 public class CanonicalMetadataService {
 
     private static final String MANIFEST_SCHEMA = "rpf-canonical-ingest-v1";
+    static final String METADATA_CURSOR_CONTRACT = "rpf-metadata-cursor-v1";
+    static final int METADATA_DEFAULT_LIMIT = 50;
+    static final int METADATA_MAX_LIMIT = 100;
+    private static final String METADATA_ORDER_BY_TYPE = "created_at,entity_id:asc";
+    private static final String METADATA_ORDER_CROSS_TYPE = "created_at,entity_type,entity_id:asc";
     private static final String LEGACY_RPF18_SOURCE_SHA256 = "3a1083279be0e6969c7222e86087647058e5a15562c1f99eccdc4297a21bd689";
     private static final List<String> DECISION_ROLES = List.of(
             "policy_ref", "suite_ref", "candidate_evaluation_ref", "comparison_ref", "gate_evaluation_ref", "regression_ref"
@@ -119,23 +128,66 @@ public class CanonicalMetadataService {
     }
 
     public ApiModels.MetadataView get(String entityType, String entityId) {
+        return get(entityType, entityId, true);
+    }
+
+    public ApiModels.MetadataView get(String entityType, String entityId, boolean verifyArtifact) {
         MetadataRow row = find(normalizeEntityType(entityType), entityId);
         if (row == null) throw new EntityNotFoundException("Canonical metadata was not found.");
-        return toView(row);
+        return toView(row, verifyArtifact);
     }
 
     public ApiModels.MetadataList list(String entityType) {
+        return list(entityType, null, null);
+    }
+
+    public ApiModels.MetadataList list(String entityType, Integer requestedLimit, String encodedCursor) {
         String normalized = normalizeEntityType(entityType);
-        List<MetadataRow> rows;
-        if (normalized == null) {
-            rows = jdbcTemplate.query("SELECT * FROM canonical_metadata ORDER BY created_at, entity_type, entity_id", rowMapper());
+        int limit = boundedLimit(requestedLimit);
+        String ordering = normalized == null ? METADATA_ORDER_CROSS_TYPE : METADATA_ORDER_BY_TYPE;
+        MetadataCursor cursor = decodeCursor(encodedCursor);
+        validateCursor(cursor, normalized, ordering, limit);
+
+        StringBuilder sql = new StringBuilder("SELECT * FROM canonical_metadata");
+        List<Object> arguments = new ArrayList<>();
+        if (normalized != null) {
+            sql.append(" WHERE entity_type = ?");
+            arguments.add(normalized);
+            if (cursor != null) {
+                sql.append(" AND (created_at > ? OR (created_at = ? AND entity_id > ?))");
+                Timestamp timestamp = cursorTimestamp(cursor);
+                arguments.add(timestamp);
+                arguments.add(timestamp);
+                arguments.add(cursor.entityId());
+            }
+            sql.append(" ORDER BY created_at ASC, entity_id ASC LIMIT ?");
         } else {
-            rows = jdbcTemplate.query(
-                    "SELECT * FROM canonical_metadata WHERE entity_type = ? ORDER BY created_at, entity_id",
-                    rowMapper(), normalized
-            );
+            if (cursor != null) {
+                sql.append(" WHERE (created_at > ? OR (created_at = ? AND (entity_type > ? OR (entity_type = ? AND entity_id > ?))))");
+                Timestamp timestamp = cursorTimestamp(cursor);
+                arguments.add(timestamp);
+                arguments.add(timestamp);
+                arguments.add(cursor.entityType());
+                arguments.add(cursor.entityType());
+                arguments.add(cursor.entityId());
+            }
+            sql.append(" ORDER BY created_at ASC, entity_type ASC, entity_id ASC LIMIT ?");
         }
-        return new ApiModels.MetadataList(rows.stream().map(this::toView).toList());
+        arguments.add(limit + 1);
+        List<MetadataRow> rows = jdbcTemplate.query(sql.toString(), rowMapper(), arguments.toArray());
+        boolean hasMore = rows.size() > limit;
+        if (hasMore) rows = new ArrayList<>(rows.subList(0, limit));
+        String nextCursor = hasMore && !rows.isEmpty() ? encodeCursor(normalized, ordering, limit, rows.get(rows.size() - 1)) : null;
+        return new ApiModels.MetadataList(
+                rows.stream().map(row -> toView(row, false)).toList(),
+                limit,
+                hasMore,
+                nextCursor == null ? NullNode.getInstance() : objectMapper.getNodeFactory().textNode(nextCursor),
+                METADATA_CURSOR_CONTRACT,
+                ordering,
+                normalized,
+                "REGISTERED_REFERENCE"
+        );
     }
 
     public ApiModels.ArtifactResponse readArtifact(String entityType, String entityId) {
@@ -826,11 +878,19 @@ public class CanonicalMetadataService {
     }
 
     private ApiModels.MetadataView toView(MetadataRow row) {
+        return toView(row, true);
+    }
+
+    private ApiModels.MetadataView toView(MetadataRow row, boolean verifyArtifact) {
         ApiModels.ArtifactSnapshot resolution;
-        try {
-            resolution = artifactStore.verify(row.artifactRef(), row.entityType(), row.entityId());
-        } catch (InvalidEvidenceException exception) {
-            resolution = ApiModels.ArtifactSnapshot.unavailable(row.artifactRef(), exception.code(), row.entityType(), row.entityId());
+        if (!verifyArtifact) {
+            resolution = ApiModels.ArtifactSnapshot.registered(row.artifactRef(), row.entityType(), row.entityId());
+        } else {
+            try {
+                resolution = artifactStore.verify(row.artifactRef(), row.entityType(), row.entityId());
+            } catch (InvalidEvidenceException exception) {
+                resolution = ApiModels.ArtifactSnapshot.unavailable(row.artifactRef(), exception.code(), row.entityType(), row.entityId());
+            }
         }
         return new ApiModels.MetadataView(
                 new ApiModels.MetadataRecord(
@@ -840,6 +900,79 @@ public class CanonicalMetadataService {
                 ),
                 resolution
         );
+    }
+
+    private static int boundedLimit(Integer requestedLimit) {
+        if (requestedLimit == null || requestedLimit <= 0) return METADATA_DEFAULT_LIMIT;
+        return Math.min(requestedLimit, METADATA_MAX_LIMIT);
+    }
+
+    private MetadataCursor decodeCursor(String encodedCursor) {
+        if (encodedCursor == null || encodedCursor.isBlank()) return null;
+        try {
+            byte[] decoded = Base64.getUrlDecoder().decode(encodedCursor);
+            JsonNode node = objectMapper.readTree(decoded);
+            if (node == null || !node.isObject()
+                    || !node.has("contract") || !node.has("version") || !node.has("entity_type")
+                    || !node.has("ordering") || !node.has("limit") || !node.has("created_at")
+                    || !node.has("entity_id")) {
+                throw invalidCursor();
+            }
+            String entityType = node.get("entity_type").isNull() ? null : text(node, "entity_type");
+            String ordering = text(node, "ordering");
+            String createdAt = text(node, "created_at");
+            String entityId = text(node, "entity_id");
+            if (entityId.isBlank() || createdAt.isBlank() || ordering.isBlank() || !node.get("limit").canConvertToInt()) {
+                throw invalidCursor();
+            }
+            return new MetadataCursor(
+                    text(node, "contract"), node.get("version").asInt(), entityType, ordering,
+                    node.get("limit").asInt(), createdAt, entityId
+            );
+        } catch (IllegalArgumentException | IOException exception) {
+            throw invalidCursor();
+        }
+    }
+
+    private void validateCursor(MetadataCursor cursor, String entityType, String ordering, int limit) {
+        if (cursor == null) return;
+        if (cursor.contract().isBlank() || cursor.version() <= 0) throw invalidCursor();
+        if (!METADATA_CURSOR_CONTRACT.equals(cursor.contract()) || cursor.version() != 1
+                || !Objects.equals(cursor.entityType(), entityType)
+                || !Objects.equals(cursor.ordering(), ordering)
+                || cursor.limit() != limit) {
+            throw new RequestValidationException("INCOMPATIBLE_METADATA_CURSOR", "The metadata cursor does not match this entity type, ordering, or page size.");
+        }
+        cursorTimestamp(cursor);
+    }
+
+    private Timestamp cursorTimestamp(MetadataCursor cursor) {
+        try {
+            return Timestamp.from(Instant.parse(cursor.createdAt()));
+        } catch (RuntimeException exception) {
+            throw invalidCursor();
+        }
+    }
+
+    private String encodeCursor(String entityType, String ordering, int limit, MetadataRow row) {
+        ObjectNode node = objectMapper.createObjectNode();
+        node.put("contract", METADATA_CURSOR_CONTRACT);
+        node.put("version", 1);
+        if (entityType == null) node.set("entity_type", NullNode.getInstance());
+        else node.put("entity_type", entityType);
+        node.put("ordering", ordering);
+        node.put("limit", limit);
+        node.put("created_at", row.createdAt());
+        node.put("entity_id", row.entityId());
+        try {
+            return Base64.getUrlEncoder().withoutPadding().encodeToString(objectMapper.writeValueAsBytes(node));
+        } catch (JsonProcessingException exception) {
+            throw new IllegalStateException("Metadata cursor could not be encoded.", exception);
+        }
+    }
+
+    private static RequestValidationException invalidCursor() {
+        return new RequestValidationException("INVALID_METADATA_CURSOR", "The metadata cursor is malformed or unsupported.");
     }
 
     private MetadataRow find(String entityType, String entityId) {
@@ -966,6 +1099,17 @@ public class CanonicalMetadataService {
             ApiModels.ArtifactRef artifactRef,
             String registeredBy,
             String createdAt
+    ) {
+    }
+
+    private record MetadataCursor(
+            String contract,
+            int version,
+            String entityType,
+            String ordering,
+            int limit,
+            String createdAt,
+            String entityId
     ) {
     }
 }

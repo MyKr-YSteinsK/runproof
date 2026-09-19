@@ -43,6 +43,23 @@ interface MetadataListResponse {
   items: ControlPlaneMetadataViewDto[];
 }
 
+export interface ControlPlaneMetadataPageDto {
+  items: ControlPlaneMetadataViewDto[];
+  limit: number;
+  has_more: boolean;
+  next_cursor: string | null;
+  cursor_contract: string;
+  ordering: string;
+  entity_type?: string;
+  artifact_resolution?: string;
+}
+
+export interface ControlPlaneCanonicalDetailDto {
+  metadata: ControlPlaneMetadataViewDto;
+  artifact_ref: ControlPlaneArtifactRefDto;
+  artifact: Record<string, unknown>;
+}
+
 interface ArtifactResponse {
   artifact_ref: ControlPlaneArtifactRefDto;
   artifact: unknown;
@@ -97,6 +114,67 @@ const requestJson = async <T>(baseUrl: string, path: string, fetcher: FetchLike)
   return body as T;
 };
 
+const validateMetadataPage = (response: ControlPlaneMetadataPageDto): ControlPlaneMetadataPageDto => {
+  if (!Array.isArray(response.items)
+      || typeof response.limit !== "number"
+      || typeof response.has_more !== "boolean"
+      || (response.next_cursor !== null && typeof response.next_cursor !== "string")
+      || typeof response.cursor_contract !== "string"
+      || typeof response.ordering !== "string") {
+    throw new ControlPlaneApiError("Control Plane metadata page is malformed.", "INVALID_API_RESPONSE", null, false);
+  }
+  return response;
+};
+
+export const loadControlPlaneMetadataPage = async (
+  entityType: string | null,
+  options: { limit?: number; cursor?: string | null } = {},
+  baseUrl = import.meta.env.VITE_CONTROL_PLANE_API_URL || "/api/v1",
+  fetcher: FetchLike = fetch,
+): Promise<ControlPlaneMetadataPageDto> => {
+  const query = new URLSearchParams();
+  if (entityType) query.set("entity_type", entityType);
+  if (options.limit !== undefined) query.set("limit", String(options.limit));
+  if (options.cursor) query.set("cursor", options.cursor);
+  const suffix = query.toString() ? `?${query.toString()}` : "";
+  const response = await requestJson<ControlPlaneMetadataPageDto>(baseUrl, `/metadata${suffix}`, fetcher);
+  return validateMetadataPage(response);
+};
+
+export const loadControlPlaneCanonicalDetail = async (
+  entityType: string,
+  entityId: string,
+  baseUrl = import.meta.env.VITE_CONTROL_PLANE_API_URL || "/api/v1",
+  fetcher: FetchLike = fetch,
+): Promise<ControlPlaneCanonicalDetailDto> => {
+  const encodedType = encodeURIComponent(entityType);
+  const encodedId = encodeURIComponent(entityId);
+  const metadata = await requestJson<ControlPlaneMetadataViewDto>(
+    baseUrl,
+    `/metadata/${encodedType}/${encodedId}?verify=false`,
+    fetcher,
+  );
+  if (!metadata.canonical_metadata || !metadata.artifact_resolution) {
+    throw new ControlPlaneApiError("Control Plane metadata detail is malformed.", "INVALID_API_RESPONSE", null, false);
+  }
+  const artifactPath = metadata.artifact_resolution.artifact_url || `/artifacts/${encodedType}/${encodedId}`;
+  const response = await requestJson<ArtifactResponse>(baseUrl, artifactPath, fetcher);
+  if (!response.artifact_ref || response.artifact_ref.resolved !== true
+      || !response.artifact || typeof response.artifact !== "object" || Array.isArray(response.artifact)) {
+    throw new ControlPlaneApiError(
+      `Artifact unavailable for ${entityType}/${entityId}.`,
+      response.artifact_ref?.error_code || "ARTIFACT_UNAVAILABLE",
+      null,
+      false,
+    );
+  }
+  return {
+    metadata,
+    artifact_ref: response.artifact_ref,
+    artifact: response.artifact as Record<string, unknown>,
+  };
+};
+
 const list = async (baseUrl: string, entityType: string, fetcher: FetchLike): Promise<ControlPlaneMetadataViewDto[]> => {
   const response = await requestJson<MetadataListResponse>(baseUrl, `/metadata?entity_type=${encodeURIComponent(entityType)}`, fetcher);
   if (!Array.isArray(response.items)) {
@@ -134,9 +212,9 @@ const resolveArtifacts = async (baseUrl: string, items: ControlPlaneMetadataView
 };
 
 /**
- * Loads one complete canonical snapshot before activation. A failed list or
- * artifact request rejects the whole snapshot; callers must show the API
- * error instead of silently rendering the old fixture corpus.
+ * Legacy complete-corpus adapter retained only for fixture/tests and explicit
+ * compatibility callers. API-mode route bootstrap uses route-scoped loaders;
+ * it must not call this function or auto-crawl metadata cursors.
  */
 export const loadControlPlaneCorpus = async (
   baseUrl = import.meta.env.VITE_CONTROL_PLANE_API_URL || "/api/v1",
