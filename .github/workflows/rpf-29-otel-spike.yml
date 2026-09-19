@@ -2,16 +2,6 @@ name: RPF-29 OpenTelemetry Spike
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths:
-      - "spikes/rpf-29/**"
-      - ".github/workflows/rpf-29-otel-spike.yml"
-  pull_request:
-    branches: [main]
-    paths:
-      - "spikes/rpf-29/**"
-      - ".github/workflows/rpf-29-otel-spike.yml"
 
 permissions:
   contents: read

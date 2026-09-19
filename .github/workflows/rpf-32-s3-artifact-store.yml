@@ -1,31 +1,10 @@
 name: RPF-32 Formal S3-compatible Artifact Store
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/rpf-32-s3-artifact-store.yml"
-      - "control-plane/**"
-      - "runtime/runproof_runtime/control_plane_client.py"
-      - "runtime/runproof_runtime/durable_worker.py"
-      - "runtime/requirements.txt"
-      - "spikes/rpf-32/**"
-      - "AGENTS.md"
-  pull_request:
-    branches: [main]
-    paths:
-      - ".github/workflows/rpf-32-s3-artifact-store.yml"
-      - "control-plane/**"
-      - "runtime/runproof_runtime/control_plane_client.py"
-      - "runtime/runproof_runtime/durable_worker.py"
-      - "runtime/requirements.txt"
-      - "spikes/rpf-32/**"
-      - "AGENTS.md"
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: rpf32-s3-${{ github.workflow }}-${{ github.ref }}

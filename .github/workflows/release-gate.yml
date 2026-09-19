@@ -45,7 +45,6 @@ on:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: rpf12-release-gate-${{ github.workflow }}-${{ github.ref }}

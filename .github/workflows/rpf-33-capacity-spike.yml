@@ -1,29 +1,10 @@
 name: RPF-33 Capacity and Large-Trace Spike
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/rpf-33-capacity-spike.yml"
-      - "control-plane/**"
-      - "runtime/**"
-      - "spikes/rpf-33/**"
-      - "spikes/rpf-30/collector-config.yaml"
-      - "AGENTS.md"
-  pull_request:
-    branches: [main]
-    paths:
-      - ".github/workflows/rpf-33-capacity-spike.yml"
-      - "control-plane/**"
-      - "runtime/**"
-      - "spikes/rpf-33/**"
-      - "spikes/rpf-30/collector-config.yaml"
-      - "AGENTS.md"
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: rpf33-capacity-${{ github.workflow }}-${{ github.ref }}

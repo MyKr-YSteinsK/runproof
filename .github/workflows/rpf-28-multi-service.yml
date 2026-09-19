@@ -1,35 +1,10 @@
 name: RPF-28 Formal Multi-service Environment
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/rpf-28-multi-service.yml"
-      - "runtime/runproof_runtime/multi_service_environment.py"
-      - "runtime/runproof_runtime/multi_service_runner.py"
-      - "runtime/runproof_runtime/runner.py"
-      - "runtime/runproof_runtime/agent_contract.py"
-      - "runtime/runproof_runtime/evaluation.py"
-      - "runtime/runproof_runtime/durable_worker.py"
-      - "spikes/rpf-28/**"
-  pull_request:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/rpf-28-multi-service.yml"
-      - "runtime/runproof_runtime/multi_service_environment.py"
-      - "runtime/runproof_runtime/multi_service_runner.py"
-      - "runtime/runproof_runtime/runner.py"
-      - "runtime/runproof_runtime/agent_contract.py"
-      - "runtime/runproof_runtime/evaluation.py"
-      - "runtime/runproof_runtime/durable_worker.py"
-      - "spikes/rpf-28/**"
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: rpf28-formal-multi-service-${{ github.workflow }}-${{ github.ref }}

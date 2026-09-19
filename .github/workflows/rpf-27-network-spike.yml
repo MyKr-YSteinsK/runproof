@@ -1,17 +1,10 @@
 name: RPF-27 Multi-service Network Fault Spike
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/workflows/rpf-27-network-spike.yml"
-      - "spikes/rpf-27/**"
   workflow_dispatch:
 
 permissions:
   contents: read
-  actions: write
 
 concurrency:
   group: rpf27-network-spike-${{ github.workflow }}-${{ github.ref }}

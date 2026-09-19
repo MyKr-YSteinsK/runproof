@@ -1,26 +1,6 @@
 name: RPF-30 Focused OpenTelemetry Contract
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - ".github/workflows/rpf-30-otel.yml"
-      - "control-plane/**"
-      - "runtime/**"
-      - "spikes/rpf-30/**"
-      - "spikes/rpf-28/**"
-      - "package.json"
-      - "AGENTS.md"
-  pull_request:
-    branches: [main]
-    paths:
-      - ".github/workflows/rpf-30-otel.yml"
-      - "control-plane/**"
-      - "runtime/**"
-      - "spikes/rpf-30/**"
-      - "spikes/rpf-28/**"
-      - "package.json"
-      - "AGENTS.md"
   workflow_dispatch:
 
 permissions:
