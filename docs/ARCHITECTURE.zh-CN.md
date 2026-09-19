@@ -170,8 +170,9 @@ Simulation hosting、provider/account/region/budget preflight、独立 restore�
 human Approval/Release principal 配置，以及 Product Release Identity
 read-back/rollback。完整矩阵、日期来源和离线 proof 见
 [`spikes/rpf-36/`](../spikes/rpf-36/README.md)。当前 Lifecycle 是
-`Stabilization / Portfolio Maintenance`；RPF-37 是全仓收束审计，下一边界是
-低风险、可回滚的 RPF-38 cleanup，而不是 Production implementation。
+`Stabilization / Portfolio Maintenance`；RPF-37 是全仓收束审计，RPF-38 已完成
+低风险、可回滚的 cleanup。下一边界是 maintenance-only 或新的 focused Plan，
+而不是 Production implementation。
 
 ## Authority 与恢复边界
 
@@ -213,17 +214,18 @@ read-back/rollback。完整矩阵、日期来源和离线 proof 见
 | 有界 canonical metadata read model | RPF-35 metadata cursor contract、registered-reference list、verified Local/S3 detail、route-scoped Web loader、no-auto-crawl budget 与 Large fixture proof | `python spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>`；`python spikes/rpf-35/verify-evidence.py <rpf35-result.json>` |
 | Production topology 与 Managed Operations 边界 | RPF-36 dated provider matrix、future candidate region/topology、managed persistence/secrets、Simulation hosting boundary、Release Identity/Approval chain、restore/rollback/cost model 与 RPF-37 Deferred/maintenance calibration | `python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run>`；`python spikes/rpf-36/verify-evidence.py <rpf36-result.json>`；`python spikes/rpf-37/audit.py --root . --output .local/rpf-37/audit.json` |
 
-source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
+source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。RPF 执行与 lifecycle 导航见 [RPF_EXECUTION_INDEX.md](history/RPF_EXECUTION_INDEX.md)。
 
 ## Production 边界
 
 当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。RPF-36 增加的是 conditional managed-topology 调查，不是云部署；它仍没有证明或授权 Production HA、托管云 operations、多主机 supervisor、human Approval 配置、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界是可回滚的 RPF-38 repository cleanup：先收敛历史 workflow
-fan-out，澄清 governance/history ownership，同时保留全部 formal contract 与
-reviewed evidence。Production Cloud boundary 保持 Deferred；RPF-36 不授权实际
-Production deployment，也不引入 Kubernetes、broker、multiregion、完整
-tenant/RBAC 或自动 `ELIGIBLE` deployment。RPF-35 仍不证明 Production capacity、
+RPF-38 已完成可回滚的 repository cleanup：历史 workflow fan-out 改为
+manual-only，governance/history ownership 已明确，全部 formal contract 与
+reviewed evidence 保持不变。下一边界是 maintenance-only 或新的 focused Plan，
+而不是 Production implementation。Production Cloud boundary 保持 Deferred；
+RPF-36 不授权实际 Production deployment，也不引入 Kubernetes、broker、
+multiregion、完整 tenant/RBAC 或自动 `ELIGIBLE` deployment。RPF-35 仍不证明 Production capacity、
 artifact streaming、virtualization、retention/GC 或 managed durability；S3
 adapter 仍是 compatibility boundary，不是 durability、HA 或 release authority
 结论。
