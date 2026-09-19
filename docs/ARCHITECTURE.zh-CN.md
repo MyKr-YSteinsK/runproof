@@ -123,6 +123,53 @@ RPF-35 本地 proof 在 13,502 条 metadata 上测得：100-row page 最多 2 �
 RPF-35 不引入 artifact streaming、浏览器 virtualization、retention/GC、broker、
 topology 或 release/deploy authority。
 
+## Production topology 与 Managed Operations 调查
+
+RPF-36 是调查边界，不是云部署。它按 `2026-09-19` 的 Provider 资料比较了
+AWS ECS/Fargate + RDS + S3、Render + Cloudflare R2、Railway + Cloudflare R2。
+当前首选 candidate 是单 region AWS topology，首个 Region candidate 为
+`ap-southeast-1`（Singapore）。Region、latency、data residency、account quota
+和 cost 仍须在 RPF-37 做 preflight 并取得授权；RPF-36 没有使用 provider
+account、paid resource 或 cloud API。
+
+候选数据流为：
+
+```text
+Internet -> static Web/CDN -> read-only API edge -> stateless Control Plane
+                                              -> managed PostgreSQL
+                                              -> S3-compatible artifact store
+private Durable Worker -> Control Plane HTTP/JSON -> scoped RPF-28 Simulation task
+GitHub Actions -> canonical gate -> protected human Approval -> Release principal
+```
+
+Web 只读，API 或 verified artifact 不可用时 fail closed。Control Plane 无状态，
+PostgreSQL 与 object storage 是 canonical；Worker 初始为一个 private、
+outbound-only replica、concurrency 1。RPF-28 的 fresh target/dependency/
+Toxiproxy environment 必须映射为 scoped per-run task 或独立 sandbox host；
+Agent/Worker 永不拿 Docker socket、数据库 credential 或 Release principal。
+
+Release boundary 保持：
+`Release Decision ELIGIBLE -> human/product Approval -> protected Release
+principal -> deployment -> target verification`。候选的
+`rpf-product-release-identity-v1` 绑定 commit、source tree、application 和
+image/static digest、migration identity、build run、target environment、
+deployment id、timestamp；它独立于 Agent Version Identity 且 append-only。
+GitHub Actions OIDC 只作为受限短期 release identity 候选，必须绑定
+repository/workflow/environment，canonical gate 本身不部署。
+
+RPF-36 提出 RDS backup/PITR + independent restore-to-new-instance rehearsal、
+应用层 S3 immutability、七天 orphan grace + dry-run inventory、additive
+expand/contract migration，以及带 circuit-breaker/alarm rollback 的 ECS
+rolling deployment。这些是 candidate operation，不是 Production SLA。初始
+sizing 只复用 RPF-33 的方向性 evidence；`BROKER_REQUIRED=NOT_YET` 不变。
+
+生命周期判断是
+`READY_FOR_PRODUCTION_IMPLEMENTATION = CONDITIONAL`：仍需证明 per-run
+Simulation hosting、provider/account/region/budget preflight、独立 restore、
+human Approval/Release principal 配置，以及 Product Release Identity
+read-back/rollback。完整矩阵、日期来源和离线 proof 见
+[`spikes/rpf-36/`](../spikes/rpf-36/README.md)。
+
 ## Authority 与恢复边界
 
 - Agent 和 worker 的 authority 小于 decision-writer authority。
@@ -161,17 +208,19 @@ topology 或 release/deploy authority。
 | 正式 S3-compatible ArtifactStore | `S3ArtifactStore`、显式 backend wiring、SeaweedFS 4.47 proof、PostgreSQL canonical ingest 与 HTTP/JSON Worker upload | `python spikes/rpf-32/probe.py --run`；`python spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>` |
 | 有界 Execution read model | RPF-34 summary list、opaque keyset cursor、有界 detail/timeline、query/payload budget 与 eligible-discovery 兼容性 proof | `python spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>`；`python spikes/rpf-34/verify-evidence.py <rpf34-result.json>` |
 | 有界 canonical metadata read model | RPF-35 metadata cursor contract、registered-reference list、verified Local/S3 detail、route-scoped Web loader、no-auto-crawl budget 与 Large fixture proof | `python spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>`；`python spikes/rpf-35/verify-evidence.py <rpf35-result.json>` |
+| Production topology 与 Managed Operations 边界 | RPF-36 dated provider matrix、candidate region/topology、managed persistence/secrets、Simulation hosting boundary、Release Identity/Approval chain、restore/rollback/cost model 与 conditional RPF-37 scope | `python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run>`；`python spikes/rpf-36/verify-evidence.py <rpf36-result.json>` |
 
 source identity、hosted run 和历史兼容性事实统一保存在 [VERIFICATION_HISTORY.zh-CN.md](history/VERIFICATION_HISTORY.zh-CN.md)，不重复塞入 current snapshot。
 
 ## Production 边界
 
-当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。但它没有证明或授权 Production HA、托管云部署、多主机 supervisor、human Approval、tenant/RBAC identity 或真实破坏性 remediation。
+当前仓库证明了 Controlled Simulation、正式 fresh 多服务网络故障 Environment、本地 production-like persistence/recovery、显式 PostgreSQL durable workflow、immutable evidence、正式 S3-compatible object-store adapter、hosted CI 检查和 Windows 本地 Golden Demo 生命周期。RPF-36 增加的是 conditional managed-topology 调查，不是云部署；它仍没有证明或授权 Production HA、托管云 operations、多主机 supervisor、human Approval 配置、tenant/RBAC identity 或真实破坏性 remediation。
 
-下一架构边界应通过 RPF-33→RPF-35 capacity/read-model milestone 的 checkpoint
-review 选择：如果 cross-type EXPLAIN 显示可重复收益，再做 focused PostgreSQL
-index plan；也可以选择 artifact streaming/retention、托管对象存储运维或
-Production topology 调查。RPF-35 已约束普通 canonical metadata 读取，但不证明
-Production capacity、artifact streaming、virtualization、retention/GC 或托管
-durability。正式 OpenTelemetry 仍是可选诊断边界；S3-compatible adapter 也仍是
-单节点兼容性 proof，不代表 durability、HA 或 release authority。
+下一架构边界是 conditional RPF-37 slice：取得 provider/account/region/budget
+授权，证明一个 managed RDS/S3 connection 和一个 scoped RPF-28 Simulation
+task，再验证 Product Release Identity、restore 和 rollback。RPF-36 不授权实际
+Production deployment，也不引入 Kubernetes、broker、multiregion、完整
+tenant/RBAC 或自动 `ELIGIBLE` deployment。RPF-35 仍不证明 Production capacity、
+artifact streaming、virtualization、retention/GC 或 managed durability；S3
+adapter 仍是 compatibility boundary，不是 durability、HA 或 release authority
+结论。

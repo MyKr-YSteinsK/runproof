@@ -1,0 +1,760 @@
+{
+  "schema_version": "rpf-production-topology-managed-operations-v1",
+  "plan_id": "RPF-36",
+  "investigation_date": "2026-09-19",
+  "lifecycle": "Stabilization",
+  "status": "PASS",
+  "formal_production_implementation_changed": false,
+  "cloud_operations": "NOT_EXECUTED",
+  "paid_resources_created": false,
+  "production_deployment_executed": false,
+  "historical_reviewed_bytes_changed": false,
+  "scope": {
+    "kind": "investigation-spike",
+    "single_region": true,
+    "kubernetes": false,
+    "broker": false,
+    "multiregion": false,
+    "real_destructive_credentials": false,
+    "real_agent_production_access": false,
+    "release_authority_automatic": false,
+    "notes": "All provider and cost conclusions remain candidate recommendations until RPF-37 preflight and explicit authorization."
+  },
+  "research_sources": [
+    {
+      "title": "AWS Regions and Availability Zones",
+      "url": "https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "ap-southeast-1 geography, three Availability Zones, default region status"
+    },
+    {
+      "title": "Amazon ECS deployment failure detection",
+      "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-failure-detection.html",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "deployment circuit breaker and alarm rollback boundary"
+    },
+    {
+      "title": "How the Amazon ECS deployment circuit breaker detects failures",
+      "url": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "previous COMPLETED revision rollback and steady-state failure detection"
+    },
+    {
+      "title": "Amazon RDS for PostgreSQL",
+      "url": "https://aws.amazon.com/rds/postgresql/",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "managed PostgreSQL, VPC, TLS, automated backup and PITR capability"
+    },
+    {
+      "title": "Managing backup and restore for Amazon RDS",
+      "url": "https://docs.aws.amazon.com/AmazonRDS/latest/gettingstartedguide/managing-backup-restore.html",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "one-to-35-day retention, point-in-time restore, restore-to-new-instance workflow"
+    },
+    {
+      "title": "Amazon S3 pricing",
+      "url": "https://aws.amazon.com/s3/pricing/",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "storage, request, retrieval and data-transfer cost dimensions"
+    },
+    {
+      "title": "Configuring OpenID Connect in Amazon Web Services",
+      "url": "https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws",
+      "provider": "GitHub",
+      "retrieved_on": "2026-09-19",
+      "supports": "short-lived GitHub Actions to AWS federation and trust-policy conditions"
+    },
+    {
+      "title": "Configuring a role for GitHub OIDC identity provider",
+      "url": "https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "restricting repository, branch or workflow claims and protected environments"
+    },
+    {
+      "title": "Rotation schedules - AWS Secrets Manager",
+      "url": "https://docs.aws.amazon.com/secretsmanager/latest/userguide/rotate-secrets_schedule.html",
+      "provider": "AWS",
+      "retrieved_on": "2026-09-19",
+      "supports": "scheduled secret rotation windows"
+    },
+    {
+      "title": "S3 Pricing",
+      "url": "https://developers.cloudflare.com/r2/pricing/",
+      "provider": "Cloudflare R2",
+      "retrieved_on": "2026-09-19",
+      "supports": "R2 storage/request/egress cost dimensions"
+    },
+    {
+      "title": "How R2 works",
+      "url": "https://developers.cloudflare.com/r2/how-r2-works/",
+      "provider": "Cloudflare R2",
+      "retrieved_on": "2026-09-19",
+      "supports": "S3-compatible API and egress model"
+    },
+    {
+      "title": "Render service types",
+      "url": "https://render.com/docs/service-types",
+      "provider": "Render",
+      "retrieved_on": "2026-09-19",
+      "supports": "static sites, web services, private services, background workers and managed Postgres"
+    },
+    {
+      "title": "Render background workers",
+      "url": "https://render.com/docs/background-workers",
+      "provider": "Render",
+      "retrieved_on": "2026-09-19",
+      "supports": "continuous outbound-only worker process model"
+    },
+    {
+      "title": "Render PostgreSQL backups",
+      "url": "https://render.com/docs/postgresql-backups",
+      "provider": "Render",
+      "retrieved_on": "2026-09-19",
+      "supports": "paid Postgres recovery window and restore-to-new-instance behavior"
+    },
+    {
+      "title": "Render pricing",
+      "url": "https://render.com/pricing",
+      "provider": "Render",
+      "retrieved_on": "2026-09-19",
+      "supports": "published workspace, compute, disk and database cost components"
+    },
+    {
+      "title": "Render FAQ",
+      "url": "https://render.com/docs/faq",
+      "provider": "Render",
+      "retrieved_on": "2026-09-19",
+      "supports": "ephemeral filesystem and custom Docker boundary"
+    },
+    {
+      "title": "Railway private networking",
+      "url": "https://docs.railway.com/networking/private-networking",
+      "provider": "Railway",
+      "retrieved_on": "2026-09-19",
+      "supports": "private WireGuard networking and internal DNS"
+    },
+    {
+      "title": "Railway databases",
+      "url": "https://docs.railway.com/databases",
+      "provider": "Railway",
+      "retrieved_on": "2026-09-19",
+      "supports": "PostgreSQL template is an unmanaged service and backup/DR responsibility remains with the user"
+    },
+    {
+      "title": "Railway pricing FAQs",
+      "url": "https://docs.railway.com/pricing/faqs",
+      "provider": "Railway",
+      "retrieved_on": "2026-09-19",
+      "supports": "subscription plus usage pricing model"
+    }
+  ],
+  "providers_evaluated": [
+    {
+      "id": "aws-ecs-rds-s3",
+      "class": "hyperscaler-managed-stack",
+      "region_candidate": "ap-southeast-1 (Singapore), candidate only",
+      "java_service": "ECS Fargate service behind private target group and public ALB/API boundary",
+      "python_worker": "ECS Fargate private service; one durable poller initially, controlled task launch capability scoped separately",
+      "static_web": "S3 versioned release prefix plus CloudFront; public read-only Web, API calls terminate at Control Plane boundary",
+      "managed_postgresql": "Amazon RDS for PostgreSQL 16-compatible engine; Multi-AZ and instance class require RPF-37 quote/preflight",
+      "s3_object_storage": "Amazon S3 Standard, separate canonical-artifact bucket and least-privilege task role",
+      "secret_manager": "AWS Secrets Manager with ECS secret injection; rotation schedule must be tested before production",
+      "private_networking": "VPC private subnets for RDS, Worker and Control Plane where possible; public edge only at CloudFront/ALB",
+      "workload_identity": "ECS task roles for services; GitHub Actions OIDC for CI/release role with repository/workflow/environment conditions",
+      "github_deploy_integration": "GitHub Actions builds and gates; future release job assumes a narrowly scoped OIDC role only after protected approval",
+      "approval_release_gate": "GitHub Environment production reviewers plus explicit Release Decision and Product Release Identity; no automatic ELIGIBLE deploy",
+      "health_checks": "CloudFront/ALB HTTP check, ECS container checks, Control Plane readiness, Worker heartbeat/backlog, RDS and S3 dependency signals",
+      "logs_otel": "CloudWatch logs/metrics first; optional OTel diagnostics remains non-blocking and bounded",
+      "rollback": "ECS rolling deployment with circuit breaker/alarm rollback to last COMPLETED revision; static Web returns to previous immutable prefix",
+      "backup_pitr": "RDS automated backup and PITR candidate; S3 versioning/lifecycle optional and never replaces application immutability",
+      "restore_workflow": "RDS restore to independent instance, reconnect a disposable stack, verify metadata-artifact consistency; S3 recovery verification separately",
+      "lowest_practical_monthly_cost": "No honest fixed total before region, task-hours, RDS class, ALB/NAT and log volume are known; use a line-item quote",
+      "free_idle_constraints": "Free-tier or promotional credits are not the operating baseline; stopped/idle service and NAT/ALB charges require explicit budget controls",
+      "operational_complexity": "High relative to PaaS, but the cleanest match for scoped IAM, managed persistence, private networking and ECS task isolation",
+      "vendor_lock_in": "Medium: ECS/IAM/ALB/Secrets/CloudWatch are provider-specific; product contracts remain PostgreSQL, S3-compatible, HTTP/JSON and explicit release",
+      "worker_simulation_fit": "Best candidate, but unproven: RPF-28 must be translated to scoped per-run ECS tasks or a separate sandbox host; Docker socket is forbidden",
+      "outcome": "selected-candidate-with-blockers",
+      "sources": [
+        "https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html",
+        "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-configuration.html",
+        "https://aws.amazon.com/rds/postgresql/",
+        "https://aws.amazon.com/s3/pricing/",
+        "https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws"
+      ]
+    },
+    {
+      "id": "render-r2",
+      "class": "developer-paas-plus-external-s3",
+      "region_candidate": "Render-managed region plus Cloudflare R2 account location; exact pairing not selected",
+      "java_service": "Render Web/Private Service with managed process replacement",
+      "python_worker": "Render Background Worker, outbound-only and continuously running",
+      "static_web": "Render Static Site or equivalent CDN edge",
+      "managed_postgresql": "Render Postgres paid tier; recovery and restore behavior is documented, but exact tier/cost requires quote",
+      "s3_object_storage": "Cloudflare R2 S3-compatible bucket",
+      "secret_manager": "Platform environment secrets; rotation and audit design require provider-specific validation",
+      "private_networking": "Private service and outbound worker boundary; public edge remains separate",
+      "workload_identity": "No equivalent to the selected AWS task-role/OIDC design was evidenced in this spike; use protected provider token only if later authorized",
+      "github_deploy_integration": "Deploy hook/API candidate behind GitHub protected environment; long-lived provider token risk must be resolved",
+      "approval_release_gate": "GitHub Environment approval can be the authority boundary; provider deploy action must not be triggered by the canonical gate alone",
+      "health_checks": "Platform health checks plus application endpoints; readiness contract still needs a disposable target proof",
+      "logs_otel": "Provider logs first; optional OTel export remains diagnostic and may add external cost",
+      "rollback": "Provider revision rollback candidate; static site and external object-store release identity need explicit coordination",
+      "backup_pitr": "Paid Render Postgres recovery window; R2 object recovery and application metadata consistency remain product responsibilities",
+      "restore_workflow": "Render restore-to-new-instance plus R2 read-back and metadata consistency check; not executed",
+      "lowest_practical_monthly_cost": "Published base examples indicate about 46 USD/month before paid Postgres, storage, bandwidth and domain for a Pro workspace plus three small services; not a quote",
+      "free_idle_constraints": "Free/idle behavior is unsuitable as a Production baseline; paid database recovery and non-spinning-down compute are required",
+      "operational_complexity": "Low to medium",
+      "vendor_lock_in": "Medium: process/deploy/DB operations are platform-specific; R2 preserves object API portability",
+      "worker_simulation_fit": "Blocked for a single-platform topology: no safe nested Docker socket model was evidenced; requires separately operated sandbox host",
+      "outcome": "portfolio-candidate-not-selected",
+      "sources": [
+        "https://render.com/docs/service-types",
+        "https://render.com/docs/background-workers",
+        "https://render.com/docs/postgresql-backups",
+        "https://render.com/docs/faq",
+        "https://render.com/pricing",
+        "https://developers.cloudflare.com/r2/how-r2-works/"
+      ]
+    },
+    {
+      "id": "railway-r2",
+      "class": "developer-paas-plus-external-s3",
+      "region_candidate": "Railway project region plus Cloudflare R2 account location; exact pairing not selected",
+      "java_service": "Railway service with private networking",
+      "python_worker": "Railway service with private networking and outbound egress",
+      "static_web": "Railway public service or separate static host; no final choice",
+      "managed_postgresql": "Railway-provided PostgreSQL template is explicitly unmanaged; backups/DR/tuning remain user responsibility",
+      "s3_object_storage": "Cloudflare R2 S3-compatible bucket",
+      "secret_manager": "Railway sealed/project variables candidate; rotation and audit design require provider-specific validation",
+      "private_networking": "Private encrypted networking and internal DNS are strong for service-to-service traffic",
+      "workload_identity": "No equivalent to selected AWS task roles/OIDC release trust was evidenced in this spike",
+      "github_deploy_integration": "GitHub deployment integration candidate, but release identity and narrowly scoped deploy credentials remain unproven",
+      "approval_release_gate": "GitHub Environment approval could gate a provider action; not yet a complete managed Release principal",
+      "health_checks": "Platform health checks plus application endpoints; restore and artifact verification are still product work",
+      "logs_otel": "Provider logs/metrics candidate; OTel diagnostic backend remains optional",
+      "rollback": "Service revision rollback candidate; database template rollback and restore remain user-operated",
+      "backup_pitr": "Unmanaged database template is a direct blocker for the D-020 managed persistence target unless an external managed PostgreSQL is added",
+      "restore_workflow": "External database plus R2 would need a separate restore contract; not executed",
+      "lowest_practical_monthly_cost": "Hobby subscription starts at 5 USD/month plus usage; exact workload cost is not stable without sizing",
+      "free_idle_constraints": "Usage limits can stop workloads; low idle cost is not equivalent to a production backup/DR commitment",
+      "operational_complexity": "Low to medium for compute, high for completing missing managed persistence/DR boundaries",
+      "vendor_lock_in": "Medium: service/network semantics are provider-specific; external R2 helps object portability",
+      "worker_simulation_fit": "Blocked for a single-platform topology: no safe nested Docker socket model was evidenced; requires separately operated sandbox host",
+      "outcome": "low-cost-comparison-but-d-020-blocker",
+      "sources": [
+        "https://docs.railway.com/networking/private-networking",
+        "https://docs.railway.com/databases",
+        "https://docs.railway.com/pricing/faqs",
+        "https://docs.railway.com/pricing/cost-control",
+        "https://developers.cloudflare.com/r2/how-r2-works/"
+      ]
+    }
+  ],
+  "region_decision": {
+    "recommended_candidate": "aws:ap-southeast-1",
+    "status": "candidate-only",
+    "latency": "Not measured from the intended users or GitHub-hosted runner; RPF-37 must run a bounded HTTP/DB/object latency preflight before selection",
+    "managed_service_availability": "AWS documents ap-southeast-1 as Singapore with three Availability Zones and enabled by default; ECS/RDS/S3/Secrets availability and quota still require account-level preflight",
+    "cost": "Regional quote required; no fixed total is claimed",
+    "data_residency": "Singapore candidate. This is not a China-region or legal-residency conclusion; user must approve the geography",
+    "future_provider_access": "Single-region deployment keeps the product contract portable while leaving later provider/region migration possible; no multiregion is proposed",
+    "maintenance": "Use managed services and one region; use Multi-AZ database only after budget approval; keep the Worker and simulation tasks private",
+    "decision_gates": [
+      "user approves Singapore as a data-residency and cost candidate",
+      "account-level service/quota check passes",
+      "latency and egress preflight passes",
+      "RPF-28 Controlled Simulation task mapping is proven"
+    ],
+    "source": "https://docs.aws.amazon.com/global-infrastructure/latest/regions/aws-regions.html"
+  },
+  "selected_topology": {
+    "name": "candidate-b-managed-single-region",
+    "diagram": "Internet -> CloudFront/static Web -> public API edge -> stateless Control Plane -> private RDS and private S3; private Durable Worker -> Control Plane HTTP/JSON -> scoped per-run Controlled Simulation task -> S3 upload; GitHub Actions -> canonical gate -> protected human approval -> explicit release principal",
+    "public_endpoints": [
+      "CloudFront/static Web",
+      "Control Plane API edge only when the product needs browser access",
+      "health endpoint with no secret or data disclosure"
+    ],
+    "private_endpoints": [
+      "RDS PostgreSQL",
+      "S3 access through task role/VPC endpoint where cost and account design permit",
+      "Worker and per-run simulation task network",
+      "provider logs/metrics ingestion"
+    ],
+    "data_flows": [
+      "Web is read-only and fail-closed when canonical API/artifact data is unavailable",
+      "Control Plane owns canonical metadata, Job state, Release Decision and artifact verification",
+      "Worker owns execution transport but calls Control Plane over HTTP/JSON and never writes DB directly",
+      "Simulation task receives only scenario-scoped inputs and cannot access Docker socket, DB credentials or release credentials",
+      "Canonical artifact is uploaded before metadata completion and verified by one bounded read",
+      "GitHub Actions produces evidence and a future release identity but cannot auto-deploy from ELIGIBLE"
+    ],
+    "access_principals": {
+      "web_read": "read-only browser token or future user session; no worker/decision credential",
+      "control_plane": "service task role plus scoped database and artifact-store access",
+      "worker": "worker service identity with HTTP/JSON and upload permissions only",
+      "simulation_agent": "scenario-scoped tool/environment identity; no database, object-store admin or release access",
+      "github_ci": "read-only repository plus gate/evidence identity",
+      "release_principal": "separate protected environment identity; only explicit approved release workflow may assume it"
+    },
+    "negative_authority_checks": {
+      "agent_direct_database": false,
+      "agent_release_authority": false,
+      "worker_release_authority": false,
+      "web_mutation_authority": false,
+      "eligible_auto_deploy": false,
+      "production_destructive_simulation": false
+    }
+  },
+  "web_topology": {
+    "hosting": "static Web on immutable versioned object prefix plus CDN",
+    "tls_domain": "provider-managed TLS at the edge; custom domain is a later authorized configuration",
+    "api_boundary": "browser calls the read-only Control Plane API; no browser-held worker, decision or release credential",
+    "failure_behavior": "API or verified artifact unavailable means fail closed with explicit unavailable state; no fixture fallback outside explicit test mode",
+    "cache_boundary": "cache only public static assets and safe read responses; never cache credentials or mutable authority responses",
+    "rollback": "restore previous Web release prefix and invalidate only affected CDN paths"
+  },
+  "control_plane_topology": {
+    "process": "stateless Java/Spring service; all canonical state is in managed PostgreSQL and S3-compatible artifact storage",
+    "restart_replacement": "new task must pass liveness/readiness before receiving traffic; no local disk is canonical",
+    "migration_startup": "additive migration check runs before rollout completion; incompatible schema stops readiness and rollout",
+    "readiness": "process, database connection, schema version and artifact-store credential/connectivity checks",
+    "graceful_shutdown": "stop claiming new jobs, heartbeat/finish active attempt within bounded grace, then drain HTTP and exit",
+    "configuration": "externalized environment/provider secret references; no credential in image, source, logs or evidence",
+    "autoscaling": "not claimed in this spike; initial replica is one and scaling is a later measured task"
+  },
+  "worker_topology": {
+    "mode": "always-on private durable worker service",
+    "initial_replicas": 1,
+    "initial_concurrency": 1,
+    "network": "outbound-only to Control Plane, simulation-task endpoint and object storage; no public listener",
+    "claim_model": "existing PostgreSQL-backed durable claim/lease/fencing contract remains canonical",
+    "scale_rule": "increase replicas only after queue-depth, attempt duration and DB-connection evidence; no broker is introduced",
+    "simulation_launch": "future provider adapter may launch one scoped ECS task per run or a separately hosted sandbox; it must pass profile identity and cleanup evidence",
+    "secrets": "worker receives only worker/service credentials and provider task-launch permissions; it never receives release principal or database superuser credentials"
+  },
+  "controlled_simulation": {
+    "required_profile": "multi-service-toxiproxy-v1 from RPF-28",
+    "target_dependency": "fresh per-run private network/task with target, dependency, Toxiproxy and Agent-shaped client",
+    "nested_container": "not assumed safe on Render/Railway; AWS candidate requires ECS task-per-run or a separate locked-down sandbox host",
+    "docker_socket": "never mounted into Agent or Worker",
+    "task_authority": "only a narrowly scoped environment-launch identity can create/stop the disposable task; no arbitrary image, subnet or security-group selection",
+    "cleanup": "task and network cleanup must be verified; quarantine on cleanup uncertainty and never silently reuse a foreign resource",
+    "blocker": "provider-specific task isolation and cost/quotas are unproven until RPF-37"
+  },
+  "managed_postgresql": {
+    "candidate": "Amazon RDS for PostgreSQL 16-compatible engine",
+    "version": "16-compatible; exact minor and region availability are RPF-37 preflight facts",
+    "tls": "require SSL/TLS and verify the provider CA; force encrypted transport in the application configuration",
+    "credential_rotation": "Secrets Manager rotation candidate; application must support bounded reconnect/pool refresh",
+    "connection_limit": "start with a small per-process pool (5-10) and measure against the selected instance max; do not infer QPS",
+    "backup": "automated backups with a 1-35 day candidate retention; final retention needs product/data policy approval",
+    "pitr": "enabled candidate; restore creates an independent instance and is not considered proven until a rehearsal passes",
+    "migration": "additive expand/contract migrations; no destructive down migration in rollout path",
+    "exposure": "private network only; no public DB endpoint",
+    "cost": "instance, storage, backup, I/O and data transfer are separate line items; exact region quote required",
+    "source": "https://aws.amazon.com/rds/postgresql/"
+  },
+  "restore_sla_candidate": {
+    "database_backup_retention": "35 days candidate ceiling, subject to cost and policy approval",
+    "database_rpo": "15 minutes candidate objective, not a provider SLA claim",
+    "database_rto": "4 hours candidate objective for independent restore and application reconnect",
+    "artifact_rpo": "provider durability plus application upload-before-metadata; object recovery must be verified separately",
+    "artifact_rto": "4 hours candidate objective for read-back and metadata consistency recovery",
+    "rehearsal_frequency": "quarterly and before any destructive migration; first rehearsal is a required RPF-37 gate",
+    "evidence_required": "restore target identity, source backup/PITR timestamp, row counts, artifact SHA-256/schema/source checks, reconnect, and cleanup",
+    "status": "candidate-only; no cloud restore executed"
+  },
+  "object_storage": {
+    "candidate": "Amazon S3 Standard canonical-artifact bucket",
+    "api": "AWS SDK S3 API with provider-neutral S3ArtifactStore contract",
+    "write": "conditional If-None-Match create; same-content replay succeeds; different-content same-key conflict fails closed",
+    "read": "one GET followed by RunProof SHA-256, schema, identity and source/runtime verification",
+    "access": "Control Plane/Worker task roles scoped to required prefix and operations; Agent cannot write canonical objects",
+    "encryption": "provider encryption at rest and TLS in transit; KMS choice and cost require RPF-37 authorization",
+    "versioning": "optional defense-in-depth; never substitutes for application immutability or canonical metadata conflict rules",
+    "lifecycle": "candidate transition/retention only after data policy; no automatic delete in this spike",
+    "restore": "object read-back and metadata consistency check; Object Lock is not assumed or enabled by this investigation",
+    "egress": "measure S3-to-compute region locality and public egress; include in cost envelope",
+    "source": "https://aws.amazon.com/s3/pricing/"
+  },
+  "s3_compatibility_findings": {
+    "aws_s3": "native candidate not live-tested; existing RPF-32 contract defines required behavior",
+    "cloudflare_r2": "S3-compatible and egress-oriented alternative; existing RPF-32 provider-neutral adapter should be rerun only if this candidate is selected",
+    "conditional_create": "required",
+    "same_content_replay": "required",
+    "different_content_conflict": "required",
+    "verified_read": "required",
+    "negative_cases": "missing, corrupt, wrong identity, invalid access and unavailable endpoint must remain fail-closed",
+    "status": "compatibility contract preserved; no new object-store provider probe executed in RPF-36"
+  },
+  "artifact_policy": {
+    "canonical_artifacts": "retain long-term by default; deletion requires a later explicit high-risk policy and authority",
+    "orphan_candidate": "inventory put-before-metadata objects, keep a seven-day grace period, then require dry-run review before any delete",
+    "delete_authority": "separate human/product retention authority, never Agent, Worker or automatic release gate",
+    "gc": "not implemented and not authorized in this spike",
+    "metadata_consistency": "never delete a canonical artifact solely because a list page is empty; verify metadata and object identity first"
+  },
+  "secrets": {
+    "database": "platform secret reference injected into Control Plane only",
+    "object_store": "task role preferred; static keys only as an explicitly approved transitional boundary",
+    "service_auth": "scoped service identity references, rotated independently",
+    "provider_key": "platform-managed secret reference injected only into the provider-calling runtime; never persisted in evidence",
+    "release_principal": "protected environment/OIDC role reference, never available to Agent or Worker",
+    "rotation": "rotate DB/service/provider/release credentials independently and verify reconnect/revocation",
+    "leak_boundary": "no Git, image layer, Web bundle, scenario, trace, log, artifact export or TASK_RESULT secret value"
+  },
+  "service_auth": {
+    "current": "scoped Bearer tokens remain the local/single-tenant compatibility boundary",
+    "target": "mixed transition: provider workload identity for service-to-service and GitHub OIDC for CI/release; preserve explicit scoped HTTP/JSON authority",
+    "scope": "do not implement full OAuth/OIDC/SSO or tenant/RBAC in RPF-36",
+    "single_tenant": "sufficient for first candidate only if user identity is explicitly bounded and no multi-tenant claim is made",
+    "negative": "browser never holds worker/decision/release credential; Agent cannot assume service or release identity"
+  },
+  "approval_release": {
+    "recommended": "GitHub production Environment with protected reviewers plus a separate release-principal workflow using short-lived OIDC federation",
+    "chain": [
+      "Release Decision ELIGIBLE",
+      "human/product Approval",
+      "protected release-principal workflow",
+      "deployment",
+      "target verification and deployment evidence"
+    ],
+    "not_allowed": [
+      "ELIGIBLE -> automatic deploy",
+      "Agent or Worker owns release principal",
+      "canonical gate directly mutates provider state"
+    ],
+    "trust_policy": "restrict repository, main/tag/environment and workflow claims; avoid wildcard subject conditions",
+    "source": "https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws"
+  },
+  "product_release_identity": {
+    "contract": "rpf-product-release-identity-v1-candidate",
+    "required_fields": [
+      "commit_sha",
+      "source_tree_sha256",
+      "application_version",
+      "control_plane_image_digest",
+      "worker_image_digest",
+      "web_asset_manifest_digest",
+      "schema_migration_identity",
+      "build_workflow",
+      "build_run_id",
+      "target_environment",
+      "deployment_id",
+      "deployed_at"
+    ],
+    "binding": "all fields are recorded before deployment and read back from the target; Agent Version Identity remains separate",
+    "immutability": "release identity is append-only; rollback points to a prior identity and does not rewrite history",
+    "status": "contract designed only; no registry or deployment record created"
+  },
+  "build_strategy": {
+    "control_plane": "reproducible Java image with pinned base digest and generated SBOM",
+    "worker": "reproducible Python image with pinned dependencies/base digest and generated SBOM",
+    "web": "static build with asset manifest and source-tree binding",
+    "registry": "ECR private repository candidate for selected AWS topology; registry choice remains RPF-37 authorization",
+    "digest": "deploy by immutable image digest, never mutable latest tag",
+    "security_scan": "low-cost CI SBOM and vulnerability scan before approval; findings are evidence, not an automatic release authority",
+    "status": "no image was published"
+  },
+  "schema_migration": {
+    "strategy": "expand/contract additive migration",
+    "ordering": "migration-compatible schema first, then application revision; destructive cleanup is a later independent change",
+    "failure": "migration failure blocks readiness and rollout; it does not auto-run a destructive down migration",
+    "rollback": "application can roll back while compatibility window remains; schema rollback requires a separate reviewed plan",
+    "evidence": "migration identity is part of Product Release Identity and target verification"
+  },
+  "rollout": {
+    "selected": "platform-native ECS rolling deployment with deployment circuit breaker and bounded CloudWatch alarm rollback",
+    "reason": "simpler first proof than canary/blue-green while preserving a previous completed revision",
+    "web": "publish immutable static prefix, verify, then update edge reference/invalidate bounded paths",
+    "control_plane": "new task reaches readiness before old task drains; graceful shutdown stops new job claims",
+    "worker": "drain/reclaim active attempts with fencing before replacement",
+    "not_claimed": "no canary, multiregion or autoscaling proof in RPF-36",
+    "source": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-failure-detection.html"
+  },
+  "rollback": {
+    "trigger": "failed readiness, deployment circuit breaker/alarm, target verification failure or explicit human decision",
+    "target": "previous Product Release Identity with compatible schema/config/secret references",
+    "web": "previous immutable asset manifest",
+    "control_plane": "previous image digest and deployment revision",
+    "worker": "previous compatible worker image; stale attempts fenced and UNKNOWN_OUTCOME reconciled",
+    "database": "restore is not an application rollback; use independent restore rehearsal and explicit data decision",
+    "evidence": "record rollback identity, reason, target verification and any data divergence",
+    "source": "https://docs.aws.amazon.com/AmazonECS/latest/developerguide/deployment-circuit-breaker.html"
+  },
+  "failure_domains": [
+    {
+      "domain": "Web/CDN",
+      "impact": "read-only product unavailable or stale assets",
+      "recovery": "edge health, asset prefix rollback, cache invalidation",
+      "evidence": "asset manifest and availability check",
+      "release_impact": "block target verification; never mutate canonical evidence"
+    },
+    {
+      "domain": "Control Plane",
+      "impact": "submit/read/decision boundary unavailable",
+      "recovery": "task replacement and readiness-gated rollout",
+      "evidence": "health, deployment identity, DB/artifact read-back",
+      "release_impact": "block release and reconcile active jobs"
+    },
+    {
+      "domain": "Worker",
+      "impact": "backlog and active attempts may become UNKNOWN_OUTCOME",
+      "recovery": "lease expiry, stale fencing, bounded reconcile, replacement",
+      "evidence": "attempt/event/effect receipt chain",
+      "release_impact": "block completion claim, never blind retry"
+    },
+    {
+      "domain": "PostgreSQL",
+      "impact": "canonical metadata/job/decision read/write unavailable",
+      "recovery": "provider failover or independent restore rehearsal",
+      "evidence": "backup/PITR identity, schema, row/artifact consistency",
+      "release_impact": "no release decision write/read-back"
+    },
+    {
+      "domain": "Object store",
+      "impact": "artifact upload/read verification unavailable",
+      "recovery": "bounded retry/reconcile and provider recovery; no metadata completion before verified object",
+      "evidence": "conditional write, one GET, SHA-256/schema/identity",
+      "release_impact": "fail closed; no artifact-backed decision"
+    },
+    {
+      "domain": "Collector/logging",
+      "impact": "diagnostic signal loss only unless a product audit log is affected",
+      "recovery": "provider log retention and bounded local export; OTel remains optional",
+      "evidence": "canonical evidence is independent of diagnostic traces",
+      "release_impact": "alert; block only if required audit evidence is missing"
+    },
+    {
+      "domain": "GitHub Actions",
+      "impact": "gate/build/approval workflow unavailable",
+      "recovery": "rerun with new evidence after cause fixed; no deploy from stale success",
+      "evidence": "workflow/run/release identity and approval record",
+      "release_impact": "no release principal assumption without fresh gate"
+    }
+  ],
+  "health_readiness": {
+    "web": "edge HTTP 200 for static shell and explicit unavailable state for API failure",
+    "control_plane_liveness": "process/event loop alive, no secret disclosure",
+    "control_plane_readiness": "database reachable, expected schema applied, artifact-store verification path available",
+    "worker": "heartbeat age, claimed attempt age, lease expiry and backlog depth",
+    "database": "provider health plus bounded application connection/read query",
+    "object_store": "bounded credentialed verify/read probe without downloading unbounded corpus",
+    "graceful_shutdown": "stop new claims, heartbeat/reconcile active attempt, drain HTTP, then exit",
+    "otel": "diagnostic exporter failure does not make the product falsely healthy or block canonical work"
+  },
+  "observability": {
+    "logs": "provider-managed structured logs with 14-day initial candidate retention and secret/private-protocol redaction",
+    "metrics": "availability, readiness, job backlog, attempt age, reconcile-required count, DB pool usage, object failure count, release failure count",
+    "traces": "optional OTel with low-cardinality canonical IDs and bounded retention; no SaaS trace backend required initially",
+    "audit": "Release Decision, Approval, Product Release Identity and deployment events remain canonical/auditable and are not only OTel data",
+    "cost": "monitor log ingestion, trace sampling and egress as separate cost lines"
+  },
+  "minimum_alerts": [
+    "Control Plane unavailable or readiness failing",
+    "PostgreSQL unavailable, connection pool exhaustion or backup failure",
+    "Object store unavailable, verification conflict or orphan growth above threshold",
+    "Worker heartbeat stale, queue/backlog threshold exceeded or reconcile-required age exceeded",
+    "Release target verification or deployment rollback",
+    "Secret rotation/revocation failure"
+  ],
+  "capacity": {
+    "evidence_basis": "RPF-33 directional measurements only; no Production QPS/SLA claim",
+    "web": "one static CDN deployment",
+    "control_plane": "one small task initially, 0.5 vCPU / 1 GiB candidate; scale only from observed readiness and DB pool evidence",
+    "worker": "one private task, 1 vCPU / 2 GiB candidate, concurrency 1; controlled tasks are separately budgeted",
+    "database": "smallest production-eligible RDS class with enough connections for pool and maintenance; exact class is quote/preflight",
+    "connection_pool": "5-10 per process candidate, capped below provider max and measured in RPF-37",
+    "object_storage": "50 GiB soft budget / 100 GiB review threshold candidate; no automatic delete",
+    "cost_envelope": "task hours, RDS, ALB/NAT, object storage/requests/egress, logs and backup are measured separately",
+    "broker": "BROKER_REQUIRED=NOT_YET; DB-backed durable polling remains the current boundary"
+  },
+  "backpressure": {
+    "job_queue": "bound claimed concurrency and reject/hold new work when backlog/age threshold is exceeded",
+    "worker_shortage": "leave jobs durable and visible; do not drop or blindly duplicate attempts",
+    "db_connections": "fail readiness or delay claim before exhausting pool; expose pool saturation alert",
+    "object_upload": "bounded retry/reconcile; metadata cannot complete without verified object",
+    "api_overload": "bounded request/page payloads and explicit 429/503 at edge; preserve read fail-closed semantics",
+    "future_work": "capacity/backpressure thresholds need focused RPF-37 measurement, not invented QPS"
+  },
+  "cost_model": {
+    "aws": {
+      "method": "quote required; no fixed monthly total claimed",
+      "line_items": [
+        "CloudFront/S3 static Web storage, requests and transfer",
+        "Fargate Control Plane and Worker vCPU/memory seconds",
+        "ALB and private-network egress/NAT or VPC endpoints",
+        "RDS instance, storage, I/O, backup/PITR and data transfer",
+        "S3 artifact storage, PUT/GET/LIST requests, retrieval and egress",
+        "Secrets Manager, KMS if selected, CloudWatch logs/metrics and optional traces"
+      ],
+      "formula": "monthly = web + fargate + edge/network + rds + object_store + secrets/logs + backup",
+      "long_term_baseline": "must not rely on promotional credits or free tier",
+      "source": "https://aws.amazon.com/pricing/"
+    },
+    "render_r2": {
+      "method": "published base examples only",
+      "lower_bound": "about 46 USD/month before paid PostgreSQL, storage, bandwidth and domain: Pro workspace plus three small compute services",
+      "long_term_baseline": "paid Postgres recovery and non-spinning-down compute required; R2 charges are separate",
+      "source": "https://render.com/pricing"
+    },
+    "railway_r2": {
+      "method": "published subscription plus usage model",
+      "lower_bound": "5 USD/month Hobby subscription plus variable usage; not a production total",
+      "long_term_baseline": "usage limit behavior and unmanaged database DR make this unsuitable as selected target",
+      "source": "https://docs.railway.com/pricing/faqs"
+    },
+    "portfolio_demo": "local Golden Demo remains the no-cloud-cost path; it is not a Production topology or SLA",
+    "budget_gate": "RPF-37 must require a monthly cap, alert threshold, idle-resource shutdown policy and explicit account owner before cloud operations"
+  },
+  "ci_release_workflow": {
+    "flow": [
+      "commit",
+      "push",
+      "canonical gate",
+      "build immutable Product Release Identity",
+      "protected human/product Approval",
+      "separate Release principal assumes short-lived identity",
+      "deploy immutable digests",
+      "target verification",
+      "record deployment evidence"
+    ],
+    "current_state": "GitHub Actions currently produces CI/evidence only; RPF-36 adds no deploy step",
+    "trust_boundary": "canonical gate and Agent cannot assume release principal",
+    "freshness": "release principal requires fresh gate and exact source/image/schema binding; stale result cannot authorize deploy"
+  },
+  "production_verification_matrix": [
+    "deployed Product Release Identity read-back",
+    "Web static asset and API fail-closed check",
+    "Control Plane readiness, schema and graceful replacement",
+    "PostgreSQL TLS, migration, backup/PITR identity and independent restore",
+    "S3 conditional put/replay/conflict, verified read and metadata consistency",
+    "Durable Job claim, heartbeat, reclaim and response-loss reconcile",
+    "RPF-28 Controlled Simulation profile, receipt/effect count and cleanup",
+    "Release Decision read-back and separate approval/release authority",
+    "Worker and Control Plane restart with no duplicate side effect",
+    "rollback to previous Product Release Identity",
+    "cost/alert/backpressure threshold observation"
+  ],
+  "restore_rehearsal": {
+    "database": "restore a point-in-time backup to a new private instance, apply only forward-compatible migrations, reconnect disposable Control Plane/Worker, compare canonical row counts and decisions",
+    "objects": "verify retained artifacts by scoped listing/sample and one-GET SHA-256/schema/identity checks; include orphan inventory without deletion",
+    "application": "run a bounded read/write/reconcile scenario and confirm no release authority is inherited by the rehearsal",
+    "exit": "record source backup timestamp, restored target identity, result hashes, consistency summary, elapsed time and cleanup",
+    "not_done": "no provider backup or restore operation executed by RPF-36"
+  },
+  "data_policy": {
+    "reviewed_corpus": "durable and long-term; historical reviewed bytes immutable",
+    "jobs_attempts_events": "durable canonical operational history; candidate 90-day hot retention requires product approval and later retention plan",
+    "canonical_artifacts": "long-term by default; no automatic GC",
+    "orphan_artifacts": "seven-day candidate grace plus dry-run inventory before separately authorized delete",
+    "logs": "14-day candidate retention with redaction",
+    "traces": "7-day candidate bounded diagnostic retention, optional",
+    "credentials": "platform secret references only; values never durable in app data",
+    "user_identity": "first target remains single-user/single-tenant; no multi-tenant identity claim"
+  },
+  "single_tenant_boundary": {
+    "first_target": "single-user/single-tenant Production candidate",
+    "public_access": "public Web/API edge does not imply multi-tenant readiness",
+    "isolation": "one product data domain and one approval boundary; tenant/RBAC remains future scope",
+    "required_before_multi_tenant": "tenant identity, authorization model, data partitioning, audit and cross-tenant negative proofs"
+  },
+  "security_baseline": {
+    "tls": "edge, Control Plane and database/object-store transport encrypted",
+    "database_exposure": "private endpoint only",
+    "bucket_public_access": "disabled; scoped task roles",
+    "secret_injection": "platform references, no source/image/log/artifact values",
+    "service_auth": "scoped service identities with rotation",
+    "agent_credentials": "no Production credentials and no Docker socket",
+    "worker_authority": "no Release principal or database direct access",
+    "web_authority": "read-only, no mutation/release endpoint",
+    "simulation_isolation": "private fresh-per-run task/network with verified cleanup",
+    "audit_logs": "canonical decision/approval/deployment events retained independently of diagnostics",
+    "release_separation": "human approval and separate release principal required"
+  },
+  "provider_portability": {
+    "product_contracts": [
+      "PostgreSQL canonical persistence",
+      "S3-compatible immutable artifact API",
+      "HTTP/JSON durable Worker boundary",
+      "optional diagnostic OTel",
+      "explicit audited Release principal"
+    ],
+    "provider_implementation": [
+      "ECS/RDS/S3/Secrets/IAM/ALB/CloudFront",
+      "region and network topology",
+      "deployment circuit breaker and logs",
+      "per-run simulation task mechanism"
+    ],
+    "migration_rule": "do not expose provider SDK or credentials through Agent/Product contracts; adapter tests must preserve conditional write, verified read and authority boundaries"
+  },
+  "iac": {
+    "recommendation": "simple provider-native deployment descriptors plus checked-in environment/schema manifests first; introduce OpenTofu/Terraform only when resource count or reuse justifies state management",
+    "rebuildability": "all future resource identifiers, policy templates, image digests, migration and environment values must be auditable without committing secret values",
+    "state": "no IaC state, plan or cloud resource created in RPF-36"
+  },
+  "disposable_proof": {
+    "method": "local config validation and offline evidence verifier",
+    "command": "python spikes/rpf-36/probe.py --run --output-dir .local/rpf-36/<run> && python spikes/rpf-36/verify-evidence.py <result>",
+    "checks": [
+      "three-provider matrix completeness",
+      "dated official source links",
+      "selected topology authority and endpoint boundaries",
+      "Product Release Identity fields",
+      "backup/restore and retention candidate",
+      "cost formula and no fake fixed AWS total",
+      "no cloud credentials or production operation",
+      "no Kubernetes/broker/multiregion expansion",
+      "source identity and immutable historical boundary"
+    ],
+    "cloud_operations": "NOT_EXECUTED",
+    "paid_resources_created": false,
+    "status": "PASS"
+  },
+  "lifecycle_gate": {
+    "ready_for_production_implementation": "CONDITIONAL",
+    "reasons": [
+      "AWS candidate satisfies managed persistence and authority shape but no account/region/latency/cost preflight was authorized",
+      "per-run Controlled Simulation hosting and cleanup is not proven on the selected provider",
+      "independent managed PostgreSQL/object restore rehearsal is designed but not executed",
+      "human Approval and Release principal are designed but no external environment is configured",
+      "Product Release Identity contract is designed but no registry/deployment record exists"
+    ],
+    "not_production": true
+  },
+  "next_plan": {
+    "id": "RPF-37",
+    "boundary": "AWS candidate preflight plus first disposable managed-topology implementation slice: account/region/cost authorization, immutable image/Release Identity, managed RDS/S3 connection, scoped service identities, and one provider-isolated RPF-28 simulation task; no general release until restore, approval and target verification gates pass",
+    "minimum_blockers": [
+      "provider/account/region and monthly budget authorization",
+      "RPF-28 per-run simulation task isolation and cleanup proof",
+      "RDS/S3 TLS, role scope and independent restore rehearsal",
+      "GitHub protected environment and release-principal trust policy",
+      "Product Release Identity read-back and rollback proof"
+    ],
+    "must_not_expand_to": [
+      "Kubernetes",
+      "broker",
+      "multiregion",
+      "full tenant/RBAC",
+      "automatic ELIGIBLE deployment"
+    ]
+  },
+  "external_authorizations": [
+    "user-selected provider/account owner",
+    "approved Singapore region or alternative with data-residency rationale",
+    "explicit monthly and one-time budget cap for disposable/managed resources",
+    "permission to create disposable cloud resources and any required IAM roles",
+    "approved human/product reviewers for the protected production environment",
+    "approval of database/object retention, RPO/RTO and restore rehearsal policy",
+    "approval before any real Production deploy or destructive remediation credential"
+  ]
+}

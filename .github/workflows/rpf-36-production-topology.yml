@@ -1,0 +1,53 @@
+name: RPF-36 Production topology investigation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-36-production-topology.yml"
+      - "spikes/rpf-36/**"
+      - "AGENTS.md"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/rpf-36-production-topology.yml"
+      - "spikes/rpf-36/**"
+      - "AGENTS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rpf36-production-topology-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  topology-investigation:
+    name: Offline managed-topology contract proof
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run RPF-36 offline proof
+        run: python spikes/rpf-36/probe.py --run --output-dir ci-results/rpf36
+      - name: Verify RPF-36 evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          result="$(find ci-results/rpf36 -type f -name 'rpf36-result.json' -print -quit)"
+          test -n "$result"
+          python spikes/rpf-36/verify-evidence.py "$result"
+      - name: Upload RPF-36 diagnostic evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-36-production-topology-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf36
+          if-no-files-found: error
+          retention-days: 14
