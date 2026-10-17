@@ -1,0 +1,20 @@
+.ew-lab { max-width: 1380px; margin: 0 auto; color: #d7e3e6; }
+.ew-heading { border-bottom: 1px solid #cad6d7; padding: 6px 0 24px; margin-bottom: 24px; }
+.ew-heading h1 { font-size: clamp(28px, 3vw, 42px); margin: 12px 0; letter-spacing: -.04em; color: #edf6f5; }
+.ew-heading p { font-size: 17px; color: #a3b4bb; }.ew-heading small { font-family: monospace; color: #adc1c8; }
+.ew-source { display: inline-block; background: #e0f0eb; color: #215746; font-size: 12px; padding: 7px 10px; border-radius: 4px; }
+.ew-panel { background: #fff; color: #192d39; border: 1px solid #d6dfdf; border-radius: 8px; padding: 22px; margin-bottom: 20px; min-width: 0; }
+.ew-panel h2 { margin: 0 0 20px; font-size: 18px; }.ew-panel h3 { font-size: 13px; margin-top: 20px; }
+.ew-setup { max-width: 670px; }.ew-lab label { display: block; font-weight: 600; margin-bottom: 8px; }
+.ew-lab select, .ew-lab button { padding: 10px 14px; border-radius: 5px; border: 1px solid #bbcaca; background: #fff; color: #213a42; font: inherit; }
+.ew-lab button { cursor: pointer; }.ew-lab button.ew-primary { background: #235a4f; color: white; border-color: #235a4f; }.ew-lab button:disabled { cursor: not-allowed; opacity: .55; }
+.ew-lab :is(button, select, a, summary):focus-visible { outline: 3px solid #1679bc; outline-offset: 3px; }
+.ew-lab pre { font-size: 12px; line-height: 1.6; padding: 13px; background: #f3f6f6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ew-lab code { font-size: 12px; overflow-wrap: anywhere; }.ew-error { border: 1px solid #bd7474; padding: 16px; background: #fff2f0; color: #682d31; margin-bottom: 20px; }
+.ew-session { display: flex; flex-wrap: wrap; gap: 10px 20px; padding: 16px 0; align-items: center; }.ew-session strong { background: #e4f1eb; color: #215746; padding: 6px; font-size: 13px; }
+.ew-lab > a { color: #b9e6d6; }.ew-fault { display: flex; flex-wrap: wrap; gap: 7px 14px; font: 12px monospace; }.ew-fault span { background: #edf4f2; padding: 5px; }
+.ew-diff { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 12px; }.ew-diff th, .ew-diff td { padding: 9px 5px; text-align: left; border-bottom: 1px solid #dfe7e5; overflow-wrap: anywhere; }.ew-diff thead { color: #61747c; }
+.ew-grid { display: grid; grid-template-columns: minmax(290px, .9fr) minmax(360px, 1.2fr); gap: 22px; align-items: start; }.ew-results { min-width: 0; }
+.ew-events { list-style: none; padding: 0; margin: 0; }.ew-events li { border-top: 1px solid #e1e8e8; }.ew-events a { padding: 12px 3px; display: block; font-family: monospace; font-size: 12px; text-decoration: none; color: #25474a; overflow-wrap: anywhere; }.ew-events a[aria-current] { background: #e7f1ef; }.ew-events span { margin-right: 10px; color: #6d8389; }.ew-events small { display: block; color: #75868c; margin: 4px 0 0 24px; }
+.ew-axes { margin: 18px 0; }.ew-axes div { border-bottom: 1px solid #e0e8e7; padding: 9px 0; }.ew-axes dt { font-size: 11px; color: #61747c; }.ew-axes dd { margin: 5px 0 0; font-family: monospace; font-size: 12px; overflow-wrap: anywhere; }
+@media(max-width: 1100px) { .ew-grid { grid-template-columns: 1fr; } }

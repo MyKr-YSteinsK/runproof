@@ -3,6 +3,7 @@ import argparse
 import hashlib
 import json
 import os
+import re
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -17,20 +18,23 @@ from .witness import _package_source_digest
 from .witness_verify import (ISSUER_ID, LIMITATIONS, _derive_fault_activation, verify_bytes)
 
 
-def run_trial(contracts, *, before_cleanup_hook=None):
+def run_trial(contracts, *, before_cleanup_hook=None, storage_task="rpf-44", event_hook=None, quarantine_id=None):
     """Both domains traverse this exact orchestration/event/feedback pipeline.
 
     Seven budgeted actions: initialize, initial authority, dispatch, reconcile,
     final authority/effect, feedback, cleanup. Cleanup still runs on failure.
     """
     contracts.validate()
+    require(storage_task in ("rpf-44", "rpf-45"), "STORAGE_TASK_REJECTED")
+    require(quarantine_id is None or (storage_task == "rpf-45" and isinstance(quarantine_id, str)
+            and re.fullmatch(r"session-[a-f0-9]{32}", quarantine_id)), "QUARANTINE_ID_REJECTED")
     x, f = contracts.experiment, contracts.effect
     domain = x["domain"]
     spec = SPECS[domain]
     budget = Budget(contracts.execution["budgets"])
     sandbox_type, reader_type, adapter_type = (OpsSandbox, OpsAuthorityReader, OpsAdapter) if domain == "ops" else (
         OrderSandbox, AuthorityReader, OrderAdapter)
-    sandbox = sandbox_type(contracts)
+    sandbox = sandbox_type(contracts, storage_task=storage_task)
     events = []
     failed = False
 
@@ -38,6 +42,8 @@ def run_trial(contracts, *, before_cleanup_hook=None):
         events.append({"seq": len(events) + 1, "event_id": f"event-{x['run_id']}-{len(events)+1:02d}",
                        "observed_at": datetime.now(timezone.utc).isoformat(), "type": name,
                        "facts": json.loads(canonical(facts)), "facts_sha256": digest(facts)})
+        if event_hook:
+            event_hook(json.loads(canonical(events[-1])))
 
     emit("contracts_preregistered", {"owner": x["owner"], "capture_id": x["capture_id"],
                                       "contract_hashes": contracts.hashes})
@@ -45,7 +51,7 @@ def run_trial(contracts, *, before_cleanup_hook=None):
         budget.step()
         sandbox.initialize()
         emit("environment_initialized", {k: x[k] for k in ("owner", "run_id", "environment_id")})
-        reader, adapter = reader_type(sandbox.path, contracts), adapter_type(sandbox)
+        reader, adapter = reader_type(sandbox.path, contracts, storage_task=storage_task), adapter_type(sandbox)
         budget.step()
         orchestrator = Orchestrator(contracts, adapter, reader, budget)
         emit("authority_before_verified", {"snapshot_sha256": orchestrator.before.sha256})
@@ -92,7 +98,10 @@ def run_trial(contracts, *, before_cleanup_hook=None):
     finally:
         if sandbox.created:
             def quarantine():
-                destination = quarantine_path(sandbox.directory, task="rpf-44")
+                destination = quarantine_path(sandbox.directory, task=storage_task)
+                if quarantine_id:
+                    destination = destination.with_name(quarantine_id)
+                    require(not destination.exists(), "QUARANTINE_ALREADY_EXISTS")
                 destination.parent.mkdir(parents=True, exist_ok=True)
                 sandbox.directory.rename(destination)
 

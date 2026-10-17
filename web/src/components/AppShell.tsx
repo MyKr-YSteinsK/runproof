@@ -28,14 +28,16 @@ export interface AppShellProps {
   release?: boolean;
   execution?: boolean;
   intelligence?: boolean;
+  lab?: boolean;
 }
 
-export const AppShell = ({ children, detail = false, overview = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false }: AppShellProps) => {
-  const { t } = useI18n();
-  const dataSourceLabel = DATA_SOURCE_MODE === "api" ? t("common.controlPlaneApi") : t("common.reviewedFixtureCorpus");
+export const AppShell = ({ children, detail = false, overview = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false, lab = false }: AppShellProps) => {
+  const { t, locale } = useI18n();
+  const labLabel = locale === "zh-CN" ? "受控实验室" : "EffectWitness Lab";
+  const dataSourceLabel = lab ? "LOCAL SIMULATION GATEWAY" : DATA_SOURCE_MODE === "api" ? t("common.controlPlaneApi") : t("common.reviewedFixtureCorpus");
   const readModelCount = (count: number): number | string => DATA_SOURCE_MODE === "api" ? "API" : count;
   const comparisonHref = DATA_SOURCE_MODE === "api" ? "/comparisons" : `/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`;
-  const topContext = overview ? t("nav.top.goldenDemo")
+  const topContext = lab ? labLabel : overview ? t("nav.top.goldenDemo")
     : execution ? (detail ? t("nav.top.durableDetail") : t("nav.top.durableList"))
       : intelligence ? (detail ? t("nav.top.failureIntelligenceDetail") : t("nav.top.failureIntelligence"))
         : agent ? (detail ? t("nav.top.agentDetail") : t("nav.top.agentRegistry"))
@@ -61,7 +63,7 @@ export const AppShell = ({ children, detail = false, overview = false, agent = f
         <nav className="primary-nav" aria-label={t("nav.primary")}>
           <a className={overview ? "active" : ""} href="/overview" onClick={(event) => { event.preventDefault(); navigate("/overview"); }}><span className="nav-glyph">⌂</span><span>{t("nav.overview")}</span><span className="nav-count">RPF-19</span></a>
           <a className={agent ? "active" : ""} href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}><span className="nav-glyph">◇</span><span>{t("nav.agents")}</span><span className="nav-count">{readModelCount(reviewedAgents.length)}</span></a>
-          <a className={!overview && !detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}><span className="nav-glyph">▤</span><span>{t("nav.runEvidence")}</span><span className="nav-count">{readModelCount(reviewedRuns.length)}</span></a>
+          <a className={!lab && !overview && !detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}><span className="nav-glyph">▤</span><span>{t("nav.runEvidence")}</span><span className="nav-count">{readModelCount(reviewedRuns.length)}</span></a>
           <a className={failure ? "active" : ""} href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}><span className="nav-glyph">!</span><span>{t("nav.failureCases")}</span><span className="nav-count">{readModelCount(reviewedFailureCases.length)}</span></a>
           <a className={intelligence ? "active" : ""} href="/failure-intelligence" onClick={(event) => { event.preventDefault(); navigate("/failure-intelligence"); }}><span className="nav-glyph">⌁</span><span>{t("nav.failureIntelligence")}</span><span className="nav-count">{readModelCount(reviewedFailureClusters.length)}</span></a>
           <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}><span className="nav-glyph">↗</span><span>{t("nav.regressions")}</span><span className="nav-count">{readModelCount(reviewedRegressions.length)}</span></a>
@@ -70,14 +72,15 @@ export const AppShell = ({ children, detail = false, overview = false, agent = f
           <a className={comparison ? "active" : ""} href={comparisonHref} onClick={(event) => { event.preventDefault(); navigate(comparisonHref); }}><span className="nav-glyph">⇄</span><span>{t("nav.comparisons")}</span><span className="nav-count">{readModelCount(2)}</span></a>
           <a className={release ? "active" : ""} href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}><span className="nav-glyph">✓</span><span>{t("nav.releaseDecisions")}</span><span className="nav-count">{readModelCount(reviewedReleaseDecisions.length)}</span></a>
           <a className={execution ? "active" : ""} href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}><span className="nav-glyph">◇</span><span>{t("nav.executions")}</span><span className="nav-count">API</span></a>
+          <a className={lab ? "active" : ""} href="/effectwitness" onClick={(event) => { event.preventDefault(); navigate("/effectwitness"); }}><span className="nav-glyph">↗</span><span>{labLabel}</span><span className="nav-count">LOCAL</span></a>
         </nav>
-        <div className="rail-note"><span className="section-label">{t("nav.currentSurface")}</span><p>{t("nav.currentSurfaceNote")}</p><span className="schema-chip">v2 evidence · v1 evals · v1 gates</span></div>
-        <div className="rail-footer"><span>{t("nav.stabilization")}</span><span className="footer-dot" aria-hidden="true" /><span>{DATA_SOURCE_MODE === "api" ? t("common.canonicalReadModel") : t("common.fixtureMode")}</span></div>
+        <div className="rail-note"><span className="section-label">{t("nav.currentSurface")}</span><p>{lab ? (locale === "zh-CN" ? "独立本机 Gateway；仅允许虚构订单与配置变更。" : "Independent local Gateway; simulated orders and config changes only.") : t("nav.currentSurfaceNote")}</p><span className="schema-chip">{lab ? "Lab v1 · Witness v2" : "v2 evidence · v1 evals · v1 gates"}</span></div>
+        <div className="rail-footer"><span>{lab ? "CONTROLLED SIMULATION" : t("nav.stabilization")}</span><span className="footer-dot" aria-hidden="true" /><span>{lab ? "NO PRODUCTION ACCESS" : DATA_SOURCE_MODE === "api" ? t("common.canonicalReadModel") : t("common.fixtureMode")}</span></div>
       </aside>
       <main className="app-main">
         <header className="topbar">
-          <div className="topbar-context"><span className="topbar-kicker">{t("nav.top.controlPlane")}</span><span className="topbar-divider" aria-hidden="true">/</span><span>{topContext}</span></div>
-          <div className="topbar-meta"><span className="live-indicator"><i aria-hidden="true" /> {dataSourceLabel}</span><span className="topbar-revision">RPF-19</span><LocaleSwitcher /></div>
+          <div className="topbar-context"><span className="topbar-kicker">{lab ? "LOCAL LAB" : t("nav.top.controlPlane")}</span><span className="topbar-divider" aria-hidden="true">/</span><span>{topContext}</span></div>
+          <div className="topbar-meta"><span className="live-indicator"><i aria-hidden="true" /> {dataSourceLabel}</span><span className="topbar-revision">{lab ? "RPF-45" : "RPF-19"}</span><LocaleSwitcher /></div>
         </header>
         <div className="page-content">{children}</div>
       </main>

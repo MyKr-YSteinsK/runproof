@@ -34,8 +34,8 @@ class AuthorityReader:
     observations through this API. It is not a security boundary against Python
     code or an administrator in this process and is not an offline Witness.
     """
-    def __init__(self, path: Path, contracts: FrozenContracts):
-        self.path = owned_path(path, task=contracts.experiment["owner"])
+    def __init__(self, path: Path, contracts: FrozenContracts, *, storage_task=None):
+        self.path = owned_path(path, task=storage_task or contracts.experiment["owner"])
         self.contracts = contracts
         self._seal = secrets.token_bytes(32)
         self.available = True
@@ -93,15 +93,17 @@ class AuthorityReader:
 
 
 class OrderSandbox:
-    def __init__(self, contracts: FrozenContracts, directory: Path | None = None):
+    def __init__(self, contracts: FrozenContracts, directory: Path | None = None, *, storage_task=None):
         contracts.validate()
         self.contracts = contracts
         self.owner = contracts.experiment["owner"]
+        self.storage_task = storage_task or self.owner
+        require(self.storage_task == self.owner or self.storage_task == "rpf-45", "STORAGE_TASK_REJECTED")
         root = {"rpf-41": LOCAL_ROOT, "rpf-42": LOCAL_ROOT.parent / "rpf-42",
                 "rpf-43": LOCAL_ROOT.parent / "rpf-43",
-                "rpf-44": LOCAL_ROOT.parent / "rpf-44"}[self.owner]
-        self.directory = owned_path(directory or root / contracts.experiment["run_id"], task=self.owner)
-        self.path = owned_path(self.directory / "orders.sqlite3", task=self.owner)
+                "rpf-44": LOCAL_ROOT.parent / "rpf-44", "rpf-45": LOCAL_ROOT.parent / "rpf-45"}[self.storage_task]
+        self.directory = owned_path(directory or root / contracts.experiment["run_id"], task=self.storage_task)
+        self.path = owned_path(self.directory / "orders.sqlite3", task=self.storage_task)
         self.created = False
         self.generation = 0
 
@@ -196,7 +198,7 @@ class OrderSandbox:
         generation = self.reset()
         # Only exact task-created SQLite files; no recursive deletion.
         for suffix in ("", "-journal", "-wal", "-shm"):
-            path = owned_path(Path(str(self.path) + suffix), task=self.owner)
+            path = owned_path(Path(str(self.path) + suffix), task=self.storage_task)
             if path.exists():
                 path.unlink()
         self.directory.rmdir()

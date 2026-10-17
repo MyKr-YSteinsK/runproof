@@ -21,7 +21,7 @@ from runtime.runproof_runtime.effectwitness.witness import _final_bundle, _precl
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ROOT = REPO_ROOT
-TEST_ROOT = REPO_ROOT / ".local" / "rpf-44" / "tmp" / "witness-tests"
+TEST_ROOT = REPO_ROOT / ".local" / "rpf-45" / "tmp" / "witness-tests"
 
 
 def setUpModule():

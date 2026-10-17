@@ -76,6 +76,7 @@ import { FailureCaseDetail as FailureCaseDetailFeature } from "./features/failur
 import { resolveCanonicalRouteState } from "./app/canonicalRouteState";
 import { useI18n } from "./i18n";
 import { ApiRouteLoadingState, CanonicalApiAgentDetailPage, CanonicalApiDetailPage, CanonicalApiIndexPage } from "./features/canonical/CanonicalApiPages";
+import { LabPage } from "./features/effectwitness/LabPage";
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -1744,8 +1745,9 @@ export default function App() {
     return () => window.removeEventListener("popstate", update);
   }, []);
   const executionRoute = location.pathname === "/executions" || Boolean(location.executionJobId);
+  const labRoute = location.pathname.startsWith("/effectwitness");
   useEffect(() => {
-    if (DATA_SOURCE_MODE === "fixture" || executionRoute) {
+    if (DATA_SOURCE_MODE === "fixture" || executionRoute || labRoute) {
       setDataSource({ status: "ready" });
       setApiRouteState({ status: "ready" });
       return;
@@ -1771,12 +1773,13 @@ export default function App() {
     return () => {
       active = false;
     };
-  }, [executionRoute, location.pathname, location.search]);
+  }, [executionRoute, labRoute, location.pathname, location.search]);
   const canonicalRouteState = useMemo(() => resolveCanonicalRouteState(dataSource.status, snapshot, location), [dataSource.status, snapshot, location]);
   const selected = canonicalRouteState.kind === "ready" || canonicalRouteState.kind === "not-found"
     ? canonicalRouteState.selection
     : {};
   const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
+  if (labRoute) return <LabPage path={location.pathname} search={location.search} />;
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
   if (DATA_SOURCE_MODE === "api") {
     if (apiRouteState.status !== "ready" || !apiRoute) return <ApiRouteLoadingState status={apiRouteState.status === "error" ? "error" : "loading"} error={apiRouteState.error} />;

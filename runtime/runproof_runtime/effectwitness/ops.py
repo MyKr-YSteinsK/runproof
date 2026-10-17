@@ -18,12 +18,14 @@ from .orders import AuthoritySnapshot
 
 
 class OpsSandbox:
-    def __init__(self, contracts, directory=None):
+    def __init__(self, contracts, directory=None, *, storage_task="rpf-44"):
         contracts.validate()
         require(contracts.experiment["domain"] == "ops", "OPS_DOMAIN_REQUIRED")
         self.contracts = contracts
-        self.directory = owned_path(directory or ROOT / ".local" / "rpf-44" /
-                                    contracts.experiment["run_id"], task="rpf-44")
+        require(storage_task in ("rpf-44", "rpf-45"), "STORAGE_TASK_REJECTED")
+        self.storage_task = storage_task
+        self.directory = owned_path(directory or ROOT / ".local" / storage_task /
+                                    contracts.experiment["run_id"], task=storage_task)
         self.path = self.directory / "ops.sqlite3"
         self.generation = 0
         self.created = False
@@ -92,7 +94,7 @@ class OpsSandbox:
                     "RESET_READBACK_FAILED", "ENVIRONMENT")
         self.generation = 1
         for suffix in ("", "-journal", "-wal", "-shm"):
-            path = owned_path(self.path.with_name(self.path.name + suffix), task="rpf-44")
+            path = owned_path(self.path.with_name(self.path.name + suffix), task=self.storage_task)
             if path.exists():
                 path.unlink()
         self.directory.rmdir()
@@ -100,8 +102,8 @@ class OpsSandbox:
 
 
 class OpsAuthorityReader:
-    def __init__(self, path, contracts):
-        self.path = owned_path(path, task="rpf-44")
+    def __init__(self, path, contracts, *, storage_task="rpf-44"):
+        self.path = owned_path(path, task=storage_task)
         self.contracts = contracts
         self._seal = secrets.token_bytes(32)
         self.available = True
@@ -165,7 +167,7 @@ class OpsAdapter:
         require(type(arguments) is dict and arguments == {k: self.contracts.effect[k] for k in keys},
                 "TOOL_ARGUMENTS_REJECTED", "AGENT")
         if name == "inspect_config":
-            reader = OpsAuthorityReader(self.sandbox.path, self.contracts)
+            reader = OpsAuthorityReader(self.sandbox.path, self.contracts, storage_task=self.sandbox.storage_task)
             return reader.validate(reader.read())["config"]
         result = self.sandbox.apply(**arguments)
         if result["status"] == "APPLIED" and self.contracts.experiment["fault"] == "response-lost":
