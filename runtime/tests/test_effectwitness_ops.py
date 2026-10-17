@@ -24,7 +24,7 @@ from runtime.runproof_runtime.effectwitness.ops_oracle import evaluate_ops_effec
 from runtime.runproof_runtime.effectwitness.witness_verify import canonical, digest, verify_bytes, VerificationRejected
 
 REPO = Path(__file__).resolve().parents[2]
-TASK = REPO / ".local/rpf-45/compat-runtime/.local/rpf-44"
+TASK = REPO / ".local/rpf-46/compat-runtime/.local/rpf-44"
 OLD_SHA = "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e"
 
 
@@ -32,7 +32,7 @@ def legacy_test_scope(namespace):
     """Redirect legacy fixture owners below this task; production defaults stay intact."""
     from runtime.runproof_runtime.effectwitness import contracts, orders, exploration, pge_contracts, __main__
     scope = ExitStack()
-    root = REPO / ".local/rpf-45/compat-runtime"
+    root = REPO / ".local/rpf-46/compat-runtime"
     local = root / ".local/rpf-41"
     pge = root / ".local/rpf-42"
     for module, name, value in ((contracts, "ROOT", root), (contracts, "LOCAL_ROOT", local),
@@ -40,7 +40,7 @@ def legacy_test_scope(namespace):
             (pge_contracts, "ROOT", root), (pge_contracts, "PGE_ROOT", pge),
             (exploration, "ROOT", root), (exploration, "PGE_ROOT", pge)):
         scope.enter_context(patch.object(module, name, value))
-    for key, value in (("ROOT", root), ("PGE_ROOT", pge), ("TEST_ROOT", REPO / ".local/rpf-45/tmp/witness-tests")):
+    for key, value in (("ROOT", root), ("PGE_ROOT", pge), ("TEST_ROOT", REPO / ".local/rpf-46/tmp/witness-tests")):
         if key in namespace:
             scope.enter_context(patch.dict(namespace, {key: value}))
     return scope
@@ -50,7 +50,7 @@ def setUpModule():
     from runtime.runproof_runtime.effectwitness import ops, cross_trial
     global _task_scope
     _task_scope = legacy_test_scope(globals())
-    root = REPO / ".local/rpf-45/compat-runtime"
+    root = REPO / ".local/rpf-46/compat-runtime"
     _task_scope.enter_context(patch.object(ops, "ROOT", root))
     _task_scope.enter_context(patch.object(cross_trial, "ROOT", root))
 

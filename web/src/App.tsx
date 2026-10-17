@@ -77,6 +77,7 @@ import { resolveCanonicalRouteState } from "./app/canonicalRouteState";
 import { useI18n } from "./i18n";
 import { ApiRouteLoadingState, CanonicalApiAgentDetailPage, CanonicalApiDetailPage, CanonicalApiIndexPage } from "./features/canonical/CanonicalApiPages";
 import { LabPage } from "./features/effectwitness/LabPage";
+import { LivePage } from "./features/effectwitness/LivePage";
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -1779,7 +1780,9 @@ export default function App() {
     ? canonicalRouteState.selection
     : {};
   const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
-  if (labRoute) return <LabPage path={location.pathname} search={location.search} />;
+  if (labRoute) return location.pathname.startsWith("/effectwitness/explorations")
+    ? <LivePage path={location.pathname} search={location.search} />
+    : <LabPage path={location.pathname} search={location.search} />;
   if (executionRoute) return location.executionJobId ? <ExecutionDetail jobId={location.executionJobId} /> : <ExecutionIndex />;
   if (DATA_SOURCE_MODE === "api") {
     if (apiRouteState.status !== "ready" || !apiRoute) return <ApiRouteLoadingState status={apiRouteState.status === "error" ? "error" : "loading"} error={apiRouteState.error} />;

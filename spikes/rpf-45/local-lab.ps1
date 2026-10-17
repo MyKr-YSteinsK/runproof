@@ -1,8 +1,10 @@
-param([ValidateSet('Start','Stop')][string]$Action = 'Start')
+param([ValidateSet('Start','Stop')][string]$Action = 'Start', [switch]$EnablePaidPge,
+  [ValidateSet('rpf-45','rpf-46')][string]$Task = 'rpf-45')
 $ErrorActionPreference = 'Stop'
 $taskRepo = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 if ($taskRepo -ne 'D:\CS\runproof') { throw 'Launcher root must be independently reviewed on this machine.' }
-$taskLocal = Join-Path $taskRepo '.local/rpf-45'
+if ($EnablePaidPge) { $Task = 'rpf-46' }
+$taskLocal = Join-Path $taskRepo ('.local/' + $Task)
 $taskRecord = Join-Path $taskLocal 'processes.json'
 if ($Action -eq 'Stop') {
   if (-not (Test-Path -LiteralPath $taskRecord)) { throw 'No task-owned process record.' }
@@ -29,13 +31,14 @@ foreach ($taskPort in @(4185,8765)) {
 }
 $taskTemp = Join-Path $taskLocal 'tmp'
 New-Item -ItemType Directory -Path $taskTemp -Force | Out-Null
-$taskKeys = @('TEMP','TMP','TMPDIR','PYTHONDONTWRITEBYTECODE','RPF_EW_LAB_ENABLED','RPF_EW_LAB_GATEWAY_TOKEN','RPF_EW_LAB_TASK_OUTPUT')
+$taskKeys = @('TEMP','TMP','TMPDIR','PYTHONDONTWRITEBYTECODE','RPF_EW_LAB_ENABLED','RPF_EW_LAB_GATEWAY_TOKEN','RPF_EW_LAB_TASK_OUTPUT','RPF_EW_LAB_TASK_ID')
 $taskOld = @{}
 foreach ($taskKey in $taskKeys) { $taskOld[$taskKey] = [Environment]::GetEnvironmentVariable($taskKey,'Process') }
 $taskStarted = @()
 try {
   $env:TEMP=$taskTemp; $env:TMP=$taskTemp; $env:TMPDIR=$taskTemp
   $env:PYTHONDONTWRITEBYTECODE='1'; $env:RPF_EW_LAB_ENABLED='1'; $env:RPF_EW_LAB_TASK_OUTPUT='1'
+  $env:RPF_EW_LAB_TASK_ID=$Task
   $taskSecretBytes = New-Object byte[] 32
   $taskRng = [Security.Cryptography.RandomNumberGenerator]::Create()
   try { $taskRng.GetBytes($taskSecretBytes) } finally { $taskRng.Dispose() }
@@ -43,7 +46,9 @@ try {
   $taskPython = (Get-Command python.exe).Source
   $taskPython = (& $taskPython -c 'import sys; print(sys.executable)').Trim()
   $taskNode = (Get-Command node.exe).Source
-  $taskStarted += Start-Process -FilePath $taskPython -ArgumentList @('-m','runtime.runproof_runtime.effectwitness.lab_gateway','--enable-local-simulation') -WorkingDirectory $taskRepo -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $taskLocal 'gateway.log') -RedirectStandardError (Join-Path $taskLocal 'gateway-error.log')
+  $taskArguments = @('-m','runtime.runproof_runtime.effectwitness.lab_gateway','--enable-local-simulation')
+  if ($EnablePaidPge) { $taskArguments += '--enable-paid-order-pge' }
+  $taskStarted += Start-Process -FilePath $taskPython -ArgumentList $taskArguments -WorkingDirectory $taskRepo -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $taskLocal 'gateway.log') -RedirectStandardError (Join-Path $taskLocal 'gateway-error.log')
   $taskVite = Join-Path $taskRepo 'node_modules/vite/bin/vite.js'
   if (-not (Test-Path -LiteralPath $taskVite)) { throw 'Existing Vite dependency missing; no automatic install.' }
   $taskStarted += Start-Process -FilePath $taskNode -ArgumentList @($taskVite) -WorkingDirectory $taskRepo -WindowStyle Hidden -PassThru -RedirectStandardOutput (Join-Path $taskLocal 'web.log') -RedirectStandardError (Join-Path $taskLocal 'web-error.log')

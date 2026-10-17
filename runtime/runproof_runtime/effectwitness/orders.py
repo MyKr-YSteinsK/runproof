@@ -98,10 +98,11 @@ class OrderSandbox:
         self.contracts = contracts
         self.owner = contracts.experiment["owner"]
         self.storage_task = storage_task or self.owner
-        require(self.storage_task == self.owner or self.storage_task == "rpf-45", "STORAGE_TASK_REJECTED")
+        require(self.storage_task == self.owner or self.storage_task in ("rpf-45", "rpf-46"), "STORAGE_TASK_REJECTED")
         root = {"rpf-41": LOCAL_ROOT, "rpf-42": LOCAL_ROOT.parent / "rpf-42",
                 "rpf-43": LOCAL_ROOT.parent / "rpf-43",
-                "rpf-44": LOCAL_ROOT.parent / "rpf-44", "rpf-45": LOCAL_ROOT.parent / "rpf-45"}[self.storage_task]
+                "rpf-44": LOCAL_ROOT.parent / "rpf-44", "rpf-45": LOCAL_ROOT.parent / "rpf-45",
+                "rpf-46": LOCAL_ROOT.parent / "rpf-46"}[self.storage_task]
         self.directory = owned_path(directory or root / contracts.experiment["run_id"], task=self.storage_task)
         self.path = owned_path(self.directory / "orders.sqlite3", task=self.storage_task)
         self.created = False

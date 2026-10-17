@@ -4,6 +4,7 @@ import hashlib
 import json
 import os
 import re
+import time
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -18,20 +19,24 @@ from .witness import _package_source_digest
 from .witness_verify import (ISSUER_ID, LIMITATIONS, _derive_fault_activation, verify_bytes)
 
 
-def run_trial(contracts, *, before_cleanup_hook=None, storage_task="rpf-44", event_hook=None, quarantine_id=None):
+def run_trial(contracts, *, before_cleanup_hook=None, storage_task="rpf-44", event_hook=None, quarantine_id=None, deadline=None):
     """Both domains traverse this exact orchestration/event/feedback pipeline.
 
     Seven budgeted actions: initialize, initial authority, dispatch, reconcile,
     final authority/effect, feedback, cleanup. Cleanup still runs on failure.
     """
     contracts.validate()
-    require(storage_task in ("rpf-44", "rpf-45"), "STORAGE_TASK_REJECTED")
-    require(quarantine_id is None or (storage_task == "rpf-45" and isinstance(quarantine_id, str)
+    require(storage_task in ("rpf-44", "rpf-45", "rpf-46"), "STORAGE_TASK_REJECTED")
+    require(quarantine_id is None or (storage_task in ("rpf-45", "rpf-46") and isinstance(quarantine_id, str)
             and re.fullmatch(r"session-[a-f0-9]{32}", quarantine_id)), "QUARANTINE_ID_REJECTED")
     x, f = contracts.experiment, contracts.effect
     domain = x["domain"]
     spec = SPECS[domain]
-    budget = Budget(contracts.execution["budgets"])
+    class TrialBudget(Budget):
+        def check_time(self):
+            super().check_time()
+            require(deadline is None or time.monotonic() < deadline, "SESSION_TIME_EXHAUSTED")
+    budget = TrialBudget(contracts.execution["budgets"])
     sandbox_type, reader_type, adapter_type = (OpsSandbox, OpsAuthorityReader, OpsAdapter) if domain == "ops" else (
         OrderSandbox, AuthorityReader, OrderAdapter)
     sandbox = sandbox_type(contracts, storage_task=storage_task)

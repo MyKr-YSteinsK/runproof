@@ -22,7 +22,7 @@ class OpsSandbox:
         contracts.validate()
         require(contracts.experiment["domain"] == "ops", "OPS_DOMAIN_REQUIRED")
         self.contracts = contracts
-        require(storage_task in ("rpf-44", "rpf-45"), "STORAGE_TASK_REJECTED")
+        require(storage_task in ("rpf-44", "rpf-45", "rpf-46"), "STORAGE_TASK_REJECTED")
         self.storage_task = storage_task
         self.directory = owned_path(directory or ROOT / ".local" / storage_task /
                                     contracts.experiment["run_id"], task=storage_task)

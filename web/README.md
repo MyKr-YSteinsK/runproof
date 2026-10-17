@@ -25,3 +25,8 @@ RPF-09 的 `web/src/data/controlPlaneReadModel.ts` 仍保留为 API migration co
 本机启动/停止、Session 与 Witness 的来源/信任限制见 [RPF-45 README](../spikes/rpf-45/README.md)。经显式启动器启用后，Lab 使用 `http://127.0.0.1:4185/effectwitness`；普通 `npm run dev` 仍使用 4173。启动器仅复用已有 Python/Node/Vite，不安装依赖。
 
 本轮为 deterministic 受控订单/配置实验，Provider 调用为 0，实时 Explorer LLM 未实现。局部内容核验不构成可信外部锚或发行者签名。
+# RPF-46 Live order Explorer
+
+`/effectwitness/explorations` adds an explicitly paid order Explorer alongside the free order/ops capture. Start with `spikes/rpf-45/local-lab.ps1 -Action Start -EnablePaidPge` only under an active live-call authorization. Default startup leaves Explorer disabled. Provider credentials stay in the server environment; browser requests contain only the fixed mode/domain and idempotency key.
+
+The new versioned `/effectwitness-api/explorations` routes share the existing Gateway writer lock, while the one-session paid quota and all new output live under `.local/rpf-46`. Refresh, language changes and event deep links read the same session; disconnect marks loaded evidence as a read-only snapshot and disables certificate actions. No fixture fallback or automatic experiment replay. See [RPF-46](../spikes/rpf-46/README.md) for immutable quota, exact contracts, offline evidence checks and trust limits.

@@ -1,0 +1,591 @@
+{
+  "schema_version": "rpf46-research-summary-v1",
+  "scope": "REDACTED_LOCAL_EXECUTION_REPORT_NOT_EXTERNAL_ATTESTATION",
+  "session_id": "exploration-a3cdf741b7e34f4f97c07228fdf9b679",
+  "plan_digest": "cac5b623be53314faf0e0e8fc9ee09a8ce4f8439a6d6cb3bf9b5db0f38fb5493",
+  "source_digest": "11daf0f8a97d35e6fb9c28fd990cdc9be5755035df2eba1d6438dd5a495570cd",
+  "created_at": "2026-10-17T16:22:02.278261+00:00",
+  "completed_at": "2026-10-17T16:22:04.661420+00:00",
+  "explorer": "LIVE_EXPLORER_DEEPSEEK",
+  "target_driver": "DETERMINISTIC_CONTROLLED_TARGET",
+  "source": "LIVE_LOCAL_SIMULATION",
+  "limits": {
+    "cost_cny": 1.5,
+    "fault_trials": 2,
+    "provider_requests": 2,
+    "request_seconds": 90,
+    "seconds": 1200,
+    "steps": 16,
+    "tokens": 12000
+  },
+  "pricing": {
+    "basis": "cache-miss-peak",
+    "checked_at": "2026-10-18",
+    "currency": "USD",
+    "input_per_million": 0.3,
+    "output_per_million": 1.2,
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "usd_cny_ceiling": 10
+  },
+  "provider_requests": [
+    {
+      "attempt": 1,
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "http_status": 200,
+      "request_id": null,
+      "requested_model": "deepseek-flash",
+      "response_id": "f426f71c-1408-46c5-99f7-c2dc87743cb7",
+      "returned_model": "deepseek-flash",
+      "status": "RECEIVED",
+      "tool_results_submitted": [],
+      "usage": {
+        "completion_tokens": 36,
+        "prompt_tokens": 669,
+        "total_tokens": 705
+      }
+    },
+    {
+      "attempt": 2,
+      "endpoint": "https://api.deepseek.com/chat/completions",
+      "http_status": 200,
+      "request_id": null,
+      "requested_model": "deepseek-flash",
+      "response_id": "8951a316-12c0-495a-ad76-c9d40044d08a",
+      "returned_model": "deepseek-flash",
+      "status": "RECEIVED",
+      "tool_results_submitted": [
+        "call_00_ZCn0DvttlGWTJGJU3iiC7231"
+      ],
+      "usage": {
+        "completion_tokens": 38,
+        "prompt_tokens": 869,
+        "total_tokens": 907
+      }
+    }
+  ],
+  "selections": [
+    {
+      "candidate_id": "normal",
+      "input_feedback_hash": null,
+      "input_messages_hash": "f7c27bd3102b12faf078b0e5c5a85d20e8329dfc45ec95a9857578e1c47c5bb9",
+      "response_id": "f426f71c-1408-46c5-99f7-c2dc87743cb7",
+      "round": 1,
+      "tool_call_id": "call_00_ZCn0DvttlGWTJGJU3iiC7231"
+    },
+    {
+      "candidate_id": "response-lost",
+      "input_feedback_hash": "5cc9789a5034104ee1627e2afc9919dc77dce39d6026b20cb690ec9873714912",
+      "input_messages_hash": "9f9b450347e8a4356c9d0ffe3eb70444b40d11023991b9b5e686f4f029cfe921",
+      "response_id": "8951a316-12c0-495a-ad76-c9d40044d08a",
+      "round": 2,
+      "tool_call_id": "call_00_NV65ODes1GVOUU8JDqNA4853"
+    }
+  ],
+  "trial_reservations": [
+    {
+      "operation_id": "refund-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+      "reserved_at": "2026-10-17T16:22:03.166641+00:00",
+      "reserved_steps": 7,
+      "round": 1,
+      "run_id": "rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+      "status": "COMPLETED"
+    },
+    {
+      "operation_id": "refund-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+      "reserved_at": "2026-10-17T16:22:04.429732+00:00",
+      "reserved_steps": 7,
+      "round": 2,
+      "run_id": "rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+      "status": "COMPLETED"
+    }
+  ],
+  "trials": [
+    {
+      "round": 1,
+      "candidate_id": "normal",
+      "run_id": "rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+      "contract_hashes": {
+        "effect": "67c483fbb452a08f58a0b5357f33e6354f23f99980355f7ea9106ae438e09c25",
+        "execution": "5ead68fdd91b6e21a8385696f3ef40321b045f49aa0c924787e540369cb18875",
+        "experiment": "d95c55369ef92e87883fc6f857da0d9bc63143587bfadbc72f31b6a80fc7cbe2"
+      },
+      "effect_identity": {
+        "amount_minor": 2500,
+        "authority_id": "authority-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+        "contract_id": "full-refund-v1",
+        "currency": "CNY",
+        "initial_status": "PAID",
+        "operation_id": "refund-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+        "order_id": "order-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+        "required_status": "REFUNDED",
+        "schema_version": "rpf-order-effect-v1",
+        "verifier_id": "rpf41-order-effect-verifier",
+        "verifier_version": "1"
+      },
+      "before": {
+        "data": {
+          "environment": {
+            "environment_id": "env-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+            "environment_revision": "rpf41-sqlite-orders-v1",
+            "owner": "rpf-44",
+            "reset_generation": 0,
+            "run_id": "rpf46-2c7a40d4c4a94fe692e1d82443dcf22a"
+          },
+          "order": {
+            "currency": "CNY",
+            "order_id": "order-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+            "paid_minor": 2500,
+            "refunded_minor": 0,
+            "revision": 0,
+            "status": "PAID"
+          },
+          "reader_id": "rpf41-sqlite-authority-reader",
+          "reader_version": "1",
+          "receipts": [],
+          "source_id": "authority-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a"
+        },
+        "sha256": "1bdcb83b9ce39f66c54195ead2e8a92ff5de048e88aa217feafbdfd576d91556"
+      },
+      "after": {
+        "data": {
+          "environment": {
+            "environment_id": "env-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+            "environment_revision": "rpf41-sqlite-orders-v1",
+            "owner": "rpf-44",
+            "reset_generation": 0,
+            "run_id": "rpf46-2c7a40d4c4a94fe692e1d82443dcf22a"
+          },
+          "order": {
+            "currency": "CNY",
+            "order_id": "order-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+            "paid_minor": 2500,
+            "refunded_minor": 2500,
+            "revision": 1,
+            "status": "REFUNDED"
+          },
+          "reader_id": "rpf41-sqlite-authority-reader",
+          "reader_version": "1",
+          "receipts": [
+            {
+              "amount_minor": 2500,
+              "committed_revision": 1,
+              "currency": "CNY",
+              "operation_id": "refund-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+              "order_id": "order-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+              "receipt_id": "receipt-4d2fa30dd5a1d952f9f19744",
+              "status": "COMMITTED"
+            }
+          ],
+          "source_id": "authority-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a"
+        },
+        "sha256": "100c147fee2e0b3218cba0efed9ae9f9e075455921af60406bddaab8e10a3e81"
+      },
+      "effect": {
+        "after_sha256": "100c147fee2e0b3218cba0efed9ae9f9e075455921af60406bddaab8e10a3e81",
+        "before_sha256": "1bdcb83b9ce39f66c54195ead2e8a92ff5de048e88aa217feafbdfd576d91556",
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+        "evidence_gaps": [],
+        "receipt_hash": "1d3940848c7b14e5375966f81d5a2c6d7b5d3f9051ca00c961928b21e542c83f",
+        "state_diff": {
+          "refunded_minor": {
+            "after": 2500,
+            "before": 0
+          },
+          "revision": {
+            "after": 1,
+            "before": 0
+          },
+          "status": {
+            "after": "REFUNDED",
+            "before": "PAID"
+          }
+        },
+        "verifier_id": "rpf41-order-effect-verifier",
+        "verifier_version": "1",
+        "violated_rules": []
+      },
+      "fault": {
+        "activation": "NOT_PLANNED",
+        "observed": false,
+        "planned": false,
+        "reconciled": false,
+        "triggered": false
+      },
+      "reconciliation": null,
+      "cleanup": {
+        "receipt_count_after_reset": 0,
+        "reset_generation": 1,
+        "status": "RESET_AND_REMOVED"
+      },
+      "feedback": {
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+        "domain": "order",
+        "evidence_gaps": [],
+        "fault_activation": "NOT_PLANNED",
+        "receipt_hash": "1d3940848c7b14e5375966f81d5a2c6d7b5d3f9051ca00c961928b21e542c83f",
+        "schema_version": "rpf-cross-feedback-v1",
+        "state_diff": {
+          "refunded_minor": {
+            "after": 2500,
+            "before": 0
+          },
+          "revision": {
+            "after": 1,
+            "before": 0
+          },
+          "status": {
+            "after": "REFUNDED",
+            "before": "PAID"
+          }
+        },
+        "violated_rules": []
+      },
+      "feedback_sha256": "5cc9789a5034104ee1627e2afc9919dc77dce39d6026b20cb690ec9873714912",
+      "new_facts": [
+        "fault_activation=NOT_PLANNED"
+      ],
+      "claims": {
+        "attribution_strength": "CORRELATIONAL_ONLY",
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+        "fault_activation": "NOT_PLANNED",
+        "reproduction": "NOT_TESTED",
+        "run_outcome": "PASS"
+      },
+      "witness": {
+        "external_anchor": false,
+        "issuer_authenticity": "NOT_ESTABLISHED",
+        "status": "NOT_ISSUED_PROFILE_NOT_ELIGIBLE"
+      }
+    },
+    {
+      "round": 2,
+      "candidate_id": "response-lost",
+      "run_id": "rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+      "contract_hashes": {
+        "effect": "0aacda1cce1e3063a6f628ac8be19aed8bdcbb7e0882dbe232b87f4884dd331b",
+        "execution": "5ead68fdd91b6e21a8385696f3ef40321b045f49aa0c924787e540369cb18875",
+        "experiment": "675ae69072b8e59b3a0a8b4c53c8c8a0446481a5d483f72ea98af371f2cdc451"
+      },
+      "effect_identity": {
+        "amount_minor": 2500,
+        "authority_id": "authority-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+        "contract_id": "full-refund-v1",
+        "currency": "CNY",
+        "initial_status": "PAID",
+        "operation_id": "refund-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+        "order_id": "order-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+        "required_status": "REFUNDED",
+        "schema_version": "rpf-order-effect-v1",
+        "verifier_id": "rpf41-order-effect-verifier",
+        "verifier_version": "1"
+      },
+      "before": {
+        "data": {
+          "environment": {
+            "environment_id": "env-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+            "environment_revision": "rpf41-sqlite-orders-v1",
+            "owner": "rpf-44",
+            "reset_generation": 0,
+            "run_id": "rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9"
+          },
+          "order": {
+            "currency": "CNY",
+            "order_id": "order-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+            "paid_minor": 2500,
+            "refunded_minor": 0,
+            "revision": 0,
+            "status": "PAID"
+          },
+          "reader_id": "rpf41-sqlite-authority-reader",
+          "reader_version": "1",
+          "receipts": [],
+          "source_id": "authority-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9"
+        },
+        "sha256": "48b7d73003cd6198df98e8f6e8cf823a269a8cbee36610435ea8b0de9249282b"
+      },
+      "after": {
+        "data": {
+          "environment": {
+            "environment_id": "env-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+            "environment_revision": "rpf41-sqlite-orders-v1",
+            "owner": "rpf-44",
+            "reset_generation": 0,
+            "run_id": "rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9"
+          },
+          "order": {
+            "currency": "CNY",
+            "order_id": "order-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+            "paid_minor": 2500,
+            "refunded_minor": 2500,
+            "revision": 1,
+            "status": "REFUNDED"
+          },
+          "reader_id": "rpf41-sqlite-authority-reader",
+          "reader_version": "1",
+          "receipts": [
+            {
+              "amount_minor": 2500,
+              "committed_revision": 1,
+              "currency": "CNY",
+              "operation_id": "refund-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+              "order_id": "order-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+              "receipt_id": "receipt-b38e318e44ffbf765eb36d63",
+              "status": "COMMITTED"
+            }
+          ],
+          "source_id": "authority-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9"
+        },
+        "sha256": "a1469c9260472688f0fe22f78770ecbb6f1f9401cab56bb2ab6ae12e4edab259"
+      },
+      "effect": {
+        "after_sha256": "a1469c9260472688f0fe22f78770ecbb6f1f9401cab56bb2ab6ae12e4edab259",
+        "before_sha256": "48b7d73003cd6198df98e8f6e8cf823a269a8cbee36610435ea8b0de9249282b",
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+        "evidence_gaps": [],
+        "receipt_hash": "ebb476513d853dd670b07dd6ede2cda881208453f47ac7243caa584ab62fc196",
+        "state_diff": {
+          "refunded_minor": {
+            "after": 2500,
+            "before": 0
+          },
+          "revision": {
+            "after": 1,
+            "before": 0
+          },
+          "status": {
+            "after": "REFUNDED",
+            "before": "PAID"
+          }
+        },
+        "verifier_id": "rpf41-order-effect-verifier",
+        "verifier_version": "1",
+        "violated_rules": []
+      },
+      "fault": {
+        "activation": "TRIGGERED",
+        "observed": true,
+        "planned": true,
+        "reconciled": true,
+        "triggered": true
+      },
+      "reconciliation": {
+        "operation_id": "refund-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+        "receipt_id": "receipt-b38e318e44ffbf765eb36d63",
+        "status": "RECONCILED_COMMITTED"
+      },
+      "cleanup": {
+        "receipt_count_after_reset": 0,
+        "reset_generation": 1,
+        "status": "RESET_AND_REMOVED"
+      },
+      "feedback": {
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+        "domain": "order",
+        "evidence_gaps": [],
+        "fault_activation": "TRIGGERED",
+        "receipt_hash": "ebb476513d853dd670b07dd6ede2cda881208453f47ac7243caa584ab62fc196",
+        "schema_version": "rpf-cross-feedback-v1",
+        "state_diff": {
+          "refunded_minor": {
+            "after": 2500,
+            "before": 0
+          },
+          "revision": {
+            "after": 1,
+            "before": 0
+          },
+          "status": {
+            "after": "REFUNDED",
+            "before": "PAID"
+          }
+        },
+        "violated_rules": []
+      },
+      "feedback_sha256": "3963a46d8ac9c76ab6f1025b846647614bc882a1dc32b7fcddb955a85fd203b0",
+      "new_facts": [
+        "fault_activation=TRIGGERED"
+      ],
+      "claims": {
+        "attribution_strength": "CORRELATIONAL_ONLY",
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+        "fault_activation": "TRIGGERED",
+        "reproduction": "NOT_TESTED",
+        "run_outcome": "PASS"
+      },
+      "witness": {
+        "bytes": 9922,
+        "external_anchor": false,
+        "issuer_authenticity": "NOT_ESTABLISHED",
+        "schema_version": "rpf-effect-witness-v2",
+        "sha256": "aca81bd9fa12494171fcf95d7f75393f99b0bca0af9ce6027a2311e417818220",
+        "status": "CONTENT_CHECKED_LOCAL"
+      }
+    }
+  ],
+  "research": {
+    "H1": "LIMITED_MECHANISM_EVIDENCE_ONLY",
+    "L1": true,
+    "L2": true,
+    "attribution": "CORRELATIONAL_ONLY"
+  },
+  "usage": {
+    "automatic_retries": 0,
+    "confirmed_tokens": 1612,
+    "elapsed_seconds": 2.372,
+    "estimated_cost_cny_upper": 0.005502,
+    "fault_trials": 2,
+    "input_tokens": 1538,
+    "output_tokens": 74,
+    "pending_token_reservation": 0,
+    "physical_trials_completed": 2,
+    "physical_trials_reserved": 2,
+    "provider_requests": 2,
+    "steps": 16,
+    "tokens": 1612,
+    "usage_known": true
+  },
+  "feedback_link_events": [
+    {
+      "event_id": "pge-event-1",
+      "facts": {
+        "plan_digest": "cac5b623be53314faf0e0e8fc9ee09a8ce4f8439a6d6cb3bf9b5db0f38fb5493",
+        "source_digest": "11daf0f8a97d35e6fb9c28fd990cdc9be5755035df2eba1d6438dd5a495570cd"
+      },
+      "facts_sha256": "882ad1f18a412f7202e086e25866ff437b4de622bb6bdd2f17ffebeee5953346",
+      "observed_at": "2026-10-17T16:22:02.296221+00:00",
+      "seq": 1,
+      "type": "PLAN_FROZEN"
+    },
+    {
+      "event_id": "pge-event-2",
+      "facts": {
+        "body_hash": "a1eedcb3d9618b8c3a410047ed0274f09a1ff69119ebfc2e35c54590488b3ad2",
+        "delivered_tool_call_id": null,
+        "feedback_hash": null,
+        "messages_hash": "f7c27bd3102b12faf078b0e5c5a85d20e8329dfc45ec95a9857578e1c47c5bb9",
+        "round": 1
+      },
+      "facts_sha256": "4140239a4296adcdf99fd59e8624576197a4848e623a48dd01c4c71e79109c8f",
+      "observed_at": "2026-10-17T16:22:02.303833+00:00",
+      "seq": 2,
+      "type": "PROVIDER_INPUT_FROZEN"
+    },
+    {
+      "event_id": "pge-event-3",
+      "facts": {
+        "candidate_id": "normal",
+        "input_feedback_hash": null,
+        "input_messages_hash": "f7c27bd3102b12faf078b0e5c5a85d20e8329dfc45ec95a9857578e1c47c5bb9",
+        "response_id": "f426f71c-1408-46c5-99f7-c2dc87743cb7",
+        "round": 1,
+        "tool_call_id": "call_00_ZCn0DvttlGWTJGJU3iiC7231"
+      },
+      "facts_sha256": "be9c6231c8aacefaaae5f21bc3bcd3230ff5212af47c81283b2bc4850fd6b373",
+      "observed_at": "2026-10-17T16:22:03.157756+00:00",
+      "seq": 3,
+      "type": "PROVIDER_SELECTION_ACCEPTED"
+    },
+    {
+      "event_id": "pge-event-4",
+      "facts": {
+        "operation_id": "refund-rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+        "reserved_at": "2026-10-17T16:22:03.166641+00:00",
+        "reserved_steps": 7,
+        "round": 1,
+        "run_id": "rpf46-2c7a40d4c4a94fe692e1d82443dcf22a",
+        "status": "ATTEMPTED"
+      },
+      "facts_sha256": "23fa63ddbd8cb937cf14cff7de19d3d9e15f36e19d8b70ac912f41f8794a6658",
+      "observed_at": "2026-10-17T16:22:03.166655+00:00",
+      "seq": 4,
+      "type": "PHYSICAL_TRIAL_RESERVED"
+    },
+    {
+      "event_id": "pge-event-14",
+      "facts": {
+        "feedback_sha256": "5cc9789a5034104ee1627e2afc9919dc77dce39d6026b20cb690ec9873714912",
+        "new_facts": [
+          "fault_activation=NOT_PLANNED"
+        ],
+        "round": 1
+      },
+      "facts_sha256": "92a26f2420929784dedbb5e68d5b36397615fe5662ebbaa141c363412a4e517f",
+      "observed_at": "2026-10-17T16:22:03.313847+00:00",
+      "seq": 14,
+      "type": "AUTHORITY_FEEDBACK_VALIDATED"
+    },
+    {
+      "event_id": "pge-event-15",
+      "facts": {
+        "body_hash": "ddb7051adef02b2040e1980a3bec544a74b18f1206494726502d9e8befcf7e80",
+        "delivered_tool_call_id": "call_00_ZCn0DvttlGWTJGJU3iiC7231",
+        "feedback_hash": "5cc9789a5034104ee1627e2afc9919dc77dce39d6026b20cb690ec9873714912",
+        "messages_hash": "9f9b450347e8a4356c9d0ffe3eb70444b40d11023991b9b5e686f4f029cfe921",
+        "round": 2
+      },
+      "facts_sha256": "68c6712ff631bccc5ca88074521ef1d31ccd1dd092b6deb030464cd2c9a00704",
+      "observed_at": "2026-10-17T16:22:03.321878+00:00",
+      "seq": 15,
+      "type": "PROVIDER_INPUT_FROZEN"
+    },
+    {
+      "event_id": "pge-event-16",
+      "facts": {
+        "candidate_id": "response-lost",
+        "input_feedback_hash": "5cc9789a5034104ee1627e2afc9919dc77dce39d6026b20cb690ec9873714912",
+        "input_messages_hash": "9f9b450347e8a4356c9d0ffe3eb70444b40d11023991b9b5e686f4f029cfe921",
+        "response_id": "8951a316-12c0-495a-ad76-c9d40044d08a",
+        "round": 2,
+        "tool_call_id": "call_00_NV65ODes1GVOUU8JDqNA4853"
+      },
+      "facts_sha256": "44a9cec88c81831f04418b42709e9c7ed20891534f6e8a470bd3b700a7fdefcb",
+      "observed_at": "2026-10-17T16:22:04.416751+00:00",
+      "seq": 16,
+      "type": "PROVIDER_SELECTION_ACCEPTED"
+    },
+    {
+      "event_id": "pge-event-17",
+      "facts": {
+        "operation_id": "refund-rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+        "reserved_at": "2026-10-17T16:22:04.429732+00:00",
+        "reserved_steps": 7,
+        "round": 2,
+        "run_id": "rpf46-b4e1ac6d14cb445fa3e9116c1f46c1f9",
+        "status": "ATTEMPTED"
+      },
+      "facts_sha256": "624313f80221ab36a636c745d03185be42099a6031cf915ee8b949e6ac250d6e",
+      "observed_at": "2026-10-17T16:22:04.429745+00:00",
+      "seq": 17,
+      "type": "PHYSICAL_TRIAL_RESERVED"
+    },
+    {
+      "event_id": "pge-event-27",
+      "facts": {
+        "feedback_sha256": "3963a46d8ac9c76ab6f1025b846647614bc882a1dc32b7fcddb955a85fd203b0",
+        "new_facts": [
+          "fault_activation=TRIGGERED"
+        ],
+        "round": 2
+      },
+      "facts_sha256": "386d33f1fa964c17c6b9d518daea883094d1d2f6d11b66823bfafa47e5f68f97",
+      "observed_at": "2026-10-17T16:22:04.654446+00:00",
+      "seq": 27,
+      "type": "AUTHORITY_FEEDBACK_VALIDATED"
+    },
+    {
+      "event_id": "pge-event-28",
+      "facts": {
+        "reason": "TWO_ROUNDS_COMPLETED_NO_COUNTERFACTUAL"
+      },
+      "facts_sha256": "94938ef0952b6ed20b4945ad9ad74dbcfdec9c93116c774694a064b7d2472732",
+      "observed_at": "2026-10-17T16:22:04.661384+00:00",
+      "seq": 28,
+      "type": "SESSION_STOPPED"
+    }
+  ],
+  "rationale": "RATIONALE_NOT_RECORDED",
+  "trust": {
+    "external_anchor": false,
+    "issuer_authenticity": "NOT_ESTABLISHED"
+  }
+}

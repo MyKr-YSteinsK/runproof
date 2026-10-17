@@ -50,7 +50,7 @@ export function parseSession(v: unknown, expectedId?: string): Session {
   } else if (v.result !== null || v.witness !== null) throw new LabApiError("UNVERIFIED_RESULT");
   return v as unknown as Session;
 }
-async function request(path: string, options: RequestInit = {}): Promise<unknown> {
+export async function request(path: string, options: RequestInit = {}): Promise<unknown> {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 6000);
   try {

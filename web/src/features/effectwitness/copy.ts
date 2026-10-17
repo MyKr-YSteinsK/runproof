@@ -12,7 +12,7 @@ export const labCopy = {
     trust: "CONTENT_CHECKED_LOCAL · ISSUER_AUTHENTICITY_NOT_ESTABLISHED", noWitness: "No valid Witness available.",
     cancel: "Request cancellation", cancelNote: "Running cancellation is a request; the in-flight operation still reconciles before completion.",
     evidence: "OBSERVED_FACT / VERIFIED_RESULT", details: "Frozen contracts & technical facts", remaining: "Remaining reservations",
-    explorer: "DETERMINISTIC_TARGET · Provider requests 0 · Explorer NOT_IMPLEMENTED", result: "Verifier / four axes",
+    explorer: "DETERMINISTIC_TARGET · Provider requests 0 · No Explorer in this free mode", result: "Verifier / four axes",
     raw: "Selected event facts", rawFeedback: "Full feedback JSON", field: "Field", before: "Before", after: "After", actualFault: "Fault planned / actual", cancelled: "Cancellation never proves that an in-flight side effect stopped.",
   },
   "zh-CN": {
@@ -28,7 +28,7 @@ export const labCopy = {
     trust: "CONTENT_CHECKED_LOCAL · ISSUER_AUTHENTICITY_NOT_ESTABLISHED", noWitness: "无有效 Witness。",
     cancel: "请求取消", cancelNote: "运行中取消仅为请求；已开始的操作仍需完成对账后收口。",
     evidence: "OBSERVED_FACT / VERIFIED_RESULT", details: "冻结合同与技术事实", remaining: "剩余预留额度",
-    explorer: "DETERMINISTIC_TARGET · Provider 请求 0 · Explorer 未实现", result: "验证器 / 四轴结果",
+    explorer: "DETERMINISTIC_TARGET · Provider 请求 0 · 此免费模式不使用 Explorer", result: "验证器 / 四轴结果",
     raw: "所选事件事实", rawFeedback: "反馈原始 JSON", field: "字段", before: "变更前", after: "变更后", actualFault: "计划故障 / 实际激活", cancelled: "取消请求不能证明运行中的副作用已停止。",
   },
 } as const;

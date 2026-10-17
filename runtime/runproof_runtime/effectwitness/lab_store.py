@@ -30,10 +30,10 @@ def utc():
     return datetime.now(timezone.utc).isoformat()
 
 
-def atomic_write(path, raw):
-    path = owned_path(path, task="rpf-45")
+def atomic_write(path, raw, *, task="rpf-45"):
+    path = owned_path(path, task=task)
     temporary = path.with_suffix(path.suffix + ".pending")
-    owned_path(temporary, task="rpf-45")
+    owned_path(temporary, task=task)
     with temporary.open("wb") as stream:
         stream.write(raw)
         stream.flush()
@@ -42,14 +42,16 @@ def atomic_write(path, raw):
 
 
 class SessionStore:
-    def __init__(self, root=None, *, runner=run_trial):
-        self.root = owned_path((root or ROOT45) / "sessions", task="rpf-45")
+    def __init__(self, root=None, *, runner=run_trial, storage_task="rpf-45"):
+        self.task = storage_task
+        self.exploration = None
+        self.root = owned_path((root or ROOT45) / "sessions", task=self.task)
         self.root.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
         self.runner = runner
         self.threads = []
         self.closed = False
-        self.handle = owned_path(self.root / "owner.lock", task="rpf-45").open("a+b")
+        self.handle = owned_path(self.root / "owner.lock", task=self.task).open("a+b")
         try:
             if self.handle.seek(0, os.SEEK_END) == 0:
                 self.handle.write(b"0")
@@ -64,7 +66,7 @@ class SessionStore:
         except OSError as error:
             self.handle.close()
             raise LabError(409, "SESSION_STORE_ALREADY_OWNED") from error
-        self.path = owned_path(self.root / "ledger.json", task="rpf-45")
+        self.path = owned_path(self.root / "ledger.json", task=self.task)
         try:
             self.data = json.loads(self.path.read_bytes()) if self.path.exists() else {"schema_version": SCHEMA, "sessions": []}
             if (set(self.data) != {"schema_version", "sessions"} or self.data["schema_version"] != SCHEMA
@@ -89,12 +91,12 @@ class SessionStore:
             raise LabError(503, "SESSION_LEDGER_UNAVAILABLE") from error
 
     def _save(self):
-        atomic_write(self.path, canonical(self.data))
+        atomic_write(self.path, canonical(self.data), task=self.task)
 
     def _quarantine_session(self, session, contracts):
         """Only move a ledger-owned, independently identified task sandbox; never reset it."""
-        source = owned_path(ROOT45 / session["run_id"], task="rpf-45")
-        destination = quarantine_path(source, task="rpf-45").with_name(session["session_id"])
+        source = owned_path(ROOT / ".local" / self.task / session["run_id"], task=self.task)
+        destination = quarantine_path(source, task=self.task).with_name(session["session_id"])
         if destination.exists():
             session["quarantine_status"] = "QUARANTINED"
             return
@@ -108,7 +110,7 @@ class SessionStore:
             filename = "ops.sqlite3" if session["domain"] == "ops" else "orders.sqlite3"
             if set(p.name for p in source.iterdir()) - {filename + suffix for suffix in ("", "-journal", "-wal", "-shm")}:
                 raise ValueError()
-            reader = reader_type(source / filename, contracts, storage_task="rpf-45")
+            reader = reader_type(source / filename, contracts, storage_task=self.task)
             reader.validate(reader.read())
             destination.parent.mkdir(parents=True, exist_ok=True)
             source.rename(destination)
@@ -126,11 +128,13 @@ class SessionStore:
 
     def capabilities(self):
         with self.lock:
-            blocked = any(s["status"] in BLOCKED for s in self.data["sessions"])
+            blocked = any(s["status"] in BLOCKED for s in self.data["sessions"]) or bool(
+                self.exploration and self.exploration.data["session"] and
+                self.exploration.data["session"]["status"] in BLOCKED)
             return {"schema_version": SCHEMA, "source": "LIVE_LOCAL_SIMULATION", "domains": ["order", "ops"],
                     "mode": "LOCAL_CONTROLLED_CAPTURE", "fault": "response-lost", "enabled": not blocked and not self.closed,
                     "remaining_reservations": 3 - len(self.data["sessions"]), "max_running": 1, "max_queued": 0,
-                    "busy": any(s["status"] in ACTIVE for s in self.data["sessions"]),
+                    "busy": any(s["status"] in ACTIVE for s in self.data["sessions"]) or bool(self.exploration and self.exploration.active()),
                     "limits": {"trials": 3, "steps_per_trial": 8, "seconds_per_trial": 900,
                                "provider_requests": 0, "tokens": 0, "cost_cny": 0},
                     "explorer": "NOT_IMPLEMENTED", "issuer_authenticity": "NOT_ESTABLISHED"}
@@ -148,6 +152,8 @@ class SessionStore:
                     if (s["domain"], s["mode"]) != (request["domain"], request["mode"]):
                         raise LabError(409, "IDEMPOTENCY_IDENTITY_CONFLICT")
                     return self.get(s["session_id"])
+            if self.exploration:
+                self.exploration.guard_other_mode()
             if any(s["status"] in BLOCKED for s in self.data["sessions"]):
                 raise LabError(409, "RECONCILE_REQUIRED")
             if any(s["status"] in ACTIVE for s in self.data["sessions"]):
@@ -160,7 +166,7 @@ class SessionStore:
             s = {"schema_version": SCHEMA, "session_id": session_id, **request, "run_id": run_id,
                  "source": "LIVE_LOCAL_SIMULATION", "status": "ACCEPTED", "created_at": utc(), "updated_at": utc(),
                  "contracts": c.document(), "events": [], "result": None, "usage": None, "witness": None,
-                 "error_code": None, "cancel_requested": False, "storage_owner": "rpf-45"}
+                 "error_code": None, "cancel_requested": False, "storage_owner": self.task}
             self.data["sessions"].append(s)
             self._save()  # Durable quota and identities precede any executor thread/mutation.
             thread = threading.Thread(target=self._execute, args=(session_id, c), daemon=False)
@@ -196,16 +202,16 @@ class SessionStore:
                 self._save()
 
         try:
-            bundle, usage = self.runner(contracts, storage_task="rpf-45", event_hook=progress, quarantine_id=session_id)
+            bundle, usage = self.runner(contracts, storage_task=self.task, event_hook=progress, quarantine_id=session_id)
             raw = canonical(bundle)
             verified = verify_bytes(raw)  # Deliberately no self-generated trusted external anchor.
             if (verified["schema_version"] != "rpf-effect-witness-v2" or bundle["contracts"] != contracts.document()
                     or bundle["events"] != s["events"]):
                 raise ValueError("CAPTURE_IDENTITY_MISMATCH")
             sha = hashlib.sha256(raw).hexdigest()
-            folder = owned_path(self.root / session_id, task="rpf-45")
+            folder = owned_path(self.root / session_id, task=self.task)
             folder.mkdir()
-            atomic_write(folder / "witness.json", raw)
+            atomic_write(folder / "witness.json", raw, task=self.task)
             with self.lock:
                 s.update(status="COMPLETED", updated_at=utc(), result=bundle, usage=usage,
                          witness={"status": "CONTENT_CHECKED_LOCAL", "sha256": sha, "bytes": len(raw),
@@ -231,7 +237,7 @@ class SessionStore:
             return copy.deepcopy(s)
 
     def _witness(self, s):
-        path = owned_path(self.root / s["session_id"] / "witness.json", task="rpf-45")
+        path = owned_path(self.root / s["session_id"] / "witness.json", task=self.task)
         with path.open("rb") as stream:
             raw = stream.read(128 * 1024 + 1)
         if hashlib.sha256(raw).hexdigest() != s["witness"]["sha256"]:
@@ -264,6 +270,8 @@ class SessionStore:
     def close(self):
         with self.lock:
             self.closed = True
+        if self.exploration:
+            self.exploration.close()
         for thread in self.threads:
             thread.join(timeout=905)
         if any(t.is_alive() for t in self.threads):

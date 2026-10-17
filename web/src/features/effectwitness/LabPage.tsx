@@ -85,13 +85,13 @@ export function LabPage({ path, search }: { path: string; search: string }) {
   return <AppShell lab><section className="ew-lab">
     <header className="ew-heading"><span className="ew-source">{text.scope}</span><h1>{text.title}</h1><p>{text.subtitle}</p><small>{text.explorer}</small></header>
     {(!validPath || error) && <div className="ew-error" role="alert"><strong>{!validPath ? "INVALID_LAB_ROUTE" : error}</strong><p>{!validPath || error === "SESSION_NOT_FOUND" ? text.missing : ["GATEWAY_BUSY", "TRIAL_QUOTA_EXHAUSTED", "RECONCILE_REQUIRED", "SESSION_REQUEST_REJECTED"].includes(error) ? text.rejected : text.unavailable}</p><button onClick={() => setRevision(r => r + 1)}>{text.retry}</button></div>}
-    {validPath && !sid && <section className="ew-panel ew-setup"><h2>01 · {text.setup}</h2>
+    {validPath && !sid && <><p><a href="/effectwitness/explorations" onClick={e => {e.preventDefault();navigate("/effectwitness/explorations");}}>{locale === "zh-CN" ? "订单 PGE · 实时 Explorer（显式付费入口）" : "Order PGE · Live Explorer (explicit paid mode)"}</a></p><section className="ew-panel ew-setup"><h2>01 · {text.setup}</h2>
       <label htmlFor="ew-domain">{text.domain}</label><select id="ew-domain" value={domain} disabled={Boolean(pending) || busy} onChange={e => setDomain(e.target.value as Domain)}><option value="order">{text.order}</option><option value="ops">{text.ops}</option></select>
       <p>{text.fault}</p><p>{text.remaining}: {cap?.remaining_reservations ?? "—"}</p>
       <button className="ew-primary" disabled={busy || !cap?.enabled || (!pending && cap.remaining_reservations === 0)} onClick={() => void start()}>{busy ? "…" : pending ? text.recover : text.start}</button>
       {pending && <p role="status">{text.unknown}</p>}
       <h3>{text.budget}</h3><pre>{pretty(cap?.limits ?? "UNAVAILABLE")}</pre>
-    </section>}
+    </section></>}
     {sid && <>
       <div className="ew-session"><strong>{session?.status || (error ? "INCONCLUSIVE" : "LOADING")}</strong><code>{sid}</code><code>{session?.run_id}</code><span>{session?.source}</span></div>
       {session?.error_code && <div className="ew-error" role="alert">{session.error_code} · {text.noWitness}</div>}

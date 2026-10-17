@@ -1,4 +1,12 @@
 .ew-lab { max-width: 1380px; margin: 0 auto; color: #d7e3e6; }
+.ew-live { max-width: 1120px; }
+.ew-provenance { display: flex; flex-wrap: wrap; gap: 12px; padding: 0 0 24px; font-family: monospace; }
+.ew-provenance small { flex-basis: 100%; color: #adc1c8; }
+.ew-choice-chain { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.ew-choice-chain > div { padding: 16px; border-left: 3px solid #3f8278; background: #eef5f4; }
+.ew-live code { display: block; overflow-wrap: anywhere; font-size: 12px; margin: 8px 0; }
+.ew-live .ew-session { flex-wrap: wrap; }.ew-live .ew-heading a { color: #a8e3d6; }
+@media (max-width: 720px) { .ew-choice-chain { grid-template-columns: 1fr; } }
 .ew-heading { border-bottom: 1px solid #cad6d7; padding: 6px 0 24px; margin-bottom: 24px; }
 .ew-heading h1 { font-size: clamp(28px, 3vw, 42px); margin: 12px 0; letter-spacing: -.04em; color: #edf6f5; }
 .ew-heading p { font-size: 17px; color: #a3b4bb; }.ew-heading small { font-family: monospace; color: #adc1c8; }

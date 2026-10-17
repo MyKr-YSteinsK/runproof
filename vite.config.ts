@@ -4,6 +4,7 @@ import react from "@vitejs/plugin-react";
 const labEnabled = process.env.RPF_EW_LAB_ENABLED === "1";
 const labToken = process.env.RPF_EW_LAB_GATEWAY_TOKEN || "";
 const taskOutput = process.env.RPF_EW_LAB_TASK_OUTPUT === "1";
+const taskId = process.env.RPF_EW_LAB_TASK_ID === "rpf-46" ? "rpf-46" : "rpf-45";
 const labBoundary: Plugin = {
   name: "local-lab-boundary",
   configureServer(server) {
@@ -28,7 +29,7 @@ const labBoundary: Plugin = {
 
 export default defineConfig({
   plugins: [labBoundary, react()],
-  ...(taskOutput ? { cacheDir: ".local/rpf-45/node-cache", build: { outDir: ".local/rpf-45/web-build" } } : {}),
+  ...(taskOutput ? { cacheDir: `.local/${taskId}/node-cache`, build: { outDir: `.local/${taskId}/web-build` } } : {}),
   server: {
     host: "127.0.0.1",
     watch: { ignored: ["**/.local/**", "**/docs/reviews/**"] },

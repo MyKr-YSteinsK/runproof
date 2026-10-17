@@ -18,7 +18,7 @@ from runtime.runproof_runtime.effectwitness.lab_gateway import Gateway, PREFIX
 from runtime.runproof_runtime.effectwitness.lab_store import SessionStore, LabError, canonical
 
 ROOT = Path(__file__).resolve().parents[2]
-TEMP = ROOT / ".local/rpf-45/tmp"
+TEMP = ROOT / ".local/rpf-46/tmp"
 TOKEN = "test-only-gateway-secret-" + "x" * 32
 ORIGIN = "http://127.0.0.1:4185"
 
@@ -32,7 +32,7 @@ class LabTests(unittest.TestCase):
         TEMP.mkdir(parents=True, exist_ok=True)
         self.temp = tempfile.TemporaryDirectory(dir=TEMP)
         self.root = Path(self.temp.name)
-        self.store = SessionStore(self.root)
+        self.store = SessionStore(self.root, storage_task="rpf-46")
         self.server = Gateway(0, TOKEN, ORIGIN, self.store)
         self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": .02})
         self.thread.start()
@@ -114,7 +114,7 @@ class LabTests(unittest.TestCase):
             self.assertEqual(session["witness"]["status"], "CONTENT_CHECKED_LOCAL")
             self.assertEqual(session["result"]["claims"]["fault_activation"], "TRIGGERED")
             self.assertEqual(session["result"]["observation"]["cleanup"]["status"], "RESET_AND_REMOVED")
-            self.assertFalse((ROOT / ".local/rpf-45" / session["run_id"]).exists())
+            self.assertFalse((ROOT / ".local/rpf-46" / session["run_id"]).exists())
             self.assertEqual(self.http("POST", "/sessions", request)[1]["session_id"], sid)
             self.assertEqual(self.http("POST", "/sessions", {**request, "domain": "ops" if domain == "order" else "order"})[0], 409)
             status, bundle, raw, headers = self.http("GET", "/sessions/" + sid + "/witness")
@@ -140,7 +140,7 @@ raise SystemExit(main())
         self.assertNotEqual(sessions[0]["run_id"], sessions[1]["run_id"])
         self.assertEqual(self.store.capabilities()["remaining_reservations"], 1)
         self.store.close()
-        self.store = SessionStore(self.root)
+        self.store = SessionStore(self.root, storage_task="rpf-46")
         self.server.store = self.store
         self.assertEqual(self.store.get(sessions[0]["session_id"])["status"], "COMPLETED")
         self.assertEqual(self.store.create(req("order", sessions[0]["request_id"]))["session_id"], sessions[0]["session_id"])
@@ -173,7 +173,7 @@ raise SystemExit(main())
 
     def test_cancel_before_running_quota_and_process_lock(self):
         with self.assertRaisesRegex(LabError, "SESSION_STORE_ALREADY_OWNED"):
-            SessionStore(self.root)
+            SessionStore(self.root, storage_task="rpf-46")
         for _ in range(3):
             with self.store.lock:
                 s = self.store.create(req())
@@ -195,7 +195,7 @@ raise SystemExit(main())
         ledger = json.loads((self.root / "sessions/ledger.json").read_bytes())
         ledger["sessions"][0]["status"] = "RUNNING"
         (self.root / "sessions/ledger.json").write_bytes(canonical(ledger))
-        self.store = SessionStore(self.root)
+        self.store = SessionStore(self.root, storage_task="rpf-46")
         self.server.store = self.store
         self.assertEqual(self.store.get(sid)["error_code"], "RESTART_WITH_UNRESOLVED_EXECUTION")
         self.assertEqual(len(self.store.threads), 0)
@@ -217,7 +217,7 @@ raise SystemExit(main())
         from runtime.runproof_runtime.effectwitness.ops import OpsSandbox
         captures = []
         def interrupted(contracts, **kwargs):
-            sandbox = OpsSandbox(contracts, storage_task="rpf-45")
+            sandbox = OpsSandbox(contracts, storage_task="rpf-46")
             sandbox.initialize()
             sandbox.apply(**{k: contracts.effect[k] for k in ("config_id", "operation_id", "release")})
             captures.append((contracts, sandbox))
@@ -226,7 +226,7 @@ raise SystemExit(main())
         accepted = self.store.create(req("ops"))
         self.wait()
         s = self.store.get(accepted["session_id"])
-        quarantine = ROOT / ".local/quarantine/rpf-45" / s["session_id"]
+        quarantine = ROOT / ".local/quarantine/rpf-46" / s["session_id"]
         try:
             self.assertEqual(s["status"], "RECONCILE_REQUIRED")
             self.assertEqual(s["quarantine_status"], "QUARANTINED")

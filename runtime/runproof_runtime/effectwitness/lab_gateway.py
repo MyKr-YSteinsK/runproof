@@ -121,6 +121,29 @@ class Handler(BaseHTTPRequestHandler):
             path = self.path
             if self.command == "GET" and path == PREFIX + "/capabilities":
                 self.reply(200, self.server.store.capabilities())
+            elif path.startswith(PREFIX + "/explorations"):
+                live = self.server.store.exploration
+                if self.command == "GET" and path == PREFIX + "/explorations/capabilities":
+                    self.reply(200, live.capabilities() if live else {"schema_version": "rpf-lab-exploration-v1",
+                        "explorer": "DISABLED", "enabled": False, "remaining_sessions": 0, "busy": False,
+                        "limits": {}, "requested_model": "deepseek-flash", "physical_trials": 2})
+                elif live is None:
+                    raise LabError(409, "PAID_EXPLORER_DISABLED")
+                elif self.command == "POST" and path == PREFIX + "/explorations":
+                    self.reply(202, live.create(body))
+                else:
+                    match = re.fullmatch(PREFIX + r"/explorations/(exploration-[a-f0-9]{32})(/cancel|/witness/[12])?", path)
+                    if not match:
+                        raise LabError(404, "ROUTE_NOT_FOUND")
+                    sid, action = match.groups()
+                    if self.command == "GET" and action is None:
+                        self.reply(200, live.get(sid))
+                    elif self.command == "GET" and action and action.startswith("/witness/"):
+                        self.reply(200, live.witness(sid, action[-1]), raw=True)
+                    elif self.command == "POST" and action == "/cancel" and body == {}:
+                        self.reply(200, live.cancel(sid))
+                    else:
+                        raise LabError(400, "REQUEST_REJECTED")
             elif self.command == "POST" and path == PREFIX + "/sessions":
                 self.reply(202, self.server.store.create(body))
             else:
@@ -145,6 +168,7 @@ class Handler(BaseHTTPRequestHandler):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--enable-local-simulation", action="store_true")
+    parser.add_argument("--enable-paid-order-pge", action="store_true")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
     if not args.enable_local_simulation:
@@ -152,6 +176,9 @@ def main():
     token = os.environ.get("RPF_EW_LAB_GATEWAY_TOKEN", "")
     store = SessionStore()
     try:
+        if args.enable_paid_order_pge:
+            from .lab_exploration import ExplorationStore
+            ExplorationStore(store, enabled=True)
         server = Gateway(args.port, token, "http://127.0.0.1:4185", store)
         print("Local controlled Lab listening on 127.0.0.1:" + str(server.server_port), flush=True)
         try:

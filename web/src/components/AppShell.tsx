@@ -80,7 +80,7 @@ export const AppShell = ({ children, detail = false, overview = false, agent = f
       <main className="app-main">
         <header className="topbar">
           <div className="topbar-context"><span className="topbar-kicker">{lab ? "LOCAL LAB" : t("nav.top.controlPlane")}</span><span className="topbar-divider" aria-hidden="true">/</span><span>{topContext}</span></div>
-          <div className="topbar-meta"><span className="live-indicator"><i aria-hidden="true" /> {dataSourceLabel}</span><span className="topbar-revision">{lab ? "RPF-45" : "RPF-19"}</span><LocaleSwitcher /></div>
+          <div className="topbar-meta"><span className="live-indicator"><i aria-hidden="true" /> {dataSourceLabel}</span><span className="topbar-revision">{lab ? "RPF-45 / RPF-46" : "RPF-19"}</span><LocaleSwitcher /></div>
         </header>
         <div className="page-content">{children}</div>
       </main>
