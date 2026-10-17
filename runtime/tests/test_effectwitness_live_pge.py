@@ -142,6 +142,7 @@ class LiveTests(unittest.TestCase):
         s=live.get(sid)
         self.assertEqual(s["status"],"RECONCILE_REQUIRED");self.assertEqual(s["trials"],[])
         self.assertFalse(self.owner.capabilities()["enabled"])
+        self.assertEqual(live.capabilities()["explorer"],"UNAVAILABLE")
         with self.assertRaisesRegex(LabError,"RECONCILE_REQUIRED"):
             self.owner.create({"domain":"order","mode":"LOCAL_CONTROLLED_CAPTURE","request_id":"free-request"})
 

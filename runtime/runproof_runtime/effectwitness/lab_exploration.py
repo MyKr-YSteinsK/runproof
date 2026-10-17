@@ -165,6 +165,8 @@ class ExplorationStore:
             s = self.data["session"]
             state = "DISABLED" if not self.enabled else "KEY_MISSING" if not os.environ.get("DEEPSEEK_API_KEY") else "AVAILABLE"
             healthy = not s or s["status"] not in BLOCKED
+            if state == "AVAILABLE" and (not healthy or not legacy["enabled"] or self.closed or self.owner.closed):
+                state = "UNAVAILABLE"
             return {"schema_version": SCHEMA, "mode": "PGE_LIVE_ORDER", "domain": "order", "explorer": state,
                 "enabled": state == "AVAILABLE" and healthy and legacy["enabled"] and not self.closed,
                 "busy": legacy["busy"], "remaining_sessions": int(s is None), "limits": dict(LIMITS),
