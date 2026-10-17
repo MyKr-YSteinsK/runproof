@@ -105,7 +105,18 @@ def main() -> int:
     modes.add_argument("--demo", action="store_true", help="free fresh SQLite refund and independent verification (default)")
     modes.add_argument("--self-check", action="store_true", help="validate frozen contracts only; no files/network")
     modes.add_argument("--live", action="store_true", help="one paid DeepSeek session; exclusive task ledger prevents reruns")
+    modes.add_argument("--pge-demo", action="store_true", help="free MOCK_POLICY_ONLY two-round mechanism and B0")
+    modes.add_argument("--pge-live", action="store_true", help="one bounded live exploration session, two real selections and B0")
     args = parser.parse_args()
+    if args.pge_demo or args.pge_live:
+        from .exploration import run_session
+        try:
+            result = run_session(live=args.pge_live)
+        except FileExistsError:
+            print('{"status":"REFUSED","reason":"RPF42_LIVE_SESSION_ALREADY_RESERVED"}')
+            return 2
+        print(json.dumps(result, ensure_ascii=True, sort_keys=True))
+        return 0 if result["failure"] is None and (not args.pge_live or result["research"]["L2"]) else 1
     contracts = make_contracts("run-" + uuid.uuid4().hex,
                                driver="deepseek-http" if args.live else "deterministic")
     if args.self_check:

@@ -14,6 +14,48 @@ HOST = "api.deepseek.com"
 MODEL = "deepseek-flash"
 
 
+def request_completion(body: dict, budget, records: list, checkpoint) -> dict:
+    """Shared narrow transport. Caller owns the session and durable checkpoint."""
+    key = os.environ.get("DEEPSEEK_API_KEY", "")
+    require(bool(key), "DEEPSEEK_KEY_UNAVAILABLE", "PROVIDER")
+    encoded = canonical(body)
+    budget.reserve_request(len(encoded) + 1024, body["max_tokens"])
+    record = {"attempt": budget.requests, "endpoint": "https://" + HOST + "/chat/completions",
+              "requested_model": body["model"], "status": "ATTEMPTED",
+              "tool_results_submitted": [m["tool_call_id"] for m in body["messages"] if m["role"] == "tool"]}
+    records.append(record)
+    checkpoint()  # flush/fsync reservation and visibility before opening socket
+    connection = http.client.HTTPSConnection(HOST, timeout=min(budget.limits["request_seconds"],
+        budget.limits["seconds"] - (budget.clock() - budget.started)))
+    try:
+        connection.request("POST", "/chat/completions", encoded,
+                           {"Authorization": "Bearer " + key, "Content-Type": "application/json"})
+        response = connection.getresponse()
+        record.update(http_status=response.status, request_id=response.getheader("x-request-id"))
+        raw = response.read(262145)
+        require(len(raw) <= 262144, "PROVIDER_RESPONSE_TOO_LARGE", "PROVIDER")
+        require(response.status == 200, "PROVIDER_HTTP_ERROR", "PROVIDER")
+        data = json.loads(raw)
+        budget.record_usage(data.get("usage"))
+        budget.check_time()
+        record.update(response_id=data.get("id"), returned_model=data.get("model"),
+                      usage={k: data["usage"][k] for k in
+                             ("prompt_tokens", "completion_tokens", "total_tokens")}, status="RECEIVED")
+        require(isinstance(data.get("id"), str) and isinstance(data.get("model"), str),
+                "PROVIDER_IDENTITY_MISSING", "PROVIDER")
+        checkpoint()
+        return data
+    except RuntimeFailure:
+        checkpoint()
+        raise
+    except (OSError, http.client.HTTPException, ValueError, KeyError, TypeError) as error:
+        record["status"] = "TRANSPORT_OR_PROTOCOL_ERROR"
+        checkpoint()
+        raise RuntimeFailure("PROVIDER", "PROVIDER_TRANSPORT_OR_PROTOCOL_ERROR") from error
+    finally:
+        connection.close()
+
+
 def drive(orchestrator: Orchestrator, checkpoint) -> dict:
     key = os.environ.get("DEEPSEEK_API_KEY", "")
     require(bool(key), "DEEPSEEK_KEY_UNAVAILABLE", "PROVIDER")

@@ -45,12 +45,13 @@ def identifier(value: Any) -> bool:
     return isinstance(value, str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_-]{0,95}", value) is not None
 
 
-def owned_path(path: Path) -> Path:
+def owned_path(path: Path, *, task: str = "rpf-41") -> Path:
     """Resolve only task-owned descendants; reject symlink escape and ancestors."""
-    local = LOCAL_ROOT.resolve()
+    require(task in ("rpf-41", "rpf-42"), "UNKNOWN_STORAGE_OWNER")
+    local = (LOCAL_ROOT if task == "rpf-41" else ROOT / ".local" / "rpf-42").resolve()
     resolved = path.resolve()
     require(ROOT.resolve() in local.parents and local in resolved.parents,
-            "PATH_OUTSIDE_RPF41")
+            "PATH_OUTSIDE_" + task.replace("-", "").upper())
     for part in (path, *path.parents):
         if part == ROOT:
             break
@@ -64,10 +65,10 @@ def source_identity() -> str:
                    for p in sorted(folder.glob("*.py"))})
 
 
-def quarantine_path(run_directory: Path) -> Path:
+def quarantine_path(run_directory: Path, *, task: str = "rpf-41") -> Path:
     """Validate both absolute endpoints before moving an owned failed run."""
-    source = owned_path(run_directory)
-    base = ROOT / ".local" / "quarantine" / "rpf-41"
+    source = owned_path(run_directory, task=task)
+    base = ROOT / ".local" / "quarantine" / task
     destination = base / source.name
     require(base.resolve() == base.absolute() and destination.resolve().parent == base.resolve(),
             "QUARANTINE_PATH_ESCAPE")
@@ -124,13 +125,21 @@ class FrozenContracts:
                 and effect["required_status"] == "REFUNDED", "ORDER_SEMANTICS")
         require(effect["verifier_id"] == VERIFIER_ID and effect["verifier_version"] == "1",
                 "VERIFIER_IDENTITY")
+        version = experiment.get("schema_version") if type(experiment) is dict else None
+        require(version in ("rpf-experiment-v1", "rpf-experiment-v2"), "EXPERIMENT_VERSION")
+        extra = {"session_id", "session_digest", "policy", "candidate_id"} if version == "rpf-experiment-v2" else set()
         fields(experiment, {"schema_version", "run_id", "scenario_id", "environment_id",
                             "environment_revision", "owner", "reset_generation", "fault",
-                            "execution_digest", "effect_digest"}, "EXPERIMENT_FIELDS")
-        require(experiment["schema_version"] == "rpf-experiment-v1", "EXPERIMENT_VERSION")
+                            "execution_digest", "effect_digest"} | extra, "EXPERIMENT_FIELDS")
+        if extra:
+            require(identifier(experiment["session_id"]) and identifier(experiment["candidate_id"])
+                    and experiment["policy"] in ("PGE", "B0")
+                    and isinstance(experiment["session_digest"], str)
+                    and re.fullmatch(r"[0-9a-f]{64}", experiment["session_digest"]) is not None,
+                    "SESSION_REFERENCE")
         for key in ("run_id", "scenario_id", "environment_id"):
             require(identifier(experiment[key]), "EXPERIMENT_" + key.upper())
-        require(experiment["owner"] == "rpf-41"
+        require(experiment["owner"] == ("rpf-42" if extra else "rpf-41")
                 and experiment["environment_revision"] == ENV_REVISION
                 and type(experiment["reset_generation"]) is int
                 and experiment["reset_generation"] == 0, "ENVIRONMENT_CONTRACT")

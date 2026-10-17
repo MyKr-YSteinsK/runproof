@@ -23,6 +23,13 @@ from runtime.runproof_runtime.effectwitness import provider
 
 class PilotTests(unittest.TestCase):
     def setUp(self):
+        # RPF-42 regression fixtures stay in the current task workspace.
+        # Production v1 ownership/default paths are not changed by these patches.
+        from runtime.runproof_runtime.effectwitness import contracts, orders, __main__ as cli
+        for module in (contracts, orders, cli):
+            redirect = patch.object(module, "LOCAL_ROOT", ROOT / ".local" / "rpf-42")
+            redirect.start()
+            self.addCleanup(redirect.stop)
         self.c = make_contracts("test-" + uuid.uuid4().hex)
         self.s = OrderSandbox(self.c)
         self.s.initialize()

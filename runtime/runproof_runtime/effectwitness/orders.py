@@ -35,7 +35,7 @@ class AuthorityReader:
     code or an administrator in this process and is not an offline Witness.
     """
     def __init__(self, path: Path, contracts: FrozenContracts):
-        self.path = owned_path(path)
+        self.path = owned_path(path, task=contracts.experiment["owner"])
         self.contracts = contracts
         self._seal = secrets.token_bytes(32)
         self.available = True
@@ -70,7 +70,7 @@ class AuthorityReader:
                 "AUTHORITY_HASH_OR_ISSUER_MISMATCH", "ENVIRONMENT")
         data = json.loads(snapshot.payload)
         experiment, effect = self.contracts.experiment, self.contracts.effect
-        expected = {"owner": "rpf-41", "run_id": experiment["run_id"],
+        expected = {"owner": experiment["owner"], "run_id": experiment["run_id"],
                     "environment_id": experiment["environment_id"],
                     "environment_revision": ENV_REVISION,
                     "reset_generation": experiment["reset_generation"]}
@@ -96,8 +96,10 @@ class OrderSandbox:
     def __init__(self, contracts: FrozenContracts, directory: Path | None = None):
         contracts.validate()
         self.contracts = contracts
-        self.directory = owned_path(directory or LOCAL_ROOT / contracts.experiment["run_id"])
-        self.path = owned_path(self.directory / "orders.sqlite3")
+        self.owner = contracts.experiment["owner"]
+        root = LOCAL_ROOT if self.owner == "rpf-41" else LOCAL_ROOT.parent / "rpf-42"
+        self.directory = owned_path(directory or root / contracts.experiment["run_id"], task=self.owner)
+        self.path = owned_path(self.directory / "orders.sqlite3", task=self.owner)
         self.created = False
         self.generation = 0
 
@@ -120,7 +122,7 @@ class OrderSandbox:
                     status TEXT NOT NULL, committed_revision INTEGER NOT NULL);
             """)
             db.execute("INSERT INTO environment VALUES(?,?,?,?,0)",
-                       ("rpf-41", x["run_id"], x["environment_id"], ENV_REVISION))
+                       (self.owner, x["run_id"], x["environment_id"], ENV_REVISION))
             db.execute("INSERT INTO orders VALUES(?,?,0,?,'PAID',0)",
                        (e["order_id"], e["amount_minor"], e["currency"]))
             db.commit()
@@ -128,7 +130,7 @@ class OrderSandbox:
     def _check_owner(self, db: sqlite3.Connection) -> None:
         row = db.execute("SELECT * FROM environment").fetchone()
         x = self.contracts.experiment
-        require(row == ("rpf-41", x["run_id"], x["environment_id"], ENV_REVISION,
+        require(row == (self.owner, x["run_id"], x["environment_id"], ENV_REVISION,
                         self.generation), "ENVIRONMENT_OWNER_OR_GENERATION", "ENVIRONMENT")
 
     def refund(self, order_id: str, operation_id: str, amount_minor: int) -> dict:
@@ -192,7 +194,7 @@ class OrderSandbox:
         generation = self.reset()
         # Only exact task-created SQLite files; no recursive deletion.
         for suffix in ("", "-journal", "-wal", "-shm"):
-            path = owned_path(Path(str(self.path) + suffix))
+            path = owned_path(Path(str(self.path) + suffix), task=self.owner)
             if path.exists():
                 path.unlink()
         self.directory.rmdir()
