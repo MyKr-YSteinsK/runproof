@@ -97,7 +97,8 @@ class OrderSandbox:
         contracts.validate()
         self.contracts = contracts
         self.owner = contracts.experiment["owner"]
-        root = LOCAL_ROOT if self.owner == "rpf-41" else LOCAL_ROOT.parent / "rpf-42"
+        root = {"rpf-41": LOCAL_ROOT, "rpf-42": LOCAL_ROOT.parent / "rpf-42",
+                "rpf-43": LOCAL_ROOT.parent / "rpf-43"}[self.owner]
         self.directory = owned_path(directory or root / contracts.experiment["run_id"], task=self.owner)
         self.path = owned_path(self.directory / "orders.sqlite3", task=self.owner)
         self.created = False

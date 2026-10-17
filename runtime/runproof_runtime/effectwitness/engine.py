@@ -114,12 +114,15 @@ class Orchestrator:
         return {"status": "RECONCILED_COMMITTED", "receipt_id": receipt["receipt_id"],
                 "operation_id": receipt["operation_id"]}
 
-    def effect_result(self, verifier: Callable) -> dict:
+    def effect_result(self, verifier: Callable, *, after_snapshot_hook=None) -> dict:
         if self.pending is not None:
             return {"contract_outcome": "INCONCLUSIVE", "violated_rules": [],
                     "evidence_gaps": ["UNRESOLVED_UNKNOWN_OUTCOME"]}
         try:
             after = self.authority.read()
+            self.authority.validate(after)
+            if after_snapshot_hook is not None:
+                after_snapshot_hook(after)
         except RuntimeFailure as failure:
             return {"contract_outcome": "INCONCLUSIVE", "violated_rules": [],
                     "evidence_gaps": [failure.code]}

@@ -47,8 +47,10 @@ def identifier(value: Any) -> bool:
 
 def owned_path(path: Path, *, task: str = "rpf-41") -> Path:
     """Resolve only task-owned descendants; reject symlink escape and ancestors."""
-    require(task in ("rpf-41", "rpf-42"), "UNKNOWN_STORAGE_OWNER")
-    local = (LOCAL_ROOT if task == "rpf-41" else ROOT / ".local" / "rpf-42").resolve()
+    roots = {"rpf-41": LOCAL_ROOT, "rpf-42": ROOT / ".local" / "rpf-42",
+             "rpf-43": ROOT / ".local" / "rpf-43"}
+    require(task in roots, "UNKNOWN_STORAGE_OWNER")
+    local = roots[task].resolve()
     resolved = path.resolve()
     require(ROOT.resolve() in local.parents and local in resolved.parents,
             "PATH_OUTSIDE_" + task.replace("-", "").upper())
@@ -126,20 +128,28 @@ class FrozenContracts:
         require(effect["verifier_id"] == VERIFIER_ID and effect["verifier_version"] == "1",
                 "VERIFIER_IDENTITY")
         version = experiment.get("schema_version") if type(experiment) is dict else None
-        require(version in ("rpf-experiment-v1", "rpf-experiment-v2"), "EXPERIMENT_VERSION")
-        extra = {"session_id", "session_digest", "policy", "candidate_id"} if version == "rpf-experiment-v2" else set()
+        require(version in ("rpf-experiment-v1", "rpf-experiment-v2", "rpf-experiment-v3"),
+                "EXPERIMENT_VERSION")
+        extra = ({"session_id", "session_digest", "policy", "candidate_id"}
+                 if version == "rpf-experiment-v2" else
+                 {"capture_id", "capture_mode"} if version == "rpf-experiment-v3" else set())
         fields(experiment, {"schema_version", "run_id", "scenario_id", "environment_id",
                             "environment_revision", "owner", "reset_generation", "fault",
                             "execution_digest", "effect_digest"} | extra, "EXPERIMENT_FIELDS")
-        if extra:
+        if version == "rpf-experiment-v2":
             require(identifier(experiment["session_id"]) and identifier(experiment["candidate_id"])
                     and experiment["policy"] in ("PGE", "B0")
                     and isinstance(experiment["session_digest"], str)
                     and re.fullmatch(r"[0-9a-f]{64}", experiment["session_digest"]) is not None,
                     "SESSION_REFERENCE")
+        if version == "rpf-experiment-v3":
+            require(identifier(experiment["capture_id"])
+                    and experiment["capture_mode"] == "DETERMINISTIC_CAPTURE", "CAPTURE_REFERENCE")
         for key in ("run_id", "scenario_id", "environment_id"):
             require(identifier(experiment[key]), "EXPERIMENT_" + key.upper())
-        require(experiment["owner"] == ("rpf-42" if extra else "rpf-41")
+        owner = {"rpf-experiment-v1": "rpf-41", "rpf-experiment-v2": "rpf-42",
+                 "rpf-experiment-v3": "rpf-43"}[version]
+        require(experiment["owner"] == owner
                 and experiment["environment_revision"] == ENV_REVISION
                 and type(experiment["reset_generation"]) is int
                 and experiment["reset_generation"] == 0, "ENVIRONMENT_CONTRACT")

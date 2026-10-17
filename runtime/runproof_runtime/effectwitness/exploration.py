@@ -5,9 +5,10 @@ import json
 import os
 import sqlite3
 from pathlib import Path
+from datetime import datetime, timezone
 
 from ..models import RuntimeFailure
-from .contracts import canonical, digest, owned_path, quarantine_path, require
+from .contracts import ROOT, canonical, digest, owned_path, quarantine_path, require
 from .engine import Budget, Orchestrator
 from .orders import AuthorityReader, OrderAdapter, OrderSandbox
 from .pge_contracts import PGE_ROOT, SessionPlan, TARGET, utc
@@ -70,21 +71,48 @@ class _TrialBudget:
         require(self.shared.fault_trials > 0, "TRIAL_NOT_RESERVED")
 
 
-def run_trial(contracts, shared: SessionBudget) -> dict:
+def run_trial(contracts, shared: SessionBudget, *, event_hook=None, before_cleanup_hook=None) -> dict:
     sandbox = OrderSandbox(contracts)
     reader = AuthorityReader(sandbox.path, contracts)
     adapter = OrderAdapter(sandbox)
     orchestrator = None
+    hook_errors = []
     result = {"contracts": {"execution": contracts.execution, "effect": contracts.effect,
                              "experiment": contracts.experiment}, "contract_hashes": contracts.hashes,
               "target_driver": TARGET, "run_outcome": "INCONCLUSIVE", "failure": None}
+
+    def emit(name, facts):
+        if event_hook is None:
+            return
+        event = {"name": name, "observed_at": datetime.now(timezone.utc).isoformat(timespec="microseconds"),
+                 "facts": facts}
+        try:
+            event_hook(event)
+        except Exception:
+            # Capture failures must not bypass owner reset and bounded cleanup.
+            hook_errors.append("CAPTURE_HOOK_FAILED")
+
+    contracts.validate()
+    emit("contracts_preregistered", {"owner": contracts.experiment["owner"],
+         "capture_id": contracts.experiment.get("capture_id"), "contract_hashes": contracts.hashes})
     try:
         sandbox.initialize()
+        emit("environment_initialized", {"owner": contracts.experiment["owner"],
+             "run_id": contracts.experiment["run_id"],
+             "environment_id": contracts.experiment["environment_id"]})
         orchestrator = Orchestrator(contracts, adapter, reader, _TrialBudget(contracts, shared))
+        emit("authority_before_verified", {"snapshot_sha256": orchestrator.before.sha256})
         e = contracts.effect
-        orchestrator.dispatch("refund_order", {k: e[k] for k in ("order_id", "operation_id", "amount_minor")})
+        call_result = orchestrator.dispatch(
+            "refund_order", {k: e[k] for k in ("order_id", "operation_id", "amount_minor")})
+        emit("tool_result_observed", {"name": "refund_order",
+             "arguments": {k: e[k] for k in ("order_id", "operation_id", "amount_minor")},
+             "result": call_result})
+        emit("fault_activation_observed", {k: adapter.fault[k]
+             for k in ("planned", "triggered", "observed")})
         if orchestrator.pending:
-            orchestrator.reconcile()
+            result["reconciliation"] = orchestrator.reconcile()
+            emit("receipt_reconciled", result["reconciliation"])
         result["run_outcome"] = "PASS"
     except RuntimeFailure as failure:
         result.update(run_outcome=failure.outcome, failure={"domain": failure.domain, "code": failure.code})
@@ -93,27 +121,46 @@ def run_trial(contracts, shared: SessionBudget) -> dict:
     finally:
         if orchestrator:
             adapter.fault["reconciled"] = orchestrator.reconciled
-            result["effect"] = orchestrator.effect_result(OrderEffectVerifier(contracts, reader))
+            result["effect"] = orchestrator.effect_result(
+                OrderEffectVerifier(contracts, reader),
+                after_snapshot_hook=lambda snapshot: emit(
+                    "authority_after_verified", {"snapshot_sha256": snapshot.sha256}))
             result["tool_calls"] = orchestrator.calls
+            emit("effect_verified", {"contract_outcome": result["effect"]["contract_outcome"],
+                 "before_sha256": result["effect"].get("before", {}).get("sha256"),
+                 "after_sha256": result["effect"].get("after", {}).get("sha256"),
+                 "verifier_id": result["effect"].get("verifier_id"),
+                 "verifier_version": result["effect"].get("verifier_version")})
         else:
             result["effect"] = {"contract_outcome": "INCONCLUSIVE", "evidence_gaps": ["TRIAL_NOT_STARTED"]}
         result["fault"] = {**adapter.fault, "activation": "TRIGGERED" if adapter.fault["triggered"]
                            else "NOT_TRIGGERED" if adapter.fault["planned"] else "NOT_PLANNED"}
+        if before_cleanup_hook is not None:
+            try:
+                before_cleanup_hook(result)
+            except Exception:
+                hook_errors.append("CAPTURE_HOOK_FAILED")
         if sandbox.created:
             try:
                 if orchestrator and orchestrator.pending:
-                    orchestrator.reconcile()  # receipt read only, never repeat the mutation
+                    result["reconciliation"] = orchestrator.reconcile()  # receipt read only, never repeat the mutation
+                    emit("receipt_reconciled", result["reconciliation"])
                 result["cleanup"] = sandbox.cleanup()
+                emit("cleanup_completed", result["cleanup"])
             except (RuntimeFailure, sqlite3.Error, OSError) as failure:
                 result["cleanup"] = {"status": "QUARANTINE_REQUIRED",
                                      "reason": getattr(failure, "code", type(failure).__name__)}
                 try:
-                    destination = quarantine_path(sandbox.directory, task="rpf-42")
+                    owner = contracts.experiment["owner"]
+                    destination = quarantine_path(sandbox.directory, task=owner)
                     destination.parent.mkdir(parents=True, exist_ok=True)
                     sandbox.directory.rename(destination)
-                    result["cleanup"]["path"] = destination.relative_to(PGE_ROOT.parents[1]).as_posix()
+                    result["cleanup"]["path"] = destination.relative_to(ROOT).as_posix()
                 except (RuntimeFailure, OSError):
-                    result["cleanup"]["path"] = sandbox.directory.relative_to(PGE_ROOT.parents[1]).as_posix()
+                    result["cleanup"]["path"] = sandbox.directory.relative_to(ROOT).as_posix()
+                emit("cleanup_failed", result["cleanup"])
+        if hook_errors:
+            result["capture_hook_error"] = hook_errors[0]
     return result
 
 
