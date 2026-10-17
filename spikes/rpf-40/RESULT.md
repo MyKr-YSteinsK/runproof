@@ -53,7 +53,7 @@ Plan 列出的 V5 Bootstrap 文件没有在当前受审 Git tree 中落地；tra
 ### Budget / Commands / Cleanup
 
 - Hard budget: Provider requests ≤6，Agent/tool steps ≤8，tokens ≤15,000，estimated provider cost ≤¥3.00，live window ≤20 分钟，无盲重试。
-- Actual: 2 Provider requests（含失败/重试共 2/0），3 steps，686 tokens，0 fault trials，2.125 秒。按峰值输入 cache-miss 与峰值输出费率估算 USD 0.0002544；按 ¥10/USD 的保守换算，上界 CNY ¥0.002544。官方计费页面提示价格可能调整；此值是依据响应 usage 的估算，不是账单回执。
+- Actual: Provider 请求总数 2（失败 0、重试 0），3 steps，686 tokens，0 fault trials，2.125 秒。按峰值输入 cache-miss 与峰值输出费率估算 USD 0.0002544；按 ¥10/USD 的保守换算，上界 CNY ¥0.002544。官方计费页面提示价格可能调整；此值是依据响应 usage 的估算，不是账单回执。
 - Commands: 隔离 Python 3.12.13 venv 的 Scripts/python.exe -X utf8 spikes/rpf-40/probe.py --self-check — exit 0；同一解释器执行 --live — exit 0 / PASS_TOOL_CALL_CHAIN；git diff --quiet 与 git diff --cached --quiet 的启动前检查均 exit 0。额外检查发现 py -3.12 启动器没有解析到该 uv 管理的解释器，故 README 使用通用 python 命令；这不影响实际 3.12.13 调用。没有运行产品全量测试、Maven、Web build、RPF-28 或 Docker。
 - Side effects: 仅 DeepSeek 官方端点的 2 次计费 API 请求；本地创建固定 JSON fixture 并只读一次；无业务状态变化、数据库写入、Docker/容器/云资源、Release/Decision 写入。
 - Cleanup: 执行环境拒绝对任务生成的 venv 目录进行递归删除。没有发生删除；已将 packages、venv、tmp 移入 .local/rpf-40/quarantine/，并保留 live-result.json 与 sandbox-state.json 作为最小可核验证据。没有在仓库外父目录或其他临时目录生成文件。
