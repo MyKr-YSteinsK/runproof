@@ -335,16 +335,30 @@ def verify_bytes(raw: bytes, expected_sha256: str | None = None) -> dict:
         raise VerificationRejected("JSON_INVALID") from error
     try:
         is_canonical = canonical(bundle) == raw
-    except (TypeError, ValueError, OverflowError) as error:
+    except (TypeError, ValueError, OverflowError, RecursionError) as error:
         raise VerificationRejected("JSON_NONCANONICAL_VALUE") from error
     _reject(is_canonical, "BUNDLE_NOT_CANONICAL")
-    _validate_bundle(bundle)
+    _reject(type(bundle) is dict, "WITNESS_FIELDS")
+    schema = bundle.get("schema_version")
+    try:
+        if schema == SCHEMA_VERSION:
+            _validate_bundle(bundle)
+        elif schema == "rpf-effect-witness-v2":
+            # Static, pure module; no runtime/executor imports on the offline path.
+            from .cross_core import validate_bundle
+            validate_bundle(bundle)
+        else:
+            raise VerificationRejected("WITNESS_SCHEMA_VERSION")
+    except (KeyError, TypeError, IndexError, AttributeError, RecursionError) as error:
+        raise VerificationRejected("WITNESS_STRUCTURE_INVALID") from error
     anchored = expected_sha256 is not None
     return {"status": "VERIFIED_ANCHORED" if anchored else "UNANCHORED_INCONCLUSIVE",
-            "trust_level": "MANAGED_LOCAL_SIMULATION_BOUNDED" if anchored else "UNANCHORED",
+            "trust_level": ("MANAGED_LOCAL_SIMULATION_BOUNDED" if schema == SCHEMA_VERSION else
+                            "CONTROLLED_LOCAL_SIMULATION_BOUNDED") if anchored else "UNANCHORED",
             "issuer_authenticity": "NOT_ESTABLISHED", "file_sha256": file_sha256,
-            "schema_version": SCHEMA_VERSION, "verifier_id": VERIFIER_ID,
-            "verifier_version": VERIFIER_VERSION, "contract_outcome": bundle["claims"]["contract_outcome"],
+            "schema_version": schema, "verifier_id": VERIFIER_ID,
+            "verifier_version": VERIFIER_VERSION if schema == SCHEMA_VERSION else "2",
+            "contract_outcome": bundle["claims"]["contract_outcome"],
             "fault_activation": bundle["claims"]["fault_activation"],
             "attribution_strength": bundle["claims"]["attribution_strength"],
             "reproduction": bundle["claims"]["reproduction"],

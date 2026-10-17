@@ -21,9 +21,19 @@ from runtime.runproof_runtime.effectwitness.__main__ import run
 from runtime.runproof_runtime.effectwitness import provider
 
 
+def setUpModule():
+    from runtime.tests.test_effectwitness_ops import legacy_test_scope
+    global _task_scope
+    _task_scope = legacy_test_scope(globals())
+
+
+def tearDownModule():
+    _task_scope.close()
+
+
 class PilotTests(unittest.TestCase):
     def setUp(self):
-        # RPF-42 regression fixtures stay in the current task workspace.
+        # Regression owners are redirected by setUpModule into the current task.
         # Production v1 ownership/default paths are not changed by these patches.
         from runtime.runproof_runtime.effectwitness import contracts, orders, __main__ as cli
         for module in (contracts, orders, cli):

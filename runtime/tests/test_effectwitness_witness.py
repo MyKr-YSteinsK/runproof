@@ -21,7 +21,17 @@ from runtime.runproof_runtime.effectwitness.witness import _final_bundle, _precl
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 ROOT = REPO_ROOT
-TEST_ROOT = REPO_ROOT / ".local" / "rpf-43" / "tests"
+TEST_ROOT = REPO_ROOT / ".local" / "rpf-44" / "tmp" / "witness-tests"
+
+
+def setUpModule():
+    from runtime.tests.test_effectwitness_ops import legacy_test_scope
+    global _task_scope
+    _task_scope = legacy_test_scope(globals())
+
+
+def tearDownModule():
+    _task_scope.close()
 
 
 def _fixture_bundle() -> dict:

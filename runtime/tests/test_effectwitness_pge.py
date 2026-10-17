@@ -23,6 +23,16 @@ from runtime.runproof_runtime.effectwitness.orders import AuthorityReader, Order
 from runtime.runproof_runtime.effectwitness import provider
 
 
+def setUpModule():
+    from runtime.tests.test_effectwitness_ops import legacy_test_scope
+    global _task_scope
+    _task_scope = legacy_test_scope(globals())
+
+
+def tearDownModule():
+    _task_scope.close()
+
+
 class PgeContractTests(unittest.TestCase):
     def test_strict_frozen_catalog_budget_baseline_and_versions(self):
         plan = SessionPlan.create()
