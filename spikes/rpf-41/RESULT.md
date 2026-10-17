@@ -1,6 +1,6 @@
 # TASK_RESULT｜RPF-41 / rev-1
 
-**Status: PARTIAL**（commit 前快照：工程/live 验收已完成，必要 Git 交付尚待执行）。2026-10-17 完成 Runtime 订单退款竖切片及本轮一次真实业务 live。Main 的 Evidence 接受、阶段推进、main 合并均未由执行器宣布。
+**Status: COMPLETE**（本 Plan 交付候选；工程/live 验收及必要 Git 交付已完成）。2026-10-17 完成 Runtime 订单退款竖切片及本轮一次真实业务 live。Main 的 Evidence 接受、阶段推进、main 合并均未由执行器宣布。最终报告提交的 SHA 在同次聊天回执补录，不循环改写报告以填写自身 SHA。
 
 ## 身份、范围与技术决定
 
@@ -59,7 +59,7 @@ Live budget：2/4 requests，3/8 steps（2 Provider+1 Tool），897 input+208 ou
 | A-07 Live Agent | PASS | 本轮2次200；真实模型工具调用、实际退款、同 ID 回注、独立效果判定；1105 tokens |
 | A-08 Runtime 复用 | PASS | 新 Runtime 包/root CLI；Core ports 和 RPF-28 映射见 README；第二域实现仍 NOT_RUN |
 | A-09 回归/安全/清理 | PASS（有环境限制） | 19 新测试通过；完整99项在现有 OTel 环境通过、2 Docker组跳过；旧 tracked 零变动，单份脱敏结果；重型边界未验证 |
-| A-10 Git 交付 | NOT_RUN | 此快照尚未 commit/push；完成后更新报告，最终 SHA 在聊天回执；没有 PR/main merge/release/deploy |
+| A-10 Git 交付 | PASS | 实现提交 `ad29de64f3f293f819fd77afbb0e8fdd074eca06` 已普通 push，同名远端独立 ls-remote 相等；main 不变。报告收口提交的最终 SHA 见聊天回执；没有 PR/main merge/release/deploy |
 
 实际命令/环境（均从仓库根；`PYTHONDONTWRITEBYTECODE=1`，完整回归 TEMP/TMP 指向 `.local/rpf-41/`）：
 
@@ -97,7 +97,7 @@ spikes/rpf-41/RESULT.md
 
 没有安装包/venv/wheel、构建产物或截图。未创建或修改 `D:\CS\temp\Red-Repeat`、其他仓库或父目录，未触动 RPF-40 本地产物。仅残留上述8个解释器缓存，不涉及未确认的业务副作用或数据库。
 
-范围/secret/大小与 staging 精确文件核验、push 后 tracked/staged clean、`?? docs/reviews/` 原样保留，由最终 Git 回执确认。密钥只从进程环境读取；未保存 Authorization、私有推理或模型自由文本。Authority 临时 seal 不入结果；最小 JSON 不是可离线公证的 Witness。
+范围/secret/大小与 staging 精确文件核验通过；7个源码文件暂存字节与 live source digest 完全相同，最大源码文件13152 bytes；新代码自行编写，没有复制第三方包或新增依赖/license。实现 commit/push 后 `git diff --quiet` 与 `git diff --cached --quiet` 均 exit 0，状态仅 `?? docs/reviews/`；同名远端独立读回 `ad29de64f3f293f819fd77afbb0e8fdd074eca06`，main 仍为 `bda0cd49e50e3181f604324e94877a24b9885334`。报告收口再次普通 commit/push，最终 HEAD/远端/clean 核验在聊天补录。密钥只从进程环境读取；未保存 Authorization、私有推理或模型自由文本。Authority 临时 seal 不入结果；最小 JSON 不是可离线公证的 Witness。
 
 ## 下一边界
 
