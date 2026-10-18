@@ -161,6 +161,11 @@ class TargetToolHost:
     def register(self, calls, response_id):
         require(type(calls) is list and len(calls) <= 1, "PARALLEL_TOOL_CALLS_REJECTED", "AGENT")
         for call in calls:
+            # DeepSeek's official non-stream Tool Call examples include index=0.
+            # This is transport position only; identity and business fields stay exact.
+            if type(call) is dict and set(call) == {"id", "type", "function", "index"}:
+                require(type(call["index"]) is int and call["index"] == 0, "TARGET_CALL_INDEX")
+                call = {k: v for k, v in call.items() if k != "index"}
             fields(call, {"id", "type", "function"}, "TARGET_CALL_FIELDS")
             require(call["type"] == "function" and identifier(call["id"])
                     and call["id"] not in self.intents, "TOOL_CALL_ID_DUPLICATE_OR_INVALID", "AGENT")
@@ -269,6 +274,10 @@ class PydanticAgentDriver:
         choices = data.get("choices")
         require(type(choices) is list and len(choices) == 1, "PROVIDER_CHOICES", "PROVIDER")
         calls = choices[0]["message"].get("tool_calls") or []
+        require(type(calls) is list, "PROVIDER_TOOL_CALL_LIST")
+        record["tool_envelope_fields"] = [sorted(k if k in ("id", "type", "function", "index") else "OTHER_FIELD"
+                                                 for k in call) if type(call) is dict else ["INVALID_TYPE"] for call in calls]
+        ledger.checkpoint()
         host.register(calls, data["id"])
         record["intents"] = [host.intents[c["id"]] for c in calls]
         ledger.checkpoint()

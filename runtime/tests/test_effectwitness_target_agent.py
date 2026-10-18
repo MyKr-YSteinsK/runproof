@@ -77,6 +77,17 @@ class TargetAgentTests(unittest.TestCase):
                 self.register(host, name, args=args)
         self.assertEqual(host.authority.validate(host.authority.read())["receipts"], [])
 
+    def test_documented_index_extension_does_not_relax_business_or_other_fields(self):
+        host = self.host()
+        call = {"id": "indexed", "type": "function", "index": 0, "function": {"name": "inspect_order",
+                "arguments": canonical(arguments_for("inspect_order", self.contracts.effect)).decode()}}
+        host.register([call], "response-indexed")
+        self.assertEqual(host.intents["indexed"]["name"], "inspect_order")
+        for patch_value in ({"index": True}, {"index": 1}, {"extra": "forbidden"}):
+            altered = {**call, "id": "other", **patch_value}
+            with self.assertRaises(RuntimeFailure):
+                host.register([altered], "response-bad")
+
     def test_observe_first_duplicate_id_and_intent_binding(self):
         host = self.host()
         args = self.register(host, "refund_order")

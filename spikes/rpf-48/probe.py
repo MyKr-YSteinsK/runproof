@@ -30,7 +30,7 @@ class FixtureCompletion:
         self.count += 1
         message = {"role": "assistant", "content": "Fixture transport complete."}
         if self.count == 1:
-            message.update(content=None, tool_calls=[{"id": "fixture-call-1", "type": "function", "function": {
+            message.update(content=None, tool_calls=[{"id": "fixture-call-1", "type": "function", "index": 0, "function": {
                 "name": "inspect_order", "arguments": canonical({"order_id": self.effect["order_id"]}).decode()}}])
         return {"id": "fixture-response-" + str(self.count), "object": "chat.completion", "created": 0,
                 "model": "deepseek-flash", "choices": [{"index": 0, "message": message,
