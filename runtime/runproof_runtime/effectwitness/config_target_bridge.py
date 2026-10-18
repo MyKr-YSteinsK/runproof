@@ -32,7 +32,7 @@ def _api_data(observation: dict, status: int, code: int, kind: str):
     if (observation.get("status") != status
             or observation.get("transport_error") is not None
             or not isinstance(observation.get("content_type"), str)
-            or not observation["content_type"].startswith("application/json")):
+            or not observation["content_type"].lower().startswith("application/json")):
         return False, None
     body = observation.get("response")
     if (type(body) is not dict or set(body) != {"code", "message", "data", "traceId"}
@@ -44,6 +44,8 @@ def _api_data(observation: dict, status: int, code: int, kind: str):
     if kind == "none" and data is not None:
         return False, None
     if kind == "item" and type(data) is not dict:
+        return False, None
+    if kind == "list" and type(data) is not list:
         return False, None
     return True, data
 
@@ -200,13 +202,19 @@ class ConfigTargetToolHost:
             allowed, _ = _api_data(observation, 404, 4041, "none")
         else:
             if kind == "create_config_v1":
-                _reject(len(self.client.observations) >= 3
-                        and self.client.observations[2]["kind"] == "inspect_config"
-                        and self.client.observations[2]["status"] == 404, "CREATE_WITHOUT_INSPECT")
+                inspected = (self.client.observations[2]
+                             if len(self.client.observations) >= 3 else {})
+                inspect_ok, _ = _api_data(inspected, 404, 4041, "none")
+                _reject(inspect_ok and not self.client.stop_writes,
+                        "CREATE_WITHOUT_INSPECT")
             if kind == "update_config_v2":
-                _reject(len(self.client.observations) >= 4
-                        and self.client.observations[3]["kind"] == "create_config_v1"
-                        and self.client.observations[3]["status"] == 200, "UPDATE_WITHOUT_CREATE")
+                created = (self.client.observations[3]
+                           if len(self.client.observations) >= 4 else {})
+                create_ok, create_data = _api_data(created, 200, 0, "item")
+                create_ok = (create_ok and _config_item(
+                    create_data, self.client.effect, version=1, value="rpf52-v1"))
+                _reject(create_ok and not self.client.stop_writes,
+                        "UPDATE_WITHOUT_CREATE")
             observation = self.client.request(kind, credential=True)
             allowed, data = _api_data(observation, 200, 0, "item")
             if allowed:
@@ -224,6 +232,8 @@ class ConfigTargetToolHost:
             "accepted": bool(allowed),
         }
         self.tool_trace.append(trace)
+        if not allowed:
+            self.client.stop_writes = True
         _reject(allowed, "TARGET_HTTP_TOOL_FAILED")
         return result
 

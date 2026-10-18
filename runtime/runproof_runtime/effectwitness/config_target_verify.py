@@ -92,8 +92,11 @@ def validate_evidence(value) -> dict:
     }, "RUNTIME_IDENTITY_FIELDS")
     _require(runtime["python_version"] == "3.12.13"
              and isinstance(runtime["python_executable"], str)
-             and runtime["python_executable"].lower().endswith(
-                 r".local\rpf-52\sdk-venv\scripts\python.exe")
+             and runtime["python_executable"].lower() in {
+                 "pinned-cpython-3.12.13",
+                 r".local\rpf-52\sdk-venv\scripts\python.exe",
+                 r".local\rpf-52-rev2\sdk-venv\scripts\python.exe",
+             }
              and runtime["distribution_origin"] == "rpf48-pinned-site-packages-read-only"
              and _sha(runtime["readonly_distribution_ref_sha256"])
              and runtime["readonly_distribution_ref_sha256"]
@@ -271,6 +274,10 @@ def validate_evidence(value) -> dict:
     _require(oracle["outcome"] == "CONTRACT_SATISFIED_IN_RUN"
              and oracle["violations"] == [] and oracle["gaps"] == [],
              "BUSINESS_EFFECT_NOT_SATISFIED")
+    _require(oracle["run_outcome"] == "EXECUTION_COMPLETE"
+             and oracle["agent_failure"] == "NOT_PROVEN"
+             and oracle["business_violation"] == "NOT_PROVEN",
+             "RUN_OUTCOME_CLASSIFICATION")
     _require(type(payload["claims"]) is dict and payload["claims"] == {
         "agent_framework_runtime": "EXECUTED",
         "llm_autonomous_decision": "NOT_PROVEN",

@@ -12,8 +12,10 @@ CONTRACT_SCHEMA = "rpf-config-target-sdk-fixture-v1"
 EXECUTION_SCHEMA = "rpf-config-target-execution-v1"
 EFFECT_SCHEMA = "rpf-config-target-effect-v1"
 EXPERIMENT_SCHEMA = "rpf-config-target-experiment-v1"
+PLAN_REVISION = "rev-2"
+GIT_BRANCH = "codex/rpf-52-rev2-config-target-sdk-recovery"
 SOURCE_LEVEL = "SDK_FIXTURE_EXTERNAL_HTTP_EFFECT_OBSERVED"
-PARENT_SHA = "151922a9b891ce9aa6f2d62639109e435f98c8ab"
+PARENT_SHA = "5d0fa1f81c8362f9eb27fe893756fe8f95fc9e3f"
 SOURCE_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
 MANIFEST_SHA = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
 JAR_SHA = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
@@ -172,6 +174,8 @@ def make_contracts(*, run_id: str, source_identity_sha256: str,
     }
     experiment = {
         "schema_version": EXPERIMENT_SCHEMA,
+        "plan_revision": PLAN_REVISION,
+        "git_branch": GIT_BRANCH,
         "run_id": run_id,
         "scenario_id": "config-center-sdk-fixture-v1-v2",
         "environment_id": "env-" + run_id,
@@ -237,6 +241,8 @@ def validate_contracts(value: Any) -> None:
             and isinstance(effect.get("key"), str) and _KEY.fullmatch(effect["key"]),
             "EFFECT_NAMESPACE")
     require(type(experiment) is dict and experiment.get("schema_version") == EXPERIMENT_SCHEMA
+            and experiment.get("plan_revision") == PLAN_REVISION
+            and experiment.get("git_branch") == GIT_BRANCH
             and experiment.get("scenario_id") == "config-center-sdk-fixture-v1-v2"
             and experiment.get("environment_revision") == "config-center-local-h2-v1"
             and experiment.get("owner") == "rpf-52"
@@ -368,6 +374,8 @@ def evaluate_config_target_effect(effect: dict, observations: list[dict],
                 gaps.append("HTTP_OUTCOME_UNKNOWN_" + kind.upper())
             else:
                 violations.append("API_RESPONSE_CONTRACT_" + kind.upper())
+            if kind in ("final_current", "final_history", "final_list"):
+                gaps.append("AUTHORITY_READBACK_UNAVAILABLE_" + kind.upper())
             return None
         return data
 
@@ -395,9 +403,14 @@ def evaluate_config_target_effect(effect: dict, observations: list[dict],
     listed = body("final_list", 200, 0, "list")
     if listed is not None and (len(listed) != 1 or not _valid_item(listed[0], effect, 2, "rpf52-v2")):
         violations.append("FINAL_LIST_INVALID")
-    outcome = ("VIOLATION_CONFIRMED" if violations else
-               "INCONCLUSIVE" if gaps else "CONTRACT_SATISFIED_IN_RUN")
-    return {"outcome": outcome, "violations": sorted(set(violations)),
+    outcome = ("INCONCLUSIVE" if gaps else
+               "VIOLATION_CONFIRMED" if violations else "CONTRACT_SATISFIED_IN_RUN")
+    return {"outcome": outcome,
+            "run_outcome": "PLATFORM_ERROR" if gaps else "EXECUTION_COMPLETE",
+            "agent_failure": "NOT_PROVEN",
+            "business_violation": "CONFIRMED" if outcome == "VIOLATION_CONFIRMED"
+                                  else "NOT_PROVEN",
+            "violations": sorted(set(violations)),
             "gaps": sorted(set(gaps)),
             "facts": {"http_request_count": len(observations),
                       "tool_call_count": len(tool_trace),

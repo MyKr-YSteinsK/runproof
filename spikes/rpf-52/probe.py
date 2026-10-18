@@ -9,6 +9,7 @@ import json
 import os
 import re
 import secrets
+import shutil
 import socket
 import subprocess
 import sys
@@ -27,7 +28,8 @@ from runtime.runproof_runtime.effectwitness.config_target_bridge import (
     ConfigTargetToolHost, TargetBridgeRejected,
 )
 from runtime.runproof_runtime.effectwitness.config_target_contracts import (
-    CONTRACT_SCHEMA, HTTP_ORDER, MANIFEST_SHA, PARENT_SHA, SOURCE_COMMIT,
+    CONTRACT_SCHEMA, GIT_BRANCH, HTTP_ORDER, MANIFEST_SHA, PARENT_SHA,
+    PLAN_REVISION, SOURCE_COMMIT,
     SOURCE_LEVEL, JAR_SHA, canonical, digest, evaluate_config_target_effect,
     make_contracts, strict_json, validate_contracts,
 )
@@ -35,23 +37,25 @@ from runtime.runproof_runtime.effectwitness.config_target_verify import (
     EvidenceRejected, verify_bytes,
 )
 
-TASK_ROOT = ROOT / ".local" / "rpf-52"
+TASK_ROOT = ROOT / ".local" / "rpf-52-rev2"
 PREFLIGHT_PATH = TASK_ROOT / "preflight.json"
 STARTED_PATH = TASK_ROOT / "scenario-started.json"
 RESULT_PATH = TASK_ROOT / "scenario-result.json"
-EVIDENCE_PATH = ROOT / "spikes" / "rpf-52" / "config-target-fixture-evidence.json"
+EVIDENCE_PATH = ROOT / "spikes" / "rpf-52" / "rev-2" / "config-target-fixture-evidence.json"
 OLD_TASK_ROOT = ROOT / ".local" / "rpf-51-rev4"
 SOURCE_ROOT = OLD_TASK_ROOT / "upstream-config-center"
 MANIFEST_PATH = OLD_TASK_ROOT / "upstream-source-manifest.json"
 JAR_PATH = SOURCE_ROOT / "config-center-server" / "target" / "config-center-server-1.0.0.jar"
-SDK_SOURCE_PYTHON = ROOT / ".local" / "rpf-48" / "venv" / "Scripts" / "python.exe"
+TASK_JAR_PATH = TASK_ROOT / "config-center-server-1.0.0.jar"
+SDK_BOOTSTRAP_PYTHON = Path(
+    r"C:\Users\Yukis\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe")
 SDK_VENV = TASK_ROOT / "sdk-venv"
-SDK_PYTHON = SDK_VENV / "Scripts" / "python.exe"
+SDK_PYTHON = SDK_BOOTSTRAP_PYTHON
 SDK_SITE_PACKAGES = ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages"
 SDK_DISTRIBUTION_REF = ".local/rpf-48/venv/Lib/site-packages"
 SDK_CHILD = ROOT / "runtime" / "runproof_runtime" / "effectwitness" / "config_target_external.py"
 JAVA = Path(r"C:\Program Files\Java\jdk-17\bin\java.exe")
-BRANCH = "codex/rpf-52-config-target-sdk-fixture"
+BRANCH = GIT_BRANCH
 ORIGIN = "https://github.com/MyKr-YSteinsK/runproof.git"
 MAIN_SHA = "bda0cd49e50e3181f604324e94877a24b9885334"
 _RUNTIME_FILES = (
@@ -62,6 +66,8 @@ _RUNTIME_FILES = (
     "runtime/tests/test_effectwitness_config_target.py",
     "spikes/rpf-52/probe.py",
 )
+_ALLOWED_TRACKED_CHANGES = set(_RUNTIME_FILES)
+_ALLOWED_UNTRACKED_DIRECTORIES = {"docs/reviews/", "spikes/rpf-52/rev-2/"}
 _PACKAGE_SCRIPT = r'''
 import base64, hashlib, importlib.metadata as md, inspect, json, pathlib, sys
 sys.path.insert(0,sys.argv[1])
@@ -131,10 +137,21 @@ def _check_repo_identity(*, require_remote_free: bool) -> dict:
     if (_git("remote", "get-url", "origin") != ORIGIN
             or _git("remote", "get-url", "--push", "origin") != ORIGIN):
         raise ProbeError("RUNPROOF_ORIGIN_MISMATCH")
-    if subprocess.run(["git", "diff", "--quiet"], cwd=ROOT, check=False).returncode:
-        raise ProbeError("TRACKED_WORKTREE_MODIFIED")
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT, check=False).returncode:
         raise ProbeError("INDEX_NOT_CLEAN")
+    status = subprocess.run(["git", "status", "--porcelain=v1"], cwd=ROOT,
+                            stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+                            timeout=30, check=False, text=True)
+    if status.returncode:
+        raise ProbeError("WORKTREE_STATUS_UNAVAILABLE")
+    for line in status.stdout.splitlines():
+        if len(line) < 4:
+            raise ProbeError("WORKTREE_STATUS_INVALID")
+        code, path = line[:2], line[3:].replace("\\", "/")
+        if code == "??" and path in _ALLOWED_UNTRACKED_DIRECTORIES:
+            continue
+        if code == "??" or path not in _ALLOWED_TRACKED_CHANGES:
+            raise ProbeError("WORKTREE_OUTSIDE_ALLOWLIST")
     refs = {}
     raw = subprocess.run(["git", "ls-remote", "origin", "refs/heads/main",
                           "refs/heads/" + BRANCH], cwd=ROOT, stdout=subprocess.PIPE,
@@ -205,7 +222,33 @@ def _verify_source_bundle() -> dict:
             "source_file_count": count, "source_bytes": total,
             "jar_bytes": len(jar_raw), "jar_sha256": JAR_SHA,
             "source_root": ".local/rpf-51-rev4/upstream-config-center",
-            "jar_path": ".local/rpf-51-rev4/upstream-config-center/config-center-server/target/config-center-server-1.0.0.jar"}
+            "source_jar_path": ".local/rpf-51-rev4/upstream-config-center/config-center-server/target/config-center-server-1.0.0.jar",
+            "runtime_jar_path": ".local/rpf-52-rev2/config-center-server-1.0.0.jar"}
+
+
+def _copy_task_jar() -> dict:
+    if TASK_ROOT.is_symlink() or not TASK_ROOT.is_dir():
+        raise ProbeError("TASK_JAR_DESTINATION_UNAVAILABLE")
+    if TASK_JAR_PATH.exists() or TASK_JAR_PATH.is_symlink():
+        return _verify_task_jar()
+    try:
+        with JAR_PATH.open("rb") as source, TASK_JAR_PATH.open("xb") as target:
+            shutil.copyfileobj(source, target, length=1024 * 1024)
+            target.flush()
+            os.fsync(target.fileno())
+    except OSError:
+        raise ProbeError("TASK_JAR_COPY_FAILED") from None
+    return _verify_task_jar()
+
+
+def _verify_task_jar() -> dict:
+    if (not TASK_JAR_PATH.is_file() or _has_symlink(TASK_JAR_PATH, TASK_ROOT)):
+        raise ProbeError("TASK_JAR_UNAVAILABLE_OR_LINK")
+    raw = TASK_JAR_PATH.read_bytes()
+    if len(raw) != 66981576 or hashlib.sha256(raw).hexdigest() != JAR_SHA:
+        raise ProbeError("TASK_JAR_IDENTITY_MISMATCH")
+    return {"path": ".local/rpf-52-rev2/config-center-server-1.0.0.jar",
+            "bytes": len(raw), "sha256": JAR_SHA}
 
 
 def _sdk_identity() -> dict:
@@ -231,12 +274,13 @@ def _sdk_identity() -> dict:
     if data.get("python_version") != "3.12.13":
         raise ProbeError("PINNED_PYTHON_VERSION_MISMATCH")
     try:
-        data["python_executable"] = str(
-            Path(data["python_executable"]).resolve().relative_to(ROOT.resolve())).replace("/", "\\")
-    except (ValueError, KeyError):
-        raise ProbeError("SDK_PYTHON_OUTSIDE_REPO") from None
-    if data["python_executable"].lower() != r".local\rpf-52\sdk-venv\scripts\python.exe":
-        raise ProbeError("SDK_PYTHON_PATH_MISMATCH")
+        actual_python = Path(data["python_executable"]).resolve(strict=True)
+        expected_python = SDK_BOOTSTRAP_PYTHON.resolve(strict=True)
+    except (OSError, RuntimeError, KeyError):
+        raise ProbeError("SDK_PYTHON_IDENTITY_UNAVAILABLE") from None
+    if actual_python != expected_python:
+        raise ProbeError("SDK_PYTHON_IDENTITY_MISMATCH")
+    data["python_executable"] = "pinned-cpython-3.12.13"
     if (data["sdk_distributions"]["pydantic-ai-slim"]["version"] != "2.57.0"
             or data["sdk_distributions"]["openai"]["version"] != "3.35.1"
             or data["sdk_distributions"]["pydantic-ai-slim"]["record_mismatches"] != 0
@@ -248,17 +292,17 @@ def _sdk_identity() -> dict:
     return data
 
 
-def _setup_task_sdk_venv() -> None:
-    if not SDK_SOURCE_PYTHON.is_file() or not SDK_SITE_PACKAGES.is_dir():
+def _verify_task_sdk_runtime() -> None:
+    if (not SDK_BOOTSTRAP_PYTHON.is_file()
+            or _has_symlink(SDK_BOOTSTRAP_PYTHON, Path("C:\\"))
+            or not SDK_SITE_PACKAGES.is_dir()):
         raise ProbeError("PINNED_SDK_SOURCE_ENV_UNAVAILABLE")
-    if SDK_VENV.exists() or SDK_VENV.is_symlink():
-        raise ProbeError("TASK_SDK_VENV_ALREADY_EXISTS")
-    result = subprocess.run([str(SDK_SOURCE_PYTHON), "-B", "-I", "-m", "venv",
-                             "--without-pip", str(SDK_VENV)],
-        cwd=ROOT, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-        timeout=120, check=False)
-    if result.returncode or not SDK_PYTHON.is_file():
-        raise ProbeError("TASK_SDK_VENV_CREATE_FAILED")
+    identity = subprocess.run([str(SDK_BOOTSTRAP_PYTHON), "-B", "-I", "-c",
+                               "import sys; print(sys.version.split()[0])"],
+        cwd=ROOT, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL,
+        timeout=20, check=False, text=True)
+    if identity.returncode or identity.stdout.strip() != "3.12.13":
+        raise ProbeError("SDK_BOOTSTRAP_PYTHON_MISMATCH")
 
 
 def _java_identity() -> dict:
@@ -312,8 +356,35 @@ def _write_exclusive(path: Path, raw: bytes) -> None:
 
 
 def prepare() -> dict:
-    if TASK_ROOT.exists() or TASK_ROOT.is_symlink():
-        raise ProbeError("RPF52_TASK_ROOT_ALREADY_EXISTS")
+    regression_root = TASK_ROOT / "runtime-regression-src"
+    if TASK_ROOT.is_symlink() or (TASK_ROOT.exists() and not TASK_ROOT.is_dir()):
+        raise ProbeError("RPF52_REV2_TASK_ROOT_UNAVAILABLE")
+    if TASK_ROOT.exists():
+        allowed_preflight_scratch = {
+            "sdk-child-smoke.py", "sdk-smoke-diagnostic.py",
+            "sdk-smoke-diagnostic-result.json", "sdk-smoke-tmp",
+            "config-center-server-1.0.0.jar", "sdk-venv",
+        }
+        existing = {child.name: child for child in TASK_ROOT.iterdir()}
+        if (not regression_root.is_dir() or regression_root.is_symlink()
+                or set(existing) - (allowed_preflight_scratch | {"runtime-regression-src"})
+                or any(not existing[name].is_file() or existing[name].is_symlink()
+                       for name in allowed_preflight_scratch.intersection(existing)
+                       if name not in {"sdk-smoke-tmp", "sdk-venv"})):
+            raise ProbeError("RPF52_REV2_TASK_ROOT_HAS_UNOWNED_CONTENT")
+        smoke_tmp = existing.get("sdk-smoke-tmp")
+        if smoke_tmp is not None and (
+                not smoke_tmp.is_dir() or smoke_tmp.is_symlink()
+                or {child.name for child in smoke_tmp.iterdir()} != {"appdata", "localappdata"}
+                or any(not child.is_dir() or child.is_symlink()
+                       for child in smoke_tmp.iterdir())):
+            raise ProbeError("RPF52_REV2_SMOKE_TEMP_UNEXPECTED")
+        sdk_venv = existing.get("sdk-venv")
+        if sdk_venv is not None and (
+                not sdk_venv.is_dir() or sdk_venv.is_symlink()
+                or {child.name for child in sdk_venv.iterdir()}
+                != {"Include", "Lib", "Scripts", "pyvenv.cfg"}):
+            raise ProbeError("RPF52_REV2_UNUSED_VENV_UNEXPECTED")
     if not (ROOT / ".local").is_dir() or (ROOT / ".local").is_symlink():
         raise ProbeError("LOCAL_ROOT_UNAVAILABLE")
     if EVIDENCE_PATH.exists():
@@ -325,15 +396,17 @@ def prepare() -> dict:
     java_port, agent_port = _free_ports()
     run_id = "rpf52-" + uuid.uuid4().hex
     prepared_at = _utc_now()
-    TASK_ROOT.mkdir()
-    _setup_task_sdk_venv()
+    if not TASK_ROOT.exists():
+        TASK_ROOT.mkdir()
+    source["runtime_jar"] = _copy_task_jar()
+    _verify_task_sdk_runtime()
     sdk = _sdk_identity()
     contracts = make_contracts(run_id=run_id,
         source_identity_sha256=source_identity["sha256"], sdk_identity=sdk,
         java_version=java["version"], java_port=java_port,
         agent_host_port=agent_port, prepared_at_utc=prepared_at)
     document = {
-        "plan_id": "RPF-52", "plan_revision": "rev-1",
+        "plan_id": "RPF-52", "plan_revision": PLAN_REVISION,
         "created_at_utc": prepared_at, "repo": repo, "source": source,
         "java_identity": java, "sdk_identity": sdk,
         "runtime_source_identity": source_identity,
@@ -353,7 +426,8 @@ def prepare() -> dict:
     validate_contracts(contracts)
     _write_exclusive(PREFLIGHT_PATH, canonical(document))
     return {"status": "PREFLIGHT_FROZEN", "run_id": run_id,
-            "preflight_path": ".local/rpf-52/preflight.json",
+            "preflight_path": ".local/rpf-52-rev2/preflight.json",
+            "task_jar_path": source["runtime_jar"]["path"],
             "source_manifest_sha256": MANIFEST_SHA, "jar_sha256": JAR_SHA,
             "runtime_source_sha256": source_identity["sha256"],
             "sdk_versions": {"pydantic-ai-slim": "2.57.0", "openai": "3.35.1"},
@@ -368,7 +442,7 @@ def _load_preflight() -> dict:
         validate_contracts(document["contracts"])
     except Exception:
         raise ProbeError("PREFLIGHT_INVALID") from None
-    if document.get("plan_id") != "RPF-52" or document.get("plan_revision") != "rev-1":
+    if document.get("plan_id") != "RPF-52" or document.get("plan_revision") != PLAN_REVISION:
         raise ProbeError("PREFLIGHT_PLAN_IDENTITY")
     return document
 
@@ -377,7 +451,9 @@ def _check_frozen(preflight: dict) -> None:
     _check_repo_identity(require_remote_free=True)
     if _source_identity() != preflight["runtime_source_identity"]:
         raise ProbeError("RUNTIME_SOURCE_CHANGED_AFTER_FREEZE")
-    if _verify_source_bundle() != preflight["source"]:
+    source = _verify_source_bundle()
+    source["runtime_jar"] = _verify_task_jar()
+    if source != preflight["source"]:
         raise ProbeError("EXTERNAL_SOURCE_CHANGED_AFTER_FREEZE")
     if _sdk_identity() != preflight["sdk_identity"]:
         raise ProbeError("SDK_IDENTITY_CHANGED_AFTER_FREEZE")
@@ -568,7 +644,7 @@ def _minimal_env(directory: Path, *, api_key: str | None = None) -> dict:
 def _java_args(contracts: dict) -> list[str]:
     effect = contracts["effect"]
     return [str(JAVA), f"-Djava.io.tmpdir={TASK_ROOT / 'java-tmp'}",
-            "-jar", str(JAR_PATH), "--spring.profiles.active=local",
+            "-jar", str(TASK_JAR_PATH), "--spring.profiles.active=local",
             "--server.address=127.0.0.1",
             f"--server.port={contracts['experiment']['java_port']}",
             "--security.api-keys[0].key=" + "$" + "{CONFIG_CENTER_API_KEY}",
@@ -780,7 +856,8 @@ def run_scenario() -> dict:
     if RESULT_PATH.exists() or RESULT_PATH.is_symlink():
         raise ProbeError("SCENARIO_RESULT_ALREADY_EXISTS")
     marker = {
-        "plan_id": "RPF-52", "run_id": preflight["contracts"]["experiment"]["run_id"],
+        "plan_id": "RPF-52", "plan_revision": PLAN_REVISION,
+        "run_id": preflight["contracts"]["experiment"]["run_id"],
         "started_at_utc": _utc_now(),
         "preflight_sha256": hashlib.sha256(PREFLIGHT_PATH.read_bytes()).hexdigest(),
         "contract_sha256": digest(preflight["contracts"]),
@@ -1068,7 +1145,8 @@ def run_scenario() -> dict:
         "cost_cny": 0,
     }
     result = {
-        "plan_id": "RPF-52", "plan_revision": "rev-1",
+        "plan_id": "RPF-52", "plan_revision": PLAN_REVISION,
+        "repo": preflight["repo"], "source": preflight["source"],
         "run_id": contracts["experiment"]["run_id"],
         "scenario_status": "EVIDENCE_READY" if failure_code is None else "PARTIAL",
         "scenario_duration_ms": scenario_duration_ms,
@@ -1143,7 +1221,7 @@ def run_scenario() -> dict:
                 raise ProbeError("EVIDENCE_POST_WRITE_VERIFY_FAILED")
             _write_exclusive(RESULT_PATH, local_raw)
             return {"status": "COMPLETE", "run_id": result["run_id"],
-                    "evidence_path": "spikes/rpf-52/config-target-fixture-evidence.json",
+                    "evidence_path": "spikes/rpf-52/rev-2/config-target-fixture-evidence.json",
                     "evidence_bytes": len(saved), "evidence_sha256": expected_sha,
                     "http_business_requests": len(observations),
                     "health_gets": len(health_observations),
@@ -1163,6 +1241,9 @@ def run_scenario() -> dict:
     if not RESULT_PATH.exists():
         result["oracle"] = (evaluate_config_target_effect(contracts["effect"], observations, tool_trace)
                             if observations else {"outcome": "INCONCLUSIVE", "violations": [],
+                                                  "run_outcome": "PLATFORM_ERROR",
+                                                  "agent_failure": "NOT_PROVEN",
+                                                  "business_violation": "NOT_PROVEN",
                                                   "gaps": ["NO_HTTP_OBSERVATIONS"], "facts": {}})
         local_raw = canonical(result)
         if api_key_bytes in local_raw:

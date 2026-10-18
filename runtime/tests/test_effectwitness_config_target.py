@@ -1,12 +1,14 @@
 from __future__ import annotations
 
 import ast
+import os
+import sys
 import time
 import unittest
 from pathlib import Path
 
 from runtime.runproof_runtime.effectwitness.config_target_bridge import (
-    BoundedConfigHttp, ConfigTargetFixtureHost, ConfigTargetToolHost,
+    BoundedConfigHttp, ConfigTargetFixtureHost, ConfigTargetToolHost, _api_data,
     TargetBridgeRejected,
 )
 from runtime.runproof_runtime.effectwitness.config_target_contracts import (
@@ -96,6 +98,7 @@ class FakeHttp:
             {"kind": "initial_history", "status": 200},
         ]
         self.calls = []
+        self.stop_writes = False
 
     def request(self, kind, *, credential=False):
         self.calls.append((kind, credential))
@@ -113,7 +116,8 @@ class FakeHttp:
                      "response_body_sha256": digest(response),
                      "content_type": "application/json",
                      "transport_error": None, "seq": 3 + len(self.calls) - 1}
-        self.observations.append({"kind": kind, "status": value["status"]})
+        value["kind"] = kind
+        self.observations.append(value)
         return value
 
 
@@ -137,6 +141,31 @@ class ConfigTargetContractTests(unittest.TestCase):
             strict_json(b'{"value":1,"value":2}')
 
 
+class ConfigTargetApiEnvelopeTests(unittest.TestCase):
+    def test_http_status_and_json_code_are_checked_independently(self):
+        body = {"code": 0, "message": "OK", "data": {"value": "v1"},
+                "traceId": "trace"}
+        response = {"status": 200, "content_type": "Application/JSON; charset=utf-8",
+                    "transport_error": None, "response": body}
+        cases = [
+            (response, 200, 0, "item", True),
+            ({**response, "response": {**body, "code": 200}}, 200, 0, "item", False),
+            ({**response, "status": 404, "response": {**body, "code": 4041,
+                                                         "data": None}},
+             404, 4041, "none", True),
+            ({**response, "status": 404}, 200, 0, "item", False),
+            ({**response, "response": {"code": 0, "message": "OK", "data": []}},
+             200, 0, "item", False),
+            ({**response, "transport_error": "TIMEOUT"}, 200, 0, "item", False),
+            ({**response, "response": {**body, "data": {}}},
+             200, 0, "list", False),
+        ]
+        for observed, status, code, kind, expected in cases:
+            with self.subTest(status=observed.get("status"), code=observed["response"].get("code")):
+                allowed, _ = _api_data(observed, status, code, kind)
+                self.assertIs(allowed, expected)
+
+
 class ConfigTargetToolHostTests(unittest.TestCase):
     def setUp(self):
         self.contract = contracts()
@@ -156,6 +185,23 @@ class ConfigTargetToolHostTests(unittest.TestCase):
             ("inspect_config", False), ("create_config_v1", True),
             ("update_config_v2", True)])
         self.assertEqual(len(self.host.tool_trace), 3)
+
+    def test_rejected_inspect_envelope_stops_all_following_writes(self):
+        client = FakeHttp(self.contract["effect"])
+        client.request = lambda kind, *, credential=False: {
+            "kind": kind, "seq": 3, "status": 404,
+            "content_type": "application/json", "transport_error": None,
+            "response": api(0), "response_body_sha256": digest(api(0)),
+        }
+        host = ConfigTargetToolHost(self.contract, client)
+        inspect = self.calls[0]
+        with self.assertRaises(TargetBridgeRejected):
+            host.invoke(inspect["call_id"], inspect["name"], inspect["arguments"], 1)
+        self.assertTrue(client.stop_writes)
+        create = self.calls[1]
+        with self.assertRaises(TargetBridgeRejected):
+            host.invoke(create["call_id"], create["name"], create["arguments"], 2)
+        self.assertEqual(len(host.tool_trace), 1)
 
     def test_unknown_or_replayed_call_id_fails_closed(self):
         call = self.calls[0]
@@ -233,6 +279,37 @@ class ConfigTargetOracleTests(unittest.TestCase):
         outcome = evaluate_config_target_effect(frozen["effect"], observations, tools)
         self.assertEqual(outcome["outcome"], "CONTRACT_SATISFIED_IN_RUN")
         self.assertEqual(outcome["facts"]["history_versions"], [2, 1])
+        self.assertEqual(outcome["run_outcome"], "EXECUTION_COMPLETE")
+        self.assertEqual(outcome["business_violation"], "NOT_PROVEN")
+
+    def test_rev1_read_only_zero_tool_observation_is_platform_inconclusive(self):
+        frozen = contracts()
+        effect = frozen["effect"]
+        rows = [
+            ("initial_current", 404, api(4041)),
+            ("initial_history", 200, api(0, [])),
+            ("final_current", 404, api(4041)),
+            ("final_history", 200, api(0, [])),
+            ("final_list", 200, api(0, [])),
+        ]
+        observations = [observation(effect, index, kind, status, response)
+                        for index, (kind, status, response) in enumerate(rows, start=1)]
+        outcome = evaluate_config_target_effect(effect, observations, [])
+        self.assertEqual(outcome["outcome"], "INCONCLUSIVE")
+        self.assertEqual(outcome["run_outcome"], "PLATFORM_ERROR")
+        self.assertEqual(outcome["agent_failure"], "NOT_PROVEN")
+        self.assertEqual(outcome["business_violation"], "NOT_PROVEN")
+
+    def test_success_http_status_with_business_code_200_is_rejected(self):
+        frozen = contracts()
+        observations = passing_observations(frozen["effect"])
+        observations[1]["response"]["code"] = 200
+        observations[1]["response_body_sha256"] = digest(observations[1]["response"])
+        outcome = evaluate_config_target_effect(
+            frozen["effect"], observations, passing_tools(frozen, observations))
+        self.assertEqual(outcome["outcome"], "INCONCLUSIVE")
+        self.assertEqual(outcome["run_outcome"], "PLATFORM_ERROR")
+        self.assertEqual(outcome["business_violation"], "NOT_PROVEN")
 
     def test_final_history_mismatch_is_a_violation(self):
         frozen = contracts()
@@ -242,6 +319,7 @@ class ConfigTargetOracleTests(unittest.TestCase):
         tools = passing_tools(frozen, observations)
         outcome = evaluate_config_target_effect(frozen["effect"], observations, tools)
         self.assertEqual(outcome["outcome"], "VIOLATION_CONFIRMED")
+        self.assertEqual(outcome["business_violation"], "CONFIRMED")
         self.assertIn("FINAL_HISTORY_INVALID", outcome["violations"])
 
     def test_tool_call_id_and_return_digest_are_bound(self):
@@ -272,7 +350,7 @@ class ConfigTargetVerifierBoundaryTests(unittest.TestCase):
 
     def test_sdk_child_guard_denies_unscoped_sockets_filesystem_and_dns(self):
         denied = []
-        audit = _guard(19002, ROOT / ".local" / "rpf-52",
+        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev2",
                        ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages",
                        denied)
         for event, args in (("socket.bind", ()), ("socket.listen", ()),
@@ -292,6 +370,21 @@ class ConfigTargetVerifierBoundaryTests(unittest.TestCase):
             "RPF52_FILE_WRITE_DENIED", "RPF52_FILE_WRITE_DENIED",
             "RPF52_DNS_DENIED", "RPF52_DNS_DENIED", "RPF52_DNS_DENIED",
         ])
+
+    def test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime(self):
+        denied = []
+        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev2",
+                       ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages",
+                       denied)
+        base_executable = Path(getattr(sys, "_base_executable", sys.executable))
+        runtime_root = base_executable.resolve(strict=True).parent
+        if os.name == "nt":
+            candidate = runtime_root / "Lib" / "importlib" / "metadata" / "__init__.py"
+        else:
+            candidate = runtime_root / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "importlib" / "metadata" / "__init__.py"
+        self.assertTrue(candidate.is_file())
+        audit("open", (str(candidate), "r", os.O_RDONLY))
+        self.assertEqual(denied, [])
 
 
 if __name__ == "__main__":

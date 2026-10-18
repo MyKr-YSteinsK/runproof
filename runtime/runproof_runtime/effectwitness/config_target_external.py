@@ -12,6 +12,13 @@ def _guard(port: int, write_root: Path, sdk_readonly_path: Path, denied: list[st
     write_root = write_root.resolve()
     readable = [Path(__file__).resolve(), Path(sys.prefix).resolve(),
                 Path(sys.base_prefix).resolve(), sdk_readonly_path.resolve()]
+    base_executable = Path(getattr(sys, "_base_executable", sys.executable))
+    try:
+        # Windows app-container file virtualization can resolve the standard
+        # library under LocalCache while sys.base_prefix keeps the logical path.
+        readable.append(base_executable.resolve(strict=True).parent)
+    except (OSError, RuntimeError):
+        pass
     system_root = os.environ.get("SystemRoot")
     if system_root:
         readable.append(Path(system_root).resolve())
