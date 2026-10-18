@@ -100,13 +100,15 @@ class TargetContracts:
                     for k in ("execution", "effect", "experiment")), "TARGET_NOT_CANONICAL")
 
     @classmethod
-    def create(cls, run_id, *, fault="none", driver="pydantic-ai"):
+    def create(cls, run_id, *, fault="none", driver="pydantic-ai", budgets=None):
         require(identifier(run_id), "TARGET_RUN_ID")
+        budgets = dict(LIMITS if budgets is None else budgets)
+        require(set(budgets) == set(LIMITS), "TARGET_BUDGET_FIELDS")
         e = {"schema_version": "rpf-target-execution-v1", "role": "TARGET",
              "agent_id": "rpf48-refund-target", "agent_version": "1", "driver": driver,
              "framework": FRAMEWORK if driver == "pydantic-ai" else {
                  "name": "runproof-reference", "version": "1", "wheel_sha256": "0" * 64},
-             "config_sha256": digest(CONFIG), "tools": list(TOOLS), "budgets": dict(LIMITS)}
+             "config_sha256": digest(CONFIG), "tools": list(TOOLS), "budgets": budgets}
         f = make_contracts(run_id).effect
         x = {"schema_version": "rpf-target-experiment-v1", "domain": "order", "run_id": run_id,
              "environment_id": "env-" + run_id, "environment_revision": ENV_REVISION,

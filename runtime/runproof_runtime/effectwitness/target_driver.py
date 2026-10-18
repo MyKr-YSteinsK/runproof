@@ -19,8 +19,8 @@ from .target_contracts import (CONFIG, FRAMEWORK, INSTRUCTIONS, OPENAI_CLIENT_VE
                                SDK_CORE_SHA256, TOOLS, arguments_for, strict_json)
 
 
-def save(path, value):
-    path = owned_path(Path(path), task="rpf-48")
+def save(path, value, *, storage_task="rpf-48"):
+    path = owned_path(Path(path), task=storage_task)
     path.parent.mkdir(parents=True, exist_ok=True)
     temp = path.with_suffix(path.suffix + ".tmp")
     with temp.open("wb") as stream:
@@ -32,8 +32,8 @@ def save(path, value):
 
 class TaskLock:
     """Exclusive task-local controller ownership; crash leaves an explicit hold."""
-    def __init__(self, path):
-        self.path = owned_path(Path(path), task="rpf-48")
+    def __init__(self, path, *, storage_task="rpf-48"):
+        self.path = owned_path(Path(path), task=storage_task)
 
     def __enter__(self):
         self.path.parent.mkdir(parents=True, exist_ok=True)
@@ -50,40 +50,57 @@ class TaskLock:
 
 class ProviderLedger:
     """Task-wide irreversible reservations. No reset and no automatic retry."""
-    def __init__(self, path, *, fixture=False):
-        self.path = owned_path(Path(path), task="rpf-48")
+    PROFILES = {
+        "rpf-48": {"schema": "rpf48-budget-v1", "trials": 2, "requests": 6,
+                   "tokens": 15000, "cost_cny": 2.0, "input_cny_per_million": 2.0,
+                   "output_cny_per_million": 8.0},
+        # Current DeepSeek Flash peak rates are USD 0.30/M input cache miss
+        # and USD 1.20/M output; RPF-49 uses a conservative CNY 10/USD bound.
+        "rpf-49": {"schema": "rpf49-budget-v1", "trials": 1, "requests": 6,
+                   "tokens": 12000, "cost_cny": 1.0, "input_cny_per_million": 3.0,
+                   "output_cny_per_million": 12.0},
+    }
+
+    def __init__(self, path, *, fixture=False, storage_task="rpf-48"):
+        require(storage_task in self.PROFILES, "UNKNOWN_STORAGE_OWNER")
+        self.storage_task = storage_task
+        self.profile = self.PROFILES[storage_task]
+        self.path = owned_path(Path(path), task=storage_task)
         self.fixture = fixture
         if self.path.exists():
             self.data = strict_json(self.path.read_bytes())
             fields(self.data, {"schema_version", "fixture", "started_at", "trials", "trial_status", "requests"}, "LEDGER_FIELDS")
-            require(self.data["schema_version"] == "rpf48-budget-v1" and self.data["fixture"] is fixture,
+            require(self.data["schema_version"] == self.profile["schema"] and self.data["fixture"] is fixture,
                     "LEDGER_IDENTITY")
         else:
-            self.data = {"schema_version": "rpf48-budget-v1", "fixture": fixture,
+            self.data = {"schema_version": self.profile["schema"], "fixture": fixture,
                          "started_at": time.time(), "trials": [], "trial_status": {}, "requests": []}
             self.checkpoint()
         self.validate()
 
     def checkpoint(self):
-        save(self.path, self.data)
+        save(self.path, self.data, storage_task=self.storage_task)
 
     def validate(self):
-        require(type(self.data["trials"]) is list and len(self.data["trials"]) <= 2, "TRIAL_BUDGET")
+        require(type(self.data["trials"]) is list
+                and len(self.data["trials"]) <= self.profile["trials"], "TRIAL_BUDGET")
         require(set(self.data["trial_status"]) == set(self.data["trials"])
                 and all(v in ("RESERVED", "CLOSED", "QUARANTINED") for v in self.data["trial_status"].values()), "TRIAL_STATE_CORRUPT")
-        require(type(self.data["requests"]) is list and len(self.data["requests"]) <= 6, "REQUEST_BUDGET")
+        require(type(self.data["requests"]) is list
+                and len(self.data["requests"]) <= self.profile["requests"], "REQUEST_BUDGET")
         for index, record in enumerate(self.data["requests"], 1):
             require(record["attempt"] == index and record["status"] in ("RESERVED_USAGE_UNKNOWN", "RECEIVED"), "LEDGER_CORRUPT")
             if record["status"] == "RECEIVED":
                 self.valid_usage(record["usage"], record["reservation_tokens"])
-        require(self.usage()["confirmed_tokens"] <= 15000, "TOKEN_BUDGET")
+        require(self.usage()["confirmed_tokens"] <= self.profile["tokens"], "TOKEN_BUDGET")
 
     def start_trial(self, run_id):
         self.validate()
         require(time.time() - self.data["started_at"] < 2700, "TASK_WINDOW_EXHAUSTED")
         require(self.usage()["usage_known"], "PROVIDER_USAGE_UNKNOWN", "PROVIDER")
         require(all(v == "CLOSED" for v in self.data["trial_status"].values()), "PREVIOUS_TRIAL_UNRESOLVED")
-        require(identifier(run_id) and run_id not in self.data["trials"] and len(self.data["trials"]) < 2,
+        require(identifier(run_id) and run_id not in self.data["trials"]
+                and len(self.data["trials"]) < self.profile["trials"],
                 "TRIAL_BUDGET")
         self.data["trials"].append(run_id)
         self.data["trial_status"][run_id] = "RESERVED"
@@ -100,10 +117,13 @@ class ProviderLedger:
         require(run_id in self.data["trials"] and time.time() - self.data["started_at"] < 2700, "TASK_WINDOW_EXHAUSTED")
         require(usage["usage_known"], "PROVIDER_USAGE_UNKNOWN", "PROVIDER")
         reserve = len(canonical(body)) + 1024 + 256
-        require(len(self.data["requests"]) < 6 and usage["confirmed_tokens"] + reserve <= 15000,
+        require(len(self.data["requests"]) < self.profile["requests"]
+                and usage["confirmed_tokens"] + reserve <= self.profile["tokens"],
                 "PROVIDER_RESERVATION_EXHAUSTED", "PROVIDER")
-        # Official peak CNY tariff, all input cache-miss: 2 input / 8 output per million.
-        require(usage["estimated_cost_cny_upper"] + reserve * 8 / 1_000_000 <= 2,
+        # Reserve every token at the higher output rate so the cap holds before HTTP.
+        require(usage["estimated_cost_cny_upper"]
+                + reserve * self.profile["output_cny_per_million"] / 1_000_000
+                <= self.profile["cost_cny"],
                 "COST_RESERVATION_EXHAUSTED", "PROVIDER")
         record = {"attempt": len(self.data["requests"]) + 1, "run_id": run_id,
                   "request_sha256": digest(body), "reservation_tokens": reserve,
@@ -137,7 +157,9 @@ class ProviderLedger:
                 "metering_kind": "FIXTURE_SYNTHETIC_NOT_BILLED" if self.fixture else "PROVIDER_REPORTED",
                 "provider_tokens": 0 if self.fixture else inp + out if known else None,
                 "input_tokens": inp, "output_tokens": out, "usage_known": known,
-                "estimated_cost_cny_upper": 0.0 if self.fixture else (inp * 2 + out * 8) / 1_000_000 if known else None,
+                "estimated_cost_cny_upper": 0.0 if self.fixture else (
+                    inp * self.profile["input_cny_per_million"]
+                    + out * self.profile["output_cny_per_million"]) / 1_000_000 if known else None,
                 "automatic_retries": 0, "trials": len(self.data["trials"])}
 
 
@@ -221,9 +243,10 @@ class TargetAgentDriver(Protocol):
 
 class PydanticAgentDriver:
     """One statically registered SDK, in a credential-free scoped child process."""
-    def __init__(self, python, run_directory, *, fixture_completion=None):
-        self.python = owned_path(Path(python), task="rpf-48")
-        self.directory = owned_path(Path(run_directory), task="rpf-48")
+    def __init__(self, python, run_directory, *, fixture_completion=None, storage_task="rpf-48"):
+        self.storage_task = storage_task
+        self.python = owned_path(Path(python), task=storage_task)
+        self.directory = owned_path(Path(run_directory), task=storage_task)
         self.fixture_completion = fixture_completion
         self.runtime = None
         self.failure = None
