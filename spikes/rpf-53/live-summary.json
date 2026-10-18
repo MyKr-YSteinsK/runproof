@@ -1,0 +1,54 @@
+{
+  "schema_version": "rpf53-live-summary-v1",
+  "plan_id": "RPF-53",
+  "plan_revision": "rev-1",
+  "status": "PARTIAL",
+  "provider_trial": "NOT_STARTED",
+  "provider_usage": {
+    "provider_https_requests": 0,
+    "trials": 0,
+    "tokens": 0,
+    "estimated_cost_cny_upper": 0.0,
+    "secret_value_read": false
+  },
+  "business_effect": {
+    "java_processes": 0,
+    "health_gets": 0,
+    "business_http_requests": 0,
+    "post_requests": 0,
+    "authority_readback": "NOT_RUN",
+    "oracle": "NOT_RUN"
+  },
+  "diagnostic": {
+    "attempts_allowed": 2,
+    "attempts_used": 2,
+    "status": "FAIL",
+    "failure_domain": "PLATFORM",
+    "failure_code": "RPF53_FILE_ACCESS_DENIED",
+    "failure_stage": "sdk_import",
+    "denied_file_basenames": ["__init__.cpython-312.pyc", "__init__.py"],
+    "third_attempt_authorized": false,
+    "attempt_02_runtime_source_sha256": "354fe032cf844cbefb2fedfdb99ed725820f86120ae99600908657bbfba48e18",
+    "final_runtime_source_sha256": "65f5b217ab4a80a22ac705813e51079aa555a6e75201bd4fa3a43698940ff77d"
+  },
+  "gates": {
+    "A-01": "PASS",
+    "A-02": "PASS",
+    "A-03": "FAIL",
+    "A-04": "NOT_RUN",
+    "A-05": "NOT_RUN",
+    "A-06": "NOT_RUN",
+    "A-07": "PASS",
+    "A-08": "PASS"
+  },
+  "evidence": null,
+  "limitations": {
+    "issuer_authenticity": "NOT_ESTABLISHED",
+    "database_independent_authority": "NOT_ESTABLISHED",
+    "independent_reproduction": "NOT_TESTED",
+    "PGE": "PGE_NOT_EXECUTED",
+    "workswarm": "NOT_PROVEN",
+    "agent_failure": "NOT_PROVEN",
+    "business_violation": "NOT_PROVEN"
+  }
+}
