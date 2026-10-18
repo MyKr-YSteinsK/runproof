@@ -61,6 +61,7 @@
 
 - verifier 的纯离线导入检查通过；测试导入阻断 `sqlite3`、socket、HTTP、urllib、SSL、Pydantic AI、OpenAI 与 Pydantic。验证只读取 JSON 并重算内容，不访问 SDK、数据库或网络。
 - SHA-256 锚绑定文件字节，不建立 issuer authenticity、OS 级进程来源证明或生产真实性；本结果只适用于本地受控模拟订单，不宣称因果归因、独立重现或跨模型泛化。
+- Live 结束后的离线复核发现 verifier 汇总字典合并会覆盖缺锚结果中的 `NOT_PROVEN`。修复仅限 `target_recovery.py` 的离线汇总逻辑，并增加测试确保完整事实缺少外部锚时仍为 `NOT_PROVEN`。没有再次调用 Provider；没有改动 Agent、Host、Provider、合同或 Oracle 执行路径。修复后重新核验正确锚、缺锚、错锚、对抗负控及完整 Runtime 回归，均得到本文记录的结果。
 
 ## 6. 预算、清理与验证结果
 
@@ -89,7 +90,7 @@
 | A-05 独立 Recovery Evidence | `PASS` | 13,399-byte 摘要、SHA、外部锚、离线 verifier、缺锚降级和错锚/篡改拒绝均已核验；issuer 仍未建立。 |
 | A-06 硬预算和不确定态 | `PASS` | 1 Trial、4 requests、3,961 tokens、¥0.015393 估算、7 steps、retry=0；usage 均已知，账本 CLOSED。 |
 | A-07 回归与清理 | `PASS` | 新测试 8 passed，Target 回归 16 passed，完整 Runtime 187 passed/2 Docker SKIP；RPF-43/44/48 历史摘要核验；本轮 sandbox 已精确清理。 |
-| A-08 Git 与结果 | `PASS` | 本文件为唯一正式 `RESULT.md`；定向白名单提交、普通 Push 和独立 remote SHA 复核在收口阶段完成。无 PR、main merge、deploy 或 publish。 |
+| A-08 Git 与结果 | `PASS` | 本文件为唯一正式 `RESULT.md`；定向白名单 focused commit、普通 Push 和独立 remote SHA 复核在收口阶段完成。无 PR、main merge、deploy 或 publish。 |
 
 ## 8. 下阶段建议
 
