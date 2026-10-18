@@ -29,27 +29,28 @@ from runtime.runproof_runtime.effectwitness.config_target_bridge import (
 )
 from runtime.runproof_runtime.effectwitness.config_target_contracts import (
     CONTRACT_SCHEMA, GIT_BRANCH, HTTP_ORDER, MANIFEST_SHA, PARENT_SHA,
-    PLAN_REVISION, SOURCE_COMMIT,
-    SOURCE_LEVEL, JAR_SHA, canonical, digest, evaluate_config_target_effect,
-    make_contracts, strict_json, validate_contracts,
+    PLAN_REVISION, SOURCE_COMMIT, SOURCE_LEVEL, JAR_SHA, canonical, digest,
+    evaluate_config_target_effect, make_contracts, parse_sdk_child_report,
+    strict_json, validate_contracts,
 )
 from runtime.runproof_runtime.effectwitness.config_target_verify import (
     EvidenceRejected, verify_bytes,
 )
 
-TASK_ROOT = ROOT / ".local" / "rpf-52-rev2"
-PREFLIGHT_PATH = TASK_ROOT / "preflight.json"
-STARTED_PATH = TASK_ROOT / "scenario-started.json"
-RESULT_PATH = TASK_ROOT / "scenario-result.json"
-EVIDENCE_PATH = ROOT / "spikes" / "rpf-52" / "rev-2" / "config-target-fixture-evidence.json"
+TASK_ROOT = ROOT / ".local" / "rpf-52-rev3"
+SCENARIO_ROOT = TASK_ROOT / "scenario"
+PREFLIGHT_PATH = SCENARIO_ROOT / "preflight.json"
+STARTED_PATH = SCENARIO_ROOT / "scenario-started.json"
+RESULT_PATH = SCENARIO_ROOT / "scenario-result.json"
+SDK_DIAGNOSTIC_PATH = ROOT / "spikes" / "rpf-52" / "rev-3" / "sdk-diagnostic.json"
+EVIDENCE_PATH = ROOT / "spikes" / "rpf-52" / "rev-3" / "config-target-fixture-evidence.json"
 OLD_TASK_ROOT = ROOT / ".local" / "rpf-51-rev4"
 SOURCE_ROOT = OLD_TASK_ROOT / "upstream-config-center"
 MANIFEST_PATH = OLD_TASK_ROOT / "upstream-source-manifest.json"
 JAR_PATH = SOURCE_ROOT / "config-center-server" / "target" / "config-center-server-1.0.0.jar"
-TASK_JAR_PATH = TASK_ROOT / "config-center-server-1.0.0.jar"
+TASK_JAR_PATH = SCENARIO_ROOT / "config-center-server-1.0.0.jar"
 SDK_BOOTSTRAP_PYTHON = Path(
     r"C:\Users\Yukis\AppData\Roaming\uv\python\cpython-3.12.13-windows-x86_64-none\python.exe")
-SDK_VENV = TASK_ROOT / "sdk-venv"
 SDK_PYTHON = SDK_BOOTSTRAP_PYTHON
 SDK_SITE_PACKAGES = ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages"
 SDK_DISTRIBUTION_REF = ".local/rpf-48/venv/Lib/site-packages"
@@ -65,9 +66,10 @@ _RUNTIME_FILES = (
     "runtime/runproof_runtime/effectwitness/config_target_verify.py",
     "runtime/tests/test_effectwitness_config_target.py",
     "spikes/rpf-52/probe.py",
+    "spikes/rpf-52/rev-3/diagnose.py",
 )
 _ALLOWED_TRACKED_CHANGES = set(_RUNTIME_FILES)
-_ALLOWED_UNTRACKED_DIRECTORIES = {"docs/reviews/", "spikes/rpf-52/rev-2/"}
+_ALLOWED_UNTRACKED_DIRECTORIES = {"docs/reviews/", "spikes/rpf-52/rev-3/"}
 _PACKAGE_SCRIPT = r'''
 import base64, hashlib, importlib.metadata as md, inspect, json, pathlib, sys
 sys.path.insert(0,sys.argv[1])
@@ -223,11 +225,11 @@ def _verify_source_bundle() -> dict:
             "jar_bytes": len(jar_raw), "jar_sha256": JAR_SHA,
             "source_root": ".local/rpf-51-rev4/upstream-config-center",
             "source_jar_path": ".local/rpf-51-rev4/upstream-config-center/config-center-server/target/config-center-server-1.0.0.jar",
-            "runtime_jar_path": ".local/rpf-52-rev2/config-center-server-1.0.0.jar"}
+            "runtime_jar_path": ".local/rpf-52-rev3/scenario/config-center-server-1.0.0.jar"}
 
 
 def _copy_task_jar() -> dict:
-    if TASK_ROOT.is_symlink() or not TASK_ROOT.is_dir():
+    if SCENARIO_ROOT.is_symlink() or not SCENARIO_ROOT.is_dir():
         raise ProbeError("TASK_JAR_DESTINATION_UNAVAILABLE")
     if TASK_JAR_PATH.exists() or TASK_JAR_PATH.is_symlink():
         return _verify_task_jar()
@@ -242,12 +244,12 @@ def _copy_task_jar() -> dict:
 
 
 def _verify_task_jar() -> dict:
-    if (not TASK_JAR_PATH.is_file() or _has_symlink(TASK_JAR_PATH, TASK_ROOT)):
+    if (not TASK_JAR_PATH.is_file() or _has_symlink(TASK_JAR_PATH, SCENARIO_ROOT)):
         raise ProbeError("TASK_JAR_UNAVAILABLE_OR_LINK")
     raw = TASK_JAR_PATH.read_bytes()
     if len(raw) != 66981576 or hashlib.sha256(raw).hexdigest() != JAR_SHA:
         raise ProbeError("TASK_JAR_IDENTITY_MISMATCH")
-    return {"path": ".local/rpf-52-rev2/config-center-server-1.0.0.jar",
+    return {"path": ".local/rpf-52-rev3/scenario/config-center-server-1.0.0.jar",
             "bytes": len(raw), "sha256": JAR_SHA}
 
 
@@ -355,36 +357,134 @@ def _write_exclusive(path: Path, raw: bytes) -> None:
         raise ProbeError("ONE_SHOT_FILE_ALREADY_EXISTS") from None
 
 
-def prepare() -> dict:
-    regression_root = TASK_ROOT / "runtime-regression-src"
+def _load_sdk_diagnostic() -> tuple[dict, bytes]:
+    if (not SDK_DIAGNOSTIC_PATH.is_file()
+            or _has_symlink(SDK_DIAGNOSTIC_PATH, ROOT)):
+        raise ProbeError("SDK_DIAGNOSTIC_MISSING_OR_LINK")
+    raw = SDK_DIAGNOSTIC_PATH.read_bytes()
+    try:
+        document = strict_json(raw)
+    except Exception:
+        raise ProbeError("SDK_DIAGNOSTIC_INVALID") from None
+    fields = {
+        "schema_version", "plan_id", "plan_revision", "mode", "status", "attempts",
+        "runtime_source_identity", "diagnose_script_sha256", "sdk_identity",
+        "java_started", "provider_requests", "tokens", "cost_cny", "finalized_at_utc",
+    }
+    if type(document) is not dict or set(document) != fields:
+        raise ProbeError("SDK_DIAGNOSTIC_NOT_PASS")
+    attempts = document["attempts"]
+    if (document["schema_version"] != "rpf52-sdk-diagnostic-v1"
+            or document["plan_id"] != "RPF-52"
+            or document["plan_revision"] != PLAN_REVISION
+            or document["mode"] != "FIXTURE_ONLY_NO_JAVA_NO_BUSINESS_EFFECT"
+            or document["status"] != "PASS" or document["java_started"] is not False
+            or document["provider_requests"] != 0 or document["tokens"] != 0
+            or document["cost_cny"] != 0 or type(attempts) is not list
+            or not 1 <= len(attempts) <= 2
+            or any(type(item) is not dict for item in attempts)):
+        raise ProbeError("SDK_DIAGNOSTIC_NOT_PASS")
+    attempt_fields = {
+        "attempt", "run_id", "status", "runtime_source_sha256", "sdk_error",
+        "fixture_host_first_failure_code", "completions", "sdk_tool_calls", "tool_returns",
+        "java_started", "real_business_http_requests", "cleanup",
+    }
+    for index, item in enumerate(attempts, start=1):
+        cleanup = item.get("cleanup")
+        sdk_error = item.get("sdk_error")
+        counts = (item.get("completions"), item.get("sdk_tool_calls"),
+                  item.get("tool_returns"))
+        if (set(item) != attempt_fields or item.get("attempt") != index
+                or item.get("status") not in {"PASS", "FAIL"}
+                or not isinstance(item.get("run_id"), str)
+                or type(item.get("runtime_source_sha256")) is not str
+                or not re.fullmatch(r"[0-9a-f]{64}", item["runtime_source_sha256"])
+                or item.get("java_started") is not False
+                or item.get("real_business_http_requests") != 0
+                or type(counts[0]) is not int or not 0 <= counts[0] <= 4
+                or (counts[1] is not None and
+                    (type(counts[1]) is not int or not 0 <= counts[1] <= 3))
+                or type(counts[2]) is not int or not 0 <= counts[2] <= 3
+                or type(sdk_error) is not dict
+                or set(sdk_error) != {
+                    "status", "stage", "error_type", "guard_code", "guard_denials",
+                    "parser_code"}
+                or sdk_error.get("status") not in {"SDK_ERROR", "COMPLETED", None}
+                or (item.get("fixture_host_first_failure_code") is not None
+                    and (type(item["fixture_host_first_failure_code"]) is not str
+                         or not re.fullmatch(r"[A-Z][A-Z0-9_]{0,95}",
+                                             item["fixture_host_first_failure_code"])))
+                or cleanup != {
+                    "sdk_child_exited": True, "fixture_host_closed": True,
+                    "fixture_port_closed": True,
+                    "sdk_child_external_connections": [],
+                    "parent_process_external_connections": [],
+                }):
+            raise ProbeError("SDK_DIAGNOSTIC_ATTEMPT_CONTRACT")
+        if item["status"] == "PASS" and (
+                counts != (4, 3, 3) or item["fixture_host_first_failure_code"] is not None
+                or sdk_error.get("status") != "COMPLETED"):
+            raise ProbeError("SDK_DIAGNOSTIC_ATTEMPT_CONTRACT")
+    if (attempts[-1]["status"] != "PASS"
+            or (len(attempts) == 2 and attempts[0]["status"] != "FAIL")
+            or type(document.get("sdk_identity")) is not dict
+            or type(document.get("runtime_source_identity")) is not dict
+            or document["runtime_source_identity"].get("sha256")
+            != attempts[-1]["runtime_source_sha256"]
+            or not isinstance(document.get("diagnose_script_sha256"), str)
+            or not re.fullmatch(r"[0-9a-f]{64}", document["diagnose_script_sha256"])
+            or document["runtime_source_identity"].get("files", {}).get(
+                "spikes/rpf-52/rev-3/diagnose.py") != document["diagnose_script_sha256"]):
+        raise ProbeError("SDK_DIAGNOSTIC_NOT_PASS")
+    return document, raw
+
+
+def _diagnostic_source_delta(diagnostic: dict, scenario_source_identity: dict) -> list[str]:
+    diagnostic_identity = diagnostic.get("runtime_source_identity")
+    if (type(diagnostic_identity) is not dict
+            or type(diagnostic_identity.get("files")) is not dict
+            or type(scenario_source_identity) is not dict
+            or type(scenario_source_identity.get("files")) is not dict
+            or set(diagnostic_identity["files"]) != set(scenario_source_identity["files"])):
+        raise ProbeError("SDK_DIAGNOSTIC_SOURCE_IDENTITY_MISMATCH")
+    changed = sorted(name for name, sha in diagnostic_identity["files"].items()
+                     if scenario_source_identity["files"].get(name) != sha)
+    if changed not in ([], ["spikes/rpf-52/probe.py"]):
+        raise ProbeError("SDK_DIAGNOSTIC_SOURCE_CHANGE_OUTSIDE_GATE_FIX")
+    return changed
+
+
+def _validate_diagnostic_task_root() -> None:
     if TASK_ROOT.is_symlink() or (TASK_ROOT.exists() and not TASK_ROOT.is_dir()):
-        raise ProbeError("RPF52_REV2_TASK_ROOT_UNAVAILABLE")
-    if TASK_ROOT.exists():
-        allowed_preflight_scratch = {
-            "sdk-child-smoke.py", "sdk-smoke-diagnostic.py",
-            "sdk-smoke-diagnostic-result.json", "sdk-smoke-tmp",
-            "config-center-server-1.0.0.jar", "sdk-venv",
-        }
-        existing = {child.name: child for child in TASK_ROOT.iterdir()}
-        if (not regression_root.is_dir() or regression_root.is_symlink()
-                or set(existing) - (allowed_preflight_scratch | {"runtime-regression-src"})
-                or any(not existing[name].is_file() or existing[name].is_symlink()
-                       for name in allowed_preflight_scratch.intersection(existing)
-                       if name not in {"sdk-smoke-tmp", "sdk-venv"})):
-            raise ProbeError("RPF52_REV2_TASK_ROOT_HAS_UNOWNED_CONTENT")
-        smoke_tmp = existing.get("sdk-smoke-tmp")
-        if smoke_tmp is not None and (
-                not smoke_tmp.is_dir() or smoke_tmp.is_symlink()
-                or {child.name for child in smoke_tmp.iterdir()} != {"appdata", "localappdata"}
-                or any(not child.is_dir() or child.is_symlink()
-                       for child in smoke_tmp.iterdir())):
-            raise ProbeError("RPF52_REV2_SMOKE_TEMP_UNEXPECTED")
-        sdk_venv = existing.get("sdk-venv")
-        if sdk_venv is not None and (
-                not sdk_venv.is_dir() or sdk_venv.is_symlink()
-                or {child.name for child in sdk_venv.iterdir()}
-                != {"Include", "Lib", "Scripts", "pyvenv.cfg"}):
-            raise ProbeError("RPF52_REV2_UNUSED_VENV_UNEXPECTED")
+        raise ProbeError("RPF52_REV3_TASK_ROOT_UNAVAILABLE")
+    if not TASK_ROOT.exists():
+        raise ProbeError("RPF52_REV3_DIAGNOSTIC_ROOT_MISSING")
+    allowed = {"diagnostic-1", "diagnostic-2"}
+    existing = {child.name: child for child in TASK_ROOT.iterdir()}
+    if set(existing) - allowed:
+        raise ProbeError("RPF52_REV3_TASK_ROOT_HAS_UNOWNED_CONTENT")
+    for name, attempt in existing.items():
+        if not attempt.is_dir() or attempt.is_symlink():
+            raise ProbeError("RPF52_REV3_DIAGNOSTIC_ATTEMPT_PATH_INVALID")
+        children = {child.name: child for child in attempt.iterdir()}
+        if set(children) != {"attempt-started.json", "attempt.json", "sdk-tmp"}:
+            raise ProbeError("RPF52_REV3_DIAGNOSTIC_CONTENT_INVALID")
+        if (any(not children[key].is_file() or children[key].is_symlink()
+                for key in ("attempt-started.json", "attempt.json"))
+                or not children["sdk-tmp"].is_dir() or children["sdk-tmp"].is_symlink()):
+            raise ProbeError("RPF52_REV3_DIAGNOSTIC_CONTENT_INVALID")
+        sdk_tmp_children = {child.name: child for child in children["sdk-tmp"].iterdir()}
+        if (not {"appdata", "localappdata"}.issubset(sdk_tmp_children)
+                or any(not sdk_tmp_children[key].is_dir() or sdk_tmp_children[key].is_symlink()
+                       for key in ("appdata", "localappdata"))):
+            raise ProbeError("RPF52_REV3_DIAGNOSTIC_TEMP_CONTENT_INVALID")
+
+
+def prepare() -> dict:
+    _validate_diagnostic_task_root()
+    if SCENARIO_ROOT.exists() or SCENARIO_ROOT.is_symlink():
+        raise ProbeError("SCENARIO_ROOT_ALREADY_EXISTS")
+    diagnostic, diagnostic_raw = _load_sdk_diagnostic()
     if not (ROOT / ".local").is_dir() or (ROOT / ".local").is_symlink():
         raise ProbeError("LOCAL_ROOT_UNAVAILABLE")
     if EVIDENCE_PATH.exists():
@@ -393,14 +493,16 @@ def prepare() -> dict:
     source = _verify_source_bundle()
     java = _java_identity()
     source_identity = _source_identity()
+    source_delta = _diagnostic_source_delta(diagnostic, source_identity)
     java_port, agent_port = _free_ports()
     run_id = "rpf52-" + uuid.uuid4().hex
     prepared_at = _utc_now()
-    if not TASK_ROOT.exists():
-        TASK_ROOT.mkdir()
+    SCENARIO_ROOT.mkdir()
     source["runtime_jar"] = _copy_task_jar()
     _verify_task_sdk_runtime()
     sdk = _sdk_identity()
+    if sdk != diagnostic.get("sdk_identity"):
+        raise ProbeError("SDK_DIAGNOSTIC_SDK_IDENTITY_MISMATCH")
     contracts = make_contracts(run_id=run_id,
         source_identity_sha256=source_identity["sha256"], sdk_identity=sdk,
         java_version=java["version"], java_port=java_port,
@@ -410,6 +512,17 @@ def prepare() -> dict:
         "created_at_utc": prepared_at, "repo": repo, "source": source,
         "java_identity": java, "sdk_identity": sdk,
         "runtime_source_identity": source_identity,
+        "sdk_diagnostic": {
+            "path": "spikes/rpf-52/rev-3/sdk-diagnostic.json",
+            "sha256": hashlib.sha256(diagnostic_raw).hexdigest(),
+            "status": diagnostic["status"],
+            "runtime_source_sha256": diagnostic["runtime_source_identity"]["sha256"],
+            "scenario_runtime_source_sha256": source_identity["sha256"],
+            "source_delta_files": source_delta,
+            "source_delta_reason": (
+                "PROBE_DIAGNOSTIC_SUMMARY_VALIDATION_ONLY" if source_delta else "IDENTICAL"),
+            "sdk_identity": diagnostic["sdk_identity"],
+        },
         "contracts": contracts,
         "java_argv_redacted": [
             "java", "-Djava.io.tmpdir=<task-owned>", "-jar",
@@ -426,7 +539,7 @@ def prepare() -> dict:
     validate_contracts(contracts)
     _write_exclusive(PREFLIGHT_PATH, canonical(document))
     return {"status": "PREFLIGHT_FROZEN", "run_id": run_id,
-            "preflight_path": ".local/rpf-52-rev2/preflight.json",
+            "preflight_path": ".local/rpf-52-rev3/scenario/preflight.json",
             "task_jar_path": source["runtime_jar"]["path"],
             "source_manifest_sha256": MANIFEST_SHA, "jar_sha256": JAR_SHA,
             "runtime_source_sha256": source_identity["sha256"],
@@ -451,6 +564,21 @@ def _check_frozen(preflight: dict) -> None:
     _check_repo_identity(require_remote_free=True)
     if _source_identity() != preflight["runtime_source_identity"]:
         raise ProbeError("RUNTIME_SOURCE_CHANGED_AFTER_FREEZE")
+    diagnostic, diagnostic_raw = _load_sdk_diagnostic()
+    frozen_diagnostic = preflight.get("sdk_diagnostic", {})
+    source_delta = _diagnostic_source_delta(
+        diagnostic, preflight["runtime_source_identity"])
+    if (frozen_diagnostic.get("sha256") != hashlib.sha256(diagnostic_raw).hexdigest()
+            or frozen_diagnostic.get("runtime_source_sha256")
+            != diagnostic["runtime_source_identity"]["sha256"]
+            or frozen_diagnostic.get("scenario_runtime_source_sha256")
+            != preflight["runtime_source_identity"]["sha256"]
+            or frozen_diagnostic.get("source_delta_files") != source_delta
+            or frozen_diagnostic.get("source_delta_reason") != (
+                "PROBE_DIAGNOSTIC_SUMMARY_VALIDATION_ONLY" if source_delta else "IDENTICAL")
+            or frozen_diagnostic.get("sdk_identity") != preflight.get("sdk_identity")
+            or diagnostic.get("sdk_identity") != preflight.get("sdk_identity")):
+        raise ProbeError("SDK_DIAGNOSTIC_FREEZE_MISMATCH")
     source = _verify_source_bundle()
     source["runtime_jar"] = _verify_task_jar()
     if source != preflight["source"]:
@@ -643,7 +771,7 @@ def _minimal_env(directory: Path, *, api_key: str | None = None) -> dict:
 
 def _java_args(contracts: dict) -> list[str]:
     effect = contracts["effect"]
-    return [str(JAVA), f"-Djava.io.tmpdir={TASK_ROOT / 'java-tmp'}",
+    return [str(JAVA), f"-Djava.io.tmpdir={SCENARIO_ROOT / 'java-tmp'}",
             "-jar", str(TASK_JAR_PATH), "--spring.profiles.active=local",
             "--server.address=127.0.0.1",
             f"--server.port={contracts['experiment']['java_port']}",
@@ -698,7 +826,7 @@ def _check_initial_state(current: dict, history: dict) -> bool:
             and history_body.get("data") == [])
 
 
-def _communicate_sdk(process, config: bytes, java_log: _RedactedLog,
+def _communicate_sdk(process, config: bytes, java_log: _RedactedLog | None,
                      timeout_seconds: float) -> tuple[bytes, bytes, str | None]:
     answer = {}
     def communicate():
@@ -713,10 +841,10 @@ def _communicate_sdk(process, config: bytes, java_log: _RedactedLog,
     started = time.monotonic()
     stop_code = None
     while thread.is_alive():
-        if java_log.leak.is_set():
+        if java_log is not None and java_log.leak.is_set():
             stop_code = "JAVA_LOG_SECRET_DETECTED"
             break
-        if java_log.overflow.is_set():
+        if java_log is not None and java_log.overflow.is_set():
             stop_code = "JAVA_LOG_BUDGET_EXCEEDED"
             break
         if time.monotonic() - started >= timeout_seconds:
@@ -892,8 +1020,8 @@ def run_scenario() -> dict:
     process_stopped = host_closed = child_stopped = True
     stderr_sha256 = None
     try:
-        java_tmp = TASK_ROOT / "java-tmp"
-        sdk_tmp = TASK_ROOT / "sdk-tmp"
+        java_tmp = SCENARIO_ROOT / "java-tmp"
+        sdk_tmp = SCENARIO_ROOT / "sdk-tmp"
         for directory in (java_tmp, sdk_tmp, java_tmp / "appdata",
                           java_tmp / "localappdata", sdk_tmp / "appdata",
                           sdk_tmp / "localappdata"):
@@ -903,7 +1031,7 @@ def run_scenario() -> dict:
         command = _java_args(contracts)
         if api_key in " ".join(command):
             raise ProbeError("API_KEY_IN_JAVA_ARGV")
-        java_process = subprocess.Popen(command, cwd=TASK_ROOT,
+        java_process = subprocess.Popen(command, cwd=SCENARIO_ROOT,
             env=_minimal_env(java_tmp, api_key=api_key), stdin=subprocess.DEVNULL,
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, bufsize=0)
         java_log = _RedactedLog(java_process, api_key_bytes)
@@ -974,7 +1102,7 @@ def run_scenario() -> dict:
         stage = "SDK_CHILD_START"
         child_config = {
             "port": agent_port, "run_id": contracts["experiment"]["run_id"],
-            "write_root": str(TASK_ROOT), "sdk_readonly_path": str(SDK_SITE_PACKAGES.resolve()),
+            "write_root": str(SCENARIO_ROOT), "sdk_readonly_path": str(SDK_SITE_PACKAGES.resolve()),
             "timeout_seconds": max(0, scenario_deadline - time.monotonic()),
         }
         if child_config["timeout_seconds"] <= 0:
@@ -986,7 +1114,7 @@ def run_scenario() -> dict:
             raise ProbeError("API_KEY_IN_SDK_CHILD_INPUT")
         if "CONFIG_CENTER_API_KEY" in child_env:
             raise ProbeError("API_KEY_IN_SDK_CHILD_ENV")
-        sdk_process = subprocess.Popen(sdk_command, cwd=TASK_ROOT, env=child_env,
+        sdk_process = subprocess.Popen(sdk_command, cwd=SCENARIO_ROOT, env=child_env,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         sdk_timeout_seconds = scenario_deadline - time.monotonic()
         if sdk_timeout_seconds <= 0:
@@ -1000,10 +1128,9 @@ def run_scenario() -> dict:
             raise ProbeError(stop_code)
         if len(sdk_stdout) > 8192:
             raise ProbeError("SDK_REPORT_TOO_LARGE")
-        try:
-            sdk_report = strict_json(sdk_stdout)
-        except Exception:
-            raise ProbeError("SDK_REPORT_INVALID") from None
+        sdk_report, sdk_report_error = parse_sdk_child_report(sdk_stdout, sdk_exit_code)
+        if sdk_report_error:
+            raise ProbeError(sdk_report_error)
         if (type(sdk_report) is not dict or sdk_exit_code != 0
                 or sdk_report.get("status") != "COMPLETED"
                 or sdk_report.get("pid") != sdk_process.pid
@@ -1074,7 +1201,7 @@ def run_scenario() -> dict:
             process_stopped = _finish_process(java_process)
             if java_log is not None:
                 try:
-                    java_log_info = java_log.save(TASK_ROOT / "java-process.log")
+                    java_log_info = java_log.save(SCENARIO_ROOT / "java-process.log")
                 except Exception:
                     java_log_info["save_failed"] = True
         try:
@@ -1159,7 +1286,11 @@ def run_scenario() -> dict:
         "http_observations": observations, "tool_trace": tool_trace,
         "fixture_runtime": fixture_report, "cleanup": cleanup,
         "sdk_stderr_sha256": stderr_sha256,
+        "sdk_error_stage": sdk_report.get("stage") if type(sdk_report) is dict else None,
+        "sdk_error_type": sdk_report.get("error_type") if type(sdk_report) is dict else None,
         "sdk_guard_code": sdk_report.get("guard_code") if type(sdk_report) is dict else None,
+        "fixture_host_first_failure_code": (
+            fixture_host.first_failure_code if fixture_host is not None else None),
         "provider_https_attempts": 0, "provider_requests": 0,
         "tokens": fixture_report["tokens"], "cost_cny": 0,
     }
@@ -1186,7 +1317,7 @@ def run_scenario() -> dict:
             payload = _evidence_payload(preflight, result)
             evidence_raw = _wrap_evidence(payload)
             secret_matches = 0
-            for path in TASK_ROOT.rglob("*"):
+            for path in SCENARIO_ROOT.rglob("*"):
                 if path.is_file() and api_key_bytes in path.read_bytes():
                     secret_matches += 1
             secret_matches += evidence_raw.count(api_key_bytes)
@@ -1221,7 +1352,7 @@ def run_scenario() -> dict:
                 raise ProbeError("EVIDENCE_POST_WRITE_VERIFY_FAILED")
             _write_exclusive(RESULT_PATH, local_raw)
             return {"status": "COMPLETE", "run_id": result["run_id"],
-                    "evidence_path": "spikes/rpf-52/rev-2/config-target-fixture-evidence.json",
+                    "evidence_path": "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
                     "evidence_bytes": len(saved), "evidence_sha256": expected_sha,
                     "http_business_requests": len(observations),
                     "health_gets": len(health_observations),
@@ -1263,11 +1394,27 @@ def main(argv=None) -> int:
     action = parser.add_mutually_exclusive_group(required=True)
     action.add_argument("--prepare", action="store_true")
     action.add_argument("--run-scenario", action="store_true")
+    action.add_argument("--diagnostic", action="store_true")
+    action.add_argument("--finalize-diagnostic", action="store_true")
+    parser.add_argument("--attempt", type=int, choices=(1, 2), default=1)
     args = parser.parse_args(argv)
     try:
-        result = prepare() if args.prepare else run_scenario()
+        if args.prepare:
+            result = prepare()
+        elif args.run_scenario:
+            result = run_scenario()
+        else:
+            sys.modules.setdefault("probe", sys.modules[__name__])
+            diagnostic_root = ROOT / "spikes" / "rpf-52" / "rev-3"
+            if not diagnostic_root.is_dir() or _has_symlink(diagnostic_root, ROOT):
+                raise ProbeError("SDK_DIAGNOSTIC_DRIVER_UNAVAILABLE")
+            sys.path.insert(0, str(diagnostic_root))
+            import diagnose
+            result = (diagnose.run_attempt(args.attempt) if args.diagnostic
+                      else diagnose.finalize_summary())
         print(json.dumps(result, sort_keys=True, separators=(",", ":")))
-        return 0 if result["status"] in ("PREFLIGHT_FROZEN", "COMPLETE") else 2
+        return 0 if result["status"] in (
+            "PREFLIGHT_FROZEN", "COMPLETE", "PASS", "SUMMARY_WRITTEN") else 2
     except ProbeError as exc:
         print(json.dumps({"status": "BLOCKED", "code": exc.code},
                          sort_keys=True, separators=(",", ":")))

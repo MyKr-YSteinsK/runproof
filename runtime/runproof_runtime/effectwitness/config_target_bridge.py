@@ -28,6 +28,29 @@ def _reject(condition: bool, code: str) -> None:
         raise TargetBridgeRejected(code)
 
 
+_SAFE_FIXTURE_FAILURE_CODES = frozenset({
+    "DUPLICATE_JSON_KEY", "INVALID_JSON", "NONFINITE_JSON",
+    "FIXTURE_AUTH", "FIXTURE_BIND_ADDRESS", "FIXTURE_CLIENT_ADDRESS",
+    "FIXTURE_COMPLETION_BUDGET", "FIXTURE_CONTENT_TYPE", "FIXTURE_HOST_HEADER",
+    "FIXTURE_METHOD", "FIXTURE_ORIGIN", "FIXTURE_REQUEST_SIZE", "FIXTURE_ROUTE",
+    "FIXTURE_REQUEST_REJECTED", "MODEL_MESSAGES", "MODEL_REQUEST_CONFIG",
+    "SDK_ASSISTANT_TOOL_ARGUMENTS", "SDK_NOT_READY_OR_FAILED", "SDK_READY_FIELDS",
+    "SDK_READY_IDENTITY", "SDK_TOOL_CALL_MESSAGE_LINEAGE", "SDK_TOOL_PROTOCOL",
+    "SDK_TOOL_REGISTRY_COUNT", "SDK_TOOL_RETURN_COUNT", "SDK_TOOL_RETURN_LINEAGE",
+    "SDK_TOOL_SCHEMA_CHANGED", "SDK_TOOL_SCHEMA_NAME", "SDK_TOOL_SCHEMA_PARAMETERS",
+    "SDK_TOOL_SCHEMA_SHAPE", "TARGET_HTTP_TOOL_FAILED", "TOOL_CALL_BUDGET",
+    "TOOL_INTENT_REJECTED", "AUTHORITY_MUST_BE_READ_ONLY", "CREATE_WITHOUT_INSPECT",
+    "CREDENTIAL_SCOPE", "HTTP_ORDER_OR_BUDGET", "RECONCILE_READ_NOT_ALLOWLISTED",
+    "SCENARIO_DEADLINE_EXCEEDED", "UPDATE_WITHOUT_CREATE", "WRITE_AFTER_STOP",
+})
+
+
+def _safe_fixture_failure_code(value: Any) -> str:
+    if isinstance(value, str) and value in _SAFE_FIXTURE_FAILURE_CODES:
+        return value
+    return "FIXTURE_REQUEST_REJECTED"
+
+
 def _api_data(observation: dict, status: int, code: int, kind: str):
     if (observation.get("status") != status
             or observation.get("transport_error") is not None
@@ -238,6 +261,66 @@ class ConfigTargetToolHost:
         return result
 
 
+class ConfigTargetInMemoryDiagnosticBackend:
+    """Deterministic, non-network backend used only for the rev-3 SDK preflight."""
+
+    backend_id = "FIXTURE_ONLY_IN_MEMORY_NO_BUSINESS_HTTP"
+
+    def __init__(self, contracts: dict):
+        validate_contracts(contracts)
+        self.contracts = contracts
+        self.effect = contracts["effect"]
+        self.observations: list[dict] = []
+        self.stop_writes = False
+        self.real_http_requests = 0
+        self._state: tuple[int, str] | None = None
+        self._history: list[int] = []
+        self._record("initial_current", 404, 4041, None)
+        self._record("initial_history", 200, 0, [])
+
+    def _record(self, kind: str, status: int, code: int, data: Any) -> dict:
+        method, path = expected_path(self.effect, kind)
+        body = {"code": code, "message": "ok", "data": data, "traceId": None}
+        observation = {
+            "seq": len(self.observations) + 1, "kind": kind, "method": method,
+            "path": path, "request": expected_request(self.effect, kind),
+            "status": status, "content_type": "application/json",
+            "response": body, "response_body_sha256": digest(body),
+            "elapsed_ms": 0, "transport_error": None,
+        }
+        self.observations.append(observation)
+        return observation
+
+    def request(self, kind: str, *, credential: bool = False,
+                reconcile: bool = False) -> dict:
+        index = len(self.observations)
+        _reject(not reconcile and index < 5 and HTTP_ORDER[index] == kind,
+                "HTTP_ORDER_OR_BUDGET")
+        _reject(not self.stop_writes, "WRITE_AFTER_STOP")
+        method, _ = expected_path(self.effect, kind)
+        _reject(credential == (method == "POST"), "CREDENTIAL_SCOPE")
+        if kind == "inspect_config":
+            _reject(self._state is None, "INSPECT_DID_NOT_CONFIRM_ABSENCE")
+            return self._record(kind, 404, 4041, None)
+        if kind == "create_config_v1":
+            _reject(self._state is None, "CREATE_WITHOUT_INSPECT")
+            self._state = (1, "rpf52-v1")
+            self._history.append(1)
+            return self._record(kind, 200, 0, self._item(*self._state))
+        if kind == "update_config_v2":
+            _reject(self._state == (1, "rpf52-v1"), "UPDATE_WITHOUT_CREATE")
+            self._state = (2, "rpf52-v2")
+            self._history.append(2)
+            return self._record(kind, 200, 0, self._item(*self._state))
+        raise TargetBridgeRejected("HTTP_KIND_DUPLICATE_OR_UNKNOWN")
+
+    def _item(self, version: int, value: str) -> dict:
+        return {"app": self.effect["app"], "env": self.effect["env"],
+                "key": self.effect["key"], "value": value,
+                "description": None, "version": version,
+                "updatedAt": "2026-10-18T00:00:00Z"}
+
+
 class ConfigTargetFixtureHost:
     """One local completion endpoint; it returns four fixed SDK model responses."""
 
@@ -254,6 +337,7 @@ class ConfigTargetFixtureHost:
         self.completions: list[dict] = []
         self.client_sources: set[str] = set()
         self.failure: str | None = None
+        self.first_failure_code: str | None = None
         self._server: HTTPServer | None = None
         self._thread: threading.Thread | None = None
 
@@ -307,10 +391,11 @@ class ConfigTargetFixtureHost:
                         raise TargetBridgeRejected("FIXTURE_ROUTE")
                     self._send(200, result)
                 except Exception as exc:
-                    code = getattr(exc, "code", "FIXTURE_REQUEST_REJECTED")
-                    host.failure = host.failure or code
+                    code = _safe_fixture_failure_code(getattr(exc, "code", None))
+                    host.first_failure_code = host.first_failure_code or code
+                    host.failure = host.failure or host.first_failure_code
                     try:
-                        self._send(400, {"error": host.failure})
+                        self._send(400, {"error": host.first_failure_code})
                     except OSError:
                         pass
 
@@ -433,6 +518,11 @@ class ConfigTargetFixtureHost:
             _reject(function.get("name") == name and type(function.get("parameters")) is dict,
                     "SDK_TOOL_SCHEMA_NAME")
             parameters = function["parameters"]
+            required = parameters.get("required", [])
+            required_matches = (
+                type(required) is list and len(required) == len(properties)
+                and all(type(key) is str for key in required)
+                and set(required) == set(properties))
             _reject(parameters.get("type") == "object"
                     and parameters.get("additionalProperties") is False
                     and type(parameters.get("properties")) is dict
@@ -440,7 +530,5 @@ class ConfigTargetFixtureHost:
                     and all(type(parameters["properties"][key]) is dict
                             and parameters["properties"][key].get("type") == kind
                             for key, kind in properties.items())
-                    and type(parameters.get("required")) is list
-                    and len(parameters["required"]) == len(properties)
-                    and set(parameters["required"]) == set(properties),
+                    and required_matches,
                     "SDK_TOOL_SCHEMA_PARAMETERS")

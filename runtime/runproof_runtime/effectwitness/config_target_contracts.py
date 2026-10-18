@@ -12,10 +12,15 @@ CONTRACT_SCHEMA = "rpf-config-target-sdk-fixture-v1"
 EXECUTION_SCHEMA = "rpf-config-target-execution-v1"
 EFFECT_SCHEMA = "rpf-config-target-effect-v1"
 EXPERIMENT_SCHEMA = "rpf-config-target-experiment-v1"
-PLAN_REVISION = "rev-2"
-GIT_BRANCH = "codex/rpf-52-rev2-config-target-sdk-recovery"
+PLAN_REVISION = "rev-3"
+GIT_BRANCH = "codex/rpf-52-rev3-sdk-diagnostics-and-fixture-recovery"
 SOURCE_LEVEL = "SDK_FIXTURE_EXTERNAL_HTTP_EFFECT_OBSERVED"
-PARENT_SHA = "5d0fa1f81c8362f9eb27fe893756fe8f95fc9e3f"
+PARENT_SHA = "7b18f091151c505071a44529246c0dbde38648bf"
+_PLAN_IDENTITIES = {
+    ("rev-2", "codex/rpf-52-rev2-config-target-sdk-recovery",
+     "5d0fa1f81c8362f9eb27fe893756fe8f95fc9e3f"),
+    (PLAN_REVISION, GIT_BRANCH, PARENT_SHA),
+}
 SOURCE_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
 MANIFEST_SHA = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
 JAR_SHA = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
@@ -37,6 +42,12 @@ _KEY = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,199}\Z")
 _OBS_FIELDS = {"seq", "kind", "method", "path", "request", "status",
                "content_type", "response", "response_body_sha256",
                "elapsed_ms", "transport_error"}
+_SDK_STAGES = {"config", "sdk_import", "sdk_setup", "sdk_run"}
+_SDK_GUARD_CODES = {
+    "RPF52_PROCESS_EXEC_DENIED", "RPF52_SOCKET_OPERATION_DENIED",
+    "RPF52_NETWORK_DENIED", "RPF52_DNS_DENIED", "RPF52_FILE_ACCESS_DENIED",
+    "RPF52_FILE_WRITE_DENIED",
+}
 
 
 class ContractRejected(ValueError):
@@ -73,6 +84,74 @@ def strict_json(raw: bytes) -> Any:
         raise
     except (UnicodeError, ValueError, TypeError):
         raise ContractRejected("INVALID_JSON") from None
+
+
+def parse_sdk_child_report(raw: bytes, exit_code: int) -> tuple[dict | None, str | None]:
+    """Parse only the SDK child's bounded, message-free diagnostic contract."""
+    if type(raw) is not bytes or not raw:
+        return None, "SDK_DIAGNOSTIC_UNAVAILABLE"
+    if len(raw) > 8192:
+        return None, "SDK_REPORT_TOO_LARGE"
+    try:
+        value = strict_json(raw)
+    except ContractRejected as exc:
+        code = ("SDK_REPORT_DUPLICATE_JSON_KEYS" if exc.code == "DUPLICATE_JSON_KEY"
+                else "SDK_REPORT_INVALID_JSON")
+        return None, code
+    if type(value) is not dict:
+        return None, "SDK_REPORT_SCHEMA_INVALID"
+    if value.get("status") == "SDK_ERROR":
+        fields = {"status", "stage", "error_type", "guard_code", "guard_denials"}
+        error_type = value.get("error_type")
+        if set(value) != fields:
+            return None, "SDK_REPORT_SCHEMA_INVALID"
+        if (type(value.get("stage")) is not str
+                or value["stage"] not in _SDK_STAGES):
+            return None, "SDK_ERROR_STAGE_INVALID"
+        if (not isinstance(error_type, str)
+                or re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", error_type) is None):
+            return None, "SDK_ERROR_TYPE_INVALID"
+        guard_code = value.get("guard_code")
+        denials = value.get("guard_denials")
+        if ((guard_code is not None
+             and (type(guard_code) is not str or guard_code not in _SDK_GUARD_CODES))
+                or type(denials) is not list or len(denials) > 8
+                or any(type(code) is not str or code not in _SDK_GUARD_CODES
+                       for code in denials)):
+            return None, "SDK_ERROR_GUARD_SCHEMA_INVALID"
+        report = {"status": "SDK_ERROR", "stage": value["stage"],
+                  "error_type": error_type, "guard_code": guard_code,
+                  "guard_denials": list(denials)}
+        if type(exit_code) is not int or exit_code != 1:
+            return report, "SDK_ERROR_EXIT_CODE_MISMATCH"
+        return report, "SDK_CHILD_REPORTED_ERROR"
+    fields = {
+        "status", "framework", "version", "openai_version", "python_version", "pid",
+        "requests", "input_tokens", "output_tokens", "tool_calls", "guard_denials",
+        "sdk_source_sha256", "openai_source_sha256", "final_output_sha256",
+        "final_text_persisted",
+    }
+    if set(value) != fields or value.get("status") != "COMPLETED":
+        return None, "SDK_REPORT_SCHEMA_INVALID"
+    integer_fields = ("pid", "requests", "input_tokens", "output_tokens", "tool_calls")
+    if any(type(value.get(name)) is not int or value[name] < 0 for name in integer_fields):
+        return None, "SDK_REPORT_SCHEMA_INVALID"
+    sha_fields = ("sdk_source_sha256", "openai_source_sha256", "final_output_sha256")
+    if (value.get("framework") != "pydantic-ai-slim"
+            or value.get("version") != "2.57.0"
+            or value.get("openai_version") != "3.35.1"
+            or value.get("python_version") != "3.12.13"
+            or any(not isinstance(value.get(name), str)
+                   or _SHA.fullmatch(value[name]) is None for name in sha_fields)
+            or type(value.get("guard_denials")) is not list
+            or any(type(code) is not str or code not in _SDK_GUARD_CODES
+                   for code in value["guard_denials"])
+            or value.get("final_text_persisted") is not False):
+        return None, "SDK_REPORT_SCHEMA_INVALID"
+    report = {key: value[key] for key in fields}
+    if type(exit_code) is not int or exit_code != 0:
+        return report, "SDK_COMPLETION_EXIT_CODE_MISMATCH"
+    return report, None
 
 
 def _utc(value: Any) -> bool:
@@ -241,12 +320,13 @@ def validate_contracts(value: Any) -> None:
             and isinstance(effect.get("key"), str) and _KEY.fullmatch(effect["key"]),
             "EFFECT_NAMESPACE")
     require(type(experiment) is dict and experiment.get("schema_version") == EXPERIMENT_SCHEMA
-            and experiment.get("plan_revision") == PLAN_REVISION
-            and experiment.get("git_branch") == GIT_BRANCH
+            and all(type(experiment.get(name)) is str for name in (
+                "plan_revision", "git_branch", "runproof_parent_commit"))
+            and (experiment.get("plan_revision"), experiment.get("git_branch"),
+                 experiment.get("runproof_parent_commit")) in _PLAN_IDENTITIES
             and experiment.get("scenario_id") == "config-center-sdk-fixture-v1-v2"
             and experiment.get("environment_revision") == "config-center-local-h2-v1"
             and experiment.get("owner") == "rpf-52"
-            and experiment.get("runproof_parent_commit") == PARENT_SHA
             and experiment.get("config_center_source_commit") == SOURCE_COMMIT
             and experiment.get("config_center_manifest_sha256") == MANIFEST_SHA
             and experiment.get("config_center_jar_sha256") == JAR_SHA, "EXPERIMENT_IDENTITY")

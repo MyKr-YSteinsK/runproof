@@ -67,7 +67,7 @@ def validate_evidence(value) -> dict:
              <= contracts["execution"]["budgets"]["runtime_seconds"] * 1000,
              "SCENARIO_RUNTIME_BUDGET")
     source_identity = payload["runtime_source_identity"]
-    source_files = {
+    rev2_source_files = {
         "runtime/runproof_runtime/effectwitness/config_target_contracts.py",
         "runtime/runproof_runtime/effectwitness/config_target_bridge.py",
         "runtime/runproof_runtime/effectwitness/config_target_external.py",
@@ -75,6 +75,8 @@ def validate_evidence(value) -> dict:
         "runtime/tests/test_effectwitness_config_target.py",
         "spikes/rpf-52/probe.py",
     }
+    source_files = (rev2_source_files if experiment["plan_revision"] == "rev-2"
+                    else rev2_source_files | {"spikes/rpf-52/rev-3/diagnose.py"})
     _require(type(source_identity) is dict and set(source_identity) == {"files", "sha256"}
              and type(source_identity["files"]) is dict
              and set(source_identity["files"]) == source_files

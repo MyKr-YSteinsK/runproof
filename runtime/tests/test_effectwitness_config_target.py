@@ -1,20 +1,22 @@
 from __future__ import annotations
 
 import ast
+import http.client
 import os
+import socket
 import sys
 import time
 import unittest
 from pathlib import Path
 
 from runtime.runproof_runtime.effectwitness.config_target_bridge import (
-    BoundedConfigHttp, ConfigTargetFixtureHost, ConfigTargetToolHost, _api_data,
-    TargetBridgeRejected,
+    BoundedConfigHttp, ConfigTargetFixtureHost, ConfigTargetInMemoryDiagnosticBackend,
+    ConfigTargetToolHost, _api_data, _safe_fixture_failure_code, TargetBridgeRejected,
 )
 from runtime.runproof_runtime.effectwitness.config_target_contracts import (
     HTTP_ORDER, canonical, digest, evaluate_config_target_effect,
-    expected_path, expected_request, fixture_response, make_contracts, strict_json,
-    validate_contracts, ContractRejected,
+    expected_path, expected_request, fixture_response, make_contracts,
+    parse_sdk_child_report, strict_json, validate_contracts, ContractRejected,
 )
 from runtime.runproof_runtime.effectwitness.config_target_external import _guard
 
@@ -140,6 +142,17 @@ class ConfigTargetContractTests(unittest.TestCase):
         with self.assertRaises(ContractRejected):
             strict_json(b'{"value":1,"value":2}')
 
+    def test_exact_rev2_identity_remains_valid_but_arbitrary_parent_is_rejected(self):
+        frozen = contracts()
+        experiment = frozen["experiment"]
+        experiment["plan_revision"] = "rev-2"
+        experiment["git_branch"] = "codex/rpf-52-rev2-config-target-sdk-recovery"
+        experiment["runproof_parent_commit"] = "5d0fa1f81c8362f9eb27fe893756fe8f95fc9e3f"
+        validate_contracts(frozen)
+        experiment["runproof_parent_commit"] = "a" * 40
+        with self.assertRaises(ContractRejected):
+            validate_contracts(frozen)
+
 
 class ConfigTargetApiEnvelopeTests(unittest.TestCase):
     def test_http_status_and_json_code_are_checked_independently(self):
@@ -232,6 +245,61 @@ class ConfigTargetToolHostTests(unittest.TestCase):
         self.assertEqual(client.observations, [])
 
 
+class ConfigTargetDiagnosticBackendTests(unittest.TestCase):
+    def test_memory_backend_drives_same_three_tool_host_without_http(self):
+        frozen = contracts()
+        backend = ConfigTargetInMemoryDiagnosticBackend(frozen)
+        host = ConfigTargetToolHost(frozen, backend)
+        for index, call in enumerate(frozen["execution"]["tool_calls"], start=1):
+            host.invoke(call["call_id"], call["name"], call["arguments"], index)
+        self.assertEqual(backend.backend_id,
+                         "FIXTURE_ONLY_IN_MEMORY_NO_BUSINESS_HTTP")
+        self.assertEqual(backend.real_http_requests, 0)
+        self.assertEqual([row["kind"] for row in backend.observations], [
+            "initial_current", "initial_history", "inspect_config",
+            "create_config_v1", "update_config_v2",
+        ])
+        self.assertEqual(backend._state, (2, "rpf52-v2"))
+        self.assertEqual(backend._history, [1, 2])
+        self.assertEqual([row["call_id"] for row in host.tool_trace],
+                         [call["call_id"] for call in frozen["execution"]["tool_calls"]])
+
+    def test_fixture_error_code_is_enumerated_and_message_free(self):
+        self.assertEqual(_safe_fixture_failure_code("SDK_TOOL_RETURN_LINEAGE"),
+                         "SDK_TOOL_RETURN_LINEAGE")
+        self.assertEqual(_safe_fixture_failure_code("secret-token-value"),
+                         "FIXTURE_REQUEST_REJECTED")
+
+    def test_fixture_http_4xx_preserves_first_enumerated_rejection_code(self):
+        frozen = contracts()
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        frozen["execution"]["agent_host"]["port"] = port
+        frozen["experiment"]["agent_host_port"] = port
+        frozen["experiment"]["execution_digest"] = digest(frozen["execution"])
+        validate_contracts(frozen)
+        backend = ConfigTargetInMemoryDiagnosticBackend(frozen)
+        tool_host = ConfigTargetToolHost(frozen, backend)
+        fixture = ConfigTargetFixtureHost(frozen, tool_host, "a" * 64, "b" * 64)
+        fixture.start()
+        try:
+            for _ in range(2):
+                connection = http.client.HTTPConnection("127.0.0.1", port, timeout=2)
+                connection.request("POST", "/ready", body=b"{}", headers={
+                    "Host": f"127.0.0.1:{port}", "Origin": "",
+                    "Content-Type": "application/json", "Authorization": "Bearer wrong",
+                })
+                response = connection.getresponse()
+                body = strict_json(response.read())
+                connection.close()
+                self.assertEqual(response.status, 400)
+                self.assertEqual(body, {"error": "FIXTURE_AUTH"})
+                self.assertEqual(fixture.first_failure_code, "FIXTURE_AUTH")
+        finally:
+            fixture.close()
+
+
 class ConfigTargetFixtureContractTests(unittest.TestCase):
     def test_fixture_script_has_three_ordered_tool_calls_then_stop(self):
         frozen = contracts()
@@ -259,6 +327,13 @@ class ConfigTargetFixtureContractTests(unittest.TestCase):
                 "required": ["expected_version", "value"], "additionalProperties": False}}},
         ]
         ConfigTargetFixtureHost._verify_registry(schema)
+        schema[0]["function"]["parameters"].pop("required")
+        ConfigTargetFixtureHost._verify_registry(schema)
+        schema[0]["function"]["parameters"]["required"] = []
+        schema[1]["function"]["parameters"].pop("required")
+        with self.assertRaises(TargetBridgeRejected):
+            ConfigTargetFixtureHost._verify_registry(schema)
+        schema[1]["function"]["parameters"]["required"] = ["value"]
         with self.assertRaises(TargetBridgeRejected):
             ConfigTargetFixtureHost._verify_registry(schema + [schema[0]])
         schema[2]["function"]["parameters"]["properties"]["key"] = {"type": "string"}
@@ -269,6 +344,63 @@ class ConfigTargetFixtureContractTests(unittest.TestCase):
             "type": "string"}
         with self.assertRaises(TargetBridgeRejected):
             ConfigTargetFixtureHost._verify_registry(schema)
+
+
+class ConfigTargetSdkDiagnosticParsingTests(unittest.TestCase):
+    def test_valid_completed_report_and_sdk_error_are_sanitized(self):
+        completed = {
+            "status": "COMPLETED", "framework": "pydantic-ai-slim",
+            "version": "2.57.0", "openai_version": "3.35.1",
+            "python_version": "3.12.13", "pid": 123, "requests": 4,
+            "input_tokens": 0, "output_tokens": 0, "tool_calls": 3,
+            "guard_denials": [], "sdk_source_sha256": "a" * 64,
+            "openai_source_sha256": "b" * 64, "final_output_sha256": "c" * 64,
+            "final_text_persisted": False,
+        }
+        self.assertEqual(parse_sdk_child_report(canonical(completed), 0),
+                         (completed, None))
+        failure = {"status": "SDK_ERROR", "stage": "sdk_run",
+                   "error_type": "RuntimeError", "guard_code": None,
+                   "guard_denials": []}
+        self.assertEqual(parse_sdk_child_report(canonical(failure), 1),
+                         (failure, "SDK_CHILD_REPORTED_ERROR"))
+
+    def test_missing_large_duplicate_and_invalid_sdk_reports_fail_closed(self):
+        self.assertEqual(parse_sdk_child_report(b"", 1),
+                         (None, "SDK_DIAGNOSTIC_UNAVAILABLE"))
+        self.assertEqual(parse_sdk_child_report(b" " * 8193, 1),
+                         (None, "SDK_REPORT_TOO_LARGE"))
+        self.assertEqual(parse_sdk_child_report(b'{"status":"SDK_ERROR","status":"x"}', 1),
+                         (None, "SDK_REPORT_DUPLICATE_JSON_KEYS"))
+        self.assertEqual(parse_sdk_child_report(b'{"status":"SDK_ERROR"}', 1),
+                         (None, "SDK_REPORT_SCHEMA_INVALID"))
+
+    def test_invalid_error_types_guard_values_and_exit_codes_are_classified(self):
+        base = {"status": "SDK_ERROR", "stage": "sdk_run",
+                "error_type": "RuntimeError", "guard_code": None,
+                "guard_denials": []}
+        item = {**base, "stage": ["sdk_run"]}
+        self.assertEqual(parse_sdk_child_report(canonical(item), 1),
+                         (None, "SDK_ERROR_STAGE_INVALID"))
+        item = {**base, "error_type": {"message": "secret"}}
+        self.assertEqual(parse_sdk_child_report(canonical(item), 1),
+                         (None, "SDK_ERROR_TYPE_INVALID"))
+        item = {**base, "guard_denials": [{}]}
+        self.assertEqual(parse_sdk_child_report(canonical(item), 1),
+                         (None, "SDK_ERROR_GUARD_SCHEMA_INVALID"))
+        self.assertEqual(parse_sdk_child_report(canonical(base), 0)[1],
+                         "SDK_ERROR_EXIT_CODE_MISMATCH")
+        completed = {
+            "status": "COMPLETED", "framework": "pydantic-ai-slim",
+            "version": "2.57.0", "openai_version": "3.35.1",
+            "python_version": "3.12.13", "pid": 123, "requests": 4,
+            "input_tokens": 0, "output_tokens": 0, "tool_calls": 3,
+            "guard_denials": [], "sdk_source_sha256": "a" * 64,
+            "openai_source_sha256": "b" * 64, "final_output_sha256": "c" * 64,
+            "final_text_persisted": False,
+        }
+        self.assertEqual(parse_sdk_child_report(canonical(completed), 1)[1],
+                         "SDK_COMPLETION_EXIT_CODE_MISMATCH")
 
 
 class ConfigTargetOracleTests(unittest.TestCase):
@@ -350,7 +482,7 @@ class ConfigTargetVerifierBoundaryTests(unittest.TestCase):
 
     def test_sdk_child_guard_denies_unscoped_sockets_filesystem_and_dns(self):
         denied = []
-        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev2",
+        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev3" / "diagnostic-1",
                        ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages",
                        denied)
         for event, args in (("socket.bind", ()), ("socket.listen", ()),
@@ -373,7 +505,7 @@ class ConfigTargetVerifierBoundaryTests(unittest.TestCase):
 
     def test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime(self):
         denied = []
-        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev2",
+        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev3" / "diagnostic-1",
                        ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages",
                        denied)
         base_executable = Path(getattr(sys, "_base_executable", sys.executable))
