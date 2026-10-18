@@ -31,7 +31,7 @@
 | A-07 创意申报包 | PASS | `SUBMISSION.md` 含中文名称、短/长简介、用户/场景、技术方案、创新点、边界、英文简介、官方材料字段映射及待用户填写个人信息占位。公告公开信息列明 2026-10-30 日期，不含时刻/时区；最终登录表单未检查，明确 `OFFICIAL_PORTAL_LOGIN_REQUIRED / USER_CHECK`，状态 `NOT_SUBMITTED`。 |
 | A-08 三分钟分镜/素材 | PASS（视频不可用） | `DEMO_SCRIPT.md` 时间轴共 180 秒，逐段给出真实画面、旁白、源文件与结论边界，并提供真实只读路由和安全回环启动命令。环境没有可识别的 ffmpeg/ffprobe/OBS/桌面录屏工具；未安装依赖，未产出 MP4，因此视频为 `UNAVAILABLE / NOT_RUN`，没有截图冒充视频。 |
 | A-09 回归/清理/成本 | UNAVAILABLE | 本轮 Provider 请求/token/费用均为 0；非测试新业务 trial 为 0。旧付费账本、quarantine 和 cache-hold 没有被访问或修改；本结果不声称核查其内部内容。测试/构建/文档/离线校验均通过，但已生成的 `.local/rpf-47/vite-cache/` 与 `web-build/` 未清理：PowerShell `Remove-Item -Recurse -Force` 被执行策略拒绝，未产生删除副作用。保留目录供本地复核；无新建 quarantine 或业务状态。 |
-| A-10 Git/交付 | PASS | 首个 focused commit `45d049ca54974d374d4ddf6093248722f287a092` 已普通 push；随后从 `origin` 独立克隆并确认目标 ref 为同一 SHA。push 前后 `main` 均为 `bda0cd49e50e3181f604324e94877a24b9885334`。本结果是 push 后的第二个小型证据更新 commit，也将普通 push 并复核；它自己的最终 SHA 留在聊天回执避免自指。未建 PR、未合并、未发布或部署。 |
+| A-10 Git/交付 | PASS | 首个 focused commit `45d049ca54974d374d4ddf6093248722f287a092` 已普通 push；随后从 `origin` 独立克隆并确认目标 ref 为同一 SHA。push 前后 `main` 均为 `bda0cd49e50e3181f604324e94877a24b9885334`。其后两个小型结果更新 commit `e8e93f999cdccd535f0d18df12b17770d755eb78` 和 `d2f3e1fbad7f2d1710478d717d043ce464f6c3a7` 也已普通 push；最后一次独立 `ls-remote` 与本地 HEAD 完全一致。精确最终 SHA 同时列于聊天回执，避免在该 SHA 对应的 commit 内自指。未建 PR、未合并、未发布或部署。 |
 
 ## 4. 来源身份与可复核输出
 
