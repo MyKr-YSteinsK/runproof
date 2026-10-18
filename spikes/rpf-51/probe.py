@@ -22,7 +22,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from runtime.runproof_runtime.effectwitness.config_http_adapter import (
-    ConfigAuthorityReader, ConfigToolHost,
+    AdapterRejected, ConfigAuthorityReader, ConfigToolHost,
 )
 from runtime.runproof_runtime.effectwitness.config_http_contracts import (
     FrozenContracts, canonical, digest, make_contracts, sha256_bytes, strict_json,
@@ -32,18 +32,21 @@ from runtime.runproof_runtime.effectwitness.config_http_witness import (
 )
 from runtime.runproof_runtime.effectwitness.config_http_oracle import evaluate_config_effect
 
-TASK_ROOT = ROOT / ".local" / "rpf-51-rev3"
-SOURCE_SEED_ROOT = ROOT / ".local" / "rpf-51-rev2" / "upstream-config-center"
-SOURCE_SEED_MANIFEST = ROOT / ".local" / "rpf-51-rev2" / "upstream-source-manifest.json"
+TASK_ROOT = ROOT / ".local" / "rpf-51-rev4"
+SOURCE_SEED_ROOT = ROOT / ".local" / "rpf-51-rev3" / "upstream-config-center"
+SOURCE_SEED_MANIFEST = ROOT / ".local" / "rpf-51-rev3" / "upstream-source-manifest.json"
 UPSTREAM = TASK_ROOT / "upstream-config-center"
 MANIFEST_PATH = TASK_ROOT / "upstream-source-manifest.json"
-DIAGNOSTIC_ROOT = TASK_ROOT / "diagnostic"
+DIAGNOSTICS_ROOT = TASK_ROOT / "diagnostics"
+DIAGNOSTIC_ATTEMPT = 1
+DIAGNOSTIC_ROOT = DIAGNOSTICS_ROOT / "attempt-01"
 DIAGNOSTIC_INTENT_PATH = DIAGNOSTIC_ROOT / "intent.json"
 DIAGNOSTIC_STARTED_PATH = DIAGNOSTIC_ROOT / "started.json"
 DIAGNOSTIC_RESULT_PATH = DIAGNOSTIC_ROOT / "result.json"
 DIAGNOSTIC_FAILURE_PATH = DIAGNOSTIC_ROOT / "failure.json"
 DIAGNOSTIC_LOG_PATH = DIAGNOSTIC_ROOT / "config-center-server.log"
 DIAGNOSTIC_READINESS_LOG = DIAGNOSTIC_ROOT / "readiness-observations.jsonl"
+DIAGNOSTIC_SUMMARY_PATH = ROOT / "spikes" / "rpf-51" / "rev-4" / "readiness-diagnostic.json"
 SCENARIO_ROOT = TASK_ROOT / "scenario"
 PREFLIGHT_PATH = SCENARIO_ROOT / "preflight.json"
 STARTED_PATH = SCENARIO_ROOT / "started.json"
@@ -51,18 +54,17 @@ RUN_RESULT_PATH = SCENARIO_ROOT / "run-result.json"
 FAILURE_PATH = SCENARIO_ROOT / "run-failure.json"
 SCENARIO_LOG_PATH = SCENARIO_ROOT / "config-center-server.log"
 SCENARIO_READINESS_LOG = SCENARIO_ROOT / "readiness-observations.jsonl"
-WITNESS_PATH = ROOT / "spikes" / "rpf-51" / "rev-3" / "config-http-witness.json"
-READINESS_DIAGNOSTIC_PATH = ROOT / "spikes" / "rpf-51" / "rev-3" / "readiness-diagnostic.json"
-REV3_ROOT = ROOT / "spikes" / "rpf-51" / "rev-3"
+WITNESS_PATH = ROOT / "spikes" / "rpf-51" / "rev-4" / "config-http-witness.json"
+REV4_ROOT = ROOT / "spikes" / "rpf-51" / "rev-4"
 UPSTREAM_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
 UPSTREAM_MANIFEST_SHA256 = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
 UPSTREAM_JAR_SHA256 = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
 UPSTREAM_SOURCE_FILE_COUNT = 110
 UPSTREAM_SOURCE_TOTAL_BYTES = 393800
 UPSTREAM_JAR_RELATIVE = "config-center-server/target/config-center-server-1.0.0.jar"
-SOURCE_COPY_ACQUISITION = "COPIED_FROM_PREVIOUSLY_VERIFIED_RPF51_REV2_SOURCE_COPY_AND_JAR"
-RUNPROOF_PARENT = "68ac08de12048856fe38aa7e8548ad5bb3516a9b"
-RUNPROOF_BRANCH = "codex/rpf-51-rev3-readiness-http-effect"
+SOURCE_COPY_ACQUISITION = "COPIED_FROM_PREVIOUSLY_VERIFIED_RPF51_REV3_SOURCE_COPY_AND_JAR"
+RUNPROOF_PARENT = "1c4c3a382808a98613b1e659dfcddbc1d5ebc67e"
+RUNPROOF_BRANCH = "codex/rpf-51-rev4-real-jdk-http-effect"
 RUNPROOF_ORIGIN_URL = "https://github.com/MyKr-YSteinsK/runproof.git"
 RUNTIME_SOURCE_FILES = (
     "runtime/runproof_runtime/effectwitness/config_http_contracts.py",
@@ -91,6 +93,32 @@ def _utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="milliseconds").replace("+00:00", "Z")
 
 
+def _configure_diagnostic_attempt(attempt: int) -> None:
+    if attempt not in (1, 2):
+        raise ProbeError("DIAGNOSTIC_ATTEMPT_OUT_OF_BOUNDS")
+    paths = _diagnostic_paths(attempt)
+    globals().update({
+        "DIAGNOSTIC_ATTEMPT": attempt,
+        "DIAGNOSTIC_ROOT": paths["root"],
+        "DIAGNOSTIC_INTENT_PATH": paths["intent"],
+        "DIAGNOSTIC_STARTED_PATH": paths["started"],
+        "DIAGNOSTIC_RESULT_PATH": paths["result"],
+        "DIAGNOSTIC_FAILURE_PATH": paths["failure"],
+        "DIAGNOSTIC_LOG_PATH": paths["log"],
+        "DIAGNOSTIC_READINESS_LOG": paths["readiness"],
+    })
+
+
+def _diagnostic_paths(attempt: int) -> dict[str, Path]:
+    if attempt not in (1, 2):
+        raise ProbeError("DIAGNOSTIC_ATTEMPT_OUT_OF_BOUNDS")
+    root = DIAGNOSTICS_ROOT / f"attempt-{attempt:02d}"
+    return {"root": root, "intent": root / "intent.json", "started": root / "started.json",
+            "result": root / "result.json", "failure": root / "failure.json",
+            "log": root / "config-center-server.log",
+            "readiness": root / "readiness-observations.jsonl"}
+
+
 def _write_exclusive(path: Path, raw: bytes) -> None:
     _owned_path(path)
     flags = os.O_CREAT | os.O_EXCL | os.O_WRONLY
@@ -104,7 +132,7 @@ def _write_exclusive(path: Path, raw: bytes) -> None:
 def _write_witness_once(raw: bytes) -> None:
     resolved = WITNESS_PATH.resolve()
     if (resolved != WITNESS_PATH.absolute()
-            or WITNESS_PATH.parent.resolve() != REV3_ROOT.resolve()):
+            or WITNESS_PATH.parent.resolve() != REV4_ROOT.resolve()):
         raise ProbeError("WITNESS_PATH_NOT_ALLOWLISTED")
     fd = os.open(WITNESS_PATH, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(fd, "wb") as stream:
@@ -117,7 +145,7 @@ def _owned_path(path: Path) -> Path:
     root = TASK_ROOT.resolve()
     resolved = path.resolve()
     if resolved == root or root not in resolved.parents:
-        raise ProbeError("TASK_PATH_OUTSIDE_RPF51_REV3")
+        raise ProbeError("TASK_PATH_OUTSIDE_RPF51_REV4")
     current = path
     while current != ROOT and current != current.parent:
         if current.is_symlink():
@@ -208,12 +236,13 @@ def _runtime_source_digest() -> str:
     return digest(files)
 
 
-def _java_info() -> tuple[str, str]:
+def _java_details() -> dict[str, str]:
     launcher = shutil.which("java")
     if not launcher:
         raise ProbeError("JAVA_UNAVAILABLE")
+    launcher_path = str(Path(launcher).absolute())
     try:
-        result = subprocess.run([launcher, "-XshowSettings:properties", "-version"],
+        result = subprocess.run([launcher_path, "-XshowSettings:properties", "-version"],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.STDOUT, timeout=10, check=False, text=True)
     except (OSError, subprocess.TimeoutExpired):
@@ -223,13 +252,17 @@ def _java_info() -> tuple[str, str]:
     home_match = re.search(r"^\s*java\.home\s*=\s*(.*?)\s*$", result.stdout, re.MULTILINE)
     if not home_match:
         raise ProbeError("JAVA_HOME_UNAVAILABLE")
-    java_home = Path(home_match.group(1))
+    try:
+        java_home = Path(home_match.group(1)).resolve(strict=True)
+    except OSError:
+        raise ProbeError("JAVA_HOME_UNAVAILABLE") from None
     java_name = "java.exe" if os.name == "nt" else "java"
     java = java_home / "bin" / java_name
-    if not java.is_file():
+    if java.is_symlink() or not java.is_file():
         raise ProbeError("JAVA_HOME_EXECUTABLE_UNAVAILABLE")
+    direct_executable = str(java.absolute())
     try:
-        direct_result = subprocess.run([str(java), "-version"], stdout=subprocess.PIPE,
+        direct_result = subprocess.run([direct_executable, "-version"], stdout=subprocess.PIPE,
                                        stderr=subprocess.STDOUT, timeout=10, check=False, text=True)
     except (OSError, subprocess.TimeoutExpired):
         raise ProbeError("JAVA_VERSION_PROBE_FAILED") from None
@@ -238,7 +271,13 @@ def _java_info() -> tuple[str, str]:
     match = re.search(r'version "(17(?:\.\d+){1,2}(?:\+[-A-Za-z0-9._]+)?)"', direct_result.stdout)
     if not match:
         raise ProbeError("JAVA_17_REQUIRED")
-    return str(java), match.group(1)
+    return {"launcher_path": launcher_path, "java_home": str(java_home),
+            "direct_jdk_executable": direct_executable, "version": match.group(1)}
+
+
+def _java_info() -> tuple[str, str]:
+    details = _java_details()
+    return details["direct_jdk_executable"], details["version"]
 
 
 def _free_port() -> int:
@@ -282,13 +321,13 @@ def _check_repo_identity() -> None:
 
 def _copy_verified_source() -> tuple[dict, str]:
     if TASK_ROOT.exists() or TASK_ROOT.is_symlink():
-        raise ProbeError("REV3_TASK_ROOT_ALREADY_EXISTS")
+        raise ProbeError("REV4_TASK_ROOT_ALREADY_EXISTS")
     if _has_symlink_in_repo_path(TASK_ROOT.parent):
-        raise ProbeError("REV3_TASK_PARENT_IS_LINK")
+        raise ProbeError("REV4_TASK_PARENT_IS_LINK")
     if (not SOURCE_SEED_ROOT.is_dir() or _has_symlink_in_repo_path(SOURCE_SEED_ROOT)
             or not SOURCE_SEED_MANIFEST.is_file()
             or _has_symlink_in_repo_path(SOURCE_SEED_MANIFEST)):
-        raise ProbeError("REV2_VERIFIED_SOURCE_COPY_UNAVAILABLE")
+        raise ProbeError("REV3_VERIFIED_SOURCE_COPY_UNAVAILABLE")
     raw_manifest = SOURCE_SEED_MANIFEST.read_bytes()
     manifest_sha256 = sha256_bytes(raw_manifest)
     if manifest_sha256 != UPSTREAM_MANIFEST_SHA256:
@@ -343,26 +382,71 @@ def _copy_verified_source() -> tuple[dict, str]:
     return verified_manifest, verified_sha
 
 
+def _verify_task_source_copy() -> tuple[dict, str]:
+    manifest, manifest_sha256 = _source_manifest()
+    jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
+    if not jar.is_file() or jar.stat().st_size != 66981576:
+        raise ProbeError("CONFIG_CENTER_JAR_UNAVAILABLE")
+    if sha256_bytes(jar.read_bytes()) != UPSTREAM_JAR_SHA256:
+        raise ProbeError("CONFIG_CENTER_JAR_SHA256_MISMATCH")
+    return manifest, manifest_sha256
+
+
+def _validate_second_diagnostic(previous: dict, current_runtime_sha256: str) -> None:
+    allowed_harness_failures = {
+        "LISTENER_PID_MISMATCH", "OWNED_LISTENER_NOT_VISIBLE",
+        "HEALTH_TRANSPORT_ERROR", "OWNED_LISTENER_CHANGED_AFTER_HEALTH",
+    }
+    if (type(previous) is not dict or previous.get("status") != "FAILED"
+            or previous.get("failure_category") not in allowed_harness_failures
+            or type(previous.get("process_id")) is not int or previous["process_id"] <= 0
+            or previous.get("process_stopped") is not True
+            or previous.get("port_closed") is not True
+            or previous.get("external_connections") != []
+            or previous.get("business_http_request_count") != 0
+            or previous.get("provider_requests") != 0
+            or type(previous.get("health_get_count")) is not int
+            or not 0 <= previous["health_get_count"] <= MAX_DIAGNOSTIC_HEALTH_GETS
+            or previous.get("tokens") != 0 or previous.get("cost_cny") != 0
+            or previous.get("runproof_parent_commit") != RUNPROOF_PARENT
+            or previous.get("runtime_source_sha256") == current_runtime_sha256):
+        raise ProbeError("SECOND_DIAGNOSTIC_NOT_JUSTIFIED_BY_SAFE_HARNESS_FAILURE")
+
+
 def prepare_diagnostic() -> dict:
     _check_repo_identity()
-    if (READINESS_DIAGNOSTIC_PATH.exists() or DIAGNOSTIC_INTENT_PATH.exists()
-            or DIAGNOSTIC_STARTED_PATH.exists() or DIAGNOSTIC_RESULT_PATH.exists()
-            or DIAGNOSTIC_FAILURE_PATH.exists() or WITNESS_PATH.exists()):
-        raise ProbeError("REV3_DIAGNOSTIC_ONE_SHOT_ARTIFACT_ALREADY_EXISTS")
-    java, java_version = _java_info()
+    attempt_root = DIAGNOSTIC_ROOT
+    if (REV4_ROOT.exists() or REV4_ROOT.is_symlink()
+            or DIAGNOSTIC_SUMMARY_PATH.exists() or attempt_root.exists()
+            or DIAGNOSTIC_INTENT_PATH.exists() or DIAGNOSTIC_STARTED_PATH.exists()
+            or DIAGNOSTIC_RESULT_PATH.exists() or DIAGNOSTIC_FAILURE_PATH.exists()
+            or SCENARIO_ROOT.exists() or WITNESS_PATH.exists()):
+        raise ProbeError("REV4_DIAGNOSTIC_ATTEMPT_ALREADY_EXISTS")
+    if DIAGNOSTIC_ATTEMPT == 1:
+        manifest, manifest_sha256 = _copy_verified_source()
+    else:
+        previous = _read_local_diagnostic_result(1)
+        _validate_second_diagnostic(previous, _runtime_source_digest())
+        manifest, manifest_sha256 = _verify_task_source_copy()
+        previous_port = previous.get("port")
+    java_details = _java_details()
+    java_version = java_details["version"]
     runtime_digest = _runtime_source_digest()
     port = _free_port()
-    if not _port_closed(port):
+    if (DIAGNOSTIC_ATTEMPT == 2 and port == previous_port) or not _port_closed(port):
         raise ProbeError("DIAGNOSTIC_PORT_OCCUPIED_BEFORE_FREEZE")
-    manifest, manifest_sha256 = _copy_verified_source()
-    DIAGNOSTIC_ROOT.mkdir()
+    DIAGNOSTIC_ROOT.mkdir(parents=True)
     nonce = uuid.uuid4().hex
     intent = {
-        "schema_version": "rpf51-rev3-diagnostic-intent-v1",
+        "schema_version": "rpf51-rev4-diagnostic-intent-v1",
+        "attempt": DIAGNOSTIC_ATTEMPT,
         "diagnostic_id": "rpf51-diag-" + nonce,
         "runproof_parent_commit": RUNPROOF_PARENT,
         "runproof_branch": RUNPROOF_BRANCH,
         "runtime_source_sha256": runtime_digest,
+        "launcher_path": java_details["launcher_path"],
+        "java_home": java_details["java_home"],
+        "direct_jdk_executable": java_details["direct_jdk_executable"],
         "config_center_source_commit": UPSTREAM_COMMIT,
         "config_center_source_manifest_sha256": manifest_sha256,
         "config_center_source_file_count": manifest["file_count"],
@@ -385,7 +469,11 @@ def prepare_diagnostic() -> dict:
     }
     _write_exclusive(DIAGNOSTIC_INTENT_PATH, canonical(intent))
     print(json.dumps({"status": "DIAGNOSTIC_INTENT_FROZEN",
+                      "attempt": DIAGNOSTIC_ATTEMPT,
                       "diagnostic_id": intent["diagnostic_id"], "port": port,
+                      "launcher_path": java_details["launcher_path"],
+                      "direct_jdk_executable": java_details["direct_jdk_executable"],
+                      "java_home": java_details["java_home"],
                       "config_center_source_commit": UPSTREAM_COMMIT,
                       "source_manifest_sha256": manifest_sha256,
                       "jar_sha256": UPSTREAM_JAR_SHA256,
@@ -393,34 +481,164 @@ def prepare_diagnostic() -> dict:
     return intent
 
 
-def _read_diagnostic_result() -> dict:
+def _read_local_diagnostic_result(attempt: int) -> dict:
+    paths = _diagnostic_paths(attempt)
     try:
-        result = strict_json(DIAGNOSTIC_RESULT_PATH.read_bytes())
+        for key in ("result", "intent", "started"):
+            _owned_path(paths[key])
+        result_raw = paths["result"].read_bytes()
+        result = strict_json(result_raw)
+        intent = strict_json(paths["intent"].read_bytes())
+        started = strict_json(paths["started"].read_bytes())
+        failure = strict_json(paths["failure"].read_bytes()) if paths["failure"].exists() else None
     except (OSError, ValueError):
         raise ProbeError("DIAGNOSTIC_RESULT_UNAVAILABLE") from None
-    if (type(result) is not dict or result.get("schema_version") != "rpf51-rev3-diagnostic-result-v1"
-            or result.get("status") != "PASS" or result.get("ready") is not True
+    if type(result) is not dict or type(intent) is not dict or type(started) is not dict:
+        raise ProbeError("DIAGNOSTIC_RESULT_IDENTITY_MISMATCH")
+    if (result.get("schema_version") != "rpf51-rev4-diagnostic-result-v1"
+            or result.get("attempt") != attempt
+            or result.get("diagnostic_id") != intent.get("diagnostic_id")
+            or intent.get("attempt") != attempt
+            or intent.get("schema_version") != "rpf51-rev4-diagnostic-intent-v1"
+            or started.get("schema_version") != "rpf51-rev4-diagnostic-started-v1"
+            or started.get("attempt") != attempt
+            or started.get("diagnostic_id") != result.get("diagnostic_id")
+            or started.get("intent_sha256") != sha256_bytes(paths["intent"].read_bytes())
+            or started.get("runtime_source_sha256") != intent.get("runtime_source_sha256")
+            or started.get("port") != intent.get("port")
+            or result.get("port") != intent.get("port")
+            or result.get("runtime_source_sha256") != intent.get("runtime_source_sha256")
+            or result.get("runproof_parent_commit") != RUNPROOF_PARENT
+            or result.get("runproof_branch") != RUNPROOF_BRANCH
+            or result.get("status") not in ("PASS", "FAILED")
+            or result.get("process_stopped") is not True
+            or result.get("port_closed") is not True
+            or result.get("business_http_request_count") != 0
+            or result.get("provider_requests") != 0
+            or result.get("tokens") != 0 or result.get("cost_cny") != 0):
+        raise ProbeError("DIAGNOSTIC_RESULT_IDENTITY_MISMATCH")
+    if result["status"] == "FAILED":
+        if (type(failure) is not dict
+                or failure.get("schema_version") != "rpf51-rev4-diagnostic-failure-v1"
+                or failure.get("attempt") != attempt
+                or failure.get("diagnostic_id") != result.get("diagnostic_id")
+                or failure.get("failure_category") != result.get("failure_category")
+                or failure.get("process_stopped") is not True
+                or failure.get("port_closed") is not True
+                or failure.get("business_http_request_count") != 0):
+            raise ProbeError("DIAGNOSTIC_FAILURE_RECORD_MISMATCH")
+    elif failure is not None:
+        raise ProbeError("PASS_DIAGNOSTIC_HAS_FAILURE_RECORD")
+    return result
+
+
+def _write_readiness_diagnostic_summary() -> dict:
+    attempts = []
+    for attempt in (1, 2):
+        paths = _diagnostic_paths(attempt)
+        if paths["result"].is_file():
+            result = _read_local_diagnostic_result(attempt)
+            attempts.append({"attempt": attempt,
+                             "result_sha256": sha256_bytes(paths["result"].read_bytes()),
+                             "result": result})
+    if not attempts or DIAGNOSTIC_SUMMARY_PATH.exists():
+        raise ProbeError("READINESS_SUMMARY_STATE_INVALID")
+    passing = [entry["attempt"] for entry in attempts if entry["result"]["status"] == "PASS"]
+    summary = {"schema_version": "rpf51-rev4-readiness-diagnostic-v1",
+               "runproof_parent_commit": RUNPROOF_PARENT,
+               "runproof_branch": RUNPROOF_BRANCH,
+               "status": "PASS" if passing else "FAILED",
+               "selected_pass_attempt": passing[0] if passing else None,
+               "attempts": attempts}
+    raw = canonical(summary)
+    if len(raw) > 32 * 1024:
+        raise ProbeError("READINESS_DIAGNOSTIC_SIZE_LIMIT")
+    if REV4_ROOT.exists() or REV4_ROOT.is_symlink():
+        raise ProbeError("REV4_OUTPUT_ROOT_ALREADY_EXISTS")
+    REV4_ROOT.mkdir()
+    _write_tracked_once(DIAGNOSTIC_SUMMARY_PATH, raw)
+    return summary
+
+
+def _read_diagnostic_result() -> dict:
+    try:
+        if _has_symlink_in_repo_path(DIAGNOSTIC_SUMMARY_PATH):
+            raise ProbeError("READINESS_DIAGNOSTIC_PATH_INVALID")
+        summary_raw = DIAGNOSTIC_SUMMARY_PATH.read_bytes()
+        summary = strict_json(summary_raw)
+    except ProbeError:
+        raise
+    except (OSError, ValueError):
+        raise ProbeError("READINESS_DIAGNOSTIC_UNAVAILABLE") from None
+    if (type(summary) is not dict
+            or summary.get("schema_version") != "rpf51-rev4-readiness-diagnostic-v1"
+            or summary.get("runproof_parent_commit") != RUNPROOF_PARENT
+            or summary.get("runproof_branch") != RUNPROOF_BRANCH
+            or summary.get("status") != "PASS"
+            or type(summary.get("attempts")) is not list
+            or not 1 <= len(summary["attempts"]) <= 2):
+        raise ProbeError("DIAGNOSTIC_NOT_PASS")
+    by_attempt = {}
+    for entry in summary["attempts"]:
+        if type(entry) is not dict or type(entry.get("attempt")) is not int:
+            raise ProbeError("READINESS_DIAGNOSTIC_MISMATCH")
+        attempt = entry["attempt"]
+        if attempt in by_attempt or attempt not in (1, 2):
+            raise ProbeError("READINESS_DIAGNOSTIC_MISMATCH")
+        result = _read_local_diagnostic_result(attempt)
+        paths = _diagnostic_paths(attempt)
+        if (entry.get("result_sha256") != sha256_bytes(paths["result"].read_bytes())
+                or entry.get("result") != result):
+            raise ProbeError("READINESS_DIAGNOSTIC_MISMATCH")
+        by_attempt[attempt] = result
+    attempts = [entry["attempt"] for entry in summary["attempts"]]
+    if attempts not in ([1], [1, 2]):
+        raise ProbeError("READINESS_DIAGNOSTIC_ATTEMPT_SEQUENCE")
+    if len(attempts) == 2:
+        first, second = by_attempt[1], by_attempt[2]
+        allowed_harness_failures = {
+            "LISTENER_PID_MISMATCH", "OWNED_LISTENER_NOT_VISIBLE",
+            "HEALTH_TRANSPORT_ERROR", "OWNED_LISTENER_CHANGED_AFTER_HEALTH",
+        }
+        if (first.get("status") != "FAILED"
+                or first.get("failure_category") not in allowed_harness_failures
+                or first.get("runtime_source_sha256") == second.get("runtime_source_sha256")):
+            raise ProbeError("SECOND_DIAGNOSTIC_HISTORY_INVALID")
+    passing_attempts = [attempt for attempt in attempts
+                        if by_attempt[attempt].get("status") == "PASS"]
+    if summary.get("selected_pass_attempt") != (passing_attempts[0] if passing_attempts else None):
+        raise ProbeError("READINESS_DIAGNOSTIC_SELECTION_INVALID")
+    selected_attempt = summary.get("selected_pass_attempt")
+    if selected_attempt not in by_attempt:
+        raise ProbeError("DIAGNOSTIC_NOT_PASS")
+    result = by_attempt[selected_attempt]
+    readiness = result.get("readiness")
+    samples = readiness.get("last_samples") if type(readiness) is dict else None
+    final = samples[-1] if type(samples) is list and samples else {}
+    java_details = _java_details()
+    if (result.get("status") != "PASS" or result.get("ready") is not True
             or result.get("business_http_request_count") != 0
             or result.get("process_exit_code") is None or result.get("process_stopped") is not True
-            or result.get("process_id", 0) <= 0 or result.get("port_closed") is not True
-            or result.get("external_connections") != []
+            or type(result.get("process_id")) is not int or result["process_id"] <= 0
+            or result.get("port_closed") is not True or result.get("external_connections") != []
             or not 1 <= result.get("health_get_count", 0) <= MAX_DIAGNOSTIC_HEALTH_GETS
             or result.get("runtime_source_sha256") != _runtime_source_digest()
             or result.get("runproof_parent_commit") != RUNPROOF_PARENT
             or result.get("config_center_source_manifest_sha256") != UPSTREAM_MANIFEST_SHA256
             or result.get("config_center_jar_sha256") != UPSTREAM_JAR_SHA256
-            or result.get("java_version") is None
-            or not DIAGNOSTIC_STARTED_PATH.is_file()):
+            or result.get("launcher_path") != java_details["launcher_path"]
+            or result.get("java_home") != java_details["java_home"]
+            or result.get("direct_jdk_executable") != java_details["direct_jdk_executable"]
+            or result.get("java_version") != java_details["version"]
+            or final.get("listener_pid") != result.get("process_id")
+            or final.get("listener_pid_after") != result.get("process_id")
+            or final.get("http_status") != 200 or final.get("http_health") is not True
+            or final.get("pid_match") is not True):
         raise ProbeError("DIAGNOSTIC_NOT_PASS")
-    try:
-        tracked = strict_json(READINESS_DIAGNOSTIC_PATH.read_bytes())
-    except (OSError, ValueError):
-        raise ProbeError("READINESS_DIAGNOSTIC_UNAVAILABLE") from None
-    if (type(tracked) is not dict
-            or tracked.get("schema_version") != "rpf51-rev3-readiness-diagnostic-v1"
-            or tracked.get("status") != "PASS"
-            or tracked.get("diagnostic_result_sha256") != sha256_bytes(DIAGNOSTIC_RESULT_PATH.read_bytes())):
-        raise ProbeError("READINESS_DIAGNOSTIC_MISMATCH")
+    result["diagnostic_result_sha256"] = next(
+        item["result_sha256"] for item in summary["attempts"]
+        if item["attempt"] == selected_attempt)
+    result["diagnostic_summary_sha256"] = sha256_bytes(summary_raw)
     return result
 
 
@@ -429,12 +647,14 @@ def prepare_scenario() -> dict:
     diagnostic = _read_diagnostic_result()
     if (PREFLIGHT_PATH.exists() or STARTED_PATH.exists() or RUN_RESULT_PATH.exists()
             or FAILURE_PATH.exists() or WITNESS_PATH.exists()):
-        raise ProbeError("REV3_SCENARIO_ONE_SHOT_ARTIFACT_ALREADY_EXISTS")
+        raise ProbeError("REV4_SCENARIO_ONE_SHOT_ARTIFACT_ALREADY_EXISTS")
     manifest, manifest_sha256 = _source_manifest()
     jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
     if not jar.is_file():
         raise ProbeError("CONFIG_CENTER_JAR_UNAVAILABLE")
-    java, java_version = _java_info()
+    java_details = _java_details()
+    java = java_details["direct_jdk_executable"]
+    java_version = java_details["version"]
     if java_version != diagnostic["java_version"]:
         raise ProbeError("JAVA_VERSION_CHANGED_AFTER_DIAGNOSTIC")
     runtime_digest = _runtime_source_digest()
@@ -460,9 +680,12 @@ def prepare_scenario() -> dict:
         config_center_jar_sha256=sha256_bytes(jar.read_bytes()), java_version=java_version,
         prepared_at_utc=_utc_now())
     contracts.validate()
+    _owned_path(SCENARIO_ROOT)
     SCENARIO_ROOT.mkdir()
-    document = {"schema_version": "rpf51-rev3-scenario-preflight-v1",
-                "diagnostic_result_sha256": sha256_bytes(DIAGNOSTIC_RESULT_PATH.read_bytes()),
+    document = {"schema_version": "rpf51-rev4-scenario-preflight-v1",
+                "diagnostic_attempt": diagnostic["attempt"],
+                "diagnostic_result_sha256": diagnostic["diagnostic_result_sha256"],
+                "diagnostic_summary_sha256": diagnostic["diagnostic_summary_sha256"],
                 "diagnostic_elapsed_seconds": diagnostic["elapsed_seconds"],
                 "max_diagnostic_seconds": MAX_DIAGNOSTIC_SECONDS,
                 "max_scenario_seconds": MAX_RUN_SECONDS,
@@ -472,9 +695,10 @@ def prepare_scenario() -> dict:
                                 "total_bytes": manifest["total_bytes"],
                                 "manifest_sha256": manifest_sha256,
                                 "jar_bytes": 66981576, "jar_sha256": UPSTREAM_JAR_SHA256,
-                                "prior_runproof_revision": "rev-2",
+                                "prior_runproof_revision": "rev-3",
                                 "acquisition": SOURCE_COPY_ACQUISITION},
-                "java_executable": "java", "maven_version": "NOT_RUN_REUSED_REV2_JAR",
+                "java_identity": java_details,
+                "maven_version": "NOT_RUN_REUSED_REV3_JAR",
                 "scenario_budget": SCENARIO_BUDGET}
     _write_exclusive(PREFLIGHT_PATH, canonical(document))
     print(json.dumps({"status": "SCENARIO_PREFLIGHT_FROZEN", "run_id": run_id, "port": port,
@@ -489,14 +713,20 @@ def _read_preflight() -> tuple[dict, FrozenContracts]:
     except (OSError, ValueError):
         raise ProbeError("PREFLIGHT_UNAVAILABLE") from None
     if type(document) is not dict or set(document) != {
-            "schema_version", "diagnostic_result_sha256", "diagnostic_elapsed_seconds",
+            "schema_version", "diagnostic_attempt", "diagnostic_result_sha256",
+            "diagnostic_summary_sha256", "diagnostic_elapsed_seconds",
             "max_diagnostic_seconds", "max_scenario_seconds", "max_total_java_seconds",
-            "contracts", "source_copy", "java_executable", "maven_version", "scenario_budget"}:
+            "contracts", "source_copy", "java_identity", "maven_version", "scenario_budget"}:
         raise ProbeError("PREFLIGHT_SHAPE")
-    if document["schema_version"] != "rpf51-rev3-scenario-preflight-v1":
+    if document["schema_version"] != "rpf51-rev4-scenario-preflight-v1":
         raise ProbeError("PREFLIGHT_VERSION")
     diagnostic = _read_diagnostic_result()
-    if document["diagnostic_result_sha256"] != sha256_bytes(DIAGNOSTIC_RESULT_PATH.read_bytes()):
+    diagnostic_path = _diagnostic_paths(diagnostic["attempt"])["result"]
+    if (document["diagnostic_result_sha256"] != diagnostic["diagnostic_result_sha256"]
+            or document["diagnostic_result_sha256"] != sha256_bytes(diagnostic_path.read_bytes())
+            or document["diagnostic_summary_sha256"] != diagnostic["diagnostic_summary_sha256"]
+            or document["diagnostic_summary_sha256"] != sha256_bytes(DIAGNOSTIC_SUMMARY_PATH.read_bytes())
+            or document["diagnostic_attempt"] != diagnostic["attempt"]):
         raise ProbeError("DIAGNOSTIC_RESULT_CHANGED_AFTER_FREEZE")
     if (document["diagnostic_elapsed_seconds"] != diagnostic["elapsed_seconds"]
             or document["max_diagnostic_seconds"] != MAX_DIAGNOSTIC_SECONDS
@@ -513,10 +743,14 @@ def _read_preflight() -> tuple[dict, FrozenContracts]:
                                "manifest_sha256": UPSTREAM_MANIFEST_SHA256,
                                "jar_bytes": 66981576,
                                "jar_sha256": UPSTREAM_JAR_SHA256,
-                               "prior_runproof_revision": "rev-2",
+                               "prior_runproof_revision": "rev-3",
                                "acquisition": SOURCE_COPY_ACQUISITION}
-            or document["java_executable"] != "java"
-            or document["maven_version"] != "NOT_RUN_REUSED_REV2_JAR"
+            or document["java_identity"] != {
+                "launcher_path": diagnostic["launcher_path"],
+                "java_home": diagnostic["java_home"],
+                "direct_jdk_executable": diagnostic["direct_jdk_executable"],
+                "version": diagnostic["java_version"]}
+            or document["maven_version"] != "NOT_RUN_REUSED_REV3_JAR"
             or document["scenario_budget"] != SCENARIO_BUDGET):
         raise ProbeError("PREFLIGHT_SOURCE_PROVENANCE")
     try:
@@ -527,7 +761,7 @@ def _read_preflight() -> tuple[dict, FrozenContracts]:
         raise ProbeError("DIAGNOSTIC_SCENARIO_PORT_REUSED")
     if (contracts.experiment["runproof_parent_commit"] != RUNPROOF_PARENT
             or contracts.experiment["config_center_source_commit"] != UPSTREAM_COMMIT):
-        raise ProbeError("PREFLIGHT_REV3_SOURCE_IDENTITY")
+        raise ProbeError("PREFLIGHT_REV4_SOURCE_IDENTITY")
     if (_git("rev-parse", "HEAD") != RUNPROOF_PARENT
             or _git("branch", "--show-current") != RUNPROOF_BRANCH
             or _runtime_source_digest() != contracts.experiment["runtime_source_sha256"]):
@@ -539,6 +773,9 @@ def _read_preflight() -> tuple[dict, FrozenContracts]:
     jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
     if not jar.is_file() or sha256_bytes(jar.read_bytes()) != contracts.experiment["config_center_jar_sha256"]:
         raise ProbeError("FROZEN_JAR_CHANGED")
+    current_java = _java_details()
+    if document["java_identity"] != current_java:
+        raise ProbeError("FROZEN_JAVA_IDENTITY_CHANGED")
     return document, contracts
 
 
@@ -572,6 +809,11 @@ def _netstat_rows() -> tuple[list[dict], int]:
 def _endpoint_port(endpoint: str) -> int | None:
     suffix = endpoint.rsplit(":", 1)[-1]
     return int(suffix) if suffix.isdigit() else None
+
+
+def _listener_pids(rows: list[dict], port: int) -> list[int]:
+    return sorted(row["pid"] for row in rows
+                  if row["state"] == "LISTENING" and _endpoint_port(row["local"]) == port)
 
 
 def _listener_status(rows: list[dict], malformed: int, pid: int, port: int) -> tuple[bool, str]:
@@ -685,12 +927,14 @@ def _readiness(process: subprocess.Popen, port: int, *, log_path: Path,
             process_running = process.poll() is None
             tcp_ok = _tcp_connect(port) if process_running else False
             rows, malformed = _netstat_rows()
+            listener_pids = _listener_pids(rows, port)
             owned, ownership_category = _listener_status(rows, malformed, process.pid, port)
             http_status = None
             http_health = None
             category = "PROCESS_EXITED" if not process_running else "TCP_CONNECT_FAILED"
             if process_running and tcp_ok:
                 category = ownership_category if not owned else "HEALTH_GET_NOT_ATTEMPTED"
+            listener_pids_after: list[int] = []
             if process_running and tcp_ok and owned:
                 if health_gets >= max_health_gets:
                     category = "HEALTH_GET_BUDGET_EXHAUSTED"
@@ -698,6 +942,7 @@ def _readiness(process: subprocess.Popen, port: int, *, log_path: Path,
                     health_gets += 1
                     http_status, http_health, category = _health_get(port)
                     rows_after, malformed_after = _netstat_rows()
+                    listener_pids_after = _listener_pids(rows_after, port)
                     owned_after, _ = _listener_status(rows_after, malformed_after,
                                                        process.pid, port)
                     identity_stable = process.poll() is None and owned_after
@@ -711,6 +956,11 @@ def _readiness(process: subprocess.Popen, port: int, *, log_path: Path,
                         category = "OWNED_LISTENER_CHANGED_AFTER_HEALTH"
             sample = {
                 "poll": polls,
+                "popen_pid": process.pid,
+                "listener_pid": listener_pids[0] if len(listener_pids) == 1 else None,
+                "listener_pids": listener_pids,
+                "listener_pid_after": (listener_pids_after[0]
+                                       if len(listener_pids_after) == 1 else None),
                 "process_running": process_running,
                 "tcp_connect": tcp_ok,
                 "owned_listener": owned,
@@ -791,10 +1041,11 @@ def _stop_owned_process(process: subprocess.Popen) -> bool:
 
 
 def _write_tracked_once(path: Path, raw: bytes) -> None:
-    if path.parent.resolve() != REV3_ROOT.resolve() or path.resolve() != path.absolute():
-        raise ProbeError("REV3_TRACKED_PATH_NOT_ALLOWLISTED")
+    if (path.parent.resolve() != REV4_ROOT.resolve() or path.resolve() != path.absolute()
+            or path not in (DIAGNOSTIC_SUMMARY_PATH, WITNESS_PATH)):
+        raise ProbeError("REV4_TRACKED_PATH_NOT_ALLOWLISTED")
     if path.exists():
-        raise ProbeError("REV3_TRACKED_EVIDENCE_ALREADY_EXISTS")
+        raise ProbeError("REV4_TRACKED_EVIDENCE_ALREADY_EXISTS")
     fd = os.open(path, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(fd, "wb") as stream:
         stream.write(raw)
@@ -808,8 +1059,9 @@ def _read_diagnostic_intent() -> dict:
     except (OSError, ValueError):
         raise ProbeError("DIAGNOSTIC_INTENT_UNAVAILABLE") from None
     expected_fields = {
-        "schema_version", "diagnostic_id", "runproof_parent_commit", "runproof_branch",
-        "runtime_source_sha256", "config_center_source_commit",
+        "schema_version", "attempt", "diagnostic_id", "runproof_parent_commit", "runproof_branch",
+        "runtime_source_sha256", "launcher_path", "java_home", "direct_jdk_executable",
+        "config_center_source_commit",
         "config_center_source_manifest_sha256", "config_center_source_file_count",
         "config_center_source_bytes", "config_center_jar_sha256", "config_center_jar_bytes",
         "java_version", "spring_profile", "persistence", "bind_address", "port",
@@ -818,10 +1070,16 @@ def _read_diagnostic_intent() -> dict:
     }
     if type(intent) is not dict or set(intent) != expected_fields:
         raise ProbeError("DIAGNOSTIC_INTENT_SHAPE")
-    if (intent["schema_version"] != "rpf51-rev3-diagnostic-intent-v1"
+    java_details = _java_details()
+    if (intent["schema_version"] != "rpf51-rev4-diagnostic-intent-v1"
+            or intent["attempt"] != DIAGNOSTIC_ATTEMPT
             or intent["runproof_parent_commit"] != RUNPROOF_PARENT
             or intent["runproof_branch"] != RUNPROOF_BRANCH
             or intent["runtime_source_sha256"] != _runtime_source_digest()
+            or intent["launcher_path"] != java_details["launcher_path"]
+            or intent["java_home"] != java_details["java_home"]
+            or intent["direct_jdk_executable"] != java_details["direct_jdk_executable"]
+            or intent["java_version"] != java_details["version"]
             or intent["config_center_source_commit"] != UPSTREAM_COMMIT
             or intent["config_center_source_manifest_sha256"] != UPSTREAM_MANIFEST_SHA256
             or intent["config_center_source_file_count"] != UPSTREAM_SOURCE_FILE_COUNT
@@ -844,22 +1102,28 @@ def _read_diagnostic_intent() -> dict:
 def run_diagnostic_once() -> dict:
     _check_repo_identity()
     if (DIAGNOSTIC_STARTED_PATH.exists() or DIAGNOSTIC_RESULT_PATH.exists()
-            or DIAGNOSTIC_FAILURE_PATH.exists() or READINESS_DIAGNOSTIC_PATH.exists()):
-        raise ProbeError("REV3_DIAGNOSTIC_ONE_SHOT_ALREADY_CONSUMED")
+            or DIAGNOSTIC_FAILURE_PATH.exists() or DIAGNOSTIC_SUMMARY_PATH.exists()):
+        raise ProbeError("REV4_DIAGNOSTIC_ATTEMPT_ALREADY_CONSUMED")
     intent = _read_diagnostic_intent()
     manifest, manifest_sha = _source_manifest()
     if manifest_sha != intent["config_center_source_manifest_sha256"]:
         raise ProbeError("DIAGNOSTIC_SOURCE_CHANGED")
     jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
-    java, java_version = _java_info()
-    if java_version != intent["java_version"]:
+    java_details = _java_details()
+    java = java_details["direct_jdk_executable"]
+    java_version = java_details["version"]
+    if (java != intent["direct_jdk_executable"]
+            or java_version != intent["java_version"]):
         raise ProbeError("JAVA_VERSION_CHANGED_AFTER_DIAGNOSTIC_FREEZE")
     if not _port_closed(intent["port"]):
         raise ProbeError("DIAGNOSTIC_PORT_OCCUPIED_BEFORE_START")
-    started_marker = {"schema_version": "rpf51-rev3-diagnostic-started-v1",
+    started_marker = {"schema_version": "rpf51-rev4-diagnostic-started-v1",
+                      "attempt": DIAGNOSTIC_ATTEMPT,
                       "diagnostic_id": intent["diagnostic_id"],
                       "started_at_utc": _utc_now(),
-                      "intent_sha256": sha256_bytes(DIAGNOSTIC_INTENT_PATH.read_bytes())}
+                      "intent_sha256": sha256_bytes(DIAGNOSTIC_INTENT_PATH.read_bytes()),
+                      "runtime_source_sha256": intent["runtime_source_sha256"],
+                      "port": intent["port"]}
     _write_exclusive(DIAGNOSTIC_STARTED_PATH, canonical(started_marker))
 
     port = intent["port"]
@@ -892,10 +1156,12 @@ def run_diagnostic_once() -> dict:
                                     max_health_gets=MAX_DIAGNOSTIC_HEALTH_GETS)
             if not readiness["ready"]:
                 failure = readiness["failure_category"] or "DIAGNOSTIC_READINESS_FAILED"
-            if process.poll() is None:
+            elif process.poll() is None:
                 external_connections = _external_connections(process.pid, port)
                 if external_connections:
                     failure = failure or "UNEXPECTED_EXTERNAL_CONNECTION"
+            else:
+                failure = "PROCESS_EXITED_BEFORE_OWNED_SHUTDOWN"
         except ProbeError as exc:
             failure = failure or exc.code
         except (OSError, subprocess.SubprocessError, ValueError):
@@ -937,11 +1203,16 @@ def run_diagnostic_once() -> dict:
     process_exit_code = process.returncode if process is not None else None
     status = "PASS" if failure is None and readiness["ready"] else "FAILED"
     result = {
-        "schema_version": "rpf51-rev3-diagnostic-result-v1",
+        "schema_version": "rpf51-rev4-diagnostic-result-v1",
+        "attempt": DIAGNOSTIC_ATTEMPT,
         "diagnostic_id": intent["diagnostic_id"], "status": status,
         "failure_category": failure, "ready": readiness["ready"],
         "runproof_parent_commit": RUNPROOF_PARENT,
+        "runproof_branch": RUNPROOF_BRANCH,
         "runtime_source_sha256": intent["runtime_source_sha256"],
+        "launcher_path": java_details["launcher_path"],
+        "java_home": java_details["java_home"],
+        "direct_jdk_executable": java,
         "config_center_source_commit": UPSTREAM_COMMIT,
         "config_center_source_manifest_sha256": manifest_sha,
         "config_center_source_file_count": manifest["file_count"],
@@ -964,40 +1235,18 @@ def run_diagnostic_once() -> dict:
     _write_exclusive(DIAGNOSTIC_RESULT_PATH, result_raw)
     if status != "PASS" and not DIAGNOSTIC_FAILURE_PATH.exists():
         _write_exclusive(DIAGNOSTIC_FAILURE_PATH, canonical({
-            "schema_version": "rpf51-rev3-diagnostic-failure-v1",
+            "schema_version": "rpf51-rev4-diagnostic-failure-v1",
+            "attempt": DIAGNOSTIC_ATTEMPT,
             "failure_category": failure, "diagnostic_id": intent["diagnostic_id"],
             "process_id": result["process_id"], "process_stopped": process_stopped,
             "port_closed": port_closed, "health_get_count": readiness["health_get_count"],
             "business_http_request_count": 0,
+            "runtime_source_sha256": intent["runtime_source_sha256"],
         }))
-    tracked = {
-        "schema_version": "rpf51-rev3-readiness-diagnostic-v1",
-        "status": status, "failure_category": failure,
-        "diagnostic_id": intent["diagnostic_id"],
-        "runproof_parent_commit": RUNPROOF_PARENT,
-        "runtime_source_sha256": intent["runtime_source_sha256"],
-        "config_center_source_commit": UPSTREAM_COMMIT,
-        "config_center_source_manifest_sha256": manifest_sha,
-        "config_center_jar_sha256": UPSTREAM_JAR_SHA256,
-        "java_version": java_version, "process_id": result["process_id"],
-        "process_command": process_command, "port": port,
-        "spring_profile": "local", "persistence": "in-memory-h2",
-        "health_path": "/actuator/health", "health_get_count": readiness["health_get_count"],
-        "readiness": readiness, "business_http_request_count": 0,
-        "provider_requests": 0, "tokens": 0, "cost_cny": 0,
-        "elapsed_seconds": elapsed, "process_exit_code": process_exit_code,
-        "process_stopped": process_stopped, "port_closed": port_closed,
-        "external_connections": external_connections,
-        "api_key_found_in_log": key_found,
-        "diagnostic_result_sha256": sha256_bytes(result_raw),
-        "limitations": ["HEALTH_GET_ONLY", "NO_BUSINESS_EFFECT", "NO_PROVIDER",
-                        "SAME_HOST_PROCESS_AND_LOOPBACK_OBSERVATION"],
-    }
-    tracked_raw = canonical(tracked)
-    if len(tracked_raw) > 16 * 1024:
-        raise ProbeError("READINESS_DIAGNOSTIC_SIZE_LIMIT")
-    _write_tracked_once(READINESS_DIAGNOSTIC_PATH, tracked_raw)
+    if status == "PASS" or DIAGNOSTIC_ATTEMPT == 2:
+        _write_readiness_diagnostic_summary()
     print(json.dumps({"status": status, "diagnostic_id": intent["diagnostic_id"],
+                      "attempt": DIAGNOSTIC_ATTEMPT,
                       "process_id": result["process_id"], "port": port,
                       "health_get_count": readiness["health_get_count"],
                       "process_stopped": process_stopped, "port_closed": port_closed,
@@ -1008,14 +1257,14 @@ def run_diagnostic_once() -> dict:
 def run_once() -> dict:
     _check_repo_identity()
     if STARTED_PATH.exists() or RUN_RESULT_PATH.exists() or FAILURE_PATH.exists() or WITNESS_PATH.exists():
-        raise ProbeError("RPF51_REV3_SCENARIO_ONE_SHOT_ALREADY_CONSUMED")
+        raise ProbeError("RPF51_REV4_SCENARIO_ONE_SHOT_ALREADY_CONSUMED")
     preflight, contracts = _read_preflight()
     if WITNESS_PATH.exists():
-        raise ProbeError("REV3_WITNESS_OUTPUT_ALREADY_EXISTS")
+        raise ProbeError("REV4_WITNESS_OUTPUT_ALREADY_EXISTS")
     if not _port_closed(contracts.experiment["port"]):
         raise ProbeError("FROZEN_PORT_OCCUPIED_BEFORE_START")
     _owned_path(STARTED_PATH)
-    started_record = {"schema_version": "rpf51-rev3-scenario-started-v1",
+    started_record = {"schema_version": "rpf51-rev4-scenario-started-v1",
                       "run_id": contracts.experiment["run_id"], "started_at_utc": _utc_now(),
                       "preflight_sha256": sha256_bytes(PREFLIGHT_PATH.read_bytes())}
     _write_exclusive(STARTED_PATH, canonical(started_record))
@@ -1024,8 +1273,11 @@ def run_once() -> dict:
     env_name = contracts.effect["env"]
     port = contracts.experiment["port"]
     jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
-    java, actual_java_version = _java_info()
-    if actual_java_version != contracts.experiment["java_version"]:
+    java_details = _java_details()
+    java = java_details["direct_jdk_executable"]
+    actual_java_version = java_details["version"]
+    if (actual_java_version != contracts.experiment["java_version"]
+            or java_details != preflight["java_identity"]):
         raise ProbeError("JAVA_VERSION_CHANGED_AFTER_FREEZE")
     api_key = secrets.token_urlsafe(32)
     invalid_key = secrets.token_urlsafe(32)
@@ -1227,7 +1479,7 @@ def run_once() -> dict:
         witness = None
         raw = b""
     if failure_code or witness is None:
-        result = {"schema_version": "rpf51-rev3-scenario-result-v1",
+        result = {"schema_version": "rpf51-rev4-scenario-result-v1",
                   "status": "PARTIAL", "failure_category": failure_code,
                   "run_id": contracts.experiment["run_id"],
                   "contract_outcome": effect_result["contract_outcome"],
@@ -1236,6 +1488,7 @@ def run_once() -> dict:
                   "provider_requests": 0, "tokens": 0, "cost_cny": 0,
                   "diagnostic_elapsed_seconds": diagnostic_elapsed,
                   "total_java_elapsed_seconds": round(total_java_elapsed, 6),
+                  "java_identity": java_details,
                   "process_id": process.pid if process is not None else None,
                   "process_exit_code": process.returncode if process is not None else None,
                   "process_stopped": process_stopped, "port_closed": port_closed,
@@ -1247,7 +1500,7 @@ def run_once() -> dict:
         if not RUN_RESULT_PATH.exists():
             _write_exclusive(RUN_RESULT_PATH, canonical(result))
         if not FAILURE_PATH.exists():
-            _write_exclusive(FAILURE_PATH, canonical({"schema_version": "rpf51-rev3-scenario-failure-v1",
+            _write_exclusive(FAILURE_PATH, canonical({"schema_version": "rpf51-rev4-scenario-failure-v1",
                                                       "failure_category": failure_code,
                                                       "process_id": result["process_id"],
                                                       "process_stopped": process_stopped,
@@ -1258,7 +1511,7 @@ def run_once() -> dict:
         print(json.dumps({"status": "PARTIAL", **result}, sort_keys=True))
         raise ProbeError(failure_code or "ORACLE_CONTRACT_NOT_SATISFIED")
     anchor = sha256_bytes(raw)
-    result = {"schema_version": "rpf51-rev3-scenario-result-v1", "status": "PASS",
+    result = {"schema_version": "rpf51-rev4-scenario-result-v1", "status": "PASS",
               "run_id": contracts.experiment["run_id"],
               "source_level": witness["source_identity"]["source_level"],
               "contract_outcome": witness["effect_result"]["contract_outcome"],
@@ -1268,6 +1521,7 @@ def run_once() -> dict:
               "provider_requests": 0, "tokens": 0, "cost_cny": 0,
               "diagnostic_elapsed_seconds": diagnostic_elapsed,
               "total_java_elapsed_seconds": round(total_java_elapsed, 6),
+              "java_identity": java_details,
               "process_id": process.pid, "process_exit_code": process.returncode,
               "process_stopped": process_stopped, "port_closed": port_closed,
               "external_connections": external_connections,
@@ -1281,7 +1535,7 @@ def run_once() -> dict:
 def _record_failure(code: str) -> None:
     if STARTED_PATH.exists() and not FAILURE_PATH.exists():
         _write_exclusive(FAILURE_PATH, canonical({
-            "schema_version": "rpf51-rev3-scenario-failure-v1",
+            "schema_version": "rpf51-rev4-scenario-failure-v1",
             "failure_category": code, "started_marker_present": True,
             "witness_written": WITNESS_PATH.exists(),
         }))
@@ -1295,17 +1549,30 @@ def main(argv: list[str] | None = None) -> int:
                        help="copy verified source and freeze the single read-only diagnostic")
     modes.add_argument("--diagnose", action="store_true",
                        help="run one read-only health diagnostic and verify shutdown")
+    modes.add_argument("--summarize-diagnostics", action="store_true",
+                       help="freeze the local results of completed diagnostics")
     modes.add_argument("--prepare-scenario", action="store_true",
                        help="freeze one business scenario after diagnostic PASS")
     modes.add_argument("--run-scenario", action="store_true",
                        help="consume the single business scenario and produce real evidence")
+    parser.add_argument("--attempt", type=int, choices=(1, 2), default=1,
+                        help="fresh read-only diagnostic attempt (maximum 2)")
     args = parser.parse_args(argv)
     try:
+        if args.prepare_diagnostic or args.diagnose:
+            _configure_diagnostic_attempt(args.attempt)
+        elif args.attempt != 1:
+            raise ProbeError("DIAGNOSTIC_ATTEMPT_ONLY_APPLIES_TO_DIAGNOSTICS")
         if args.prepare_diagnostic:
             prepare_diagnostic()
         elif args.diagnose:
             result = run_diagnostic_once()
             return 0 if result["status"] == "PASS" else 3
+        elif args.summarize_diagnostics:
+            summary = _write_readiness_diagnostic_summary()
+            print(json.dumps({"status": summary["status"],
+                              "attempt_count": len(summary["attempts"])}, sort_keys=True))
+            return 0 if summary["status"] == "PASS" else 3
         elif args.prepare_scenario:
             prepare_scenario()
         else:
@@ -1319,7 +1586,8 @@ def main(argv: list[str] | None = None) -> int:
     except ProbeError as exc:
         if args.diagnose and DIAGNOSTIC_STARTED_PATH.exists() and not DIAGNOSTIC_FAILURE_PATH.exists():
             _write_exclusive(DIAGNOSTIC_FAILURE_PATH, canonical({
-                "schema_version": "rpf51-rev3-diagnostic-failure-v1",
+                "schema_version": "rpf51-rev4-diagnostic-failure-v1",
+                "attempt": DIAGNOSTIC_ATTEMPT,
                 "failure_category": exc.code, "diagnostic_id": None,
                 "result_written": DIAGNOSTIC_RESULT_PATH.exists(),
             }))

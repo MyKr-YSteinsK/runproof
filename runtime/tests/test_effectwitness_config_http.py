@@ -28,6 +28,7 @@ _GOOD = "a" * 64
 _REV1_PARENT = "b3271eaaf408dffa1ecd6f26f1b47fab5cede289"
 _REV2_PARENT = "6753ac17ee079bf94562bfd9879bfd3c11ff74c0"
 _REV3_PARENT = "68ac08de12048856fe38aa7e8548ad5bb3516a9b"
+_REV4_PARENT = "1c4c3a382808a98613b1e659dfcddbc1d5ebc67e"
 
 
 def _load_probe_module():
@@ -140,29 +141,37 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
         with self.assertRaises(ContractRejected):
             FrozenContracts.from_document(document)
 
-    def test_rev1_rev2_and_rev3_exact_runproof_parents_are_supported(self):
+    def test_rev1_rev2_rev3_and_rev4_exact_runproof_parents_are_supported(self):
         self.assertEqual(make_contract_bundle(_REV1_PARENT).experiment["runproof_parent_commit"],
                          _REV1_PARENT)
         self.assertEqual(make_contract_bundle(_REV2_PARENT).experiment["runproof_parent_commit"],
                          _REV2_PARENT)
         self.assertEqual(make_contract_bundle(_REV3_PARENT).experiment["runproof_parent_commit"],
                          _REV3_PARENT)
+        self.assertEqual(make_contract_bundle(_REV4_PARENT).experiment["runproof_parent_commit"],
+                         _REV4_PARENT)
         with self.assertRaisesRegex(ContractRejected, "RUNPROOF_PARENT_MISMATCH"):
             make_contract_bundle("c" * 40)
 
-    def test_rev3_probe_uses_separate_task_identity_and_environment_key_placeholder(self):
+    def test_rev4_probe_uses_separate_task_identity_and_environment_key_placeholder(self):
         root = Path(__file__).resolve().parents[2]
-        self.assertEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51-rev3")
+        self.assertEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51-rev4")
         self.assertNotEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51")
-        self.assertEqual(_PROBE.RUNPROOF_PARENT, _REV3_PARENT)
-        self.assertEqual(_PROBE.RUNPROOF_BRANCH, "codex/rpf-51-rev3-readiness-http-effect")
+        self.assertEqual(_PROBE.RUNPROOF_PARENT, _REV4_PARENT)
+        self.assertEqual(_PROBE.RUNPROOF_BRANCH, "codex/rpf-51-rev4-real-jdk-http-effect")
         self.assertEqual(_PROBE.STARTED_PATH.parent, _PROBE.SCENARIO_ROOT)
         self.assertEqual(_PROBE.WITNESS_PATH,
-                         root / "spikes" / "rpf-51" / "rev-3" / "config-http-witness.json")
+                         root / "spikes" / "rpf-51" / "rev-4" / "config-http-witness.json")
+        self.assertEqual(_PROBE._diagnostic_paths(1)["root"],
+                         root / ".local" / "rpf-51-rev4" / "diagnostics" / "attempt-01")
+        self.assertEqual(_PROBE._diagnostic_paths(2)["root"],
+                         root / ".local" / "rpf-51-rev4" / "diagnostics" / "attempt-02")
 
         secret = "unit-test-secret-that-must-not-appear"
-        argv = _PROBE._build_java_args("java", Path("private-temp"), Path("private.jar"),
+        direct_java = "C:/Program Files/Java/jdk-17/bin/java.exe"
+        argv = _PROBE._build_java_args(direct_java, Path("private-temp"), Path("private.jar"),
                                        43127, "rpf51-app-test", "rpf51-env-test")
+        self.assertEqual(argv[0], direct_java)
         self.assertIn("--security.api-keys[0].key=${CONFIG_CENTER_API_KEY}", argv)
         self.assertIn("--security.api-keys[0].app=rpf51-app-test", argv)
         self.assertIn("--security.api-keys[0].env=rpf51-env-test", argv)
@@ -175,6 +184,22 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
         for legacy_args in (["--prepare"], ["--run"]):
             with self.subTest(args=legacy_args), self.assertRaises(SystemExit):
                 _PROBE.main(legacy_args)
+
+    def test_diagnostic_attempt_budget_and_second_attempt_repair_gate(self):
+        with self.assertRaises(_PROBE.ProbeError):
+            _PROBE._diagnostic_paths(3)
+        first = {"status": "FAILED", "failure_category": "LISTENER_PID_MISMATCH",
+                 "process_id": 31372, "process_stopped": True, "port_closed": True,
+                 "external_connections": [], "business_http_request_count": 0,
+                 "provider_requests": 0, "tokens": 0, "cost_cny": 0,
+                 "health_get_count": 1, "runproof_parent_commit": _REV4_PARENT,
+                 "runtime_source_sha256": "a" * 64}
+        with self.assertRaises(_PROBE.ProbeError):
+            _PROBE._validate_second_diagnostic(first, "a" * 64)
+        _PROBE._validate_second_diagnostic(first, "b" * 64)
+        unsafe = {**first, "external_connections": ["NON_LOOPBACK_CONNECTION"]}
+        with self.assertRaises(_PROBE.ProbeError):
+            _PROBE._validate_second_diagnostic(unsafe, "b" * 64)
 
     def test_oracle_requires_independent_readback_and_exact_two_row_history(self):
         observations = observations_for(self.contracts)
@@ -243,7 +268,7 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
 
 
 class ConfigHttpReadinessTests(unittest.TestCase):
-    def test_java_info_uses_jdk_executable_reported_by_launcher(self):
+    def test_java_details_resolve_launcher_home_and_direct_jdk_executable(self):
         with tempfile.TemporaryDirectory() as folder:
             java_home = Path(folder) / "jdk-17"
             java = java_home / "bin" / ("java.exe" if _PROBE.os.name == "nt" else "java")
@@ -257,11 +282,14 @@ class ConfigHttpReadinessTests(unittest.TestCase):
             with patch.object(_PROBE.shutil, "which", return_value="java-wrapper"), \
                     patch.object(_PROBE.subprocess, "run",
                                  side_effect=[settings, direct_version]) as run:
-                executable, version = _PROBE._java_info()
-        self.assertEqual(executable, str(java))
-        self.assertEqual(version, "17.0.12")
+                details = _PROBE._java_details()
+        self.assertEqual(details["direct_jdk_executable"], str(java))
+        self.assertEqual(details["java_home"], str(java_home.resolve()))
+        self.assertEqual(details["version"], "17.0.12")
+        self.assertEqual(details["launcher_path"], str(Path("java-wrapper").absolute()))
+        launcher_path = str(Path("java-wrapper").absolute())
         self.assertEqual(run.call_args_list[0].args[0],
-                         ["java-wrapper", "-XshowSettings:properties", "-version"])
+                         [launcher_path, "-XshowSettings:properties", "-version"])
         self.assertEqual(run.call_args_list[1].args[0], [str(java), "-version"])
 
     def test_netstat_fixture_parser_and_listener_identity_are_fail_closed(self):
@@ -353,6 +381,8 @@ class ConfigHttpReadinessTests(unittest.TestCase):
         self.assertEqual(result["health_get_count"], 1)
         self.assertEqual(result["last_samples"][-1]["http_status"], 200)
         self.assertTrue(result["last_samples"][-1]["pid_match"])
+        self.assertEqual(result["last_samples"][-1]["listener_pid"], 31372)
+        self.assertEqual(result["last_samples"][-1]["listener_pid_after"], 31372)
         self.assertEqual(health.call_count, 1)
 
     def test_readiness_rejects_process_exit_and_non_up_health(self):
