@@ -98,4 +98,6 @@ Quality 只以有效 Agent `PASS/FAIL` evidence 为分母；`ERROR`、`INVALID`�
 
 ## Scope boundary
 
+RPF-48 的独立受限 Target Execution Driver 已通过 Pydantic AI/DeepSeek 的真实订单 Tool Loop 与独立 Authority/Oracle 核验，入口、预算和新的 `rpf-target-evidence-v1` 去敏材料见 [RPF-48](../spikes/rpf-48/README.md)。它采用静态 adapter registry；WorkSwarm 接入、ops Live 和通用动态插件仍未证明，旧 Witness v1/v2 与正式 Worker/API 不改变。
+
 这是单 Run + Failure Case + 单条 Historical Regression + 最小 Evaluation Suite + Quality Policy/Release Gate decision vertical slice，并由 RPF-11/RPF-14 的正式 Control Plane、durable worker 与 Job Transport 承载 canonical ingest/read 与 Evaluation execution；仍不包含 broker、scheduler、production HA、超出 bounded worker contract 的完整 lease/checkpoint、streaming、thinking continuation、通用 Agent SDK、SLA/统计显著性、自动发布或真实生产 destructive operation。RPF-07 Evaluation 与 RPF-08 Gate 是确定性 reviewed prototype，不证明长期 Provider 成本/性能稳定性，也不提供 deployment/release endpoint。Docker 是当前 evidence/provider 实现，不是永久产品身份。
