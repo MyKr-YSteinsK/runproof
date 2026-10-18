@@ -54,6 +54,10 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 
 打开 <http://127.0.0.1:4173/overview>。五到十分钟的完整路径见 [docs/DEMO.zh-CN.md](docs/DEMO.zh-CN.md) 和 [docs/DEMO.md](docs/DEMO.md)。
 
+## EffectWitness 竞赛预览（功能分支）
+
+独立的 [`codex/rpf-47-competition-evidence-demo` 分支](https://github.com/MyKr-YSteinsK/runproof/tree/codex/rpf-47-competition-evidence-demo)提供只读的已记录 EffectWitness 演示和首轮竞赛材料。它将一份已提交的 Live 会话研究摘要与可离线锚定的历史 Witness 样本分开呈现。该分支尚未进入 `main` 或默认发布，不会启动模型请求、业务试验、部署或发布。来源清单、验证器、申报草案和演示脚本见 [功能分支 README](https://github.com/MyKr-YSteinsK/runproof/tree/codex/rpf-47-competition-evidence-demo/spikes/rpf-47)。
+
 ## 有证据支持的边界
 
 ### 当前范围内已证明

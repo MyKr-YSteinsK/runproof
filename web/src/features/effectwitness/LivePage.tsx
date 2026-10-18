@@ -69,7 +69,7 @@ export function LivePage({path,search}:{path:string;search:string}) {
   }
   const selected=s?.events.find(e=>e.event_id===new URLSearchParams(search).get("event"));
   return <AppShell lab><section className="ew-lab ew-live"><header className="ew-heading"><span className="ew-source">{c.scope}</span><h1>{c.title}</h1><p>{c.sub}</p>
-    <a href="/effectwitness" onClick={e=>{e.preventDefault();navigate("/effectwitness");}}>{c.free}</a></header>
+    <a href="/effectwitness" onClick={e=>{e.preventDefault();navigate("/effectwitness");}}>{c.free}</a><p><a href="/effectwitness/recorded" onClick={e=>{e.preventDefault();navigate("/effectwitness/recorded");}}>{locale === "zh-CN" ? "打开已记录的 RPF-46 只读演示" : "Open the recorded RPF-46 read-only walkthrough"}</a></p></header>
     {(!valid||error)&&<div className="ew-error" role="alert"><strong>{valid?error:"INVALID_LAB_ROUTE"}</strong><p>{c.offline}</p><button onClick={()=>setRevision(x=>x+1)}>{c.reconnect}</button></div>}
     {valid&&!sid&&<section className="ew-panel ew-setup"><h2>01 · {c.setup}</h2><p>{c.model}: <strong>{cap?.requested_model||"UNAVAILABLE"}</strong></p>
       <p>Explorer: <strong>{online?cap?.explorer:"UNAVAILABLE"}</strong> · {c.remaining}: {cap?.remaining_sessions??"—"} · busy: {String(cap?.busy??false)}</p>

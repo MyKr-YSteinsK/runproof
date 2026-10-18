@@ -1,0 +1,88 @@
+{
+  "schema_version": "rpf-47-evidence-manifest-v1",
+  "source_branch": "codex/rpf-46-live-pge-lab",
+  "source_commit": "69dfe3079f5778cf6e569e82cf8382e4e3ec04a8",
+  "sources": [
+    {
+      "id": "rpf46-summary",
+      "kind": "RECORDED_RPF46_SUMMARY",
+      "path": "spikes/rpf-46/session-report.json",
+      "sha256": "f450803b8fd3ec51fe2663ba95370577c92f0eb70cc0dd05f4d7e5b98ab25d15",
+      "schema_version": "rpf46-research-summary-v1",
+      "evidence_level": "REPORTED_NOT_FULL_OFFLINE_VERIFIED",
+      "identity": {
+        "session_id": "exploration-a3cdf741b7e34f4f97c07228fdf9b679",
+        "created_at": "2026-10-18T00:22:02.278261+08:00",
+        "completed_at": "2026-10-18T00:22:04.66142+08:00",
+        "source": "LIVE_LOCAL_SIMULATION"
+      },
+      "claim_limits": [
+        "The committed research summary records two DeepSeek Tool Calls, two fresh local simulated order trials and the feedback link; it is not the complete raw provider session or an independently issuer-authenticated witness.",
+        "Round two selected response-lost after the first round feedback hash was validated and returned in the next request.",
+        "Both orders reached REFUNDED with one receipt and CONTRACT_SATISFIED_IN_RUN; round two fault triggered and reconciled. No refund contract violation was found.",
+        "This is one session of limited mechanism evidence with CORRELATIONAL_ONLY attribution; no counterfactual causality, reproduction or statistical/general policy advantage is established.",
+        "The RPF-46 Witness bytes were reported as local-only and are not present in this independent checkout."
+      ]
+    },
+    {
+      "id": "rpf43-order-sample",
+      "kind": "HISTORICAL_WITNESS_SAMPLE",
+      "path": "spikes/rpf-43/sample-witness.json",
+      "sha256": "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e",
+      "schema_version": "rpf-effect-witness-v1",
+      "evidence_level": "VERIFIED_ANCHORED",
+      "domain": "ORDER",
+      "claim_limits": [
+        "A separate deterministic local order simulation; not part of the RPF-46 session.",
+        "The trusted file anchor and offline verifier establish bounded content consistency, not issuer identity, production payment truth, causal attribution or reproduction."
+      ],
+      "offline_verifier": "python -B -m runtime.runproof_runtime.effectwitness.witness_verify spikes/rpf-43/sample-witness.json --expected-sha256 ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e"
+    },
+    {
+      "id": "rpf44-ops-sample",
+      "kind": "HISTORICAL_WITNESS_SAMPLE",
+      "path": "spikes/rpf-44/sample-ops-witness.json",
+      "sha256": "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873",
+      "schema_version": "rpf-effect-witness-v2",
+      "evidence_level": "VERIFIED_ANCHORED",
+      "domain": "OPS",
+      "claim_limits": [
+        "A separate controlled local SQLite operations simulation; not part of the RPF-46 session and not proof of RPF-28 Docker integration.",
+        "The trusted file anchor and offline verifier establish bounded content consistency, not issuer identity, production configuration truth, causal attribution or reproduction."
+      ],
+      "offline_verifier": "python -B -m runtime.runproof_runtime.effectwitness.witness_verify spikes/rpf-44/sample-ops-witness.json --expected-sha256 21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873"
+    }
+  ],
+  "competition": {
+    "name": "首届 openJiuwen 智能体创新大赛",
+    "official_source": {
+      "publisher": "华为云云社区 / openJiuwen 活动助手",
+      "title": "〖大赛活动〗openJiuwen智能体创新大赛火热报名中！万元奖金等你来!",
+      "url": "https://bbs.huaweicloud.com/blogs/882ce6baa17e4785bc3398029e6c79eb",
+      "published_at": "2026-09-17T11:17:37+08:00",
+      "observed_date": "2026-10-18",
+      "observation": "Official search-index content exposed the full announcement and required-material list; direct page open timed out. The official openJiuwen Competition Center returned no competition entries during this audit."
+    },
+    "creative_submission_deadline": "2026-10-30",
+    "deadline_precision": "The accessible official announcement gives the date only; portal cutoff time and time zone were not verified.",
+    "officially_listed_materials": [
+      "作品名称",
+      "项目简介",
+      "应用场景说明",
+      "技术方案",
+      "DEMO（可为演示视频，3分钟以内）",
+      "项目文档",
+      "获奖作品需提供相关代码或相关佐证材料"
+    ],
+    "registration": "The announcement says registration is completed through a WeChat-scanned questionnaire. The questionnaire, logged-in submission portal, final form fields, account requirements, cutoff hour and time zone were not inspected.",
+    "unverified_conflicting_date": "2026-10-31",
+    "conflict_handling": "Do not treat 2026-10-31 as an official extension. Use 2026-10-30 as the internal preparation deadline; the user must verify the final logged-in portal fields and cutoff."
+  },
+  "validation": {
+    "offline_evidence_command": "python -B spikes/rpf-47/verify_evidence.py --root .",
+    "provider_http_attempts": 0,
+    "new_paid_sessions": 0,
+    "new_business_trials": 0,
+    "registration_status": "NOT_SUBMITTED"
+  }
+}

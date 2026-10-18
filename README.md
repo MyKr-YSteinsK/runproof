@@ -54,6 +54,10 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 
 Open <http://127.0.0.1:4173/overview>. The five-to-ten-minute walkthrough is documented in [docs/DEMO.md](docs/DEMO.md) and [docs/DEMO.zh-CN.md](docs/DEMO.zh-CN.md).
 
+## EffectWitness competition preview (feature branch)
+
+The separate [`codex/rpf-47-competition-evidence-demo` branch](https://github.com/MyKr-YSteinsK/runproof/tree/codex/rpf-47-competition-evidence-demo) contains a read-only, recorded EffectWitness walkthrough and first-round competition materials. It distinguishes a committed live-session research summary from offline-anchored historical Witness samples. The branch is not part of `main` or the default release; it does not start a model request, business trial, deployment, or release. See [the feature-branch README](https://github.com/MyKr-YSteinsK/runproof/tree/codex/rpf-47-competition-evidence-demo/spikes/rpf-47) for the source manifest, verifier, submission draft, and demo script.
+
 ## Evidence-backed boundary
 
 ### Proven in the current scope
