@@ -22,6 +22,10 @@ _SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 _GIT_SHA = re.compile(r"[0-9a-f]{40,64}\Z")
 _IDENT = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,95}\Z")
 _KEY = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,199}\Z")
+_ALLOWED_RUNPROOF_PARENTS = {
+    "b3271eaaf408dffa1ecd6f26f1b47fab5cede289",  # rev-1 base
+    "6753ac17ee079bf94562bfd9879bfd3c11ff74c0",  # rev-2 base
+}
 _EXECUTION_FIELDS = {"schema_version", "execution_id", "driver", "http", "process", "budgets"}
 _HTTP_FIELDS = {"scheme", "host", "port", "timeout_seconds", "max_response_bytes", "redirects",
                 "auth_header", "read_allowlist", "write_allowlist"}
@@ -158,7 +162,7 @@ def _validate_experiment(value: dict, execution: dict, effect: dict) -> None:
     for name in ("runproof_parent_commit", "config_center_source_commit"):
         _require(isinstance(value[name], str) and _GIT_SHA.fullmatch(value[name]),
                  "SOURCE_IDENTITY_" + name.upper())
-    _require(value["runproof_parent_commit"] == "b3271eaaf408dffa1ecd6f26f1b47fab5cede289",
+    _require(value["runproof_parent_commit"] in _ALLOWED_RUNPROOF_PARENTS,
              "RUNPROOF_PARENT_MISMATCH")
     _require(isinstance(value["java_version"], str)
              and re.fullmatch(r"17(?:\.\d+){1,2}(?:\+[-A-Za-z0-9._]+)?", value["java_version"]),

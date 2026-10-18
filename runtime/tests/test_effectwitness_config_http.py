@@ -2,10 +2,12 @@ from __future__ import annotations
 
 import copy
 import hashlib
+import importlib.util
 import json
 import subprocess
 import sys
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 from runtime.runproof_runtime.effectwitness.config_http_adapter import (
@@ -22,14 +24,30 @@ from runtime.runproof_runtime.effectwitness.config_http_witness import (
 )
 
 _GOOD = "a" * 64
+_REV1_PARENT = "b3271eaaf408dffa1ecd6f26f1b47fab5cede289"
+_REV2_PARENT = "6753ac17ee079bf94562bfd9879bfd3c11ff74c0"
 
 
-def make_contract_bundle() -> FrozenContracts:
+def _load_probe_module():
+    root = Path(__file__).resolve().parents[2]
+    path = root / "spikes" / "rpf-51" / "probe.py"
+    spec = importlib.util.spec_from_file_location("rpf51_probe_under_test", path)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("RPF-51 probe module unavailable")
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+_PROBE = _load_probe_module()
+
+
+def make_contract_bundle(parent: str = _REV1_PARENT) -> FrozenContracts:
     return make_contracts(
         run_id="rpf51-" + "1" * 32, environment_id="env-rpf51-" + "1" * 32,
         execution_id="exec-" + "1" * 32, app="rpf51-app-test", env="rpf51-env-test",
         key="rpf51.value.test", port=43127,
-        runproof_parent_commit="b3271eaaf408dffa1ecd6f26f1b47fab5cede289",
+        runproof_parent_commit=parent,
         runtime_source_sha256=_GOOD, config_center_source_commit="b" * 40,
         config_center_manifest_sha256=_GOOD, config_center_jar_sha256=_GOOD,
         java_version="17.0.12", prepared_at_utc="2026-10-18T00:00:00Z")
@@ -89,6 +107,7 @@ def run_record(contracts: FrozenContracts, observations: list[dict]) -> dict:
                                 "<task-owned>/config-center-server-1.0.0.jar",
                                 "--spring.profiles.active=local", "--server.address=127.0.0.1",
                                 f"--server.port={contracts.experiment['port']}",
+                                "--security.api-keys[0].key=<environment-placeholder>",
                                 "--security.api-keys[0].app=<synthetic>",
                                 "--security.api-keys[0].env=<synthetic>"],
             "process_started_at_utc": "2026-10-18T00:00:01Z",
@@ -118,6 +137,35 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
         document["execution"]["http"]["write_allowlist"].append("POST /admin")
         with self.assertRaises(ContractRejected):
             FrozenContracts.from_document(document)
+
+    def test_rev1_and_rev2_exact_runproof_parents_are_supported(self):
+        self.assertEqual(make_contract_bundle(_REV1_PARENT).experiment["runproof_parent_commit"],
+                         _REV1_PARENT)
+        self.assertEqual(make_contract_bundle(_REV2_PARENT).experiment["runproof_parent_commit"],
+                         _REV2_PARENT)
+        with self.assertRaisesRegex(ContractRejected, "RUNPROOF_PARENT_MISMATCH"):
+            make_contract_bundle("c" * 40)
+
+    def test_rev2_probe_uses_separate_task_identity_and_environment_key_placeholder(self):
+        root = Path(__file__).resolve().parents[2]
+        self.assertEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51-rev2")
+        self.assertNotEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51")
+        self.assertEqual(_PROBE.RUNPROOF_PARENT, _REV2_PARENT)
+        self.assertEqual(_PROBE.RUNPROOF_BRANCH, "codex/rpf-51-rev2-http-effect-recovery")
+        self.assertEqual(_PROBE.STARTED_PATH.parent, _PROBE.TASK_ROOT)
+        self.assertEqual(_PROBE.WITNESS_PATH,
+                         root / "spikes" / "rpf-51" / "rev-2" / "config-http-witness.json")
+
+        secret = "unit-test-secret-that-must-not-appear"
+        argv = _PROBE._build_java_args("java", Path("private-temp"), Path("private.jar"),
+                                       43127, "rpf51-app-test", "rpf51-env-test")
+        self.assertIn("--security.api-keys[0].key=${CONFIG_CENTER_API_KEY}", argv)
+        self.assertIn("--security.api-keys[0].app=rpf51-app-test", argv)
+        self.assertIn("--security.api-keys[0].env=rpf51-env-test", argv)
+        self.assertNotIn(secret, "\0".join(argv))
+        rendered = "\0".join(_PROBE._redacted_process_command(43127))
+        self.assertIn("--security.api-keys[0].key=<environment-placeholder>", rendered)
+        self.assertNotIn(secret, rendered)
 
     def test_oracle_requires_independent_readback_and_exact_two_row_history(self):
         observations = observations_for(self.contracts)
@@ -286,6 +334,13 @@ class ConfigHttpWitnessTests(unittest.TestCase):
         forged["issuer"]["issuer_authenticity"] = "VERIFIED"
         forged = seal(forged)
         with self.assertRaisesRegex(WitnessRejected, "WITNESS_OR_ISSUER_IDENTITY"):
+            verify_bytes(canonical(forged))
+
+    def test_resealed_wrong_source_identity_is_rejected(self):
+        forged = copy.deepcopy(self.witness)
+        forged["source_identity"]["runproof_source_commit"] = _REV2_PARENT
+        forged = seal(forged)
+        with self.assertRaisesRegex(WitnessRejected, "SOURCE_IDENTITY_MISMATCH"):
             verify_bytes(canonical(forged))
 
     def test_rehashed_false_stale_success_still_fails_external_anchor(self):

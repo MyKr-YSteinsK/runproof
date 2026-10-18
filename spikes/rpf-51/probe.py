@@ -30,16 +30,23 @@ from runtime.runproof_runtime.effectwitness.config_http_witness import (
     WitnessRejected, build_witness, verify_bytes,
 )
 
-TASK_ROOT = ROOT / ".local" / "rpf-51"
+TASK_ROOT = ROOT / ".local" / "rpf-51-rev2"
 UPSTREAM = TASK_ROOT / "upstream-config-center"
 MANIFEST_PATH = TASK_ROOT / "upstream-source-manifest.json"
 PREFLIGHT_PATH = TASK_ROOT / "preflight.json"
 STARTED_PATH = TASK_ROOT / "started.json"
 RUN_RESULT_PATH = TASK_ROOT / "run-result.json"
 FAILURE_PATH = TASK_ROOT / "run-failure.json"
-WITNESS_PATH = ROOT / "spikes" / "rpf-51" / "config-http-witness.json"
+WITNESS_PATH = ROOT / "spikes" / "rpf-51" / "rev-2" / "config-http-witness.json"
 UPSTREAM_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
-RUNPROOF_PARENT = "b3271eaaf408dffa1ecd6f26f1b47fab5cede289"
+UPSTREAM_MANIFEST_SHA256 = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
+UPSTREAM_JAR_SHA256 = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
+UPSTREAM_SOURCE_FILE_COUNT = 110
+UPSTREAM_SOURCE_TOTAL_BYTES = 393800
+UPSTREAM_JAR_RELATIVE = "config-center-server/target/config-center-server-1.0.0.jar"
+SOURCE_COPY_ACQUISITION = "COPIED_FROM_PREVIOUSLY_VERIFIED_RPF51_REV1_SOURCE_COPY_AND_JAR"
+RUNPROOF_PARENT = "6753ac17ee079bf94562bfd9879bfd3c11ff74c0"
+RUNPROOF_BRANCH = "codex/rpf-51-rev2-http-effect-recovery"
 RUNTIME_SOURCE_FILES = (
     "runtime/runproof_runtime/effectwitness/config_http_contracts.py",
     "runtime/runproof_runtime/effectwitness/config_http_adapter.py",
@@ -49,6 +56,8 @@ RUNTIME_SOURCE_FILES = (
 )
 MAX_RUN_SECONDS = 1800
 MAX_HTTP_REQUESTS = 12
+SCENARIO_BUDGET = {"business_scenarios": 1, "http_requests": MAX_HTTP_REQUESTS,
+                   "provider_requests": 0, "tokens": 0, "cost_cny": 0}
 
 
 class ProbeError(RuntimeError):
@@ -73,7 +82,8 @@ def _write_exclusive(path: Path, raw: bytes) -> None:
 
 def _write_witness_once(raw: bytes) -> None:
     resolved = WITNESS_PATH.resolve()
-    if resolved != WITNESS_PATH.absolute() or WITNESS_PATH.parent.resolve() != (ROOT / "spikes" / "rpf-51").resolve():
+    if (resolved != WITNESS_PATH.absolute()
+            or WITNESS_PATH.parent.resolve() != (ROOT / "spikes" / "rpf-51" / "rev-2").resolve()):
         raise ProbeError("WITNESS_PATH_NOT_ALLOWLISTED")
     fd = os.open(WITNESS_PATH, os.O_CREAT | os.O_EXCL | os.O_WRONLY, 0o600)
     with os.fdopen(fd, "wb") as stream:
@@ -86,7 +96,7 @@ def _owned_path(path: Path) -> Path:
     root = TASK_ROOT.resolve()
     resolved = path.resolve()
     if resolved == root or root not in resolved.parents:
-        raise ProbeError("TASK_PATH_OUTSIDE_RPF51")
+        raise ProbeError("TASK_PATH_OUTSIDE_RPF51_REV2")
     current = path
     while current != ROOT and current != current.parent:
         if current.is_symlink():
@@ -107,6 +117,9 @@ def _git(*args: str) -> str:
 
 def _source_manifest() -> tuple[dict, str]:
     raw = MANIFEST_PATH.read_bytes()
+    manifest_sha256 = sha256_bytes(raw)
+    if manifest_sha256 != UPSTREAM_MANIFEST_SHA256:
+        raise ProbeError("SOURCE_MANIFEST_SHA256_MISMATCH")
     try:
         manifest = json.loads(raw.decode("utf-8-sig"))
     except (UnicodeError, ValueError):
@@ -116,7 +129,8 @@ def _source_manifest() -> tuple[dict, str]:
             or manifest["source_commit"] != UPSTREAM_COMMIT
             or type(manifest["files"]) is not list
             or manifest["file_count"] != len(manifest["files"])
-            or len(manifest["files"]) != 110):
+            or len(manifest["files"]) != UPSTREAM_SOURCE_FILE_COUNT
+            or manifest["total_bytes"] != UPSTREAM_SOURCE_TOTAL_BYTES):
         raise ProbeError("SOURCE_MANIFEST_IDENTITY")
     total = 0
     seen = set()
@@ -145,13 +159,13 @@ def _source_manifest() -> tuple[dict, str]:
     expected_relative_files = {
         PurePosixPath(item["path"].replace("\\", "/")).as_posix() for item in manifest["files"]
     }
-    if not expected_relative_files.issubset(actual_relative_files):
-        raise ProbeError("SOURCE_TREE_FILE_MISSING")
-    generated_files = actual_relative_files - expected_relative_files
-    if any(PurePosixPath(path).parts[:2] != ("config-center-server", "target")
-           for path in generated_files):
+    expected_copy_files = expected_relative_files | {UPSTREAM_JAR_RELATIVE}
+    if actual_relative_files != expected_copy_files:
         raise ProbeError("SOURCE_TREE_UNEXPECTED_FILE")
-    return manifest, sha256_bytes(raw)
+    jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
+    if sha256_bytes(jar.read_bytes()) != UPSTREAM_JAR_SHA256:
+        raise ProbeError("CONFIG_CENTER_JAR_SHA256_MISMATCH")
+    return manifest, manifest_sha256
 
 
 def _runtime_source_digest() -> str:
@@ -190,20 +204,38 @@ def _free_port() -> int:
         raise ProbeError("LOOPBACK_PORT_UNAVAILABLE") from None
 
 
+def _build_java_args(java: str, temp_dir: Path, jar: Path, port: int,
+                     app: str, env_name: str) -> list[str]:
+    """Build Java argv with only the environment placeholder for the API key."""
+    return [java, f"-Djava.io.tmpdir={temp_dir}", "-jar", str(jar),
+            "--spring.profiles.active=local", "--server.address=127.0.0.1",
+            f"--server.port={port}", "--security.api-keys[0].key=${CONFIG_CENTER_API_KEY}",
+            f"--security.api-keys[0].app={app}", f"--security.api-keys[0].env={env_name}"]
+
+
+def _redacted_process_command(port: int) -> list[str]:
+    return ["java", "-Djava.io.tmpdir=<task-owned-tmp>", "-jar",
+            "<task-owned>/config-center-server-1.0.0.jar",
+            "--spring.profiles.active=local", "--server.address=127.0.0.1",
+            f"--server.port={port}", "--security.api-keys[0].key=<environment-placeholder>",
+            "--security.api-keys[0].app=<synthetic>",
+            "--security.api-keys[0].env=<synthetic>"]
+
+
 def prepare() -> dict:
     if Path(_git("rev-parse", "--show-toplevel")).resolve() != ROOT.resolve():
         raise ProbeError("RUNPROOF_ROOT_MISMATCH")
     if _git("rev-parse", "HEAD") != RUNPROOF_PARENT:
         raise ProbeError("RUNPROOF_PARENT_MISMATCH")
-    if _git("branch", "--show-current") != "codex/rpf-51-config-center-http-effect":
+    if _git("branch", "--show-current") != RUNPROOF_BRANCH:
         raise ProbeError("RUNPROOF_BRANCH_MISMATCH")
     for path in (PREFLIGHT_PATH, STARTED_PATH, RUN_RESULT_PATH, FAILURE_PATH, WITNESS_PATH):
         if path.exists():
-            raise ProbeError("RPF51_ONE_SHOT_ARTIFACT_ALREADY_EXISTS")
+            raise ProbeError("RPF51_REV2_ONE_SHOT_ARTIFACT_ALREADY_EXISTS")
     if not TASK_ROOT.is_dir() or not UPSTREAM.is_dir() or not MANIFEST_PATH.is_file():
         raise ProbeError("TASK_OWNED_SOURCE_COPY_UNAVAILABLE")
     manifest, manifest_sha256 = _source_manifest()
-    jar = UPSTREAM / "config-center-server" / "target" / "config-center-server-1.0.0.jar"
+    jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
     if not jar.is_file():
         raise ProbeError("CONFIG_CENTER_JAR_UNAVAILABLE")
     java, java_version = _java_info()
@@ -223,14 +255,15 @@ def prepare() -> dict:
         config_center_jar_sha256=sha256_bytes(jar.read_bytes()), java_version=java_version,
         prepared_at_utc=_utc_now())
     contracts.validate()
-    document = {"schema_version": "rpf51-preflight-v1", "contracts": contracts.document(),
+    document = {"schema_version": "rpf51-rev2-preflight-v1", "contracts": contracts.document(),
                 "source_copy": {"commit": UPSTREAM_COMMIT, "file_count": manifest["file_count"],
                                 "total_bytes": manifest["total_bytes"],
                                 "manifest_sha256": manifest_sha256,
-                                "acquisition": "PUBLIC_GIT_ARCHIVE_FROM_CLEAN_ADJACENT_CHECKOUT"},
-                "java_executable": "java", "maven_version": "3.9.16",
-                "scenario_budget": {"business_scenarios": 1, "http_requests": MAX_HTTP_REQUESTS,
-                                     "provider_requests": 0, "tokens": 0, "cost_cny": 0}}
+                                "jar_bytes": 66981576, "jar_sha256": UPSTREAM_JAR_SHA256,
+                                "prior_runproof_revision": "rev-1",
+                                "acquisition": SOURCE_COPY_ACQUISITION},
+                "java_executable": "java", "maven_version": "NOT_RUN_REUSED_REV1_JAR",
+                "scenario_budget": SCENARIO_BUDGET}
     _write_exclusive(PREFLIGHT_PATH, canonical(document))
     print(json.dumps({"status": "PREFLIGHT_FROZEN", "run_id": run_id, "port": port,
                       "external_source_commit": UPSTREAM_COMMIT,
@@ -246,19 +279,40 @@ def _read_preflight() -> tuple[dict, FrozenContracts]:
     if type(document) is not dict or set(document) != {
             "schema_version", "contracts", "source_copy", "java_executable", "maven_version", "scenario_budget"}:
         raise ProbeError("PREFLIGHT_SHAPE")
-    if document["schema_version"] != "rpf51-preflight-v1":
+    if document["schema_version"] != "rpf51-rev2-preflight-v1":
         raise ProbeError("PREFLIGHT_VERSION")
+    source_copy = document["source_copy"]
+    if (type(source_copy) is not dict
+            or set(source_copy) != {"commit", "file_count", "total_bytes", "manifest_sha256",
+                                    "jar_bytes", "jar_sha256", "prior_runproof_revision", "acquisition"}
+            or source_copy != {"commit": UPSTREAM_COMMIT,
+                               "file_count": UPSTREAM_SOURCE_FILE_COUNT,
+                               "total_bytes": UPSTREAM_SOURCE_TOTAL_BYTES,
+                               "manifest_sha256": UPSTREAM_MANIFEST_SHA256,
+                               "jar_bytes": 66981576,
+                               "jar_sha256": UPSTREAM_JAR_SHA256,
+                               "prior_runproof_revision": "rev-1",
+                               "acquisition": SOURCE_COPY_ACQUISITION}
+            or document["java_executable"] != "java"
+            or document["maven_version"] != "NOT_RUN_REUSED_REV1_JAR"
+            or document["scenario_budget"] != SCENARIO_BUDGET):
+        raise ProbeError("PREFLIGHT_SOURCE_PROVENANCE")
     try:
         contracts = FrozenContracts.from_document(document["contracts"])
     except Exception:
         raise ProbeError("PREFLIGHT_CONTRACTS") from None
-    if _git("rev-parse", "HEAD") != RUNPROOF_PARENT or _runtime_source_digest() != contracts.experiment["runtime_source_sha256"]:
+    if (contracts.experiment["runproof_parent_commit"] != RUNPROOF_PARENT
+            or contracts.experiment["config_center_source_commit"] != UPSTREAM_COMMIT):
+        raise ProbeError("PREFLIGHT_REV2_SOURCE_IDENTITY")
+    if (_git("rev-parse", "HEAD") != RUNPROOF_PARENT
+            or _git("branch", "--show-current") != RUNPROOF_BRANCH
+            or _runtime_source_digest() != contracts.experiment["runtime_source_sha256"]):
         raise ProbeError("FROZEN_RUNTIME_SOURCE_CHANGED")
     manifest, manifest_sha = _source_manifest()
     if (manifest_sha != contracts.experiment["config_center_manifest_sha256"]
             or manifest["source_commit"] != contracts.experiment["config_center_source_commit"]):
         raise ProbeError("FROZEN_EXTERNAL_SOURCE_CHANGED")
-    jar = UPSTREAM / "config-center-server" / "target" / "config-center-server-1.0.0.jar"
+    jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
     if not jar.is_file() or sha256_bytes(jar.read_bytes()) != contracts.experiment["config_center_jar_sha256"]:
         raise ProbeError("FROZEN_JAR_CHANGED")
     return document, contracts
@@ -335,10 +389,10 @@ def _write_obs_result(observations: list[dict], kind: str) -> dict | None:
 
 def run_once() -> dict:
     if STARTED_PATH.exists() or RUN_RESULT_PATH.exists() or FAILURE_PATH.exists() or WITNESS_PATH.exists():
-        raise ProbeError("RPF51_ONE_SHOT_ALREADY_CONSUMED")
+        raise ProbeError("RPF51_REV2_ONE_SHOT_ALREADY_CONSUMED")
     preflight, contracts = _read_preflight()
     _owned_path(STARTED_PATH)
-    started_record = {"schema_version": "rpf51-started-v1",
+    started_record = {"schema_version": "rpf51-rev2-started-v1",
                       "run_id": contracts.experiment["run_id"], "started_at_utc": _utc_now(),
                       "preflight_sha256": sha256_bytes(PREFLIGHT_PATH.read_bytes())}
     _write_exclusive(STARTED_PATH, canonical(started_record))
@@ -351,7 +405,7 @@ def run_once() -> dict:
     app = contracts.effect["app"]
     env_name = contracts.effect["env"]
     port = contracts.experiment["port"]
-    jar = UPSTREAM / "config-center-server" / "target" / "config-center-server-1.0.0.jar"
+    jar = UPSTREAM.joinpath(*PurePosixPath(UPSTREAM_JAR_RELATIVE).parts)
     java, actual_java_version = _java_info()
     if actual_java_version != contracts.experiment["java_version"]:
         raise ProbeError("JAVA_VERSION_CHANGED_AFTER_FREEZE")
@@ -369,15 +423,8 @@ def run_once() -> dict:
     if log_path.exists():
         raise ProbeError("SERVER_LOG_ALREADY_EXISTS")
 
-    args = [java, f"-Djava.io.tmpdir={temp_dir}", "-jar", str(jar),
-            "--spring.profiles.active=local", "--server.address=127.0.0.1",
-            f"--server.port={port}", f"--security.api-keys[0].app={app}",
-            f"--security.api-keys[0].env={env_name}"]
-    process_command = ["java", "-Djava.io.tmpdir=<task-owned-tmp>", "-jar",
-                       "<task-owned>/config-center-server-1.0.0.jar",
-                       "--spring.profiles.active=local", "--server.address=127.0.0.1",
-                       f"--server.port={port}", "--security.api-keys[0].app=<synthetic>",
-                       "--security.api-keys[0].env=<synthetic>"]
+    args = _build_java_args(java, temp_dir, jar, port, app, env_name)
+    process_command = _redacted_process_command(port)
     task_env = {name: os.environ[name] for name in ("SystemRoot", "WINDIR", "PATH") if name in os.environ}
     task_env.update({"CONFIG_CENTER_API_KEY": api_key, "SERVER_ADDRESS": "127.0.0.1",
                      "TEMP": str(temp_dir), "TMP": str(temp_dir), "TMPDIR": str(temp_dir),
@@ -514,7 +561,7 @@ def run_once() -> dict:
         verify_bytes(raw)
         _write_witness_once(raw)
         anchor = sha256_bytes(raw)
-        result = {"schema_version": "rpf51-run-result-v1", "run_id": contracts.experiment["run_id"],
+        result = {"schema_version": "rpf51-rev2-run-result-v1", "run_id": contracts.experiment["run_id"],
                   "source_level": witness["source_identity"]["source_level"],
                   "contract_outcome": witness["effect_result"]["contract_outcome"],
                   "witness_sha256": anchor, "http_request_count": len(observations),
@@ -532,7 +579,7 @@ def run_once() -> dict:
 def _record_failure(code: str) -> None:
     if not FAILURE_PATH.exists():
         try:
-            _write_exclusive(FAILURE_PATH, canonical({"schema_version": "rpf51-run-failure-v1",
+            _write_exclusive(FAILURE_PATH, canonical({"schema_version": "rpf51-rev2-run-failure-v1",
                                                       "error_code": code,
                                                       "started_marker_present": STARTED_PATH.exists(),
                                                       "witness_written": WITNESS_PATH.exists()}))
