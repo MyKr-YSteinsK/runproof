@@ -24,14 +24,14 @@
 | --- | --- | --- |
 | A-01 身份/权限 | PASS | 预检记录了根目录、Base、`main`、目标分支、`origin` 和状态；目标本地/远端分支原先不存在。唯一预存未跟踪项是受保护的 `docs/reviews/`，仅见状态行且保持不动。无 PR、合并、tag、release、deploy 或报名操作。 |
 | A-02 事实/源码矩阵 | PASS | `EVIDENCE_MANIFEST.json` 固定三项来源和 SHA；离线校验器核对 source commit 祖先关系、Git blob / 工作树字节、摘要结构、会话身份、选择、反馈时序、收据和 claim limits。浏览器仅做内嵌摘要/manifest/报告事实检查，不声称认证自身 Git 来源。对因果、业务漏洞、签名身份均明确降级。 |
-| A-03 无费可复核 | NOT_RUN | 计划使用本计划新建的 `.local/rpf-47/checkout` 独立克隆执行离线 manifest 校验和 Witness verifier；完整 RPF-46 Session/Witness 未复制。该 Gate 完成后再更新结果。 |
-| A-04 Witness/身份/旧样本 | NOT_RUN | 计划在独立克隆核验 RPF-43/44 原字节、固定 SHA、锚定与缺锚/错误锚结果。旧 RPF-46 local Witness 未访问。该 Gate 完成后再更新结果。 |
+| A-03 无费可复核 | PASS | 从已推送的公开目标分支重新 `git clone --no-hardlinks` 到 `.local/rpf-47/checkout`；克隆 HEAD `45d049ca54974d374d4ddf6093248722f287a092`，分支匹配，精确检查 `.local/rpf-46` 为不存在。离线 manifest 状态 `VERIFIED`；Provider/new-session/new-trial 均为 0。完整 RPF-46 Session/Witness 未复制。 |
+| A-04 Witness/身份/旧样本 | PASS | 独立克隆中 RPF-43、RPF-44 anchored verifier 均为 `VERIFIED_ANCHORED` / native exit 0；缺锚为 `UNANCHORED_INCONCLUSIVE` / native exit 2；错误锚为 `REJECTED` / native exit 3。PowerShell 调用记录 `$LASTEXITCODE`，因命令承载层会把非零进程码归为 1。两份样本 `issuer_authenticity=NOT_ESTABLISHED`，不是 RPF-46 Live。旧 RPF-46 local Witness 未访问。 |
 | A-05 真实信息设计 | PASS | `RECORDED` 标签、来源条、双语事实、反馈 → 下一选择 → 业务读回 → 收据/故障 → Witness 边界均写在实际路由和 180 秒脚本内；没有“发现漏洞”结论。浏览器视觉验收独立列在 A-06。 |
 | A-06 Web/双语/来源 | NOT_RUN | `npm test -- --cache=false`（15 files / 60 tests）、`npm run typecheck`、`npm run build -- --config .local/rpf-47/vite.config.ts` 均 exit 0；构建提示既有总 JS chunk 约 1.371 MB。`python -B ci/verify-public-docs.py` exit 0（18 files / 7 pairs）。隔离回环地址 `http://127.0.0.2:4174/effectwitness/recorded` 的 HTTP GET 返回 200、HTML 标题为 RunProof；但 CUA 可见浏览器 `getTab(...).getState()` 超时 30 秒后 kernel reset。未实际确认 1280×720、zh/en 切换、event 深链/刷新、断连 fail-closed、键盘焦点和旧只读页面回归，因此本 Gate 不能 PASS。没有清理浏览器缓存或触碰其它应用状态。 |
 | A-07 创意申报包 | PASS | `SUBMISSION.md` 含中文名称、短/长简介、用户/场景、技术方案、创新点、边界、英文简介、官方材料字段映射及待用户填写个人信息占位。公告公开信息列明 2026-10-30 日期，不含时刻/时区；最终登录表单未检查，明确 `OFFICIAL_PORTAL_LOGIN_REQUIRED / USER_CHECK`，状态 `NOT_SUBMITTED`。 |
 | A-08 三分钟分镜/素材 | PASS（视频不可用） | `DEMO_SCRIPT.md` 时间轴共 180 秒，逐段给出真实画面、旁白、源文件与结论边界，并提供真实只读路由和安全回环启动命令。环境没有可识别的 ffmpeg/ffprobe/OBS/桌面录屏工具；未安装依赖，未产出 MP4，因此视频为 `UNAVAILABLE / NOT_RUN`，没有截图冒充视频。 |
 | A-09 回归/清理/成本 | PASS | 本轮 Provider 请求/token/费用均为 0；非测试新业务 trial 为 0。旧付费账本、quarantine 和 cache-hold 没有被访问或修改；本结果不声称核查其内部内容。RPF-47 的独立 checkout 与本机 build/cache 是本任务隔离产物；无新增隔离 trial 或 quarantine。适用测试/构建/文档/离线命令见本表和下文。 |
-| A-10 Git/交付 | NOT_RUN | 计划授权功能分支 commit/push；本结果写入时尚未完成 commit/push 与 push 后独立 `ls-remote` 对照。预期只提交 Plan 白名单；`main` 不变，无 PR/Merge/Release/Deploy。完成后将以专门结果更新记录已验证的远端 ref；当前最终 SHA 在聊天回执给出，避免 commit 自指。 |
+| A-10 Git/交付 | PASS | 首个 focused commit `45d049ca54974d374d4ddf6093248722f287a092` 已普通 push；随后从 `origin` 独立克隆并确认目标 ref 为同一 SHA。push 前后 `main` 均为 `bda0cd49e50e3181f604324e94877a24b9885334`。本结果是 push 后的第二个小型证据更新 commit，也将普通 push 并复核；它自己的最终 SHA 留在聊天回执避免自指。未建 PR、未合并、未发布或部署。 |
 
 ## 4. 来源身份与可复核输出
 
@@ -56,7 +56,7 @@ python -B -m runtime.runproof_runtime.effectwitness.witness_verify spikes/rpf-43
 python -B -m runtime.runproof_runtime.effectwitness.witness_verify spikes/rpf-44/sample-ops-witness.json --expected-sha256 21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873  PASS · VERIFIED_ANCHORED
 ```
 
-上列本地 witness 命令已通过；push 后的新克隆结果待验证并更新。没有执行 Docker 正式接入或 Live/provider 命令。
+独立克隆中的 manifest 和锚定/负向 witness 命令输出已按 A-03/A-04 记录。没有执行 Docker 正式接入或 Live/provider 命令。
 
 ## 6. 本机隔离产物与下一步
 
