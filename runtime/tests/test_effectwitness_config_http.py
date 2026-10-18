@@ -6,6 +6,7 @@ import importlib.util
 import json
 import subprocess
 import sys
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
@@ -26,6 +27,7 @@ from runtime.runproof_runtime.effectwitness.config_http_witness import (
 _GOOD = "a" * 64
 _REV1_PARENT = "b3271eaaf408dffa1ecd6f26f1b47fab5cede289"
 _REV2_PARENT = "6753ac17ee079bf94562bfd9879bfd3c11ff74c0"
+_REV3_PARENT = "68ac08de12048856fe38aa7e8548ad5bb3516a9b"
 
 
 def _load_probe_module():
@@ -138,23 +140,25 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
         with self.assertRaises(ContractRejected):
             FrozenContracts.from_document(document)
 
-    def test_rev1_and_rev2_exact_runproof_parents_are_supported(self):
+    def test_rev1_rev2_and_rev3_exact_runproof_parents_are_supported(self):
         self.assertEqual(make_contract_bundle(_REV1_PARENT).experiment["runproof_parent_commit"],
                          _REV1_PARENT)
         self.assertEqual(make_contract_bundle(_REV2_PARENT).experiment["runproof_parent_commit"],
                          _REV2_PARENT)
+        self.assertEqual(make_contract_bundle(_REV3_PARENT).experiment["runproof_parent_commit"],
+                         _REV3_PARENT)
         with self.assertRaisesRegex(ContractRejected, "RUNPROOF_PARENT_MISMATCH"):
             make_contract_bundle("c" * 40)
 
-    def test_rev2_probe_uses_separate_task_identity_and_environment_key_placeholder(self):
+    def test_rev3_probe_uses_separate_task_identity_and_environment_key_placeholder(self):
         root = Path(__file__).resolve().parents[2]
-        self.assertEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51-rev2")
+        self.assertEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51-rev3")
         self.assertNotEqual(_PROBE.TASK_ROOT, root / ".local" / "rpf-51")
-        self.assertEqual(_PROBE.RUNPROOF_PARENT, _REV2_PARENT)
-        self.assertEqual(_PROBE.RUNPROOF_BRANCH, "codex/rpf-51-rev2-http-effect-recovery")
-        self.assertEqual(_PROBE.STARTED_PATH.parent, _PROBE.TASK_ROOT)
+        self.assertEqual(_PROBE.RUNPROOF_PARENT, _REV3_PARENT)
+        self.assertEqual(_PROBE.RUNPROOF_BRANCH, "codex/rpf-51-rev3-readiness-http-effect")
+        self.assertEqual(_PROBE.STARTED_PATH.parent, _PROBE.SCENARIO_ROOT)
         self.assertEqual(_PROBE.WITNESS_PATH,
-                         root / "spikes" / "rpf-51" / "rev-2" / "config-http-witness.json")
+                         root / "spikes" / "rpf-51" / "rev-3" / "config-http-witness.json")
 
         secret = "unit-test-secret-that-must-not-appear"
         argv = _PROBE._build_java_args("java", Path("private-temp"), Path("private.jar"),
@@ -166,6 +170,11 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
         rendered = "\0".join(_PROBE._redacted_process_command(43127))
         self.assertIn("--security.api-keys[0].key=<environment-placeholder>", rendered)
         self.assertNotIn(secret, rendered)
+
+    def test_legacy_rev1_rev2_run_switches_cannot_reach_a_scenario(self):
+        for legacy_args in (["--prepare"], ["--run"]):
+            with self.subTest(args=legacy_args), self.assertRaises(SystemExit):
+                _PROBE.main(legacy_args)
 
     def test_oracle_requires_independent_readback_and_exact_two_row_history(self):
         observations = observations_for(self.contracts)
@@ -231,6 +240,263 @@ class ConfigHttpContractsAndOracleTests(unittest.TestCase):
         result = evaluate_config_effect(self.contracts.effect, observations)
         self.assertEqual(result["contract_outcome"], "VIOLATION_CONFIRMED")
         self.assertIn("UNAUTHORIZED_WRITE_ACCEPTED", result["violated_rules"])
+
+
+class ConfigHttpReadinessTests(unittest.TestCase):
+    def test_java_info_uses_jdk_executable_reported_by_launcher(self):
+        with tempfile.TemporaryDirectory() as folder:
+            java_home = Path(folder) / "jdk-17"
+            java = java_home / "bin" / ("java.exe" if _PROBE.os.name == "nt" else "java")
+            java.parent.mkdir(parents=True)
+            java.touch()
+            settings = subprocess.CompletedProcess(
+                args=["java"], returncode=0,
+                stdout=f"    java.home = {java_home}\nopenjdk version \"17.0.12\"\n")
+            direct_version = subprocess.CompletedProcess(
+                args=[str(java)], returncode=0, stdout='openjdk version "17.0.12"\n')
+            with patch.object(_PROBE.shutil, "which", return_value="java-wrapper"), \
+                    patch.object(_PROBE.subprocess, "run",
+                                 side_effect=[settings, direct_version]) as run:
+                executable, version = _PROBE._java_info()
+        self.assertEqual(executable, str(java))
+        self.assertEqual(version, "17.0.12")
+        self.assertEqual(run.call_args_list[0].args[0],
+                         ["java-wrapper", "-XshowSettings:properties", "-version"])
+        self.assertEqual(run.call_args_list[1].args[0], [str(java), "-version"])
+
+    def test_netstat_fixture_parser_and_listener_identity_are_fail_closed(self):
+        standard = """Active Connections
+  Proto  Local Address          Foreign Address        State           PID
+  TCP    127.0.0.1:7654          0.0.0.0:0              LISTENING       31372
+"""
+        rows, malformed = _PROBE.parse_netstat_output(standard)
+        self.assertEqual(malformed, 0)
+        self.assertEqual(_PROBE._listener_status(rows, malformed, 31372, 7654),
+                         (True, "OWNED_LOOPBACK_LISTENER"))
+        self.assertEqual(_PROBE._listener_status(rows, malformed, 7, 7654)[1],
+                         "LISTENER_PID_MISMATCH")
+
+        wildcard, malformed = _PROBE.parse_netstat_output(
+            "TCP 0.0.0.0:7654 0.0.0.0:0 LISTENING 31372")
+        self.assertEqual(_PROBE._listener_status(wildcard, malformed, 31372, 7654)[1],
+                         "LISTENER_NOT_EXACT_LOOPBACK")
+        ipv6, malformed = _PROBE.parse_netstat_output(
+            "TCP [::1]:7654 [::]:0 LISTENING 31372")
+        self.assertEqual(_PROBE._listener_status(ipv6, malformed, 31372, 7654)[1],
+                         "LISTENER_NOT_EXACT_LOOPBACK")
+        localized, malformed = _PROBE.parse_netstat_output(
+            "TCP 127.0.0.1:7654 0.0.0.0:0 ABHOEREN 31372")
+        self.assertFalse(_PROBE._listener_status(localized, malformed, 31372, 7654)[0])
+        duplicate, malformed = _PROBE.parse_netstat_output(
+            "TCP 127.0.0.1:7654 0.0.0.0:0 LISTENING 31372\n"
+            "TCP 127.0.0.1:7654 0.0.0.0:0 LISTENING 31373")
+        self.assertEqual(_PROBE._listener_status(duplicate, malformed, 31372, 7654)[1],
+                         "MULTIPLE_PORT_LISTENERS")
+        incomplete, malformed = _PROBE.parse_netstat_output("TCP 127.0.0.1:7654")
+        self.assertEqual(malformed, 1)
+        self.assertEqual(_PROBE._listener_status(incomplete, malformed, 31372, 7654)[1],
+                         "NETSTAT_OUTPUT_INCOMPLETE")
+
+    def test_tcp_success_with_unowned_pid_sleeps_and_never_calls_health(self):
+        class Process:
+            pid = 31372
+
+            @staticmethod
+            def poll():
+                return None
+
+        clock = [0.0]
+        sleeps = []
+
+        def monotonic():
+            clock[0] += 0.01
+            return clock[0]
+
+        def sleep(delay):
+            sleeps.append(delay)
+            clock[0] += delay
+
+        rows = ([{"protocol": "TCP", "local": "127.0.0.1:7654",
+                  "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 99}], 0)
+        with tempfile.TemporaryDirectory() as folder, \
+                patch.object(_PROBE, "_tcp_connect", return_value=True), \
+                patch.object(_PROBE, "_netstat_rows", return_value=rows), \
+                patch.object(_PROBE, "_health_get") as health, \
+                patch.object(_PROBE.time, "monotonic", side_effect=monotonic), \
+                patch.object(_PROBE.time, "sleep", side_effect=sleep):
+            result = _PROBE._readiness(Process(), 7654,
+                                       log_path=Path(folder) / "readiness.jsonl",
+                                       timeout_seconds=1, max_health_gets=1)
+        self.assertFalse(result["ready"])
+        self.assertEqual(result["failure_category"], "LISTENER_PID_MISMATCH")
+        self.assertGreater(len(sleeps), 0)
+        self.assertFalse(health.called)
+
+    def test_readiness_requires_owned_pid_and_real_health_up(self):
+        class Process:
+            pid = 31372
+
+            @staticmethod
+            def poll():
+                return None
+
+        rows = ([{"protocol": "TCP", "local": "127.0.0.1:7654",
+                  "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 31372}], 0)
+        with tempfile.TemporaryDirectory() as folder, \
+                patch.object(_PROBE, "_tcp_connect", return_value=True), \
+                patch.object(_PROBE, "_netstat_rows", side_effect=[rows, rows]), \
+                patch.object(_PROBE, "_health_get", return_value=(200, True, "HEALTH_UP")) as health:
+            result = _PROBE._readiness(Process(), 7654,
+                                       log_path=Path(folder) / "readiness.jsonl",
+                                       timeout_seconds=1, max_health_gets=1)
+        self.assertTrue(result["ready"])
+        self.assertEqual(result["health_get_count"], 1)
+        self.assertEqual(result["last_samples"][-1]["http_status"], 200)
+        self.assertTrue(result["last_samples"][-1]["pid_match"])
+        self.assertEqual(health.call_count, 1)
+
+    def test_readiness_rejects_process_exit_and_non_up_health(self):
+        class Exited:
+            pid = 31372
+
+            @staticmethod
+            def poll():
+                return 1
+
+        with tempfile.TemporaryDirectory() as folder, \
+                patch.object(_PROBE, "_tcp_connect", return_value=False), \
+                patch.object(_PROBE, "_netstat_rows", return_value=([], 0)):
+            exited = _PROBE._readiness(Exited(), 7654,
+                                       log_path=Path(folder) / "exited.jsonl",
+                                       timeout_seconds=1, max_health_gets=1)
+        self.assertFalse(exited["ready"])
+        self.assertEqual(exited["failure_category"], "PROCESS_EXITED")
+
+        class Running:
+            pid = 31372
+
+            @staticmethod
+            def poll():
+                return None
+
+        rows = ([{"protocol": "TCP", "local": "127.0.0.1:7654",
+                  "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 31372}], 0)
+        with tempfile.TemporaryDirectory() as folder, \
+                patch.object(_PROBE, "_tcp_connect", return_value=True), \
+                patch.object(_PROBE, "_netstat_rows", return_value=rows), \
+                patch.object(_PROBE, "_health_get", return_value=(200, False, "HEALTH_STATUS_NOT_UP")) as health:
+            failed = _PROBE._readiness(Running(), 7654,
+                                       log_path=Path(folder) / "health.jsonl",
+                                       timeout_seconds=1, max_health_gets=1)
+        self.assertFalse(failed["ready"])
+        self.assertEqual(failed["failure_category"], "HEALTH_GET_BUDGET_EXHAUSTED")
+        self.assertEqual(failed["health_get_count"], 1)
+        self.assertEqual(health.call_count, 1)
+
+    def test_readiness_rechecks_listener_identity_after_health_get(self):
+        class Process:
+            pid = 31372
+
+            @staticmethod
+            def poll():
+                return None
+
+        owned = ([{"protocol": "TCP", "local": "127.0.0.1:7654",
+                   "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 31372}], 0)
+        replaced = ([{"protocol": "TCP", "local": "127.0.0.1:7654",
+                      "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 88}], 0)
+        with tempfile.TemporaryDirectory() as folder, \
+                patch.object(_PROBE, "_tcp_connect", return_value=True), \
+                patch.object(_PROBE, "_netstat_rows", side_effect=[owned, replaced]), \
+                patch.object(_PROBE, "_health_get", return_value=(200, True, "HEALTH_UP")):
+            result = _PROBE._readiness(Process(), 7654,
+                                       log_path=Path(folder) / "identity-change.jsonl",
+                                       timeout_seconds=1, max_health_gets=1)
+        self.assertFalse(result["ready"])
+        self.assertEqual(result["failure_category"], "OWNED_SERVICE_IDENTITY_CHANGED")
+
+    def test_health_get_uses_only_health_path_and_requires_up_body(self):
+        instances = []
+        bodies = [b'{"status":"UP"}', b'{"status":"DOWN"}']
+
+        class Response:
+            status = 200
+
+            def __init__(self, body):
+                self.body = body
+
+            def read(self, limit):
+                return self.body
+
+        class Connection:
+            def __init__(self, host, port, timeout):
+                self.request_args = None
+                self.body = bodies.pop(0)
+                instances.append(self)
+
+            def request(self, method, path, headers):
+                self.request_args = (method, path, headers)
+
+            def getresponse(self):
+                return Response(self.body)
+
+            def close(self):
+                return None
+
+        with patch("http.client.HTTPConnection", Connection):
+            self.assertEqual(_PROBE._health_get(7654), (200, True, "HEALTH_UP"))
+            self.assertEqual(instances[-1].request_args[:2], ("GET", "/actuator/health"))
+            self.assertNotIn("X-API-Key", instances[-1].request_args[2])
+            self.assertEqual(_PROBE._health_get(7654), (200, False, "HEALTH_STATUS_NOT_UP"))
+
+    def test_external_audit_allows_only_owned_loopback_listener_and_local_peers(self):
+        owned = ([{"protocol": "TCP", "local": "127.0.0.1:7654",
+                   "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 31372}], 0)
+        with patch.object(_PROBE, "_netstat_rows", return_value=owned):
+            self.assertEqual(_PROBE._external_connections(31372, 7654), [])
+
+        wildcard = ([{"protocol": "TCP", "local": "0.0.0.0:7654",
+                      "remote": "0.0.0.0:0", "state": "LISTENING", "pid": 31372}], 0)
+        with patch.object(_PROBE, "_netstat_rows", return_value=wildcard):
+            self.assertEqual(_PROBE._external_connections(31372, 7654),
+                             ["NON_LOOPBACK_OR_UNEXPECTED_LISTENER"])
+
+        external = ([{"protocol": "TCP", "local": "127.0.0.1:43000",
+                      "remote": "203.0.113.10:443", "state": "ESTABLISHED", "pid": 31372}], 0)
+        with patch.object(_PROBE, "_netstat_rows", return_value=external):
+            self.assertEqual(_PROBE._external_connections(31372, 7654),
+                             ["NON_LOOPBACK_CONNECTION"])
+
+    def test_cleanup_terminates_and_waits_on_the_exact_owned_process_handle(self):
+        class Process:
+            pid = 31372
+
+            def __init__(self):
+                self.returncode = None
+                self.terminate_calls = 0
+                self.wait_calls = 0
+                self.kill_calls = 0
+
+            def poll(self):
+                return self.returncode
+
+            def terminate(self):
+                self.terminate_calls += 1
+                self.returncode = 0
+
+            def wait(self, timeout):
+                self.wait_calls += 1
+                return self.returncode
+
+            def kill(self):
+                self.kill_calls += 1
+                self.returncode = -9
+
+        process = Process()
+        self.assertTrue(_PROBE._stop_owned_process(process))
+        self.assertEqual(process.terminate_calls, 1)
+        self.assertEqual(process.wait_calls, 1)
+        self.assertEqual(process.kill_calls, 0)
 
 
 class ConfigHttpAdapterTests(unittest.TestCase):

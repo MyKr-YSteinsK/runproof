@@ -25,6 +25,7 @@ _KEY = re.compile(r"[A-Za-z0-9][A-Za-z0-9._-]{0,199}\Z")
 _ALLOWED_RUNPROOF_PARENTS = {
     "b3271eaaf408dffa1ecd6f26f1b47fab5cede289",  # rev-1 base
     "6753ac17ee079bf94562bfd9879bfd3c11ff74c0",  # rev-2 base
+    "68ac08de12048856fe38aa7e8548ad5bb3516a9b",  # rev-3 base
 }
 _EXECUTION_FIELDS = {"schema_version", "execution_id", "driver", "http", "process", "budgets"}
 _HTTP_FIELDS = {"scheme", "host", "port", "timeout_seconds", "max_response_bytes", "redirects",
