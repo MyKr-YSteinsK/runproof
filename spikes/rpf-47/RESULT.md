@@ -30,7 +30,7 @@
 | A-06 Web/双语/来源 | NOT_RUN | `npm test -- --cache=false`（15 files / 60 tests）、`npm run typecheck`、`npm run build -- --config .local/rpf-47/vite.config.ts` 均 exit 0；构建提示既有总 JS chunk 约 1.371 MB。`python -B ci/verify-public-docs.py` exit 0（18 files / 7 pairs）。隔离回环地址 `http://127.0.0.2:4174/effectwitness/recorded` 的 HTTP GET 返回 200、HTML 标题为 RunProof；但 CUA 可见浏览器 `getTab(...).getState()` 超时 30 秒后 kernel reset。未实际确认 1280×720、zh/en 切换、event 深链/刷新、断连 fail-closed、键盘焦点和旧只读页面回归，因此本 Gate 不能 PASS。没有清理浏览器缓存或触碰其它应用状态。 |
 | A-07 创意申报包 | PASS | `SUBMISSION.md` 含中文名称、短/长简介、用户/场景、技术方案、创新点、边界、英文简介、官方材料字段映射及待用户填写个人信息占位。公告公开信息列明 2026-10-30 日期，不含时刻/时区；最终登录表单未检查，明确 `OFFICIAL_PORTAL_LOGIN_REQUIRED / USER_CHECK`，状态 `NOT_SUBMITTED`。 |
 | A-08 三分钟分镜/素材 | PASS（视频不可用） | `DEMO_SCRIPT.md` 时间轴共 180 秒，逐段给出真实画面、旁白、源文件与结论边界，并提供真实只读路由和安全回环启动命令。环境没有可识别的 ffmpeg/ffprobe/OBS/桌面录屏工具；未安装依赖，未产出 MP4，因此视频为 `UNAVAILABLE / NOT_RUN`，没有截图冒充视频。 |
-| A-09 回归/清理/成本 | PASS | 本轮 Provider 请求/token/费用均为 0；非测试新业务 trial 为 0。旧付费账本、quarantine 和 cache-hold 没有被访问或修改；本结果不声称核查其内部内容。RPF-47 的独立 checkout 与本机 build/cache 是本任务隔离产物；无新增隔离 trial 或 quarantine。适用测试/构建/文档/离线命令见本表和下文。 |
+| A-09 回归/清理/成本 | UNAVAILABLE | 本轮 Provider 请求/token/费用均为 0；非测试新业务 trial 为 0。旧付费账本、quarantine 和 cache-hold 没有被访问或修改；本结果不声称核查其内部内容。测试/构建/文档/离线校验均通过，但已生成的 `.local/rpf-47/vite-cache/` 与 `web-build/` 未清理：PowerShell `Remove-Item -Recurse -Force` 被执行策略拒绝，未产生删除副作用。保留目录供本地复核；无新建 quarantine 或业务状态。 |
 | A-10 Git/交付 | PASS | 首个 focused commit `45d049ca54974d374d4ddf6093248722f287a092` 已普通 push；随后从 `origin` 独立克隆并确认目标 ref 为同一 SHA。push 前后 `main` 均为 `bda0cd49e50e3181f604324e94877a24b9885334`。本结果是 push 后的第二个小型证据更新 commit，也将普通 push 并复核；它自己的最终 SHA 留在聊天回执避免自指。未建 PR、未合并、未发布或部署。 |
 
 ## 4. 来源身份与可复核输出
@@ -60,6 +60,6 @@ python -B -m runtime.runproof_runtime.effectwitness.witness_verify spikes/rpf-44
 
 ## 6. 本机隔离产物与下一步
 
-- 本轮只在 `.local/rpf-47/` 创建/保留任务产物；独立新克隆保留作 A-03/A-04 复核证据。临时 build 与 Vite cache 在最终验证后清理；未创建 quarantine。旧 Plan 40–46 本机数据不在写入或清理范围内。
+- 本轮只在 `.local/rpf-47/` 创建/保留任务产物；独立新克隆保留作 A-03/A-04 复核证据。生成的 `vite-cache/` 与 `web-build/` 保留在该任务目录内；递归删除命令被执行策略拒绝，故没有再尝试规避。`tmp/`、`logs/`、`media/` 未用于存放提交物，未创建 quarantine。旧 Plan 40–46 本机数据不在写入或清理范围内。
 - 后续用户动作：在可用桌面浏览器按 1280×720 完成语言、事件深链/刷新、键盘和错误态验收；若提交门户确认实际硬性要求 MP4，则在有录屏工具的本机按脚本录制并检查 ≤180 秒；登录官方报名问卷核实截止时刻/时区、字段、附件和 IP 条款；由用户自行决定是否报名、上传和最终提交。
 - 当前无源代码安全或数据结论阻塞项；未完成 GUI 体验 Gate、录屏文件和报名门户人工核对是 `PARTIAL` 的原因。`SUBMISSION_PREPARED` 不等于报名或作品已提交。
