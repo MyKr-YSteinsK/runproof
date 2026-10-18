@@ -49,7 +49,8 @@ def owned_path(path: Path, *, task: str = "rpf-41") -> Path:
     """Resolve only task-owned descendants; reject symlink escape and ancestors."""
     roots = {"rpf-41": LOCAL_ROOT, "rpf-42": ROOT / ".local" / "rpf-42",
              "rpf-43": ROOT / ".local" / "rpf-43", "rpf-44": ROOT / ".local" / "rpf-44",
-             "rpf-45": ROOT / ".local" / "rpf-45", "rpf-46": ROOT / ".local" / "rpf-46"}
+             "rpf-45": ROOT / ".local" / "rpf-45", "rpf-46": ROOT / ".local" / "rpf-46",
+             "rpf-48": ROOT / ".local" / "rpf-48"}
     require(task in roots, "UNKNOWN_STORAGE_OWNER")
     local = roots[task].resolve()
     resolved = path.resolve()
