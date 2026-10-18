@@ -51,7 +51,8 @@ def owned_path(path: Path, *, task: str = "rpf-41") -> Path:
              "rpf-43": ROOT / ".local" / "rpf-43", "rpf-44": ROOT / ".local" / "rpf-44",
              "rpf-45": ROOT / ".local" / "rpf-45", "rpf-46": ROOT / ".local" / "rpf-46",
              "rpf-48": ROOT / ".local" / "rpf-48",
-             "rpf-49": ROOT / ".local" / "rpf-49"}
+             "rpf-49": ROOT / ".local" / "rpf-49",
+             "rpf-50": ROOT / ".local" / "rpf-50"}
     require(task in roots, "UNKNOWN_STORAGE_OWNER")
     local = roots[task].resolve()
     resolved = path.resolve()
