@@ -65,7 +65,7 @@
 | A-06 新独立完整Evidence | NOT_MET | synthetic完整证书0/2/3与7类rehashed tamper通过；真实三场景缺口，未签成功证书；两个单场景核验不替代此Gate |
 | A-07 权限/回归/预算 | PASS（限定） | 309 tests、0failures/errors、2 Docker skip；8历史锚、Reviewed/PublicDocs通过；正式预算内、进程/端口清理；修复未补真实场景 |
 | A-08 调查与差异 | PASS | 明确复用点、交付抑制通道、真实event/Authority及两次工具/证据整理问题、初始/交付source与未完成项 |
-| A-09 Git交付 | PENDING | 8个新文件与单一中文主结果已准备，待focused commit、普通push与fresh refs核验 |
+| A-09 Git交付 | PASS | 8个新文件以2de2d11提交并普通push；fresh ls-remote确认目标完整SHA与本地相同，Parent/main未变；本状态随后以文档收口提交交付 |
 
 实际命令及结果：
 
@@ -85,4 +85,4 @@ Maven/Web/GUI、真实Provider、真实Explorer、完整三场景重跑均NOT_RU
 
 `TASK_COMPLETE=FALSE`，`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_DECIDED`。Issuer真实性、数据库独立Authority未建立；独立复现未测试；真实模型与Explorer未执行；PGE/WorkSwarm均NOT_PROVEN。同一证书或capture的离线核验不算独立复现。
 
-Git最终SHA、普通push与fresh远端/main核验在同次聊天回执提供。本文件不循环填写自身SHA。
+首次实施提交 `2de2d11e1ea3a3061d988051e14e3b8c2285dd7c` 已普通push，fresh ls-remote确认相同SHA；Parent仍为Base，main仍为上述身份。该交付事实随后以文档收口提交交付；最终SHA与最后一次fresh远端核验在同次聊天回执提供。本文件不循环填写自身SHA，任务整体仍为Partial。
