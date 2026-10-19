@@ -29,7 +29,8 @@ if str(ROOT) not in sys.path:
 from runtime.runproof_runtime.effectwitness.config_live_contracts import (
     PLAN_REVISION, BASE_SHA, BASE_BRANCH, LIVE_BRANCH, EVIDENCE_SCHEMA, LIMITS, PROVIDER_MODEL, PROVIDER_NAME,
     PROVIDER_ORIGIN, PROVIDER_PATH, SDK_CORE_SHA256, SDK_NAME, SDK_VERSION,
-    OPENAI_VERSION, SOURCE_COMMIT, SOURCE_JAR_SHA256, SOURCE_MANIFEST_SHA256,
+    OPENAI_VERSION, SOURCE_COMMIT, SOURCE_JAR_BYTES, SOURCE_JAR_SHA256,
+    SOURCE_MANIFEST_SHA256, TASK_OWNED_JAR_PATH,
     canonical, digest, make_contracts, sha256_bytes, strict_json,
 )
 from runtime.runproof_runtime.effectwitness.config_live_runtime import (
@@ -41,23 +42,26 @@ from runtime.runproof_runtime.effectwitness.config_live_verify import (
 )
 
 
-WORK_ROOT = ROOT / ".local" / "rpf-53-rev4"
+WORK_ROOT = ROOT / ".local" / "rpf-53-rev5"
 PREFLIGHT_DIR = WORK_ROOT / "preflight"
 BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight.json"
+SUPERSEDED_BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight-superseded-before-fixture.json"
 ATTEMPT_PREFLIGHTS = [BASE_PREFLIGHT,
     PREFLIGHT_DIR / "base-preflight-attempt-02.json"]
 PREFLIGHT = PREFLIGHT_DIR / "preflight.json"
 FIXTURE_ROOT = WORK_ROOT / "fixture"
 SCENARIO_ROOT = WORK_ROOT / "scenario"
 QUARANTINE_ROOT = WORK_ROOT / "quarantine"
+TASK_JAR_DIR = WORK_ROOT / "jar"
+TASK_OWNED_JAR = ROOT.joinpath(*TASK_OWNED_JAR_PATH.split("/"))
 STARTED_PATH = SCENARIO_ROOT / "started.json"
 CONTRACTS_PATH = SCENARIO_ROOT / "contracts.json"
 LEDGER_PATH = SCENARIO_ROOT / "provider-ledger.json"
-REV4_DIR = ROOT / "spikes" / "rpf-53" / "rev-4"
-SUMMARY_PATH = REV4_DIR / "live-summary.json"
-EVIDENCE_PATH = REV4_DIR / "config-live-evidence.json"
-RESULT_PATH = REV4_DIR / "RESULT.md"
-SDK_FIXTURE_DIAGNOSTIC_PATH = REV4_DIR / "sdk-fixture-diagnostic.json"
+REV5_DIR = ROOT / "spikes" / "rpf-53" / "rev-5"
+SUMMARY_PATH = REV5_DIR / "live-summary.json"
+EVIDENCE_PATH = REV5_DIR / "config-live-evidence.json"
+RESULT_PATH = REV5_DIR / "RESULT.md"
+SDK_FIXTURE_PREFLIGHT_PATH = REV5_DIR / "sdk-fixture-preflight.json"
 SDK_LAUNCHER = ROOT / ".local" / "rpf-48" / "venv" / "Scripts" / "python.exe"
 SDK_SITE = ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages"
 JAVA = Path(r"C:\Program Files\Java\jdk-17\bin\java.exe")
@@ -73,10 +77,10 @@ SOURCE_FILES = (
     "spikes/rpf-53/probe.py",
 )
 ALLOWED_FILES = set(SOURCE_FILES) | {
-    "spikes/rpf-53/rev-4/README.md", "spikes/rpf-53/rev-4/RESULT.md",
-    "spikes/rpf-53/rev-4/live-summary.json",
-    "spikes/rpf-53/rev-4/sdk-fixture-diagnostic.json",
-    "spikes/rpf-53/rev-4/config-live-evidence.json",
+    "spikes/rpf-53/rev-5/README.md", "spikes/rpf-53/rev-5/RESULT.md",
+    "spikes/rpf-53/rev-5/live-summary.json",
+    "spikes/rpf-53/rev-5/sdk-fixture-preflight.json",
+    "spikes/rpf-53/rev-5/config-live-evidence.json",
 }
 MAX_JAVA_LOG_BYTES = 1_000_000
 _DIRECT_SDK_PYTHON: Path | None = None
@@ -98,6 +102,175 @@ def _sha_file(path: Path) -> str:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
             h.update(block)
     return h.hexdigest()
+
+
+def _is_link(path: Path) -> bool:
+    return path.is_symlink() or bool(getattr(path, "is_junction", lambda: False)())
+
+
+def _has_link_component(path: Path) -> bool:
+    absolute = Path(os.path.abspath(path))
+    return any(_is_link(item) for item in (absolute, *absolute.parents))
+
+
+def _copy_task_owned_jar(source_info: dict, *, create: bool = True,
+                         allow_existing: bool = False) -> dict:
+    root = WORK_ROOT.resolve(strict=True)
+    source = SOURCE_JAR
+    target = TASK_OWNED_JAR
+    if (_has_link_component(source) or not source.is_file()
+            or _has_link_component(target.parent) or not target.parent.is_dir()):
+        raise ProbeError("TASK_JAR_PATH_OR_LINK_GATE")
+    try:
+        target_lexical = Path(os.path.abspath(target))
+        target_lexical.relative_to(root)
+    except ValueError:
+        raise ProbeError("TASK_JAR_PATH_ESCAPE") from None
+    if _has_link_component(target):
+        raise ProbeError("TASK_JAR_PATH_OR_LINK_GATE")
+    resolved_target = target.resolve(strict=False)
+    if not resolved_target.is_relative_to(root):
+        raise ProbeError("TASK_JAR_PATH_ESCAPE")
+    source_before_bytes = source.stat().st_size
+    source_before_sha = _sha_file(source)
+    if (source_info.get("source_commit") != SOURCE_COMMIT
+            or source_info.get("manifest_sha256") != SOURCE_MANIFEST_SHA256
+            or source_info.get("jar_bytes") != SOURCE_JAR_BYTES
+            or source_info.get("jar_sha256") != SOURCE_JAR_SHA256
+            or source_before_bytes != SOURCE_JAR_BYTES
+            or source_before_sha != SOURCE_JAR_SHA256):
+        raise ProbeError("TASK_JAR_SOURCE_IDENTITY")
+    if target.exists():
+        if not create:
+            raise ProbeError("TASK_JAR_COPY_MISSING")
+        if not allow_existing:
+            raise ProbeError("TASK_JAR_PREEXISTING_COPY")
+        if (not target.is_file() or target.is_symlink()
+                or target.stat().st_size != SOURCE_JAR_BYTES
+                or _sha_file(target) != SOURCE_JAR_SHA256):
+            raise ProbeError("TASK_JAR_EXISTING_COPY_MISMATCH")
+    else:
+        if not create:
+            raise ProbeError("TASK_JAR_COPY_MISSING")
+        try:
+            with source.open("rb") as src, target.open("xb") as dst:
+                shutil.copyfileobj(src, dst, length=1024 * 1024)
+                dst.flush()
+                os.fsync(dst.fileno())
+        except FileExistsError:
+            raise ProbeError("TASK_JAR_COPY_RACE") from None
+        except OSError:
+            raise ProbeError("TASK_JAR_COPY_FAILED") from None
+    if (_has_link_component(target) or not target.is_file()
+            or not target.resolve(strict=True).is_relative_to(root)):
+        raise ProbeError("TASK_JAR_COPY_PATH_INVALID")
+    source_after_bytes = source.stat().st_size
+    source_after_sha = _sha_file(source)
+    copy_bytes = target.stat().st_size
+    copy_sha = _sha_file(target)
+    if (source_after_bytes != source_before_bytes
+            or source_after_sha != source_before_sha
+            or copy_bytes != source_after_bytes or copy_sha != source_after_sha):
+        raise ProbeError("TASK_JAR_COPY_DIGEST_MISMATCH")
+    return {
+        "relative_path": TASK_OWNED_JAR_PATH,
+        "source_commit": SOURCE_COMMIT,
+        "manifest_sha256": SOURCE_MANIFEST_SHA256,
+        "source_sha256": source_after_sha,
+        "source_bytes": source_after_bytes,
+        "copy_sha256": copy_sha,
+        "copy_bytes": copy_bytes,
+        "path_within_task_root": True,
+        "no_link_components": True,
+        "copy_verified": True,
+    }
+
+
+def _argv_jar_path_matches(argv: object, expected_jar: Path,
+                           task_root: Path) -> bool:
+    if type(argv) not in (list, tuple) or any(type(value) is not str for value in argv):
+        return False
+    jar_flags = [index for index, value in enumerate(argv) if value == "-jar"]
+    if len(jar_flags) != 1 or jar_flags[0] + 1 >= len(argv):
+        return False
+    try:
+        expected = expected_jar.resolve(strict=True)
+        root = task_root.resolve(strict=True)
+        actual = Path(argv[jar_flags[0] + 1]).resolve(strict=True)
+        if (_has_link_component(expected_jar) or _has_link_component(actual)
+                or not expected.is_file() or not actual.is_file()
+                or not expected.is_relative_to(root) or actual != expected):
+            return False
+        return os.path.normcase(str(actual)) == os.path.normcase(str(expected))
+    except (OSError, RuntimeError, ValueError):
+        return False
+
+
+def _actual_process_command_line(pid: int) -> str:
+    if os.name != "nt" or type(pid) is not int or pid <= 0:
+        raise ProbeError("JAVA_COMMAND_LINE_UNAVAILABLE")
+    command = (f"$p=Get-CimInstance Win32_Process -Filter 'ProcessId={pid}'; "
+               "if($null -eq $p -or [string]::IsNullOrEmpty($p.CommandLine)){exit 2}; "
+               "[Console]::Out.Write([Convert]::ToBase64String("
+               "[Text.Encoding]::UTF8.GetBytes($p.CommandLine)))")
+    try:
+        result = subprocess.run(["powershell.exe", "-NoLogo", "-NoProfile",
+            "-NonInteractive", "-Command", command], stdin=subprocess.DEVNULL,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=15, check=False)
+        encoded = result.stdout.decode("ascii", "strict").strip()
+        if result.returncode != 0 or result.stderr or not encoded:
+            raise ProbeError("JAVA_COMMAND_LINE_UNAVAILABLE")
+        raw = base64.b64decode(encoded, validate=True)
+        return raw.decode("utf-8", "strict")
+    except (OSError, UnicodeError, ValueError, subprocess.TimeoutExpired):
+        raise ProbeError("JAVA_COMMAND_LINE_UNAVAILABLE") from None
+
+
+def _split_windows_command_line(command_line: str) -> list[str]:
+    if os.name != "nt" or not command_line:
+        raise ProbeError("JAVA_COMMAND_LINE_UNAVAILABLE")
+    import ctypes
+    argc = ctypes.c_int()
+    shell32 = ctypes.WinDLL("shell32", use_last_error=True)
+    kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+    shell32.CommandLineToArgvW.argtypes = [ctypes.c_wchar_p,
+                                           ctypes.POINTER(ctypes.c_int)]
+    shell32.CommandLineToArgvW.restype = ctypes.POINTER(ctypes.c_wchar_p)
+    kernel32.LocalFree.argtypes = [ctypes.c_void_p]
+    kernel32.LocalFree.restype = ctypes.c_void_p
+    pointer = shell32.CommandLineToArgvW(command_line, ctypes.byref(argc))
+    if not pointer:
+        raise ProbeError("JAVA_COMMAND_LINE_UNAVAILABLE")
+    try:
+        return [pointer[index] for index in range(argc.value)]
+    finally:
+        kernel32.LocalFree(pointer)
+
+
+def _actual_java_jar_proof(process: subprocess.Popen, task_jar: dict) -> dict:
+    expected = ROOT.joinpath(*TASK_OWNED_JAR_PATH.split("/"))
+    if not _argv_jar_path_matches(process.args, expected, WORK_ROOT):
+        raise ProbeError("JAVA_POPEN_JAR_PATH_MISMATCH")
+    command_line = _actual_process_command_line(process.pid)
+    actual_argv = _split_windows_command_line(command_line)
+    if not _argv_jar_path_matches(actual_argv, expected, WORK_ROOT):
+        raise ProbeError("JAVA_PROCESS_JAR_PATH_MISMATCH")
+    if (task_jar.get("relative_path") != TASK_OWNED_JAR_PATH
+            or task_jar.get("copy_sha256") != SOURCE_JAR_SHA256
+            or task_jar.get("copy_bytes") != SOURCE_JAR_BYTES
+            or task_jar.get("copy_verified") is not True):
+        raise ProbeError("JAVA_TASK_JAR_IDENTITY_MISMATCH")
+    return {
+        "task_relative_path": TASK_OWNED_JAR_PATH,
+        "source_sha256": task_jar["source_sha256"],
+        "copy_sha256": task_jar["copy_sha256"],
+        "copy_bytes": task_jar["copy_bytes"],
+        "source_commit": task_jar["source_commit"],
+        "manifest_sha256": task_jar["manifest_sha256"],
+        "popen_argv_matches_copy": True,
+        "actual_process_argv_matches_copy": True,
+        "actual_command_line_sha256": sha256_bytes(command_line.encode("utf-8")),
+    }
 
 
 def _query_base_python(expected_base_sha256: str | None = None,
@@ -213,14 +386,14 @@ def _check_status_scope() -> list[str]:
         if path == "docs/reviews/" or path == "docs/reviews":
             continue
         normalized = path.replace("\\", "/")
-        if normalized in ("spikes/rpf-53/rev-4/", "spikes/rpf-53/rev-4"):
-            if not REV4_DIR.is_dir() or REV4_DIR.is_symlink():
-                raise ProbeError("REV4_OUTPUT_ROOT_INVALID")
+        if normalized in ("spikes/rpf-53/rev-5/", "spikes/rpf-53/rev-5"):
+            if not REV5_DIR.is_dir() or REV5_DIR.is_symlink():
+                raise ProbeError("REV5_OUTPUT_ROOT_INVALID")
             allowed_names = {Path(item).name for item in ALLOWED_FILES
-                             if item.startswith("spikes/rpf-53/rev-4/")}
+                             if item.startswith("spikes/rpf-53/rev-5/")}
             if any(child.name not in allowed_names or child.is_symlink()
-                   or not child.is_file() for child in REV4_DIR.iterdir()):
-                raise ProbeError("UNAPPROVED_REV4_OUTPUT")
+                   or not child.is_file() for child in REV5_DIR.iterdir()):
+                raise ProbeError("UNAPPROVED_REV5_OUTPUT")
             continue
         if normalized in ALLOWED_FILES:
             continue
@@ -269,19 +442,19 @@ def _check_worktree_directories() -> None:
     def is_link(path: Path) -> bool:
         return path.is_symlink() or bool(getattr(path, "is_junction", lambda: False)())
 
-    for path in (ROOT / "spikes" / "rpf-53", REV4_DIR, WORK_ROOT):
+    for path in (ROOT / "spikes" / "rpf-53", REV5_DIR, WORK_ROOT):
         if is_link(path):
             raise ProbeError("TASK_ROOT_IS_SYMLINK")
     if not (ROOT / "spikes" / "rpf-53").is_dir():
         raise ProbeError("SPIKE_DIRECTORY_MISSING")
-    if REV4_DIR.exists() and not REV4_DIR.is_dir():
-        raise ProbeError("REV4_OUTPUT_ROOT_INVALID")
-    REV4_DIR.mkdir(exist_ok=True)
+    if REV5_DIR.exists() and not REV5_DIR.is_dir():
+        raise ProbeError("REV5_OUTPUT_ROOT_INVALID")
+    REV5_DIR.mkdir(exist_ok=True)
     if not WORK_ROOT.exists():
         WORK_ROOT.mkdir()
     if not WORK_ROOT.is_dir() or is_link(WORK_ROOT):
         raise ProbeError("TASK_LOCAL_ROOT_INVALID")
-    expected = {"preflight", "fixture", "scenario", "quarantine", "tests"}
+    expected = {"preflight", "fixture", "scenario", "quarantine", "tests", "jar"}
     for child in WORK_ROOT.iterdir():
         if child.name not in expected or is_link(child):
             raise ProbeError("TASK_LOCAL_ROOT_NOT_EXCLUSIVE")
@@ -290,7 +463,7 @@ def _check_worktree_directories() -> None:
 
 
 def _verify_source_bundle() -> dict:
-    if SOURCE_ROOT.is_symlink() or SOURCE_MANIFEST.is_symlink() or SOURCE_JAR.is_symlink():
+    if any(_has_link_component(path) for path in (SOURCE_ROOT, SOURCE_MANIFEST, SOURCE_JAR)):
         raise ProbeError("SOURCE_PATH_IS_LINK")
     raw = SOURCE_MANIFEST.read_bytes()
     if sha256_bytes(raw) != SOURCE_MANIFEST_SHA256:
@@ -314,7 +487,7 @@ def _verify_source_bundle() -> dict:
             raise ProbeError("SOURCE_MANIFEST_PATH")
         seen.add(item["path"])
         path = SOURCE_ROOT.joinpath(*relative.parts)
-        if path.is_symlink() or not path.is_file():
+        if _has_link_component(path) or not path.is_file():
             raise ProbeError("SOURCE_FILE_MISSING_OR_LINK")
         data = path.read_bytes()
         if len(data) != item["bytes"] or sha256_bytes(data) != item["sha256"]:
@@ -322,7 +495,7 @@ def _verify_source_bundle() -> dict:
         total += len(data)
     if total != 393800:
         raise ProbeError("SOURCE_TREE_BYTE_COUNT")
-    if not SOURCE_JAR.is_file() or SOURCE_JAR.stat().st_size != 66981576:
+    if not SOURCE_JAR.is_file() or SOURCE_JAR.stat().st_size != SOURCE_JAR_BYTES:
         raise ProbeError("SOURCE_JAR_SIZE")
     jar_sha = _sha_file(SOURCE_JAR)
     if jar_sha != SOURCE_JAR_SHA256:
@@ -559,6 +732,32 @@ def _runtime_source_identity() -> dict:
     return {"files": files, "sha256": digest(files)}
 
 
+def _has_prior_task_jar_proof() -> bool:
+    for path in (BASE_PREFLIGHT, SUPERSEDED_BASE_PREFLIGHT):
+        if not path.is_file() or _has_link_component(path):
+            continue
+        try:
+            value = strict_json(path.read_bytes())
+        except Exception:
+            continue
+        jar = value.get("task_owned_jar") if type(value) is dict else None
+        if (type(value) is dict and value.get("schema_version") == "rpf53-rev5-base-preflight-v1"
+                and value.get("plan_revision") == PLAN_REVISION
+                and type(jar) is dict
+                and jar.get("relative_path") == TASK_OWNED_JAR_PATH
+                and jar.get("source_commit") == SOURCE_COMMIT
+                and jar.get("manifest_sha256") == SOURCE_MANIFEST_SHA256
+                and jar.get("source_sha256") == SOURCE_JAR_SHA256
+                and jar.get("source_bytes") == SOURCE_JAR_BYTES
+                and jar.get("copy_sha256") == SOURCE_JAR_SHA256
+                and jar.get("copy_bytes") == SOURCE_JAR_BYTES
+                and jar.get("path_within_task_root") is True
+                and jar.get("no_link_components") is True
+                and jar.get("copy_verified") is True):
+            return True
+    return False
+
+
 def _check_key_presence() -> bool:
     return bool(os.environ.get("DEEPSEEK_API_KEY"))
 
@@ -566,6 +765,7 @@ def _check_key_presence() -> bool:
 def _preflight() -> dict:
     repo = _check_repo_identity()
     source = _verify_source_bundle()
+    task_owned_jar = _copy_task_owned_jar(source, allow_existing=_has_prior_task_jar_proof())
     sdk = _sdk_identity()
     java = _java_identity()
     runtime = _runtime_source_identity()
@@ -573,9 +773,10 @@ def _preflight() -> dict:
             or source["manifest_sha256"] != SOURCE_MANIFEST_SHA256):
         raise ProbeError("A01_SOURCE_IDENTITY")
     return {
-        "schema_version": "rpf53-rev4-base-preflight-v1",
+        "schema_version": "rpf53-rev5-base-preflight-v1",
         "plan_id": "RPF-53", "plan_revision": PLAN_REVISION, "checked_at_utc": _utc(),
-        "repo": repo, "source": source, "sdk": sdk, "java": java,
+        "repo": repo, "source": source, "task_owned_jar": task_owned_jar,
+        "sdk": sdk, "java": java,
         "runtime_source": runtime,
         "provider": {"key_present": _check_key_presence(),
             "name": PROVIDER_NAME, "origin": PROVIDER_ORIGIN,
@@ -613,7 +814,7 @@ def _load_base_preflight(path: Path = BASE_PREFLIGHT) -> dict:
     if not path.is_file() or path.is_symlink():
         raise ProbeError("BASE_PREFLIGHT_NOT_RUN")
     value = strict_json(path.read_bytes())
-    if (value.get("schema_version") != "rpf53-rev4-base-preflight-v1"
+    if (value.get("schema_version") != "rpf53-rev5-base-preflight-v1"
             or value.get("plan_revision") != PLAN_REVISION):
         raise ProbeError("BASE_PREFLIGHT_REVISION")
     current = _preflight()
@@ -621,6 +822,7 @@ def _load_base_preflight(path: Path = BASE_PREFLIGHT) -> dict:
             or value.get("source") != current.get("source")
             or value.get("sdk") != current.get("sdk")
             or value.get("java") != current.get("java")
+            or value.get("task_owned_jar") != current.get("task_owned_jar")
             or value.get("runtime_source") != current.get("runtime_source")):
         raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
     return value
@@ -701,10 +903,10 @@ def _diagnostic_attempt_context() -> tuple[dict, int, Path, Path]:
                 or not re.fullmatch(r"[0-9a-f]{64}", runtime_hash or "")
                 or started.get("run_id") != result.get("run_id")
                 or started.get("base_preflight_sha256") != _sha_file(base_path)
-                or base.get("schema_version") != "rpf53-rev4-base-preflight-v1"
+                or base.get("schema_version") != "rpf53-rev5-base-preflight-v1"
                 or base.get("plan_revision") != PLAN_REVISION
                 or base.get("runtime_source", {}).get("sha256") != runtime_hash
-                or result.get("schema_version") != "rpf53-rev4-sdk-fixture-diagnostic-v1"
+                or result.get("schema_version") != "rpf53-rev5-sdk-fixture-diagnostic-v1"
                 or result.get("plan_revision") != PLAN_REVISION
                 or type(result.get("pids")) is not dict
                 or type(result["pids"].get("popen_pid")) is not int
@@ -750,36 +952,33 @@ def _diagnostic_attempt_context() -> tuple[dict, int, Path, Path]:
     if next_base_path.exists() or next_base_path.is_symlink():
         raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
     current = _preflight()
-    previous_repo, current_repo = dict(last_base.get("repo", {})), dict(current.get("repo", {}))
-    previous_repo.pop("status_paths", None)
-    current_repo.pop("status_paths", None)
-    previous_sdk, current_sdk = last_base.get("sdk"), current.get("sdk")
-    sdk_transition_fields = {"base_executable_sha256", "python_executable_sha256",
-                             "python_launcher_sha256", "python_runtime_mapping_sha256"}
-    if (previous_repo != current_repo
-            or any(last_base.get(key) != current.get(key)
-                   for key in ("source", "java", "provider", "push_effect"))
-            or type(previous_sdk) is not dict or type(current_sdk) is not dict
-            or set(previous_sdk) - sdk_transition_fields
-                != set(current_sdk) - sdk_transition_fields
-            or any(previous_sdk.get(key) != current_sdk.get(key)
-                   for key in set(previous_sdk) - sdk_transition_fields)
-            or previous_sdk.get("base_executable_sha256")
-                != current_sdk.get("python_executable_sha256")
-            or previous_sdk.get("python_executable_sha256")
-                != current_sdk.get("python_launcher_sha256")
-            or previous_sdk.get("python_runtime_mapping_sha256")
-                == current_sdk.get("python_runtime_mapping_sha256")
-            or current_sdk.get("configured_executable_matches_sys") is not True):
-        raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
-    previous_hash = last_base.get("runtime_source", {}).get("sha256")
-    current_hash = current.get("runtime_source", {}).get("sha256")
-    if (not re.fullmatch(r"[0-9a-f]{64}", previous_hash or "")
-            or not re.fullmatch(r"[0-9a-f]{64}", current_hash or "")
-            or previous_hash == current_hash):
+    if not _diagnostic_retry_identity_valid(last_base, current):
         raise ProbeError("DIAGNOSTIC_SOURCE_NOT_REPAIRED")
     _write_once(next_base_path, canonical(current))
     return current, next_attempt, FIXTURE_ROOT / f"attempt-{next_attempt:02d}", next_base_path
+
+
+def _diagnostic_retry_identity_valid(previous: object, current: object) -> bool:
+    if type(previous) is not dict or type(current) is not dict:
+        return False
+    previous_repo_raw, current_repo_raw = previous.get("repo"), current.get("repo")
+    if type(previous_repo_raw) is not dict or type(current_repo_raw) is not dict:
+        return False
+    previous_repo, current_repo = dict(previous_repo_raw), dict(current_repo_raw)
+    previous_repo.pop("status_paths", None)
+    current_repo.pop("status_paths", None)
+    if (previous_repo != current_repo
+            or any(previous.get(key) != current.get(key)
+                   for key in ("source", "task_owned_jar", "sdk", "java", "provider", "push_effect"))):
+        return False
+    previous_runtime, current_runtime = previous.get("runtime_source"), current.get("runtime_source")
+    if type(previous_runtime) is not dict or type(current_runtime) is not dict:
+        return False
+    previous_hash = previous_runtime.get("sha256")
+    current_hash = current_runtime.get("sha256")
+    return (re.fullmatch(r"[0-9a-f]{64}", previous_hash or "") is not None
+            and re.fullmatch(r"[0-9a-f]{64}", current_hash or "") is not None
+            and previous_hash != current_hash)
 
 
 def _fixture_lineage_valid(host: ConfigLiveHost) -> bool:
@@ -982,6 +1181,7 @@ def _public_diagnostic_attempt(result: dict) -> dict:
         "sdk_tool_call_ids": result["sdk_tool_call_ids"],
         "returned_tool_ids": result["returned_tool_ids"],
         "fixture_completion_trace": result["fixture_completion_trace"],
+        "visible_contract_checks": result["visible_contract_checks"],
         "tool_trace": result["tool_trace"],
         "returned_in_request": result["returned_in_request"],
         "sdk_report": report,
@@ -1001,11 +1201,11 @@ def _public_diagnostic_attempt(result: dict) -> dict:
 
 def _record_public_diagnostic_attempt(result: dict) -> None:
     record = _public_diagnostic_attempt(result)
-    artifact = {"schema_version": "rpf53-rev4-sdk-fixture-diagnostic-v1",
+    artifact = {"schema_version": "rpf53-rev5-sdk-fixture-diagnostic-v1",
                 "plan_id": "RPF-53", "plan_revision": PLAN_REVISION,
                 "attempts": [record]}
-    if SDK_FIXTURE_DIAGNOSTIC_PATH.exists() or SDK_FIXTURE_DIAGNOSTIC_PATH.is_symlink():
-        previous = strict_json(SDK_FIXTURE_DIAGNOSTIC_PATH.read_bytes())
+    if SDK_FIXTURE_PREFLIGHT_PATH.exists() or SDK_FIXTURE_PREFLIGHT_PATH.is_symlink():
+        previous = strict_json(SDK_FIXTURE_PREFLIGHT_PATH.read_bytes())
         if (type(previous) is not dict
                 or previous.get("schema_version") != artifact["schema_version"]
                 or previous.get("plan_revision") != PLAN_REVISION
@@ -1013,11 +1213,11 @@ def _record_public_diagnostic_attempt(result: dict) -> None:
                 or len(previous["attempts"]) != result["attempt"] - 1):
             raise ProbeError("PUBLIC_DIAGNOSTIC_STATE_INVALID")
         artifact["attempts"] = [*previous["attempts"], record]
-        _atomic_write(SDK_FIXTURE_DIAGNOSTIC_PATH, canonical(artifact))
+        _atomic_write(SDK_FIXTURE_PREFLIGHT_PATH, canonical(artifact))
     else:
         if result["attempt"] != 1:
             raise ProbeError("PUBLIC_DIAGNOSTIC_STATE_INVALID")
-        _write_once(SDK_FIXTURE_DIAGNOSTIC_PATH, canonical(artifact))
+        _write_once(SDK_FIXTURE_PREFLIGHT_PATH, canonical(artifact))
 
 
 def _fixture_return_message_ids(responses: list[dict]) -> list[str]:
@@ -1060,7 +1260,7 @@ def run_diagnostic() -> dict:
             "openai_core_sha256": base["sdk"]["openai_core_sha256"],
             "sdk_site_root_binding_sha256": base["sdk"]["sdk_site_root_binding_sha256"],
             "python_runtime_mapping_sha256": base["sdk"]["python_runtime_mapping_sha256"],
-        }, mode="FIXTURE_TEST_ONLY")
+        }, task_owned_jar=base["task_owned_jar"], mode="FIXTURE_TEST_ONLY")
     marker = {"plan_id": "RPF-53", "plan_revision": PLAN_REVISION,
               "runtime_source_sha256": base["runtime_source"]["sha256"],
               "attempt": attempt, "run_id": run_id,
@@ -1164,6 +1364,12 @@ def run_diagnostic() -> dict:
             and re.fullmatch(r"[0-9a-f]{64}", base["sdk"].get(
                 "python_launcher_sha256", "")) is not None,
         "fixture_completions_four": len(host.provider_responses) == 4,
+        "agent_contract_visible_each_completion": len(host.visible_contract_checks) == 4
+            and all(item.get("instructions_present") is True
+                    and item.get("task_prompt_present") is True
+                    and item.get("tool_help_exact") is True
+                    and re.fullmatch(r"[0-9a-f]{64}", item.get("messages_sha256", ""))
+                        is not None for item in host.visible_contract_checks),
         "sdk_tool_calls_three": len(host.tool_trace) == 3 and sdk_tool_ids == expected_call_ids,
         "tool_returns_three_unique": returned_tool_count == 3
             and returned_tool_ids == expected_call_ids,
@@ -1176,7 +1382,10 @@ def run_diagnostic() -> dict:
         "provider_https_zero": ledger.usage()["provider_https_requests"] == 0,
         "business_http_zero": contracts["execution"]["service"]
             == {"transport": "IN_MEMORY_FIXTURE_ONLY"},
-        "java_process_zero": process_started and process is not None,
+        "java_process_zero": process_started and process is not None
+            and type(process.args) is list
+            and process.args == [str(sdk_python), "-I", "-B",
+                str(ROOT / "runtime/runproof_runtime/effectwitness/config_live_external.py")],
         "sdk_child_exited": process is not None and process.poll() is not None,
         "sdk_external_connections_empty": not sdk_external,
         "fixture_host_closed": host._server is None and host._thread is None,
@@ -1208,12 +1417,13 @@ def run_diagnostic() -> dict:
         "guard_code": safe_guard_code, "denied_files": safe_denied_files,
         "report_fields": report_fields,
     }
-    result = {"schema_version": "rpf53-rev4-sdk-fixture-diagnostic-v1",
+    result = {"schema_version": "rpf53-rev5-sdk-fixture-diagnostic-v1",
         "plan_revision": PLAN_REVISION, "attempt": attempt, "run_id": run_id,
         "runtime_source_sha256": base["runtime_source"]["sha256"],
         "source_identity": {"config_center_source_commit": base["source"]["source_commit"],
             "config_center_manifest_sha256": base["source"]["manifest_sha256"],
             "config_center_jar_sha256": base["source"]["jar_sha256"],
+            "task_owned_jar": base["task_owned_jar"],
             "config_center_file_count": base["source"]["source_file_count"],
             "config_center_total_bytes": base["source"]["source_total_bytes"],
             "java_version": base["java"]["version"],
@@ -1256,6 +1466,7 @@ def run_diagnostic() -> dict:
         "sdk_tool_call_ids": sdk_tool_ids, "returned_tool_ids": returned_tool_ids,
         "tool_return_message_call_ids": tool_return_message_ids,
         "fixture_completion_trace": _fixture_completion_trace(host.provider_responses),
+        "visible_contract_checks": host.visible_contract_checks,
         "acceptance_checks": checks,
         "returned_in_request": [item.get("returned_in_request") for item in host.tool_trace],
         "sdk_report": _safe_sdk_report(report),
@@ -1280,7 +1491,7 @@ def run_diagnostic() -> dict:
     _record_public_diagnostic_attempt(result)
     if not passed:
         raise ProbeError("SDK_FIXTURE_DIAGNOSTIC_FAILED")
-    preflight = {"schema_version": "rpf53-rev4-preflight-v1", "base": base,
+    preflight = {"schema_version": "rpf53-rev5-preflight-v1", "base": base,
                  "diagnostic": {"attempt": attempt, "status": "PASS",
                     "base_preflight_path": str(base_path.relative_to(ROOT)).replace("\\", "/"),
                     "base_preflight_sha256": _sha_file(base_path),
@@ -1439,13 +1650,15 @@ def _start_java(contracts: dict, api_key: str, scenario: Path):
     temp_dir.mkdir(exist_ok=False)
     effect = contracts["effect"]
     port = contracts["experiment"]["java_port"]
-    args = [str(JAVA), f"-Djava.io.tmpdir={temp_dir}", "-jar", str(SOURCE_JAR),
+    args = [str(JAVA), f"-Djava.io.tmpdir={temp_dir}", "-jar", str(TASK_OWNED_JAR),
             "--spring.profiles.active=local", "--server.address=127.0.0.1",
             f"--server.port={port}", "--security.api-keys[0].key=${CONFIG_CENTER_API_KEY}",
             "--security.api-keys[0].app=" + effect["app"],
             "--security.api-keys[0].env=" + effect["env"]]
     if api_key.encode("ascii") in " ".join(args).encode("ascii"):
         raise ProbeError("API_KEY_IN_JAVA_ARGV")
+    if not _argv_jar_path_matches(args, TASK_OWNED_JAR, WORK_ROOT):
+        raise ProbeError("JAVA_POPEN_JAR_PATH_MISMATCH")
     process = subprocess.Popen(args, cwd=scenario, env=_java_env(temp_dir, api_key),
         stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
         bufsize=0)
@@ -1502,13 +1715,13 @@ def _live_preflight() -> dict:
     if not PREFLIGHT.is_file() or PREFLIGHT.is_symlink():
         raise ProbeError("A03_DIAGNOSTIC_NOT_PASSED")
     value = strict_json(PREFLIGHT.read_bytes())
-    if (value.get("schema_version") != "rpf53-rev4-preflight-v1"
+    if (value.get("schema_version") != "rpf53-rev5-preflight-v1"
             or value.get("diagnostic", {}).get("status") != "PASS"
             or not re.fullmatch(r"[0-9a-f]{64}", value.get("diagnostic", {}).get("tool_schema_sha256", ""))):
         raise ProbeError("A03_DIAGNOSTIC_NOT_PASSED")
     base = value.get("base")
     current = _preflight()
-    for key in ("repo", "source", "sdk", "java", "runtime_source"):
+    for key in ("repo", "source", "task_owned_jar", "sdk", "java", "runtime_source"):
         if base.get(key) != current.get(key):
             raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
     if not current["provider"]["key_present"]:
@@ -1546,12 +1759,16 @@ def _make_payload(preflight: dict, contracts: dict, report: dict,
             public["tool_returns"] = response["tool_returns"]
         attempts.append(public)
     sdk_identity = preflight["base"]["sdk"]
+    task_jar = contracts["experiment"]["task_owned_jar"]
     source_identity = {
         "provider": PROVIDER_NAME, "provider_model": PROVIDER_MODEL,
         "provider_endpoint": PROVIDER_ORIGIN + PROVIDER_PATH,
         "config_center_source_commit": SOURCE_COMMIT,
         "config_center_manifest_sha256": SOURCE_MANIFEST_SHA256,
         "config_center_jar_sha256": SOURCE_JAR_SHA256,
+        "task_owned_jar_relative_path": task_jar["relative_path"],
+        "task_owned_jar_sha256": task_jar["copy_sha256"],
+        "task_owned_jar_bytes": task_jar["copy_bytes"],
         "runtime_source_sha256": preflight["base"]["runtime_source"]["sha256"],
         "sdk_core_sha256": SDK_CORE_SHA256,
         "python_version": sdk_identity["python_version"],
@@ -1597,7 +1814,8 @@ def _make_payload(preflight: dict, contracts: dict, report: dict,
     oracle = evaluate_live_effect(contracts["effect"], client.observations, host.tool_trace)
     return {"schema_version": EVIDENCE_SCHEMA, "plan_id": "RPF-53",
         "contracts": contracts, "source_identity": source_identity, "sdk": sdk,
-        "provider": provider, "tool_trace": host.tool_trace,
+        "provider": provider, "agent_contract_visibility": host.visible_contract_checks,
+        "tool_trace": host.tool_trace,
         "http_observations": client.observations,
         "authority_before": before, "authority_after": after,
         "oracle": oracle, "safety": safety,
@@ -1668,6 +1886,7 @@ def run_scenario() -> dict:
     contracts = make_contracts(run_id=run_id, suffix=suffix,
         java_port=java_port, agent_port=host_port, prepared_at_utc=_utc(),
         runtime_source_sha256=preflight["base"]["runtime_source"]["sha256"],
+        task_owned_jar=preflight["base"]["task_owned_jar"],
         sdk_identity={
             "python_version": preflight["base"]["sdk"]["python_version"],
             "python_executable_sha256": preflight["base"]["sdk"]["python_executable_sha256"],
@@ -1682,26 +1901,14 @@ def run_scenario() -> dict:
             "sdk_site_root_binding_sha256": preflight["base"]["sdk"]["sdk_site_root_binding_sha256"],
             "python_runtime_mapping_sha256": preflight["base"]["sdk"]["python_runtime_mapping_sha256"],
         }, tool_schema_sha256=preflight["diagnostic"]["tool_schema_sha256"])
-    _write_once(CONTRACTS_PATH, canonical(contracts))
-    marker = {"plan_id": "RPF-53", "plan_revision": PLAN_REVISION, "run_id": run_id,
-        "started_at_utc": _utc(), "preflight_sha256": _sha_file(PREFLIGHT),
-        "java_runtime_verification": preflight["java_runtime_verification"],
-        "contracts_sha256": digest(contracts), "one_shot": True,
-        "provider_https_requests": 0, "total_tokens_reserved_limit": LIMITS["total_tokens"],
-        "cost_cny_upper_limit": LIMITS["estimated_cost_cny_upper"],
-        "automatic_retries": 0}
-    _write_once(STARTED_PATH, canonical(marker))
-    ledger = ProviderLedger(LEDGER_PATH, run_id, create=True)
-    api_key = os.environ.get("DEEPSEEK_API_KEY", "")
-    if not api_key:
-        ledger.finish(False)
-        raise ProbeError("DEEPSEEK_KEY_DISAPPEARED_AFTER_MARKER", "PROVIDER")
     business_key = secrets.token_urlsafe(32)
     deadline = time.monotonic() + LIMITS["scenario_seconds"]
     client = ConfigLiveHttp(contracts, business_key, deadline=deadline)
     business = ConfigLiveBusiness(contracts, client)
-    host = ConfigLiveHost(contracts, ledger, business, api_key=api_key,
-                          expected_tool_schema_sha256=preflight["diagnostic"]["tool_schema_sha256"])
+    ledger = None
+    host = None
+    api_key = ""
+    java_jar_proof = None
     java_process = sdk_process = None
     java_log = None
     sdk_report = None
@@ -1727,12 +1934,31 @@ def run_scenario() -> dict:
         java_process, java_log = _start_java(contracts, business_key, scenario)
         if not _wait_for_java(java_process, java_port, java_log, deadline, health):
             raise ProbeError("JAVA_HEALTH_NOT_READY")
+        java_jar_proof = _actual_java_jar_proof(
+            java_process, preflight["base"]["task_owned_jar"])
         java_listener_pid = java_process.pid if _listener_owned(java_process.pid, java_port) else None
         java_external = _external_connections(java_process.pid)
         if java_external:
             raise ProbeError("JAVA_EXTERNAL_CONNECTION_OBSERVED")
         if java_log.redactions or java_log.overflow:
             raise ProbeError("JAVA_LOG_SECRET_OR_SIZE_GUARD")
+        api_key = os.environ.get("DEEPSEEK_API_KEY", "")
+        if not api_key:
+            raise ProbeError("DEEPSEEK_KEY_DISAPPEARED_BEFORE_MARKER", "PROVIDER")
+        _write_once(CONTRACTS_PATH, canonical(contracts))
+        marker = {"plan_id": "RPF-53", "plan_revision": PLAN_REVISION, "run_id": run_id,
+            "started_at_utc": _utc(), "preflight_sha256": _sha_file(PREFLIGHT),
+            "java_runtime_verification": preflight["java_runtime_verification"],
+            "task_owned_jar": preflight["base"]["task_owned_jar"],
+            "java_jar_launch_proof": java_jar_proof,
+            "contracts_sha256": digest(contracts), "one_shot": True,
+            "provider_https_requests": 0, "total_tokens_reserved_limit": LIMITS["total_tokens"],
+            "cost_cny_upper_limit": LIMITS["estimated_cost_cny_upper"],
+            "automatic_retries": 0}
+        _write_once(STARTED_PATH, canonical(marker))
+        ledger = ProviderLedger(LEDGER_PATH, run_id, create=True)
+        host = ConfigLiveHost(contracts, ledger, business, api_key=api_key,
+                              expected_tool_schema_sha256=preflight["diagnostic"]["tool_schema_sha256"])
         if not client.initial_state_valid():
             raise ProbeError("INITIAL_STATE_NOT_ABSENT")
         authority_before = {"current_seq": 1, "history_seq": 2}
@@ -1809,7 +2035,9 @@ def run_scenario() -> dict:
         failure = {"domain": getattr(exc, "domain", "PLATFORM"),
                    "code": getattr(exc, "code", "SCENARIO_ERROR")}
         if isinstance(exc, LiveRuntimeRejected) and exc.domain == "PROVIDER":
-            failure["provider_usage_state"] = ledger.data["requests"][-1]["status"] if ledger.data["requests"] else "NO_ATTEMPT"
+            failure["provider_usage_state"] = (
+                ledger.data["requests"][-1]["status"]
+                if ledger is not None and ledger.data["requests"] else "NO_ATTEMPT")
     except Exception:
         failure = {"domain": "PLATFORM", "code": "SCENARIO_UNEXPECTED_ERROR"}
     finally:
@@ -1826,11 +2054,14 @@ def run_scenario() -> dict:
                 sdk_external = _external_connections(sdk_process.pid)
             except Exception:
                 sdk_external = [{"remote": "UNAVAILABLE"}]
-        try:
-            host.close()
-            host_closed = host._server is None and host._thread is None
-        except Exception:
-            host_closed = False
+        if host is not None:
+            try:
+                host.close()
+                host_closed = host._server is None and host._thread is None
+            except Exception:
+                host_closed = False
+        else:
+            host_closed = True
         if java_process is not None:
             try:
                 java_external = _external_connections(java_process.pid)
@@ -1860,7 +2091,32 @@ def run_scenario() -> dict:
         cleanup_ok = (process_stopped and listener_closed and host_closed and sdk_stopped
                       and not sdk_external and not java_external and not java_log_info["overflow"]
                       and java_log_info["redactions"] == 0)
-        ledger.finish(cleanup_ok and failure is None)
+        if ledger is not None:
+            ledger.finish(cleanup_ok and failure is None)
+
+    if ledger is None or host is None:
+        pre_marker_summary = {
+            "schema_version": "rpf53-rev5-live-summary-v1", "plan_id": "RPF-53",
+            "plan_revision": PLAN_REVISION, "status": "BLOCKED",
+            "run_id": run_id, "marker_created": False,
+            "task_owned_jar": preflight["base"]["task_owned_jar"],
+            "java_jar_launch_proof": java_jar_proof,
+            "java": {"pid": java_process.pid if java_process else None,
+                "listener_pid": java_listener_pid, "health_gets": health,
+                "exit_code": java_exit_code, "stopped": process_stopped,
+                "listener_closed": listener_closed if java_process else False,
+                "external_connections": java_external, "log": java_log_info},
+            "provider_key_present": bool(api_key), "provider_requests": [],
+            "provider_usage": {"provider_https_requests": 0, "tokens": 0,
+                "confirmed_tokens": 0, "usage_known": True,
+                "automatic_retries": 0, "trials": 0},
+            "sdk": None, "business_http_requests": len(client.observations),
+            "cleanup_ok": cleanup_ok,
+            "failure": failure or {"domain": "PLATFORM", "code": "PRE_MARKER_STOP"},
+            "completed_at_utc": _utc(),
+        }
+        _write_once(SUMMARY_PATH, canonical(pre_marker_summary))
+        return pre_marker_summary
 
     report = sdk_report or {}
     if sdk_report is not None and sdk_exit_code is not None:
@@ -1886,16 +2142,19 @@ def run_scenario() -> dict:
             after_readback = {}
     oracle = evaluate_live_effect(contracts["effect"], client.observations, host.tool_trace)
     status = "COMPLETE" if (failure is None and oracle["outcome"] == "CONTRACT_SATISFIED_IN_RUN"
-                            and cleanup_ok and ledger.usage()["usage_known"]) else "PARTIAL"
+                            and cleanup_ok and ledger.usage()["usage_known"]
+                            and type(java_jar_proof) is dict
+                            and java_jar_proof.get("actual_process_argv_matches_copy") is True) else "PARTIAL"
     if host.failure and host.failure.get("domain") == "PROVIDER":
         status = "PARTIAL"
     summary = {
-        "schema_version": "rpf53-live-summary-v1", "plan_id": "RPF-53",
+        "schema_version": "rpf53-rev5-live-summary-v1", "plan_id": "RPF-53",
         "status": status, "run_id": run_id, "started_marker_sha256": _sha_file(STARTED_PATH),
         "contracts_sha256": digest(contracts), "runtime_source_sha256": preflight["base"]["runtime_source"]["sha256"],
         "provider_key_present": True, "provider_requests": ledger.data["requests"],
         "provider_usage": ledger.usage(), "sdk": report,
-        "tool_trace": host.tool_trace, "http_observations": client.observations,
+        "tool_trace": host.tool_trace, "tool_rejections": host.tool_rejections,
+        "http_observations": client.observations,
         "authority_before": {"current_seq": 1, "history_seq": 2} if authority_before else None,
         "authority_after": after_readback, "oracle": oracle,
         "java": {"pid": java_process.pid if java_process else None,
@@ -1903,6 +2162,7 @@ def run_scenario() -> dict:
                  "exit_code": java_exit_code, "stopped": process_stopped,
                  "listener_closed": listener_closed if java_process else False,
                  "external_connections": java_external, "log": java_log_info,
+                 "jar_provenance": java_jar_proof,
                  "version": preflight["base"]["java"]["version"],
                  "executable_sha256": preflight["base"]["java"]["executable_sha256"]},
         "sdk_process": {"pid": sdk_process.pid if sdk_process else None,
@@ -1925,6 +2185,7 @@ def run_scenario() -> dict:
     safety = {"java_pid": java_process.pid, "java_listener_pid": java_listener_pid,
         "java_exit_code": java_exit_code, "java_stopped": process_stopped,
         "java_listener_closed": listener_closed, "java_external_connections": java_external,
+        "java_jar_provenance": java_jar_proof,
         "sdk_pid": sdk_process.pid, "sdk_stopped": sdk_stopped,
         "sdk_external_connections": sdk_external, "host_closed": host_closed,
         "parent_external_connections": [],
@@ -1933,7 +2194,8 @@ def run_scenario() -> dict:
         "sdk_guard_denials": report["guard_denials"]}
     result = {"status": status, "provider_responses": host.provider_responses,
               "sdk_report": report, "tool_schema_sha256": host.tool_schema_sha256,
-              "tool_trace": host.tool_trace, "http_observations": client.observations,
+              "tool_trace": host.tool_trace, "tool_rejections": host.tool_rejections,
+              "http_observations": client.observations,
               "authority_before": authority_before, "authority_after": authority_after,
               "java_safety": {**safety, "version": preflight["base"]["java"]["version"],
                               "executable_sha256": preflight["base"]["java"]["executable_sha256"]}}
@@ -1965,7 +2227,7 @@ def run_scenario() -> dict:
         _atomic_write(SUMMARY_PATH, canonical(summary))
         raise ProbeError("LIVE_EVIDENCE_OFFLINE_CONTROLS_FAILED")
     summary["status"] = "COMPLETE"
-    summary["evidence"] = {"path": "spikes/rpf-53/rev-4/config-live-evidence.json",
+    summary["evidence"] = {"path": "spikes/rpf-53/rev-5/config-live-evidence.json",
         "bytes": len(evidence_raw), "sha256": anchor,
         "verifier_exit_codes": {"correct_anchor": correct_exit,
                                  "missing_anchor": missing_exit, "wrong_anchor": wrong_exit},
@@ -1993,6 +2255,7 @@ def main(argv: list[str] | None = None) -> int:
                 "provider_key_present": value["provider"]["key_present"],
                 "provider_requests": 0, "source_file_count": value["source"]["source_file_count"],
                 "jar_sha256": value["source"]["jar_sha256"],
+                "task_owned_jar": value["task_owned_jar"],
                 "sdk_core_sha256": value["sdk"]["sdk_core_sha256"]},
                 sort_keys=True, separators=(",", ":")))
             return 0
@@ -2004,11 +2267,13 @@ def main(argv: list[str] | None = None) -> int:
                 sort_keys=True, separators=(",", ":")))
             return 0
         value = run_scenario()
+        usage = value.get("provider_usage", {})
+        oracle = value.get("oracle", {})
         print(json.dumps({"status": value["status"], "run_id": value["run_id"],
-            "provider_requests": value["provider_usage"]["provider_https_requests"],
-            "tokens": value["provider_usage"]["tokens"],
-            "estimated_cost_cny_upper": value["provider_usage"]["estimated_cost_cny_upper"],
-            "effect_outcome": value["oracle"]["outcome"],
+            "provider_requests": usage.get("provider_https_requests", 0),
+            "tokens": usage.get("tokens", 0),
+            "estimated_cost_cny_upper": usage.get("estimated_cost_cny_upper"),
+            "effect_outcome": oracle.get("outcome", "NOT_RUN"),
             "evidence": value.get("evidence")}, sort_keys=True, separators=(",", ":")))
         return 0 if value["status"] == "COMPLETE" else 1
     except ProbeError as exc:

@@ -16,8 +16,10 @@ from pathlib import Path
 from types import SimpleNamespace
 
 from runtime.runproof_runtime.effectwitness.config_live_contracts import (
-    BASE_SHA, LIMITS, PROVIDER_MODEL, SDK_CORE_SHA256, LiveContractRejected,
-    canonical, make_contracts, strict_json, validate_contracts,
+    AGENT_INSTRUCTIONS, BASE_SHA, LIMITS, PROVIDER_MODEL, SDK_CORE_SHA256,
+    SOURCE_COMMIT, SOURCE_JAR_BYTES, SOURCE_JAR_SHA256, SOURCE_MANIFEST_SHA256,
+    TASK_OWNED_JAR_PATH, TASK_PROMPT, TOOL_HELP, LiveContractRejected,
+    canonical, digest, make_contracts, strict_json, validate_contracts,
 )
 from runtime.runproof_runtime.effectwitness.config_live_runtime import (
     ConfigLiveBusiness, ConfigLiveHost, ConfigLiveMemoryBackend, LiveRuntimeRejected, ProviderLedger,
@@ -26,6 +28,7 @@ from runtime.runproof_runtime.effectwitness.config_live_runtime import (
 from runtime.runproof_runtime.effectwitness.config_live_verify import (
     _sdk_executable_identity_valid, _sdk_process_identity_valid, evaluate_live_effect,
 )
+from runtime.runproof_runtime.effectwitness import config_live_external as sdk_child
 from runtime.runproof_runtime.effectwitness.config_live_external import (
     _guard_events, _root_has_link_component, _runtime_archive_entry,
     _validated_run_usage,
@@ -34,7 +37,7 @@ from runtime.runproof_runtime.effectwitness.config_live_external import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev4" / "tests"
+TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev5" / "tests"
 _PROBE_SPEC = importlib.util.spec_from_file_location(
     "rpf53_rev4_probe", ROOT / "spikes" / "rpf-53" / "probe.py")
 _PROBE = importlib.util.module_from_spec(_PROBE_SPEC)
@@ -55,16 +58,66 @@ def _sdk_identity() -> dict:
 def _contracts(*, fixture: bool = False, agent_port: int | None = None) -> dict:
     suffix = "0123456789abcdef"
     port = agent_port or (47322 if fixture else 47323)
+    task_owned_jar = {
+        "relative_path": TASK_OWNED_JAR_PATH,
+        "source_commit": SOURCE_COMMIT,
+        "manifest_sha256": SOURCE_MANIFEST_SHA256,
+        "source_sha256": SOURCE_JAR_SHA256,
+        "source_bytes": SOURCE_JAR_BYTES,
+        "copy_sha256": SOURCE_JAR_SHA256,
+        "copy_bytes": SOURCE_JAR_BYTES,
+        "path_within_task_root": True,
+        "no_link_components": True,
+        "copy_verified": True,
+    }
     return make_contracts(run_id="rpf53-test-" + suffix, suffix=suffix,
         java_port=None if fixture else 47321,
         agent_port=port,
         prepared_at_utc="2026-10-18T00:00:00Z", runtime_source_sha256="e" * 64,
         sdk_identity=_sdk_identity(),
+        task_owned_jar=task_owned_jar,
         tool_schema_sha256=None if fixture else "f" * 64,
         mode="FIXTURE_TEST_ONLY" if fixture else "REAL_PROVIDER")
 
 
 class ConfigLiveContractsTests(unittest.TestCase):
+    def test_fixture_retry_allows_source_repair_without_sdk_identity_transition(self):
+        previous = {
+            "repo": {"branch": "codex/rpf-53-rev5-live-config-contract-jar-closeout",
+                     "status_paths": ["before"]},
+            "source": {"manifest": "fixed"}, "task_owned_jar": {"sha256": "fixed"},
+            "sdk": {"python_executable_sha256": "a" * 64,
+                    "python_runtime_mapping_sha256": "b" * 64},
+            "java": {"version": "17.0.12"}, "provider": {"model": "deepseek-flash"},
+            "push_effect": {"release": "none"},
+            "runtime_source": {"sha256": "c" * 64},
+        }
+        repaired = copy.deepcopy(previous)
+        repaired["repo"]["status_paths"] = ["after"]
+        repaired["runtime_source"]["sha256"] = "d" * 64
+        self.assertTrue(_PROBE._diagnostic_retry_identity_valid(previous, repaired))
+
+        changed_sdk = copy.deepcopy(repaired)
+        changed_sdk["sdk"]["python_runtime_mapping_sha256"] = "e" * 64
+        self.assertFalse(_PROBE._diagnostic_retry_identity_valid(previous, changed_sdk))
+        unchanged_source = copy.deepcopy(previous)
+        self.assertFalse(_PROBE._diagnostic_retry_identity_valid(previous, unchanged_source))
+
+    def test_agent_visible_task_and_tool_help_freeze_the_exact_synthetic_contract(self):
+        self.assertIn("inspect_config", AGENT_INSTRUCTIONS)
+        self.assertIn('value="rpf53-v1"', AGENT_INSTRUCTIONS)
+        self.assertIn("expected_version=1", AGENT_INSTRUCTIONS)
+        self.assertIn('value="rpf53-v2"', AGENT_INSTRUCTIONS)
+        self.assertIn('{"value":"rpf53-v1"}', TASK_PROMPT)
+        self.assertIn('{"expected_version":1,"value":"rpf53-v2"}', TASK_PROMPT)
+        self.assertIn("UNKNOWN_OUTCOME", TASK_PROMPT)
+        self.assertEqual(set(TOOL_HELP), {
+            "inspect_config", "create_config_v1", "update_config_v2"})
+        self.assertEqual(sdk_child.TOOL_HELP, TOOL_HELP)
+        self.assertIn("rpf53-v1", TOOL_HELP["create_config_v1"])
+        self.assertIn("rpf53-v2", TOOL_HELP["update_config_v2"])
+        self.assertIn("expected_version 1", TOOL_HELP["update_config_v2"])
+
     def test_pinned_run_usage_report_uses_only_verified_fields(self):
         class PinnedRunUsage:
             requests = 4
@@ -461,17 +514,38 @@ class ConfigLiveBudgetTests(unittest.TestCase):
 
 
 class ConfigLiveProtocolTests(unittest.TestCase):
+    def test_task_owned_jar_gate_accepts_only_the_copy_under_this_run_root(self):
+        TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix="jar-gate-", dir=TASK_TEST_ROOT) as temporary:
+            root = Path(temporary) / "task-root"
+            jar_dir = root / "jar"
+            jar_dir.mkdir(parents=True)
+            jar = jar_dir / "config-center-server-1.0.0.jar"
+            jar.write_bytes(b"synthetic fixed JAR bytes")
+            outside = Path(temporary) / "old-source.jar"
+            outside.write_bytes(b"same source content, wrong ownership")
+            self.assertTrue(_PROBE._argv_jar_path_matches(
+                ["java.exe", "-Dtest=1", "-jar", str(jar)], jar, root))
+            self.assertFalse(_PROBE._argv_jar_path_matches(
+                ["java.exe", "-jar", str(outside)], jar, root))
+            self.assertFalse(_PROBE._argv_jar_path_matches(
+                ["java.exe", "-jar", str(jar), "-jar", str(outside)], jar, root))
+            self.assertFalse(_PROBE._argv_jar_path_matches(
+                ["java.exe", "-jar", str(root / ".." / "old-source.jar")], jar, root))
+        self.assertEqual(_PROBE.TASK_OWNED_JAR.relative_to(ROOT).as_posix(),
+                         TASK_OWNED_JAR_PATH)
+
     def test_sdk_tool_registry_accepts_omitted_empty_required_only(self):
         tools = [
             {"type": "function", "function": {"name": "inspect_config",
-             "description": "Inspect", "parameters": {"type": "object",
+             "description": TOOL_HELP["inspect_config"], "parameters": {"type": "object",
              "properties": {}, "additionalProperties": False}}},
             {"type": "function", "function": {"name": "create_config_v1",
-             "description": "Create", "parameters": {"type": "object",
+             "description": TOOL_HELP["create_config_v1"], "parameters": {"type": "object",
              "properties": {"value": {"type": "string"}}, "required": ["value"],
              "additionalProperties": False}}},
             {"type": "function", "function": {"name": "update_config_v2",
-             "description": "Update", "parameters": {"type": "object",
+             "description": TOOL_HELP["update_config_v2"], "parameters": {"type": "object",
              "properties": {"expected_version": {"type": "integer"},
                              "value": {"type": "string"}},
              "required": ["expected_version", "value"],
@@ -487,6 +561,11 @@ class ConfigLiveProtocolTests(unittest.TestCase):
             _validate_tool_registry(strict_tools)
         tools[0]["function"]["parameters"]["required"] = ["fake"]
         with self.assertRaisesRegex(LiveRuntimeRejected, "SDK_TOOL_SCHEMA_REQUIRED"):
+            _validate_tool_registry(tools)
+        tools = copy.deepcopy(strict_tools)
+        tools[0]["function"]["strict"] = True
+        tools[0]["function"]["description"] = "not the frozen help text"
+        with self.assertRaisesRegex(LiveRuntimeRejected, "SDK_TOOL_DESCRIPTION"):
             _validate_tool_registry(tools)
 
     def test_tool_schema_diagnostic_exposes_shape_without_untrusted_keys(self):
@@ -548,13 +627,110 @@ class ConfigLiveProtocolTests(unittest.TestCase):
         with self.assertRaisesRegex(LiveRuntimeRejected, "TOOL_NOT_ALLOWLISTED"):
             business.invoke("delete_config", {})
         with self.assertRaisesRegex(LiveRuntimeRejected, "CREATE_ARGUMENTS_REJECTED"):
-            business.invoke("create_config_v1", {"value": "attacker-value"})
+            business.invoke("create_config_v1", {"value": "private-free-text"})
+        create_diagnostic = business.safe_rejections[-1]
+        self.assertEqual(create_diagnostic["key_shape"], "EXACT")
+        self.assertEqual(create_diagnostic["argument_types"], {"value": "STRING"})
+        self.assertFalse(create_diagnostic["expected_value_match"])
+        self.assertRegex(create_diagnostic["arguments_sha256"], r"^[0-9a-f]{64}$")
+        self.assertNotIn("private-free-text", json.dumps(create_diagnostic))
+        with self.assertRaisesRegex(LiveRuntimeRejected, "CREATE_ARGUMENTS_REJECTED"):
+            business.invoke("create_config_v1", {"value": 11})
+        self.assertEqual(business.safe_rejections[-1]["argument_types"]["value"], "INTEGER")
+        with self.assertRaisesRegex(LiveRuntimeRejected, "TOOL_ARGUMENT_SHAPE"):
+            business.invoke("create_config_v1", {
+                "value": "private-free-text", "private-field-name": "private-field-value"})
+        shape_diagnostic = business.safe_rejections[-1]
+        self.assertEqual(shape_diagnostic["key_shape"], "EXTRA")
+        self.assertEqual(shape_diagnostic["unknown_key_count"], 1)
+        self.assertNotIn("private-field-name", json.dumps(shape_diagnostic))
+        self.assertNotIn("private-field-value", json.dumps(shape_diagnostic))
         with self.assertRaisesRegex(LiveRuntimeRejected, "CREATE_WITHOUT_CONFIRMED_ABSENCE"):
             business.invoke("create_config_v1", {"value": "rpf53-v1"})
         with self.assertRaisesRegex(LiveRuntimeRejected, "UPDATE_WITHOUT_CONFIRMED_CREATE"):
             business.invoke("update_config_v2", {
                 "expected_version": 1, "value": "rpf53-v2"})
+        with self.assertRaisesRegex(LiveRuntimeRejected, "UPDATE_ARGUMENTS_REJECTED"):
+            business.invoke("update_config_v2", {
+                "expected_version": True, "value": "rpf53-v2"})
+        update_diagnostic = business.safe_rejections[-1]
+        self.assertEqual(update_diagnostic["argument_types"], {
+            "expected_version": "BOOLEAN", "value": "STRING"})
+        self.assertFalse(update_diagnostic["expected_version_match"])
         self.assertEqual(client.requests, [])
+
+    def test_host_retains_only_bounded_rejection_metadata_without_raw_argument(self):
+        class Client:
+            stop_writes = False
+
+            def request(self, kind):
+                raise AssertionError("rejected arguments must not reach HTTP")
+
+        contracts = _contracts(fixture=True)
+        ledger = ProviderLedger.fixture_only(contracts["experiment"]["run_id"])
+        business = ConfigLiveBusiness(contracts, Client())
+        host = ConfigLiveHost(contracts, ledger, business, fixture=True)
+        arguments = {"value": "private-free-text"}
+        host.runtime = {"pid": 123}
+        host.intents["call_rpf53_rejected"] = {
+            "response_id": "chatcmpl-rpf53-rejected",
+            "call_id": "call_rpf53_rejected", "name": "create_config_v1",
+            "arguments_sha256": digest(arguments), "arguments": arguments}
+        with self.assertRaisesRegex(LiveRuntimeRejected, "CREATE_ARGUMENTS_REJECTED"):
+            host._tool({"call_id": "call_rpf53_rejected",
+                        "name": "create_config_v1", "arguments": arguments})
+        encoded = json.dumps(host.tool_rejections, sort_keys=True)
+        self.assertNotIn("private-free-text", encoded)
+        self.assertEqual(host.tool_rejections[0]["call_id"], "call_rpf53_rejected")
+        self.assertEqual(host.tool_rejections[0]["expected_value_match"], False)
+        self.assertRegex(host.tool_rejections[0]["arguments_sha256"], r"^[0-9a-f]{64}$")
+        self.assertEqual(host.tool_trace, [])
+
+    def test_business_allows_one_exact_create_and_stops_after_unknown_response(self):
+        class Client:
+            def __init__(self, create_unknown=False):
+                self.stop_writes = False
+                self.create_unknown = create_unknown
+                self.requests = []
+                self.effect = _contracts()["effect"]
+
+            def request(self, kind):
+                self.requests.append(kind)
+                if kind == "inspect_config":
+                    return {"status": 404, "transport_error": None,
+                        "content_type": "application/json", "response": {
+                            "code": 4041, "message": "not found", "data": None,
+                            "traceId": None}}
+                if kind == "create_config_v1" and self.create_unknown:
+                    return {"status": None, "transport_error": "TIMEOUT",
+                            "content_type": None, "response": None}
+                item = {name: self.effect[name] for name in ("app", "env", "key")}
+                item.update(value="rpf53-v1", description=None, version=1,
+                            updatedAt="2026-10-18T00:00:00Z")
+                return {"status": 200, "transport_error": None,
+                    "content_type": "application/json", "response": {
+                        "code": 0, "message": "ok", "data": item, "traceId": None}}
+
+        client = Client()
+        business = ConfigLiveBusiness(_contracts(), client)
+        self.assertEqual(business.invoke("inspect_config", {}), {"state": "ABSENT"})
+        self.assertEqual(business.invoke("create_config_v1", {"value": "rpf53-v1"})[
+            "status"], "COMMITTED")
+        with self.assertRaisesRegex(LiveRuntimeRejected, "CREATE_WITHOUT_CONFIRMED_ABSENCE"):
+            business.invoke("create_config_v1", {"value": "rpf53-v1"})
+        self.assertEqual(client.requests.count("create_config_v1"), 1)
+
+        uncertain_client = Client(create_unknown=True)
+        uncertain = ConfigLiveBusiness(_contracts(), uncertain_client)
+        uncertain.invoke("inspect_config", {})
+        outcome = uncertain.invoke("create_config_v1", {"value": "rpf53-v1"})
+        self.assertEqual(outcome["status"], "UNKNOWN_OUTCOME")
+        self.assertTrue(uncertain_client.stop_writes)
+        with self.assertRaisesRegex(LiveRuntimeRejected, "UPDATE_WITHOUT_CONFIRMED_CREATE"):
+            uncertain.invoke("update_config_v2", {
+                "expected_version": 1, "value": "rpf53-v2"})
+        self.assertEqual(uncertain_client.requests.count("create_config_v1"), 1)
+        self.assertNotIn("update_config_v2", uncertain_client.requests)
 
     def test_host_ready_binds_the_reported_python_executable_hash(self):
         contracts = _contracts(fixture=True)
@@ -598,21 +774,22 @@ class ConfigLiveProtocolTests(unittest.TestCase):
             ready_response.read()
             tools = [
                 {"type": "function", "function": {"name": "inspect_config",
-                 "description": "Inspect", "parameters": {"type": "object",
+                 "description": TOOL_HELP["inspect_config"], "parameters": {"type": "object",
                  "properties": {}, "additionalProperties": False}}},
                 {"type": "function", "function": {"name": "create_config_v1",
-                 "description": "Create", "parameters": {"type": "object",
+                 "description": TOOL_HELP["create_config_v1"], "parameters": {"type": "object",
                  "properties": {"value": {"type": "string"}}, "required": ["value"],
                  "additionalProperties": False}}},
                 {"type": "function", "function": {"name": "update_config_v2",
-                 "description": "Update", "parameters": {"type": "object",
+                 "description": TOOL_HELP["update_config_v2"], "parameters": {"type": "object",
                  "properties": {"expected_version": {"type": "integer"},
                                  "value": {"type": "string"}},
                  "required": ["expected_version", "value"],
                  "additionalProperties": False}}},
             ]
             request = {"model": "rpf53-fixture-only", "messages":[
-                {"role":"user","content":"synthetic"}], "tools":tools,
+                {"role":"system","content":AGENT_INSTRUCTIONS},
+                {"role":"user","content":TASK_PROMPT}], "tools":tools,
                 "tool_choice":"auto", "parallel_tool_calls":False,
                 "max_tokens":256,"stream":False}
             connection.request("POST", "/v1/chat/completions", canonical(request), {

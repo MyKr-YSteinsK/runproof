@@ -16,8 +16,9 @@ from pathlib import Path
 from urllib.parse import quote
 
 from .config_live_contracts import (
-    LIMITS, OPENAI_VERSION, PROVIDER_MODEL, PROVIDER_ORIGIN, PROVIDER_PATH,
+    AGENT_INSTRUCTIONS, LIMITS, OPENAI_VERSION, PROVIDER_MODEL, PROVIDER_ORIGIN, PROVIDER_PATH,
     SDK_CORE_SHA256, SDK_NAME, SDK_VERSION, TOOLS, TOOL_ARGUMENT_KEYS,
+    TASK_PROMPT, TOOL_HELP,
     LiveContractRejected, canonical, digest, require, strict_json, validate_contracts,
 )
 
@@ -363,13 +364,75 @@ class ConfigLiveBusiness:
         self.create_ok = False
         self.update_ok = False
         self.call_count = 0
+        self.safe_rejections: list[dict] = []
+
+    @staticmethod
+    def safe_argument_diagnostic(name: str, arguments: dict, effect: dict,
+                                 code: str) -> dict:
+        expected_keys = set(TOOL_ARGUMENT_KEYS.get(name, ()))
+        supplied_keys = set(arguments) if type(arguments) is dict else set()
+        present = sorted(expected_keys & supplied_keys)
+        missing = sorted(expected_keys - supplied_keys)
+        unknown_count = len(supplied_keys - expected_keys)
+        if missing and unknown_count:
+            key_shape = "MISSING_AND_EXTRA"
+        elif missing:
+            key_shape = "MISSING"
+        elif unknown_count:
+            key_shape = "EXTRA"
+        else:
+            key_shape = "EXACT"
+
+        def classify(key: str) -> str:
+            if key not in arguments:
+                return "MISSING"
+            value = arguments[key]
+            if value is None:
+                return "NULL"
+            if type(value) is bool:
+                return "BOOLEAN"
+            if type(value) is int:
+                return "INTEGER"
+            if type(value) is float:
+                return "NUMBER"
+            if type(value) is str:
+                return "STRING"
+            if type(value) is list:
+                return "ARRAY"
+            if type(value) is dict:
+                return "OBJECT"
+            return "OTHER"
+
+        result = {
+            "code": code,
+            "arguments_sha256": digest(arguments),
+            "key_shape": key_shape,
+            "expected_keys": sorted(expected_keys),
+            "present_expected_keys": present,
+            "missing_expected_keys": missing,
+            "unknown_key_count": unknown_count,
+            "argument_types": {key: classify(key) for key in sorted(expected_keys)},
+        }
+        if "value" in expected_keys:
+            target = (effect.get("initial_value") if name == "create_config_v1"
+                      else effect.get("required_value"))
+            result["expected_value_match"] = (
+                type(arguments.get("value")) is str and arguments.get("value") == target)
+        if "expected_version" in expected_keys:
+            result["expected_version_match"] = (
+                type(arguments.get("expected_version")) is int
+                and arguments.get("expected_version") == 1)
+        return result
 
     def invoke(self, name: str, arguments: dict) -> dict:
         self.call_count += 1
         _reject(self.call_count <= LIMITS["sdk_tool_calls"], "TOOL_CALL_BUDGET", "AGENT")
         _reject(name in TOOLS and type(arguments) is dict, "TOOL_NOT_ALLOWLISTED", "AGENT")
         expected_keys = set(TOOL_ARGUMENT_KEYS[name])
-        _reject(set(arguments) == expected_keys, "TOOL_ARGUMENT_SHAPE", "AGENT")
+        if set(arguments) != expected_keys:
+            self.safe_rejections.append(self.safe_argument_diagnostic(
+                name, arguments, self.effect, "TOOL_ARGUMENT_SHAPE"))
+            _reject(False, "TOOL_ARGUMENT_SHAPE", "AGENT")
         if name == "inspect_config":
             observation = self.client.request("inspect_config")
             if observation["status"] == 404:
@@ -386,8 +449,10 @@ class ConfigLiveBusiness:
             self.client.stop_writes = True
             return {"state": "UNKNOWN", "reason": "READ_CONTRACT_FAILED"}
         if name == "create_config_v1":
-            _reject(arguments == {"value": self.effect["initial_value"]},
-                    "CREATE_ARGUMENTS_REJECTED", "AGENT")
+            if arguments != {"value": self.effect["initial_value"]}:
+                self.safe_rejections.append(self.safe_argument_diagnostic(
+                    name, arguments, self.effect, "CREATE_ARGUMENTS_REJECTED"))
+                _reject(False, "CREATE_ARGUMENTS_REJECTED", "AGENT")
             _reject(self.inspect_ok and not self.create_ok and not self.client.stop_writes,
                     "CREATE_WITHOUT_CONFIRMED_ABSENCE", "AGENT")
             observation = self.client.request("create_config_v1")
@@ -400,9 +465,12 @@ class ConfigLiveBusiness:
                     or observation["transport_error"] else "REJECTED",
                     "reason": observation["transport_error"] or "CREATE_RESPONSE_CONTRACT_FAILED"}
         _reject(name == "update_config_v2", "TOOL_NOT_ALLOWLISTED", "AGENT")
-        _reject(type(arguments.get("expected_version")) is int
-                and arguments == {"expected_version": 1, "value": self.effect["required_value"]},
-                "UPDATE_ARGUMENTS_REJECTED", "AGENT")
+        if (type(arguments.get("expected_version")) is not int
+                or arguments != {"expected_version": 1,
+                                 "value": self.effect["required_value"]}):
+            self.safe_rejections.append(self.safe_argument_diagnostic(
+                name, arguments, self.effect, "UPDATE_ARGUMENTS_REJECTED"))
+            _reject(False, "UPDATE_ARGUMENTS_REJECTED", "AGENT")
         _reject(self.create_ok and not self.update_ok and not self.client.stop_writes,
                 "UPDATE_WITHOUT_CONFIRMED_CREATE", "AGENT")
         observation = self.client.request("update_config_v2")
@@ -453,6 +521,8 @@ def _validate_tool_registry(tools: object) -> str:
         _reject("strict" not in function or function["strict"] is True,
                 "SDK_TOOL_SCHEMA_SHAPE", "AGENT")
         name, params = function["name"], function["parameters"]
+        _reject(function.get("description") == TOOL_HELP[name],
+                "SDK_TOOL_DESCRIPTION", "AGENT")
         _reject(name not in by_name and type(params) is dict
                 and set(params) <= {"type", "properties", "required", "additionalProperties", "title"}
                 and params.get("type") == "object"
@@ -584,6 +654,8 @@ class ConfigLiveHost:
         self.intents: dict[str, dict] = {}
         self.tool_trace: list[dict] = []
         self.tool_returns: dict[str, dict] = {}
+        self.tool_rejections: list[dict] = []
+        self.visible_contract_checks: list[dict] = []
         self.provider_responses: list[dict] = []
         self._server: HTTPServer | None = None
         self._thread: threading.Thread | None = None
@@ -699,7 +771,17 @@ class ConfigLiveHost:
                 and digest(arguments) == intent["arguments_sha256"],
                 "TOOL_INTENT_BINDING_OR_REPLAY", "AGENT")
         _reject(len(self.tool_trace) < LIMITS["sdk_tool_calls"], "TOOL_CALL_BUDGET", "AGENT")
-        result = self.business.invoke(name, arguments)
+        try:
+            result = self.business.invoke(name, arguments)
+        except LiveRuntimeRejected as exc:
+            if (isinstance(self.business, ConfigLiveBusiness)
+                    and exc.domain == "AGENT"
+                    and exc.code in ("TOOL_ARGUMENT_SHAPE", "CREATE_ARGUMENTS_REJECTED",
+                                     "UPDATE_ARGUMENTS_REJECTED")):
+                detail = (self.business.safe_rejections[-1]
+                          if self.business.safe_rejections else {})
+                self.tool_rejections.append({"call_id": call_id, "name": name, **detail})
+            raise
         item = {"sequence": len(self.tool_trace) + 1,
                 "provider_response_id": intent["response_id"], "call_id": call_id,
                 "name": name, "arguments": arguments,
@@ -758,6 +840,33 @@ class ConfigLiveHost:
             self.tool_definitions = body["tools"]
         else:
             _reject(self.tool_definitions == body["tools"], "SDK_TOOL_SCHEMA_CHANGED", "AGENT")
+        messages = body.get("messages")
+        _reject(type(messages) is list, "AGENT_MESSAGES_INVALID", "AGENT")
+        system_parts, user_parts = [], []
+        for item in messages:
+            if type(item) is not dict:
+                continue
+            content = item.get("content")
+            if type(content) is str:
+                rendered = content
+            elif type(content) is list:
+                rendered = "\n".join(part.get("text", "") for part in content
+                    if type(part) is dict and type(part.get("text")) is str)
+            else:
+                rendered = ""
+            if item.get("role") in ("system", "developer"):
+                system_parts.append(rendered)
+            elif item.get("role") == "user":
+                user_parts.append(rendered)
+        visibility = {
+            "instructions_present": AGENT_INSTRUCTIONS in "\n".join(system_parts),
+            "task_prompt_present": TASK_PROMPT in "\n".join(user_parts),
+            "tool_help_exact": True,
+            "messages_sha256": digest(messages),
+        }
+        self.visible_contract_checks.append(visibility)
+        _reject(visibility["instructions_present"] and visibility["task_prompt_present"],
+                "AGENT_VISIBLE_CONTRACT_MISSING", "AGENT")
         returns = self._verify_tool_returns(body)
         request = dict(body)
         request.pop("max_completion_tokens", None)

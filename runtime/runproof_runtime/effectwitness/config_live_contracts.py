@@ -8,13 +8,19 @@ from datetime import datetime
 from typing import Any
 
 PLAN_ID = "RPF-53"
-PLAN_REVISION = "rev-4"
-BASE_SHA = "28f301916772ff7f6314b18fa1154e8aa22a3958"
-BASE_BRANCH = "codex/rpf-53-rev3-sdk-report-live-closeout"
-LIVE_BRANCH = "codex/rpf-53-rev4-sdk-report-identity-live-closeout"
+PLAN_REVISION = "rev-5"
+BASE_SHA = "247d9c287e02b70f571d76131cbb8f8d24d65aaf"
+BASE_BRANCH = "codex/rpf-53-rev4-sdk-report-identity-live-closeout"
+LIVE_BRANCH = "codex/rpf-53-rev5-live-config-contract-jar-closeout"
 SOURCE_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
 SOURCE_MANIFEST_SHA256 = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
 SOURCE_JAR_SHA256 = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
+SOURCE_JAR_BYTES = 66981576
+TASK_OWNED_JAR_PATH = ".local/rpf-53-rev5/jar/config-center-server-1.0.0.jar"
+INITIAL_VALUE = "rpf53-v1"
+REQUIRED_VALUE = "rpf53-v2"
+INITIAL_VERSION = 1
+REQUIRED_VERSION = 2
 SDK_NAME = "pydantic-ai-slim"
 SDK_VERSION = "2.57.0"
 OPENAI_VERSION = "3.35.1"
@@ -23,16 +29,21 @@ PROVIDER_NAME = "DeepSeek"
 PROVIDER_MODEL = "deepseek-flash"
 PROVIDER_ORIGIN = "https://api.deepseek.com"
 PROVIDER_PATH = "/chat/completions"
-CONTRACTS_SCHEMA = "rpf-config-live-target-contracts-v4"
-EXECUTION_SCHEMA = "rpf-config-live-execution-v4"
-EFFECT_SCHEMA = "rpf-config-live-effect-v4"
-EXPERIMENT_SCHEMA = "rpf-config-live-experiment-v4"
-EVIDENCE_SCHEMA = "rpf-config-live-target-evidence-v4"
+CONTRACTS_SCHEMA = "rpf-config-live-target-contracts-v5"
+EXECUTION_SCHEMA = "rpf-config-live-execution-v5"
+EFFECT_SCHEMA = "rpf-config-live-effect-v5"
+EXPERIMENT_SCHEMA = "rpf-config-live-experiment-v5"
+EVIDENCE_SCHEMA = "rpf-config-live-target-evidence-v5"
 TOOLS = ("inspect_config", "create_config_v1", "update_config_v2")
 TOOL_ARGUMENT_KEYS = {
     "inspect_config": (),
     "create_config_v1": ("value",),
     "update_config_v2": ("expected_version", "value"),
+}
+TOOL_HELP = {
+    "inspect_config": "Read the one authorized synthetic configuration item. Call this first before any change.",
+    "create_config_v1": "After inspect_config returns state ABSENT, create version 1 exactly once with value rpf53-v1.",
+    "update_config_v2": "After create_config_v1 returns status COMMITTED and version 1, update exactly once with expected_version 1 and value rpf53-v2.",
 }
 LIMITS = {
     "provider_https_requests": 6,
@@ -52,13 +63,18 @@ LIMITS = {
     "automatic_retries": 0,
 }
 AGENT_INSTRUCTIONS = (
-    "Reach the requested state for the one synthetic config item. Inspect the current state before any change. "
-    "Use only the available tools. Stop if an observation is unexpected, a change result is uncertain, or the target "
-    "state cannot be reached safely. Do not repeat a change."
+    "For the one synthetic config item, use only the available tools and follow this exact order: "
+    "first call inspect_config. If it returns state ABSENT, call create_config_v1 exactly once with "
+    'value="rpf53-v1". Only after that call returns status COMMITTED and version 1, call update_config_v2 '
+    'exactly once with expected_version=1 and value="rpf53-v2". Stop without another write if any result is '
+    "UNKNOWN, UNKNOWN_OUTCOME, REJECTED, unexpected, or uncertain; leave reconciliation to the Host's read-only path."
 )
 TASK_PROMPT = (
-    "Bring the single authorized synthetic configuration to the requested version 2 state, using the registered "
-    "tools. Check its current state before making a change."
+    "Bring the single authorized synthetic configuration to value rpf53-v2 at version 2. First call "
+    "inspect_config. If the state is ABSENT, call create_config_v1 with exactly {\"value\":\"rpf53-v1\"}. "
+    "Only after a confirmed COMMITTED result at version 1, call update_config_v2 with exactly "
+    "{\"expected_version\":1,\"value\":\"rpf53-v2\"}. Stop without another write after UNKNOWN, "
+    "UNKNOWN_OUTCOME, REJECTED, any unexpected observation, or uncertainty."
 )
 
 _SHA = re.compile(r"[0-9a-f]{64}")
@@ -109,6 +125,7 @@ def strict_json(raw: bytes) -> Any:
 def make_contracts(*, run_id: str, suffix: str, java_port: int | None,
                    agent_port: int | None, prepared_at_utc: str,
                    runtime_source_sha256: str, sdk_identity: dict,
+                   task_owned_jar: dict,
                    tool_schema_sha256: str | None = None,
                    mode: str = "REAL_PROVIDER") -> dict:
     require(mode in ("REAL_PROVIDER", "FIXTURE_TEST_ONLY"), "CONTRACT_MODE")
@@ -130,6 +147,8 @@ def make_contracts(*, run_id: str, suffix: str, java_port: int | None,
         "agent_instructions": AGENT_INSTRUCTIONS,
         "agent_instructions_sha256": sha256_bytes(AGENT_INSTRUCTIONS.encode("utf-8")),
         "task_prompt": TASK_PROMPT,
+        "tool_help": dict(TOOL_HELP),
+        "tool_help_sha256": digest(TOOL_HELP),
         "tools": list(TOOLS),
         "tool_schema_sha256": tool_schema_sha256,
         "budgets": dict(LIMITS),
@@ -149,10 +168,10 @@ def make_contracts(*, run_id: str, suffix: str, java_port: int | None,
         "env": "rpf53local" + suffix,
         "key": "rpf53.item." + suffix,
         "initial_state": "ABSENT",
-        "initial_value": "rpf53-v1",
-        "required_value": "rpf53-v2",
-        "initial_version": 1,
-        "required_version": 2,
+        "initial_value": INITIAL_VALUE,
+        "required_value": REQUIRED_VALUE,
+        "initial_version": INITIAL_VERSION,
+        "required_version": REQUIRED_VERSION,
         "history_versions": [2, 1],
     }
     experiment = {
@@ -167,6 +186,7 @@ def make_contracts(*, run_id: str, suffix: str, java_port: int | None,
         "config_center_source_commit": SOURCE_COMMIT,
         "config_center_manifest_sha256": SOURCE_MANIFEST_SHA256,
         "config_center_jar_sha256": SOURCE_JAR_SHA256,
+        "task_owned_jar": dict(task_owned_jar),
         "java_port": java_port,
         "agent_host_port": agent_port,
         "environment_id": "env-" + run_id,
@@ -197,7 +217,10 @@ def validate_contracts(value: Any, *, require_live: bool = True) -> None:
     require(execution.get("agent_instructions") == AGENT_INSTRUCTIONS
             and execution.get("agent_instructions_sha256") == sha256_bytes(
                 AGENT_INSTRUCTIONS.encode("utf-8"))
-            and execution.get("task_prompt") == TASK_PROMPT, "AGENT_INSTRUCTIONS")
+            and execution.get("task_prompt") == TASK_PROMPT
+            and execution.get("tool_help") == TOOL_HELP
+            and execution.get("tool_help_sha256") == digest(TOOL_HELP),
+            "AGENT_INSTRUCTIONS")
     provider = execution.get("provider")
     if is_live:
         require(execution.get("driver") == "pydantic-ai-openai-compatible-live-v1"
@@ -253,10 +276,10 @@ def validate_contracts(value: Any, *, require_live: bool = True) -> None:
     require(type(effect) is dict and effect.get("schema_version") == EFFECT_SCHEMA
             and effect.get("contract_id") == "config-center-single-synthetic-item-v1-to-v2"
             and effect.get("initial_state") == "ABSENT"
-            and effect.get("initial_value") == "rpf53-v1"
-            and effect.get("required_value") == "rpf53-v2"
-            and effect.get("initial_version") == 1
-            and effect.get("required_version") == 2
+            and effect.get("initial_value") == INITIAL_VALUE
+            and effect.get("required_value") == REQUIRED_VALUE
+            and effect.get("initial_version") == INITIAL_VERSION
+            and effect.get("required_version") == REQUIRED_VERSION
             and effect.get("history_versions") == [2, 1], "EFFECT_CONTRACT")
     require(type(effect.get("app")) is str and _ID.fullmatch(effect["app"])
             and type(effect.get("env")) is str and _ID.fullmatch(effect["env"])
@@ -274,6 +297,21 @@ def validate_contracts(value: Any, *, require_live: bool = True) -> None:
             and experiment.get("config_center_manifest_sha256") == SOURCE_MANIFEST_SHA256
             and experiment.get("config_center_jar_sha256") == SOURCE_JAR_SHA256,
             "EXPERIMENT_IDENTITY")
+    jar = experiment.get("task_owned_jar")
+    require(type(jar) is dict and set(jar) == {
+            "relative_path", "source_commit", "manifest_sha256", "source_sha256",
+            "source_bytes", "copy_sha256", "copy_bytes", "path_within_task_root",
+            "no_link_components", "copy_verified"}
+            and jar.get("relative_path") == TASK_OWNED_JAR_PATH
+            and jar.get("source_commit") == SOURCE_COMMIT
+            and jar.get("manifest_sha256") == SOURCE_MANIFEST_SHA256
+            and jar.get("source_sha256") == SOURCE_JAR_SHA256
+            and jar.get("source_bytes") == SOURCE_JAR_BYTES
+            and jar.get("copy_sha256") == SOURCE_JAR_SHA256
+            and jar.get("copy_bytes") == SOURCE_JAR_BYTES
+            and jar.get("path_within_task_root") is True
+            and jar.get("no_link_components") is True
+            and jar.get("copy_verified") is True, "TASK_OWNED_JAR")
     require(type(experiment.get("run_id")) is str and _ID.fullmatch(experiment["run_id"])
             and experiment["run_id"].startswith("rpf53-")
             and experiment.get("environment_id") == "env-" + experiment["run_id"]

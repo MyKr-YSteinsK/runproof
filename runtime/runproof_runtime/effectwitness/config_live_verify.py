@@ -9,7 +9,8 @@ from urllib.parse import quote
 
 from .config_live_contracts import (
     EVIDENCE_SCHEMA, LIMITS, PROVIDER_MODEL, PROVIDER_NAME, PROVIDER_ORIGIN,
-    SOURCE_COMMIT, SOURCE_JAR_SHA256, SOURCE_MANIFEST_SHA256,
+    SOURCE_COMMIT, SOURCE_JAR_BYTES, SOURCE_JAR_SHA256, SOURCE_MANIFEST_SHA256,
+    TASK_OWNED_JAR_PATH,
     LiveContractRejected, canonical, digest, require, sha256_bytes, strict_json,
     validate_contracts,
 )
@@ -252,7 +253,7 @@ def evaluate_live_effect(effect: dict, observations: list[dict], tool_trace: lis
 def validate_payload(payload: object) -> dict:
     _reject(type(payload) is dict and set(payload) == {
         "schema_version", "plan_id", "contracts", "source_identity", "sdk",
-        "provider", "tool_trace", "http_observations", "authority_before",
+        "provider", "agent_contract_visibility", "tool_trace", "http_observations", "authority_before",
         "authority_after", "oracle", "safety", "limitations"}, "EVIDENCE_FIELDS")
     _reject(payload["schema_version"] == EVIDENCE_SCHEMA and payload["plan_id"] == "RPF-53",
             "EVIDENCE_SCHEMA")
@@ -266,6 +267,7 @@ def validate_payload(payload: object) -> dict:
             and set(payload["source_identity"]) == {
                 "provider", "provider_model", "provider_endpoint", "config_center_source_commit",
                 "config_center_manifest_sha256", "config_center_jar_sha256",
+                "task_owned_jar_relative_path", "task_owned_jar_sha256", "task_owned_jar_bytes",
                 "runtime_source_sha256", "sdk_core_sha256", "python_version",
                 "python_executable_sha256", "python_launcher_sha256",
                 "pydantic_record_sha256",
@@ -280,6 +282,9 @@ def validate_payload(payload: object) -> dict:
             and payload["source_identity"]["config_center_source_commit"] == SOURCE_COMMIT
             and payload["source_identity"]["config_center_manifest_sha256"] == SOURCE_MANIFEST_SHA256
             and payload["source_identity"]["config_center_jar_sha256"] == SOURCE_JAR_SHA256
+            and payload["source_identity"]["task_owned_jar_relative_path"] == TASK_OWNED_JAR_PATH
+            and payload["source_identity"]["task_owned_jar_sha256"] == SOURCE_JAR_SHA256
+            and payload["source_identity"]["task_owned_jar_bytes"] == SOURCE_JAR_BYTES
             and payload["source_identity"]["runtime_source_sha256"] == execution["experiment"]["runtime_source_sha256"]
             and payload["source_identity"]["sdk_core_sha256"] == execution["framework"]["core_sha256"]
             and payload["source_identity"]["python_version"] == "3.12.13"
@@ -336,6 +341,16 @@ def validate_payload(payload: object) -> dict:
         and provider["requested_model"] == PROVIDER_MODEL
         and type(provider["attempts"]) is list and len(provider["attempts"]) == sdk["requests"],
         "PROVIDER_IDENTITY")
+    visibility = payload["agent_contract_visibility"]
+    _reject(type(visibility) is list and len(visibility) == len(provider["attempts"])
+            and all(type(item) is dict and set(item) == {
+                "instructions_present", "task_prompt_present", "tool_help_exact",
+                "messages_sha256"}
+                and item["instructions_present"] is True
+                and item["task_prompt_present"] is True
+                and item["tool_help_exact"] is True
+                and _sha(item["messages_sha256"]) for item in visibility),
+            "AGENT_CONTRACT_VISIBILITY")
     previous_ids: list[str] = []
     response_ids = set()
     input_tokens = output_tokens = 0
@@ -449,7 +464,7 @@ def validate_payload(payload: object) -> dict:
     safety = payload["safety"]
     _reject(type(safety) is dict and set(safety) == {
         "java_pid", "java_listener_pid", "java_exit_code", "java_stopped",
-        "java_listener_closed", "java_external_connections", "sdk_pid",
+        "java_listener_closed", "java_external_connections", "java_jar_provenance", "sdk_pid",
         "sdk_stopped", "sdk_external_connections", "host_closed",
         "parent_external_connections", "sdk_provider_key_absent",
         "sdk_business_key_absent", "sdk_guard_denials"}
@@ -457,6 +472,20 @@ def validate_payload(payload: object) -> dict:
         and safety["java_listener_pid"] == safety["java_pid"]
         and type(safety["java_exit_code"]) is int and safety["java_stopped"] is True
         and safety["java_listener_closed"] is True and safety["java_external_connections"] == []
+        and type(safety["java_jar_provenance"]) is dict
+        and set(safety["java_jar_provenance"]) == {
+            "task_relative_path", "source_sha256", "copy_sha256", "copy_bytes",
+            "source_commit", "manifest_sha256", "popen_argv_matches_copy",
+            "actual_process_argv_matches_copy", "actual_command_line_sha256"}
+        and safety["java_jar_provenance"]["task_relative_path"] == TASK_OWNED_JAR_PATH
+        and safety["java_jar_provenance"]["source_sha256"] == SOURCE_JAR_SHA256
+        and safety["java_jar_provenance"]["copy_sha256"] == SOURCE_JAR_SHA256
+        and safety["java_jar_provenance"]["copy_bytes"] == SOURCE_JAR_BYTES
+        and safety["java_jar_provenance"]["source_commit"] == SOURCE_COMMIT
+        and safety["java_jar_provenance"]["manifest_sha256"] == SOURCE_MANIFEST_SHA256
+        and safety["java_jar_provenance"]["popen_argv_matches_copy"] is True
+        and safety["java_jar_provenance"]["actual_process_argv_matches_copy"] is True
+        and _sha(safety["java_jar_provenance"]["actual_command_line_sha256"])
         and safety["sdk_pid"] == sdk["popen_pid"] == sdk["ready_pid"] == sdk["pid"]
         and safety["sdk_stopped"] is True
         and safety["sdk_external_connections"] == [] and safety["host_closed"] is True

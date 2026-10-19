@@ -10,6 +10,12 @@ import sys
 import sysconfig
 from pathlib import Path
 
+TOOL_HELP = {
+    "inspect_config": "Read the one authorized synthetic configuration item. Call this first before any change.",
+    "create_config_v1": "After inspect_config returns state ABSENT, create version 1 exactly once with value rpf53-v1.",
+    "update_config_v2": "After create_config_v1 returns status COMMITTED and version 1, update exactly once with expected_version 1 and value rpf53-v2.",
+}
+
 
 def _is_link(path: Path) -> bool:
     if path.is_symlink():
@@ -319,6 +325,7 @@ def main() -> int:
 
         for function in (inspect_config, create_config_v1, update_config_v2):
             function.__annotations__["ctx"] = RunContext[None]
+            function.__doc__ = TOOL_HELP[function.__name__]
         stage = "sdk_setup"
 
         async def run():
