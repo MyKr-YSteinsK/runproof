@@ -42,7 +42,7 @@
 | A-07 真实 feedback 时序 | NOT_RUN | 无真实第一轮 verdict 和第二轮输入，只有合成协议通过。 |
 | A-08 联合 Witness | NOT_RUN | no-valid-Witness；合成负控不能替代真实 Envelope。 |
 | A-09 回归/安全/预算记录 | PASS | 12 项定向、325 项隔离 Runtime（2 skip）、九历史锚、Reviewed/Public Docs、安全范围核验通过；实际付费与业务计数均 0。 |
-| A-10 Git/交付 | NOT_RUN | 待 focused commit、普通 push 及 fresh remote 观察后更新。 |
+| A-10 Git/交付 | PASS | 11 文件 focused commit 已普通 push 至指定分支；fresh remote SHA 与本地一致，main/parent 未变；本结果补记单独提交。 |
 
 ## 验证明细
 
@@ -75,4 +75,4 @@ L1/L2=`NOT_RUN`，H1=`NOT_PROVEN`；业务违规未评估，不能推导 Agent �
 
 环境策略阻塞使实现仅在离线层完成；SDK RECORD/ABI、三个冷进程、模型工具协议、Java/H2、真实 feedback 与新 Witness 均待验。未触碰系统策略，不以技术未知扩大权限。后续应由用户/环境管理员明确解决固定 CPython 的应用控制问题，再通过新 Plan 重新核验源码身份、起点、费用和独占运行空间；不得直接重用本轮旧 gate/账本。当前没有需要升级业务权限或修改只读旧源码的已验证理由。
 
-交付观察将在本文件同一任务收口更新；最终远端 commit SHA 由聊天回执给出。无 PR、merge、main push、tag、release、workflow dispatch 或 deploy。
+首次实现交付 commit：`8fa28da994149b8f69a8ef11aafc491efc50f768`；已普通 push，fresh `git ls-remote` 观察与本地一致，main/parent 仍为上述基线。交付后工作树只剩用户原有 `?? docs/reviews/` 外层状态。本次交付记录以独立文档提交收口，最终远端 commit SHA 由聊天回执给出。未运行 hosted CI（该 feature push 不匹配 main 自动触发），无 PR、merge、main push、tag、release、workflow dispatch 或 deploy。
