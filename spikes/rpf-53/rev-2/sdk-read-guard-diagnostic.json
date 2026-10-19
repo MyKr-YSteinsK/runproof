@@ -1,0 +1,115 @@
+{
+  "schema_version": "rpf53-rev2-sdk-guard-diagnostic-summary-v1",
+  "plan_id": "RPF-53",
+  "plan_revision": "rev-2",
+  "status": "PARTIAL",
+  "runtime_source_sha256_final": "be5bf311f8280fac835af7b434b11145cec4bf1722f02b3010f95e14239f3d64",
+  "sdk_identity": {
+    "framework": "pydantic-ai-slim",
+    "framework_version": "2.57.0",
+    "openai_version": "3.35.1",
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+    "python_runtime_mapping_sha256": "dec9f9d7796996df26044bc49811e758d2cc3731f11ef6fb0f6872ce88719b4e"
+  },
+  "runtime_mapping": {
+    "exact_configured_archive_entry": "python312.zip",
+    "entry_matches_verified_base_prefix": true,
+    "entry_exists_at_preflight": false,
+    "allowed_scope": "EXACT_FILE_ENTRY_ONLY",
+    "parent_directory_allowed": false,
+    "parent_child_mapping_hash_match": true,
+    "mapping_denial_tests_pass": true
+  },
+  "attempts": [
+    {
+      "attempt": 1,
+      "run_id": "rpf53-diag-cef9c6b4dea54733",
+      "runtime_source_sha256": "1d15146f47074700af5c18262d3fc4a9e7d057147f805b85fcfc7ccdbe2bcf67",
+      "status": "FAIL",
+      "stage": "sdk_run",
+      "error_type": "ModelHTTPError",
+      "host_rejection": {
+        "domain": "AGENT",
+        "code": "SDK_TOOL_SCHEMA_SHAPE"
+      },
+      "guard_denials": [
+        "FILE_ACCESS_DENIED"
+      ],
+      "denied_files": [
+        {
+          "category": "OUTSIDE_ALLOWED",
+          "basename": "python312.zip"
+        }
+      ],
+      "fixture_sdk_tool_calls": 0,
+      "fixture_tool_returns_reinjected": 0,
+      "provider_https_requests": 0,
+      "business_http_requests": 0,
+      "java_processes": 0,
+      "cleanup": {
+        "sdk_child_exited": true,
+        "sdk_child_external_connections": [],
+        "fixture_host_closed": true,
+        "fixture_host_thread_stopped": true,
+        "fixture_port_closed": true
+      }
+    },
+    {
+      "attempt": 2,
+      "run_id": "rpf53-diag-cc1eb8eef8ff4d5c",
+      "runtime_source_sha256": "d2ac0e20eb95ebb664be18134d4ebd6fc9c361f3f2b5d59eb3f02191ab4a556d",
+      "status": "FAIL",
+      "stage": "sdk_run",
+      "error_type": "TypeError",
+      "sdk_report_status": "SDK_ERROR",
+      "host_rejection": null,
+      "guard_denials": [],
+      "denied_files": [],
+      "tool_schema_summary": [
+        {
+          "tool_name": "inspect_config",
+          "strict": "OMITTED",
+          "unknown_function_keys": 0,
+          "unknown_parameter_keys": 0
+        },
+        {
+          "tool_name": "create_config_v1",
+          "strict": "TRUE",
+          "unknown_function_keys": 0,
+          "unknown_parameter_keys": 0
+        },
+        {
+          "tool_name": "update_config_v2",
+          "strict": "TRUE",
+          "unknown_function_keys": 0,
+          "unknown_parameter_keys": 0
+        }
+      ],
+      "fixture_sdk_tool_calls": 3,
+      "fixture_tool_returns_reinjected": 3,
+      "fixture_backend_calls": 3,
+      "sdk_completion_count": "NOT_CAPTURED",
+      "provider_https_requests": 0,
+      "business_http_requests": 0,
+      "java_processes": 0,
+      "cleanup": {
+        "sdk_child_exited": true,
+        "sdk_child_external_connections": [],
+        "fixture_host_closed": true,
+        "fixture_host_thread_stopped": true,
+        "fixture_port_closed": true
+      }
+    }
+  ],
+  "attempt_budget": {
+    "maximum": 2,
+    "consumed": 2,
+    "third_attempt": "PROHIBITED"
+  },
+  "scenario": {
+    "provider_https_requests": 0,
+    "business_http_requests": 0,
+    "java_processes": 0,
+    "live_evidence": "NOT_CREATED"
+  }
+}

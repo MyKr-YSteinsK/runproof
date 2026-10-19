@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import json
+import copy
 import http.client
 import os
+import subprocess
 import socket
 import shutil
 import tempfile
@@ -17,14 +19,17 @@ from runtime.runproof_runtime.effectwitness.config_live_contracts import (
 )
 from runtime.runproof_runtime.effectwitness.config_live_runtime import (
     ConfigLiveBusiness, ConfigLiveHost, ConfigLiveMemoryBackend, LiveRuntimeRejected, ProviderLedger,
-    _validate_provider_response, _validate_tool_registry,
+    _tool_schema_summary, _validate_provider_response, _validate_tool_registry,
 )
 from runtime.runproof_runtime.effectwitness.config_live_verify import evaluate_live_effect
-from runtime.runproof_runtime.effectwitness.config_live_external import _safe_denied_basename
+from runtime.runproof_runtime.effectwitness.config_live_external import (
+    _guard_events, _root_has_link_component, _runtime_archive_entry,
+    _safe_denied_basename,
+)
 
 
 ROOT = Path(__file__).resolve().parents[2]
-TASK_TEST_ROOT = ROOT / ".local" / "rpf-53" / "tests"
+TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev2" / "tests"
 
 
 def _sdk_identity() -> dict:
@@ -32,7 +37,9 @@ def _sdk_identity() -> dict:
             "pydantic_record_sha256": "b" * 64, "pydantic_record_entries": 444,
             "pydantic_record_mismatches": 0, "openai_record_sha256": "c" * 64,
             "openai_record_entries": 2000, "openai_record_mismatches": 0,
-            "openai_core_sha256": "d" * 64}
+            "openai_core_sha256": "d" * 64,
+            "sdk_site_root_binding_sha256": "e" * 64,
+            "python_runtime_mapping_sha256": "f" * 64}
 
 
 def _contracts(*, fixture: bool = False, agent_port: int | None = None) -> dict:
@@ -59,6 +66,122 @@ class ConfigLiveContractsTests(unittest.TestCase):
         self.assertIn("import httpx2", source)
         self.assertIn("httpx2.AsyncClient", source)
         self.assertNotRegex(source, r"\bimport httpx\b")
+
+
+class ConfigLiveGuardTests(unittest.TestCase):
+    def setUp(self):
+        TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)
+        self.temp = tempfile.TemporaryDirectory(prefix="guard-", dir=TASK_TEST_ROOT)
+        self.root = Path(self.temp.name).resolve()
+        self.sdk = self.root / "pinned-site-packages"
+        self.runtime = self.root / "mapped-python-runtime"
+        self.scratch = self.root / "task-scratch"
+        self.outside = self.root / "outside"
+        for path in (self.sdk, self.runtime, self.scratch, self.outside):
+            path.mkdir()
+        self.denied = []
+        self.denied_files = []
+        self.port = 43721
+        self.audit = _guard_events(self.port, self.scratch, self.sdk,
+            [self.runtime], self.root / "child.py", self.denied, self.denied_files)
+
+    def tearDown(self):
+        self.temp.cleanup()
+
+    def _open(self, path, mode="r", flags=os.O_RDONLY):
+        return self.audit("open", (str(path), mode, flags))
+
+    def test_sdk_and_mapped_runtime_are_read_only(self):
+        self._open(self.sdk / "pydantic_ai" / "__init__.py")
+        self._open(self.sdk / "pydantic_ai" / "__pycache__" / "agent.pyc")
+        self._open(self.runtime / "Lib" / "pathlib.py")
+        with self.assertRaisesRegex(PermissionError, "RPF53_FILE_WRITE_DENIED"):
+            self._open(self.sdk / "pydantic_ai" / "write.txt", "w", os.O_WRONLY | os.O_CREAT)
+        self.assertEqual(self.denied_files[-1], {
+            "category": "PINNED_SDK", "basename": "write.txt"})
+        with self.assertRaisesRegex(PermissionError, "RPF53_FILE_WRITE_DENIED"):
+            self.audit("os.chmod", (str(self.sdk / "pydantic_ai" / "__init__.py"), 0o600, None))
+        self.assertEqual(self.denied_files[-1]["category"], "PINNED_SDK")
+
+    def test_only_exact_configured_python_archive_is_mapped(self):
+        prefix = self.runtime / "base-prefix"
+        prefix.mkdir()
+        archive = prefix / "python312.zip"
+        self.assertEqual(_runtime_archive_entry(prefix, [str(archive)], (3, 12)), archive)
+        self.assertIsNone(_runtime_archive_entry(prefix,
+            [str(self.outside / "python312.zip")], (3, 12)))
+        self.assertIsNone(_runtime_archive_entry(prefix,
+            [str(prefix / "nested" / "python312.zip")], (3, 12)))
+        self.assertIsNone(_runtime_archive_entry(prefix,
+            [str(prefix / ".." / "base-prefix" / "python312.zip")], (3, 12)))
+        audit = _guard_events(self.port, self.scratch, self.sdk,
+            [archive], self.root / "child.py", self.denied, self.denied_files)
+        self.assertIsNone(audit("open", (str(archive), "r", os.O_RDONLY)))
+        with self.assertRaisesRegex(PermissionError, "RPF53_FILE_ACCESS_DENIED"):
+            audit("open", (str(prefix / "neighbor.txt"), "r", os.O_RDONLY))
+
+    def test_task_scratch_is_the_only_writable_root(self):
+        self._open(self.scratch / "trace.json", "w", os.O_WRONLY | os.O_CREAT)
+        self._open(self.scratch / "trace.json")
+        with self.assertRaisesRegex(PermissionError, "RPF53_FILE_WRITE_DENIED"):
+            self._open(self.runtime / "outside.txt", "w", os.O_WRONLY | os.O_CREAT)
+        self.assertEqual(self.denied_files[-1]["category"], "PYTHON_RUNTIME_MAPPED")
+
+    def test_basename_never_grants_access_to_outside_paths(self):
+        old_rpf48_file = self.sdk.parent / "old-provider-log.json"
+        same_basename = self.outside / "__init__.py"
+        broad_user_path = Path.home() / "rpf53-guard-test.txt"
+        for path in (old_rpf48_file, same_basename, broad_user_path):
+            with self.subTest(path=path.name):
+                with self.assertRaisesRegex(PermissionError, "RPF53_FILE_ACCESS_DENIED"):
+                    self._open(path)
+        self.assertEqual([item["category"] for item in self.denied_files],
+                         ["OUTSIDE_ALLOWED"] * 3)
+        self.assertEqual([item["basename"] for item in self.denied_files],
+                         ["old-provider-log.json", "__init__.py", "rpf53-guard-test.txt"])
+
+    def test_symlink_escape_is_resolved_before_allowlist_check(self):
+        secret = self.outside / "__init__.py"
+        secret.write_text("synthetic", encoding="utf-8")
+        escape = self.scratch / "escape"
+        try:
+            try:
+                escape.symlink_to(self.outside, target_is_directory=True)
+            except OSError:
+                if os.name != "nt":
+                    raise
+                result = subprocess.run(["cmd.exe", "/c", "mklink", "/J",
+                    str(escape), str(self.outside)], stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE, check=False)
+                if (result.returncode != 0 or not escape.is_dir()
+                        or not getattr(escape, "is_junction", lambda: False)()):
+                    self.fail("Windows could not create the task-owned junction fixture")
+            self.assertTrue(_root_has_link_component(escape))
+            with self.assertRaisesRegex(PermissionError, "RPF53_FILE_ACCESS_DENIED"):
+                self._open(escape / "__init__.py")
+            self.assertEqual(self.denied_files[-1], {
+                "category": "OUTSIDE_ALLOWED", "basename": "__init__.py"})
+            with self.assertRaisesRegex(PermissionError, "RPF53_FILE_WRITE_DENIED"):
+                self._open(escape / "created.txt", "w", os.O_WRONLY | os.O_CREAT)
+            self.assertEqual(self.denied_files[-1], {
+                "category": "OUTSIDE_ALLOWED", "basename": "created.txt"})
+        finally:
+            if os.path.lexists(escape):
+                if getattr(escape, "is_junction", lambda: False)():
+                    escape.rmdir()
+                else:
+                    escape.unlink()
+
+    def test_process_dns_and_non_host_socket_operations_are_denied(self):
+        self.audit("socket.connect", (object(), ("127.0.0.1", self.port)))
+        with self.assertRaisesRegex(PermissionError, "RPF53_PROCESS_EXEC_DENIED"):
+            self.audit("subprocess.Popen", ())
+        with self.assertRaisesRegex(PermissionError, "RPF53_NETWORK_DENIED"):
+            self.audit("socket.connect", (object(), ("127.0.0.1", self.port + 1)))
+        with self.assertRaisesRegex(PermissionError, "RPF53_DNS_DENIED"):
+            self.audit("socket.getaddrinfo", ("provider.example", 443))
+        with self.assertRaisesRegex(PermissionError, "RPF53_SOCKET_OPERATION_DENIED"):
+            self.audit("socket.bind", (object(), ("127.0.0.1", 0)))
 
     def test_contract_is_independent_live_schema(self):
         value = _contracts()
@@ -148,9 +271,28 @@ class ConfigLiveProtocolTests(unittest.TestCase):
              "additionalProperties": False}}},
         ]
         self.assertRegex(_validate_tool_registry(tools), r"[0-9a-f]{64}")
+        strict_tools = copy.deepcopy(tools)
+        for entry in strict_tools:
+            entry["function"]["strict"] = True
+        self.assertRegex(_validate_tool_registry(strict_tools), r"[0-9a-f]{64}")
+        strict_tools[0]["function"]["strict"] = False
+        with self.assertRaisesRegex(LiveRuntimeRejected, "SDK_TOOL_SCHEMA_SHAPE"):
+            _validate_tool_registry(strict_tools)
         tools[0]["function"]["parameters"]["required"] = ["fake"]
         with self.assertRaisesRegex(LiveRuntimeRejected, "SDK_TOOL_SCHEMA_REQUIRED"):
             _validate_tool_registry(tools)
+
+    def test_tool_schema_diagnostic_exposes_shape_without_untrusted_keys(self):
+        summary = _tool_schema_summary([{"type": "function", "attacker-secret-key": "value",
+            "function": {"name": "unknown-tool", "private-key": "secret",
+                         "parameters": {"type": "object", "properties": {
+                             "sensitive-field": {"type": "string"}}}}}])
+        encoded = json.dumps(summary, sort_keys=True)
+        self.assertNotIn("attacker-secret-key", encoded)
+        self.assertNotIn("private-key", encoded)
+        self.assertNotIn("sensitive-field", encoded)
+        self.assertEqual(summary["entries"][0]["function_unknown_key_count"], 1)
+        self.assertEqual(summary["entries"][0]["unknown_property_key_count"], 1)
 
     def test_only_documented_zero_index_extension_is_accepted(self):
         response = {"id": "chatcmpl-rpf53-test", "object": "chat.completion",
@@ -220,7 +362,9 @@ class ConfigLiveProtocolTests(unittest.TestCase):
             ready = {"framework": "pydantic-ai-slim", "version": "2.57.0",
                 "openai_version": "3.35.1", "pid": os.getpid(),
                 "sdk_source_sha256": SDK_CORE_SHA256,
-                "openai_source_sha256": _sdk_identity()["openai_core_sha256"]}
+                "openai_source_sha256": _sdk_identity()["openai_core_sha256"],
+                "sdk_site_root_binding_sha256": "e" * 64,
+                "python_runtime_mapping_sha256": "f" * 64}
             connection = http.client.HTTPConnection("127.0.0.1", port, timeout=3)
             connection.request("POST", "/ready", canonical(ready), {
                 "Content-Type": "application/json", "Authorization": "Bearer " + host.token})

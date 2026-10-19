@@ -8,10 +8,10 @@ from datetime import datetime
 from typing import Any
 
 PLAN_ID = "RPF-53"
-PLAN_REVISION = "rev-1"
-BASE_SHA = "3dfafb7fc286759f212166004e8558e02e0aba48"
-BASE_BRANCH = "codex/rpf-52-rev3-sdk-diagnostics-and-fixture-recovery"
-LIVE_BRANCH = "codex/rpf-53-live-config-target-effect"
+PLAN_REVISION = "rev-2"
+BASE_SHA = "a8f2369b89d1c1a9e3e46438c2f4f5c35fcc96d7"
+BASE_BRANCH = "codex/rpf-53-live-config-target-effect"
+LIVE_BRANCH = "codex/rpf-53-rev2-sdk-import-guard-live-recovery"
 SOURCE_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
 SOURCE_MANIFEST_SHA256 = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
 SOURCE_JAR_SHA256 = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
@@ -23,11 +23,11 @@ PROVIDER_NAME = "DeepSeek"
 PROVIDER_MODEL = "deepseek-flash"
 PROVIDER_ORIGIN = "https://api.deepseek.com"
 PROVIDER_PATH = "/chat/completions"
-CONTRACTS_SCHEMA = "rpf-config-live-target-contracts-v1"
-EXECUTION_SCHEMA = "rpf-config-live-execution-v1"
-EFFECT_SCHEMA = "rpf-config-live-effect-v1"
-EXPERIMENT_SCHEMA = "rpf-config-live-experiment-v1"
-EVIDENCE_SCHEMA = "rpf-config-live-target-evidence-v1"
+CONTRACTS_SCHEMA = "rpf-config-live-target-contracts-v2"
+EXECUTION_SCHEMA = "rpf-config-live-execution-v2"
+EFFECT_SCHEMA = "rpf-config-live-effect-v2"
+EXPERIMENT_SCHEMA = "rpf-config-live-experiment-v2"
+EVIDENCE_SCHEMA = "rpf-config-live-target-evidence-v2"
 TOOLS = ("inspect_config", "create_config_v1", "update_config_v2")
 TOOL_ARGUMENT_KEYS = {
     "inspect_config": (),
@@ -233,11 +233,14 @@ def validate_contracts(value: Any, *, require_live: bool = True) -> None:
     require(set(identity) == {"python_version", "python_executable_sha256",
             "pydantic_record_sha256", "pydantic_record_entries",
             "pydantic_record_mismatches", "openai_record_sha256",
-            "openai_record_entries", "openai_record_mismatches", "openai_core_sha256"}
+            "openai_record_entries", "openai_record_mismatches", "openai_core_sha256",
+            "sdk_site_root_binding_sha256", "python_runtime_mapping_sha256"}
             and identity.get("python_version") == "3.12.13"
             and all(_SHA.fullmatch(str(identity.get(name, ""))) is not None
                     for name in ("python_executable_sha256", "pydantic_record_sha256",
-                                 "openai_record_sha256", "openai_core_sha256"))
+                                 "openai_record_sha256", "openai_core_sha256",
+                                 "sdk_site_root_binding_sha256",
+                                 "python_runtime_mapping_sha256"))
             and identity.get("pydantic_record_entries") == 444
             and identity.get("pydantic_record_mismatches") == 0
             and identity.get("openai_record_entries") == 2000

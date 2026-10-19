@@ -250,6 +250,7 @@ def validate_payload(payload: object) -> dict:
                 "pydantic_record_entries", "pydantic_record_mismatches",
                 "openai_record_sha256", "openai_record_entries",
                 "openai_record_mismatches", "openai_core_sha256",
+                "sdk_site_root_binding_sha256", "python_runtime_mapping_sha256",
                 "java_version", "java_executable_sha256"}
             and payload["source_identity"]["provider"] == PROVIDER_NAME
             and payload["source_identity"]["provider_model"] == PROVIDER_MODEL
@@ -271,6 +272,12 @@ def validate_payload(payload: object) -> dict:
             and payload["source_identity"]["openai_record_mismatches"] == 0
             and payload["source_identity"]["openai_core_sha256"] == execution["framework"]["identity"].get("openai_core_sha256")
             and _sha(payload["source_identity"]["openai_core_sha256"])
+            and payload["source_identity"]["sdk_site_root_binding_sha256"]
+                == execution["framework"]["identity"].get("sdk_site_root_binding_sha256")
+            and _sha(payload["source_identity"]["sdk_site_root_binding_sha256"])
+            and payload["source_identity"]["python_runtime_mapping_sha256"]
+                == execution["framework"]["identity"].get("python_runtime_mapping_sha256")
+            and _sha(payload["source_identity"]["python_runtime_mapping_sha256"])
             and payload["source_identity"]["java_version"] == "17.0.12"
             and _sha(payload["source_identity"]["java_executable_sha256"]),
             "SOURCE_IDENTITY")

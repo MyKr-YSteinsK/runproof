@@ -447,8 +447,10 @@ def _validate_tool_registry(tools: object) -> str:
                 and entry["type"] == "function" and type(entry["function"]) is dict,
                 "SDK_TOOL_SCHEMA_SHAPE", "AGENT")
         function = entry["function"]
-        _reject(set(function) <= {"name", "description", "parameters"}
+        _reject(set(function) <= {"name", "description", "parameters", "strict"}
                 and function.get("name") in TOOLS and "parameters" in function,
+                "SDK_TOOL_SCHEMA_SHAPE", "AGENT")
+        _reject("strict" not in function or function["strict"] is True,
                 "SDK_TOOL_SCHEMA_SHAPE", "AGENT")
         name, params = function["name"], function["parameters"]
         _reject(name not in by_name and type(params) is dict
@@ -470,6 +472,38 @@ def _validate_tool_registry(tools: object) -> str:
         by_name[name] = entry
     _reject(set(by_name) == set(TOOLS), "SDK_TOOL_REGISTRY", "AGENT")
     return digest([by_name[name] for name in TOOLS])
+
+
+def _tool_schema_summary(tools: object) -> dict:
+    allowed_entry = {"type", "function"}
+    allowed_function = {"name", "description", "parameters", "strict"}
+    allowed_parameters = {"type", "properties", "required", "additionalProperties", "title"}
+    if type(tools) is not list:
+        return {"container": "NOT_LIST", "count": None, "entries": []}
+    entries = []
+    for entry in tools[:8]:
+        function = entry.get("function") if type(entry) is dict else None
+        parameters = function.get("parameters") if type(function) is dict else None
+        properties = parameters.get("properties") if type(parameters) is dict else None
+        entries.append({
+            "entry_type": "OBJECT" if type(entry) is dict else "OTHER",
+            "entry_unknown_key_count": len(set(entry) - allowed_entry)
+                if type(entry) is dict else None,
+            "function_type": "OBJECT" if type(function) is dict else "OTHER",
+            "function_unknown_key_count": len(set(function) - allowed_function)
+                if type(function) is dict else None,
+            "tool_name": function.get("name") if type(function) is dict
+                and function.get("name") in TOOLS else "UNKNOWN",
+            "strict": "OMITTED" if type(function) is not dict or "strict" not in function
+                else "TRUE" if function.get("strict") is True else "INVALID",
+            "parameters_type": "OBJECT" if type(parameters) is dict else "OTHER",
+            "parameters_unknown_key_count": len(set(parameters) - allowed_parameters)
+                if type(parameters) is dict else None,
+            "property_key_count": len(properties) if type(properties) is dict else None,
+            "unknown_property_key_count": len(set(properties) -
+                {"expected_version", "value"}) if type(properties) is dict else None,
+        })
+    return {"container": "LIST", "count": len(tools), "entries": entries}
 
 
 def _validate_provider_response(data: object, *, fixture: bool = False) -> tuple[dict, dict, list[dict]]:
@@ -543,6 +577,7 @@ class ConfigLiveHost:
         self.expected_tool_schema_sha256 = expected_tool_schema_sha256
         self.fixture_failure_code = fixture_failure_code
         self.tool_schema_sha256: str | None = None
+        self.tool_schema_summary: dict | None = None
         self.tool_definitions: list[dict] | None = None
         self.runtime: dict | None = None
         self.failure: dict | None = None
@@ -633,13 +668,19 @@ class ConfigLiveHost:
     def _ready(self, body: object) -> dict:
         _reject(self.runtime is None and type(body) is dict
                 and set(body) == {"framework", "version", "openai_version", "pid",
-                                  "sdk_source_sha256", "openai_source_sha256"}
+                                  "sdk_source_sha256", "openai_source_sha256",
+                                  "sdk_site_root_binding_sha256",
+                                  "python_runtime_mapping_sha256"}
                 and body.get("framework") == SDK_NAME and body.get("version") == SDK_VERSION
                 and body.get("openai_version") == OPENAI_VERSION
                 and type(body.get("pid")) is int and body["pid"] > 0
                 and body.get("sdk_source_sha256") == SDK_CORE_SHA256
                 and body.get("openai_source_sha256") == self.contracts[
-                    "execution"]["framework"]["identity"].get("openai_core_sha256"),
+                    "execution"]["framework"]["identity"].get("openai_core_sha256")
+                and body.get("sdk_site_root_binding_sha256") == self.contracts[
+                    "execution"]["framework"]["identity"].get("sdk_site_root_binding_sha256")
+                and body.get("python_runtime_mapping_sha256") == self.contracts[
+                    "execution"]["framework"]["identity"].get("python_runtime_mapping_sha256"),
                 "SDK_READY_IDENTITY")
         self.runtime = dict(body)
         return {"status": "AGENT_RUNTIME_CONNECTED"}
@@ -702,6 +743,7 @@ class ConfigLiveHost:
                 and body.get("tool_choice", "auto") == "auto"
                 and body.get("parallel_tool_calls") is False,
                 "MODEL_REQUEST_CONFIG", "AGENT")
+        self.tool_schema_summary = _tool_schema_summary(body.get("tools"))
         tool_hash = _validate_tool_registry(body.get("tools"))
         _reject(self.tool_schema_sha256 is None or self.tool_schema_sha256 == tool_hash,
                 "SDK_TOOL_SCHEMA_CHANGED", "AGENT")

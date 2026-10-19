@@ -1,0 +1,72 @@
+{
+  "schema_version": "rpf53-rev2-live-summary-v1",
+  "plan_id": "RPF-53",
+  "plan_revision": "rev-2",
+  "status": "PARTIAL",
+  "runproof": {
+    "base_sha": "a8f2369b89d1c1a9e3e46438c2f4f5c35fcc96d7",
+    "base_branch": "codex/rpf-53-live-config-target-effect",
+    "working_branch": "codex/rpf-53-rev2-sdk-import-guard-live-recovery",
+    "main_sha_at_preflight": "bda0cd49e50e3181f604324e94877a24b9885334"
+  },
+  "source_identity": {
+    "runtime_source_sha256_final": "be5bf311f8280fac835af7b434b11145cec4bf1722f02b3010f95e14239f3d64",
+    "runtime_source_sha256_attempt_01": "1d15146f47074700af5c18262d3fc4a9e7d057147f805b85fcfc7ccdbe2bcf67",
+    "runtime_source_sha256_attempt_02": "d2ac0e20eb95ebb664be18134d4ebd6fc9c361f3f2b5d59eb3f02191ab4a556d",
+    "config_center_commit": "0258b9cef02ea74a40989d035c79256c776409c0",
+    "config_center_manifest_sha256": "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343",
+    "config_center_jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+    "config_center_source_files": 110
+  },
+  "sdk_identity": {
+    "python_version": "3.12.13",
+    "framework": "pydantic-ai-slim",
+    "framework_version": "2.57.0",
+    "framework_core_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+    "framework_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+    "framework_record_entries": 444,
+    "framework_record_hashed_entries": 443,
+    "framework_record_mismatches": 0,
+    "openai_version": "3.35.1",
+    "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+    "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+    "openai_record_entries": 2000,
+    "openai_record_hashed_entries": 1999,
+    "openai_record_mismatches": 0,
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+    "python_runtime_mapping_sha256": "dec9f9d7796996df26044bc49811e758d2cc3731f11ef6fb0f6872ce88719b4e"
+  },
+  "diagnostics": {
+    "attempts_authorized": 2,
+    "attempts_consumed": 2,
+    "third_attempt": "PROHIBITED",
+    "attempt_01_run_id": "rpf53-diag-cef9c6b4dea54733",
+    "attempt_01_status": "FAIL",
+    "attempt_02_run_id": "rpf53-diag-cc1eb8eef8ff4d5c",
+    "attempt_02_status": "FAIL",
+    "attempt_02_sdk_tool_calls": 3,
+    "attempt_02_tool_returns_reinjected": 3,
+    "attempt_02_completion_count": "NOT_CAPTURED",
+    "attempt_02_sdk_report_error": "TypeError",
+    "cleanup_confirmed_for_both_attempts": true
+  },
+  "provider_preflight": {
+    "key_present": true,
+    "provider_https_requests": 0
+  },
+  "scenario": {
+    "status": "NOT_RUN",
+    "provider_https_requests": 0,
+    "business_http_requests": 0,
+    "java_processes": 0
+  },
+  "live_evidence": {
+    "status": "NOT_CREATED",
+    "reason": "A-03 did not pass; A-04 through A-06 were not run"
+  },
+  "authority_limits": {
+    "issuer_authenticity": "NOT_ESTABLISHED",
+    "database_independent_authority": "NOT_ESTABLISHED",
+    "independent_reproduction": "NOT_TESTED"
+  }
+}

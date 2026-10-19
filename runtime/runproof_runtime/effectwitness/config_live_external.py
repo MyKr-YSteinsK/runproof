@@ -7,22 +7,132 @@ import json
 import os
 import re
 import sys
+import sysconfig
 from pathlib import Path
 
 
-def _guard(port: int, write_root: Path, denied: list[str], denied_files: list[str]):
-    root = write_root.resolve()
-    readable = [Path(sys.prefix).resolve(), Path(sys.base_prefix).resolve(),
-                Path(os.environ.get("SYSTEMROOT", sys.base_prefix)).resolve(),
-                Path(__file__).resolve(), root]
+def _is_link(path: Path) -> bool:
+    if path.is_symlink():
+        return True
+    is_junction = getattr(path, "is_junction", None)
+    return bool(is_junction and is_junction())
 
+
+def _canonical_directory(path: Path) -> Path:
+    resolved = Path(path).resolve(strict=True)
+    if not resolved.is_dir():
+        raise PermissionError("RPF53_TRUSTED_ROOT_INVALID")
+    return resolved
+
+
+def _root_has_link_component(path: Path) -> bool:
+    current = Path(path).absolute()
+    components = [current, *current.parents]
+    return any(_is_link(item) for item in components)
+
+
+def _path_category(path: Path, *, sdk_root: Path, runtime_roots: list[Path],
+                   write_root: Path) -> str:
+    try:
+        candidate = Path(path).resolve()
+    except (OSError, RuntimeError, TypeError, ValueError):
+        return "UNKNOWN"
+
+    def inside(target: Path, base: Path) -> bool:
+        return target == base or base in target.parents
+
+    if inside(candidate, write_root):
+        return "TASK_OWNED"
+    if inside(candidate, sdk_root):
+        return "PINNED_SDK"
+    if any(inside(candidate, base) for base in runtime_roots):
+        return "PYTHON_RUNTIME_MAPPED"
+    return "OUTSIDE_ALLOWED"
+
+
+def _runtime_archive_entry(base_prefix: Path, entries: list[str],
+                           version: tuple[int, int]) -> Path | None:
+    archive_name = f"python{version[0]}{version[1]}.zip"
+    expected = base_prefix / archive_name
+    for entry in entries:
+        if not entry:
+            continue
+        configured = Path(entry)
+        if (not configured.is_absolute() or ".." in configured.parts
+                or configured.name.casefold() != archive_name.casefold()
+                or _root_has_link_component(configured)):
+            continue
+        try:
+            if configured.resolve() == expected:
+                return expected
+        except (OSError, RuntimeError):
+            continue
+    return None
+
+
+def _runtime_mapping() -> tuple[list[Path], str]:
+    executable = Path(getattr(sys, "_base_executable", sys.executable)).resolve(strict=True)
+    executable_root = executable.parent.resolve(strict=True)
+    stdlib_value = sysconfig.get_paths().get("stdlib")
+    if not stdlib_value:
+        raise PermissionError("RPF53_PYTHON_RUNTIME_MAPPING_INVALID")
+    stdlib = Path(stdlib_value).resolve(strict=True)
+    base_prefix = Path(sys.base_prefix).resolve(strict=True)
+    archive = _runtime_archive_entry(base_prefix, list(sys.path),
+                                    (sys.version_info.major, sys.version_info.minor))
+    material = "\n".join((str(executable), str(stdlib), str(archive) if archive else ""))
+    mapping_sha256 = hashlib.sha256(material.casefold().encode("utf-8")).hexdigest()
+    roots = [executable_root, stdlib]
+    if archive is not None:
+        roots.append(archive)
+    for entry in sys.path:
+        if not entry:
+            continue
+        try:
+            mapped = Path(entry).resolve(strict=True)
+        except (OSError, RuntimeError):
+            continue
+        if mapped == executable_root or executable_root in mapped.parents:
+            roots.append(mapped)
+    unique = []
+    for path in roots:
+        if path not in unique:
+            unique.append(path)
+    return unique, mapping_sha256
+
+
+def _runtime_read_roots(expected_mapping_sha256: str) -> list[Path]:
+    roots, mapping_sha256 = _runtime_mapping()
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_mapping_sha256) \
+            or mapping_sha256 != expected_mapping_sha256:
+        raise PermissionError("RPF53_PYTHON_RUNTIME_MAPPING_MISMATCH")
+    return roots
+
+
+def _guard_events(port: int, root: Path, sdk_root: Path, runtime_roots: list[Path],
+                  script_path: Path, denied: list[str], denied_files: list[dict]):
     def inside(path: Path, base: Path) -> bool:
         return path == base or base in path.parents
+
+    def denied_file(path: str | bytes | os.PathLike[str], code: str) -> None:
+        denied.append(code)
+        if len(denied_files) >= 8:
+            return
+        try:
+            name = _safe_denied_basename(path)
+            category = _path_category(Path(path), sdk_root=sdk_root,
+                                      runtime_roots=runtime_roots, write_root=root)
+        except (OSError, RuntimeError, TypeError, ValueError):
+            name, category = "UNKNOWN", "UNKNOWN"
+        denied_files.append({"category": category, "basename": name})
 
     def audit(event, args):
         if event in ("subprocess.Popen", "os.system", "os.exec", "os.posix_spawn"):
             denied.append("PROCESS_EXEC_DENIED")
             raise PermissionError("RPF53_PROCESS_EXEC_DENIED")
+        if event in ("socket.bind", "socket.listen", "socket.sendto", "socket.sendmsg"):
+            denied.append("SOCKET_OPERATION_DENIED")
+            raise PermissionError("RPF53_SOCKET_OPERATION_DENIED")
         if event == "socket.connect":
             address = args[1]
             if not isinstance(address, tuple) or address[:2] != ("127.0.0.1", port):
@@ -39,23 +149,35 @@ def _guard(port: int, write_root: Path, denied: list[str], denied_files: list[st
             write = ((isinstance(mode, str) and any(char in mode for char in "wax+"))
                      or (isinstance(flags, int)
                          and bool(flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT))))
-            allowed = (inside(candidate, root) if write
-                       else any(inside(candidate, base) for base in readable))
+            allowed = (inside(candidate, root) if write else
+                       inside(candidate, root) or inside(candidate, sdk_root)
+                       or any(inside(candidate, base) for base in runtime_roots)
+                       or candidate == script_path)
             if not allowed:
-                denied.append("FILE_WRITE_DENIED" if write else "FILE_ACCESS_DENIED")
-                basename = _safe_denied_basename(path)
-                if len(denied_files) < 8:
-                    denied_files.append(basename or "UNKNOWN")
-                raise PermissionError("RPF53_FILE_ACCESS_DENIED")
-        if event in ("os.remove", "os.rmdir", "os.mkdir"):
-            if not inside(Path(args[0]).resolve(), root):
-                denied.append("FILE_WRITE_DENIED")
-                raise PermissionError("RPF53_FILE_WRITE_DENIED")
-        if event in ("os.rename", "os.link", "os.symlink"):
-            if not all(inside(Path(item).resolve(), root) for item in args[:2]):
-                denied.append("FILE_WRITE_DENIED")
-                raise PermissionError("RPF53_FILE_WRITE_DENIED")
+                code = "FILE_WRITE_DENIED" if write else "FILE_ACCESS_DENIED"
+                denied_file(path, code)
+                raise PermissionError("RPF53_FILE_WRITE_DENIED" if write
+                                      else "RPF53_FILE_ACCESS_DENIED")
+        if event in ("os.remove", "os.rmdir", "os.mkdir", "os.chmod", "os.chown",
+                     "os.utime", "os.truncate", "os.rename", "os.link", "os.symlink"):
+            denied_file(args[0], "FILE_WRITE_DENIED")
+            raise PermissionError("RPF53_FILE_WRITE_DENIED")
     return audit
+
+
+def _guard(port: int, write_root: Path, sdk_readonly_path: Path,
+           expected_runtime_mapping_sha256: str,
+           denied: list[str], denied_files: list[dict]):
+    root = _canonical_directory(write_root)
+    sdk_root = _canonical_directory(sdk_readonly_path)
+    if _root_has_link_component(sdk_readonly_path) or _root_has_link_component(write_root):
+        raise PermissionError("RPF53_TRUSTED_ROOT_LINK")
+    expected_sdk_root = _canonical_directory(Path(sys.prefix) / "Lib" / "site-packages")
+    if sdk_root != expected_sdk_root:
+        raise PermissionError("RPF53_SDK_ROOT_BINDING_MISMATCH")
+    return _guard_events(port, root, sdk_root,
+                         _runtime_read_roots(expected_runtime_mapping_sha256),
+                         Path(__file__).resolve(strict=True), denied, denied_files)
 
 
 def _safe_denied_basename(path: str | bytes | os.PathLike[str]) -> str:
@@ -88,14 +210,16 @@ def _post(port: int, token: str, route: str, body: dict) -> dict:
 def main() -> int:
     stage = "config"
     denied: list[str] = []
-    denied_files: list[str] = []
+    denied_files: list[dict] = []
     loop = None
     try:
         config_raw = sys.stdin.buffer.read(16385)
         if not config_raw or len(config_raw) > 16384:
             raise ValueError("CONFIG_SIZE")
         config = json.loads(config_raw.decode("utf-8"))
-        required = {"port", "token", "write_root", "instructions", "task_prompt",
+        required = {"port", "token", "write_root", "sdk_readonly_path",
+                    "sdk_site_root_binding_sha256", "python_runtime_mapping_sha256",
+                    "instructions", "task_prompt",
                     "model", "max_runtime_seconds", "fixture"}
         if type(config) is not dict or set(config) != required:
             raise ValueError("CONFIG_FIELDS")
@@ -106,7 +230,18 @@ def main() -> int:
         import asyncio
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        sys.addaudithook(_guard(port, Path(config["write_root"]), denied, denied_files))
+        sdk_root = _canonical_directory(Path(config["sdk_readonly_path"]))
+        expected_sdk_root = _canonical_directory(Path(sys.prefix) / "Lib" / "site-packages")
+        path_binding = hashlib.sha256(os.path.normcase(str(sdk_root)).casefold().encode(
+            "utf-8")).hexdigest()
+        if (sdk_root != expected_sdk_root
+                or path_binding != config["sdk_site_root_binding_sha256"]
+                or _root_has_link_component(Path(config["sdk_readonly_path"]))):
+            raise PermissionError("RPF53_SDK_ROOT_BINDING_MISMATCH")
+        sys.path.insert(0, str(sdk_root))
+        sys.addaudithook(_guard(port, Path(config["write_root"]), sdk_root,
+                                config["python_runtime_mapping_sha256"],
+                                denied, denied_files))
 
         stage = "sdk_import"
         import importlib.metadata
@@ -119,6 +254,9 @@ def main() -> int:
 
         sdk_file = Path(inspect.getfile(Agent)).resolve()
         openai_file = Path(inspect.getfile(AsyncOpenAI)).resolve()
+        if not (sdk_file == sdk_root or sdk_root in sdk_file.parents
+                or openai_file == sdk_root or sdk_root in openai_file.parents):
+            raise RuntimeError("SDK_SOURCE_ROOT_MISMATCH")
         sdk_sha = hashlib.sha256(sdk_file.read_bytes()).hexdigest()
         openai_sha = hashlib.sha256(openai_file.read_bytes()).hexdigest()
         framework_version = importlib.metadata.version("pydantic-ai-slim")
@@ -128,7 +266,9 @@ def main() -> int:
         _post(port, config["token"], "/ready", {
             "framework": "pydantic-ai-slim", "version": framework_version,
             "openai_version": openai_version, "pid": os.getpid(),
-            "sdk_source_sha256": sdk_sha, "openai_source_sha256": openai_sha})
+            "sdk_source_sha256": sdk_sha, "openai_source_sha256": openai_sha,
+            "sdk_site_root_binding_sha256": config["sdk_site_root_binding_sha256"],
+            "python_runtime_mapping_sha256": config["python_runtime_mapping_sha256"]})
 
         callbacks = 0
 
@@ -174,7 +314,7 @@ def main() -> int:
                 result = await agent.run(config["task_prompt"],
                     usage_limits=UsageLimits(request_limit=6, total_tokens_limit=12000,
                                              tool_calls_limit=8))
-                usage = result.usage()
+                usage = result.usage
                 output = result.output
                 output_raw = (output if isinstance(output, str) else
                               json.dumps(output, sort_keys=True, separators=(",", ":"),
@@ -203,14 +343,17 @@ def main() -> int:
         text = str(exc)
         for code in ("RPF53_PROCESS_EXEC_DENIED", "RPF53_NETWORK_DENIED",
                      "RPF53_DNS_DENIED", "RPF53_FILE_ACCESS_DENIED",
-                     "RPF53_FILE_WRITE_DENIED"):
+                     "RPF53_FILE_WRITE_DENIED", "RPF53_SOCKET_OPERATION_DENIED",
+                     "RPF53_TRUSTED_ROOT_INVALID", "RPF53_TRUSTED_ROOT_LINK",
+                     "RPF53_SDK_ROOT_BINDING_MISMATCH",
+                     "RPF53_PYTHON_RUNTIME_MAPPING_INVALID"):
             if code in text:
                 guard_code = code
                 break
         report = {"status": "SDK_ERROR", "stage": stage,
                   "error_type": error_type, "guard_code": guard_code,
                   "guard_denials": sorted(set(denied))[:8],
-                  "denied_file_basenames": sorted(set(denied_files))[:8]}
+                  "denied_files": denied_files[:8]}
         print(json.dumps(report, sort_keys=True, separators=(",", ":")))
         return 1
     finally:

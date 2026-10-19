@@ -41,9 +41,9 @@ from runtime.runproof_runtime.effectwitness.config_live_verify import (
 )
 
 
-WORK_ROOT = ROOT / ".local" / "rpf-53"
+WORK_ROOT = ROOT / ".local" / "rpf-53-rev2"
 PREFLIGHT_DIR = WORK_ROOT / "preflight"
-BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight.json"
+BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight-final.json"
 SECOND_BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight-attempt-02.json"
 PREFLIGHT = PREFLIGHT_DIR / "preflight.json"
 DIAGNOSTIC_ROOT = WORK_ROOT / "diagnostic"
@@ -52,9 +52,11 @@ QUARANTINE_ROOT = WORK_ROOT / "quarantine"
 STARTED_PATH = SCENARIO_ROOT / "started.json"
 CONTRACTS_PATH = SCENARIO_ROOT / "contracts.json"
 LEDGER_PATH = SCENARIO_ROOT / "provider-ledger.json"
-SUMMARY_PATH = ROOT / "spikes" / "rpf-53" / "live-summary.json"
-EVIDENCE_PATH = ROOT / "spikes" / "rpf-53" / "config-live-evidence.json"
-RESULT_PATH = ROOT / "spikes" / "rpf-53" / "RESULT.md"
+REV2_DIR = ROOT / "spikes" / "rpf-53" / "rev-2"
+SUMMARY_PATH = REV2_DIR / "live-summary.json"
+EVIDENCE_PATH = REV2_DIR / "config-live-evidence.json"
+RESULT_PATH = REV2_DIR / "RESULT.md"
+SDK_GUARD_DIAGNOSTIC_PATH = REV2_DIR / "sdk-read-guard-diagnostic.json"
 SDK_PYTHON = ROOT / ".local" / "rpf-48" / "venv" / "Scripts" / "python.exe"
 SDK_SITE = ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages"
 JAVA = Path(r"C:\Program Files\Java\jdk-17\bin\java.exe")
@@ -69,10 +71,11 @@ SOURCE_FILES = (
     "runtime/tests/test_effectwitness_config_live.py",
     "spikes/rpf-53/probe.py",
 )
-ALLOWED_DIRS = ("spikes/rpf-53/",)
 ALLOWED_FILES = set(SOURCE_FILES) | {
-    "spikes/rpf-53/README.md", "spikes/rpf-53/RESULT.md",
-    "spikes/rpf-53/live-summary.json", "spikes/rpf-53/config-live-evidence.json",
+    "spikes/rpf-53/rev-2/README.md", "spikes/rpf-53/rev-2/RESULT.md",
+    "spikes/rpf-53/rev-2/live-summary.json",
+    "spikes/rpf-53/rev-2/sdk-read-guard-diagnostic.json",
+    "spikes/rpf-53/rev-2/config-live-evidence.json",
 }
 MAX_JAVA_LOG_BYTES = 1_000_000
 
@@ -147,7 +150,7 @@ def _check_status_scope() -> list[str]:
         if path == "docs/reviews/" or path == "docs/reviews":
             continue
         normalized = path.replace("\\", "/")
-        if normalized in ALLOWED_FILES or any(normalized.startswith(prefix) for prefix in ALLOWED_DIRS):
+        if normalized in ALLOWED_FILES:
             continue
         raise ProbeError("UNAPPROVED_WORKTREE_CHANGE")
     if subprocess.run(["git", "diff", "--cached", "--quiet"], cwd=ROOT).returncode != 0:
@@ -191,11 +194,14 @@ def _check_repo_identity() -> dict:
 
 
 def _check_worktree_directories() -> None:
-    for path in (ROOT / "spikes" / "rpf-53", WORK_ROOT):
+    for path in (ROOT / "spikes" / "rpf-53", REV2_DIR, WORK_ROOT):
         if path.is_symlink():
             raise ProbeError("TASK_ROOT_IS_SYMLINK")
     if not (ROOT / "spikes" / "rpf-53").is_dir():
         raise ProbeError("SPIKE_DIRECTORY_MISSING")
+    if REV2_DIR.exists() and (not REV2_DIR.is_dir() or REV2_DIR.is_symlink()):
+        raise ProbeError("REV2_OUTPUT_ROOT_INVALID")
+    REV2_DIR.mkdir(exist_ok=True)
     if not WORK_ROOT.exists():
         WORK_ROOT.mkdir()
     if not WORK_ROOT.is_dir() or WORK_ROOT.is_symlink():
@@ -252,26 +258,42 @@ def _verify_source_bundle() -> dict:
 
 
 def _sdk_identity() -> dict:
-    if not SDK_PYTHON.is_file() or SDK_PYTHON.is_symlink() or not SDK_SITE.is_dir():
+    def has_link_component(path: Path) -> bool:
+        absolute = Path(path).absolute()
+        return any(item.is_symlink() or bool(getattr(item, "is_junction", lambda: False)())
+                   for item in (absolute, *absolute.parents))
+
+    if (not SDK_PYTHON.is_file() or not SDK_SITE.is_dir()
+            or has_link_component(SDK_PYTHON) or has_link_component(SDK_SITE)):
         raise ProbeError("PINNED_SDK_RUNTIME_MISSING")
     script = r'''
-import base64, csv, hashlib, importlib.metadata as md, inspect, json, pathlib, sys
-from openai import AsyncOpenAI
-from pydantic_ai import Agent
-base=pathlib.Path(sys.prefix,"Lib","site-packages").resolve()
-venv_root=pathlib.Path(sys.prefix).resolve()
+import base64, csv, hashlib, importlib.metadata as md, inspect, json, pathlib, sys, sysconfig, os
+base=pathlib.Path(sys.prefix,"Lib","site-packages").resolve(strict=True)
+venv_root=pathlib.Path(sys.prefix).resolve(strict=True)
+expected=pathlib.Path(sys.argv[1]).resolve(strict=True)
+if base!=expected or not base.is_dir(): raise RuntimeError("SDK_ROOT_IDENTITY")
+def is_link(path):
+ p=pathlib.Path(path)
+ return p.is_symlink() or bool(getattr(p,"is_junction",lambda:False)())
+if is_link(expected): raise RuntimeError("SDK_ROOT_LINK")
 dists={d.metadata.get("Name","").lower().replace("-","_"):d for d in md.distributions(path=[str(base)])}
 def inspect_dist(key,expected):
  d=dists[key]; record=pathlib.Path(d._path)/"RECORD"
+ if is_link(record) or not record.resolve(strict=True).is_relative_to(base): raise RuntimeError("RECORD_PATH")
  with record.open(encoding="utf-8",newline="") as f: rows=list(csv.reader(f))
  hashed=mismatch=0
  for row in rows:
   if len(row)<2 or not row[1]: continue
   rel=pathlib.PurePosixPath(row[0].replace("\\","/"))
-  if rel.is_absolute(): raise RuntimeError("RECORD_PATH")
-  target=base.joinpath(*rel.parts).resolve()
+  if rel.is_absolute() or any(":" in part for part in rel.parts): raise RuntimeError("RECORD_PATH")
+  lexical=base.joinpath(*rel.parts)
+  cursor=base
+  for part in rel.parts:
+   cursor=cursor/part
+   if is_link(cursor): raise RuntimeError("RECORD_LINK")
+  target=lexical.resolve(strict=True)
   if target!=venv_root and venv_root not in target.parents: raise RuntimeError("RECORD_PATH")
-  if target.is_symlink() or not target.is_file(): raise RuntimeError("RECORD_FILE")
+  if not target.is_file(): raise RuntimeError("RECORD_FILE")
   data=target.read_bytes(); alg, encoded=row[1].split("=",1)
   if alg!="sha256": raise RuntimeError("RECORD_HASH_ALGORITHM")
   hashed+=1
@@ -282,17 +304,46 @@ def inspect_dist(key,expected):
          "record_mismatches":mismatch,"record_sha256":hashlib.sha256(record.read_bytes()).hexdigest()}
 p=inspect_dist("pydantic_ai_slim","2.57.0")
 o=inspect_dist("openai","3.35.1")
+from openai import AsyncOpenAI
+from pydantic_ai import Agent
 core=pathlib.Path(inspect.getfile(Agent)).resolve()
 openai_core=pathlib.Path(inspect.getfile(AsyncOpenAI)).resolve()
+if base not in core.parents or base not in openai_core.parents: raise RuntimeError("SDK_MODULE_OUTSIDE_ROOT")
+base_executable=pathlib.Path(getattr(sys,"_base_executable",sys.executable)).resolve(strict=True)
+stdlib=pathlib.Path(sysconfig.get_paths()["stdlib"]).resolve(strict=True)
+base_prefix=pathlib.Path(sys.base_prefix).resolve(strict=True)
+if not stdlib.is_dir(): raise RuntimeError("PYTHON_RUNTIME_MAPPING")
+archive_name=f"python{sys.version_info.major}{sys.version_info.minor}.zip"
+archive_expected=base_prefix/archive_name
+archive=None
+for item in sys.path:
+ if not item: continue
+ entry=pathlib.Path(item)
+ if not entry.is_absolute() or ".." in entry.parts or entry.name.casefold()!=archive_name.casefold(): continue
+ try:
+  if entry.resolve()==archive_expected: archive=archive_expected; break
+ except OSError: pass
+root_binding=hashlib.sha256(os.path.normcase(str(base)).casefold().encode("utf-8")).hexdigest()
 result={"python_version":sys.version.split()[0],"python_executable_sha256":hashlib.sha256(pathlib.Path(sys.executable).read_bytes()).hexdigest(),
- "pydantic":p,"openai":o,"sdk_core_sha256":hashlib.sha256(core.read_bytes()).hexdigest(),
+ "pydantic":p,"openai":o,"sdk_site_root_binding_sha256":root_binding,
+ "python_runtime_mapping_sha256":hashlib.sha256((str(base_executable)+"\n"+str(stdlib)+"\n"+(str(archive) if archive else "")).casefold().encode("utf-8")).hexdigest(),
+ "sdk_core_sha256":hashlib.sha256(core.read_bytes()).hexdigest(),
  "openai_core_sha256":hashlib.sha256(openai_core.read_bytes()).hexdigest()}
 print(json.dumps(result,sort_keys=True,separators=(",",":")))
 '''
-    result = subprocess.run([str(SDK_PYTHON), "-B", "-X", "utf8", "-c", script], cwd=ROOT,
+    env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR", "PATH") if key in os.environ}
+    result = subprocess.run([str(SDK_PYTHON), "-I", "-B", "-X", "utf8", "-c", script,
+                             str(SDK_SITE.resolve(strict=True))], cwd=ROOT, env=env,
                             stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
                             stderr=subprocess.PIPE, timeout=30, check=False)
     if result.returncode != 0 or result.stderr:
+        safe_causes = ("SDK_ROOT_IDENTITY", "SDK_ROOT_LINK", "RECORD_PATH",
+            "RECORD_LINK", "RECORD_FILE", "RECORD_HASH_ALGORITHM", "SDK_VERSION",
+            "SDK_MODULE_OUTSIDE_ROOT", "PYTHON_RUNTIME_MAPPING")
+        stderr_text = result.stderr.decode("utf-8", "replace")
+        for cause in safe_causes:
+            if cause in stderr_text:
+                raise ProbeError("PINNED_SDK_RECORD_VERIFY_FAILED_" + cause)
         raise ProbeError("PINNED_SDK_RECORD_VERIFY_FAILED")
     try:
         value = json.loads(result.stdout.decode("utf-8"))
@@ -307,7 +358,9 @@ print(json.dumps(result,sort_keys=True,separators=(",",":")))
             or value.get("openai", {}).get("version") != OPENAI_VERSION
             or value.get("openai", {}).get("record_entries") != 2000
             or value.get("openai", {}).get("record_hashed_entries") != 1999
-            or value.get("openai", {}).get("record_mismatches") != 0):
+            or value.get("openai", {}).get("record_mismatches") != 0
+            or not re.fullmatch(r"[0-9a-f]{64}", value.get("sdk_site_root_binding_sha256", ""))
+            or not re.fullmatch(r"[0-9a-f]{64}", value.get("python_runtime_mapping_sha256", ""))):
         raise ProbeError("PINNED_SDK_IDENTITY_MISMATCH")
     return value
 
@@ -315,17 +368,35 @@ print(json.dumps(result,sort_keys=True,separators=(",",":")))
 def _java_identity() -> dict:
     if not JAVA.is_file() or JAVA.is_symlink():
         raise ProbeError("DIRECT_JDK17_MISSING")
-    java_tmp = WORK_ROOT / "preflight" / "java-tmp"
-    java_tmp.mkdir(parents=True, exist_ok=True)
+    release = JAVA.parent.parent / "release"
+    if release.is_symlink() or not release.is_file():
+        raise ProbeError("DIRECT_JDK17_RELEASE_MISSING")
+    release_raw = release.read_bytes()
+    version_text = release_raw.decode("utf-8", "strict")
+    match = re.search(r'^JAVA_VERSION="([0-9.]+)"\r?$', version_text, re.MULTILINE)
+    if not match or match.group(1) != "17.0.12":
+        raise ProbeError("DIRECT_JDK17_RELEASE_IDENTITY_MISMATCH")
+    return {"version": match.group(1), "executable_sha256": _sha_file(JAVA),
+            "release_sha256": sha256_bytes(release_raw),
+            "identity_source": "JDK_RELEASE_FILE_NO_PROCESS"}
+
+
+def _verify_java_runtime() -> dict:
+    static = _java_identity()
+    java_tmp = WORK_ROOT / "preflight" / "java-runtime-check"
+    java_tmp.mkdir(parents=True, exist_ok=False)
     result = subprocess.run([str(JAVA), f"-Djava.io.tmpdir={java_tmp}", "-version"],
                             cwd=java_tmp, stdin=subprocess.DEVNULL,
                             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
                             timeout=30, check=False)
     version_text = result.stderr.decode("utf-8", "replace")
     match = re.search(r'java version "([0-9.]+)', version_text)
-    if result.returncode != 0 or not match or match.group(1) != "17.0.12":
+    if (result.returncode != 0 or not match or match.group(1) != "17.0.12"
+            or _sha_file(JAVA) != static["executable_sha256"]):
         raise ProbeError("DIRECT_JDK17_IDENTITY_MISMATCH")
-    return {"version": match.group(1), "executable_sha256": _sha_file(JAVA)}
+    return {"version": match.group(1), "executable_sha256": static["executable_sha256"],
+            "release_sha256": static["release_sha256"],
+            "identity_source": "DIRECT_JDK_VERSION_PROCESS"}
 
 
 def _runtime_source_identity() -> dict:
@@ -352,8 +423,8 @@ def _preflight() -> dict:
             or source["manifest_sha256"] != SOURCE_MANIFEST_SHA256):
         raise ProbeError("A01_SOURCE_IDENTITY")
     return {
-        "schema_version": "rpf53-base-preflight-v1",
-        "plan_id": "RPF-53", "plan_revision": "rev-1", "checked_at_utc": _utc(),
+        "schema_version": "rpf53-rev2-base-preflight-v1",
+        "plan_id": "RPF-53", "plan_revision": "rev-2", "checked_at_utc": _utc(),
         "repo": repo, "source": source, "sdk": sdk, "java": java,
         "runtime_source": runtime,
         "provider": {"key_present": _check_key_presence(),
@@ -389,6 +460,9 @@ def _load_base_preflight(path: Path = BASE_PREFLIGHT) -> dict:
     if not path.is_file() or path.is_symlink():
         raise ProbeError("BASE_PREFLIGHT_NOT_RUN")
     value = strict_json(path.read_bytes())
+    if (value.get("schema_version") != "rpf53-rev2-base-preflight-v1"
+            or value.get("plan_revision") != "rev-2"):
+        raise ProbeError("BASE_PREFLIGHT_REVISION")
     current = _preflight()
     if (value.get("repo") != current.get("repo")
             or value.get("source") != current.get("source")
@@ -411,83 +485,6 @@ def _sdk_env(home: Path) -> dict[str, str]:
                 "TMP": str(home), "PYTHONDONTWRITEBYTECODE": "1",
                 "OTEL_SDK_DISABLED": "true", "LOGFIRE_SEND_TO_LOGFIRE": "false"})
     return env
-
-
-def _offline_fake_failure_control(base: dict, tools: list[dict], tool_schema_sha256: str,
-                                  attempt: int) -> dict:
-    suffix = uuid.uuid4().hex[:16]
-    run_id = "rpf53-faildiag-" + suffix
-    port = _free_port()
-    identity = base["sdk"]
-    contracts = make_contracts(run_id=run_id, suffix=suffix, java_port=None,
-        agent_port=port, prepared_at_utc=_utc(),
-        runtime_source_sha256=base["runtime_source"]["sha256"],
-        sdk_identity={
-            "python_version": identity["python_version"],
-            "python_executable_sha256": identity["python_executable_sha256"],
-            "pydantic_record_sha256": identity["pydantic"]["record_sha256"],
-            "pydantic_record_entries": identity["pydantic"]["record_entries"],
-            "pydantic_record_mismatches": identity["pydantic"]["record_mismatches"],
-            "openai_record_sha256": identity["openai"]["record_sha256"],
-            "openai_record_entries": identity["openai"]["record_entries"],
-            "openai_record_mismatches": identity["openai"]["record_mismatches"],
-            "openai_core_sha256": identity["openai_core_sha256"],
-        }, mode="FIXTURE_TEST_ONLY")
-    ledger = ProviderLedger.fixture_only(run_id)
-    host = ConfigLiveHost(contracts, ledger, ConfigLiveMemoryBackend(), fixture=True,
-        expected_tool_schema_sha256=tool_schema_sha256,
-        fixture_failure_code="OFFLINE_REPLAY_PROVIDER_HTTP_503")
-    negative_dir = SCENARIO_ROOT / f"sdk-diagnostic-negative-{attempt:02d}"
-    negative_dir.mkdir(exist_ok=False)
-    process = None
-    stdout = stderr = b""
-    try:
-        host.start(port)
-        config = {"port": port, "token": host.token,
-            "write_root": str(negative_dir),
-            "instructions": contracts["execution"]["agent_instructions"],
-            "task_prompt": contracts["execution"]["task_prompt"],
-            "model": "rpf53-fixture-only", "max_runtime_seconds": 60,
-            "fixture": True}
-        process = subprocess.Popen([str(SDK_PYTHON), "-I", "-B",
-            str(ROOT / "runtime/runproof_runtime/effectwitness/config_live_external.py")],
-            cwd=negative_dir, env=_sdk_env(negative_dir), stdin=subprocess.PIPE,
-            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        try:
-            stdout, stderr = process.communicate(canonical(config), timeout=90)
-        except subprocess.TimeoutExpired:
-            process.kill()
-            stdout, stderr = process.communicate(timeout=10)
-        report = strict_json(stdout) if stdout and len(stdout) <= 8192 else {}
-    finally:
-        if process is not None and process.poll() is None:
-            process.terminate()
-            try:
-                stdout, stderr = process.communicate(timeout=10)
-            except subprocess.TimeoutExpired:
-                process.kill()
-                stdout, stderr = process.communicate(timeout=10)
-        host.close()
-    passed = (process is not None and process.returncode == 1 and not stderr
-        and type(report) is dict and set(report) == {
-            "status", "stage", "error_type", "guard_code", "guard_denials",
-            "denied_file_basenames"}
-        and report["status"] == "SDK_ERROR" and report["stage"] == "sdk_run"
-        and re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", report["error_type"]) is not None
-        and report["guard_denials"] == []
-        and report["denied_file_basenames"] == []
-        and host.failure == {"domain": "PROVIDER", "code": "OFFLINE_REPLAY_PROVIDER_HTTP_503"}
-        and ledger.usage()["provider_https_requests"] == 0 and not host.tool_trace
-        and process.poll() is not None and host._server is None)
-    return {"status": "PASS" if passed else "FAIL", "source": "OFFLINE_REPLAY",
-        "provider_https_requests": 0, "business_http_requests": 0, "java_processes": 0,
-        "host_http_status": 502, "host_failure": host.failure,
-        "sdk_status": report.get("status") if type(report) is dict else None,
-        "sdk_stage": report.get("stage") if type(report) is dict else None,
-        "sdk_error_type": report.get("error_type") if type(report) is dict else None,
-        "sdk_exit_code": process.returncode if process else None,
-        "sdk_stdout_sha256": sha256_bytes(stdout), "sdk_stderr_bytes": len(stderr),
-        "sdk_stderr_sha256": sha256_bytes(stderr), "tool_calls": len(host.tool_trace)}
 
 
 def _diagnostic_attempt_context() -> tuple[dict, int, Path, Path]:
@@ -513,12 +510,17 @@ def _diagnostic_attempt_context() -> tuple[dict, int, Path, Path]:
     started = strict_json(started_path.read_bytes())
     result = strict_json(result_path.read_bytes())
     report = result.get("sdk_report") if type(result) is dict else None
-    fake_control = result.get("fake_transport_negative_control") if type(result) is dict else None
+    failure = result.get("failure_attribution") if type(result) is dict else None
+    cleanup = result.get("cleanup") if type(result) is dict else None
+    source_at_start = started.get("runtime_source_sha256") if type(started) is dict else None
     if (type(started) is not dict or type(result) is not dict
             or started.get("plan_id") != "RPF-53"
+            or started.get("plan_revision") != "rev-2"
             or started.get("attempt") != 1 or started.get("model_source") != "FIXTURE_TEST_ONLY"
+            or started.get("one_shot") is not True
+            or not re.fullmatch(r"[0-9a-f]{64}", source_at_start or "")
             or started.get("run_id") != result.get("run_id")
-            or result.get("schema_version") != "rpf53-sdk-diagnostic-v1"
+            or result.get("schema_version") != "rpf53-rev2-sdk-diagnostic-v1"
             or result.get("status") != "FAIL"
             or result.get("provider_https_requests") != 0
             or result.get("business_http_requests") != 0
@@ -527,24 +529,51 @@ def _diagnostic_attempt_context() -> tuple[dict, int, Path, Path]:
             or result.get("stderr_bytes") != 0
             or result.get("tool_trace") != [] or result.get("tool_schema_sha256") is not None
             or result.get("fake_backend_calls") != []
-            or type(fake_control) is not dict or fake_control.get("status") != "NOT_RUN"
-            or result.get("failure") is not None
+            or result.get("failure") not in (None, {"domain": "AGENT",
+                                                    "code": "SDK_TOOL_SCHEMA_SHAPE"})
             or type(report) is not dict
             or report.get("status") != "SDK_ERROR"
-            or report.get("stage") != "sdk_import"
-            or report.get("error_type") != "PermissionError"
-            or report.get("guard_code") != "RPF53_FILE_ACCESS_DENIED"
-            or report.get("guard_denials") != ["FILE_ACCESS_DENIED"]):
+            or type(failure) is not dict
+            or failure.get("stage") != report.get("stage")
+            or failure.get("error_type") != report.get("error_type")
+            or failure.get("stage") != "sdk_run"
+            or failure.get("error_type") != "ModelHTTPError"
+            or failure.get("denied_files") != [{
+                "category": "OUTSIDE_ALLOWED", "basename": "python312.zip"}]
+            or report.get("guard_denials") != ["FILE_ACCESS_DENIED"]
+            or type(cleanup) is not dict
+            or cleanup.get("sdk_child_exited") is not True
+            or cleanup.get("sdk_child_external_connections") != []
+            or cleanup.get("fixture_host_closed") is not True
+            or cleanup.get("fixture_host_thread_stopped") is not True
+            or cleanup.get("fixture_port_closed") is not True):
         raise ProbeError("SECOND_DIAGNOSTIC_ATTEMPT_NOT_AUTHORIZED")
+
+    if report.get("guard_code") is not None:
+        categories = {item.get("category") for item in failure["denied_files"]
+                      if type(item) is dict}
+        if "OUTSIDE_ALLOWED" in categories or "UNKNOWN" in categories:
+            raise ProbeError("SECOND_DIAGNOSTIC_UNTRUSTED_PATH")
+        if report.get("guard_code") == "RPF53_FILE_WRITE_DENIED":
+            raise ProbeError("SECOND_DIAGNOSTIC_WRITE_DENIAL")
 
     if not BASE_PREFLIGHT.is_file() or BASE_PREFLIGHT.is_symlink():
         raise ProbeError("BASE_PREFLIGHT_NOT_RUN")
     original = strict_json(BASE_PREFLIGHT.read_bytes())
     current = _preflight()
-    for key in ("repo", "source", "sdk", "java"):
+    for key in ("repo", "source", "java"):
         if original.get(key) != current.get(key):
             raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
-    if (original.get("runtime_source") == current.get("runtime_source")
+    original_sdk = dict(original.get("sdk", {}))
+    current_sdk = dict(current.get("sdk", {}))
+    original_mapping = original_sdk.pop("python_runtime_mapping_sha256", None)
+    current_mapping = current_sdk.pop("python_runtime_mapping_sha256", None)
+    if (original_sdk != current_sdk
+            or not re.fullmatch(r"[0-9a-f]{64}", original_mapping or "")
+            or not re.fullmatch(r"[0-9a-f]{64}", current_mapping or "")
+            or original_mapping == current_mapping):
+        raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
+    if (original.get("runtime_source", {}).get("sha256") != source_at_start
             or original.get("runtime_source", {}).get("sha256")
                == current.get("runtime_source", {}).get("sha256")):
         raise ProbeError("SECOND_ATTEMPT_SOURCE_NOT_REPAIRED")
@@ -573,8 +602,12 @@ def run_diagnostic() -> dict:
             "openai_record_entries": base["sdk"]["openai"]["record_entries"],
             "openai_record_mismatches": base["sdk"]["openai"]["record_mismatches"],
             "openai_core_sha256": base["sdk"]["openai_core_sha256"],
+            "sdk_site_root_binding_sha256": base["sdk"]["sdk_site_root_binding_sha256"],
+            "python_runtime_mapping_sha256": base["sdk"]["python_runtime_mapping_sha256"],
         }, mode="FIXTURE_TEST_ONLY")
-    marker = {"plan_id": "RPF-53", "attempt": attempt, "run_id": run_id,
+    marker = {"plan_id": "RPF-53", "plan_revision": "rev-2",
+              "runtime_source_sha256": base["runtime_source"]["sha256"],
+              "attempt": attempt, "run_id": run_id,
               "started_at_utc": _utc(), "model_source": "FIXTURE_TEST_ONLY",
               "base_preflight_sha256": _sha_file(base_path),
               "provider_https_requests": 0, "business_http_requests": 0,
@@ -586,10 +619,15 @@ def run_diagnostic() -> dict:
     process = None
     report = None
     stdout = stderr = b""
+    host_thread_stopped = False
     try:
         host.start(host_port)
         config = {"port": host.port, "token": host.token,
-                  "write_root": str(sdk_dir), "instructions": contracts["execution"]["agent_instructions"],
+                  "write_root": str(sdk_dir),
+                  "sdk_readonly_path": str(SDK_SITE.resolve(strict=True)),
+                  "sdk_site_root_binding_sha256": base["sdk"]["sdk_site_root_binding_sha256"],
+                  "python_runtime_mapping_sha256": base["sdk"]["python_runtime_mapping_sha256"],
+                  "instructions": contracts["execution"]["agent_instructions"],
                   "task_prompt": contracts["execution"]["task_prompt"],
                   "model": "rpf53-fixture-only", "max_runtime_seconds": 360,
                   "fixture": True}
@@ -605,7 +643,9 @@ def run_diagnostic() -> dict:
         if stdout and len(stdout) <= 8192:
             report = strict_json(stdout)
     finally:
+        host_thread = host._thread
         host.close()
+        host_thread_stopped = host_thread is None or not host_thread.is_alive()
         if process is not None and process.poll() is None:
             process.terminate()
             try:
@@ -613,6 +653,17 @@ def run_diagnostic() -> dict:
             except subprocess.TimeoutExpired:
                 process.kill()
                 stdout, stderr = process.communicate(timeout=10)
+    try:
+        sdk_external = _external_connections(process.pid) if process is not None else [
+            {"state": "UNAVAILABLE", "remote": "UNAVAILABLE"}]
+    except Exception:
+        sdk_external = [{"state": "UNAVAILABLE", "remote": "UNAVAILABLE"}]
+    try:
+        host_port_closed = _port_closed(host_port)
+    except Exception:
+        host_port_closed = False
+    returned_tool_count = sum(len(item.get("tool_returns", []))
+                              for item in host.provider_responses)
     passed = (process is not None and process.returncode == 0
         and type(report) is dict and report.get("status") == "COMPLETED"
         and report.get("framework") == SDK_NAME and report.get("version") == SDK_VERSION
@@ -621,31 +672,46 @@ def run_diagnostic() -> dict:
         and report.get("openai_source_sha256") == base["sdk"]["openai_core_sha256"]
         and report.get("provider_key_present") is False
         and report.get("business_key_present") is False
+        and report.get("pid") == process.pid
         and report.get("guard_denials") == []
         and report.get("requests") == 4 and report.get("tool_calls") == 3
         and report.get("tool_callbacks") == 3
+        and len(host.provider_responses) == 4 and returned_tool_count == 3
+        and all(item.get("returned_in_request") is not None for item in host.tool_trace)
         and len(host.tool_trace) == 3 and len(backend.calls) == 3
         and host.failure is None and not stderr
-        and ledger.usage()["provider_https_requests"] == 0)
-    fake_negative = _offline_fake_failure_control(base, host.tool_definitions or [],
-        host.tool_schema_sha256 or "", attempt) if passed else {
-        "status": "NOT_RUN", "source": "OFFLINE_REPLAY", "provider_https_requests": 0}
-    passed = passed and fake_negative["status"] == "PASS"
-    result = {"schema_version": "rpf53-sdk-diagnostic-v1", "run_id": run_id,
+        and ledger.usage()["provider_https_requests"] == 0
+        and process.poll() is not None and not sdk_external
+        and host._server is None and host._thread is None
+        and host_thread_stopped and host_port_closed)
+    denied_files = report.get("denied_files", []) if type(report) is dict else []
+    failure_attribution = None if passed else {
+        "stage": report.get("stage") if type(report) is dict else "UNKNOWN",
+        "error_type": report.get("error_type") if type(report) is dict else "UNKNOWN",
+        "guard_code": report.get("guard_code") if type(report) is dict else None,
+        "denied_files": denied_files if type(denied_files) is list else [],
+    }
+    result = {"schema_version": "rpf53-rev2-sdk-diagnostic-v1", "run_id": run_id,
         "status": "PASS" if passed else "FAIL", "model_source": "FIXTURE_TEST_ONLY",
         "provider_https_requests": 0, "business_http_requests": 0, "java_processes": 0,
         "sdk_report": report if type(report) is dict else None,
         "tool_trace": host.tool_trace, "fake_backend_calls": backend.calls,
-        "fake_transport_negative_control": fake_negative,
+        "tool_schema_summary": host.tool_schema_summary,
+        "cleanup": {"sdk_child_exited": process is not None and process.poll() is not None,
+                    "sdk_child_external_connections": sdk_external,
+                    "fixture_host_closed": host._server is None and host._thread is None,
+                    "fixture_host_thread_stopped": host_thread_stopped,
+                    "fixture_port_closed": host_port_closed},
         "tool_schema_sha256": host.tool_schema_sha256,
         "failure": host.failure,
+        "failure_attribution": failure_attribution,
         "sdk_exit_code": process.returncode if process else None,
         "stdout_sha256": sha256_bytes(stdout), "stderr_bytes": len(stderr),
         "stderr_sha256": sha256_bytes(stderr), "completed_at_utc": _utc()}
     _write_once(attempt_dir / "result.json", canonical(result))
     if not passed:
         raise ProbeError("SDK_FIXTURE_DIAGNOSTIC_FAILED")
-    preflight = {"schema_version": "rpf53-preflight-v1", "base": base,
+    preflight = {"schema_version": "rpf53-rev2-preflight-v1", "base": base,
                  "diagnostic": {"attempt": attempt, "status": "PASS",
                     "base_preflight_path": str(base_path.relative_to(ROOT)).replace("\\", "/"),
                     "base_preflight_sha256": _sha_file(base_path),
@@ -862,7 +928,7 @@ def _live_preflight() -> dict:
     if not PREFLIGHT.is_file() or PREFLIGHT.is_symlink():
         raise ProbeError("A03_DIAGNOSTIC_NOT_PASSED")
     value = strict_json(PREFLIGHT.read_bytes())
-    if (value.get("schema_version") != "rpf53-preflight-v1"
+    if (value.get("schema_version") != "rpf53-rev2-preflight-v1"
             or value.get("diagnostic", {}).get("status") != "PASS"
             or not re.fullmatch(r"[0-9a-f]{64}", value.get("diagnostic", {}).get("tool_schema_sha256", ""))):
         raise ProbeError("A03_DIAGNOSTIC_NOT_PASSED")
@@ -873,6 +939,11 @@ def _live_preflight() -> dict:
             raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
     if not current["provider"]["key_present"]:
         raise ProbeError("DEEPSEEK_KEY_UNAVAILABLE", "PROVIDER")
+    java_runtime = _verify_java_runtime()
+    if any(java_runtime.get(key) != current["java"].get(key)
+           for key in ("version", "executable_sha256", "release_sha256")):
+        raise ProbeError("DIRECT_JDK17_RUNTIME_DRIFT")
+    value["java_runtime_verification"] = java_runtime
     return value
 
 
@@ -919,6 +990,8 @@ def _make_payload(preflight: dict, contracts: dict, source_identity: dict,
         "openai_record_entries": sdk_identity["openai"]["record_entries"],
         "openai_record_mismatches": sdk_identity["openai"]["record_mismatches"],
         "openai_core_sha256": sdk_identity["openai_core_sha256"],
+        "sdk_site_root_binding_sha256": sdk_identity["sdk_site_root_binding_sha256"],
+        "python_runtime_mapping_sha256": sdk_identity["python_runtime_mapping_sha256"],
         "java_version": java_safety["version"],
         "java_executable_sha256": java_safety["executable_sha256"],
     }
@@ -1026,10 +1099,13 @@ def run_scenario() -> dict:
             "openai_record_entries": preflight["base"]["sdk"]["openai"]["record_entries"],
             "openai_record_mismatches": preflight["base"]["sdk"]["openai"]["record_mismatches"],
             "openai_core_sha256": preflight["base"]["sdk"]["openai_core_sha256"],
+            "sdk_site_root_binding_sha256": preflight["base"]["sdk"]["sdk_site_root_binding_sha256"],
+            "python_runtime_mapping_sha256": preflight["base"]["sdk"]["python_runtime_mapping_sha256"],
         }, tool_schema_sha256=preflight["diagnostic"]["tool_schema_sha256"])
     _write_once(CONTRACTS_PATH, canonical(contracts))
-    marker = {"plan_id": "RPF-53", "plan_revision": "rev-1", "run_id": run_id,
+    marker = {"plan_id": "RPF-53", "plan_revision": "rev-2", "run_id": run_id,
         "started_at_utc": _utc(), "preflight_sha256": _sha_file(PREFLIGHT),
+        "java_runtime_verification": preflight["java_runtime_verification"],
         "contracts_sha256": digest(contracts), "one_shot": True,
         "provider_https_requests": 0, "total_tokens_reserved_limit": LIMITS["total_tokens"],
         "cost_cny_upper_limit": LIMITS["estimated_cost_cny_upper"],
@@ -1086,6 +1162,9 @@ def run_scenario() -> dict:
         host.start(host_port)
         config = {"port": host.port, "token": host.token,
             "write_root": str(sdk_dir),
+            "sdk_readonly_path": str(SDK_SITE.resolve(strict=True)),
+            "sdk_site_root_binding_sha256": preflight["base"]["sdk"]["sdk_site_root_binding_sha256"],
+            "python_runtime_mapping_sha256": preflight["base"]["sdk"]["python_runtime_mapping_sha256"],
             "instructions": contracts["execution"]["agent_instructions"],
             "task_prompt": contracts["execution"]["task_prompt"],
             "model": PROVIDER_MODEL,
@@ -1310,7 +1389,7 @@ def run_scenario() -> dict:
         _atomic_write(SUMMARY_PATH, canonical(summary))
         raise ProbeError("LIVE_EVIDENCE_OFFLINE_CONTROLS_FAILED")
     summary["status"] = "COMPLETE"
-    summary["evidence"] = {"path": "spikes/rpf-53/config-live-evidence.json",
+    summary["evidence"] = {"path": "spikes/rpf-53/rev-2/config-live-evidence.json",
         "bytes": len(evidence_raw), "sha256": anchor,
         "verifier_exit_codes": {"correct_anchor": correct_exit,
                                  "missing_anchor": missing_exit, "wrong_anchor": wrong_exit},
