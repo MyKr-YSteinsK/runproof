@@ -166,14 +166,17 @@ def _guard_events(port: int, root: Path, sdk_root: Path, runtime_roots: list[Pat
 
 
 def _guard(port: int, write_root: Path, sdk_readonly_path: Path,
+           expected_sdk_site_root_binding_sha256: str,
            expected_runtime_mapping_sha256: str,
            denied: list[str], denied_files: list[dict]):
     root = _canonical_directory(write_root)
     sdk_root = _canonical_directory(sdk_readonly_path)
     if _root_has_link_component(sdk_readonly_path) or _root_has_link_component(write_root):
         raise PermissionError("RPF53_TRUSTED_ROOT_LINK")
-    expected_sdk_root = _canonical_directory(Path(sys.prefix) / "Lib" / "site-packages")
-    if sdk_root != expected_sdk_root:
+    sdk_binding = hashlib.sha256(os.path.normcase(str(sdk_root)).casefold().encode(
+        "utf-8")).hexdigest()
+    if (not re.fullmatch(r"[0-9a-f]{64}", expected_sdk_site_root_binding_sha256)
+            or sdk_binding != expected_sdk_site_root_binding_sha256):
         raise PermissionError("RPF53_SDK_ROOT_BINDING_MISMATCH")
     return _guard_events(port, root, sdk_root,
                          _runtime_read_roots(expected_runtime_mapping_sha256),
@@ -245,15 +248,16 @@ def main() -> int:
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         sdk_root = _canonical_directory(Path(config["sdk_readonly_path"]))
-        expected_sdk_root = _canonical_directory(Path(sys.prefix) / "Lib" / "site-packages")
         path_binding = hashlib.sha256(os.path.normcase(str(sdk_root)).casefold().encode(
             "utf-8")).hexdigest()
-        if (sdk_root != expected_sdk_root
+        if (not re.fullmatch(r"[0-9a-f]{64}", config["sdk_site_root_binding_sha256"])
                 or path_binding != config["sdk_site_root_binding_sha256"]
+                or not re.fullmatch(r"[0-9a-f]{64}", config["python_runtime_mapping_sha256"])
                 or _root_has_link_component(Path(config["sdk_readonly_path"]))):
             raise PermissionError("RPF53_SDK_ROOT_BINDING_MISMATCH")
         sys.path.insert(0, str(sdk_root))
         sys.addaudithook(_guard(port, Path(config["write_root"]), sdk_root,
+                                config["sdk_site_root_binding_sha256"],
                                 config["python_runtime_mapping_sha256"],
                                 denied, denied_files))
 
@@ -273,6 +277,8 @@ def main() -> int:
             raise RuntimeError("SDK_SOURCE_ROOT_MISMATCH")
         sdk_sha = hashlib.sha256(sdk_file.read_bytes()).hexdigest()
         openai_sha = hashlib.sha256(openai_file.read_bytes()).hexdigest()
+        python_executable = Path(sys.executable).resolve(strict=True)
+        python_executable_sha256 = hashlib.sha256(python_executable.read_bytes()).hexdigest()
         framework_version = importlib.metadata.version("pydantic-ai-slim")
         openai_version = importlib.metadata.version("openai")
         if framework_version != "2.57.0" or openai_version != "3.35.1":
@@ -280,6 +286,7 @@ def main() -> int:
         _post(port, config["token"], "/ready", {
             "framework": "pydantic-ai-slim", "version": framework_version,
             "openai_version": openai_version, "pid": os.getpid(),
+            "python_executable_sha256": python_executable_sha256,
             "sdk_source_sha256": sdk_sha, "openai_source_sha256": openai_sha,
             "sdk_site_root_binding_sha256": config["sdk_site_root_binding_sha256"],
             "python_runtime_mapping_sha256": config["python_runtime_mapping_sha256"]})
@@ -340,7 +347,9 @@ def main() -> int:
                 return {
                     "status": "COMPLETED", "framework": "pydantic-ai-slim",
                     "version": framework_version, "openai_version": openai_version,
-                    "pid": os.getpid(), "usage_type": usage_report["usage_type"],
+                    "pid": os.getpid(),
+                    "python_executable_sha256": python_executable_sha256,
+                    "usage_type": usage_report["usage_type"],
                     "usage_fields": usage_fields,
                     "requests": usage_values["requests"],
                     "input_tokens": usage_values["input_tokens"],

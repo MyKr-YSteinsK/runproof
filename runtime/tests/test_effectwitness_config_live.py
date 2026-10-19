@@ -23,7 +23,9 @@ from runtime.runproof_runtime.effectwitness.config_live_runtime import (
     ConfigLiveBusiness, ConfigLiveHost, ConfigLiveMemoryBackend, LiveRuntimeRejected, ProviderLedger,
     _tool_schema_summary, _validate_provider_response, _validate_tool_registry,
 )
-from runtime.runproof_runtime.effectwitness.config_live_verify import evaluate_live_effect
+from runtime.runproof_runtime.effectwitness.config_live_verify import (
+    _sdk_executable_identity_valid, _sdk_process_identity_valid, evaluate_live_effect,
+)
 from runtime.runproof_runtime.effectwitness.config_live_external import (
     _guard_events, _root_has_link_component, _runtime_archive_entry,
     _validated_run_usage,
@@ -32,15 +34,16 @@ from runtime.runproof_runtime.effectwitness.config_live_external import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev3" / "tests"
+TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev4" / "tests"
 _PROBE_SPEC = importlib.util.spec_from_file_location(
-    "rpf53_rev3_probe", ROOT / "spikes" / "rpf-53" / "probe.py")
+    "rpf53_rev4_probe", ROOT / "spikes" / "rpf-53" / "probe.py")
 _PROBE = importlib.util.module_from_spec(_PROBE_SPEC)
 _PROBE_SPEC.loader.exec_module(_PROBE)
 
 
 def _sdk_identity() -> dict:
     return {"python_version": "3.12.13", "python_executable_sha256": "a" * 64,
+            "python_launcher_sha256": "9" * 64,
             "pydantic_record_sha256": "b" * 64, "pydantic_record_entries": 444,
             "pydantic_record_mismatches": 0, "openai_record_sha256": "c" * 64,
             "openai_record_entries": 2000, "openai_record_mismatches": 0,
@@ -95,10 +98,11 @@ class ConfigLiveContractsTests(unittest.TestCase):
         with self.assertRaisesRegex(TypeError, "RPF53_USAGE_FIELD"):
             _validated_run_usage(PinnedRunUsage(), PinnedRunUsage)
 
-    def test_fixture_report_requires_the_complete_pinned_usage_contract(self):
+    def test_fixture_report_checks_every_field_and_three_process_identities(self):
         report = {
             "status": "COMPLETED", "framework": "pydantic-ai-slim",
             "version": "2.57.0", "openai_version": "3.35.1", "pid": 123,
+            "python_executable_sha256": "a" * 64,
             "usage_type": "pydantic_ai.usage.RunUsage",
             "usage_fields": ["input_tokens", "output_tokens", "requests", "tool_calls"],
             "requests": 4, "input_tokens": 41, "output_tokens": 12,
@@ -109,16 +113,90 @@ class ConfigLiveContractsTests(unittest.TestCase):
             "guard_denials": [], "provider_key_present": False,
             "business_key_present": False,
         }
-        self.assertTrue(_PROBE._fixture_report_valid(report, 123, {
-            "openai_core_sha256": "d" * 64}))
+        sdk = {"openai_core_sha256": "d" * 64,
+               "python_executable_sha256": "a" * 64}
+        checks = _PROBE._fixture_report_checks(report, 123, 123, sdk)
+        self.assertTrue(all(type(value) is bool for value in checks.values()))
+        self.assertTrue(all(checks.values()))
+        self.assertTrue(checks["popen_ready_pid_equal"])
+        self.assertTrue(checks["ready_completed_pid_equal"])
+        self.assertTrue(checks["popen_completed_pid_equal"])
+        cases = ((124, 123, 123, "popen_ready_pid_equal"),
+                 (123, 124, 123, "ready_completed_pid_equal"),
+                 (123, 123, 124, "ready_completed_pid_equal"))
+        for popen_pid, ready_pid, report_pid, failed_check in cases:
+            invalid = copy.deepcopy(report)
+            invalid["pid"] = report_pid
+            invalid_checks = _PROBE._fixture_report_checks(
+                invalid, popen_pid, ready_pid, sdk)
+            self.assertFalse(all(invalid_checks.values()))
+            self.assertFalse(invalid_checks[failed_check])
         invalid = copy.deepcopy(report)
         invalid["usage_fields"].remove("tool_calls")
-        self.assertFalse(_PROBE._fixture_report_valid(invalid, 123, {
-            "openai_core_sha256": "d" * 64}))
+        self.assertFalse(_PROBE._fixture_report_checks(invalid, 123, 123, sdk)[
+            "report_usage_fields_exact"])
         invalid = copy.deepcopy(report)
         invalid["tool_calls"] = True
-        self.assertFalse(_PROBE._fixture_report_valid(invalid, 123, {
-            "openai_core_sha256": "d" * 64}))
+        self.assertFalse(_PROBE._fixture_report_checks(invalid, 123, 123, sdk)[
+            "usage_tool_calls_integer"])
+
+    def test_fixture_report_rejects_missing_extra_hash_usage_and_guard_fields(self):
+        report = {
+            "status": "COMPLETED", "framework": "pydantic-ai-slim",
+            "version": "2.57.0", "openai_version": "3.35.1", "pid": 123,
+            "python_executable_sha256": "a" * 64,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "usage_fields": ["input_tokens", "output_tokens", "requests", "tool_calls"],
+            "requests": 4, "input_tokens": 41, "output_tokens": 12,
+            "tool_calls": 3, "tool_callbacks": 3,
+            "sdk_source_sha256": SDK_CORE_SHA256,
+            "openai_source_sha256": "d" * 64,
+            "final_output_sha256": "e" * 64, "final_text_persisted": False,
+            "guard_denials": [], "provider_key_present": False,
+            "business_key_present": False,
+        }
+        sdk = {"openai_core_sha256": "d" * 64,
+               "python_executable_sha256": "a" * 64}
+        cases = (
+            (lambda value: value.pop("output_tokens"), "report_fields_exact"),
+            (lambda value: value.update(unexpected="value"), "report_fields_exact"),
+            (lambda value: value.update(sdk_source_sha256="f" * 64), "sdk_source_hash_pinned"),
+            (lambda value: value.update(python_executable_sha256="f" * 64),
+             "report_python_executable_hash_pinned"),
+            (lambda value: value.update(usage_type="OtherUsage"), "report_runusage_type_pinned"),
+            (lambda value: value.update(usage_fields=["requests"]), "report_usage_fields_exact"),
+            (lambda value: value.update(input_tokens=-1), "usage_input_tokens_nonnegative"),
+            (lambda value: value.update(guard_denials=["RPF53_NETWORK_DENIED"]), "guard_denials_empty"),
+        )
+        for mutate, failed_check in cases:
+            invalid = copy.deepcopy(report)
+            mutate(invalid)
+            checks = _PROBE._fixture_report_checks(invalid, 123, 123, sdk)
+            self.assertFalse(checks[failed_check])
+
+    def test_fixture_diagnostic_public_report_never_keeps_arbitrary_text(self):
+        report = {
+            "status": "secret-token-value", "framework": "pydantic-ai-slim",
+            "version": "2.57.0", "openai_version": "3.35.1", "pid": 123,
+            "python_executable_sha256": "a" * 64,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "usage_fields": ["input_tokens", "output_tokens", "requests", "tool_calls"],
+            "requests": 4, "input_tokens": 41, "output_tokens": 12,
+            "tool_calls": 3, "tool_callbacks": 3,
+            "sdk_source_sha256": SDK_CORE_SHA256,
+            "openai_source_sha256": "d" * 64,
+            "final_output_sha256": "e" * 64, "final_text_persisted": False,
+            "guard_denials": [], "provider_key_present": False,
+            "business_key_present": False, "private_text": "raw-private-output",
+        }
+        serialized = json.dumps(_PROBE._safe_sdk_report(report), sort_keys=True)
+        self.assertNotIn("secret-token-value", serialized)
+        self.assertNotIn("raw-private-output", serialized)
+        self.assertNotIn("private_text", serialized)
+        self.assertEqual(_PROBE._safe_sdk_report(report)[
+            "python_executable_sha256"], "a" * 64)
+        self.assertEqual(_PROBE._safe_report_field_names(report)[
+            "unexpected_field_names"], ["private_text"])
 
     def test_fixture_lineage_requires_four_completions_and_three_returned_call_ids(self):
         call_ids = [f"call_rpf53_fixture_{index}" for index in (1, 2, 3)]
@@ -153,6 +231,36 @@ class ConfigLiveContractsTests(unittest.TestCase):
         invalid = copy.deepcopy(host)
         invalid.provider_responses.pop()
         self.assertFalse(_PROBE._fixture_lineage_valid(invalid))
+        invalid = copy.deepcopy(host)
+        invalid.tool_trace[1]["call_id"] = call_ids[0]
+        self.assertFalse(_PROBE._fixture_lineage_valid(invalid))
+        invalid = copy.deepcopy(host)
+        invalid.tool_trace[1]["returned_in_request"] = 5
+        self.assertFalse(_PROBE._fixture_lineage_valid(invalid))
+
+    def test_offline_live_witness_requires_bound_popen_ready_and_report_pids(self):
+        valid = {"popen_pid": 123, "ready_pid": 123, "pid": 123}
+        self.assertTrue(_sdk_process_identity_valid(valid))
+        for invalid in (
+                {"popen_pid": 124, "ready_pid": 123, "pid": 123},
+                {"popen_pid": 123, "ready_pid": 124, "pid": 123},
+                {"popen_pid": 123, "ready_pid": 123, "pid": 124},
+                {"popen_pid": True, "ready_pid": 1, "pid": 1},
+                {"popen_pid": 123, "ready_pid": 123},
+        ):
+            self.assertFalse(_sdk_process_identity_valid(invalid))
+
+    def test_offline_live_witness_binds_child_executable_to_source_identity(self):
+        sdk = {"python_executable_sha256": "a" * 64}
+        source = {"python_executable_sha256": "a" * 64,
+                  "python_launcher_sha256": "b" * 64}
+        framework = {"python_executable_sha256": "a" * 64,
+                     "python_launcher_sha256": "b" * 64}
+        self.assertTrue(_sdk_executable_identity_valid(sdk, source, framework))
+        self.assertFalse(_sdk_executable_identity_valid(
+            {"python_executable_sha256": "c" * 64}, source, framework))
+        self.assertFalse(_sdk_executable_identity_valid(
+            sdk, source, {**framework, "python_launcher_sha256": "d" * 64}))
 
     def test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename(self):
         self.assertEqual(_safe_denied_basename(r"C:\Users\Alice\secret token.json"),
@@ -448,6 +556,23 @@ class ConfigLiveProtocolTests(unittest.TestCase):
                 "expected_version": 1, "value": "rpf53-v2"})
         self.assertEqual(client.requests, [])
 
+    def test_host_ready_binds_the_reported_python_executable_hash(self):
+        contracts = _contracts(fixture=True)
+        ledger = ProviderLedger.fixture_only(contracts["experiment"]["run_id"])
+        host = ConfigLiveHost(contracts, ledger, ConfigLiveMemoryBackend(), fixture=True)
+        ready = {"framework": "pydantic-ai-slim", "version": "2.57.0",
+            "openai_version": "3.35.1", "pid": os.getpid(),
+            "python_executable_sha256": "f" * 64,
+            "sdk_source_sha256": SDK_CORE_SHA256,
+            "openai_source_sha256": _sdk_identity()["openai_core_sha256"],
+            "sdk_site_root_binding_sha256": "e" * 64,
+            "python_runtime_mapping_sha256": "f" * 64}
+        with self.assertRaisesRegex(LiveRuntimeRejected, "SDK_READY_IDENTITY"):
+            host._ready(ready)
+        self.assertIsNone(host.runtime)
+        ready["python_executable_sha256"] = _sdk_identity()["python_executable_sha256"]
+        self.assertEqual(host._ready(ready), {"status": "AGENT_RUNTIME_CONNECTED"})
+
     def test_offline_fake_provider_failure_returns_safe_host_502(self):
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind(("127.0.0.1", 0))
@@ -460,6 +585,7 @@ class ConfigLiveProtocolTests(unittest.TestCase):
         try:
             ready = {"framework": "pydantic-ai-slim", "version": "2.57.0",
                 "openai_version": "3.35.1", "pid": os.getpid(),
+                "python_executable_sha256": _sdk_identity()["python_executable_sha256"],
                 "sdk_source_sha256": SDK_CORE_SHA256,
                 "openai_source_sha256": _sdk_identity()["openai_core_sha256"],
                 "sdk_site_root_binding_sha256": "e" * 64,

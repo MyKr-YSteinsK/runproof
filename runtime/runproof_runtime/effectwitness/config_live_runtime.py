@@ -668,12 +668,15 @@ class ConfigLiveHost:
     def _ready(self, body: object) -> dict:
         _reject(self.runtime is None and type(body) is dict
                 and set(body) == {"framework", "version", "openai_version", "pid",
+                                  "python_executable_sha256",
                                   "sdk_source_sha256", "openai_source_sha256",
                                   "sdk_site_root_binding_sha256",
                                   "python_runtime_mapping_sha256"}
                 and body.get("framework") == SDK_NAME and body.get("version") == SDK_VERSION
                 and body.get("openai_version") == OPENAI_VERSION
                 and type(body.get("pid")) is int and body["pid"] > 0
+                and body.get("python_executable_sha256") == self.contracts[
+                    "execution"]["framework"]["identity"].get("python_executable_sha256")
                 and body.get("sdk_source_sha256") == SDK_CORE_SHA256
                 and body.get("openai_source_sha256") == self.contracts[
                     "execution"]["framework"]["identity"].get("openai_core_sha256")

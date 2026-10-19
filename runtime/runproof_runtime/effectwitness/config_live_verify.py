@@ -30,6 +30,27 @@ def _sha(value: object) -> bool:
     return type(value) is str and re.fullmatch(r"[0-9a-f]{64}", value) is not None
 
 
+def _sdk_process_identity_valid(sdk: object) -> bool:
+    if type(sdk) is not dict:
+        return False
+    pids = (sdk.get("popen_pid"), sdk.get("ready_pid"), sdk.get("pid"))
+    return all(type(pid) is int and pid > 0 for pid in pids) and pids[0] == pids[1] == pids[2]
+
+
+def _sdk_executable_identity_valid(sdk: object, source_identity: object,
+                                   framework_identity: object) -> bool:
+    if (type(sdk) is not dict or type(source_identity) is not dict
+            or type(framework_identity) is not dict):
+        return False
+    executable_sha256 = sdk.get("python_executable_sha256")
+    launcher_sha256 = source_identity.get("python_launcher_sha256")
+    return (_sha(executable_sha256)
+            and executable_sha256 == source_identity.get("python_executable_sha256")
+            and executable_sha256 == framework_identity.get("python_executable_sha256")
+            and _sha(launcher_sha256)
+            and launcher_sha256 == framework_identity.get("python_launcher_sha256"))
+
+
 def _item(data: object, effect: dict, version: int, value: str) -> bool:
     if type(data) is not dict or set(data) != {
             "app", "env", "key", "value", "description", "version", "updatedAt"}:
@@ -246,7 +267,8 @@ def validate_payload(payload: object) -> dict:
                 "provider", "provider_model", "provider_endpoint", "config_center_source_commit",
                 "config_center_manifest_sha256", "config_center_jar_sha256",
                 "runtime_source_sha256", "sdk_core_sha256", "python_version",
-                "python_executable_sha256", "pydantic_record_sha256",
+                "python_executable_sha256", "python_launcher_sha256",
+                "pydantic_record_sha256",
                 "pydantic_record_entries", "pydantic_record_mismatches",
                 "openai_record_sha256", "openai_record_entries",
                 "openai_record_mismatches", "openai_core_sha256",
@@ -262,6 +284,7 @@ def validate_payload(payload: object) -> dict:
             and payload["source_identity"]["sdk_core_sha256"] == execution["framework"]["core_sha256"]
             and payload["source_identity"]["python_version"] == "3.12.13"
             and _sha(payload["source_identity"]["python_executable_sha256"])
+            and _sha(payload["source_identity"]["python_launcher_sha256"])
             and payload["source_identity"]["pydantic_record_sha256"] == execution["framework"]["identity"].get("pydantic_record_sha256")
             and _sha(payload["source_identity"]["pydantic_record_sha256"])
             and payload["source_identity"]["pydantic_record_entries"] == 444
@@ -283,14 +306,18 @@ def validate_payload(payload: object) -> dict:
             "SOURCE_IDENTITY")
     sdk = payload["sdk"]
     _reject(type(sdk) is dict and set(sdk) == {
-        "framework", "version", "openai_version", "pid", "exit_code", "usage_type",
+        "framework", "version", "openai_version", "popen_pid", "ready_pid", "pid",
+        "python_executable_sha256",
+        "exit_code", "usage_type",
         "usage_fields", "requests",
         "input_tokens", "output_tokens", "tool_calls", "tool_callbacks",
         "sdk_source_sha256", "openai_source_sha256", "final_output_sha256",
         "final_text_persisted", "guard_denials", "provider_key_present",
         "business_key_present", "stderr_bytes", "stderr_sha256"}
         and sdk["framework"] == "pydantic-ai-slim" and sdk["version"] == "2.57.0"
-        and sdk["openai_version"] == "3.35.1" and type(sdk["pid"]) is int and sdk["pid"] > 0
+        and sdk["openai_version"] == "3.35.1" and _sdk_process_identity_valid(sdk)
+        and _sdk_executable_identity_valid(sdk, payload["source_identity"],
+            execution["framework"]["identity"])
         and sdk["usage_type"] == "pydantic_ai.usage.RunUsage"
         and sdk["usage_fields"] == ["input_tokens", "output_tokens", "requests", "tool_calls"]
         and sdk["exit_code"] == 0 and type(sdk["requests"]) is int
@@ -430,7 +457,8 @@ def validate_payload(payload: object) -> dict:
         and safety["java_listener_pid"] == safety["java_pid"]
         and type(safety["java_exit_code"]) is int and safety["java_stopped"] is True
         and safety["java_listener_closed"] is True and safety["java_external_connections"] == []
-        and safety["sdk_pid"] == sdk["pid"] and safety["sdk_stopped"] is True
+        and safety["sdk_pid"] == sdk["popen_pid"] == sdk["ready_pid"] == sdk["pid"]
+        and safety["sdk_stopped"] is True
         and safety["sdk_external_connections"] == [] and safety["host_closed"] is True
         and type(safety["parent_external_connections"]) is list
         and safety["sdk_provider_key_absent"] is True
