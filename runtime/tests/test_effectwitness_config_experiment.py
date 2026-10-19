@@ -202,6 +202,15 @@ class ExperimentTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             v.verify_bytes(raw, hashlib.sha256(raw).hexdigest())
 
+    def test_only_exact_recorded_executor_is_admitted(self):
+        actual = v.source_identity()
+        recorded = {**actual, "spikes/rpf-55/probe.py": v.EXECUTED_PROBE_SHA256}
+        self.assertIn(v.validate_execution_source(recorded), ("CURRENT_TREE", "RPF55_REV2_INITIAL_FROZEN"))
+        for name in actual:
+            wrong = {**recorded, name: "0" * 64}
+            with self.assertRaises(ValueError):
+                v.validate_execution_source(wrong)
+
     def test_fault_plan_cannot_enable_normal(self):
         p = synthetic_payload()["scenes"][0]["contracts"]
         p["experiment"]["fault_plan"]["enabled"] = True

@@ -104,7 +104,8 @@ def sdk_identity_direct():
     return value
 
 def once(path, value):
-    c.require(path.is_relative_to(WORK) or path in (OUT / "experiment-summary.json", OUT / "config-experiment-evidence.json"), "OUTPUT_SCOPE")
+    c.require(path.is_relative_to(WORK) or path in (OUT / "experiment-summary.json", OUT / "config-experiment-evidence.json",
+              OUT / "offline-verification.json"), "OUTPUT_SCOPE")
     c.require(not old._has_link_component(path), "OUTPUT_LINK")
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("xb") as stream:
@@ -342,7 +343,18 @@ def controlled(base):
 
 def offline_issue():
     path = WORK / "diagnostics/candidate-evidence.json"
-    raw = path.read_bytes()
+    initial_raw = path.read_bytes()
+    envelope = c.strict_json(initial_raw)
+    c.require(envelope["payload_sha256"] == c.digest(envelope["payload"]), "ORIGINAL_CANDIDATE_DIGEST")
+    if envelope["verifier_identity"] != v.verifier_identity():
+        c.require(envelope["verifier_identity"] == {"version": "rpf55-config-experiment-verifier-v2",
+            "sha256": "c87b9c26ace5dedcd040ea3f8791b98b4da7b2c99866550fb2fd80761844fea5"}, "UNRECOGNIZED_PRIOR_VERIFIER")
+        # Pure offline re-issuance: original bytes/Scene payload stay immutable;
+        # only the envelope's independently versioned verifier identity changes.
+        once(WORK / "replay/candidate-verifier-v2.1.json", v.seal(envelope["payload"]))
+        raw = (WORK / "replay/candidate-verifier-v2.1.json").read_bytes()
+    else:
+        raw = initial_raw
     v.verify_bytes(raw, hashlib.sha256(raw).hexdigest())
     payload = c.strict_json(raw)["payload"]
     c.require(payload["source_kind"] == "FIXTURE_TARGET_CONTROLLED_JAVA_HTTP", "REAL_SCENES_REQUIRED")
@@ -354,8 +366,12 @@ def offline_issue():
     spec2 = importlib.util.spec_from_file_location("rpf55_controls", ROOT / "runtime/tests/test_effectwitness_config_experiment.py")
     tests = importlib.util.module_from_spec(spec2)
     spec2.loader.exec_module(tests)
-    controls = tests.offline_controls(raw, WORK / "diagnostics/final-controls")
+    controls = tests.offline_controls(raw, WORK / "replay/final-controls-v2.1")
     once(OUT / "offline-verification.json", {"revision": "rev-2", "verifier_identity": v.verifier_identity(),
+        "original_verifier_identity": envelope["verifier_identity"],
+        "original_candidate_sha256": hashlib.sha256(initial_raw).hexdigest(),
+        "executed_source_files": payload["source_files"], "export_source_files": v.source_identity(),
+        "payload_unchanged": c.strict_json(raw)["payload"] == envelope["payload"],
         "evidence_sha256": hashlib.sha256(raw).hexdigest(), "controls": controls})
     once(OUT / "experiment-summary.json", {"revision": "rev-2", "status": "PASS", "success_certificate_issued": True,
         "evidence_sha256": hashlib.sha256(raw).hexdigest(), "source_files": payload["source_files"],

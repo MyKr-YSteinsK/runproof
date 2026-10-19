@@ -10,6 +10,9 @@ from .config_live_runtime import _api_response, _valid_item, _http_contract
 from .config_live_verify import _history
 
 ROOT = Path(__file__).resolve().parents[3]
+# Exact rev-2 executor used by all three immutable Scene captures, before the
+# post-run export allowlist correction. No other historical executor is admitted.
+EXECUTED_PROBE_SHA256 = "5e2a2a0fca438769d6371d843c8aacf249e7f5672f69d7e96dae413d09486ebd"
 SOURCE_FILES = tuple("runtime/runproof_runtime/effectwitness/" + name + ".py" for name in (
     "config_experiment_contracts", "config_experiment_adapter",
     "config_live_runtime", "config_live_contracts", "config_live_external", "config_live_verify")) + ("spikes/rpf-55/probe.py", "spikes/rpf-53/probe.py")
@@ -18,8 +21,14 @@ def source_identity():
     return {p: hashlib.sha256((ROOT / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest() for p in SOURCE_FILES}
 
 def verifier_identity():
-    return {"version": "rpf55-config-experiment-verifier-v2", "sha256": hashlib.sha256(
+    return {"version": "rpf55-config-experiment-verifier-v2.1", "sha256": hashlib.sha256(
         Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest()}
+
+def validate_execution_source(value):
+    current = source_identity()
+    frozen = {**current, "spikes/rpf-55/probe.py": EXECUTED_PROBE_SHA256}
+    require(value == current or value == frozen, "EXECUTION_SOURCE_IDENTITY")
+    return "CURRENT_TREE" if value == current else "RPF55_REV2_INITIAL_FROZEN"
 
 def pinned_sdk_fields():
     raw = (ROOT / "spikes/rpf-53/rev-6/config-live-evidence.json").read_bytes()
@@ -188,14 +197,16 @@ def verify_bytes(raw, anchor):
     p = envelope["payload"]
     require(set(p) == {"source_kind", "source_files", "boundaries", "scenes", "budget"}
         and p["source_kind"] in ("SYNTHETIC_TEST_ONLY", "FIXTURE_TARGET_CONTROLLED_JAVA_HTTP")
-        and p["source_files"] == source_identity() and p["boundaries"] == BOUNDARIES, "SOURCE_OR_BOUNDARIES")
+        and p["boundaries"] == BOUNDARIES, "SOURCE_OR_BOUNDARIES")
+    source_version = validate_execution_source(p["source_files"])
     require(len(p["scenes"]) == 3 and len({s["contracts"]["experiment"]["run_id"] for s in p["scenes"]}) == 3
         and len({s["contracts"]["effect"]["key"] for s in p["scenes"]}) == 3, "SCENE_ISOLATION")
     for s, candidate in zip(p["scenes"], CANDIDATES):
         verify_scene(s, candidate, digest(p["source_files"]))
     require(p["budget"] == {"jvm": 3, "business_http": 24, "post": 6,
         "health": sum(len(s["environment"]["health"]) for s in p["scenes"]), "provider": 0, "tokens": 0, "cost_cny": 0}, "TOTAL_BUDGET")
-    return {"status": "PASS", "source_kind": p["source_kind"], "PGE_CLOSED_LOOP": "NOT_PROVEN"}
+    return {"status": "PASS", "source_kind": p["source_kind"], "execution_source_identity": source_version,
+            "verifier_identity": verifier_identity(), "PGE_CLOSED_LOOP": "NOT_PROVEN"}
 
 def main():
     parser = argparse.ArgumentParser()
