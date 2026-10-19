@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 from pathlib import Path
+from datetime import datetime, timezone
 from urllib.parse import quote
 
 from .config_live_contracts import (
@@ -156,6 +157,9 @@ def evaluate_live_effect(effect: dict, observations: list[dict], tool_trace: lis
             continue
         if (item.get("method"), item.get("path"), item.get("request")) != expected:
             gaps.append("HTTP_REQUEST_LINEAGE")
+        if (kind == "update_config_v2" and type(item.get("request")) is dict
+                and type(item["request"].get("expectedVersion")) is not int):
+            gaps.append("HTTP_VERSION_TYPE")
     tool_names = [item.get("name") for item in tool_trace if type(item) is dict]
     if (len(tool_names) != len(tool_trace) or "create_config_v1" not in tool_names
             or "update_config_v2" not in tool_names
@@ -190,6 +194,10 @@ def evaluate_live_effect(effect: dict, observations: list[dict], tool_trace: lis
                          if call.get("name") == "update_config_v2" else {})
         if call.get("arguments") != expected_args:
             gaps.append("SDK_TOOL_ARGUMENTS_INVALID")
+        if (call.get("name") == "update_config_v2"
+                and (type(call.get("arguments")) is not dict
+                     or type(call["arguments"].get("expected_version")) is not int)):
+            gaps.append("SDK_TOOL_VERSION_TYPE")
         if call.get("name") == "inspect_config":
             absent, _ = _api(obs, 404, 4041, "none")
             present, item_data = _api(obs, 200, 0, "item")
@@ -250,7 +258,7 @@ def evaluate_live_effect(effect: dict, observations: list[dict], tool_trace: lis
                       "history_versions": [2, 1] if history_ok else None}}
 
 
-def validate_payload(payload: object) -> dict:
+def _validate_payload(payload: object) -> dict:
     _reject(type(payload) is dict and set(payload) == {
         "schema_version", "plan_id", "contracts", "source_identity", "sdk",
         "provider", "agent_contract_visibility", "tool_trace", "http_observations", "authority_before",
@@ -285,7 +293,7 @@ def validate_payload(payload: object) -> dict:
             and payload["source_identity"]["task_owned_jar_relative_path"] == TASK_OWNED_JAR_PATH
             and payload["source_identity"]["task_owned_jar_sha256"] == SOURCE_JAR_SHA256
             and payload["source_identity"]["task_owned_jar_bytes"] == SOURCE_JAR_BYTES
-            and payload["source_identity"]["runtime_source_sha256"] == execution["experiment"]["runtime_source_sha256"]
+            and payload["source_identity"]["runtime_source_sha256"] == payload["contracts"]["experiment"]["runtime_source_sha256"]
             and payload["source_identity"]["sdk_core_sha256"] == execution["framework"]["core_sha256"]
             and payload["source_identity"]["python_version"] == "3.12.13"
             and _sha(payload["source_identity"]["python_executable_sha256"])
@@ -330,7 +338,8 @@ def validate_payload(payload: object) -> dict:
         and all(type(sdk[key]) is int and sdk[key] >= 0 for key in (
             "input_tokens", "output_tokens", "tool_calls", "tool_callbacks"))
         and _sha(sdk["sdk_source_sha256"]) and sdk["sdk_source_sha256"] == execution["framework"]["core_sha256"]
-        and _sha(sdk["openai_source_sha256"]) and _sha(sdk["final_output_sha256"])
+        and sdk["openai_source_sha256"] == payload["source_identity"]["openai_core_sha256"]
+        and _sha(sdk["final_output_sha256"])
         and sdk["final_text_persisted"] is False and sdk["guard_denials"] == []
         and sdk["provider_key_present"] is False and sdk["business_key_present"] is False
         and sdk["stderr_bytes"] == 0 and _sha(sdk["stderr_sha256"]), "SDK_IDENTITY_OR_RESULT")
@@ -361,7 +370,7 @@ def validate_payload(payload: object) -> dict:
             "transport", "response_id", "returned_model", "usage", "tool_schema_sha256",
             "tool_call_ids", "returned_tool_ids", "tool_returns"}
             and record["attempt"] == index
-            and record["run_id"] == execution["experiment"]["run_id"]
+            and record["run_id"] == payload["contracts"]["experiment"]["run_id"]
             and _sha(record["request_sha256"])
             and type(record["reservation_tokens"]) is int and 0 < record["reservation_tokens"]
             and record["status"] == "RECEIVED"
@@ -393,6 +402,8 @@ def validate_payload(payload: object) -> dict:
         input_tokens += record["usage"]["prompt_tokens"]
         output_tokens += record["usage"]["completion_tokens"]
     total = input_tokens + output_tokens
+    _reject(sdk["input_tokens"] == input_tokens and sdk["output_tokens"] == output_tokens,
+            "SDK_PROVIDER_USAGE_BINDING")
     _reject(total <= LIMITS["total_tokens"], "TOKEN_BUDGET")
     cost = (input_tokens * LIMITS["input_cny_per_million_peak_bound"]
             + output_tokens * LIMITS["output_cny_per_million_peak_bound"]) / 1_000_000
@@ -489,7 +500,7 @@ def validate_payload(payload: object) -> dict:
         and safety["sdk_pid"] == sdk["popen_pid"] == sdk["ready_pid"] == sdk["pid"]
         and safety["sdk_stopped"] is True
         and safety["sdk_external_connections"] == [] and safety["host_closed"] is True
-        and type(safety["parent_external_connections"]) is list
+        and safety["parent_external_connections"] == []
         and safety["sdk_provider_key_absent"] is True
         and safety["sdk_business_key_absent"] is True
         and safety["sdk_guard_denials"] == [],
@@ -505,21 +516,56 @@ def validate_payload(payload: object) -> dict:
     return oracle
 
 
+def validate_payload(payload: object) -> dict:
+    """Malformed nested data is a controlled rejection, never a successful verdict."""
+    try:
+        return _validate_payload(payload)
+    except LiveEvidenceRejected:
+        raise
+    except LiveContractRejected as exc:
+        raise LiveEvidenceRejected("CONTRACT_" + exc.code) from None
+    except (KeyError, TypeError, IndexError, AttributeError, StopIteration,
+            ValueError, OverflowError, RecursionError):
+        raise LiveEvidenceRejected("MALFORMED_NESTED_FIELDS") from None
+
+
+def verifier_identity() -> dict:
+    raw = Path(__file__).read_bytes().replace(b"\r\n", b"\n")
+    return {"path": "runtime/runproof_runtime/effectwitness/config_live_verify.py",
+            "sha256": sha256_bytes(raw), "normalization": "LF"}
+
+
 def seal_payload(payload: dict) -> bytes:
     validate_payload(payload)
     envelope = {"schema_version": EVIDENCE_SCHEMA,
-                "payload_sha256": digest(payload), "payload": payload}
+                "payload_sha256": digest(payload), "payload": payload,
+                "issuance_kind": "REAL_PROVIDER_LIVE_RUN",
+                "issued_at_utc": datetime.now(timezone.utc).isoformat(),
+                "verifier_identity": verifier_identity()}
     return canonical(envelope)
 
 
 def verify_bytes(raw: bytes) -> dict:
-    _reject(type(raw) is bytes and 0 < len(raw) <= 2_000_000, "EVIDENCE_SIZE")
-    envelope = strict_json(raw)
-    _reject(type(envelope) is dict and set(envelope) == {
-        "schema_version", "payload_sha256", "payload"}
-        and envelope["schema_version"] == EVIDENCE_SCHEMA
-        and envelope["payload_sha256"] == digest(envelope["payload"]), "EVIDENCE_ENVELOPE")
-    return validate_payload(envelope["payload"])
+    try:
+        _reject(type(raw) is bytes and 0 < len(raw) <= 2_000_000, "EVIDENCE_SIZE")
+        envelope = strict_json(raw)
+        _reject(type(envelope) is dict and set(envelope) == {
+            "schema_version", "payload_sha256", "payload", "issuance_kind",
+            "issued_at_utc", "verifier_identity"}
+            and envelope["schema_version"] == EVIDENCE_SCHEMA
+            and envelope["payload_sha256"] == digest(envelope["payload"]), "EVIDENCE_ENVELOPE")
+        _reject(envelope["issuance_kind"] == "REAL_PROVIDER_LIVE_RUN"
+                and envelope["verifier_identity"] == verifier_identity(), "ISSUANCE_IDENTITY")
+        issued = datetime.fromisoformat(envelope["issued_at_utc"].replace("Z", "+00:00"))
+        _reject(issued.tzinfo is not None and issued.utcoffset().total_seconds() == 0,
+                "ISSUANCE_TIME")
+        return validate_payload(envelope["payload"])
+    except LiveEvidenceRejected:
+        raise
+    except LiveContractRejected as exc:
+        raise LiveEvidenceRejected("JSON_" + exc.code) from None
+    except (KeyError, TypeError, IndexError, AttributeError, ValueError, RecursionError):
+        raise LiveEvidenceRejected("MALFORMED_ENVELOPE") from None
 
 
 def verify_file(path: str | Path, external_sha256: str | None) -> int:

@@ -881,6 +881,8 @@ class ConfigLiveHost:
         else:
             _reject(type(self.api_key) is str and bool(self.api_key), "DEEPSEEK_KEY_UNAVAILABLE", "PROVIDER")
             record = self.ledger.reserve(request, returns)
+            record["agent_contract_visibility"] = dict(visibility)
+            self.ledger.checkpoint()
             try:
                 data = self._provider_request(request)
             except LiveRuntimeRejected as exc:

@@ -14,19 +14,21 @@ import unittest
 import uuid
 from pathlib import Path
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from runtime.runproof_runtime.effectwitness.config_live_contracts import (
     AGENT_INSTRUCTIONS, BASE_SHA, LIMITS, PROVIDER_MODEL, SDK_CORE_SHA256,
     SOURCE_COMMIT, SOURCE_JAR_BYTES, SOURCE_JAR_SHA256, SOURCE_MANIFEST_SHA256,
     TASK_OWNED_JAR_PATH, TASK_PROMPT, TOOL_HELP, LiveContractRejected,
-    canonical, digest, make_contracts, strict_json, validate_contracts,
+    canonical, digest, make_contracts, sha256_bytes as digest_bytes, strict_json, validate_contracts,
 )
 from runtime.runproof_runtime.effectwitness.config_live_runtime import (
     ConfigLiveBusiness, ConfigLiveHost, ConfigLiveMemoryBackend, LiveRuntimeRejected, ProviderLedger,
     _tool_schema_summary, _validate_provider_response, _validate_tool_registry,
 )
 from runtime.runproof_runtime.effectwitness.config_live_verify import (
-    _sdk_executable_identity_valid, _sdk_process_identity_valid, evaluate_live_effect,
+    LiveEvidenceRejected, _sdk_executable_identity_valid, _sdk_process_identity_valid,
+    evaluate_live_effect, seal_payload, validate_payload, verify_bytes,
 )
 from runtime.runproof_runtime.effectwitness import config_live_external as sdk_child
 from runtime.runproof_runtime.effectwitness.config_live_external import (
@@ -37,9 +39,9 @@ from runtime.runproof_runtime.effectwitness.config_live_external import (
 
 
 ROOT = Path(__file__).resolve().parents[2]
-TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev5" / "tests"
+TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev6" / "tests"
 _PROBE_SPEC = importlib.util.spec_from_file_location(
-    "rpf53_rev4_probe", ROOT / "spikes" / "rpf-53" / "probe.py")
+    "rpf53_rev6_probe", ROOT / "spikes" / "rpf-53" / "probe.py")
 _PROBE = importlib.util.module_from_spec(_PROBE_SPEC)
 _PROBE_SPEC.loader.exec_module(_PROBE)
 
@@ -78,6 +80,240 @@ def _contracts(*, fixture: bool = False, agent_port: int | None = None) -> dict:
         task_owned_jar=task_owned_jar,
         tool_schema_sha256=None if fixture else "f" * 64,
         mode="FIXTURE_TEST_ONLY" if fixture else "REAL_PROVIDER")
+
+
+def _synthetic_payload() -> dict:
+    """Structural test data only; never a real Provider observation or certificate."""
+    saved = json.loads((ROOT / "spikes/rpf-53/rev-5/live-summary.json").read_bytes())
+    contracts = _contracts()
+    current = next(o for o in saved["http_observations"] if o["kind"] == "final_current")["response"]["data"]
+    raw = json.dumps(saved)
+    for key in ("app", "env", "key"):
+        raw = raw.replace(current[key], contracts["effect"][key])
+    raw = raw.replace(saved["run_id"], contracts["experiment"]["run_id"])
+    for i, row in enumerate(saved["provider_requests"], 1):
+        raw = raw.replace(row["response_id"], f"synthetic-response-{i}")
+    for i, row in enumerate(saved["tool_trace"], 1):
+        raw = raw.replace(row["call_id"], f"synthetic-call-{i}")
+    saved = json.loads(raw)
+    trace = saved["tool_trace"]
+    for obs in saved["http_observations"]:
+        obs["response_body_sha256"] = digest(obs["response"])
+    for call in trace:
+        call["arguments_sha256"] = digest(call["arguments"])
+        call["result_sha256"] = digest(call["result"])
+    responses = []
+    for i, row in enumerate(saved["provider_requests"]):
+        row["request_sha256"] = digest({"synthetic_request": i})
+        row["tool_schema_sha256"] = contracts["execution"]["tool_schema_sha256"]
+        returns = [{"call_id": t["call_id"], "result_sha256": t["result_sha256"]}
+                   for t in trace[:i]]
+        responses.append({"response_id": row["response_id"], "model": PROVIDER_MODEL,
+            "usage": row["usage"], "tool_calls": [{"call_id": t} for t in row["tool_call_ids"]],
+            "tool_returns": returns})
+    sid = _sdk_identity()
+    report = saved["sdk"]
+    report.update(popen_pid=4101, ready_pid=4101, pid=4101,
+                  python_executable_sha256=sid["python_executable_sha256"],
+                  sdk_source_sha256=SDK_CORE_SHA256, openai_source_sha256=sid["openai_core_sha256"])
+    jar = copy.deepcopy(saved["java"]["jar_provenance"])
+    jar["task_relative_path"] = TASK_OWNED_JAR_PATH
+    safety = {"java_pid": 4102, "java_listener_pid": 4102, "java_exit_code": 0,
+        "java_stopped": True, "java_listener_closed": True, "java_external_connections": [],
+        "java_jar_provenance": jar, "sdk_pid": 4101, "sdk_stopped": True,
+        "sdk_external_connections": [], "host_closed": True, "parent_external_connections": [],
+        "sdk_provider_key_absent": True, "sdk_business_key_absent": True, "sdk_guard_denials": []}
+    preflight = {"base": {"runtime_source": {"sha256": contracts["experiment"]["runtime_source_sha256"]},
+        "sdk": {**sid, "pydantic": {"record_sha256": sid["pydantic_record_sha256"],
+            "record_entries": 444, "record_mismatches": 0},
+            "openai": {"record_sha256": sid["openai_record_sha256"],
+                "record_entries": 2000, "record_mismatches": 0}}}}
+    host = SimpleNamespace(provider_responses=responses, tool_trace=trace,
+        tool_schema_sha256=contracts["execution"]["tool_schema_sha256"],
+        visible_contract_checks=[{"instructions_present": True, "task_prompt_present": True,
+            "tool_help_exact": True, "messages_sha256": digest({"synthetic_messages": i})}
+            for i in range(4)])
+    ledger = SimpleNamespace(data={"requests": saved["provider_requests"]}, usage=lambda: saved["provider_usage"])
+    return _PROBE._make_payload(preflight, contracts, report, host, ledger,
+        SimpleNamespace(observations=saved["http_observations"]), saved["authority_before"],
+        saved["authority_after"], {"version": "17.0.12", "executable_sha256": "8" * 64}, safety)
+
+
+class ConfigLiveWitnessTests(unittest.TestCase):
+    def test_complete_synthetic_success_path_uses_production_payload_builder(self):
+        payload = _synthetic_payload()
+        self.assertEqual(validate_payload(payload)["outcome"], "CONTRACT_SATISFIED_IN_RUN")
+        self.assertEqual(verify_bytes(seal_payload(payload)), payload["oracle"])
+
+    def assert_rehashed_rejection(self, payload, mutate):
+        envelope = json.loads(seal_payload(payload))
+        mutate(envelope["payload"])
+        envelope["payload_sha256"] = digest(envelope["payload"])
+        with self.assertRaises(LiveEvidenceRejected):
+            verify_bytes(canonical(envelope))
+
+    def test_missing_payload_and_each_contract_field_are_controlled_rejections(self):
+        payload = _synthetic_payload()
+        paths = [(key,) for key in payload]
+        def fields(value, path):
+            if type(value) is dict:
+                for key, child in value.items():
+                    paths.append((*path, key))
+                    fields(child, (*path, key))
+        fields(payload["contracts"], ("contracts",))
+        for path in paths:
+            def remove(value, path=path):
+                for key in path[:-1]:
+                    value = value[key]
+                value.pop(path[-1])
+            with self.subTest(path=path):
+                self.assert_rehashed_rejection(payload, remove)
+
+    def test_malformed_nested_containers_never_escape_as_python_exceptions(self):
+        payload = _synthetic_payload()
+        paths = [(key,) for key in payload if type(payload[key]) in (dict, list)]
+        paths += [("contracts", key) for key in ("execution", "effect", "experiment")]
+        paths += [("provider", "attempts", 0), ("provider", "attempts", 0, "tool_returns"),
+                  ("provider", "attempts", 0, "usage"), ("tool_trace", 0),
+                  ("http_observations", 0), ("agent_contract_visibility", 0)]
+        for path in paths:
+            for malformed in (None, 1, "wrong-shape", [None], {"unexpected": None}):
+                def replace(value, path=path, malformed=malformed):
+                    for key in path[:-1]:
+                        value = value[key]
+                    value[path[-1]] = malformed
+                with self.subTest(path=path, malformed=malformed):
+                    self.assert_rehashed_rejection(payload, replace)
+
+    def test_rehashed_source_lineage_authority_budget_and_visibility_tampers(self):
+        payload = _synthetic_payload()
+        def history(value):
+            obs = value["http_observations"][value["authority_after"]["history_seq"] - 1]
+            obs["response"]["data"][0]["value"] = "forged"
+            obs["response_body_sha256"] = digest(obs["response"])
+        def bool_version(value):
+            call = value["tool_trace"][2]
+            call["arguments"]["expected_version"] = True
+            call["arguments_sha256"] = digest(call["arguments"])
+        cases = {
+            "provider": lambda p: p["provider"].update(name="SCRIPTED"),
+            "sdk_pid": lambda p: p["sdk"].update(ready_pid=4102),
+            "sdk_source": lambda p: p["sdk"].update(openai_source_sha256="7" * 64),
+            "jar_source": lambda p: p["safety"]["java_jar_provenance"].update(copy_sha256="7" * 64),
+            "tool_return_loss": lambda p: p["provider"]["attempts"][3]["tool_returns"].pop(),
+            "tool_return_swap": lambda p: p["provider"]["attempts"][3]["tool_returns"].reverse(),
+            "provider_response": lambda p: p["provider"]["attempts"][0].update(response_id="forged"),
+            "source_digest": lambda p: p["source_identity"].update(runtime_source_sha256="7" * 64),
+            "history": history, "boolean_version": bool_version,
+            "budget": lambda p: p["provider"]["usage"].update(estimated_cost_cny_upper=1.01),
+            "sdk_usage": lambda p: p["sdk"].update(input_tokens=0),
+            "visibility": lambda p: p["agent_contract_visibility"][0].update(instructions_present=1),
+            "visibility_loss": lambda p: p["agent_contract_visibility"].clear(),
+            "release_authority": lambda p: p["contracts"]["execution"].update(release_authority="AGENT"),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(name=name):
+                self.assert_rehashed_rejection(payload, mutate)
+
+    def test_invalid_json_and_issuance_identity_are_controlled_rejections(self):
+        for raw in (b'{}', b'{"x":1,"x":2}', b'{"x":NaN}', b'\xff', b'[]'):
+            with self.subTest(raw=raw), self.assertRaises(LiveEvidenceRejected):
+                verify_bytes(raw)
+        envelope = json.loads(seal_payload(_synthetic_payload()))
+        for key, value in (("issuance_kind", "DERIVED_POSTHOC"), ("issued_at_utc", "invalid"),
+                           ("verifier_identity", {"sha256": "f" * 64})):
+            invalid = {**envelope, key: value}
+            with self.subTest(key=key), self.assertRaises(LiveEvidenceRejected):
+                verify_bytes(canonical(invalid))
+
+    def test_real_independent_cli_anchors_and_rehashed_tamper(self):
+        TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TASK_TEST_ROOT) as directory:
+            path = Path(directory) / "FIXTURE_SCRIPTED-envelope.json"
+            raw = seal_payload(_synthetic_payload())
+            path.write_bytes(raw)
+            self.assertEqual(_PROBE._verify_in_independent_process(path, digest_bytes(raw)), 0)
+            self.assertEqual(_PROBE._verify_in_independent_process(path, None), 2)
+            self.assertEqual(_PROBE._verify_in_independent_process(path, "0" * 64), 3)
+            envelope = json.loads(raw)
+            envelope["payload"]["sdk"]["ready_pid"] = 9999
+            envelope["payload_sha256"] = digest(envelope["payload"])
+            raw = canonical(envelope)
+            path.write_bytes(raw)
+            self.assertEqual(_PROBE._verify_in_independent_process(path, digest_bytes(raw)), 4)
+
+    def test_output_status_can_grow_but_frozen_identity_cannot_change(self):
+        previous = {"repo": {"head": BASE_SHA, "branch": "fixed", "status_paths": ["before"],
+                             "docs_reviews_untracked_untouched": True},
+                    "runtime_source": {"sha256": "a" * 64}}
+        current = copy.deepcopy(previous)
+        current["repo"]["status_paths"] = ["after", "allowed-output.json"]
+        self.assertTrue(_PROBE._same_frozen_preflight(previous, current))
+        for key in ("head", "branch", "docs_reviews_untracked_untouched"):
+            invalid = copy.deepcopy(current)
+            invalid["repo"][key] = "changed"
+            self.assertFalse(_PROBE._same_frozen_preflight(previous, invalid))
+        current["runtime_source"]["sha256"] = "b" * 64
+        self.assertFalse(_PROBE._same_frozen_preflight(previous, current))
+
+    def test_scope_rejects_unapproved_paths_and_staged_contamination(self):
+        TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TASK_TEST_ROOT) as directory:
+            outputs = Path(directory)
+            with patch.object(_PROBE, "REV6_DIR", outputs), patch.object(_PROBE, "_status_paths") as status, \
+                    patch.object(_PROBE.subprocess, "run", return_value=SimpleNamespace(returncode=0)) as git:
+                status.return_value = ["docs/reviews/", "spikes/rpf-53/rev-6/"]
+                (outputs / "README.md").write_text("synthetic", encoding="utf-8")
+                _PROBE._check_status_scope()
+                (outputs / "live-summary.json").write_text("{}", encoding="utf-8")
+                _PROBE._check_status_scope()
+                (outputs / "rogue.json").write_text("{}", encoding="utf-8")
+                with self.assertRaises(_PROBE.ProbeError):
+                    _PROBE._check_status_scope()
+                for path in ("docs/reviews-escape/file", "runtime/unauthorized.py", "../outside"):
+                    status.return_value = ["docs/reviews/", path]
+                    with self.subTest(path=path), self.assertRaises(_PROBE.ProbeError):
+                        _PROBE._check_status_scope()
+                status.return_value = ["docs/reviews/"]
+                with patch.object(Path, "iterdir", side_effect=AssertionError("protected enumeration")):
+                    _PROBE._check_status_scope()
+                git.return_value.returncode = 1
+                with self.assertRaisesRegex(_PROBE.ProbeError, "UNEXPECTED_STAGED_CHANGE"):
+                    _PROBE._check_status_scope()
+
+    def test_total_ledger_reserves_before_network_and_prevents_second_trial(self):
+        TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TASK_TEST_ROOT) as directory:
+            root = Path(directory)
+            with patch.object(_PROBE, "TOTAL_BUDGET_PATH", root / "total-budget.json"):
+                ledger = _PROBE.Rev6ProviderLedger(root / "ledger.json", "rpf53-synthetic", create=True)
+                ledger.reserve({"synthetic_request": True}, [])
+                total = json.loads((root / "total-budget.json").read_bytes())
+                self.assertGreater(total["reserved_or_confirmed_tokens"], 0)
+                self.assertFalse(total["trials"][0]["usage"]["usage_known"])
+                with self.assertRaisesRegex(_PROBE.ProbeError, "TOTAL_BUDGET_ALREADY_RESERVED"):
+                    _PROBE.Rev6ProviderLedger(root / "second.json", "rpf53-other", create=True)
+
+    def test_live_offline_gate_requires_fresh_source_controls_gap_and_regression(self):
+        TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=TASK_TEST_ROOT) as directory:
+            path = Path(directory) / "verification-preflight.json"
+            value = {"status": "PASS", "model_source": "FIXTURE_SCRIPTED",
+                "runtime_source_sha256": "a" * 64,
+                "verifier_exit_codes": {"correct": 0, "missing": 2, "wrong": 3},
+                "tamper_controls": [{"exit_code": 4}] * 4,
+                "rev5_live_visibility_recoverable": False, "regression_pass": True}
+            with patch.object(_PROBE, "OFFLINE_GATE_PATH", path), patch.object(
+                    _PROBE, "_runtime_source_identity", return_value={"sha256": "a" * 64}):
+                path.write_bytes(canonical(value))
+                _PROBE._offline_witness_gate(require_regression=True)
+                for key, bad in (("runtime_source_sha256", "b" * 64),
+                                 ("tamper_controls", [{"exit_code": 0}] * 4),
+                                 ("rev5_live_visibility_recoverable", True),
+                                 ("regression_pass", False)):
+                    path.write_bytes(canonical({**value, key: bad}))
+                    with self.subTest(key=key), self.assertRaises(_PROBE.ProbeError):
+                        _PROBE._offline_witness_gate(require_regression=True)
 
 
 class ConfigLiveContractsTests(unittest.TestCase):

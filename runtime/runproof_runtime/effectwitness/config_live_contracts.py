@@ -8,15 +8,15 @@ from datetime import datetime
 from typing import Any
 
 PLAN_ID = "RPF-53"
-PLAN_REVISION = "rev-5"
-BASE_SHA = "247d9c287e02b70f571d76131cbb8f8d24d65aaf"
-BASE_BRANCH = "codex/rpf-53-rev4-sdk-report-identity-live-closeout"
-LIVE_BRANCH = "codex/rpf-53-rev5-live-config-contract-jar-closeout"
+PLAN_REVISION = "rev-6"
+BASE_SHA = "306ba5f49cea472a585920977c9db895626bb39f"
+BASE_BRANCH = "codex/rpf-53-rev5-live-config-contract-jar-closeout"
+LIVE_BRANCH = "codex/rpf-53-rev6-live-witness-recovery"
 SOURCE_COMMIT = "0258b9cef02ea74a40989d035c79256c776409c0"
 SOURCE_MANIFEST_SHA256 = "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343"
 SOURCE_JAR_SHA256 = "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
 SOURCE_JAR_BYTES = 66981576
-TASK_OWNED_JAR_PATH = ".local/rpf-53-rev5/jar/config-center-server-1.0.0.jar"
+TASK_OWNED_JAR_PATH = ".local/rpf-53-rev6/jar/config-center-server-1.0.0.jar"
 INITIAL_VALUE = "rpf53-v1"
 REQUIRED_VALUE = "rpf53-v2"
 INITIAL_VERSION = 1
@@ -29,11 +29,11 @@ PROVIDER_NAME = "DeepSeek"
 PROVIDER_MODEL = "deepseek-flash"
 PROVIDER_ORIGIN = "https://api.deepseek.com"
 PROVIDER_PATH = "/chat/completions"
-CONTRACTS_SCHEMA = "rpf-config-live-target-contracts-v5"
-EXECUTION_SCHEMA = "rpf-config-live-execution-v5"
-EFFECT_SCHEMA = "rpf-config-live-effect-v5"
-EXPERIMENT_SCHEMA = "rpf-config-live-experiment-v5"
-EVIDENCE_SCHEMA = "rpf-config-live-target-evidence-v5"
+CONTRACTS_SCHEMA = "rpf-config-live-target-contracts-v6"
+EXECUTION_SCHEMA = "rpf-config-live-execution-v6"
+EFFECT_SCHEMA = "rpf-config-live-effect-v6"
+EXPERIMENT_SCHEMA = "rpf-config-live-experiment-v6"
+EVIDENCE_SCHEMA = "rpf-config-live-target-evidence-v6"
 TOOLS = ("inspect_config", "create_config_v1", "update_config_v2")
 TOOL_ARGUMENT_KEYS = {
     "inspect_config": (),
