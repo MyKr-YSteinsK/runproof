@@ -11,14 +11,24 @@ from .config_live_verify import _history
 
 ROOT = Path(__file__).resolve().parents[3]
 SOURCE_FILES = tuple("runtime/runproof_runtime/effectwitness/" + name + ".py" for name in (
-    "config_experiment_contracts", "config_experiment_adapter", "config_experiment_verify",
+    "config_experiment_contracts", "config_experiment_adapter",
     "config_live_runtime", "config_live_contracts", "config_live_external", "config_live_verify")) + ("spikes/rpf-55/probe.py", "spikes/rpf-53/probe.py")
 
 def source_identity():
     return {p: hashlib.sha256((ROOT / p).read_bytes().replace(b"\r\n", b"\n")).hexdigest() for p in SOURCE_FILES}
 
+def verifier_identity():
+    return {"version": "rpf55-config-experiment-verifier-v2", "sha256": hashlib.sha256(
+        Path(__file__).read_bytes().replace(b"\r\n", b"\n")).hexdigest()}
+
+def pinned_sdk_fields():
+    raw = (ROOT / "spikes/rpf-53/rev-6/config-live-evidence.json").read_bytes()
+    require(hashlib.sha256(raw).hexdigest() == "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43", "SDK_PIN_ANCHOR")
+    return strict_json(raw)["payload"]["contracts"]["execution"]["framework"]["identity"]
+
 def seal(payload):
-    return {"schema": EVIDENCE_SCHEMA, "payload": payload, "payload_sha256": digest(payload)}
+    return {"schema": EVIDENCE_SCHEMA, "plan_revision": "rev-2", "verifier_identity": verifier_identity(),
+            "payload": payload, "payload_sha256": digest(payload)}
 
 def verify_scene(s, candidate, source_sha):
     require(type(s) is dict and set(s) == {"contracts", "contracts_sha256", "http", "events",
@@ -41,6 +51,8 @@ def verify_scene(s, candidate, source_sha):
               ["final_current", "final_history", "final_list"])
     require(type(observations) is list and len(observations) == len(kinds), "HTTP_COUNT")
     for i, (o, kind) in enumerate(zip(observations, kinds), 1):
+        require(type(o) is dict and set(o) == {"seq", "kind", "method", "path", "request", "status", "content_type",
+            "response", "response_body_sha256", "elapsed_ms", "transport_error"}, "HTTP_FIELDS")
         method, path, body = _http_contract(effect, kind)
         require(o.get("seq") == i and o.get("kind") == kind and o.get("method") == method
                 and o.get("path") == path and o.get("request") == body, "HTTP_PATH_NAMESPACE_OR_REPLAY")
@@ -70,6 +82,9 @@ def verify_scene(s, candidate, source_sha):
         "FAULT_INHIBITED": {"reason"}, "SDK_ERROR_OBSERVED": {"returncode", "status", "error_type"}}
     require(all(e["kind"] in fields and set(e) == fields[e["kind"]] | {
         "seq", "run_id", "monotonic_ns", "kind"} for e in events), "EVENT_FIELDS")
+    for kind, count in {"PRE_REGISTERED": 1, "TOOL_RESERVED": 3, "TOOL_RESULT_READY": 3,
+            "SUCCESS_RELEASED": 2 if suppressed else 3, "SDK_ERROR_OBSERVED": int(suppressed)}.items():
+        require(sum(e["kind"] == kind for e in events) == count, "EVENT_CARDINALITY")
     for o in observations:
         reserved = [e for e in events if e["kind"] == "HTTP_RESERVED" and e["http_seq"] == o["seq"]]
         completed = [e for e in events if e["kind"] == "HTTP_COMPLETED" and e["http_seq"] == o["seq"]]
@@ -107,10 +122,17 @@ def verify_scene(s, candidate, source_sha):
         require(observed[0]["returncode"] == 1 and observed[0]["status"] == "SDK_ERROR"
             and observed[0]["error_type"] == "RuntimeError", "SDK_OBSERVATION_FIELDS")
     elif inhibits:
-        require(inhibits[0]["reason"] == "PRE_REGISTERED_GATE_DISABLED", "INHIBITION_REASON")
+        ready = next(e["seq"] for e in events if e["kind"] == "TOOL_RESULT_READY" and e["call_id"] == trace[2]["call_id"])
+        released = next(e["seq"] for e in events if e["kind"] == "SUCCESS_RELEASED" and e["call_id"] == trace[2]["call_id"])
+        require(inhibits[0]["reason"] == "PRE_REGISTERED_GATE_DISABLED" and ready < inhibits[0]["seq"] < released, "INHIBITION_REASON")
     completions = s["completions"]
     require(len(completions) == (3 if suppressed else 4), "COMPLETIONS")
     for i, completion in enumerate(completions):
+        require(set(completion) == {"response_id", "model", "tool_calls", "usage", "request_sha256", "tool_returns"}
+            and completion["model"] == "rpf53-fixture-only"
+            and completion["usage"] == {"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0}, "COMPLETION_SOURCE")
+        require(completion["tool_returns"] == [{"call_id": t["call_id"], "result_sha256": t["result_sha256"]}
+                for t in trace[:i]], "SDK_RETURN_INJECTION")
         calls = completion["tool_calls"]
         require(len(calls) == (1 if i < 3 else 0), "SDK_INTENT_COUNT")
         if calls:
@@ -123,6 +145,10 @@ def verify_scene(s, candidate, source_sha):
         and sdk["ready"]["version"] == "2.57.0" and sdk["ready"]["openai_version"] == "3.35.1"
         and sdk["ready"]["sdk_source_sha256"] == SDK_CORE_SHA256 and sdk["stderr_bytes"] == 0, "SDK_PID_SOURCE")
     identity = sdk["identity"]
+    pinned = pinned_sdk_fields()
+    require(all(identity.get(k) == value for k, value in pinned.items() if not k.startswith(("pydantic_", "openai_record_")))
+        and all(identity[name].get(field) == pinned[name + "_" + field]
+            for name in ("pydantic", "openai") for field in ("record_sha256", "record_entries", "record_mismatches")), "PINNED_SDK_IDENTITY")
     require(identity["python_version"] == "3.12.13" and identity["pydantic"]["record_mismatches"] == 0
         and identity["pydantic"]["record_entries"] == 444 and identity["openai"]["record_entries"] == 2000
         and identity["openai"]["record_mismatches"] == 0, "SDK_RECORD")
@@ -156,7 +182,8 @@ def verify_bytes(raw, anchor):
     require(anchor is not None, "EXTERNAL_ANCHOR_REQUIRED")
     require(hashlib.sha256(raw).hexdigest() == anchor, "EXTERNAL_ANCHOR_MISMATCH")
     envelope = strict_json(raw)
-    require(type(envelope) is dict and set(envelope) == {"schema", "payload", "payload_sha256"}
+    require(type(envelope) is dict and set(envelope) == {"schema", "plan_revision", "verifier_identity", "payload", "payload_sha256"}
+        and envelope["plan_revision"] == "rev-2" and envelope["verifier_identity"] == verifier_identity()
         and envelope["schema"] == EVIDENCE_SCHEMA and envelope["payload_sha256"] == digest(envelope["payload"]), "ENVELOPE")
     p = envelope["payload"]
     require(set(p) == {"source_kind", "source_files", "boundaries", "scenes", "budget"}

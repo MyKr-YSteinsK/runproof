@@ -11,6 +11,10 @@ class Journal:
     def __init__(self, path: Path | None, run_id: str):
         self.path, self.run_id, self.events = path, run_id, []
         if path is not None:
+            root = Path(__file__).resolve().parents[3] / ".local/rpf-55-rev2"
+            require(path.is_absolute() and path.resolve().is_relative_to(root.resolve())
+                and not any(p.is_symlink() or getattr(p, "is_junction", lambda: False)()
+                            for p in (path, *path.parents)), "JOURNAL_SCOPE")
             require(not path.exists(), "JOURNAL_EXISTS")
             with path.open("xb"):
                 pass

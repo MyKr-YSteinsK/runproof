@@ -22,12 +22,55 @@ from runtime.runproof_runtime.effectwitness import config_experiment_verify as v
 from runtime.runproof_runtime.effectwitness.config_live_runtime import (ConfigLiveBusiness, ConfigLiveMemoryBackend, ProviderLedger)
 from runtime.runproof_runtime.effectwitness import config_live_contracts as oldc
 
-WORK = ROOT / ".local/rpf-55"
-OUT = ROOT / "spikes/rpf-55"
+WORK = ROOT / ".local/rpf-55-rev2"
+OUT = ROOT / "spikes/rpf-55/rev-2"
 JAR = WORK / "jar/config-center-server-1.0.0.jar"
 spec = importlib.util.spec_from_file_location("rpf55_readonly_helpers", ROOT / "spikes/rpf-53/probe.py")
 old = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(old)
+
+EDITABLE = {"runtime/runproof_runtime/effectwitness/" + name + ".py" for name in (
+    "config_experiment_contracts", "config_experiment_adapter", "config_experiment_verify")}
+EDITABLE |= {"runtime/tests/test_effectwitness_config_experiment.py", "spikes/rpf-55/probe.py"}
+EXPORTS = {"spikes/rpf-55/rev-2/" + name for name in (
+    "README.md", "RESULT.md", "experiment-summary.json", "config-experiment-evidence.json", "offline-verification.json")}
+
+def validate_status(rows):
+    for status, name in rows:
+        if status == "??" and name == "docs/reviews/":
+            continue
+        c.require(status == "??" or status[0] == " ", "STAGED_POLLUTION")
+        c.require(name in EDITABLE | EXPORTS or (status == "??" and name == "spikes/rpf-55/rev-2/"), "UNAUTHORIZED_WORKTREE_PATH")
+
+def check_status():
+    raw = old._git("status", "--porcelain=v1", "-z", binary=True)
+    rows = [(s[:2], s[3:]) for s in raw.decode("utf-8").split("\0") if s]
+    validate_status(rows)
+    extra = old._git("ls-files", "--others", "--exclude-standard", "--", "spikes/rpf-55/rev-2")
+    c.require(all(name in EXPORTS for name in extra.splitlines()), "UNAUTHORIZED_EXPORT")
+
+def resolve_direct_python(sdk, *, candidate=None):
+    """Rebuild a process start binding from pinned bytes in every process."""
+    cfg = old.SDK_LAUNCHER.parents[1] / "pyvenv.cfg"
+    c.require(not old._has_link_component(cfg), "SDK_CFG_LINK")
+    entries = dict(line.split(" = ", 1) for line in cfg.read_text().splitlines() if " = " in line)
+    direct = Path(entries["executable"]) if candidate is None else Path(candidate)
+    c.require(direct.resolve() != old.SDK_LAUNCHER.resolve(), "WRAPPER_PATH_FORBIDDEN")
+    c.require(direct.is_absolute() and not old._has_link_component(direct)
+        and direct.resolve() == Path(entries["executable"]).resolve()
+        and old._sha_file(direct) == sdk["python_executable_sha256"]
+        and old._sha_file(old.SDK_LAUNCHER) == sdk["python_launcher_sha256"], "DIRECT_PROCESS_BINDING")
+    return direct.resolve(strict=True)
+
+def health_projection(observations):
+    result = []
+    for observation in observations:
+        original = observation["body"]
+        c.require(type(original) is dict and original.get("status") == "UP"
+                  and observation["status"] == 200 and observation["transport_error"] is None, "HEALTH_SOURCE")
+        result.append({**observation, "body_projection": "STATUS_ONLY_FROM_RETAINED_RAW_HEALTH",
+            "raw_body_sha256": c.digest(original), "body": {"status": original["status"]}})
+    return result
 
 def sdk_identity_direct():
     """Inspect the authorized direct interpreter; never execute the venv wrapper."""
@@ -37,9 +80,7 @@ def sdk_identity_direct():
     cfg = old.SDK_LAUNCHER.parents[1] / "pyvenv.cfg"
     c.require(not old._has_link_component(cfg), "SDK_CFG_LINK")
     entries = dict(line.split(" = ", 1) for line in cfg.read_text().splitlines() if " = " in line)
-    direct = Path(entries["executable"])
-    c.require(not old._has_link_component(direct) and old._sha_file(direct) == pinned["python_executable_sha256"]
-        and old._sha_file(old.SDK_LAUNCHER) == pinned["python_launcher_sha256"], "PINNED_DIRECT_INTERPRETER")
+    direct = resolve_direct_python(pinned)
     # Reuse the exact reviewed RECORD inspection body, with its venv roots supplied
     # explicitly because sys.prefix now belongs to the direct CPython interpreter.
     tree = ast.parse((ROOT / "spikes/rpf-53/probe.py").read_text(encoding="utf-8"))
@@ -60,7 +101,6 @@ def sdk_identity_direct():
     c.require(identity_fields(value) == pinned and value["sdk_core_sha256"] == oldc.SDK_CORE_SHA256
         and value["pydantic"]["record_hashed_entries"] == 443
         and value["openai"]["record_hashed_entries"] == 1999, "DIRECT_SDK_PINNED_IDENTITY")
-    old._DIRECT_SDK_PYTHON = direct.resolve(strict=True)
     return value
 
 def once(path, value):
@@ -75,10 +115,12 @@ def preflight():
         and old._git("rev-parse", "HEAD") == c.BASE and old._git("branch", "--show-current") == c.BRANCH, "GIT_IDENTITY")
     c.require(old._git("remote", "get-url", "origin") == "https://github.com/MyKr-YSteinsK/runproof.git"
         and old._git("remote", "get-url", "--push", "origin") == "https://github.com/MyKr-YSteinsK/runproof.git", "ORIGIN")
-    for name in (".local", ".local/rpf-55", "runtime/runproof_runtime/effectwitness", "spikes/rpf-55"):
+    check_status()
+    for name in (".local", ".local/rpf-55-rev2", "runtime/runproof_runtime/effectwitness", "spikes/rpf-55/rev-2"):
         c.require(not old._has_link_component(ROOT / name), "ROOT_LINK")
     WORK.mkdir(exist_ok=True)
-    for name in ("preflight", "fixture", "scenarios", "jar", "tests", "diagnostics", "quarantine"):
+    for name in ("preflight", "fixture", "scenarios", "jar", "tests", "diagnostics", "replay", "quarantine"):
+        c.require(not old._has_link_component(WORK / name), "TASK_DIRECTORY_LINK")
         (WORK / name).mkdir(exist_ok=True)
     source = old._verify_source_bundle()  # Exact manifest-listed files only; no old ledgers.
     sdk = sdk_identity_direct()
@@ -88,7 +130,7 @@ def preflight():
             shutil.copyfileobj(src, dst)
     c.require(JAR.stat().st_size == oldc.SOURCE_JAR_BYTES and old._sha_file(JAR) == oldc.SOURCE_JAR_SHA256, "TASK_JAR")
     return {"source": source, "sdk": sdk, "java": java, "source_files": v.source_identity(),
-            "base": c.BASE, "provider": 0}
+            "verifier_identity": v.verifier_identity(), "base": c.BASE, "revision": "rev-2", "provider": 0}
 
 def identity_fields(sdk):
     result = {k: sdk[k] for k in ("python_version", "python_executable_sha256", "python_launcher_sha256",
@@ -113,7 +155,7 @@ def transport_contracts(contracts, sdk):
         sdk_identity=identity_fields(sdk), task_owned_jar=jar, mode="FIXTURE_TEST_ONLY")
 
 def run_sdk(host, contracts, sdk, folder):
-    c.require(old._DIRECT_SDK_PYTHON is not None, "DIRECT_IDENTITY_PREFLIGHT_REQUIRED")
+    direct = resolve_direct_python(sdk)
     scratch = folder / "sdk-scratch"
     scratch.mkdir()
     host.start()
@@ -125,7 +167,7 @@ def run_sdk(host, contracts, sdk, folder):
         "model": "rpf53-fixture-only", "max_runtime_seconds": 180, "fixture": True}
     proc = None
     try:
-        proc = subprocess.Popen([str(old._direct_sdk_executable(sdk)), "-I", "-B",
+        proc = subprocess.Popen([str(direct), "-I", "-B",
             str(ROOT / "runtime/runproof_runtime/effectwitness/config_live_external.py")],
             cwd=scratch, env=old._sdk_env(scratch), stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = proc.communicate(c.canonical(config), timeout=180)
@@ -142,47 +184,48 @@ def run_sdk(host, contracts, sdk, folder):
             proc.communicate(timeout=10)
         host.close()
 
-def diagnostic(base):
-    folder = WORK / "fixture" / ("attempt-" + uuid.uuid4().hex[:8])
-    c.require(len(list((WORK / "fixture").glob("attempt-*/*/started.json"))) + 2 <= 3, "FIXTURE_QUOTA")
-    folder.mkdir()
-    once(folder / "started.json", {"run_id": folder.name, "source_files": base["source_files"]})
+def diagnostic(base, candidate):
+    c.require(candidate in c.CANDIDATES, "CANDIDATE")
+    folder = WORK / "fixture"
+    c.require(len(list(folder.glob("*/started.json"))) < 3, "FIXTURE_QUOTA")
     results = []
-    # One diagnostic attempt covers normal and suppression with fresh IDs.
-    for candidate in (c.CANDIDATES[0], c.CANDIDATES[2]):
+    for candidate in (candidate,):
         sub = folder / candidate
         sub.mkdir()
-        contracts = c.make_contracts(candidate, "55" + uuid.uuid4().hex[:16], old._free_port(), old._free_port(), c.digest(base["source_files"]))
+        contracts = c.make_contracts(candidate, "55r2" + uuid.uuid4().hex[:16], old._free_port(), old._free_port(), c.digest(base["source_files"]))
         once(sub / "started.json", {"contracts": contracts, "java": 0, "provider": 0})
         j = Journal(sub / "events.jsonl", contracts["experiment"]["run_id"])
         host = ExperimentHost(transport_contracts(contracts, base["sdk"]), ProviderLedger.fixture_only(j.run_id),
             ConfigLiveMemoryBackend(), contracts, j)
         result = run_sdk(host, contracts, base["sdk"], sub)
-        normal = candidate == "normal"
+        normal = candidate != c.CANDIDATES[2]
         checks = {"ready_pid": host.runtime and host.runtime["pid"] == result["popen_pid"],
             "callbacks": len(host.tool_trace) == 3, "guard": result["report"].get("guard_denials") == [],
             "completions": len(host.provider_responses) == (4 if normal else 3),
             "returned_positions": [t["returned_in_request"] for t in host.tool_trace] == ([2,3,4] if normal else [2,3,None]),
             "status": result["report"]["status"] == ("COMPLETED" if normal else "SDK_ERROR"),
             "activated_once": sum(e["kind"] == "SUCCESS_WITHHELD" for e in j.events) == int(not normal),
-            "port_closed": old._port_closed(contracts["execution"]["host"]["port"])}
-        item = {"candidate": candidate, "sdk": result, "checks": checks, "events": j.events,
+            "port_closed": old._port_closed(contracts["execution"]["host"]["port"]),
+            "inhibited_gate": sum(e["kind"] == "FAULT_INHIBITED" for e in j.events) == int(candidate == c.CANDIDATES[1]),
+            "helper_cache_remains_empty": old._DIRECT_SDK_PYTHON is None,
+            "stderr_empty": result["stderr_bytes"] == 0}
+        item = {"candidate": candidate, "runner_pid": os.getpid(), "source_files": base["source_files"],
+                "verifier_identity": base["verifier_identity"], "sdk": result, "checks": checks, "events": j.events,
                 "tools": host.tool_trace, "completions": host.provider_responses}
         once(sub / "result.json", item)
         c.require(all(checks.values()), "TIER1_FAILED")
         results.append(item)
-    once(WORK / "preflight/fixture-pass.json", {"source_files": base["source_files"], "attempt": folder.name, "results": results})
-    return {"status": "PASS", "modes": 2, "provider": 0, "java": 0}
+    return {"status": "PASS", "candidate": candidate, "runner_pid": os.getpid(), "provider": 0, "java": 0}
 
 def scenario(contracts, base):
-    # Reject a fresh process lacking the direct-interpreter binding before a JVM,
-    # ledger or business GET can be started. Do not fall back to a venv wrapper.
-    c.require(old._DIRECT_SDK_PYTHON is not None, "DIRECT_IDENTITY_PREFLIGHT_REQUIRED")
+    # Resolve independently before any marker/JVM; a helper cache is never used.
+    resolve_direct_python(base["sdk"])
     candidate = contracts["experiment"]["candidate_id"]
     folder = WORK / "scenarios" / candidate
     folder.mkdir(exist_ok=False)
     once(folder / "started.json", {"contracts": contracts, "contracts_sha256": c.digest(contracts),
-        "source_files": base["source_files"], "reserved": c.LIMITS})
+        "source_files": base["source_files"], "verifier_identity": base["verifier_identity"],
+        "runner_pid": os.getpid(), "revision": "rev-2", "reserved": c.LIMITS})
     journal = Journal(folder / "ledger.jsonl", contracts["experiment"]["run_id"])
     client = ExperimentHttp(contracts, secrets.token_urlsafe(32), journal, time.monotonic() + 1200)
     host = ExperimentHost(transport_contracts(contracts, base["sdk"]), ProviderLedger.fixture_only(journal.run_id),
@@ -217,11 +260,7 @@ def scenario(contracts, base):
         once(folder / "health-raw.json", health)
         # Public certificate carries a labelled status projection; raw health may
         # contain a private disk path and remains exclusively in the task folder.
-        for observation in health:
-            original = observation["body"]
-            observation["body_projection"] = "STATUS_ONLY_FROM_RETAINED_RAW_HEALTH"
-            observation["raw_body_sha256"] = c.digest(original)
-            observation["body"] = {"status": original.get("status")}
+        environment["health"] = health_projection(health)
         c.require(client.initial_state_valid(), "INITIAL_STATE")
         sdk = run_sdk(host, contracts, base["sdk"], folder)
         if candidate == c.CANDIDATES[2]:
@@ -267,15 +306,30 @@ def scenario(contracts, base):
     return result
 
 def controlled(base):
-    c.require(c.strict_json((WORK / "preflight/tier0-pass.json").read_bytes())["source_files"] == base["source_files"], "TIER0_REQUIRED")
-    c.require(c.strict_json((WORK / "preflight/fixture-pass.json").read_bytes())["source_files"] == base["source_files"], "TIER1_REQUIRED")
-    plans = [c.make_contracts(candidate, "55" + uuid.uuid4().hex[:16], old._free_port(), old._free_port(),
+    tier0 = c.strict_json((WORK / "preflight/tier0-pass.json").read_bytes())
+    c.require(tier0["source_files"] == base["source_files"] and tier0["verifier_identity"] == base["verifier_identity"], "TIER0_REQUIRED")
+    fixture = [c.strict_json((WORK / "fixture" / candidate / "result.json").read_bytes()) for candidate in c.CANDIDATES]
+    cold = [c.strict_json((WORK / "preflight" / ("cold-" + candidate + ".json")).read_bytes()) for candidate in c.CANDIDATES]
+    c.require(len({item["runner_pid"] for item in fixture}) == 3 and len({item["runner_pid"] for item in cold}) == 3
+        and all(item["source_files"] == base["source_files"] for item in fixture + cold)
+        and all(item["verifier_identity"] == base["verifier_identity"] for item in fixture)
+        and all(all(item["checks"].values()) for item in fixture + cold), "TIER1_COLD_REQUIRED")
+    plans = [c.make_contracts(candidate, "55r2" + uuid.uuid4().hex[:16], old._free_port(), old._free_port(),
                               c.digest(base["source_files"])) for candidate in c.CANDIDATES]
-    once(WORK / "preflight/formal-reservation.json", {"contracts": plans, "limits": {"jvm": 3, "http": 36, "post": 6, "health": 9}})
+    once(WORK / "preflight/formal-reservation.json", {"revision": "rev-2", "contracts": plans,
+        "source_files": base["source_files"], "verifier_identity": base["verifier_identity"],
+        "limits": {"jvm": 3, "http": 36, "post": 6, "health": 9}})
     scenes = []
     try:
         for plan in plans:
-            scenes.append(scenario(plan, base))
+            candidate = plan["experiment"]["candidate_id"]
+            # A fresh OS Runner, not another call sharing the parent's globals.
+            run = subprocess.run([sys.executable, "-B", str(Path(__file__).resolve()), "scene", "--candidate", candidate],
+                cwd=ROOT, env=old._sdk_env(WORK / "diagnostics"), stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=1200)
+            once(WORK / "diagnostics" / ("runner-" + candidate + ".json"), {"returncode": run.returncode,
+                "stdout": run.stdout.decode("utf-8", "replace"), "stderr_bytes": len(run.stderr)})
+            c.require(run.returncode == 0 and not run.stderr, "SCENE_CHILD_FAILED")
+            scenes.append(c.strict_json((WORK / "scenarios" / candidate / "verified-scene.json").read_bytes()))
         payload = {"source_kind": "FIXTURE_TARGET_CONTROLLED_JAVA_HTTP", "source_files": base["source_files"],
             "boundaries": c.BOUNDARIES, "scenes": scenes, "budget": {"jvm": 3, "business_http": 24,
                 "post": 6, "health": sum(len(s["environment"]["health"]) for s in scenes), "provider": 0, "tokens": 0, "cost_cny": 0}}
@@ -290,31 +344,93 @@ def offline_issue():
     path = WORK / "diagnostics/candidate-evidence.json"
     raw = path.read_bytes()
     v.verify_bytes(raw, hashlib.sha256(raw).hexdigest())
+    payload = c.strict_json(raw)["payload"]
+    c.require(payload["source_kind"] == "FIXTURE_TARGET_CONTROLLED_JAVA_HTTP", "REAL_SCENES_REQUIRED")
+    reservation = c.strict_json((WORK / "preflight/formal-reservation.json").read_bytes())
+    c.require([s["contracts"] for s in payload["scenes"]] == reservation["contracts"], "ISSUANCE_RESERVATION")
+    for scene in payload["scenes"]:
+        folder = WORK / "scenarios" / scene["contracts"]["experiment"]["candidate_id"]
+        c.require(c.strict_json((folder / "verified-scene.json").read_bytes()) == scene, "ISSUANCE_RAW_SOURCE")
     spec2 = importlib.util.spec_from_file_location("rpf55_controls", ROOT / "runtime/tests/test_effectwitness_config_experiment.py")
     tests = importlib.util.module_from_spec(spec2)
     spec2.loader.exec_module(tests)
     controls = tests.offline_controls(raw, WORK / "diagnostics/final-controls")
-    once(OUT / "experiment-summary.json", {"status": "PASS", "evidence_sha256": hashlib.sha256(raw).hexdigest(),
+    once(OUT / "offline-verification.json", {"revision": "rev-2", "verifier_identity": v.verifier_identity(),
+        "evidence_sha256": hashlib.sha256(raw).hexdigest(), "controls": controls})
+    once(OUT / "experiment-summary.json", {"revision": "rev-2", "status": "PASS", "success_certificate_issued": True,
+        "evidence_sha256": hashlib.sha256(raw).hexdigest(), "source_files": payload["source_files"],
+        "verifier_identity": v.verifier_identity(),
+        "runs": [{"candidate": s["contracts"]["experiment"]["candidate_id"],
+            "run_id": s["contracts"]["experiment"]["run_id"], "contracts_sha256": s["contracts_sha256"],
+            "java_pid": s["environment"]["java_pid"], "sdk_pid": s["sdk"]["popen_pid"],
+            "runner_pid": c.strict_json((WORK / "scenarios" / s["contracts"]["experiment"]["candidate_id"] / "started.json").read_bytes())["runner_pid"],
+            "fault": s["fault"], "cleanup": s["environment"]["cleanup"]} for s in payload["scenes"]],
         "budget": c.strict_json(raw)["payload"]["budget"], "faults": [s["fault"] for s in c.strict_json(raw)["payload"]["scenes"]],
         "controls": controls, "PGE_CLOSED_LOOP": "NOT_PROVEN"})
     once(OUT / "config-experiment-evidence.json", c.strict_json(raw))
     return {"status": "PASS", "evidence_sha256": hashlib.sha256((OUT / "config-experiment-evidence.json").read_bytes()).hexdigest()}
 
+def cold_check(base, candidate):
+    c.require(candidate in c.CANDIDATES and old._DIRECT_SDK_PYTHON is None, "COLD_CACHE_NOT_EMPTY")
+    direct = resolve_direct_python(base["sdk"])
+    wrapper_rejected = False
+    try:
+        resolve_direct_python(base["sdk"], candidate=old.SDK_LAUNCHER)
+    except ValueError as exc:
+        wrapper_rejected = getattr(exc, "code", None) == "WRAPPER_PATH_FORBIDDEN"
+    contract = c.make_contracts(candidate, "55r2" + uuid.uuid4().hex[:16], old._free_port(), old._free_port(), c.digest(base["source_files"]))
+    folder = WORK / "tests" / ("cold-" + candidate)
+    folder.mkdir()
+    j = Journal(folder / "events.jsonl", contract["experiment"]["run_id"])
+    host = ExperimentHost(transport_contracts(contract, base["sdk"]), ProviderLedger.fixture_only(j.run_id),
+        ConfigLiveMemoryBackend(), contract, j)
+    try:
+        host.start()
+        listener = old._listener_owned(os.getpid(), host.port)
+    finally:
+        host.close()
+    checks = {"direct_hash": old._sha_file(direct) == base["sdk"]["python_executable_sha256"],
+        "wrapper_rejected": wrapper_rejected, "helper_cache_empty": old._DIRECT_SDK_PYTHON is None,
+        "host_listener_owned": listener, "host_closed": old._port_closed(contract["execution"]["host"]["port"]),
+        "pydantic_record": base["sdk"]["pydantic"]["record_mismatches"] == 0,
+        "openai_record": base["sdk"]["openai"]["record_mismatches"] == 0}
+    c.require(all(checks.values()), "COLD_CHECK_FAILED")
+    result = {"revision": "rev-2", "runner_pid": os.getpid(), "source_files": base["source_files"],
+        "checks": checks, "direct_executable_sha256": base["sdk"]["python_executable_sha256"],
+        "java": 0, "provider": 0, "business_http": 0}
+    once(WORK / "preflight" / ("cold-" + candidate + ".json"), result)
+    return {"status": "PASS", "candidate": candidate, "runner_pid": os.getpid(), "java": 0}
+
+def scene_entry(base, candidate):
+    reservation = c.strict_json((WORK / "preflight/formal-reservation.json").read_bytes())
+    c.require(reservation["source_files"] == base["source_files"]
+        and reservation["verifier_identity"] == base["verifier_identity"], "FROZEN_SCENE_SOURCE")
+    index = c.CANDIDATES.index(candidate)
+    for earlier in c.CANDIDATES[:index]:
+        c.require((WORK / "scenarios" / earlier / "verified-scene.json").is_file(), "SCENE_ORDER")
+    result = scenario(reservation["contracts"][index], base)
+    return {"status": "PASS", "candidate": candidate, "runner_pid": os.getpid(), "fault": result["fault"]}
+
 def main():
     p = argparse.ArgumentParser()
-    p.add_argument("mode", choices=("--preflight", "preflight", "fixture", "run-controlled", "verify-offline"))
+    p.add_argument("mode", choices=("preflight", "cold-check", "fixture", "scene", "run-controlled", "verify-offline"))
+    p.add_argument("--candidate", choices=c.CANDIDATES)
     args = p.parse_args()
     try:
         if args.mode == "verify-offline":
             result = offline_issue()
         else:
             base = preflight()
-            if args.mode in ("preflight", "--preflight"):
+            if args.mode == "preflight":
                 once(WORK / "preflight/identity.json", base)
                 result = {"status": "PASS", "java": 0, "provider": 0}
             elif args.mode == "fixture":
                 c.require(c.strict_json((WORK / "preflight/tier0-pass.json").read_bytes())["source_files"] == base["source_files"], "TIER0_REQUIRED")
-                result = diagnostic(base)
+                result = diagnostic(base, args.candidate)
+            elif args.mode == "cold-check":
+                result = cold_check(base, args.candidate)
+            elif args.mode == "scene":
+                result = scene_entry(base, args.candidate)
             else:
                 result = controlled(base)
         print(c.canonical(result).decode())

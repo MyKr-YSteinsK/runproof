@@ -13,10 +13,10 @@ from runtime.runproof_runtime.effectwitness.config_live_runtime import ConfigLiv
 from runtime.runproof_runtime.effectwitness.config_live_runtime import _http_contract
 
 ROOT = Path(__file__).resolve().parents[2]
-WORK = ROOT / ".local/rpf-55/tests"
+WORK = ROOT / ".local/rpf-55-rev2/tests"
 
 def synthetic_scene(candidate, index, sources):
-    contracts = c.make_contracts(candidate, "55" + (str(index) * 16), 45000 + index, 46000 + index, c.digest(sources))
+    contracts = c.make_contracts(candidate, "55r2" + (str(index) * 16), 45000 + index, 46000 + index, c.digest(sources))
     run = contracts["experiment"]["run_id"]
     effect = contracts["effect"]
     suppressed = candidate == c.CANDIDATES[2]
@@ -70,10 +70,14 @@ def synthetic_scene(candidate, index, sources):
                 journal.add("SUCCESS_RELEASED", call_id=call_id, name=kind)
     if not suppressed:
         completions.append({"response_id": "synthetic-completion-3", "tool_calls": []})
-    identity = {"python_version": "3.12.13", "python_executable_sha256": "1" * 64,
-        "sdk_site_root_binding_sha256": "2" * 64, "python_runtime_mapping_sha256": "3" * 64,
-        "openai_core_sha256": "4" * 64, "pydantic": {"record_mismatches": 0, "record_entries": 444},
-        "openai": {"record_mismatches": 0, "record_entries": 2000}}
+    for i, completion in enumerate(completions):
+        completion.update(model="rpf53-fixture-only", usage={"prompt_tokens": 0, "completion_tokens": 0, "total_tokens": 0},
+            request_sha256=c.digest({"synthetic_request": i}), tool_returns=[
+                {"call_id": t["call_id"], "result_sha256": t["result_sha256"]} for t in trace[:i]])
+    pinned = v.pinned_sdk_fields()
+    identity = {k: value for k, value in pinned.items() if not k.startswith(("pydantic_", "openai_record_"))}
+    identity.update({name: {field: pinned[name + "_" + field] for field in ("record_sha256", "record_entries", "record_mismatches")}
+                    for name in ("pydantic", "openai")})
     ready = {"pid": 100 + index, "version": "2.57.0", "openai_version": "3.35.1",
         "sdk_source_sha256": v.SDK_CORE_SHA256, "openai_source_sha256": identity["openai_core_sha256"],
         **{k: identity[k] for k in ("python_executable_sha256", "sdk_site_root_binding_sha256", "python_runtime_mapping_sha256")}}
@@ -145,7 +149,7 @@ class ExperimentTests(unittest.TestCase):
         from runtime.tests.test_effectwitness_config_live import _contracts
         for candidate in c.CANDIDATES:
             with self.subTest(candidate=candidate):
-                contracts = c.make_contracts(candidate, "55" + "a" * 16, 45001, 45002, "a" * 64)
+                contracts = c.make_contracts(candidate, "55r2" + "a" * 16, 45001, 45002, "a" * 64)
                 journal = Journal(None, contracts["experiment"]["run_id"])
                 host = ExperimentHost(_contracts(fixture=True), ProviderLedger.fixture_only(journal.run_id),
                     ConfigLiveMemoryBackend(), contracts, journal)
@@ -204,16 +208,52 @@ class ExperimentTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             c.validate_contracts(p)
 
-    def test_cold_process_rejected_before_jvm(self):
+    def test_missing_binding_rejected_before_jvm(self):
         import importlib.util
         from unittest.mock import patch
         spec = importlib.util.spec_from_file_location("rpf55_cold_process", ROOT / "spikes/rpf-55/probe.py")
         probe = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(probe)
         with patch.object(probe.subprocess, "Popen") as popen:
-            with self.assertRaisesRegex(ValueError, "DIRECT_IDENTITY_PREFLIGHT_REQUIRED"):
+            with self.assertRaises(KeyError):
                 probe.scenario({}, {})
             popen.assert_not_called()
+
+    def test_rev1_not_reinterpreted(self):
+        raw = (ROOT / "spikes/rpf-55/experiment-summary.json").read_bytes()
+        old = c.strict_json(raw)["scenes"][0]["capture"]["contracts"]
+        with self.assertRaises(ValueError):
+            c.validate_contracts(old)
+        p = synthetic_payload()
+        p["scenes"][0]["contracts"] = old
+        raw = c.canonical(v.seal(p))
+        with self.assertRaises(ValueError):
+            v.verify_bytes(raw, hashlib.sha256(raw).hexdigest())
+
+    def test_output_status_is_separate_from_source(self):
+        import runpy
+        probe = runpy.run_path(str(ROOT / "spikes/rpf-55/probe.py"))
+        before = v.source_identity()
+        probe["validate_status"]([(" M", "spikes/rpf-55/probe.py"),
+            ("??", "spikes/rpf-55/rev-2/experiment-summary.json"), ("??", "docs/reviews/")])
+        self.assertEqual(before, v.source_identity())
+        for row in ((" M", "runtime/runproof_runtime/effectwitness/config_live_runtime.py"),
+                    ("M ", "spikes/rpf-55/probe.py"), ("??", "spikes/rpf-55/rev-2/unapproved.json")):
+            with self.assertRaises(ValueError):
+                probe["validate_status"]([row])
+        self.assertFalse(any(p.startswith("spikes/rpf-55/rev-2/") for p in before))
+
+    def test_health_projection_keeps_raw_without_disk_path(self):
+        import runpy
+        probe = runpy.run_path(str(ROOT / "spikes/rpf-55/probe.py"))
+        raw = [{"status": 200, "transport_error": None, "body": {"status": "UP",
+            "components": {"diskSpace": {"details": {"path": "private-local-path"}}}}}]
+        preserved = copy.deepcopy(raw)
+        projected = probe["health_projection"](raw)
+        self.assertEqual(raw, preserved)
+        self.assertEqual(projected[0]["body"], {"status": "UP"})
+        self.assertEqual(projected[0]["raw_body_sha256"], c.digest(raw[0]["body"]))
+        self.assertNotIn("private-local-path", c.canonical(projected).decode())
 
 if __name__ == "__main__":
     unittest.main()
