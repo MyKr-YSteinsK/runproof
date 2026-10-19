@@ -283,13 +283,16 @@ def validate_payload(payload: object) -> dict:
             "SOURCE_IDENTITY")
     sdk = payload["sdk"]
     _reject(type(sdk) is dict and set(sdk) == {
-        "framework", "version", "openai_version", "pid", "exit_code", "requests",
+        "framework", "version", "openai_version", "pid", "exit_code", "usage_type",
+        "usage_fields", "requests",
         "input_tokens", "output_tokens", "tool_calls", "tool_callbacks",
         "sdk_source_sha256", "openai_source_sha256", "final_output_sha256",
         "final_text_persisted", "guard_denials", "provider_key_present",
         "business_key_present", "stderr_bytes", "stderr_sha256"}
         and sdk["framework"] == "pydantic-ai-slim" and sdk["version"] == "2.57.0"
         and sdk["openai_version"] == "3.35.1" and type(sdk["pid"]) is int and sdk["pid"] > 0
+        and sdk["usage_type"] == "pydantic_ai.usage.RunUsage"
+        and sdk["usage_fields"] == ["input_tokens", "output_tokens", "requests", "tool_calls"]
         and sdk["exit_code"] == 0 and type(sdk["requests"]) is int
         and 4 <= sdk["requests"] <= LIMITS["provider_https_requests"]
         and all(type(sdk[key]) is int and sdk[key] >= 0 for key in (

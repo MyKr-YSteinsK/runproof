@@ -27,7 +27,7 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from runtime.runproof_runtime.effectwitness.config_live_contracts import (
-    BASE_SHA, BASE_BRANCH, LIVE_BRANCH, LIMITS, PROVIDER_MODEL, PROVIDER_NAME,
+    BASE_SHA, BASE_BRANCH, LIVE_BRANCH, EVIDENCE_SCHEMA, LIMITS, PROVIDER_MODEL, PROVIDER_NAME,
     PROVIDER_ORIGIN, PROVIDER_PATH, SDK_CORE_SHA256, SDK_NAME, SDK_VERSION,
     OPENAI_VERSION, SOURCE_COMMIT, SOURCE_JAR_SHA256, SOURCE_MANIFEST_SHA256,
     canonical, digest, make_contracts, sha256_bytes, strict_json,
@@ -41,22 +41,24 @@ from runtime.runproof_runtime.effectwitness.config_live_verify import (
 )
 
 
-WORK_ROOT = ROOT / ".local" / "rpf-53-rev2"
+WORK_ROOT = ROOT / ".local" / "rpf-53-rev3"
 PREFLIGHT_DIR = WORK_ROOT / "preflight"
-BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight-final.json"
-SECOND_BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight-attempt-02.json"
+BASE_PREFLIGHT = PREFLIGHT_DIR / "base-preflight.json"
+ATTEMPT_PREFLIGHTS = [BASE_PREFLIGHT,
+    PREFLIGHT_DIR / "base-preflight-attempt-02.json",
+    PREFLIGHT_DIR / "base-preflight-attempt-03.json"]
 PREFLIGHT = PREFLIGHT_DIR / "preflight.json"
-DIAGNOSTIC_ROOT = WORK_ROOT / "diagnostic"
+FIXTURE_ROOT = WORK_ROOT / "fixture"
 SCENARIO_ROOT = WORK_ROOT / "scenario"
 QUARANTINE_ROOT = WORK_ROOT / "quarantine"
 STARTED_PATH = SCENARIO_ROOT / "started.json"
 CONTRACTS_PATH = SCENARIO_ROOT / "contracts.json"
 LEDGER_PATH = SCENARIO_ROOT / "provider-ledger.json"
-REV2_DIR = ROOT / "spikes" / "rpf-53" / "rev-2"
-SUMMARY_PATH = REV2_DIR / "live-summary.json"
-EVIDENCE_PATH = REV2_DIR / "config-live-evidence.json"
-RESULT_PATH = REV2_DIR / "RESULT.md"
-SDK_GUARD_DIAGNOSTIC_PATH = REV2_DIR / "sdk-read-guard-diagnostic.json"
+REV3_DIR = ROOT / "spikes" / "rpf-53" / "rev-3"
+SUMMARY_PATH = REV3_DIR / "live-summary.json"
+EVIDENCE_PATH = REV3_DIR / "config-live-evidence.json"
+RESULT_PATH = REV3_DIR / "RESULT.md"
+SDK_FIXTURE_DIAGNOSTIC_PATH = REV3_DIR / "sdk-fixture-diagnostic.json"
 SDK_PYTHON = ROOT / ".local" / "rpf-48" / "venv" / "Scripts" / "python.exe"
 SDK_SITE = ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages"
 JAVA = Path(r"C:\Program Files\Java\jdk-17\bin\java.exe")
@@ -72,10 +74,10 @@ SOURCE_FILES = (
     "spikes/rpf-53/probe.py",
 )
 ALLOWED_FILES = set(SOURCE_FILES) | {
-    "spikes/rpf-53/rev-2/README.md", "spikes/rpf-53/rev-2/RESULT.md",
-    "spikes/rpf-53/rev-2/live-summary.json",
-    "spikes/rpf-53/rev-2/sdk-read-guard-diagnostic.json",
-    "spikes/rpf-53/rev-2/config-live-evidence.json",
+    "spikes/rpf-53/rev-3/README.md", "spikes/rpf-53/rev-3/RESULT.md",
+    "spikes/rpf-53/rev-3/live-summary.json",
+    "spikes/rpf-53/rev-3/sdk-fixture-diagnostic.json",
+    "spikes/rpf-53/rev-3/config-live-evidence.json",
 }
 MAX_JAVA_LOG_BYTES = 1_000_000
 
@@ -194,21 +196,24 @@ def _check_repo_identity() -> dict:
 
 
 def _check_worktree_directories() -> None:
-    for path in (ROOT / "spikes" / "rpf-53", REV2_DIR, WORK_ROOT):
-        if path.is_symlink():
+    def is_link(path: Path) -> bool:
+        return path.is_symlink() or bool(getattr(path, "is_junction", lambda: False)())
+
+    for path in (ROOT / "spikes" / "rpf-53", REV3_DIR, WORK_ROOT):
+        if is_link(path):
             raise ProbeError("TASK_ROOT_IS_SYMLINK")
     if not (ROOT / "spikes" / "rpf-53").is_dir():
         raise ProbeError("SPIKE_DIRECTORY_MISSING")
-    if REV2_DIR.exists() and (not REV2_DIR.is_dir() or REV2_DIR.is_symlink()):
-        raise ProbeError("REV2_OUTPUT_ROOT_INVALID")
-    REV2_DIR.mkdir(exist_ok=True)
+    if REV3_DIR.exists() and not REV3_DIR.is_dir():
+        raise ProbeError("REV3_OUTPUT_ROOT_INVALID")
+    REV3_DIR.mkdir(exist_ok=True)
     if not WORK_ROOT.exists():
         WORK_ROOT.mkdir()
-    if not WORK_ROOT.is_dir() or WORK_ROOT.is_symlink():
+    if not WORK_ROOT.is_dir() or is_link(WORK_ROOT):
         raise ProbeError("TASK_LOCAL_ROOT_INVALID")
-    expected = {"preflight", "diagnostic", "scenario", "quarantine", "tests"}
+    expected = {"preflight", "fixture", "scenario", "quarantine", "tests"}
     for child in WORK_ROOT.iterdir():
-        if child.name not in expected or child.is_symlink():
+        if child.name not in expected or is_link(child):
             raise ProbeError("TASK_LOCAL_ROOT_NOT_EXCLUSIVE")
     for name in expected:
         (WORK_ROOT / name).mkdir(exist_ok=True)
@@ -423,8 +428,8 @@ def _preflight() -> dict:
             or source["manifest_sha256"] != SOURCE_MANIFEST_SHA256):
         raise ProbeError("A01_SOURCE_IDENTITY")
     return {
-        "schema_version": "rpf53-rev2-base-preflight-v1",
-        "plan_id": "RPF-53", "plan_revision": "rev-2", "checked_at_utc": _utc(),
+        "schema_version": "rpf53-rev3-base-preflight-v1",
+        "plan_id": "RPF-53", "plan_revision": "rev-3", "checked_at_utc": _utc(),
         "repo": repo, "source": source, "sdk": sdk, "java": java,
         "runtime_source": runtime,
         "provider": {"key_present": _check_key_presence(),
@@ -460,8 +465,8 @@ def _load_base_preflight(path: Path = BASE_PREFLIGHT) -> dict:
     if not path.is_file() or path.is_symlink():
         raise ProbeError("BASE_PREFLIGHT_NOT_RUN")
     value = strict_json(path.read_bytes())
-    if (value.get("schema_version") != "rpf53-rev2-base-preflight-v1"
-            or value.get("plan_revision") != "rev-2"):
+    if (value.get("schema_version") != "rpf53-rev3-base-preflight-v1"
+            or value.get("plan_revision") != "rev-3"):
         raise ProbeError("BASE_PREFLIGHT_REVISION")
     current = _preflight()
     if (value.get("repo") != current.get("repo")
@@ -488,103 +493,205 @@ def _sdk_env(home: Path) -> dict[str, str]:
 
 
 def _diagnostic_attempt_context() -> tuple[dict, int, Path, Path]:
-    first_dir = DIAGNOSTIC_ROOT / "attempt-01"
-    second_dir = DIAGNOSTIC_ROOT / "attempt-02"
-    if not first_dir.exists() and not first_dir.is_symlink():
-        if (second_dir.exists() or second_dir.is_symlink()
-                or PREFLIGHT.exists() or PREFLIGHT.is_symlink()
-                or SECOND_BASE_PREFLIGHT.exists() or SECOND_BASE_PREFLIGHT.is_symlink()):
+    _check_worktree_directories()
+    if PREFLIGHT.exists() or PREFLIGHT.is_symlink():
+        raise ProbeError("DIAGNOSTIC_ALREADY_PASSED_OR_RECORDED")
+    if not FIXTURE_ROOT.is_dir() or FIXTURE_ROOT.is_symlink():
+        raise ProbeError("FIXTURE_ROOT_INVALID")
+    attempt_dirs: dict[int, Path] = {}
+    for child in FIXTURE_ROOT.iterdir():
+        match = re.fullmatch(r"attempt-(0[1-3])", child.name)
+        if (not match or child.is_symlink()
+                or bool(getattr(child, "is_junction", lambda: False)())
+                or not child.is_dir()):
             raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
-        return _load_base_preflight(BASE_PREFLIGHT), 1, first_dir, BASE_PREFLIGHT
+        number = int(match.group(1))
+        if number in attempt_dirs:
+            raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
+        attempt_dirs[number] = child
 
-    if (first_dir.is_symlink() or not first_dir.is_dir()
-            or second_dir.exists() or second_dir.is_symlink()
-            or PREFLIGHT.exists() or PREFLIGHT.is_symlink()
-            or SECOND_BASE_PREFLIGHT.exists() or SECOND_BASE_PREFLIGHT.is_symlink()):
+    preflight_paths = {
+        1: BASE_PREFLIGHT,
+        2: ATTEMPT_PREFLIGHTS[1],
+        3: ATTEMPT_PREFLIGHTS[2],
+    }
+    numbers = sorted(attempt_dirs)
+    if numbers != list(range(1, len(numbers) + 1)):
         raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
-    started_path = first_dir / "started.json"
-    result_path = first_dir / "result.json"
-    if (started_path.is_symlink() or not started_path.is_file()
-            or result_path.is_symlink() or not result_path.is_file()):
-        raise ProbeError("SECOND_DIAGNOSTIC_ATTEMPT_NOT_AUTHORIZED")
-    started = strict_json(started_path.read_bytes())
-    result = strict_json(result_path.read_bytes())
-    report = result.get("sdk_report") if type(result) is dict else None
-    failure = result.get("failure_attribution") if type(result) is dict else None
-    cleanup = result.get("cleanup") if type(result) is dict else None
-    source_at_start = started.get("runtime_source_sha256") if type(started) is dict else None
-    if (type(started) is not dict or type(result) is not dict
-            or started.get("plan_id") != "RPF-53"
-            or started.get("plan_revision") != "rev-2"
-            or started.get("attempt") != 1 or started.get("model_source") != "FIXTURE_TEST_ONLY"
-            or started.get("one_shot") is not True
-            or not re.fullmatch(r"[0-9a-f]{64}", source_at_start or "")
-            or started.get("run_id") != result.get("run_id")
-            or result.get("schema_version") != "rpf53-rev2-sdk-diagnostic-v1"
-            or result.get("status") != "FAIL"
-            or result.get("provider_https_requests") != 0
-            or result.get("business_http_requests") != 0
-            or result.get("java_processes") != 0
-            or result.get("sdk_exit_code") != 1
-            or result.get("stderr_bytes") != 0
-            or result.get("tool_trace") != [] or result.get("tool_schema_sha256") is not None
-            or result.get("fake_backend_calls") != []
-            or result.get("failure") not in (None, {"domain": "AGENT",
-                                                    "code": "SDK_TOOL_SCHEMA_SHAPE"})
-            or type(report) is not dict
-            or report.get("status") != "SDK_ERROR"
-            or type(failure) is not dict
-            or failure.get("stage") != report.get("stage")
-            or failure.get("error_type") != report.get("error_type")
-            or failure.get("stage") != "sdk_run"
-            or failure.get("error_type") != "ModelHTTPError"
-            or failure.get("denied_files") != [{
-                "category": "OUTSIDE_ALLOWED", "basename": "python312.zip"}]
-            or report.get("guard_denials") != ["FILE_ACCESS_DENIED"]
-            or type(cleanup) is not dict
-            or cleanup.get("sdk_child_exited") is not True
-            or cleanup.get("sdk_child_external_connections") != []
-            or cleanup.get("fixture_host_closed") is not True
-            or cleanup.get("fixture_host_thread_stopped") is not True
-            or cleanup.get("fixture_port_closed") is not True):
-        raise ProbeError("SECOND_DIAGNOSTIC_ATTEMPT_NOT_AUTHORIZED")
+    if not numbers:
+        if any(path.exists() or path.is_symlink() for path in ATTEMPT_PREFLIGHTS[1:]):
+            raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
+        return _load_base_preflight(BASE_PREFLIGHT), 1, FIXTURE_ROOT / "attempt-01", BASE_PREFLIGHT
 
-    if report.get("guard_code") is not None:
-        categories = {item.get("category") for item in failure["denied_files"]
-                      if type(item) is dict}
-        if "OUTSIDE_ALLOWED" in categories or "UNKNOWN" in categories:
-            raise ProbeError("SECOND_DIAGNOSTIC_UNTRUSTED_PATH")
-        if report.get("guard_code") == "RPF53_FILE_WRITE_DENIED":
-            raise ProbeError("SECOND_DIAGNOSTIC_WRITE_DENIAL")
+    if len(numbers) >= 3:
+        raise ProbeError("DIAGNOSTIC_BUDGET_EXHAUSTED")
+    last_base = None
+    for number in numbers:
+        attempt_dir = attempt_dirs[number]
+        allowed = {"started.json", "result.json", "sdk-scratch"}
+        if any(child.name not in allowed or child.is_symlink()
+               or bool(getattr(child, "is_junction", lambda: False)())
+               for child in attempt_dir.iterdir()):
+            raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
+        started_path, result_path = attempt_dir / "started.json", attempt_dir / "result.json"
+        base_path = preflight_paths[number]
+        if (not started_path.is_file() or started_path.is_symlink()
+                or not result_path.is_file() or result_path.is_symlink()
+                or not base_path.is_file() or base_path.is_symlink()):
+            raise ProbeError("DIAGNOSTIC_ATTEMPT_RECORD_INCOMPLETE")
+        started = strict_json(started_path.read_bytes())
+        result = strict_json(result_path.read_bytes())
+        base = strict_json(base_path.read_bytes())
+        report = result.get("sdk_report") if type(result) is dict else None
+        cleanup = result.get("cleanup") if type(result) is dict else None
+        runtime_hash = started.get("runtime_source_sha256") if type(started) is dict else None
+        if (type(started) is not dict or type(result) is not dict or type(base) is not dict
+                or started.get("plan_id") != "RPF-53"
+                or started.get("plan_revision") != "rev-3"
+                or started.get("attempt") != number
+                or started.get("model_source") != "FIXTURE_TEST_ONLY"
+                or started.get("one_shot") is not True
+                or not re.fullmatch(r"[0-9a-f]{64}", runtime_hash or "")
+                or started.get("run_id") != result.get("run_id")
+                or started.get("base_preflight_sha256") != _sha_file(base_path)
+                or base.get("schema_version") != "rpf53-rev3-base-preflight-v1"
+                or base.get("plan_revision") != "rev-3"
+                or base.get("runtime_source", {}).get("sha256") != runtime_hash
+                or result.get("schema_version") != "rpf53-rev3-sdk-fixture-diagnostic-v1"
+                or result.get("plan_revision") != "rev-3"
+                or result.get("attempt") != number
+                or result.get("status") != "FAIL"
+                or result.get("provider_https_requests") != 0
+                or result.get("business_http_requests") != 0
+                or result.get("java_processes") != 0
+                or type(result.get("fixture_completions_observed")) is not int
+                or type(result.get("sdk_tool_calls_observed")) is not int
+                or type(result.get("tool_returns_reinjected")) is not int
+                or type(cleanup) is not dict
+                or cleanup.get("sdk_child_started") not in (True, False)
+                or (cleanup.get("sdk_child_started") is True
+                    and (cleanup.get("sdk_child_exited") is not True
+                         or type(result.get("sdk_exit_code")) is not int))
+                or cleanup.get("sdk_child_external_connections") != []
+                or cleanup.get("fixture_host_closed") is not True
+                or cleanup.get("fixture_host_thread_stopped") is not True
+                or cleanup.get("fixture_port_closed") is not True
+                or (report is not None and type(report) is not dict)):
+            raise ProbeError("DIAGNOSTIC_ATTEMPT_NOT_SAFE_TO_RETRY")
+        if result.get("status") == "PASS":
+            raise ProbeError("DIAGNOSTIC_SUCCESS_WITHOUT_PREFLIGHT")
+        if report is not None and report.get("guard_denials"):
+            raise ProbeError("DIAGNOSTIC_GUARD_FAILURE_NOT_RETRYABLE")
+        last_base = base
 
-    if not BASE_PREFLIGHT.is_file() or BASE_PREFLIGHT.is_symlink():
-        raise ProbeError("BASE_PREFLIGHT_NOT_RUN")
-    original = strict_json(BASE_PREFLIGHT.read_bytes())
+    if last_base is None:
+        raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
+    next_attempt = len(numbers) + 1
+    next_base_path = preflight_paths[next_attempt]
+    if next_base_path.exists() or next_base_path.is_symlink():
+        raise ProbeError("DIAGNOSTIC_ATTEMPT_STATE_INVALID")
     current = _preflight()
-    for key in ("repo", "source", "java"):
-        if original.get(key) != current.get(key):
+    for key in ("repo", "source", "sdk", "java", "provider", "push_effect"):
+        if last_base.get(key) != current.get(key):
             raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
-    original_sdk = dict(original.get("sdk", {}))
-    current_sdk = dict(current.get("sdk", {}))
-    original_mapping = original_sdk.pop("python_runtime_mapping_sha256", None)
-    current_mapping = current_sdk.pop("python_runtime_mapping_sha256", None)
-    if (original_sdk != current_sdk
-            or not re.fullmatch(r"[0-9a-f]{64}", original_mapping or "")
-            or not re.fullmatch(r"[0-9a-f]{64}", current_mapping or "")
-            or original_mapping == current_mapping):
-        raise ProbeError("PREFLIGHT_SOURCE_DRIFT")
-    if (original.get("runtime_source", {}).get("sha256") != source_at_start
-            or original.get("runtime_source", {}).get("sha256")
-               == current.get("runtime_source", {}).get("sha256")):
-        raise ProbeError("SECOND_ATTEMPT_SOURCE_NOT_REPAIRED")
-    _write_once(SECOND_BASE_PREFLIGHT, canonical(current))
-    return current, 2, second_dir, SECOND_BASE_PREFLIGHT
+    previous_hash = last_base.get("runtime_source", {}).get("sha256")
+    current_hash = current.get("runtime_source", {}).get("sha256")
+    if (not re.fullmatch(r"[0-9a-f]{64}", previous_hash or "")
+            or not re.fullmatch(r"[0-9a-f]{64}", current_hash or "")
+            or previous_hash == current_hash):
+        raise ProbeError("DIAGNOSTIC_SOURCE_NOT_REPAIRED")
+    _write_once(next_base_path, canonical(current))
+    return current, next_attempt, FIXTURE_ROOT / f"attempt-{next_attempt:02d}", next_base_path
+
+
+def _fixture_lineage_valid(host: ConfigLiveHost) -> bool:
+    responses, trace = host.provider_responses, host.tool_trace
+    expected_names = ("inspect_config", "create_config_v1", "update_config_v2")
+    if len(responses) != 4 or len(trace) != 3:
+        return False
+    if any(type(item) is not dict for item in (*responses, *trace)):
+        return False
+    ids = [item.get("call_id") for item in trace]
+    if (ids != [f"call_rpf53_fixture_{index}" for index in (1, 2, 3)]
+            or [item.get("name") for item in trace] != list(expected_names)):
+        return False
+    for index, response in enumerate(responses):
+        if (response.get("response_id") != f"chatcmpl-rpf53-fixture-{index + 1}"
+                or response.get("model") != "rpf53-fixture-only"):
+            return False
+        expected_calls = [] if index == 3 else [trace[index]]
+        actual_calls = response.get("tool_calls")
+        if (type(actual_calls) is not list or len(actual_calls) != len(expected_calls)
+                or any(type(call) is not dict for call in actual_calls)):
+            return False
+        for call, expected in zip(actual_calls, expected_calls):
+            if (call.get("call_id") != expected.get("call_id")
+                    or call.get("name") != expected.get("name")
+                    or expected.get("provider_response_id") != response.get("response_id")):
+                return False
+        expected_returns = trace[:index]
+        actual_returns = response.get("tool_returns")
+        if (type(actual_returns) is not list or len(actual_returns) != len(expected_returns)
+                or any(type(item) is not dict for item in actual_returns)):
+            return False
+        for returned, expected in zip(actual_returns, expected_returns):
+            if (returned.get("call_id") != expected.get("call_id")
+                    or returned.get("result_sha256") != expected.get("result_sha256")
+                    or expected.get("returned_in_request") != expected.get("sequence") + 1):
+                return False
+    return all(item.get("sequence") == index + 1
+               and item.get("provider_response_id") == responses[index]["response_id"]
+               and item.get("returned_in_request") == index + 2
+               and type(item.get("result_sha256")) is str
+               and re.fullmatch(r"[0-9a-f]{64}", item["result_sha256"]) is not None
+               for index, item in enumerate(trace))
+
+
+def _fixture_report_valid(report: object, pid: int, sdk: dict) -> bool:
+    expected = {"status", "framework", "version", "openai_version", "pid",
+        "usage_type", "usage_fields", "requests", "input_tokens", "output_tokens",
+        "tool_calls", "tool_callbacks", "sdk_source_sha256", "openai_source_sha256",
+        "final_output_sha256", "final_text_persisted", "guard_denials",
+        "provider_key_present", "business_key_present"}
+    if type(report) is not dict or set(report) != expected:
+        return False
+    numeric = ("requests", "input_tokens", "output_tokens", "tool_calls", "tool_callbacks")
+    return (report.get("status") == "COMPLETED"
+        and report.get("framework") == SDK_NAME and report.get("version") == SDK_VERSION
+        and report.get("openai_version") == OPENAI_VERSION and report.get("pid") == pid
+        and report.get("usage_type") == "pydantic_ai.usage.RunUsage"
+        and report.get("usage_fields") == ["input_tokens", "output_tokens", "requests", "tool_calls"]
+        and all(type(report.get(key)) is int and report[key] >= 0 for key in numeric)
+        and report.get("requests") == 4 and report.get("tool_calls") == 3
+        and report.get("tool_callbacks") == 3
+        and report.get("sdk_source_sha256") == SDK_CORE_SHA256
+        and report.get("openai_source_sha256") == sdk.get("openai_core_sha256")
+        and re.fullmatch(r"[0-9a-f]{64}", report.get("final_output_sha256", "")) is not None
+        and report.get("final_text_persisted") is False
+        and report.get("guard_denials") == []
+        and report.get("provider_key_present") is False
+        and report.get("business_key_present") is False)
+
+
+def _fixture_return_message_ids(responses: list[dict]) -> list[str]:
+    return [item.get("call_id") for response in responses
+            for item in response.get("tool_returns", [])]
+
+
+def _fixture_completion_trace(responses: list[dict]) -> list[dict]:
+    return [{"response_id": response.get("response_id"), "model": response.get("model"),
+        "tool_calls": [{"call_id": item.get("call_id"), "name": item.get("name")}
+                       for item in response.get("tool_calls", [])],
+        "tool_returns": [{"call_id": item.get("call_id"),
+                          "result_sha256": item.get("result_sha256")}
+                         for item in response.get("tool_returns", [])]}
+        for response in responses]
 
 
 def run_diagnostic() -> dict:
     base, attempt, attempt_dir, base_path = _diagnostic_attempt_context()
     attempt_dir.mkdir(parents=True)
-    sdk_dir = SCENARIO_ROOT / f"sdk-diagnostic-{attempt:02d}"
+    sdk_dir = attempt_dir / "sdk-scratch"
     sdk_dir.mkdir(exist_ok=False)
     suffix = uuid.uuid4().hex[:16]
     run_id = "rpf53-diag-" + suffix
@@ -605,7 +712,7 @@ def run_diagnostic() -> dict:
             "sdk_site_root_binding_sha256": base["sdk"]["sdk_site_root_binding_sha256"],
             "python_runtime_mapping_sha256": base["sdk"]["python_runtime_mapping_sha256"],
         }, mode="FIXTURE_TEST_ONLY")
-    marker = {"plan_id": "RPF-53", "plan_revision": "rev-2",
+    marker = {"plan_id": "RPF-53", "plan_revision": "rev-3",
               "runtime_source_sha256": base["runtime_source"]["sha256"],
               "attempt": attempt, "run_id": run_id,
               "started_at_utc": _utc(), "model_source": "FIXTURE_TEST_ONLY",
@@ -620,6 +727,11 @@ def run_diagnostic() -> dict:
     report = None
     stdout = stderr = b""
     host_thread_stopped = False
+    runtime_error_type = None
+    runtime_error_stage = None
+    process_started = False
+    timed_out = False
+    stage = "host_start"
     try:
         host.start(host_port)
         config = {"port": host.port, "token": host.token,
@@ -635,16 +747,30 @@ def run_diagnostic() -> dict:
             str(ROOT / "runtime/runproof_runtime/effectwitness/config_live_external.py")],
             cwd=sdk_dir, env=_sdk_env(sdk_dir), stdin=subprocess.PIPE,
             stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        process_started = True
+        stage = "sdk_run"
         try:
             stdout, stderr = process.communicate(canonical(config), timeout=360)
         except subprocess.TimeoutExpired:
+            timed_out = True
             process.kill()
             stdout, stderr = process.communicate(timeout=10)
         if stdout and len(stdout) <= 8192:
-            report = strict_json(stdout)
+            try:
+                report = strict_json(stdout)
+            except Exception as exc:
+                runtime_error_type = type(exc).__name__
+                runtime_error_stage = "sdk_report_parse"
+    except Exception as exc:
+        runtime_error_type = type(exc).__name__
+        runtime_error_stage = stage
     finally:
         host_thread = host._thread
-        host.close()
+        try:
+            host.close()
+        except Exception as exc:
+            runtime_error_type = runtime_error_type or type(exc).__name__
+            runtime_error_stage = runtime_error_stage or "fixture_host_cleanup"
         host_thread_stopped = host_thread is None or not host_thread.is_alive()
         if process is not None and process.poll() is None:
             process.terminate()
@@ -662,28 +788,37 @@ def run_diagnostic() -> dict:
         host_port_closed = _port_closed(host_port)
     except Exception:
         host_port_closed = False
-    returned_tool_count = sum(len(item.get("tool_returns", []))
-                              for item in host.provider_responses)
-    passed = (process is not None and process.returncode == 0
-        and type(report) is dict and report.get("status") == "COMPLETED"
-        and report.get("framework") == SDK_NAME and report.get("version") == SDK_VERSION
-        and report.get("openai_version") == OPENAI_VERSION
-        and report.get("sdk_source_sha256") == SDK_CORE_SHA256
-        and report.get("openai_source_sha256") == base["sdk"]["openai_core_sha256"]
-        and report.get("provider_key_present") is False
-        and report.get("business_key_present") is False
-        and report.get("pid") == process.pid
-        and report.get("guard_denials") == []
-        and report.get("requests") == 4 and report.get("tool_calls") == 3
-        and report.get("tool_callbacks") == 3
-        and len(host.provider_responses) == 4 and returned_tool_count == 3
-        and all(item.get("returned_in_request") is not None for item in host.tool_trace)
-        and len(host.tool_trace) == 3 and len(backend.calls) == 3
-        and host.failure is None and not stderr
-        and ledger.usage()["provider_https_requests"] == 0
-        and process.poll() is not None and not sdk_external
-        and host._server is None and host._thread is None
-        and host_thread_stopped and host_port_closed)
+    tool_return_message_ids = _fixture_return_message_ids(host.provider_responses)
+    returned_tool_ids = list(dict.fromkeys(tool_return_message_ids))
+    returned_tool_count = len(returned_tool_ids)
+    sdk_tool_ids = [item.get("call_id") for response in host.provider_responses
+                    for item in response.get("tool_calls", [])]
+    usage_fields = ["input_tokens", "output_tokens", "requests", "tool_calls"]
+    expected_call_ids = [f"call_rpf53_fixture_{index}" for index in (1, 2, 3)]
+    checks = {
+        "child_exit_zero": process is not None and process.returncode == 0,
+        "sdk_report_complete": _fixture_report_valid(
+            report, process.pid if process is not None else 0, base["sdk"]),
+        "usage_fields_exact": type(report) is dict
+            and report.get("usage_fields") == usage_fields,
+        "fixture_completions_four": len(host.provider_responses) == 4,
+        "sdk_tool_calls_three": len(host.tool_trace) == 3 and sdk_tool_ids == expected_call_ids,
+        "tool_returns_three_unique": returned_tool_count == 3
+            and returned_tool_ids == expected_call_ids,
+        "tool_return_lineage_complete": _fixture_lineage_valid(host),
+        "memory_backend_calls_three": len(backend.calls) == 3,
+        "host_error_free": host.failure is None,
+        "stderr_empty": not stderr,
+        "runtime_error_absent": runtime_error_type is None,
+        "not_timed_out": not timed_out,
+        "provider_https_zero": ledger.usage()["provider_https_requests"] == 0,
+        "sdk_child_exited": process is not None and process.poll() is not None,
+        "sdk_external_connections_empty": not sdk_external,
+        "fixture_host_closed": host._server is None and host._thread is None,
+        "fixture_host_thread_stopped": host_thread_stopped,
+        "fixture_port_closed": host_port_closed,
+    }
+    passed = all(checks.values())
     denied_files = report.get("denied_files", []) if type(report) is dict else []
     failure_attribution = None if passed else {
         "stage": report.get("stage") if type(report) is dict else "UNKNOWN",
@@ -691,19 +826,35 @@ def run_diagnostic() -> dict:
         "guard_code": report.get("guard_code") if type(report) is dict else None,
         "denied_files": denied_files if type(denied_files) is list else [],
     }
-    result = {"schema_version": "rpf53-rev2-sdk-diagnostic-v1", "run_id": run_id,
+    result = {"schema_version": "rpf53-rev3-sdk-fixture-diagnostic-v1",
+        "plan_revision": "rev-3", "attempt": attempt, "run_id": run_id,
+        "runtime_source_sha256": base["runtime_source"]["sha256"],
         "status": "PASS" if passed else "FAIL", "model_source": "FIXTURE_TEST_ONLY",
         "provider_https_requests": 0, "business_http_requests": 0, "java_processes": 0,
+        "fixture_completions_observed": len(host.provider_responses),
+        "sdk_tool_calls_observed": len(host.tool_trace),
+        "tool_returns_observed": returned_tool_count,
+        "tool_return_message_observations": len(tool_return_message_ids),
+        "tool_returns_reinjected": returned_tool_count,
+        "sdk_tool_call_ids": sdk_tool_ids, "returned_tool_ids": returned_tool_ids,
+        "tool_return_message_call_ids": tool_return_message_ids,
+        "fixture_completion_trace": _fixture_completion_trace(host.provider_responses),
+        "acceptance_checks": checks,
+        "returned_in_request": [item.get("returned_in_request") for item in host.tool_trace],
         "sdk_report": report if type(report) is dict else None,
         "tool_trace": host.tool_trace, "fake_backend_calls": backend.calls,
         "tool_schema_summary": host.tool_schema_summary,
-        "cleanup": {"sdk_child_exited": process is not None and process.poll() is not None,
+        "cleanup": {"sdk_child_started": process_started,
+                    "sdk_child_exited": process is not None and process.poll() is not None,
                     "sdk_child_external_connections": sdk_external,
                     "fixture_host_closed": host._server is None and host._thread is None,
                     "fixture_host_thread_stopped": host_thread_stopped,
                     "fixture_port_closed": host_port_closed},
         "tool_schema_sha256": host.tool_schema_sha256,
         "failure": host.failure,
+        "runtime_error_stage": runtime_error_stage,
+        "runtime_error_type": runtime_error_type,
+        "timed_out": timed_out,
         "failure_attribution": failure_attribution,
         "sdk_exit_code": process.returncode if process else None,
         "stdout_sha256": sha256_bytes(stdout), "stderr_bytes": len(stderr),
@@ -711,12 +862,16 @@ def run_diagnostic() -> dict:
     _write_once(attempt_dir / "result.json", canonical(result))
     if not passed:
         raise ProbeError("SDK_FIXTURE_DIAGNOSTIC_FAILED")
-    preflight = {"schema_version": "rpf53-rev2-preflight-v1", "base": base,
+    preflight = {"schema_version": "rpf53-rev3-preflight-v1", "base": base,
                  "diagnostic": {"attempt": attempt, "status": "PASS",
                     "base_preflight_path": str(base_path.relative_to(ROOT)).replace("\\", "/"),
                     "base_preflight_sha256": _sha_file(base_path),
                     "result_sha256": _sha_file(attempt_dir / "result.json"),
-                    "tool_schema_sha256": host.tool_schema_sha256}}
+                    "tool_schema_sha256": host.tool_schema_sha256,
+                    "fixture_completions": len(host.provider_responses),
+                    "sdk_tool_calls": len(host.tool_trace),
+                    "tool_returns_reinjected": returned_tool_count,
+                    "runtime_source_sha256": base["runtime_source"]["sha256"]}}
     _write_once(PREFLIGHT, canonical(preflight))
     return preflight
 
@@ -916,8 +1071,8 @@ def _sdk_report(stdout: bytes, stderr: bytes, process: subprocess.Popen) -> dict
         value = strict_json(stdout)
     except Exception:
         return None
-    expected = {"status", "framework", "version", "openai_version", "pid", "requests",
-        "input_tokens", "output_tokens", "tool_calls", "tool_callbacks",
+    expected = {"status", "framework", "version", "openai_version", "pid", "usage_type",
+        "usage_fields", "requests", "input_tokens", "output_tokens", "tool_calls", "tool_callbacks",
         "sdk_source_sha256", "openai_source_sha256", "final_output_sha256",
         "final_text_persisted", "guard_denials", "provider_key_present",
         "business_key_present"}
@@ -928,7 +1083,7 @@ def _live_preflight() -> dict:
     if not PREFLIGHT.is_file() or PREFLIGHT.is_symlink():
         raise ProbeError("A03_DIAGNOSTIC_NOT_PASSED")
     value = strict_json(PREFLIGHT.read_bytes())
-    if (value.get("schema_version") != "rpf53-rev2-preflight-v1"
+    if (value.get("schema_version") != "rpf53-rev3-preflight-v1"
             or value.get("diagnostic", {}).get("status") != "PASS"
             or not re.fullmatch(r"[0-9a-f]{64}", value.get("diagnostic", {}).get("tool_schema_sha256", ""))):
         raise ProbeError("A03_DIAGNOSTIC_NOT_PASSED")
@@ -998,7 +1153,8 @@ def _make_payload(preflight: dict, contracts: dict, source_identity: dict,
     sdk = {
         "framework": report["framework"], "version": report["version"],
         "openai_version": report["openai_version"], "pid": report["pid"],
-        "exit_code": report["exit_code"], "requests": report["requests"],
+        "exit_code": report["exit_code"], "usage_type": report["usage_type"],
+        "usage_fields": report["usage_fields"], "requests": report["requests"],
         "input_tokens": report["input_tokens"], "output_tokens": report["output_tokens"],
         "tool_calls": report["tool_calls"], "tool_callbacks": report["tool_callbacks"],
         "sdk_source_sha256": report["sdk_source_sha256"],
@@ -1018,7 +1174,7 @@ def _make_payload(preflight: dict, contracts: dict, source_identity: dict,
              "history_seq": authority_after["history_seq"],
              "list_seq": authority_after["list_seq"]}
     oracle = evaluate_live_effect(contracts["effect"], client.observations, host.tool_trace)
-    return {"schema_version": "rpf-config-live-target-evidence-v1", "plan_id": "RPF-53",
+    return {"schema_version": EVIDENCE_SCHEMA, "plan_id": "RPF-53",
         "contracts": contracts, "source_identity": source_identity, "sdk": sdk,
         "provider": provider, "tool_trace": host.tool_trace,
         "http_observations": client.observations,
@@ -1103,7 +1259,7 @@ def run_scenario() -> dict:
             "python_runtime_mapping_sha256": preflight["base"]["sdk"]["python_runtime_mapping_sha256"],
         }, tool_schema_sha256=preflight["diagnostic"]["tool_schema_sha256"])
     _write_once(CONTRACTS_PATH, canonical(contracts))
-    marker = {"plan_id": "RPF-53", "plan_revision": "rev-2", "run_id": run_id,
+    marker = {"plan_id": "RPF-53", "plan_revision": "rev-3", "run_id": run_id,
         "started_at_utc": _utc(), "preflight_sha256": _sha_file(PREFLIGHT),
         "java_runtime_verification": preflight["java_runtime_verification"],
         "contracts_sha256": digest(contracts), "one_shot": True,
@@ -1366,7 +1522,7 @@ def run_scenario() -> dict:
         "stderr_sha256": sha256_bytes(stderr)}, host, ledger, client,
         authority_before, authority_after, result["java_safety"], safety)
     try:
-        evidence_raw = canonical({"schema_version": "rpf-config-live-target-evidence-v1",
+        evidence_raw = canonical({"schema_version": EVIDENCE_SCHEMA,
             "payload_sha256": digest(payload), "payload": payload})
         verify_bytes(evidence_raw)
     except (LiveEvidenceRejected, Exception) as exc:
@@ -1389,7 +1545,7 @@ def run_scenario() -> dict:
         _atomic_write(SUMMARY_PATH, canonical(summary))
         raise ProbeError("LIVE_EVIDENCE_OFFLINE_CONTROLS_FAILED")
     summary["status"] = "COMPLETE"
-    summary["evidence"] = {"path": "spikes/rpf-53/rev-2/config-live-evidence.json",
+    summary["evidence"] = {"path": "spikes/rpf-53/rev-3/config-live-evidence.json",
         "bytes": len(evidence_raw), "sha256": anchor,
         "verifier_exit_codes": {"correct_anchor": correct_exit,
                                  "missing_anchor": missing_exit, "wrong_anchor": wrong_exit},

@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import copy
 import http.client
+import importlib.util
 import os
 import subprocess
 import socket
@@ -12,6 +13,7 @@ import tempfile
 import unittest
 import uuid
 from pathlib import Path
+from types import SimpleNamespace
 
 from runtime.runproof_runtime.effectwitness.config_live_contracts import (
     BASE_SHA, LIMITS, PROVIDER_MODEL, SDK_CORE_SHA256, LiveContractRejected,
@@ -24,12 +26,17 @@ from runtime.runproof_runtime.effectwitness.config_live_runtime import (
 from runtime.runproof_runtime.effectwitness.config_live_verify import evaluate_live_effect
 from runtime.runproof_runtime.effectwitness.config_live_external import (
     _guard_events, _root_has_link_component, _runtime_archive_entry,
+    _validated_run_usage,
     _safe_denied_basename,
 )
 
 
 ROOT = Path(__file__).resolve().parents[2]
-TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev2" / "tests"
+TASK_TEST_ROOT = ROOT / ".local" / "rpf-53-rev3" / "tests"
+_PROBE_SPEC = importlib.util.spec_from_file_location(
+    "rpf53_rev3_probe", ROOT / "spikes" / "rpf-53" / "probe.py")
+_PROBE = importlib.util.module_from_spec(_PROBE_SPEC)
+_PROBE_SPEC.loader.exec_module(_PROBE)
 
 
 def _sdk_identity() -> dict:
@@ -55,6 +62,98 @@ def _contracts(*, fixture: bool = False, agent_port: int | None = None) -> dict:
 
 
 class ConfigLiveContractsTests(unittest.TestCase):
+    def test_pinned_run_usage_report_uses_only_verified_fields(self):
+        class PinnedRunUsage:
+            requests = 4
+            tool_calls = 3
+            input_tokens = 41
+            output_tokens = 12
+
+        report = _validated_run_usage(PinnedRunUsage(), PinnedRunUsage)
+        self.assertEqual(report["usage_type"],
+                         f"{PinnedRunUsage.__module__}.{PinnedRunUsage.__qualname__}")
+        self.assertEqual(report["usage_fields"], [
+            "input_tokens", "output_tokens", "requests", "tool_calls"])
+
+    def test_usage_report_rejects_wrong_type_missing_field_and_bool_count(self):
+        class PinnedRunUsage:
+            requests = 4
+            tool_calls = 3
+            input_tokens = 41
+            output_tokens = 12
+
+        class MissingToolCalls:
+            requests = 4
+            input_tokens = 41
+            output_tokens = 12
+
+        with self.assertRaisesRegex(TypeError, "RPF53_USAGE_TYPE"):
+            _validated_run_usage(PinnedRunUsage(), MissingToolCalls)
+        with self.assertRaisesRegex(TypeError, "RPF53_USAGE_FIELD"):
+            _validated_run_usage(MissingToolCalls(), MissingToolCalls)
+        PinnedRunUsage.tool_calls = True
+        with self.assertRaisesRegex(TypeError, "RPF53_USAGE_FIELD"):
+            _validated_run_usage(PinnedRunUsage(), PinnedRunUsage)
+
+    def test_fixture_report_requires_the_complete_pinned_usage_contract(self):
+        report = {
+            "status": "COMPLETED", "framework": "pydantic-ai-slim",
+            "version": "2.57.0", "openai_version": "3.35.1", "pid": 123,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "usage_fields": ["input_tokens", "output_tokens", "requests", "tool_calls"],
+            "requests": 4, "input_tokens": 41, "output_tokens": 12,
+            "tool_calls": 3, "tool_callbacks": 3,
+            "sdk_source_sha256": SDK_CORE_SHA256,
+            "openai_source_sha256": "d" * 64,
+            "final_output_sha256": "e" * 64, "final_text_persisted": False,
+            "guard_denials": [], "provider_key_present": False,
+            "business_key_present": False,
+        }
+        self.assertTrue(_PROBE._fixture_report_valid(report, 123, {
+            "openai_core_sha256": "d" * 64}))
+        invalid = copy.deepcopy(report)
+        invalid["usage_fields"].remove("tool_calls")
+        self.assertFalse(_PROBE._fixture_report_valid(invalid, 123, {
+            "openai_core_sha256": "d" * 64}))
+        invalid = copy.deepcopy(report)
+        invalid["tool_calls"] = True
+        self.assertFalse(_PROBE._fixture_report_valid(invalid, 123, {
+            "openai_core_sha256": "d" * 64}))
+
+    def test_fixture_lineage_requires_four_completions_and_three_returned_call_ids(self):
+        call_ids = [f"call_rpf53_fixture_{index}" for index in (1, 2, 3)]
+        response_ids = [f"chatcmpl-rpf53-fixture-{index}" for index in (1, 2, 3, 4)]
+        trace = []
+        responses = [{"response_id": response_id, "model": "rpf53-fixture-only",
+                      "tool_calls": [], "tool_returns": []}
+                     for response_id in response_ids]
+        for index, name in enumerate(("inspect_config", "create_config_v1", "update_config_v2")):
+            result_sha = str(index + 1) * 64
+            trace.append({"sequence": index + 1, "call_id": call_ids[index], "name": name,
+                "provider_response_id": response_ids[index], "result_sha256": result_sha,
+                "returned_in_request": index + 2})
+            responses[index]["tool_calls"].append({"call_id": call_ids[index], "name": name})
+        for response_index, response in enumerate(responses):
+            response["tool_returns"] = [
+                {"call_id": trace[index]["call_id"],
+                 "result_sha256": trace[index]["result_sha256"]}
+                for index in range(response_index)]
+        host = SimpleNamespace(provider_responses=responses, tool_trace=trace)
+        self.assertTrue(_PROBE._fixture_lineage_valid(host))
+        returned_message_ids = _PROBE._fixture_return_message_ids(responses)
+        self.assertEqual(len(returned_message_ids), 6)
+        self.assertEqual(list(dict.fromkeys(returned_message_ids)), call_ids)
+        completion_trace = _PROBE._fixture_completion_trace(responses)
+        self.assertEqual(len(completion_trace), 4)
+        self.assertEqual([len(item["tool_returns"]) for item in completion_trace], [0, 1, 2, 3])
+        self.assertEqual(completion_trace[3]["tool_returns"][-1]["call_id"], call_ids[2])
+        invalid = copy.deepcopy(host)
+        invalid.provider_responses[3]["tool_returns"][0]["call_id"] = call_ids[1]
+        self.assertFalse(_PROBE._fixture_lineage_valid(invalid))
+        invalid = copy.deepcopy(host)
+        invalid.provider_responses.pop()
+        self.assertFalse(_PROBE._fixture_lineage_valid(invalid))
+
     def test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename(self):
         self.assertEqual(_safe_denied_basename(r"C:\Users\Alice\secret token.json"),
                          "secret_token.json")

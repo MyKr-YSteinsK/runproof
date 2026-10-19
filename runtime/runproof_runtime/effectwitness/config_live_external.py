@@ -207,6 +207,20 @@ def _post(port: int, token: str, route: str, body: dict) -> dict:
         raise RuntimeError("RPF53_HOST_REJECTED") from None
 
 
+def _validated_run_usage(usage: object, expected_type: type) -> dict:
+    if type(usage) is not expected_type:
+        raise TypeError("RPF53_USAGE_TYPE")
+    names = ("requests", "tool_calls", "input_tokens", "output_tokens")
+    values = {}
+    for name in names:
+        value = getattr(usage, name, None)
+        if type(value) is not int or value < 0:
+            raise TypeError("RPF53_USAGE_FIELD")
+        values[name] = value
+    return {"usage_type": f"{expected_type.__module__}.{expected_type.__qualname__}",
+            "usage_fields": sorted(values)}
+
+
 def main() -> int:
     stage = "config"
     denied: list[str] = []
@@ -250,7 +264,7 @@ def main() -> int:
         from pydantic_ai import Agent, RunContext
         from pydantic_ai.models.openai import OpenAIChatModel
         from pydantic_ai.providers.openai import OpenAIProvider
-        from pydantic_ai.usage import UsageLimits
+        from pydantic_ai.usage import RunUsage, UsageLimits
 
         sdk_file = Path(inspect.getfile(Agent)).resolve()
         openai_file = Path(inspect.getfile(AsyncOpenAI)).resolve()
@@ -314,7 +328,11 @@ def main() -> int:
                 result = await agent.run(config["task_prompt"],
                     usage_limits=UsageLimits(request_limit=6, total_tokens_limit=12000,
                                              tool_calls_limit=8))
-                usage = result.usage
+                usage_report = _validated_run_usage(result.usage, RunUsage)
+                usage_fields = usage_report["usage_fields"]
+                usage_values = {name: getattr(result.usage, name) for name in usage_fields}
+                if usage_values["tool_calls"] != callbacks:
+                    raise RuntimeError("RPF53_USAGE_TOOL_CALL_COUNT_MISMATCH")
                 output = result.output
                 output_raw = (output if isinstance(output, str) else
                               json.dumps(output, sort_keys=True, separators=(",", ":"),
@@ -322,9 +340,12 @@ def main() -> int:
                 return {
                     "status": "COMPLETED", "framework": "pydantic-ai-slim",
                     "version": framework_version, "openai_version": openai_version,
-                    "pid": os.getpid(), "requests": usage.requests,
-                    "input_tokens": usage.input_tokens, "output_tokens": usage.output_tokens,
-                    "tool_calls": usage.tool_calls, "tool_callbacks": callbacks,
+                    "pid": os.getpid(), "usage_type": usage_report["usage_type"],
+                    "usage_fields": usage_fields,
+                    "requests": usage_values["requests"],
+                    "input_tokens": usage_values["input_tokens"],
+                    "output_tokens": usage_values["output_tokens"],
+                    "tool_calls": usage_values["tool_calls"], "tool_callbacks": callbacks,
                     "sdk_source_sha256": sdk_sha, "openai_source_sha256": openai_sha,
                     "final_output_sha256": hashlib.sha256(output_raw.encode("utf-8")).hexdigest(),
                     "final_text_persisted": False,
