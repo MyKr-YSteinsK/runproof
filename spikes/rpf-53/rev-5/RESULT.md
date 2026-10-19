@@ -25,7 +25,7 @@
 | A05 独立 HTTP Effect + JAR | PASS | task-owned JAR 的复制身份、`Popen` 与实际 JVM `-jar` 路径均匹配；健康检查、两次 POST、最终三类读回和 Oracle 均通过。 |
 | A06 新 Live Witness | FAIL | 证书写入前的独立 verifier 自检失败，`detail_code=KeyError`；证书不存在，correct/missing/wrong anchor 与四类 tamper controls 未运行。未推测触发 KeyError 的具体字段。 |
 | A07 回归、预算与安全 | PASS | 隔离完整 Runtime 291 项通过、2 项因 Docker 不可用而跳过；Reviewed Artifacts、Public Docs、7 个历史外部锚及 `git diff --check` 通过。预算、密钥边界、进程/端口与外连检查通过。 |
-| A08 TASK_RESULT / Git | PENDING | 在提交、普通 push 与 fresh `ls-remote` 完成后更新本行；不创建 PR、不合并、不发布或部署。 |
+| A08 TASK_RESULT / Git | PASS | 实现与验收材料的聚焦提交 `07aed9303b78e4c5b7df5ba385fe491c81b90c49` 已普通 push；fresh `ls-remote` 与该分支 SHA 一致，`main` 仍为 `bda0cd49e50e3181f604324e94877a24b9885334`。未创建 PR、合并、发布或部署。 |
 
 ## 3. 冻结合同、源码与 JAR 身份
 
@@ -135,4 +135,4 @@ Tracked 文件仅限六个获准源码/测试文件与本 rev-5 的 README、TAS
 
 当前交付行为：A01–A05、A07 通过；A06 失败；总体 `PARTIAL`。下一次若继续，需要新 Plan 修复 Evidence self-check 的 `KeyError` 和 preflight 状态列表比较，再完成新的 Fixture/Live 授权门槛；本文件不授权重跑 Provider。
 
-**A08 Git 交付：PENDING；完成后在最终回执更新。**
+**A08 Git 交付：PASS。TASK_RESULT 本次闭环更新会随文档补充提交一并推送。**
