@@ -1,6 +1,6 @@
 # RPF-53 rev-6｜TASK_RESULT
 
-**Status: Partial（必要工程验收已通过，Git 交付待闭环）**
+**Status: Complete**
 
 ## 1. 身份、范围与结论
 
@@ -25,7 +25,7 @@
 | A-05 真实 Provider/Effect | PASS | 新 fresh namespace，4 次真实请求、3 次 SDK 工具和回注、8 条业务 HTTP（2 POST）；task-owned JAR 实际 JVM argv、健康检查、只读 Authority 与 Oracle 通过。 |
 | A-06 Live Witness | PASS | 新真实来源证书；correct/missing/wrong=`0/2/3`，四类 rehashed tamper 全部 exit 4。Verifier 身份、发行时间及来源限制已记录。 |
 | A-07 回归/预算/安全 | PASS | 定向 47 项；新隔离全 Runtime 301 项、0 failures/errors、2 Docker skips；七个旧锚、Reviewed Artifacts、Public Docs 和差异检查通过；总账与清理通过。 |
-| A-08 Git/TASK_RESULT | PENDING | 本报告、实现与证据仅交付授权安全分支；普通 push 后以 fresh `ls-remote` 闭环。无 PR、merge、tag、release 或 deploy。 |
+| A-08 Git/TASK_RESULT | PASS | 实现与证据提交已普通 push 到授权安全分支；fresh `ls-remote` 与提交一致，main 未变。本报告闭环更新随文档提交交付，最终分支 SHA 在聊天回执核验。无 PR、merge、tag、release 或 deploy。 |
 
 ## 3. 根因、修复和无付费预演
 
@@ -107,4 +107,4 @@ Java PID/listener PID=`24524`，SDK Popen/ready/report PID=`20280`。SDK exit 0�
 
 本轮剩余限制为 Issuer/数据库独立权威、独立复现和总体 Agent 泛化能力；PGE 未执行、WorkSwarm 未证明。Python audit hook 是 defense-in-depth，未建立 OS sandbox。现有代码仍会先采集健康组件细节，本轮公开导出已显式最小化；未在 Fixture 后修改冻结源码。
 
-Git 交付待完成：仅允许本分支 focused commit、普通 push、fresh remote SHA。最终提交 SHA 与 main/工作区核验在聊天回执提供；本报告不引用自身最终 SHA。
+Git 交付：实现/证据提交 `6fb77e53a93fa6239d220c3e12bff81a849c24bc` 已普通 push 到本轮分支，fresh `ls-remote` 匹配，main 仍为第 1 节基线。本报告的 Git 闭环更新采用文档补充提交；最终分支 SHA 与 main/工作区核验在聊天回执提供，不要求本报告引用自身最终 SHA。
