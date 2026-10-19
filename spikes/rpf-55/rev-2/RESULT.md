@@ -1,6 +1,6 @@
 # RPF-55 rev-2｜TASK_RESULT
 
-**Plan ID: RPF-55 / Revision: rev-2 / Status: Partial（必要验收通过，Git交付待闭环）**
+**Plan ID: RPF-55 / Revision: rev-2 / Status: Complete**
 
 ## 1. 结果与任务身份
 
@@ -82,7 +82,7 @@ schema=`rpf55-config-experiment-evidence-v2`、revision=`rev-2`、source_kind=`F
 | A-06 新真实Witness | PASS | 完整同源三Scene、独立外部SHA0/2/3、七类rehashed负控；仅离线导出修复，保留执行版与v2.1身份 |
 | A-07 回归/费用/安全 | PASS | 最终313 tests/0failures/errors/2 Docker skip；8历史锚、Reviewed/PublicDocs；source快照与工作树一致；预算/清理与内容检查 |
 | A-08 根因/差异/报告 | PASS | 冷缓存根因、精确直接启动、健康披露、三Scene事实、离线导出错误及source版本区别清楚记录 |
-| A-09 Git交付 | PENDING | 唯一中文主结果及5个rev-2输出已准备；执行版已本地保存，待修复/报告commit、普通push与fresh远端核验 |
+| A-09 Git交付 | PASS | 执行版及修复/报告已普通push；fresh ls-remote确认cac57cf完整SHA与本地一致，Parent/main未变；本完成状态随后以文档收口提交交付 |
 
 最终定向 suite **12 tests通过**。第一次冻结源码的完整隔离Runtime为312 tests、0failures/errors、2skip；导出/Verifier修复后，以新 `tests/snapshot-final/` 再跑**313 tests / 19.408s / 0failures / 0errors / 2skip**。五个允许源码与工作树逐个normalized SHA相同，结果记录在 `.local/rpf-55-rev2/tests/regression-summary-final.json`；原执行版快照也保留。未借旧测试快照冒充当前版本。
 
@@ -94,4 +94,4 @@ Maven/Web/GUI、额外readiness JVM、真实模型/Explorer、生产API、第三
 
 证书支持的是受控配置域Fixture与本地Host成功交付故障的有限机制。readback虽是独立GET，仍来自同一Java服务信任域；`issuer_authenticity`与`database_independent_authority`为NOT_ESTABLISHED，`independent_reproduction=NOT_TESTED`。真实Target模型与Explorer未执行，PGE闭环/WorkSwarm为NOT_PROVEN。再次核验此文件不是独立复现，也不证明生产长期安全或统计因果。
 
-`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_DECIDED`。本轮不授权真实Explorer×Target或第四场景，不修改main的canonical Project State。Git最终SHA、普通push和fresh远端/main观察在同次聊天回执提供，不循环填写包含自身的SHA。
+`TASK_COMPLETE=TRUE`，`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_DECIDED`。本轮不授权真实Explorer×Target或第四场景，不修改main的canonical Project State。首次交付 `cac57cf13475a430da37670361f154817e8de8fc` 已普通push并新鲜确认远端相同SHA，Parent/main保持上述身份；本状态随后以文档收口提交交付。Git最终SHA与最后一次fresh远端观察在同次聊天回执提供，不循环填写包含自身的SHA。
