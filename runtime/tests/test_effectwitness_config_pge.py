@@ -10,13 +10,13 @@ import sys
 import unittest
 import uuid
 from runtime.runproof_runtime.effectwitness import config_pge_contracts as c, config_pge_verify as v, config_pge_explorer as explorer
-from runtime.runproof_runtime.effectwitness.config_pge_session import TotalLedger,Journal,feedback,validate_budget
+from runtime.runproof_runtime.effectwitness.config_pge_session import TotalLedger,TaskBudget,Journal,feedback,validate_budget,validate_task
 from runtime.runproof_runtime.effectwitness.config_pge_target import TargetHost
 from runtime.runproof_runtime.effectwitness.config_live_runtime import ConfigLiveMemoryBackend,ProviderLedger
 from runtime.tests.test_effectwitness_config_experiment import synthetic_scene as primitive_scene
 
 ROOT=Path(__file__).resolve().parents[2]
-WORK=ROOT/".local/rpf-56-rev3/tests"
+WORK=ROOT/".local/rpf-56-rev4/tests"
 
 def synthetic_trial(contracts,index,source):
     # Reuse ONLY the pure synthetic HTTP/event generator, never a prior artifact.
@@ -46,7 +46,7 @@ def synthetic_trial(contracts,index,source):
 
 def synthetic_payload(choices=("normal","local-delivery-suppressed")):
     sources=v.source_identity()
-    plan=c.session_plan("rpf56r3-session-"+"a"*16,[("56"+"1"*16,45001,46001),("56"+"2"*16,45002,46002)],sources,v.pinned_sdk_fields())
+    plan=c.session_plan("rpf56r4-session-"+"a"*16,[("56"+"1"*16,45001,46001),("56"+"2"*16,45002,46002)],sources,v.pinned_sdk_fields())
     ledger={"session_id":plan["session_id"],"plan_sha256":c.digest(plan),"requests":[],"trials":[],"posts":[],"started_monotonic_ns":1}
     rounds=[];journal=Journal(None,plan["session_id"]);messages=explorer.initial_messages();signatures=[]
     for index,candidate in enumerate(choices,1):
@@ -57,6 +57,8 @@ def synthetic_payload(choices=("normal","local-delivery-suppressed")):
         ledger["requests"].append({"attempt":attempt,"role":"EXPLORER","round":index,"request_sha256":c.digest(body),"reservation_tokens":6000,
             "status":"RECEIVED","usage":{"prompt_tokens":200,"completion_tokens":20,"total_tokens":220},
             "response_id":f"synthetic-explorer-response-{index}","returned_model":"DeepSeek-V4.1-Flash-1017","selection":call})
+        shape=explorer.safe_response_shape(valid_response(call,index))
+        journal.add("RESPONSE_SHAPE_PERSISTED",round=index,shape_sha256=c.digest(shape),request_sha256=c.digest(body))
         t=synthetic_trial(plan["rounds"][index-1]["candidates"][candidate],index,sources)
         for request in t["target_requests"]:
             global_attempt=len(ledger["requests"])+1;request["global_attempt"]=global_attempt
@@ -66,11 +68,17 @@ def synthetic_payload(choices=("normal","local-delivery-suppressed")):
         ledger["posts"] += [{"run_id":run,"operation":op} for op in ("create_config_v1","update_config_v2")]
         fb=feedback(t);validated=journal.add("FEEDBACK_VALIDATED",round=index,feedback_sha256=c.digest(fb))
         rounds.append({"round":index,"request_body":body,"request_sha256":c.digest(body),"explorer_attempt":attempt,"selection":call,
-            "trial":t,"feedback":fb,"feedback_sha256":c.digest(fb),"feedback_event_seq":validated["seq"],"input_event_seq":event["seq"]})
+            "trial":t,"feedback":fb,"feedback_sha256":c.digest(fb),"feedback_event_seq":validated["seq"],"input_event_seq":event["seq"],"response_shape":shape})
         messages += [{"role":"assistant","content":None,"tool_calls":[call]},{"role":"tool","tool_call_id":call["id"],"content":c.canonical(fb).decode()}]
         signatures.append(c.digest({"fault":t["fault"],"ack":t["outcome"]["target_ack"],"effect":"SATISFIED"}))
-    return {"source_kind":"SYNTHETIC_TEST_ONLY","plan":plan,"plan_sha256":c.digest(plan),"rounds":rounds,"events":journal.events,"ledger":ledger,"limits":c.BOUNDARIES,
+    return {"source_kind":"SYNTHETIC_TEST_ONLY","plan":plan,"plan_sha256":c.digest(plan),"rounds":rounds,"events":journal.events,"ledger":ledger,"task_budget":None,"limits":c.BOUNDARIES,
         "research":{"L1":"SYNTHETIC_ONLY","L2":signatures[0]!=signatures[1],"H1":"NOT_PROVEN","information_gain_proxy":int(signatures[0]!=signatures[1])}}
+
+def valid_response(call=None,index=1):
+    if call is None:call={"id":"call_one","type":"function","function":{"name":"select_experiment","arguments":'{"candidate_id":"normal"}'}}
+    return {"id":f"synthetic-explorer-response-{index}","model":"DeepSeek-V4.1-Flash-1017",
+        "usage":{"prompt_tokens":200,"completion_tokens":20,"total_tokens":220},
+        "choices":[{"finish_reason":"tool_calls","message":{"role":"assistant","tool_calls":[call]}}]}
 
 def mutations():
     def splice(p):
@@ -114,6 +122,100 @@ def offline_controls(raw,folder):
     return {"correct_missing_wrong":codes,"rehashed_tamper":results}
 
 class ConfigPgeTests(unittest.TestCase):
+    def test_v4_response_matrix_and_no_text_promotion(self):
+        def modify(path,value):
+            d=valid_response();p=d
+            for key in path[:-1]:p=p[key]
+            p[path[-1]]=value
+            return d
+        cases=[modify(["choices"],[]),modify(["choices"],[{},{}]),modify(["choices",0,"message"],None),
+            modify(["choices",0,"message"],"not-an-object"),modify(["choices",0,"message","role"],"user"),
+            modify(["id"],None),modify(["usage"],None),modify(["choices",0,"finish_reason"],"stop"),
+            modify(["choices",0,"finish_reason"],"length"),modify(["choices",0,"finish_reason"],"private-other"),
+            modify(["choices",0,"message","tool_calls",0,"type"],"other"),
+            modify(["choices",0,"message","tool_calls",0,"function","name"],"private-other"),
+            modify(["choices",0,"message","tool_calls",0,"function","arguments"],"{"),
+            modify(["choices",0,"message","tool_calls",0,"function","arguments"],"x"*257)]
+        missing=valid_response();del missing["choices"][0]["message"]["tool_calls"];missing["choices"][0]["message"]["content"]='{"candidate_id":"normal"}'
+        cases.append(missing)
+        polluted=valid_response();polluted["choices"][0]["message"]["tool_calls"][0]["extra"]="private";cases.append(polluted)
+        for d in cases:
+            with self.subTest(shape=explorer.safe_response_shape(d)):
+                self.assertTrue(explorer.validate_response_shape(explorer.safe_response_shape(d)))
+                with self.assertRaises(ValueError):explorer.parse_selection(d,set())
+        call=explorer.parse_selection(valid_response(),set());self.assertEqual(call["id"],"call_one")
+        with self.assertRaises(ValueError):explorer.parse_selection(valid_response(),{"call_one"})
+    def test_v4_safe_shape_never_exports_text_reasoning_or_arguments(self):
+        secret="PRIVATE_MODEL_TEXT_AND_AUTHORIZATION_SENTINEL"
+        d=valid_response();m=d["choices"][0]["message"];m.update(content=secret,reasoning_content=secret)
+        m["tool_calls"][0]["function"]["arguments"]=secret
+        shape=explorer.safe_response_shape(d);explorer.validate_response_shape(shape)
+        self.assertNotIn(secret,c.canonical(shape).decode());self.assertNotIn("candidate_id",c.canonical(shape).decode())
+        bad=copy.deepcopy(shape);bad["choices"][0]["content"]["text"]=secret
+        with self.assertRaises(ValueError):explorer.validate_response_shape(bad)
+    def test_v4_shape_is_saved_before_usage_validation_and_parser(self):
+        from unittest.mock import patch
+        events=[];d=valid_response();d.pop("usage")
+        class Response:
+            status=200
+            def read(self,n):return c.canonical(d)
+        class Connection:
+            def __init__(self,*a,**k):pass
+            def request(self,*a,**k):events.append("network")
+            def getresponse(self):return Response()
+            def close(self):pass
+        class Ledger:
+            def reserve_request(self,*a):events.append("reserve");return 1
+            def received(self,*a):events.append("usage");raise ValueError("USAGE_UNKNOWN")
+        WORK.mkdir(parents=True,exist_ok=True);path=WORK/("shape-"+uuid.uuid4().hex+".json")
+        def save(obs):
+            with path.open("xb") as f:f.write(c.canonical(obs));f.flush();os.fsync(f.fileno())
+            events.append("shape")
+        with patch.object(explorer.http.client,"HTTPSConnection",Connection):
+            with self.assertRaises(ValueError):explorer.request(explorer.body_for(explorer.initial_messages()),Ledger(),1,"fixture-only-not-a-key",shape_writer=save)
+        self.assertEqual(events,["reserve","network","shape","usage"]);self.assertTrue(path.exists())
+    def task(self):
+        WORK.mkdir(parents=True,exist_ok=True)
+        return TaskBudget(WORK/("task-"+uuid.uuid4().hex),v.source_identity(),v.verifier_identity(),create=True)
+    def test_v4_task_budget_unknown_restart_source_collision_and_probe_no_retry(self):
+        t=self.task();body=explorer.body_for(explorer.initial_messages())
+        self.assertLessEqual(len(c.canonical(body))+body["max_tokens"],1024)
+        attempt=t.reserve("PROTOCOL_PROBE_ONLY",0,body)
+        reopened=TaskBudget(t.path,v.source_identity(),v.verifier_identity())
+        with self.assertRaisesRegex(ValueError,"TASK_USAGE_UNKNOWN"):reopened.reserve("EXPLORER",1,body)
+        with self.assertRaises(FileExistsError):TaskBudget(t.path,v.source_identity(),v.verifier_identity(),create=True)
+        with self.assertRaises(ValueError):TaskBudget(t.path,{"wrong":"0"*64},v.verifier_identity())
+        t.received(attempt,valid_response());t.protocol_pass(attempt)
+        with self.assertRaisesRegex(ValueError,"SECOND_PROBE"):t.reserve("PROTOCOL_PROBE_ONLY",0,body)
+        a=t.reserve("EXPLORER",1,body);t.received(a,{**valid_response(),"id":"different"})
+        groups=validate_task(t.read());self.assertEqual(groups["PROTOCOL_PROBE_ONLY"]["tokens"],220);self.assertEqual(groups["SESSION"]["tokens"],220)
+        (t.path/"snapshot-9999.json").write_bytes(b'{"torn":')
+        with self.assertRaises(ValueError):TaskBudget(t.path,v.source_identity(),v.verifier_identity())
+    def test_v4_task_budget_probe_and_session_caps_and_probe_not_witness(self):
+        t=self.task();b=explorer.body_for(explorer.initial_messages());a=t.reserve("PROTOCOL_PROBE_ONLY",0,b)
+        with self.assertRaises(ValueError):t.received(a,{**valid_response(),"usage":{"prompt_tokens":1000,"completion_tokens":25,"total_tokens":1025}})
+        state=t.read();self.assertEqual(state["requests"][0]["status"],"RESERVED_USAGE_UNKNOWN")
+        p=synthetic_payload();p["source_kind"]="PROTOCOL_PROBE_ONLY"
+        raw=c.canonical(v.seal(p))
+        with self.assertRaises(ValueError):v.verify_bytes(raw,hashlib.sha256(raw).hexdigest())
+        p=synthetic_payload();p["source_kind"]="REAL_EXPLORER_REAL_TARGET_CONFIG_JAVA_HTTP"
+        p["research"]["L1"]="TWO_REAL_ROLES_EXECUTED"
+        with self.assertRaises(ValueError):v.verify_payload(p)
+    def test_v4_full_task_and_session_witness_budget_link(self):
+        p=synthetic_payload();task=self.task().read()
+        p["plan"]["task_budget_binding"]=c.digest(task["identity"]);p["plan_sha256"]=c.digest(p["plan"]);p["ledger"]["plan_sha256"]=p["plan_sha256"]
+        task["requests"]=[{"attempt":1,"role":"PROTOCOL_PROBE_ONLY","round":0,"request_sha256":c.digest(explorer.body_for(explorer.initial_messages())),
+            "reservation_tokens":1024,"status":"RECEIVED","usage":{"prompt_tokens":20,"completion_tokens":20,"total_tokens":40},"response_id":"synthetic_probe_response","returned_model":c.MODEL,"protocol_pass":True}]
+        for i,row in enumerate(p["ledger"]["requests"],2):
+            row["task_attempt"]=i;task["requests"].append({**copy.deepcopy(row),"attempt":i})
+        p["task_budget"]=task
+        self.assertEqual(v.verify_payload(p)["status"],"PASS")
+        bad=copy.deepcopy(p);u=bad["task_budget"]["requests"][1]["usage"];u["prompt_tokens"]+=1;u["total_tokens"]+=1
+        with self.assertRaisesRegex(ValueError,"TASK_SESSION_BUDGET_SPLIT"):v.verify_payload(bad)
+        bad=copy.deepcopy(p);bad["task_budget"]["requests"][0]["protocol_pass"]=False
+        with self.assertRaisesRegex(ValueError,"TASK_PROBE_GATE"):v.verify_payload(bad)
+        bad=copy.deepcopy(p);bad["task_budget"]["requests"]*=2
+        with self.assertRaises(ValueError):validate_task(bad["task_budget"])
     def plan(self):return synthetic_payload()["plan"]
     def new_ledger(self):
         WORK.mkdir(parents=True,exist_ok=True)
@@ -167,7 +269,7 @@ class ConfigPgeTests(unittest.TestCase):
             p=copy.deepcopy(original);p["plan"][field]=value
             with self.subTest(field=field):
                 with self.assertRaises(ValueError):c.validate_plan(p["plan"])
-        for revision in ("v1","v2"):
+        for revision in ("v1","v2","v3"):
             envelope=v.seal(original);envelope["schema"]="rpf56-config-pge-evidence-"+revision
             raw=c.canonical(envelope)
             with self.assertRaises(ValueError):v.verify_bytes(raw,hashlib.sha256(raw).hexdigest())
@@ -175,7 +277,7 @@ class ConfigPgeTests(unittest.TestCase):
         trial["experiment"]["source"]["task_jar"]=".local/rpf-56/jar/config-center-server-1.0.0.jar"
         with self.assertRaises(ValueError):c.validate_trial(trial)
     def test_rev3_cannot_write_legacy_roots(self):
-        for legacy in ("rpf-56","rpf-56-rev2"):
+        for legacy in ("rpf-56","rpf-56-rev2","rpf-56-rev3"):
             path=ROOT/".local"/legacy/"not-created-by-rev3"
             with self.assertRaisesRegex(ValueError,"LEDGER_SCOPE"):TotalLedger(path,self.plan(),create=True)
             with self.assertRaisesRegex(ValueError,"JOURNAL_SCOPE"):Journal(path,self.plan()["session_id"])
@@ -217,7 +319,8 @@ except Exception:print('REJECTED')
         for calls in (None,[],[call,{**call,"id":"two"}]):
             with self.subTest(calls=calls):
                 with self.assertRaisesRegex(ValueError,"ONE_SELECTION_REQUIRED"):
-                    explorer.parse_selection({"choices":[{"message":{"tool_calls":calls}}]},set())
+                    d=valid_response();d["choices"][0]["message"]["tool_calls"]=calls
+                    explorer.parse_selection(d,set())
     def test_tamper_controls_are_not_noops_on_repeated_candidates(self):
         for first in c.CANDIDATES:
             for second in c.CANDIDATES:
@@ -230,7 +333,7 @@ except Exception:print('REJECTED')
         import runpy
         from unittest.mock import patch
         probe=runpy.run_path(str(ROOT/"spikes/rpf-56/probe.py"))
-        with patch.object(probe["old"],"_git",side_effect=[b"?? docs/reviews/\0?? spikes/rpf-56/rev-3/\0","spikes/rpf-56/rev-3/README.md"]):
+        with patch.object(probe["old"],"_git",side_effect=[b"?? docs/reviews/\0?? spikes/rpf-56/rev-4/\0","spikes/rpf-56/rev-4/README.md"]):
             probe["status_check"]()
         with patch.object(probe["old"],"_git",return_value=b"M  runtime/runproof_runtime/effectwitness/config_live_runtime.py\0"):
             with self.assertRaises(ValueError):probe["status_check"]()

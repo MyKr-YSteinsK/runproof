@@ -14,11 +14,11 @@ import uuid
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
 from runtime.runproof_runtime.effectwitness import config_pge_contracts as c, config_pge_verify as v, config_pge_explorer as explorer
-from runtime.runproof_runtime.effectwitness.config_pge_session import TotalLedger,Journal,feedback
+from runtime.runproof_runtime.effectwitness.config_pge_session import TotalLedger,TaskBudget,Journal,feedback
 from runtime.runproof_runtime.effectwitness.config_pge_target import TargetHost,TargetLedger,BusinessHttp
 from runtime.runproof_runtime.effectwitness.config_live_runtime import ConfigLiveBusiness,ConfigLiveMemoryBackend,ProviderLedger
-WORK=ROOT/".local/rpf-56-rev3"
-OUT=ROOT/"spikes/rpf-56/rev-3"
+WORK=ROOT/".local/rpf-56-rev4"
+OUT=ROOT/"spikes/rpf-56/rev-4"
 JAR=WORK/"jar/config-center-server-1.0.0.jar"
 spec=importlib.util.spec_from_file_location("rpf56_readonly_sdk_helpers",ROOT/"spikes/rpf-55/probe.py")
 h55=importlib.util.module_from_spec(spec);spec.loader.exec_module(h55)
@@ -26,7 +26,7 @@ old=h55.old
 SOURCE_NEW={"runtime/runproof_runtime/effectwitness/"+name+".py" for name in (
     "config_pge_contracts","config_pge_explorer","config_pge_target","config_pge_session","config_pge_verify")}
 SOURCE_NEW|={"runtime/tests/test_effectwitness_config_pge.py","spikes/rpf-56/probe.py"}
-EXPORTS={"spikes/rpf-56/rev-3/"+n for n in ("README.md","RESULT.md","session-summary.json","verification-diagnostic.json","recovery-diagnostic.json","config-pge-evidence.json")}
+EXPORTS={"spikes/rpf-56/rev-4/"+n for n in ("README.md","RESULT.md","session-summary.json","verification-diagnostic.json","protocol-diagnostic.json","config-pge-evidence.json")}
 
 def once(path,value):
     c.require(path.resolve().is_relative_to(WORK.resolve()) or str(path.relative_to(ROOT)).replace("\\","/") in EXPORTS,"OUTPUT_SCOPE")
@@ -40,8 +40,8 @@ def status_check():
     for row in filter(None,raw.split("\0")):
         status,name=row[:2],row[3:]
         if status=="??" and name=="docs/reviews/":continue
-        c.require(((status==" M" and name in SOURCE_NEW) or (status=="??" and (name in EXPORTS or name=="spikes/rpf-56/rev-3/"))),"WORKTREE_OR_INDEX_SCOPE")
-    extras=old._git("ls-files","--others","--exclude-standard","--","spikes/rpf-56/rev-3")
+        c.require(((status==" M" and name in SOURCE_NEW) or (status=="??" and (name in EXPORTS or name=="spikes/rpf-56/rev-4/"))),"WORKTREE_OR_INDEX_SCOPE")
+    extras=old._git("ls-files","--others","--exclude-standard","--","spikes/rpf-56/rev-4")
     c.require(all(name in SOURCE_NEW|EXPORTS for name in extras.splitlines()),"EXTRA_EXPORT")
 
 def preflight():
@@ -55,8 +55,6 @@ def preflight():
     for name in ("preflight","fixture","scenarios","jar","tests","diagnostics","replay","quarantine"):
         c.require(not old._has_link_component(WORK/name),"TASK_DIRECTORY_LINK")
         (WORK/name).mkdir(exist_ok=True)
-    smoke=c.strict_json((WORK/"smoke-result.json").read_bytes())
-    validate_smoke(smoke)
     sdk=c.strict_json((WORK/"sdk-identity.json").read_bytes())
     c.require(h55.identity_fields(sdk)==v.pinned_sdk_fields(),"SDK_IDENTITY")
     h55.resolve_direct_python(sdk)
@@ -189,6 +187,10 @@ def live(base):
     fixtures=[c.strict_json((WORK/"fixture"/name/"result.json").read_bytes()) for name in c.CANDIDATES]
     c.require(len({r["runner_pid"] for r in fixtures})==3 and all(all(r["checks"].values()) and r["source_files"]==base["source_files"] for r in fixtures),"THREE_COLD_FIXTURES_REQUIRED")
     c.require(c.strict_json((WORK/"preflight/official-price-reviewed.json").read_bytes())==c.PRICE,"PRICE_REVIEW_REQUIRED")
+    protocol=c.strict_json((OUT/"protocol-diagnostic.json").read_bytes())
+    c.require(protocol["status"]=="PASS" and protocol["source_files"]==base["source_files"] and protocol["source_kind"]=="PROTOCOL_PROBE_ONLY","REAL_PROTOCOL_PASS_REQUIRED")
+    task=TaskBudget(WORK/"task-budget",base["source_files"],base["verifier_identity"])
+    c.require(all(r["status"]=="RECEIVED" for r in task.read()["requests"]),"TASK_USAGE_UNKNOWN")
     source=old._verify_source_bundle()
     java=old._java_identity()
     if not JAR.exists():
@@ -198,7 +200,7 @@ def live(base):
     key=os.environ.get("DEEPSEEK_API_KEY","")
     c.require(bool(key),"DEEPSEEK_KEY_UNAVAILABLE")
     slots=[("56"+uuid.uuid4().hex[:16],old._free_port(),old._free_port()) for _ in range(2)]
-    plan=c.session_plan("rpf56r3-session-"+uuid.uuid4().hex[:16],slots,base["source_files"],h55.identity_fields(base["sdk"]))
+    plan=c.session_plan("rpf56r4-session-"+uuid.uuid4().hex[:16],slots,base["source_files"],h55.identity_fields(base["sdk"]),c.digest(task.identity))
     once(WORK/"preflight/session-plan.json",plan)
     total=TotalLedger(WORK/"ledger",plan,create=True)
     once(WORK/"preflight/session-started.json",{"session_id":plan["session_id"],"plan_sha256":c.digest(plan),"source_files":base["source_files"],"verifier_identity":base["verifier_identity"],"runner_pid":os.getpid()})
@@ -208,7 +210,11 @@ def live(base):
         for index in (1,2):
             body=explorer.body_for(messages)
             event=journal.add("PROVIDER_INPUT_FROZEN",round=index,body_sha256=c.digest(body))
-            data,attempt=explorer.request(body,total,index,key)
+            def save_shape(observation):
+                observation={**observation,"source_files_sha256":c.digest(base["source_files"]),"session_id":plan["session_id"]}
+                once(WORK/"replay"/f"response-shape-{index}.json",observation)
+                journal.add("RESPONSE_SHAPE_PERSISTED",round=index,shape_sha256=c.digest(observation["shape"]),request_sha256=c.digest(body))
+            data,attempt=explorer.request(body,total,index,key,shape_writer=save_shape)
             call=explorer.parse_selection(data,seen);seen.add(call["id"]);total.selection(attempt,call)
             candidate=c.strict_json(call["function"]["arguments"].encode())["candidate_id"]
             env=old._sdk_env(WORK/"diagnostics");env["DEEPSEEK_API_KEY"]=key
@@ -220,12 +226,12 @@ def live(base):
             fb=feedback(t)
             validated=journal.add("FEEDBACK_VALIDATED",round=index,feedback_sha256=c.digest(fb))
             row={"round":index,"request_body":body,"request_sha256":c.digest(body),"explorer_attempt":attempt,"selection":call,
-                "trial":t,"feedback":fb,"feedback_sha256":c.digest(fb),"feedback_event_seq":validated["seq"],"input_event_seq":event["seq"]}
+                "trial":t,"feedback":fb,"feedback_sha256":c.digest(fb),"feedback_event_seq":validated["seq"],"input_event_seq":event["seq"],"response_shape":total.response_observation["shape"]}
             once(WORK/"replay"/f"round-{index}.json",row);rounds.append(row)
             messages += [{"role":"assistant","content":None,"tool_calls":[call]},{"role":"tool","tool_call_id":call["id"],"content":c.canonical(fb).decode()}]
         signatures=[c.digest({"fault":r["trial"]["fault"],"ack":r["trial"]["outcome"]["target_ack"],"effect":"SATISFIED"}) for r in rounds]
         payload={"source_kind":"REAL_EXPLORER_REAL_TARGET_CONFIG_JAVA_HTTP","plan":plan,"plan_sha256":c.digest(plan),"rounds":rounds,
-            "events":journal.events,"ledger":total.read(),"limits":c.BOUNDARIES,"research":{"L1":"TWO_REAL_ROLES_EXECUTED",
+            "events":journal.events,"ledger":total.read(),"task_budget":task.read(),"limits":c.BOUNDARIES,"research":{"L1":"TWO_REAL_ROLES_EXECUTED",
                 "L2":signatures[0]!=signatures[1],"H1":"NOT_PROVEN","information_gain_proxy":int(signatures[0]!=signatures[1])}}
         once(WORK/"replay/candidate-evidence.json",v.seal(payload))
         return issue()
@@ -272,8 +278,42 @@ def offline():
     once(WORK/"preflight/tier0-pass.json",gate)
     return gate
 
+
+class ProtocolBudget:
+    def __init__(self,task):self.task=task
+    def reserve_request(self,role,round_index,body):return self.task.reserve("PROTOCOL_PROBE_ONLY",0,body)
+    def received(self,attempt,data):return self.task.received(attempt,data)
+
+
+def protocol_probe(base):
+    tier=c.strict_json((WORK/"preflight/tier0-pass.json").read_bytes())
+    c.require(tier["source_files"]==base["source_files"] and tier["verifier_identity"]==base["verifier_identity"],"TIER0_REQUIRED")
+    for name in c.CANDIDATES:
+        fixture=c.strict_json((WORK/"fixture"/name/"result.json").read_bytes())
+        c.require(all(fixture["checks"].values()) and fixture["source_files"]==base["source_files"] and fixture["verifier_identity"]==base["verifier_identity"],"NEW_FIXTURES_REQUIRED")
+    c.require(c.strict_json((WORK/"preflight/official-price-reviewed.json").read_bytes())==c.PRICE,"PRICE_REVIEW_REQUIRED")
+    body=explorer.body_for(explorer.initial_messages())
+    task=TaskBudget(WORK/"task-budget",base["source_files"],base["verifier_identity"],create=True)
+    adapter=ProtocolBudget(task);request_id="rpf56r4-protocol-"+uuid.uuid4().hex[:16]
+    once(WORK/"protocol/started.json",{"request_id":request_id,"request_sha256":c.digest(body),"source_files":base["source_files"],"verifier_identity":base["verifier_identity"]})
+    once(WORK/"protocol/request.json",body)
+    result={"schema":"rpf56-protocol-diagnostic-v4","source_kind":"PROTOCOL_PROBE_ONLY","request_id":request_id,
+        "request_sha256":c.digest(body),"source_files":base["source_files"],"verifier_identity":base["verifier_identity"],
+        "tool_choice":body["tool_choice"],"status":"FAIL","dispatches":0,"target":0,"java":0,"business_http":0}
+    def save_shape(observation):
+        observation={**observation,"request_id":request_id,"source_files_sha256":c.digest(base["source_files"])}
+        once(WORK/"protocol/response-shape.json",observation);result["observation"]=observation
+    try:
+        key=os.environ.get("DEEPSEEK_API_KEY","");c.require(bool(key),"DEEPSEEK_KEY_UNAVAILABLE")
+        data,attempt=explorer.request(body,adapter,0,key,shape_writer=save_shape)
+        explorer.parse_selection(data,set()) # Validate, then discard the probe choice entirely.
+        task.protocol_pass(attempt);result["status"]="PASS";result["accepted_single_tool_call"]=True
+    except Exception as exc:result["error"]=getattr(exc,"code",type(exc).__name__)
+    result["task_budget"]=task.read();once(OUT/"protocol-diagnostic.json",result)
+    return {"status":result["status"],"error":result.get("error"),"java":0,"business_http":0}
+
 def main():
-    p=argparse.ArgumentParser();p.add_argument("mode",choices=("offline","preflight","fixture","trial","live","issue"));p.add_argument("--candidate",choices=c.CANDIDATES);p.add_argument("--round",type=int,choices=(1,2));a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument("mode",choices=("offline","preflight","fixture","protocol-probe","trial","live","issue"));p.add_argument("--candidate",choices=c.CANDIDATES);p.add_argument("--round",type=int,choices=(1,2));a=p.parse_args()
     try:
         if a.mode=="offline":result=offline()
         elif a.mode=="issue":result=issue()
@@ -281,9 +321,10 @@ def main():
             base=preflight()
             if a.mode=="preflight":once(WORK/"preflight/identity.json",base);result={"status":"PASS","provider":0,"java":0}
             elif a.mode=="fixture":result=fixture(base,a.candidate)
+            elif a.mode=="protocol-probe":result=protocol_probe(base)
             elif a.mode=="trial":result=trial(base,a.round,a.candidate,os.environ.get("DEEPSEEK_API_KEY",""))
             else:result=live(base)
-        print(c.canonical(result).decode());return 0
+        print(c.canonical(result).decode());return 1 if result.get("status")=="FAIL" else 0
     except Exception as exc:
         print(c.canonical({"status":"STOPPED","error":getattr(exc,"code",type(exc).__name__)}).decode());return 1
 if __name__=="__main__":raise SystemExit(main())

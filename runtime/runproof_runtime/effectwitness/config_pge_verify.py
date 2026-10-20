@@ -5,8 +5,8 @@ import hashlib
 from pathlib import Path
 from .config_pge_contracts import (canonical,digest,strict_json,require,validate_plan,validate_trial,
     EVIDENCE_SCHEMA,BOUNDARIES,CANDIDATES)
-from .config_pge_explorer import initial_messages,body_for,parse_selection
-from .config_pge_session import validate_budget,feedback
+from .config_pge_explorer import initial_messages,body_for,parse_selection,fingerprint,validate_response_shape
+from .config_pge_session import validate_budget,validate_task,feedback
 from .config_live_runtime import _api_response,_valid_item,_http_contract
 from .config_live_verify import _history
 from .config_experiment_verify import pinned_sdk_fields
@@ -19,7 +19,7 @@ SOURCE_FILES=tuple("runtime/runproof_runtime/effectwitness/"+n+".py" for n in (
 def source_identity():
     return {p:hashlib.sha256((ROOT/p).read_bytes().replace(b"\r\n",b"\n")).hexdigest() for p in SOURCE_FILES}
 def verifier_identity():
-    return {"version":"rpf56-config-pge-verifier-v3","sha256":hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n",b"\n")).hexdigest()}
+    return {"version":"rpf56-config-pge-verifier-v4","sha256":hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n",b"\n")).hexdigest()}
 def seal(payload):
     return {"schema":EVIDENCE_SCHEMA,"payload":payload,"payload_sha256":digest(payload),"verifier_identity":verifier_identity()}
 
@@ -105,24 +105,46 @@ def verify_trial(t):
     return True
 
 def verify_payload(p):
-    require(set(p)=={"source_kind","plan","plan_sha256","rounds","events","ledger","limits","research"},"SESSION_FIELDS")
+    require(set(p)=={"source_kind","plan","plan_sha256","rounds","events","ledger","task_budget","limits","research"},"SESSION_FIELDS")
     require(p["source_kind"] in ("SYNTHETIC_TEST_ONLY","REAL_EXPLORER_REAL_TARGET_CONFIG_JAVA_HTTP"),"SOURCE_KIND")
     plan=p["plan"];validate_plan(plan)
     require(plan["source_files"]==source_identity() and p["plan_sha256"]==digest(plan) and p["limits"]==BOUNDARIES,"SESSION_SOURCE")
     state=p["ledger"];usage=validate_budget(state)
+    task=p["task_budget"]
+    if task is not None:
+        validate_task(task)
+        require(task["identity"]=={"schema":"rpf56-task-budget-v4","owner":"rpf-56-rev4","base":plan["base"],"branch":plan["branch"],"sources":source_identity(),"verifier":verifier_identity()}
+            and plan["task_budget_binding"]==digest(task["identity"]),"TASK_WITNESS_IDENTITY")
+        probe_rows=[r for r in task["requests"] if r["role"]=="PROTOCOL_PROBE_ONLY"]
+        require(len(probe_rows)>=1 and all(r.get("protocol_pass") is True and r["status"]=="RECEIVED" for r in probe_rows),"TASK_PROBE_GATE")
+        mapped=[]
+        for r in state["requests"]:
+            tr=task["requests"][r["task_attempt"]-1]
+            require(all(tr[k]==r[k] for k in ("role","round","request_sha256","status","response_id","returned_model","usage")),"TASK_SESSION_BUDGET_SPLIT")
+            mapped.append(tr["attempt"])
+        require(len(mapped)==len(set(mapped)) and set(mapped)=={r["attempt"] for r in task["requests"] if r["role"]!="PROTOCOL_PROBE_ONLY"},"TASK_UNACCOUNTED_REQUEST")
+    else:require(p["source_kind"]=="SYNTHETIC_TEST_ONLY" and plan["task_budget_binding"] is None,"REAL_TASK_BUDGET_REQUIRED")
     require(state["plan_sha256"]==digest(plan) and state["session_id"]==plan["session_id"] and usage["usage_known"],"SESSION_LEDGER")
     require(len(p["rounds"])==2 and len(state["trials"])==2 and len(state["posts"])==4,"TWO_ROUNDS_REQUIRED")
     events=p["events"]
     require([e["seq"] for e in events]==list(range(1,len(events)+1)) and all(e["run_id"]==plan["session_id"] for e in events),"SESSION_EVENTS")
     messages=initial_messages();seen=set();facts=[];used=set()
     for index,row in enumerate(p["rounds"],1):
-        require(set(row)=={"round","request_body","request_sha256","explorer_attempt","selection","trial","feedback","feedback_sha256","feedback_event_seq","input_event_seq"}
+        require(set(row)=={"round","request_body","request_sha256","explorer_attempt","selection","trial","feedback","feedback_sha256","feedback_event_seq","input_event_seq","response_shape"}
             and row["round"]==index and row["request_body"]==body_for(messages) and row["request_sha256"]==digest(row["request_body"]),"EXPLORER_INPUT_OR_FEEDBACK")
         r=state["requests"][row["explorer_attempt"]-1]
         require(r["role"]=="EXPLORER" and r["round"]==index and r["request_sha256"]==row["request_sha256"] and r["status"]=="RECEIVED","EXPLORER_LEDGER_BINDING")
         used.add(r["attempt"])
         call=row["selection"]
-        require(parse_selection({"choices":[{"message":{"tool_calls":[call]}}]},seen)==call,"SELECTION_SCHEMA")
+        response={"id":r["response_id"],"model":r["returned_model"],"usage":r["usage"],"choices":[{"finish_reason":"tool_calls","message":{"role":"assistant","tool_calls":[call]}}]}
+        require(parse_selection(response,seen)==call,"SELECTION_SCHEMA")
+        shape=row["response_shape"]
+        validate_response_shape(shape)
+        require(shape["schema"]=="rpf56-response-shape-v4" and shape["response_id"]==r["response_id"] and shape["model"]==r["returned_model"]
+            and shape["usage"]==r["usage"] and shape["choices_count"]==1 and len(shape["choices"])==1,"RESPONSE_SHAPE_BINDING")
+        ch=shape["choices"][0]
+        require(ch["finish_reason"]=="tool_calls" and ch["message_role"]=="assistant" and ch["tool_calls_presence"]=="PRESENT"
+            and ch["tool_calls_type"]=="array" and ch["tool_calls_count"]==1 and ch["calls"]==[{"type":"function","function_name":"select_experiment","call_id":fingerprint(call,"id"),"arguments":fingerprint(call["function"],"arguments")}],"RESPONSE_SHAPE_SELECTION")
         seen.add(call["id"])
         candidate=strict_json(call["function"]["arguments"].encode())["candidate_id"]
         require(r.get("selection")==call,"REAL_SELECTION_BINDING")
@@ -135,6 +157,9 @@ def verify_payload(p):
             used.add(g["attempt"])
         require(row["feedback"]==feedback(trial) and row["feedback_sha256"]==digest(row["feedback"]),"VERIFIED_FEEDBACK")
         inp=events[row["input_event_seq"]-1];fb=events[row["feedback_event_seq"]-1]
+        se=[e for e in events if e["kind"]=="RESPONSE_SHAPE_PERSISTED" and e["round"]==index]
+        require(len(se)==1 and inp["seq"]<se[0]["seq"]<fb["seq"] and se[0]["shape_sha256"]==digest(shape)
+            and se[0]["request_sha256"]==row["request_sha256"],"RESPONSE_SHAPE_EVENT")
         require(inp["kind"]=="PROVIDER_INPUT_FROZEN" and inp["round"]==index and inp["body_sha256"]==row["request_sha256"]
             and fb["kind"]=="FEEDBACK_VALIDATED" and fb["round"]==index and fb["feedback_sha256"]==row["feedback_sha256"] and inp["seq"]<fb["seq"],"FEEDBACK_EVENT_BINDING")
         if index==2:require(p["rounds"][0]["feedback_event_seq"]<row["input_event_seq"] and events[p["rounds"][0]["feedback_event_seq"]-1]["monotonic_ns"]<inp["monotonic_ns"],"FEEDBACK_CAUSAL_ORDER")
