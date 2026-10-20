@@ -42,7 +42,7 @@ Root=`D:/CS/runproof`；执行 Base/Parent=`b6e900f75b2d58944acfa9b9a2568b37583c
 | A-07 真实反馈时序 | NOT_RUN | 无真实选择、第一轮反馈和第二轮请求。 |
 | A-08 新联合 Witness | NOT_RUN | no-valid-Witness，`rev-2/config-pge-evidence.json` 必须不存在。 |
 | A-09 回归与交付质量 | PASS | 12 定向、325 Runtime（2 Docker skips）、九旧锚、Reviewed/Public Docs 通过；只复验未变更协议，不替代集成。 |
-| A-10 Git/TASK_RESULT | NOT_RUN | 待 focused commit、普通 push 与 fresh remote 校验后更新。 |
+| A-10 Git/TASK_RESULT | PASS | 五个新报告已 focused commit、普通 push，fresh 远端 SHA 与本地一致，main/Parent 不变；本交付记录单独提交收口。 |
 
 ## 4. 验证与成本
 
@@ -60,4 +60,4 @@ Root=`D:/CS/runproof`；执行 Base/Parent=`b6e900f75b2d58944acfa9b9a2568b37583c
 
 取得可核验恢复事实后，先落实显式 rev-2 schema/owner/root/Base/branch/Source freeze 与跨版负控，再做且仅做一次固定解释器 smoke；若仍 4551 即停止。全部前置通过才有三次 SDK Fixture 和一个新两轮真实 Session 的资格。恢复本身不使 RPF-56 Complete。
 
-本次只向新分支交付，无 PR、main merge/push、tag、release、workflow dispatch 或 deploy。实际 commit/push/fresh remote 结果将在同一报告收口更新，最终 SHA 放在聊天回执。
+首次报告交付 commit=`6e478b795fb76378aeac65517992f92beb38f241`，已普通 push 至新分支，fresh `git ls-remote` 与本地一致；Parent 仍为 `b6e900f75b2d58944acfa9b9a2568b37583caf86`，main 仍为 `bda0cd49e50e3181f604324e94877a24b9885334`。工作树只剩用户原有 `?? docs/reviews/` 外层状态。只新增五个白名单文件，旧 Runtime、测试、rev-1 报告和所有旧 tracked 材料未改。密钥模式/公开 JSON 绝对路径/范围审查通过；未请求 hosted CI（该分支不匹配 main 自动 Gate）。本次无 PR、main merge/push、tag、release、workflow dispatch 或 deploy。本交付记录单独提交收口，最终 SHA 放在聊天回执。
