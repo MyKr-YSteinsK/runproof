@@ -1,8 +1,8 @@
 # TASK_RESULT — RPF-59 / rev-1
 
-Status: Partial
+Status: Complete
 
-2026-10-20；免费合同、四种合成序列、真实cold、正式Session及Witness已完成，等待Git交付。`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_DECIDED`。
+2026-10-20；免费合同、四种合成序列、真实cold、正式Session、Witness及Git交付已完成。`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_DECIDED`。
 
 ## 1. 工作区、来源与边界
 
@@ -126,7 +126,7 @@ python -B -m runtime.runproof_runtime.effectwitness.pge_select_verify spikes/rpf
 | A-07 | PASS | 两轮真实业务通过，Round1反馈先于Round2请求冻结 |
 | A-08 | PASS | 新限定Witness、0/2/3、25类CLI及4类额外语义负控 |
 | A-09 | PASS | 定向16、全量381/2skip、12锚/Reviewed/Public、预算与清理通过 |
-| A-10 | NOT_RUN | 等待focused commit/push及远端SHA核对 |
+| A-10 | PASS | focused commit/push新分支，fresh ls-remote与GitHub commit readback一致；tracked/index干净 |
 
 ## 6. 残留、限制与交付
 
@@ -136,4 +136,4 @@ python -B -m runtime.runproof_runtime.effectwitness.pge_select_verify spikes/rpf
 
 只有Explorer是真实LLM；订单确定性Target与配置SDK scripted Target的等级不升级。重复领域是合法研究结果；未选择领域不得记为本次实际执行。跨域信息增益不可比，H1/H3/因果优势/WorkSwarm未证明，Issuer与数据库外部独立Authority未建立，独立复现未测试。单次切换至多记观察性结果。
 
-Git：尚未commit/push；仅本轮新安全分支允许交付，无PR、main写入、merge、tag、release、deploy或workflow dispatch。最终SHA由聊天回执提供，不循环amend报告自身。不自动开始RPF60。
+Git：实现/测试/证据提交 `7ec40ca457b7c749a1264a8f980ffaa8de395354` 已普通push到 `codex/rpf-59-cross-domain-real-explorer-selection`，fresh `git ls-remote` 与GitHub commit readback均确认同一SHA。本地tracked/index干净，原 `?? docs/reviews/` 保持未跟踪。远端父分支仍为 `03d13513ad958cf01455a39bede4f873ed474e21`，main仍为 `bda0cd49e50e3181f604324e94877a24b9885334`。本次报告状态收口另作普通commit/push，最终SHA由聊天回执提供，不循环amend报告自身。无PR、main写入、merge、tag、release、deploy或workflow dispatch；Hosted CI未运行。不自动开始RPF60。
