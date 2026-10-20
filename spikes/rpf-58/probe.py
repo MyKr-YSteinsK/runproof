@@ -3,9 +3,9 @@ import argparse,hashlib,importlib.util,os,shutil,subprocess,sys,uuid
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2];sys.path.insert(0,str(ROOT))
 from runtime.runproof_runtime.effectwitness import pge_shared_contracts as c,pge_shared_core as core,pge_shared_verify as v,pge_config_port as config
-OUT=ROOT/"spikes/rpf-58"
+OUT=ROOT/"spikes/rpf-58/rev-2"
 SOURCES=set(c.NEW_FILES)|{"runtime/tests/test_effectwitness_pge_shared_core.py"}
-EXPORTS={"spikes/rpf-58/"+n for n in ("README.md","RESULT.md","portability-assessment.json","session-summary.json","verification-diagnostic.json","cross-domain-portability-evidence.json")}
+EXPORTS={"spikes/rpf-58/rev-2/"+n for n in ("README.md","RESULT.md","cold-fixture-diagnostic.json","session-summary.json","verification-diagnostic.json","cross-domain-portability-evidence.json")}
 def once(path,value):
     path=Path(path)
     if path.is_relative_to(c.WORK):c.scoped(path)
@@ -25,8 +25,8 @@ def scope():
     for row in filter(None,raw.split("\0")):
         status,name=row[:2],row[3:]
         if status=="??" and name=="docs/reviews/":continue
-        c.require(status=="??" and (name in SOURCES|EXPORTS or name=="spikes/rpf-58/"),"WORKTREE_SCOPE")
-    extra=old._git("ls-files","--others","--exclude-standard","--",*sorted(SOURCES),"spikes/rpf-58")
+        c.require(((status==" M" and name in SOURCES) or (status=="??" and (name in EXPORTS or name=="spikes/rpf-58/rev-2/"))),"WORKTREE_SCOPE")
+    extra=old._git("ls-files","--others","--exclude-standard","--",*sorted(SOURCES),"spikes/rpf-58/rev-2")
     c.require(set(extra.splitlines())<=SOURCES|EXPORTS,"UNAPPROVED_NEW_FILE")
     c.scoped(c.WORK)
     for name in ("preflight","diagnostics","tests","jar","sandboxes","replay"):
@@ -34,12 +34,16 @@ def scope():
 def gate_path():return c.WORK/"preflight"/("offline-"+c.digest(c.sources())+".json")
 def identity_path():return c.WORK/"preflight"/("identity-"+c.digest(c.sources())+".json")
 def preflight():
-    scope();source=config.old._verify_source_bundle();java=config.old._java_identity();sdk=config.sdk_identity_direct()
+    scope();c.require(not identity_path().exists(),"IDENTITY_ALREADY_FROZEN")
+    source=config.old._verify_source_bundle();java=config.old._java_identity()
+    task=core.TaskGuard(c.WORK/"task-intents");reservation=task.reserve("METADATA",c.digest(c.sources()))
+    try:sdk=config.sdk_identity_direct()
+    except Exception as exc:task.result(reservation,"FAIL",error=getattr(exc,"code",type(exc).__name__));raise
     if not config.JAR.exists():
         with config.old.SOURCE_JAR.open("rb") as src,config.JAR.open("xb") as dst:shutil.copyfileobj(src,dst)
     c.require(config.JAR.stat().st_size==c.SOURCE_JAR_BYTES and config.old._sha_file(config.JAR)==c.SOURCE_JAR_SHA256,"TASK_JAR_IDENTITY")
     value={"sources":c.sources(),"verifier":v.identity(),"sdk":sdk,"java":java,"source":source,"provider":0,"jvm":0}
-    once(identity_path(),value);return {"status":"PASS","provider":0,"jvm":0}
+    once(identity_path(),value);task.result(reservation,"PASS",identity_sha256=c.digest(value));return {"status":"PASS","provider":0,"jvm":0}
 def tests_module():
     spec=importlib.util.spec_from_file_location("rpf58_pure_controls",ROOT/"runtime/tests/test_effectwitness_pge_shared_core.py")
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);return module
@@ -57,22 +61,31 @@ def frozen_gate():
     return identity
 def fixture():
     identity=frozen_gate()
-    contract=c.trial(c.DOMAINS[1],"rpf58-config-"+uuid.uuid4().hex[:16],c.digest(c.sources()),config.old._free_port(),config.old._free_port())
-    result=config.cold_fixture(contract,identity["sdk"]);return {"status":result["status"],"provider":0,"java":0}
+    contract=c.trial(c.DOMAINS[1],"rpf58r2-config-"+uuid.uuid4().hex[:16],c.digest(c.sources()),config.old._free_port(),config.old._free_port())
+    result=config.cold_fixture(contract,identity["sdk"])
+    once(OUT/"cold-fixture-diagnostic.json",result)
+    return {"status":result["status"],"provider":0,"java":0,"attempt":result["capture"]["attempt"]}
 def controlled_run():
-    frozen_gate();cold=c.strict_json((c.WORK/"preflight/cold-fixture/result.json").read_bytes())
+    frozen_gate();task=core.TaskGuard(c.WORK/"task-intents");task.read()
+    passes=[r for r in task.rows if r["kind"]=="COLD" and r["status"]=="PASS"]
+    c.require(len(passes)==1 and passes[0]["source_sha256"]==c.digest(c.sources()),"CURRENT_COLD_PASS_REQUIRED")
+    cold=c.strict_json((c.WORK/"preflight"/f"cold-attempt-{passes[0]['ordinal']:02}"/"result.json").read_bytes())
     c.require(cold["status"]=="PASS" and cold["source_files"]==c.sources(),"NEW_COLD_FIXTURE_REQUIRED")
-    plan=c.plan("rpf58-session-"+uuid.uuid4().hex[:16],["rpf58-order-"+uuid.uuid4().hex[:16],"rpf58-config-"+uuid.uuid4().hex[:16]],
+    config.validate_cold_capture(cold["capture"])
+    c.require(cold["capture"]["source_kind"]=="REAL_SDK_COLD_FIXTURE" and passes[0]["detail"]=={"capture_sha256":c.digest(cold["capture"])},"COLD_TASK_BINDING")
+    plan=c.plan("rpf58r2-session-"+uuid.uuid4().hex[:16],["rpf58r2-order-"+uuid.uuid4().hex[:16],"rpf58r2-config-"+uuid.uuid4().hex[:16]],
         (config.old._free_port(),config.old._free_port()),c.sources())
     once(c.WORK/"preflight/session-plan.json",plan)
-    ledger=core.Ledger(c.WORK/"ledger",plan,create=True);session=core.SharedSession(ledger)
+    session_reservation=task.reserve("SESSION",c.digest(c.sources()),plan_sha256=c.digest(plan),cold_capture_sha256=c.digest(cold["capture"]))
     once(c.WORK/"preflight/started.json",{"session_id":plan["session_id"],"source_sha256":c.digest(c.sources()),"pid":os.getpid()})
+    ledger=core.Ledger(c.WORK/"ledger",plan,create=True);session=core.SharedSession(ledger)
     try:
         for contract in plan["trials"]:
             row=session.execute_trial(contract);once(c.WORK/"replay"/(contract["experiment"]["domain"]+".json"),row)
         state=ledger.read()
+        task.result(session_reservation,"PASS",ledger_sha256=c.digest(state),rows_sha256=c.digest(session.rows))
         payload={"source_kind":"BOTH_REAL_CONTROLLED","plan":plan,"rows":session.rows,"ledger":state,
-            "ledger_chain_sha256":c.digest(ledger.chain),"boundaries":c.BOUNDARIES,"claim":v.CLAIM}
+            "ledger_chain_sha256":c.digest(ledger.chain),"boundaries":c.BOUNDARIES,"claim":v.CLAIM,"cold_fixture":cold["capture"],"task_intents":task.read()}
         raw=c.canonical(v.seal(payload))+b"\n";verdict=v.verify_bytes(raw,hashlib.sha256(raw).hexdigest())
         once(c.WORK/"replay/candidate.json",c.strict_json(raw))
         controls=tests_module().controls(raw,c.WORK/"replay/issuance-controls")
@@ -84,26 +97,12 @@ def controlled_run():
     except Exception as e:
         once(OUT/"session-summary.json",{"status":"PARTIAL","completed_domains":len(session.rows),"error":getattr(e,"code",type(e).__name__),"ledger":ledger.read(),"no_full_certificate":True})
         raise
-def controlled_order():
-    # The recommended order-first sequence is independent of the Java/SDK gate.
-    # This still consumes the ONE session marker and the ONE order Trial.
-    frozen_gate()
-    plan=c.plan("rpf58-session-"+uuid.uuid4().hex[:16],["rpf58-order-"+uuid.uuid4().hex[:16],"rpf58-config-"+uuid.uuid4().hex[:16]],
-        (config.old._free_port(),config.old._free_port()),c.sources())
-    once(c.WORK/"preflight/session-plan.json",plan)
-    ledger=core.Ledger(c.WORK/"ledger",plan,create=True);session=core.SharedSession(ledger)
-    once(c.WORK/"preflight/started.json",{"session_id":plan["session_id"],"source_sha256":c.digest(c.sources()),"pid":os.getpid()})
-    row=session.execute_trial(plan["trials"][0]);once(c.WORK/"replay/order-refund.json",row)
-    once(OUT/"session-summary.json",{"status":"PARTIAL","session_id":plan["session_id"],"source_files":c.sources(),"verifier":v.identity(),
-        "completed_domains":[{"domain":"order-refund","source_kind":row["evidence"]["source_kind"],"run_id":row["contract"]["experiment"]["run_id"],"feedback":row["feedback"],"cleanup":row["evidence"]["cleanup"]}],
-        "config_java_http":"NOT_RUN","reason":"COLD_FIXTURE_CAPTURE_FAILED_NO_RETRY_AUTHORIZED","ledger":ledger.read(),"full_cross_domain_claim":"CORE_TWO_DOMAIN_EXECUTION_NOT_PROVEN","no_full_certificate":True})
-    return {"status":"PARTIAL","order":"REAL_LOCAL_VERIFIED","config":"NOT_RUN","provider":0,"java":0}
 def main():
-    p=argparse.ArgumentParser();p.add_argument("mode",choices=("preflight","offline","fixture","controlled-run","controlled-order","verify-offline"));p.add_argument("--sha256");a=p.parse_args()
+    p=argparse.ArgumentParser();p.add_argument("mode",choices=("preflight","offline","fixture","controlled-run","verify-offline"));p.add_argument("--sha256");a=p.parse_args()
     sys.addaudithook(guard)
     try:
         if a.mode=="verify-offline":result=v.verify_bytes((OUT/"cross-domain-portability-evidence.json").read_bytes(),a.sha256)
-        else:result={"preflight":preflight,"offline":offline,"fixture":fixture,"controlled-run":controlled_run,"controlled-order":controlled_order}[a.mode]()
+        else:result={"preflight":preflight,"offline":offline,"fixture":fixture,"controlled-run":controlled_run}[a.mode]()
         print(c.canonical(result).decode());return 0
     except Exception as e:print(c.canonical({"status":"STOPPED","error":getattr(e,"code",type(e).__name__)}).decode());return 1
 if __name__=="__main__":raise SystemExit(main())

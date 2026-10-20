@@ -19,7 +19,7 @@ class Bridge:
 
 class Sandbox(OrderSandbox):
     def __init__(self,c):
-        self.contracts=Bridge(c);self.owner="rpf-58";self.storage_task="rpf-58"
+        self.contracts=Bridge(c);self.owner="rpf-58-rev2";self.storage_task="rpf-58-rev2"
         self.directory=scoped(WORK/"sandboxes"/c["experiment"]["run_id"])
         self.path=scoped(self.directory/"orders.sqlite3");self.created=False;self.generation=0
 
@@ -52,21 +52,21 @@ def execute(c,ledger):
     reader.available=False
     cleanup={"connections_closed":True,"exclusive_lock_probe":True,"database_retained_for_evidence":True}
     mark("CLEANUP_CONFIRMED",**cleanup)
-    return {"schema":"rpf58-order-trial-v1","domain":domain,"source_kind":"REAL_LOCAL_SQLITE_DETERMINISTIC",
+    return {"schema":"rpf58r2-order-trial-v2","domain":domain,"source_kind":"REAL_LOCAL_SQLITE_DETERMINISTIC",
         "executor_pid":os.getpid(),"before":before.public(),"after":after.public(),"inspect":inspect,
         "tool_call":{"name":"refund_order","arguments":args,"result":result},"fault":{"planned":False,"triggered":False,"observed":False},
         "database_sha256":hashlib.sha256(sandbox.path.read_bytes()).hexdigest(),"timeline":timeline,"cleanup":cleanup}
 
 def verify(c,e):
     validate_trial(c);require(set(e)=={"schema","domain","source_kind","executor_pid","before","after","inspect","tool_call","fault","database_sha256","timeline","cleanup"}
-        and e["schema"]=="rpf58-order-trial-v1" and e["domain"]==DOMAINS[0] and e["source_kind"] in ("REAL_LOCAL_SQLITE_DETERMINISTIC","SYNTHETIC_TEST_ONLY"),"ORDER_EVIDENCE_FIELDS")
+        and e["schema"]=="rpf58r2-order-trial-v2" and e["domain"]==DOMAINS[0] and e["source_kind"] in ("REAL_LOCAL_SQLITE_DETERMINISTIC","SYNTHETIC_TEST_ONLY"),"ORDER_EVIDENCE_FIELDS")
     if e["source_kind"]!="SYNTHETIC_TEST_ONLY":require(type(e["executor_pid"]) is int and e["executor_pid"]>0,"ORDER_REAL_ORIGIN")
     x,f=c["experiment"],c["effect"]
     for snapshot in (e["before"],e["after"]):
         d=snapshot["data"]
         require(set(snapshot)=={"data","sha256"} and snapshot["sha256"]==digest(d) and set(d)=={"reader_id","reader_version","source_id","environment","order","receipts"}
             and d["reader_id"]==READER_ID and d["reader_version"]=="1" and d["source_id"]==f["authority_id"]
-            and d["environment"]=={"owner":"rpf-58","run_id":x["run_id"],"environment_id":x["environment_id"],"environment_revision":ENV_REVISION,"reset_generation":0},"ORDER_AUTHORITY_IDENTITY")
+            and d["environment"]=={"owner":"rpf-58-rev2","run_id":x["run_id"],"environment_id":x["environment_id"],"environment_revision":ENV_REVISION,"reset_generation":0},"ORDER_AUTHORITY_IDENTITY")
         require(all(type(d["order"][k]) is int for k in ("paid_minor","refunded_minor","revision")) and type(d["environment"]["reset_generation"]) is int
             and type(d["receipts"]) is list and all(type(r[k]) is int for r in d["receipts"] for k in ("amount_minor","committed_revision")),"ORDER_AUTHORITY_TYPES")
     verdict=evaluate_order_effect(f,x["environment_id"],e["before"]["data"],e["after"]["data"])

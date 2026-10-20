@@ -1,5 +1,5 @@
 """One physical WAL and one execution pipeline, used by both static ports."""
-import copy,os,time
+import copy,os,time,hashlib
 from .pge_shared_contracts import WORK,DOMAINS,LIMITS,canonical,digest,strict_json,require,scoped,validate_plan,sources
 
 def validate_state(s,p):
@@ -92,6 +92,11 @@ def domain_port(domain):
     require(domain in DOMAINS,"DOMAIN_PORT_NOT_ALLOWLISTED")
     return {DOMAINS[0]:pge_order_port,DOMAINS[1]:pge_config_port}[domain]
 
+def dispatch_identity(function):
+    return {"entry_code_sha256":hashlib.sha256(SharedSession.execute_trial.__code__.co_code).hexdigest(),
+        "port_callable":function.__module__+"."+function.__qualname__,
+        "port_code_sha256":hashlib.sha256(function.__code__.co_code).hexdigest()}
+
 class SharedSession:
     def __init__(self,ledger):self.ledger=ledger;self.rows=[]
     def execute_trial(self,contract):
@@ -102,8 +107,11 @@ class SharedSession:
         domain=contract["experiment"]["domain"];prior=[r["feedback"] for r in self.rows]
         inp=visible(prior);self.ledger.event("INPUT_FROZEN",domain=domain,input_sha256=digest(inp))
         reservation=self.ledger.reserve(domain,"trial",{"trial":1,"order_trial" if domain==DOMAINS[0] else "config_trial":1})
-        self.ledger.event("SHARED_PORT_DISPATCH",domain=domain,entry="SharedSession.execute_trial",contract_sha256=digest(contract))
-        evidence=domain_port(domain).execute(contract,self.ledger)
+        function=domain_port(domain).execute;runtime=dispatch_identity(function)
+        self.ledger.event("SHARED_PORT_DISPATCH",domain=domain,entry="SharedSession.execute_trial",contract_sha256=digest(contract),runtime_identity=runtime)
+        self.ledger.event("DOMAIN_CALL_ENTERED",domain=domain,runtime_identity=runtime)
+        evidence=function(contract,self.ledger)
+        self.ledger.event("DOMAIN_CALL_RETURNED",domain=domain,runtime_identity=runtime,evidence_sha256=digest(evidence))
         self.ledger.event("DOMAIN_RETURNED",domain=domain,evidence_sha256=digest(evidence))
         verdict=domain_verdict(contract,evidence)
         self.ledger.event("DOMAIN_VERIFIED",domain=domain,verdict_sha256=digest(verdict))
@@ -112,3 +120,76 @@ class SharedSession:
         self.ledger.settle(reservation,{"evidence_sha256":digest(evidence),"feedback_sha256":digest(fb)})
         row={"contract":contract,"input":inp,"evidence":evidence,"feedback":fb,"trial_reservation":reservation}
         self.rows.append(row);return row
+
+class TaskGuard:
+    """Separate append-only task intents, never reset by a source revision.
+
+    Metadata <=4, cold <=2 (only after diagnosed FAIL and changed source),
+    formal session <=1. A reservation remains spent after interruption.
+    """
+    def __init__(self,path):self.path=scoped(path);self.path.mkdir(parents=True,exist_ok=True)
+    def read(self):
+        scoped(self.path);previous=None;records=[];reservations={};counts={"METADATA":0,"COLD":0,"SESSION":0}
+        files=sorted(self.path.glob("intent-*.json"))
+        for i,path in enumerate(files,1):
+            value=strict_json(scoped(path).read_bytes());record=value["record"]
+            require(path.name==f"intent-{i:04}.json" and set(value)=={"seq","previous_sha256","record","record_sha256"}
+                and value["seq"]==i and value["previous_sha256"]==previous and value["record_sha256"]==digest(record),"TASK_INTENT_TORN_OR_CHAIN")
+            if record["action"]=="RESERVE":
+                require(set(record)=={"action","kind","ordinal","source_sha256","data"} and record["kind"] in counts
+                    and type(record["source_sha256"]) is str and len(record["source_sha256"])==64,"TASK_INTENT_FIELDS")
+                kind=record["kind"];counts[kind]+=1;require(record["ordinal"]==counts[kind],"TASK_ATTEMPT_SEQUENCE")
+                reservations[i]={**record,"reservation_id":i,"status":None}
+            else:
+                require(set(record)=={"action","reservation_id","status","detail"} and record["action"]=="RESULT"
+                    and record["reservation_id"] in reservations and record["status"] in ("PASS","FAIL"),"TASK_RESULT_FIELDS")
+                row=reservations[record["reservation_id"]];require(row["status"] is None,"TASK_RESULT_REPLAY");row.update(status=record["status"],detail=record["detail"])
+            previous=digest(value);records.append(value)
+        require(counts["METADATA"]<=4 and counts["COLD"]<=2 and counts["SESSION"]<=1,"TASK_ATTEMPT_BUDGET")
+        self.previous,self.seq,self.rows=previous,len(records),list(reservations.values())
+        return records
+    def _append(self,make):
+        lock=scoped(self.path/"intent.lock")
+        try:fd=os.open(lock,os.O_CREAT|os.O_EXCL|os.O_WRONLY)
+        except FileExistsError:require(False,"TASK_INTENT_LOCK")
+        try:
+            self.read();record=make(self.rows);i=self.seq+1
+            value={"seq":i,"previous_sha256":self.previous,"record":record,"record_sha256":digest(record)}
+            with scoped(self.path/f"intent-{i:04}.json").open("xb") as f:f.write(canonical(value));f.flush();os.fsync(f.fileno())
+            self.read();return i
+        finally:os.close(fd);lock.unlink()
+    def reserve(self,kind,source_sha256,**data):
+        def make(rows):
+            require(kind in ("METADATA","COLD","SESSION"),"TASK_KIND")
+            same=[r for r in rows if r["kind"]==kind];limit={"METADATA":4,"COLD":2,"SESSION":1}[kind]
+            require(len(same)<limit,"TASK_ATTEMPT_EXHAUSTED")
+            if kind=="COLD" and same:
+                require(all(r["status"]=="FAIL" for r in same) and same[-1]["source_sha256"]!=source_sha256
+                    and bool(data.get("offline_gate_sha256")),"COLD_RETRY_REQUIRES_REPAIRED_SOURCE")
+            return {"action":"RESERVE","kind":kind,"ordinal":len(same)+1,"source_sha256":source_sha256,"data":data}
+        return self._append(make)
+    def result(self,reservation_id,status,**detail):
+        def make(rows):
+            require(any(r["reservation_id"]==reservation_id and r["status"] is None for r in rows),"TASK_RESULT_REPLAY")
+            return {"action":"RESULT","reservation_id":reservation_id,"status":status,"detail":detail}
+        self._append(make)
+
+def verify_task_records(records):
+    """Pure external-log checks, including cross-source retry eligibility."""
+    previous=None;rows={};counts={"METADATA":0,"COLD":0,"SESSION":0}
+    for i,value in enumerate(records,1):
+        record=value["record"]
+        require(set(value)=={"seq","previous_sha256","record","record_sha256"} and value["seq"]==i
+            and value["previous_sha256"]==previous and value["record_sha256"]==digest(record),"TASK_EXTERNAL_CHAIN")
+        if record["action"]=="RESERVE":
+            kind=record["kind"];require(kind in counts,"TASK_KIND");prior=[r for r in rows.values() if r["kind"]==kind]
+            if kind=="COLD" and prior:require(all(r["status"]=="FAIL" for r in prior)
+                and prior[-1]["source_sha256"]!=record["source_sha256"] and bool(record["data"].get("offline_gate_sha256")),"TASK_RETRY_SOURCE")
+            counts[kind]+=1;require(record["ordinal"]==counts[kind],"TASK_EXTERNAL_SEQUENCE")
+            rows[i]={**record,"reservation_id":i,"status":None}
+        else:
+            require(record["action"]=="RESULT" and record["reservation_id"] in rows and record["status"] in ("PASS","FAIL"),"TASK_EXTERNAL_RESULT")
+            row=rows[record["reservation_id"]];require(row["status"] is None,"TASK_EXTERNAL_RESULT_REPLAY");row.update(status=record["status"],detail=record["detail"])
+        previous=digest(value)
+    require(counts["METADATA"]<=4 and counts["COLD"]<=2 and counts["SESSION"]<=1,"TASK_EXTERNAL_BUDGET")
+    return list(rows.values())

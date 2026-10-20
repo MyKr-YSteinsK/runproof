@@ -91,26 +91,47 @@ def sdk_identity_direct():
     return value
 
 def run_sdk(host,contracts,sdk,folder,*,fixture):
+    require(fixture,"FIXTURE_ONLY")
     direct=h55.resolve_direct_python(sdk)
     scratch=folder/"sdk-scratch";scratch.mkdir()
-    host.start()
-    config={"port":host.port,"token":host.token,"write_root":str(scratch),"sdk_readonly_path":str(old.SDK_SITE.resolve()),
-        "sdk_site_root_binding_sha256":sdk["sdk_site_root_binding_sha256"],"python_runtime_mapping_sha256":sdk["python_runtime_mapping_sha256"],
-        "instructions":c.AGENT_INSTRUCTIONS,"task_prompt":c.TASK_PROMPT,"model":"rpf53-fixture-only" if fixture else c.MODEL,
-        "max_runtime_seconds":180,"fixture":fixture}
     proc=None;thread=None
     try:
+        host.start()
+        config={"port":host.port,"token":host.token,"write_root":str(scratch),"sdk_readonly_path":str(old.SDK_SITE.resolve()),
+            "sdk_site_root_binding_sha256":sdk["sdk_site_root_binding_sha256"],"python_runtime_mapping_sha256":sdk["python_runtime_mapping_sha256"],
+            "instructions":c.AGENT_INSTRUCTIONS,"task_prompt":c.TASK_PROMPT,"model":"rpf53-fixture-only",
+            "max_runtime_seconds":180,"fixture":True}
         proc=subprocess.Popen([str(direct),"-I","-B",str(ROOT/"runtime/runproof_runtime/effectwitness/config_live_external.py")],
             cwd=scratch,env=old._sdk_env(scratch),stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+        once(folder/"sdk-process-started.json",{"source_files":c.sources(),"contracts_sha256":digest(contracts),"popen_pid":proc.pid})
         stdout,stderr=proc.communicate(c.canonical(config),timeout=180)
-        report=c.strict_json(stdout)
+        try:
+            parsed=c.strict_json(stdout)
+            allowed={"status","framework","version","openai_version","pid","python_executable_sha256","usage_type","usage_fields","requests",
+                "input_tokens","output_tokens","tool_calls","tool_callbacks","sdk_source_sha256","openai_source_sha256","final_output_sha256",
+                "final_text_persisted","guard_denials","provider_key_present","business_key_present","stage","error_type","guard_code","denied_files"}
+            if type(parsed) is not dict or not set(parsed)<=allowed:raise ValueError("REPORT_FIELDS")
+            report={k:v for k,v in parsed.items() if k!="denied_files"}
+        except Exception:
+            report={"status":"REPORT_UNAVAILABLE","error_type":"MALFORMED_REPORT","raw_sha256":hashlib.sha256(stdout).hexdigest()}
         result={"popen_pid":proc.pid,"ready":host.runtime,"report":report,"returncode":proc.returncode,"stderr_bytes":len(stderr)}
+        once(folder/"sdk-received.json",{"source_files":c.sources(),"contracts_sha256":digest(contracts),"sdk":result,
+            "events":host.journal.events,"tool_trace":host.tool_trace,"completions":host.provider_responses})
         if host.activated:host.journal.add("SDK_ERROR_OBSERVED",returncode=proc.returncode,status=report.get("status"),error_type=report.get("error_type"))
         return result
+    except Exception as exc:
+        once(folder/"sdk-unavailable.json",{"source_files":c.sources(),"contracts_sha256":digest(contracts),
+            "popen_pid":None if proc is None else proc.pid,"ready":host.runtime,"error_type":type(exc).__name__,"winerror":getattr(exc,"winerror",None),
+            "events":host.journal.events,"tool_trace":host.tool_trace,"completions":host.provider_responses,"report_status":"UNAVAILABLE"})
+        raise
     finally:
         if proc is not None and proc.poll() is None:proc.kill();proc.communicate(timeout=10)
         thread=host._thread;host.close()
-        c.require(thread is None or not thread.is_alive(),"HOST_THREAD_CLEANUP")
+        cleanup={"sdk_exited":proc is not None and proc.poll() is not None,
+            "host_thread_stopped":thread is None or not thread.is_alive(),
+            "host_port_closed":old._port_closed(contracts["execution"]["agent_host"]["port"])}
+        once(folder/"sdk-cleanup.json",{"source_files":c.sources(),"cleanup":cleanup})
+        c.require(all(cleanup.values()),"SDK_HOST_CLEANUP")
 
 def _verify_scene(s, candidate, source_sha):
     require(type(s) is dict and set(s) == {"contracts", "contracts_sha256", "http", "events",
@@ -261,20 +282,67 @@ def _verify_scene(s, candidate, source_sha):
         "local_key_released": True}, "CLEANUP")
 
 def cold_fixture(contract,sdk):
-    folder=scoped(WORK/"preflight/cold-fixture");folder.mkdir(exist_ok=False)
-    once(folder/"started.json",{"source_files":c.sources(),"contracts":contract,"contracts_sha256":digest(contract),"runner_pid":os.getpid(),"provider":0,"java":0})
-    journal=MemoryJournal(None,contract["experiment"]["run_id"])
-    host=Host(contract,ProviderLedger.fixture_only(journal.run_id),ConfigLiveMemoryBackend(),journal)
-    result=run_sdk(host,contract,sdk,folder,fixture=True)
-    # Save the actual child report BEFORE any post-run predicate can fail.
-    once(folder/"capture.json",{"source_files":c.sources(),"sdk":result,"events":journal.events,"tool_trace":host.tool_trace,"completions":host.provider_responses})
-    require(result["report"]["status"]=="COMPLETED" and result["returncode"]==0 and result["stderr_bytes"]==0
-        and result["ready"]["pid"]==result["popen_pid"] and len(host.tool_trace)==3
-        and [t["returned_in_request"] for t in host.tool_trace]==[2,3,4]
-        and sum(e["kind"]=="FAULT_INHIBITED" for e in journal.events)==1
-        and old._port_closed(contract["execution"]["agent_host"]["port"]),"COLD_FIXTURE")
-    out={"status":"PASS","source_files":c.sources(),"sdk":result,"events":journal.events,"provider":0,"java":0}
-    once(folder/"result.json",out);return out
+    from .pge_shared_core import TaskGuard
+    guard=TaskGuard(WORK/"task-intents")
+    reservation=guard.reserve("COLD",digest(c.sources()),offline_gate_sha256=digest(c.sources()),contracts_sha256=digest(contract))
+    ordinal=next(r["ordinal"] for r in guard.rows if r["reservation_id"]==reservation)
+    folder=scoped(WORK/"preflight"/f"cold-attempt-{ordinal:02}");folder.mkdir(exist_ok=False)
+    once(folder/"started.json",{"source_files":c.sources(),"contracts":contract,"contracts_sha256":digest(contract),"attempt":ordinal,
+        "reservation_id":reservation,"runner_pid":os.getpid(),"started_monotonic_ns":time.monotonic_ns(),"provider":0,"java":0})
+    try:
+        journal=MemoryJournal(None,contract["experiment"]["run_id"])
+        host=Host(contract,ProviderLedger.fixture_only(journal.run_id),ConfigLiveMemoryBackend(),journal)
+        result=run_sdk(host,contract,sdk,folder,fixture=True)
+        cleanup=strict_json((folder/"sdk-cleanup.json").read_bytes())["cleanup"]
+        capture={"schema":"rpf58-cold-capture-v2","source_kind":"REAL_SDK_COLD_FIXTURE","attempt":ordinal,"source_files":c.sources(),
+            "contract":contract,"sdk":result,"events":journal.events,"tool_trace":host.tool_trace,"completions":host.provider_responses,"cleanup":cleanup}
+        once(folder/"capture.json",capture) # No semantic postcondition before persistence.
+        verdict=validate_cold_capture(capture)
+        out={"status":"PASS","source_files":c.sources(),"reservation_id":reservation,"capture":capture,"verdict":verdict,"provider":0,"java":0}
+        once(folder/"result.json",out);guard.result(reservation,"PASS",capture_sha256=digest(capture));return out
+    except Exception as exc:
+        detail={"status":"FAIL","error":getattr(exc,"code",type(exc).__name__),"source_files":c.sources(),"attempt":ordinal,
+            "capture_available":(folder/"capture.json").exists(),"sdk_received_available":(folder/"sdk-received.json").exists()}
+        once(folder/"failure.json",detail);guard.result(reservation,"FAIL",failure_sha256=digest(detail));raise
+
+def validate_cold_capture(value):
+    require(set(value)=={"schema","source_kind","attempt","source_files","contract","sdk","events","tool_trace","completions","cleanup"}
+        and value["schema"]=="rpf58-cold-capture-v2" and value["source_kind"] in ("REAL_SDK_COLD_FIXTURE","SYNTHETIC_TEST_ONLY")
+        and value["source_files"]==c.sources() and value["attempt"] in (1,2),"COLD_SOURCE_OR_FIELDS")
+    validate_trial(value["contract"]);require(value["contract"]["experiment"]["source_sha256"]==digest(c.sources()),"COLD_CONTRACT_SOURCE")
+    result=value["sdk"];report=result["report"];ready=result["ready"];pin=pinned_sdk_fields()
+    require(type(result["popen_pid"]) is int and result["popen_pid"]>0 and ready["pid"]==report["pid"]==result["popen_pid"]
+        and report["status"]=="COMPLETED" and result["returncode"]==0 and result["stderr_bytes"]==0
+        and report["tool_calls"]==report["tool_callbacks"]==3 and report["requests"]==4 and report["guard_denials"]==[]
+        and report["provider_key_present"] is False and report["business_key_present"] is False,"COLD_SDK_REPORT")
+    require(ready["version"]=="2.57.0" and ready["openai_version"]=="3.35.1" and ready["sdk_source_sha256"]==SDK_CORE_SHA256
+        and ready["openai_source_sha256"]==pin["openai_core_sha256"]
+        and all(ready[k]==pin[k] for k in ("python_executable_sha256","sdk_site_root_binding_sha256","python_runtime_mapping_sha256")),"COLD_SDK_IDENTITY")
+    trace=value["tool_trace"];completions=value["completions"]
+    require([t["name"] for t in trace]==list(c.TOOLS) and len({t["call_id"] for t in trace})==3
+        and [t["returned_in_request"] for t in trace]==[2,3,4] and len(completions)==4,"COLD_TOOL_LINEAGE")
+    for i,comp in enumerate(completions):
+        require(comp["model"]=="rpf53-fixture-only" and comp["usage"]=={"prompt_tokens":0,"completion_tokens":0,"total_tokens":0}
+            and comp["tool_returns"]==[{"call_id":t["call_id"],"result_sha256":t["result_sha256"]} for t in trace[:i]]
+            and comp["tool_calls"]==([{k:trace[i][k] for k in ("call_id","name","arguments_sha256")}] if i<3 else []),"COLD_COMPLETION_LINEAGE")
+        if i<3:
+            call=trace[i];args=({}, {"value":"rpf53-v1"},{"expected_version":1,"value":"rpf53-v2"})[i]
+            tool_result={"state":"ABSENT"} if i==0 else {"status":"COMMITTED","version":i,"value":"rpf53-v"+str(i)}
+            require(call["sequence"]==i+1 and call["arguments"]==args and call["arguments_sha256"]==digest(args)
+                and call["result"]==tool_result and call["result_sha256"]==digest(tool_result) and call["provider_response_id"]==comp["response_id"],"COLD_TOOL_ARGS_RESULTS")
+    events=value["events"]
+    require(events[0]["kind"]=="PRE_REGISTERED" and events[0]["candidate"]=="planned-but-inhibited"
+        and sum(e["kind"]=="FAULT_INHIBITED" for e in events)==1 and not any(e["kind"] in ("SUCCESS_WITHHELD","SDK_ERROR_OBSERVED") for e in events)
+        and sum(e["kind"]=="SUCCESS_RELEASED" for e in events)==3,"COLD_INHIBITED_GATE")
+    require([e["seq"] for e in events]==list(range(1,len(events)+1))
+        and all(e["run_id"]==value["contract"]["experiment"]["run_id"] for e in events)
+        and all(a["monotonic_ns"]<b["monotonic_ns"] for a,b in zip(events,events[1:])),"COLD_EVENT_ORDER")
+    inhibited=next(e for e in events if e["kind"]=="FAULT_INHIBITED")
+    ready_event=next(e for e in events if e["kind"]=="TOOL_RESULT_READY" and e["call_id"]==trace[2]["call_id"])
+    released=next(e for e in events if e["kind"]=="SUCCESS_RELEASED" and e["call_id"]==trace[2]["call_id"])
+    require(ready_event["seq"]<inhibited["seq"]<released["seq"] and inhibited["reason"]=="PRE_REGISTERED_GATE_DISABLED","COLD_GATE_ORDER")
+    require(value["cleanup"]=={"sdk_exited":True,"host_thread_stopped":True,"host_port_closed":True},"COLD_CLEANUP")
+    return {"status":"PASS","source_kind":value["source_kind"],"popen_pid":result["popen_pid"],"capture_sha256":digest(value)}
 
 def execute(contract,total):
     validate_trial(contract);require(contract["experiment"]["domain"]=="config-java-http","CONFIG_DOMAIN")
@@ -327,11 +395,11 @@ def execute(contract,total):
     scene={"contracts":contract,"contracts_sha256":digest(contract),"http":client.observations,"events":journal.events,"tool_trace":host.tool_trace,
         "completions":host.provider_responses,"sdk":sdk,"environment":environment,"fault":{"planned":True,"triggered":False,"observed":False,"channel":"NONE"},
         "outcome":{"agent_failure":"NOT_EVALUATED_FIXTURE","platform_error":"NONE","business_violation":False,"contract_outcome":"SATISFIED","reconcile":"NOT_REQUIRED","target_ack":"RECEIVED"}}
-    return {"schema":"rpf58-config-trial-v1","domain":"config-java-http","source_kind":"REAL_LOCAL_SDK_FIXTURE_JAVA_HTTP","executor_pid":os.getpid(),"scene":scene}
+    return {"schema":"rpf58r2-config-trial-v2","domain":"config-java-http","source_kind":"REAL_LOCAL_SDK_FIXTURE_JAVA_HTTP","executor_pid":os.getpid(),"scene":scene}
 
 def verify(contract,evidence):
     validate_trial(contract)
-    require(set(evidence)=={"schema","domain","source_kind","executor_pid","scene"} and evidence["schema"]=="rpf58-config-trial-v1"
+    require(set(evidence)=={"schema","domain","source_kind","executor_pid","scene"} and evidence["schema"]=="rpf58r2-config-trial-v2"
         and evidence["domain"]=="config-java-http" and evidence["source_kind"] in ("REAL_LOCAL_SDK_FIXTURE_JAVA_HTTP","SYNTHETIC_TEST_ONLY"),"CONFIG_EVIDENCE_FIELDS")
     scene=evidence["scene"];require(scene["contracts"]==contract,"CONFIG_CONTRACT_BINDING")
     if evidence["source_kind"]!="SYNTHETIC_TEST_ONLY":

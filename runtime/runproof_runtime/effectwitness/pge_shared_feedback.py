@@ -14,7 +14,7 @@ def project(contract,evidence,prior):
     facts=(["order-refund:full_refund_v1:sqlite_receipt:receipt_unique"] if d==DOMAINS[0] else
         ["config-java-http:version2_history21:same_service_http:effect_satisfied","config-java-http:disabled_gate:same_service_http:fault_planned_inhibited"])
     before=visible(prior)["seen_facts_by_domain"][d]
-    return {"schema":"rpf58-domain-feedback-v1","domain":d,"run_id":contract["experiment"]["run_id"],
+    return {"schema":"rpf58-domain-feedback-v2","domain":d,"run_id":contract["experiment"]["run_id"],
         "evidence_sha256":digest(evidence),"source_kind":evidence["source_kind"],"authority":authority,
         "status":"VERIFIED","verified_fact_ids":facts,"seen_fact_ids_before":before,
         "new_fact_ids":sorted(set(facts)-set(before)),"not_applicable":["CROSS_DOMAIN_INFORMATION_GAIN_SUM"],
