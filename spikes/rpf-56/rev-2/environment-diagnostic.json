@@ -1,0 +1,203 @@
+{
+  "OS_POLICY_CHANGED_BY_CODEX": false,
+  "classification": "POLICY_ENFORCED_FOR_PINNED_BINARY",
+  "client_date": "2026-10-20",
+  "collection": "READ_ONLY_POWERSHELL_LOCAL_FILE_HASH_AND_FILTERED_EVENTS_NO_FULL_POLICY_EXPORT",
+  "compliance_recovery": "NOT_ESTABLISHED",
+  "confidence": "HIGH_FOR_HISTORICAL_3077_DENIAL",
+  "device_guard": {
+    "code_integrity_enforcement": 2,
+    "status": "READABLE",
+    "usermode_code_integrity_enforcement": 2
+  },
+  "elevation_requested": false,
+  "event_channels": [
+    {
+      "channel": "Microsoft-Windows-CodeIntegrity/Operational",
+      "enabled": true,
+      "end": "2026-10-20T01:17:14.0000000+08:00",
+      "matching_event_count": 6,
+      "max_events": 300,
+      "query_saturated": false,
+      "start": "2026-10-19T23:17:14.0000000+08:00",
+      "status": "READABLE",
+      "window_basis": "TWO_HOURS_BEFORE_REV1_IMPLEMENTATION_COMMIT_APPROXIMATE_FAILURE_TIME"
+    },
+    {
+      "channel": "Microsoft-Windows-AppLocker/EXE and DLL",
+      "enabled": true,
+      "end": "2026-10-20T01:17:14.0000000+08:00",
+      "matching_event_count": 0,
+      "max_events": 300,
+      "query_saturated": false,
+      "start": "2026-10-19T23:17:14.0000000+08:00",
+      "status": "READABLE",
+      "window_basis": "TWO_HOURS_BEFORE_REV1_IMPLEMENTATION_COMMIT_APPROXIMATE_FAILURE_TIME"
+    },
+    {
+      "channel": "Microsoft-Windows-AppLocker/MSI and Script",
+      "enabled": true,
+      "end": "2026-10-20T01:17:14.0000000+08:00",
+      "matching_event_count": 0,
+      "max_events": 300,
+      "query_saturated": false,
+      "start": "2026-10-19T23:17:14.0000000+08:00",
+      "status": "READABLE",
+      "window_basis": "TWO_HOURS_BEFORE_REV1_IMPLEMENTATION_COMMIT_APPROXIMATE_FAILURE_TIME"
+    }
+  ],
+  "file_identities": [
+    {
+      "basename": "python.exe",
+      "expected_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "path_sha256": "f628ded0c2f9311c1e901cacd8dc84f7ca0e89698d57e8736bc7811518493579",
+      "pin_matches": true,
+      "role": "direct",
+      "sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "signature_status": "NotSigned"
+    },
+    {
+      "basename": "python.exe",
+      "expected_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "path_sha256": "ef4cba1f91bdef8aed2875cc66ac5ad86f048918af3385d3a950796ad0bbc170",
+      "pin_matches": true,
+      "role": "launcher",
+      "sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "signature_status": "NotSigned"
+    }
+  ],
+  "matching_events": [
+    {
+      "activity_sha256": "cd7ea5a2f7ecc3e11657923a44587d21b09511bd27c1b80128e50e46b5fbf84c",
+      "event_id": 3089,
+      "record_id": 2088,
+      "timestamp": "2026-10-20T01:07:29.1527647+08:00",
+      "total_signature_count": "0",
+      "validated_signing_level": "0",
+      "verification_error": "0"
+    },
+    {
+      "activity_sha256": "cd7ea5a2f7ecc3e11657923a44587d21b09511bd27c1b80128e50e46b5fbf84c",
+      "event_id": 3077,
+      "flat_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "flat_sha256_matches_pinned": true,
+      "nt_status": "0xc0e90002",
+      "parent_basename": "python.exe",
+      "parent_path_sha256": "a5085c9be87fbfd211db2038d9a5cf38f17560f7ecc6edc44219283b1b45fcdc",
+      "policy_id_sha256": "b04d8cf47e61b8135fe244695af3b27f347e3c853da34f512d1b3a4ed1493570",
+      "policy_name_sha256": "1ecbe18d3db1aff55b7f76d4265fedf2d61bd29def124cff301199ee03e0675e",
+      "record_id": 2087,
+      "requested_signing_level": "2",
+      "target_basename": "python.exe",
+      "target_path_sha256": "99eae42b7c122bb5db1727cdd2dcf549b6c49b53aa232e849962754ac970d752",
+      "timestamp": "2026-10-20T01:07:29.1527615+08:00",
+      "validated_signing_level": "1"
+    },
+    {
+      "activity_sha256": "cd7ea5a2f7ecc3e11657923a44587d21b09511bd27c1b80128e50e46b5fbf84c",
+      "event_id": 3089,
+      "record_id": 2086,
+      "timestamp": "2026-10-20T01:07:29.1521392+08:00",
+      "total_signature_count": "0",
+      "validated_signing_level": "0",
+      "verification_error": "0"
+    },
+    {
+      "activity_sha256": "ca32603a4c9b4557c266d310055973a03b8b123bc47a4fc6f16036184a009401",
+      "event_id": 3089,
+      "record_id": 2084,
+      "timestamp": "2026-10-20T01:07:23.0602553+08:00",
+      "total_signature_count": "0",
+      "validated_signing_level": "0",
+      "verification_error": "0"
+    },
+    {
+      "activity_sha256": "ca32603a4c9b4557c266d310055973a03b8b123bc47a4fc6f16036184a009401",
+      "event_id": 3077,
+      "flat_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "flat_sha256_matches_pinned": true,
+      "nt_status": "0xc0e90002",
+      "parent_basename": "python.exe",
+      "parent_path_sha256": "a5085c9be87fbfd211db2038d9a5cf38f17560f7ecc6edc44219283b1b45fcdc",
+      "policy_id_sha256": "b04d8cf47e61b8135fe244695af3b27f347e3c853da34f512d1b3a4ed1493570",
+      "policy_name_sha256": "1ecbe18d3db1aff55b7f76d4265fedf2d61bd29def124cff301199ee03e0675e",
+      "record_id": 2083,
+      "requested_signing_level": "2",
+      "target_basename": "python.exe",
+      "target_path_sha256": "99eae42b7c122bb5db1727cdd2dcf549b6c49b53aa232e849962754ac970d752",
+      "timestamp": "2026-10-20T01:07:23.0602512+08:00",
+      "validated_signing_level": "1"
+    },
+    {
+      "activity_sha256": "ca32603a4c9b4557c266d310055973a03b8b123bc47a4fc6f16036184a009401",
+      "event_id": 3089,
+      "record_id": 2082,
+      "timestamp": "2026-10-20T01:07:23.0596503+08:00",
+      "total_signature_count": "0",
+      "validated_signing_level": "0",
+      "verification_error": "0"
+    }
+  ],
+  "narrowed_window": {
+    "end": "2026-10-20T01:07:32+08:00",
+    "max_events": 30,
+    "selection": "SIX_PREVIOUSLY_MATCHED_RECORD_IDS_ONLY",
+    "start": "2026-10-20T01:07:20+08:00"
+  },
+  "observed_at": "2026-10-20T10:21:29.0753962+08:00",
+  "official_sources": [
+    "https://learn.microsoft.com/en-us/windows/security/application-security/application-control/app-control-for-business/operations/appcontrol-debugging-and-troubleshooting",
+    "https://learn.microsoft.com/en-us/windows/security/hardware-security/enable-virtualization-based-protection-of-code-integrity?tabs=intune"
+  ],
+  "operator_acknowledgement": false,
+  "os": {
+    "build": "26200",
+    "caption": "Microsoft Windows 11 家庭版 中文版",
+    "version": "10.0.26200"
+  },
+  "pinned_python_start_attempts": 0,
+  "policy_owner": "UNKNOWN",
+  "policy_scope": "USERMODE_CODE_INTEGRITY_ENFORCEMENT_OBSERVED",
+  "prior_winerror": {
+    "code": 4551,
+    "new_denial_reproduction": "NOT_RUN",
+    "source": "spikes/rpf-56/verification-diagnostic.json",
+    "source_sha256": "067dfa22709a52f8699050a0d99895f80d49d3e6f64a6ebcfed1554ba586c723",
+    "stage": "PINNED_DIRECT_CPYTHON_SDK_METADATA_INSPECTION"
+  },
+  "provenance": {
+    "correlation_script_sha256": "7e35e7823e9475d43aaae7b003a18df1ca3a64fb3d49189a247a844aeb184818",
+    "diagnose_script_sha256": "9804119e1b74ec9488c87a1b04a104f170a0585d482ec4ed9927e86424e54b0b",
+    "sanitized_correlation_sha256": "63b0626a52e9fa470b0133b4ea3d26ee141d4987241924ff08c97c40be4d8f27",
+    "sanitized_observation_sha256": "140fcc6fa2d55884d5ec8b2e75e26e6e260c512f8229c80978c83fac09b7989a"
+  },
+  "requires_external_owner_decision": true,
+  "schema": "rpf56-rev2-environment-diagnostic-v1",
+  "sdk_metadata": [
+    {
+      "distribution": "pydantic_ai_slim-2.57.0.dist-info",
+      "metadata_sha256": "9e8057f32e7da63d343cae086e8f77463ee9a32bdbfd22e62aa37a3861866298",
+      "verification": "FILE_READ_ONLY_NOT_RECORD_OR_ABI",
+      "version": "2.57.0"
+    },
+    {
+      "distribution": "openai-3.35.1.dist-info",
+      "metadata_sha256": "3344e66fc23364164ff5bdfa8ca31cff90518ad437318eee2e0331f2a029603f",
+      "verification": "FILE_READ_ONLY_NOT_RECORD_OR_ABI",
+      "version": "3.35.1"
+    }
+  ],
+  "smart_app_control": {
+    "state": "On",
+    "status": "READABLE"
+  },
+  "unique_management_product": "NOT_ESTABLISHED",
+  "unknowns": [
+    "Historical policy update time and reason",
+    "Historical absolute path continuity beyond current pyvenv binding",
+    "Policy administrator identity",
+    "Additional execution-host restrictions",
+    "Current execution eligibility without recovery record and smoke",
+    "Current SDK RECORD and ABI"
+  ]
+}

@@ -1,0 +1,45 @@
+{
+  "OS_POLICY_CHANGED_BY_CODEX": false,
+  "actual": {
+    "business_http": 0,
+    "estimated_cost_cny": 0,
+    "explorer_requests": 0,
+    "health": 0,
+    "jvm": 0,
+    "pinned_metadata_process": 0,
+    "pinned_python_smoke": 0,
+    "post": 0,
+    "sdk_fixture_processes": 0,
+    "target_requests": 0,
+    "tokens": 0
+  },
+  "base": "b6e900f75b2d58944acfa9b9a2568b37583caf86",
+  "boundaries": {
+    "WorkSwarm": "NOT_PROVEN",
+    "attribution": "CORRELATIONAL_ONLY",
+    "database_independent_authority": "NOT_ESTABLISHED",
+    "independent_reproduction": "NOT_TESTED",
+    "issuer_authenticity": "NOT_ESTABLISHED"
+  },
+  "branch": "codex/rpf-56-rev2-appcontrol-sdk-recovery",
+  "compliance_recovery_record": false,
+  "controlled_processes_remaining": 0,
+  "evidence_sha256": null,
+  "ignored_diagnostics_retained": true,
+  "investigation": "PASS",
+  "no_valid_witness": true,
+  "pending_provider_requests": 0,
+  "provider_key_read": false,
+  "real_ledger_created": false,
+  "real_started_marker_created": false,
+  "research": {
+    "H1": "NOT_PROVEN",
+    "L1": "NOT_RUN",
+    "L2": "NOT_RUN"
+  },
+  "rounds": [],
+  "schema": "rpf56-rev2-unexecuted-session-summary-v1",
+  "session_id": null,
+  "stop_reason": "EXTERNAL_COMPLIANT_RECOVERY_ACKNOWLEDGEMENT_UNAVAILABLE",
+  "task_status": "BLOCKED"
+}
