@@ -74,7 +74,7 @@ Session=`rpf58-session-bcfef9a0ac42493d`，order Run=`rpf58-order-2afb217f608042
 | A-07 完整真实Witness | NOT_RUN | 合成CLI/15篡改PASS，但无两域现场，禁止签发完整证书 |
 | A-08 旧证据 | PASS | 11固定外部锚current-tree exit0，旧模块/bytes不变 |
 | A-09 回归/来源费用 | PASS（测试/订单）；FAIL（冷启动记录） | 358/2skip，Provider0，订单锁清理；原SDK/PID/端口回执缺失，不补记 |
-| A-10 受限交付 | NOT_RUN | 待focused commit/push/fresh远端核对；即使完成也不改变整体Partial |
+| A-10 受限交付 | PASS | 聚焦实现已push，fresh ls-remote及GitHub commit API读回一致；整体仍Partial |
 
 Web/Maven/UI、Docker正式场景、Hosted CI/dispatch、发布部署均NOT_RUN，未改其边界。不能把单元测试或SDK源码推断替代配置正式现场。
 
@@ -100,6 +100,6 @@ Provider **0请求/0 tokens/¥0**；真实Explorer未执行，selection_source=D
 
 后续最小需求：明确新增一次修复后冷Fixture复验授权，并明确是否允许在原订单现场/当前Session基础上补配置Trial或采用新的独立双域Run；需继续保护已消耗的SQLite、SDK、JVM/POST额度和source身份。不能靠删除marker或换名重试。未自行创建后续Plan、修改canonical状态或推进阶段；证据接受待Architect。
 
-实现与Partial结果按本Plan聚焦交付；首次提交/Push/fresh remote事实在完成后补入，最终完整SHA在聊天回执，不循环amend。
+实现与Partial结果已聚焦提交并普通push；首次实现交付SHA=`3edf2e64eb9b7b87535aabd9ba6fee0cdda91ba4`，fresh ls-remote与GitHub commit API读回一致。main/父分支仍为原SHA，tracked/index clean，仅保留原用户目录条目。此次仅文档收口，源码、订单证据、Partial摘要raw SHA与未签发完整证书状态均不变。最终完整SHA在聊天回执，不循环amend。
 
 交付扫描：只暂存13个白名单新文件，逐个核对Git暂存blob与工作文件同字节；`git diff --cached --check`通过。新文件secret/private-path pattern与link范围检查PASS，原tracked diff为空。Partial摘要正确锚的完整Verifier拒绝退出码已实际捕获为3；当前ledger无pending/锁，订单只读复查与源码快照保持一致。没有将缓存/JAR/DB/原始日志或用户目录加入Git。
