@@ -1,8 +1,8 @@
 # TASK_RESULT — RPF-58 / rev-2
 
-Status: Partial
+Status: Complete
 
-执行日期：2026-10-20。正式业务、冷启动与离线验收已完成；本版等待 A-10 Git 交付，完成后另作文档收口。`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_YET`。
+执行日期：2026-10-20。正式业务、冷启动、离线验收及 A-10 Git 交付已完成。`EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW`，`STAGE_ADVANCED=NOT_YET`。
 
 ## 1. 身份、工作区及范围
 
@@ -108,7 +108,7 @@ Reviewed Artifacts/Public Docs 检查通过。Web/Maven/UI、Docker正式边界�
 | A-07 | PASS | 实际共同入口指纹、两Port、严格反馈事件顺序 |
 | A-08 | PASS | 新完整Witness、0/2/3及20类语义负控 |
 | A-09 | PASS | 365项/2skip、11旧锚、Reviewed/Public、0Provider和额度 |
-| A-10 | NOT_RUN | 等待本轮focused commit/push与远端SHA观察 |
+| A-10 | PASS | focused commit/push，ls-remote确认实现SHA；tracked/index干净，仅原用户目录未跟踪 |
 
 ## 6. 残留、结论边界与交付
 
@@ -116,4 +116,4 @@ Reviewed Artifacts/Public Docs 检查通过。Web/Maven/UI、Docker正式边界�
 
 本次只建立两种真实受控Port共用内核的机制证据。配置是SDK scripted Fixture，订单是确定性Target；real Explorer未执行，跨域自主LLM/PGE、H1/H3、WorkSwarm均未证明。配置同服务GET不提供数据库外部独立Authority；issuer真实性未建立、独立复现未测试、归因仅相关、跨域信息增益不可比。`FAULT_INHIBITED`不算故障激活成功。历史RPF57结论独立保留。
 
-Git交付：待普通commit/push与远端核验；不创建PR或更改main。最终SHA在聊天回执报告，不循环amend报告自身。后续范围由Architect审查决定，本轮不自动创建RPF59。
+Git交付：实现与证据提交 `cf6df740383848a7e9d90a90648b3090b5d499ce` 已普通push至本轮新分支，`git ls-remote` 观察同一SHA；本地tracked/index干净，仅保留开始时的顶层 `?? docs/reviews/`。远端父分支仍为 `1af24d94610c4e5dcf36d65c182add172e1401d2`，main仍为 `bda0cd49e50e3181f604324e94877a24b9885334`。本次文档收口另作commit/push；其最终SHA在聊天回执报告，不循环amend报告自身。未创建PR或更改main，Hosted CI未运行。后续范围由Architect审查决定，本轮不自动创建RPF59。
