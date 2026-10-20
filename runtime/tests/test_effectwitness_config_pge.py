@@ -16,7 +16,7 @@ from runtime.runproof_runtime.effectwitness.config_live_runtime import ConfigLiv
 from runtime.tests.test_effectwitness_config_experiment import synthetic_scene as primitive_scene
 
 ROOT=Path(__file__).resolve().parents[2]
-WORK=ROOT/".local/rpf-56/tests"
+WORK=ROOT/".local/rpf-56-rev3/tests"
 
 def synthetic_trial(contracts,index,source):
     # Reuse ONLY the pure synthetic HTTP/event generator, never a prior artifact.
@@ -46,7 +46,7 @@ def synthetic_trial(contracts,index,source):
 
 def synthetic_payload(choices=("normal","local-delivery-suppressed")):
     sources=v.source_identity()
-    plan=c.session_plan("rpf56-session-"+"a"*16,[("56"+"1"*16,45001,46001),("56"+"2"*16,45002,46002)],sources,v.pinned_sdk_fields())
+    plan=c.session_plan("rpf56r3-session-"+"a"*16,[("56"+"1"*16,45001,46001),("56"+"2"*16,45002,46002)],sources,v.pinned_sdk_fields())
     ledger={"session_id":plan["session_id"],"plan_sha256":c.digest(plan),"requests":[],"trials":[],"posts":[],"started_monotonic_ns":1}
     rounds=[];journal=Journal(None,plan["session_id"]);messages=explorer.initial_messages();signatures=[]
     for index,candidate in enumerate(choices,1):
@@ -160,6 +160,34 @@ class ConfigPgeTests(unittest.TestCase):
         for name in ("spikes/rpf-55/rev-2/config-experiment-evidence.json","spikes/rpf-53/rev-6/config-live-evidence.json"):
             raw=(ROOT/name).read_bytes()
             with self.assertRaises(ValueError):v.verify_bytes(raw,hashlib.sha256(raw).hexdigest())
+    def test_rev3_rejects_legacy_contract_owner_schema_and_source(self):
+        original=synthetic_payload()
+        for field,value in (("owner","rpf-56"),("base","227ffb020472633ce9b538ea33d5ad30a5e17bd7"),
+                            ("branch","codex/rpf-56-real-explorer-target-config-pge"),("schema","rpf56-config-pge-session-v1")):
+            p=copy.deepcopy(original);p["plan"][field]=value
+            with self.subTest(field=field):
+                with self.assertRaises(ValueError):c.validate_plan(p["plan"])
+        for revision in ("v1","v2"):
+            envelope=v.seal(original);envelope["schema"]="rpf56-config-pge-evidence-"+revision
+            raw=c.canonical(envelope)
+            with self.assertRaises(ValueError):v.verify_bytes(raw,hashlib.sha256(raw).hexdigest())
+        trial=copy.deepcopy(original["rounds"][0]["trial"]["contracts"])
+        trial["experiment"]["source"]["task_jar"]=".local/rpf-56/jar/config-center-server-1.0.0.jar"
+        with self.assertRaises(ValueError):c.validate_trial(trial)
+    def test_rev3_cannot_write_legacy_roots(self):
+        for legacy in ("rpf-56","rpf-56-rev2"):
+            path=ROOT/".local"/legacy/"not-created-by-rev3"
+            with self.assertRaisesRegex(ValueError,"LEDGER_SCOPE"):TotalLedger(path,self.plan(),create=True)
+            with self.assertRaisesRegex(ValueError,"JOURNAL_SCOPE"):Journal(path,self.plan()["session_id"])
+    def test_rev3_policy_denial_and_fake_pid_never_pass_recovery_gate(self):
+        import runpy
+        validate=runpy.run_path(str(ROOT/"spikes/rpf-56/probe.py"))["validate_smoke"]
+        denied={"status":"CREATEPROCESS_DENIED_OR_ERROR","winerror":4551}
+        with self.assertRaisesRegex(ValueError,"RECOVERY_SMOKE_REQUIRED"):validate(denied)
+        with self.assertRaisesRegex(ValueError,"RECOVERY_SMOKE_REQUIRED"):
+            validate({"status":"PASS","intent":{"attempt":2}})
+        with self.assertRaisesRegex(ValueError,"RECOVERY_SMOKE_REQUIRED"):
+            validate({"status":"PASS","intent":{"attempt":1},"pid":1,"report":{"pid":2}})
     def test_two_processes_cannot_double_reserve(self):
         ledger=self.new_ledger()
         code="""import sys,json;from pathlib import Path
@@ -184,6 +212,12 @@ except Exception:print('REJECTED')
         messages.append({"role":"tool","tool_call_id":"future","content":"not-yet-observed"})
         self.assertEqual(c.digest(body),original)
         self.assertEqual(len(body["messages"]),2)
+    def test_explorer_missing_empty_or_multiple_tool_calls_are_rejected(self):
+        call={"id":"one","type":"function","function":{"name":"select_experiment","arguments":'{"candidate_id":"normal"}'}}
+        for calls in (None,[],[call,{**call,"id":"two"}]):
+            with self.subTest(calls=calls):
+                with self.assertRaisesRegex(ValueError,"ONE_SELECTION_REQUIRED"):
+                    explorer.parse_selection({"choices":[{"message":{"tool_calls":calls}}]},set())
     def test_tamper_controls_are_not_noops_on_repeated_candidates(self):
         for first in c.CANDIDATES:
             for second in c.CANDIDATES:
@@ -196,7 +230,7 @@ except Exception:print('REJECTED')
         import runpy
         from unittest.mock import patch
         probe=runpy.run_path(str(ROOT/"spikes/rpf-56/probe.py"))
-        with patch.object(probe["old"],"_git",side_effect=[b"?? docs/reviews/\0?? spikes/rpf-56/\0","spikes/rpf-56/probe.py"]):
+        with patch.object(probe["old"],"_git",side_effect=[b"?? docs/reviews/\0?? spikes/rpf-56/rev-3/\0","spikes/rpf-56/rev-3/README.md"]):
             probe["status_check"]()
         with patch.object(probe["old"],"_git",return_value=b"M  runtime/runproof_runtime/effectwitness/config_live_runtime.py\0"):
             with self.assertRaises(ValueError):probe["status_check"]()

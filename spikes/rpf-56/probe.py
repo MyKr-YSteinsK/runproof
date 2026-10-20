@@ -10,7 +10,6 @@ import shutil
 import subprocess
 import sys
 import time
-import types
 import uuid
 ROOT=Path(__file__).resolve().parents[2]
 sys.path.insert(0,str(ROOT))
@@ -18,19 +17,16 @@ from runtime.runproof_runtime.effectwitness import config_pge_contracts as c, co
 from runtime.runproof_runtime.effectwitness.config_pge_session import TotalLedger,Journal,feedback
 from runtime.runproof_runtime.effectwitness.config_pge_target import TargetHost,TargetLedger,BusinessHttp
 from runtime.runproof_runtime.effectwitness.config_live_runtime import ConfigLiveBusiness,ConfigLiveMemoryBackend,ProviderLedger
-WORK=ROOT/".local/rpf-56"
-OUT=ROOT/"spikes/rpf-56"
+WORK=ROOT/".local/rpf-56-rev3"
+OUT=ROOT/"spikes/rpf-56/rev-3"
 JAR=WORK/"jar/config-center-server-1.0.0.jar"
 spec=importlib.util.spec_from_file_location("rpf56_readonly_sdk_helpers",ROOT/"spikes/rpf-55/probe.py")
 h55=importlib.util.module_from_spec(spec);spec.loader.exec_module(h55)
 old=h55.old
-# Reuse the reviewed SDK inspection code with NEW task-only cwd/env roots.
-# Do not call old preflight/scenario or access historical task markers/ledgers.
-inspect_sdk=types.FunctionType(h55.sdk_identity_direct.__code__,{**vars(h55),"WORK":WORK},"rpf56_inspect_sdk")
 SOURCE_NEW={"runtime/runproof_runtime/effectwitness/"+name+".py" for name in (
     "config_pge_contracts","config_pge_explorer","config_pge_target","config_pge_session","config_pge_verify")}
 SOURCE_NEW|={"runtime/tests/test_effectwitness_config_pge.py","spikes/rpf-56/probe.py"}
-EXPORTS={"spikes/rpf-56/"+n for n in ("README.md","RESULT.md","session-summary.json","verification-diagnostic.json","config-pge-evidence.json")}
+EXPORTS={"spikes/rpf-56/rev-3/"+n for n in ("README.md","RESULT.md","session-summary.json","verification-diagnostic.json","recovery-diagnostic.json","config-pge-evidence.json")}
 
 def once(path,value):
     c.require(path.resolve().is_relative_to(WORK.resolve()) or str(path.relative_to(ROOT)).replace("\\","/") in EXPORTS,"OUTPUT_SCOPE")
@@ -44,8 +40,8 @@ def status_check():
     for row in filter(None,raw.split("\0")):
         status,name=row[:2],row[3:]
         if status=="??" and name=="docs/reviews/":continue
-        c.require(status=="??" and (name in SOURCE_NEW|EXPORTS or name=="spikes/rpf-56/"),"WORKTREE_OR_INDEX_SCOPE")
-    extras=old._git("ls-files","--others","--exclude-standard","--","spikes/rpf-56")
+        c.require(((status==" M" and name in SOURCE_NEW) or (status=="??" and (name in EXPORTS or name=="spikes/rpf-56/rev-3/"))),"WORKTREE_OR_INDEX_SCOPE")
+    extras=old._git("ls-files","--others","--exclude-standard","--","spikes/rpf-56/rev-3")
     c.require(all(name in SOURCE_NEW|EXPORTS for name in extras.splitlines()),"EXTRA_EXPORT")
 
 def preflight():
@@ -59,16 +55,22 @@ def preflight():
     for name in ("preflight","fixture","scenarios","jar","tests","diagnostics","replay","quarantine"):
         c.require(not old._has_link_component(WORK/name),"TASK_DIRECTORY_LINK")
         (WORK/name).mkdir(exist_ok=True)
-    source=old._verify_source_bundle()
-    try:sdk=inspect_sdk()
-    except OSError as exc:
-        if getattr(exc,"winerror",None)==4551:c.require(False,"DIRECT_CPYTHON_APP_CONTROL_BLOCKED_4551")
-        raise
-    java=old._java_identity()
-    if not JAR.exists():
-        with old.SOURCE_JAR.open("rb") as src,JAR.open("xb") as dst:shutil.copyfileobj(src,dst)
-    c.require(JAR.stat().st_size==66981576 and old._sha_file(JAR)==c.SOURCE_JAR_SHA256,"TASK_JAR")
-    return {"base":c.BASE,"source_files":v.source_identity(),"verifier_identity":v.verifier_identity(),"sdk":sdk,"java":java,"config_source":source,"price":c.PRICE}
+    smoke=c.strict_json((WORK/"smoke-result.json").read_bytes())
+    validate_smoke(smoke)
+    sdk=c.strict_json((WORK/"sdk-identity.json").read_bytes())
+    c.require(h55.identity_fields(sdk)==v.pinned_sdk_fields(),"SDK_IDENTITY")
+    h55.resolve_direct_python(sdk)
+    return {"base":c.BASE,"source_files":v.source_identity(),"verifier_identity":v.verifier_identity(),"sdk":sdk,"price":c.PRICE}
+
+
+def validate_smoke(smoke):
+    c.require(smoke["status"]=="PASS" and smoke["intent"]["attempt"]==1
+        and smoke["pid"]==smoke["report"]["pid"] and smoke["report"]["version"]==[3,12,13]
+        and smoke["exit_code"]==0 and smoke["winerror"] is None and smoke["stderr_bytes"]==0
+        and smoke["report"]["isolated"]==smoke["report"]["dont_write_bytecode"]==1
+        and smoke["intent"]["exe_sha256"]=="e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f"
+        and smoke["intent"]["launcher_sha256"]=="74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83","RECOVERY_SMOKE_REQUIRED")
+
 
 def run_sdk(host,contracts,sdk,folder,*,fixture):
     direct=h55.resolve_direct_python(sdk)
@@ -105,7 +107,7 @@ def fixture(base,candidate):
     suppressed=candidate==c.CANDIDATES[2]
     checks={"ready_pid":host.runtime is not None and host.runtime["pid"]==result["popen_pid"],
         "status":result["report"]["status"]==("SDK_ERROR" if suppressed else "COMPLETED"),
-        "tool_calls":len(host.tool_trace)==3,"returns":[x["returned_in_request"] for x in host.tool_trace]==([2,3,None] if suppressed else [2,3,4]),
+        "tool_calls":len(host.tool_trace)==3 and len({x["call_id"] for x in host.tool_trace})==3,"returns":[x["returned_in_request"] for x in host.tool_trace]==([2,3,None] if suppressed else [2,3,4]),
         "completions":len(host.provider_responses)==(3 if suppressed else 4),"guard":result["report"].get("guard_denials")==[],
         "inhibited":sum(e["kind"]=="FAULT_INHIBITED" for e in journal.events)==int(candidate==c.CANDIDATES[1]),
         "suppressed_once":sum(e["kind"]=="SUCCESS_WITHHELD" for e in journal.events)==int(suppressed),
@@ -187,10 +189,16 @@ def live(base):
     fixtures=[c.strict_json((WORK/"fixture"/name/"result.json").read_bytes()) for name in c.CANDIDATES]
     c.require(len({r["runner_pid"] for r in fixtures})==3 and all(all(r["checks"].values()) and r["source_files"]==base["source_files"] for r in fixtures),"THREE_COLD_FIXTURES_REQUIRED")
     c.require(c.strict_json((WORK/"preflight/official-price-reviewed.json").read_bytes())==c.PRICE,"PRICE_REVIEW_REQUIRED")
+    source=old._verify_source_bundle()
+    java=old._java_identity()
+    if not JAR.exists():
+        with old.SOURCE_JAR.open("rb") as src,JAR.open("xb") as dst:shutil.copyfileobj(src,dst)
+    c.require(JAR.stat().st_size==66981576 and old._sha_file(JAR)==c.SOURCE_JAR_SHA256,"TASK_JAR")
+    once(WORK/"preflight/java-source-identity.json",{"source":source,"java":java,"task_jar_sha256":old._sha_file(JAR)})
     key=os.environ.get("DEEPSEEK_API_KEY","")
     c.require(bool(key),"DEEPSEEK_KEY_UNAVAILABLE")
     slots=[("56"+uuid.uuid4().hex[:16],old._free_port(),old._free_port()) for _ in range(2)]
-    plan=c.session_plan("rpf56-session-"+uuid.uuid4().hex[:16],slots,base["source_files"],h55.identity_fields(base["sdk"]))
+    plan=c.session_plan("rpf56r3-session-"+uuid.uuid4().hex[:16],slots,base["source_files"],h55.identity_fields(base["sdk"]))
     once(WORK/"preflight/session-plan.json",plan)
     total=TotalLedger(WORK/"ledger",plan,create=True)
     once(WORK/"preflight/session-started.json",{"session_id":plan["session_id"],"plan_sha256":c.digest(plan),"source_files":base["source_files"],"verifier_identity":base["verifier_identity"],"runner_pid":os.getpid()})

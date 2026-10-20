@@ -19,7 +19,7 @@ SOURCE_FILES=tuple("runtime/runproof_runtime/effectwitness/"+n+".py" for n in (
 def source_identity():
     return {p:hashlib.sha256((ROOT/p).read_bytes().replace(b"\r\n",b"\n")).hexdigest() for p in SOURCE_FILES}
 def verifier_identity():
-    return {"version":"rpf56-config-pge-verifier-v1","sha256":hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n",b"\n")).hexdigest()}
+    return {"version":"rpf56-config-pge-verifier-v3","sha256":hashlib.sha256(Path(__file__).read_bytes().replace(b"\r\n",b"\n")).hexdigest()}
 def seal(payload):
     return {"schema":EVIDENCE_SCHEMA,"payload":payload,"payload_sha256":digest(payload),"verifier_identity":verifier_identity()}
 

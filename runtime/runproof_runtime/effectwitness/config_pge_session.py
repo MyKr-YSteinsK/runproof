@@ -10,7 +10,7 @@ class Journal:
     def __init__(self,path,run_id):
         self.path,self.run_id,self.events=path,run_id,[]
         if path is not None:
-            root=Path(__file__).resolve().parents[3]/".local/rpf-56"
+            root=Path(__file__).resolve().parents[3]/".local/rpf-56-rev3"
             require(path.resolve().is_relative_to(root.resolve()) and not any(p.is_symlink() or getattr(p,"is_junction",lambda:False)()
                 for p in (path,*path.parents)),"JOURNAL_SCOPE")
             with path.open("xb"):pass
@@ -54,7 +54,7 @@ def validate_budget(state):
 class TotalLedger:
     def __init__(self, path: Path, plan, *, create=False):
         validate_plan(plan)
-        root = Path(__file__).resolve().parents[3] / ".local/rpf-56"
+        root = Path(__file__).resolve().parents[3] / ".local/rpf-56-rev3"
         require(path.is_absolute() and path.resolve().is_relative_to(root.resolve())
             and not any(p.is_symlink() or getattr(p,"is_junction",lambda:False)() for p in (path,*path.parents)), "LEDGER_SCOPE")
         self.path, self.plan = path, plan
@@ -151,7 +151,7 @@ class TotalLedger:
 
 def feedback(trial):
     x=trial["contracts"]["experiment"]
-    return {"schema":"rpf56-verified-feedback-v1","run_id":x["run_id"],"candidate_id":x["candidate_id"],
+    return {"schema":"rpf56-verified-feedback-v3","run_id":x["run_id"],"candidate_id":x["candidate_id"],
         "trial_sha256":digest(trial),"effect":"SATISFIED_V2_HISTORY_2_1","fault":trial["fault"],
         "authority":"SAME_SERVICE_READ_ONLY_HTTP","target_ack":trial["outcome"]["target_ack"],
         "source_level":"REAL_PROVIDER_TARGET_JAVA_H2","business_violation":"NOT_PROVEN"}
