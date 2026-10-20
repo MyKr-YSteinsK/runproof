@@ -1,8 +1,8 @@
 # TASK_RESULT — RPF-57 rev-1
 
-**Status: Partial**
+**Status: Complete**
 
-执行日期：2026-10-20，Asia/Shanghai。实现、真实两轮会话、新 Witness 与本地验收通过；A-10 受限 Git 交付待完成。证据接受与阶段推进仍待 Architect 审查。
+执行日期：2026-10-20，Asia/Shanghai。实现、真实两轮会话、新 Witness、本地验收及指定分支 Git 交付均已完成。证据接受与阶段推进仍待 Architect 审查。
 
 ## 1. 结果与身份
 
@@ -95,7 +95,7 @@ JVM=2/2、POST=4/4、业务 HTTP=16/24、health=2/6。正式两轮均在 1,200s/
 | A-07 Target/业务/Fault | PASS | 2真实Target、2新Java；抑制实际激活并只读对账；normal本次Live NOT_RUN |
 | A-08 实际覆盖增益 | PASS | 验证反馈seq3先于第二轮请求seq4；candidate_changed=true，新增2条实际事实 |
 | A-09 Witness/回归 | PASS | 新Witness；347 Runtime tests/2 Docker skip；10历史锚current-tree CLI exit0；Reviewed/Public Docs PASS |
-| A-10 交付 | NOT_RUN | 待 focused commit/push/fresh remote核验 |
+| A-10 交付 | PASS | 首次聚焦实现提交已push；fresh ls-remote与GitHub commit读回匹配；tracked/index clean，仅保留原用户条目 |
 
 命令：`python -B spikes/rpf-57/probe.py offline`（12项定向测试+正负完整CLI）；三个 fixture 命令与唯一一次 live 命令；完整 `unittest discover -s runtime/tests -t . -p test_*.py -v` 在本轮 ignored 快照运行，**347 tests / 0 failures / 0 errors / skipped=2**。快照取自精确 Base 的 runtime/spikes/ci/demo 并覆盖新六文件，禁用 Java/Docker与外部网络，无Key；旧测试自建的旧名称目录也完全在本轮快照内部，未触及实际历史运行根。Source SHA 对照一致。两个 Docker 环境测试明确 skip，不算Docker验收。
 
@@ -109,6 +109,6 @@ Maven、Web build/typecheck、浏览器/UI、Docker正式边界和Hosted CI/work
 
 本轮 ignored 根保留任务JAR、三Fixture、两Trial、fsync账/事件、redacted Java日志、raw health、来源/回归快照及CLI负控以供复查；不进入Git。无生产凭据、用户数据、外部原仓库或系统设置修改。执行源码冻结后只写报告/摘要/证书和本轮诊断；生成用临时脚本在清理时移除，必要运行证据保留。没有创建RPF58–60计划。
 
-本次主结果为本文件，README为复现/边界入口。Git交付状态将在实际核验后收口；最终完整commit SHA在聊天回执，避免循环回填自身SHA。Push不等于Merge/Deploy，证据接受和阶段推进待Architect审查。
+本次主结果为本文件，README为复现/边界入口。首次实现交付 SHA=`c5aeef8fe4def95cac0fd1f9dec23908821d3b54`，普通push后fresh ls-remote与GitHub commit API均确认一致；main及父分支保持原SHA。本次收口只更新本报告状态，运行源码与证书不变；最终完整commit SHA在聊天回执，避免循环回填自身SHA。Push不等于Merge/Deploy，证据接受和阶段推进待Architect审查。
 
 交付前逐文件核对暂存 Git blob 与工作文件完全同字节，证书 raw SHA 未变化，运行源码与隔离回归快照一致。新文件 private-path/secret pattern 扫描通过，任务端口再次确认关闭。普通 `git diff --cached --check` 仅报告 session.py 末尾额外空行；为保留已执行源码哈希未修饰该空行，显式 `git -c core.whitespace=-blank-at-eof diff --cached --check` 其余项通过。Git autocrlf 警告不代表当前证书已被转换；实际暂存原字节已核对。
