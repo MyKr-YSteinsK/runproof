@@ -59,7 +59,7 @@ Session=`rpf56r3-session-09bea184907340f8`；plan SHA=`5df7a1ec2a61bd8bdb1cdd279
 | A-07 自主反馈链 | NOT_RUN | 无合法第一轮选择/Trial/verdict，未发送第二次请求。 |
 | A-08 Live Witness | NOT_RUN | no-valid-Witness，文件不存在。 |
 | A-09 回归安全 | PASS | 最终 16 定向/329 Runtime（2 Docker skips）、九旧锚、Reviewed/PublicDocs、源/范围/密钥检查通过。 |
-| A-10 Git/回传 | NOT_RUN | 待 focused commit、普通 push 及 fresh remote 观察后更新。 |
+| A-10 Git/回传 | PASS | focused commit 已普通 push，fresh ls-remote 与本地 SHA 一致；GitHub connector 观察到该新分支，main/Parent 未变；本记录单独提交收口。 |
 
 ## 5. 实际用量、清理与源码
 
@@ -91,4 +91,4 @@ Java source commit=`0258b9cef02ea74a40989d035c79256c776409c0`，manifest SHA=`33
 
 下一步需要新的受限 Plan，先补全不保留正文/推理的 response-shape/finish-reason 诊断，并在新的明确额度内核查 Explorer 协议；不能借本轮剩余额度追加调用、切换模型/SDK/Provider或修改 Windows 策略。无需重新索取 API key。
 
-本次提交/推送与 fresh 远端核验完成后在同一报告收口，最终 SHA 在聊天回执给出。仅向指定新分支交付，无 main push/merge、PR、tag、release、workflow dispatch、deploy 或阶段接受声明。
+首次交付 commit=`7f80c6bbd28c652224b916670acfc02dfc7fa7a3`，已普通 push，fresh `git ls-remote` 与本地 SHA 一致；GitHub connector 独立观察到指定新分支。未认证 GitHub REST ref 查询受到共享出口 rate limit，未反复重试或申请新权限，使用既有 connector 完成分支观察。main 仍为 `bda0cd49e50e3181f604324e94877a24b9885334`，Parent 仍为 `fed5354eb70c6e2b25198f9a92c340cbf24bb551`；仅五个源码/测试路径修改及五个 rev-3 新结果文件。交付后工作树只剩用户原有 `?? docs/reviews/` 外层状态。未运行 hosted CI（feature push 不匹配 main 自动 Gate）。本记录单独提交收口，最终 SHA 在聊天回执给出。仅向指定新分支交付，无 main push/merge、PR、tag、release、workflow dispatch、deploy 或阶段接受声明。
