@@ -1,8 +1,8 @@
 # TASK_RESULT — RPF-56 rev-4
 
-**Status: Partial**
+**Status: Complete**
 
-执行日期：2026-10-20，Asia/Shanghai。真实链与本地正式验收已完成，Git 交付待收口；更新后以本文件最终状态为准。
+执行日期：2026-10-20，Asia/Shanghai。真实链、本地正式验收及指定分支 Git 交付均已完成；工程 Complete 不代表 Architect 已接受证据或推进阶段。
 
 ## 1. 结果与任务身份
 
@@ -100,8 +100,10 @@ Java source commit=`0258b9cef02ea74a40989d035c79256c776409c0`，manifest SHA=`33
 | A-07 Java/Effect/故障 | PASS | 两个fresh Java/H2，v2/history21、无重复POST、normal真实无故障、清理通过。 |
 | A-08 真反馈时序 | PASS | 第1轮feedback seq3先于第2轮freeze seq4；Call ID/hash匹配，合法重复。 |
 | A-09 真Live Witness | PASS | 新真实Envelope、外部SHA0/2/3和11 rehashed tamper，完整源/模型/业务/预算/清理。 |
-| A-10 回归/Git/回传 | NOT_RUN | 回归与安全审查通过；待 focused commit/push/fresh GitHub核验收口。 |
+| A-10 回归/Git/回传 | PASS | 回归/安全通过，focused commit普通push，fresh ls-remote与GitHub commit身份一致，main/Parent不变；本记录单独提交收口。 |
 
 这是一次有限机制会话，正常候选重复不证明统计优势、强因果或系统安全。issuer_authenticity/database_independent_authority=`NOT_ESTABLISHED`，independent_reproduction=`NOT_TESTED`，WorkSwarm=`NOT_PROVEN`，attribution=`CORRELATIONAL_ONLY`。不由Codex宣布主线接受或阶段推进：**EVIDENCE_ACCEPTED=PENDING_ARCHITECT_REVIEW；STAGE_ADVANCED=NOT_DECIDED**。
 
-交付后由 Architect 独立审查新证据，另行决定是否需要重复实验/限定归因或后续整合。本轮不追加样本、不修改main、不建PR、不发布/部署、不改Canonical Project State。实际 Git/fresh远端核验将在同一报告收口，最终SHA由聊天回执给出。
+首次完整交付 commit=`065f3c6ab9d876a6c443a1b3796cd411a3e324f5`，已普通 push 至指定新分支；fresh ls-remote与本地一致，GitHub connector独立取回同SHA的commit及12个精确白名单文件。main仍为`bda0cd49e50e3181f604324e94877a24b9885334`，Parent仍为`296caf60afe6377634481986e3c383c9381c0f9a`；工作树只剩用户原有`?? docs/reviews/`外层条目。暂存的证书Git blob与实际原始bytes相同，SHA未变；执行源码/Verifier/测试与交付blob一致。本状态记录单独文档提交收口，最终SHA由聊天回执给出。feature push不匹配main自动Gate，未请求hosted CI。
+
+交付后由 Architect 独立审查新证据，另行决定是否需要重复实验/限定归因或后续整合。本轮不追加样本、不修改main、不建PR、不发布/部署、不改Canonical Project State。
