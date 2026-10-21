@@ -1,0 +1,109 @@
+{
+  "schema": "rpf62-preflight-v1",
+  "status": "PASS",
+  "metadata_processes": 1,
+  "cold_processes": 1,
+  "cold_second_attempt": "NOT_RUN",
+  "sources": {
+    "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+    "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+    "runtime/runproof_runtime/effectwitness/config_live_verify.py": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+    "runtime/runproof_runtime/effectwitness/contracts.py": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+    "runtime/runproof_runtime/effectwitness/pge_target_capability.py": "740655bdd078ae93da55ec83eb8a700a3e55b5a188c893e01b6f1223b25eb38d",
+    "runtime/runproof_runtime/effectwitness/pge_target_capability_verify.py": "186f719b602b23fde5a2f6e13a941c59d237b4d4ca4e0425c3165e35f5f15ce2",
+    "runtime/runproof_runtime/effectwitness/pge_target_config_spike.py": "5ee96446aade25748b766bb61e153a76a87ad92762cb8a8b276673efe660fc80",
+    "runtime/tests/test_effectwitness_pge_target_capability.py": "e27fd150e9c880acea780607f176c3e6c1e73fecf834dac42cbecd6514d533c5",
+    "spikes/rpf-53/probe.py": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+    "spikes/rpf-55/probe.py": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+    "spikes/rpf-62/probe.py": "6c69f051e2581456f7327fe5e863494517f3c349d420d05fe78c7b3c1fa20d00"
+  },
+  "source_sha256": "a03c036fa5e8ef58a7b1a032e3560325ac1e7015667662c00f640a4ae2a84abe",
+  "verifier": {
+    "version": "rpf62-target-capability-verifier-v1",
+    "sha256": "186f719b602b23fde5a2f6e13a941c59d237b4d4ca4e0425c3165e35f5f15ce2"
+  },
+  "sdk_identity": {
+    "python_version": "3.12.13",
+    "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+    "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+    "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+    "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+    "pydantic_record_entries": 444,
+    "pydantic_record_mismatches": 0,
+    "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+    "openai_record_entries": 2000,
+    "openai_record_mismatches": 0
+  },
+  "java_identity": {
+    "executable_sha256": "9da06bd6c880c0c8d1a63e3716f8ef7996f146c41e6d339e4eafc93df28392f9",
+    "identity_source": "JDK_RELEASE_FILE_NO_PROCESS",
+    "release_sha256": "00d3211a59bc9f2577f93962e9210de8578c49fd2625022cb38606817d3a71f9",
+    "version": "17.0.12"
+  },
+  "source_bundle": {
+    "jar_bytes": 66981576,
+    "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+    "manifest_sha256": "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343",
+    "source_commit": "0258b9cef02ea74a40989d035c79256c776409c0",
+    "source_file_count": 110,
+    "source_total_bytes": 393800
+  },
+  "sdk_versions": {
+    "python": "3.12.13",
+    "pydantic-ai-slim": "2.57.0",
+    "openai": "3.35.1"
+  },
+  "record_entries": {
+    "pydantic": 443,
+    "openai": 1999
+  },
+  "cold": {
+    "status": "PASS",
+    "source_kind": "FIXTURE_SCRIPTED",
+    "popen_pid": 29304,
+    "ready_pid": 29304,
+    "report_pid": 29304,
+    "tool_names": [
+      "inspect_config",
+      "create_config_v1",
+      "update_config_v2",
+      "inspect_config"
+    ],
+    "returned_in_request": [
+      2,
+      3,
+      4,
+      5
+    ],
+    "checks": {
+      "cleanup": true,
+      "guard": true,
+      "pid": true,
+      "requests": true,
+      "returns": true,
+      "status": true,
+      "stderr": true,
+      "tools": true,
+      "unknown": true
+    },
+    "provider": 0,
+    "java": 0,
+    "business_http": 0
+  },
+  "price": {
+    "checked_date": "2026-10-21",
+    "input_cny_per_million_bound": 4.5,
+    "output_cny_per_million_bound": 18.0,
+    "basis": "USD_PEAK_0.30_1.20_TIMES_15_GUARD_NOT_FX_OR_INVOICE",
+    "sources": [
+      "https://api-docs.deepseek.com/quick_start/pricing/",
+      "https://api-docs.deepseek.com/guides/tool_calls/"
+    ]
+  },
+  "source_freeze": "G2_METADATA_COLD_REAL_TRIAL_FINAL_IDENTICAL"
+}
