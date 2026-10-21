@@ -76,6 +76,7 @@ import { FailureCaseDetail as FailureCaseDetailFeature } from "./features/failur
 import { resolveCanonicalRouteState } from "./app/canonicalRouteState";
 import { useI18n } from "./i18n";
 import { ApiRouteLoadingState, CanonicalApiAgentDetailPage, CanonicalApiDetailPage, CanonicalApiIndexPage } from "./features/canonical/CanonicalApiPages";
+import { CrossDomainPage } from "./features/effectwitness/CrossDomainPage";
 import { LabPage } from "./features/effectwitness/LabPage";
 import { LivePage } from "./features/effectwitness/LivePage";
 import { RecordedPage } from "./features/effectwitness/RecordedPage";
@@ -1781,6 +1782,7 @@ export default function App() {
     ? canonicalRouteState.selection
     : {};
   const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
+  if (labRoute && location.pathname.startsWith("/effectwitness/cross-domain")) return <CrossDomainPage path={location.pathname} search={location.search} />;
   if (labRoute) return location.pathname === "/effectwitness/recorded"
     ? <RecordedPage path={location.pathname} search={location.search} />
     : location.pathname.startsWith("/effectwitness/explorations")

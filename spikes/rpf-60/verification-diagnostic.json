@@ -1,0 +1,250 @@
+{
+  "additional_semantic_controls": {
+    "cold_pid_splice": "REJECTED_AFTER_REHASH",
+    "external_endpoint": "REJECTED_AFTER_REHASH",
+    "false_fault_activation": "REJECTED_AFTER_REHASH",
+    "missing_authority": "REJECTED_AFTER_REHASH"
+  },
+  "bytes": 1069226,
+  "controls": {
+    "correct_missing_wrong": [
+      0,
+      2,
+      3
+    ],
+    "rehashed_semantic_tamper": {
+      "budget_extra": 3,
+      "cleanup": 3,
+      "cold_failed": 3,
+      "cold_source": 3,
+      "duplicate_call_id": 3,
+      "duplicate_write": 3,
+      "false_effect": 3,
+      "feedback_fact_splice": 3,
+      "future_feedback": 3,
+      "illegal_candidate": 3,
+      "illegal_tool": 3,
+      "missing_tool": 3,
+      "mixed_source": 3,
+      "multiple_tools": 3,
+      "old_owner": 3,
+      "research_overclaim": 3,
+      "runtime_callable": 3,
+      "schema_downgrade": 3,
+      "source": 3,
+      "time_reverse": 3,
+      "tool_call_id": 3,
+      "unknown_usage": 3,
+      "usage_reset": 3,
+      "wrong_authority": 3,
+      "wrong_slot": 3
+    }
+  },
+  "download_same_bytes": true,
+  "privacy_exact_secret_absence": true,
+  "raw_sha256": "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9",
+  "source_files": {
+    "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+    "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+    "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+    "runtime/runproof_runtime/effectwitness/config_live_verify.py": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+    "runtime/runproof_runtime/effectwitness/config_pge_contracts.py": "4577cbf968cf290a2005b6d9cef511a85c3725320d525b3f02fdf727b933035f",
+    "runtime/runproof_runtime/effectwitness/config_pge_session.py": "a4d320e5c0ac13b1fee7fbd47c37055c1a2f786a5efeca386254cf84458c09b1",
+    "runtime/runproof_runtime/effectwitness/config_pge_target.py": "342cf305e134ac8c1c2b81eabb704b8aef4efeeeadb776f01329d734b69241b5",
+    "runtime/runproof_runtime/effectwitness/contracts.py": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+    "runtime/runproof_runtime/effectwitness/effect_oracle.py": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+    "runtime/runproof_runtime/effectwitness/lab_cross_domain.py": "a8b946937693e9e0582d59737f2a30ebfdb4e02163242744c32e8d747bf7b88c",
+    "runtime/runproof_runtime/effectwitness/lab_cross_domain_contracts.py": "b634a637623f31cb8e2ec38a68a51286f7c0126ac2b5c2dbb7709af2cb45e6a0",
+    "runtime/runproof_runtime/effectwitness/lab_cross_domain_projection.py": "e1b11e56768761e8dc22ff2d2780b04847157fd42ffb13d5be403a7ecf2691b1",
+    "runtime/runproof_runtime/effectwitness/lab_cross_domain_verify.py": "8c6848643c6513807c731936d64e929aae8576b15c43eb0b518fe3db6e39a8a9",
+    "runtime/runproof_runtime/effectwitness/lab_gateway.py": "3e275163d2ef278a1579fd2639555185731c194b731084da9388892c369a1c98",
+    "runtime/runproof_runtime/effectwitness/lab_store.py": "00e28d5ab0cbe1f7ecdeccb8e80889c27701734143984f0912a7bf1e3108df19",
+    "runtime/runproof_runtime/effectwitness/orders.py": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+    "runtime/runproof_runtime/models.py": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+    "runtime/tests/test_effectwitness_lab_cross_domain.py": "bc6e41cf9be3149a432759e4b010cd35693fb92821e74571bfc9abede5e7d96c",
+    "runtime/tests/test_effectwitness_lab_cross_domain_gateway.py": "37778fc41f25642c3217955ee852a87b3b834cbe57a46ef014cd2d48980c3b4b",
+    "spikes/rpf-53/probe.py": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+    "spikes/rpf-55/probe.py": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+    "vite.config.ts": "e50a947787c1d728be208f125715394ed8b5352243c65c6b5f431049ef4c3b69",
+    "web/src/App.tsx": "0f8318071ce7801d0ddba0a3bbaffaee0e7d21592c46ab8a8c9b7b345f57cce2",
+    "web/src/components/AppShell.tsx": "af6c250c01225fb73729377bc96db97eb89cb42c2e8de14bb7344bc657c1f114",
+    "web/src/features/effectwitness/CrossDomainPage.tsx": "a2ab0af79f74e75adfd9f85f68b49c8f7b54ec21ad333b0631e4b47e2f2db101",
+    "web/src/features/effectwitness/crossDomainApi.test.ts": "f101e8d81c69b391efbead08f40f8b16eee0ab9ef41742aae948351b96bf4629",
+    "web/src/features/effectwitness/crossDomainApi.ts": "49b0d07f20d36ab59e9c94e1ceb56d45c98ddeaf2268cc481487792f1ad22d9f",
+    "web/src/features/effectwitness/crossDomainCopy.ts": "58af89ca181e65914a80fffa629c5cddb8d1fc75ecc1b5a131d60e459eeb9c6c",
+    "web/src/features/effectwitness/lab.css": "6bd236b24a0c015c67251fea655b46554289bfa6acac4afb081f8bf4dbccde11"
+  },
+  "source_sha256": "3402428d659a5140d8c90a108a59142b78b0beba2d6de7d2e4c9a3ce967e0ada",
+  "status": "PASS",
+  "verifier": {
+    "sha256": "8c6848643c6513807c731936d64e929aae8576b15c43eb0b518fe3db6e39a8a9",
+    "version": "rpf60-selection-verifier-v1"
+  },
+  "historical_anchors": [
+    {
+      "flag": "--expected-sha256",
+      "id": "43",
+      "module": "witness_verify",
+      "path": "spikes/rpf-43/sample-witness.json",
+      "returncode": 0,
+      "sha256": "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e",
+      "elapsed_seconds": 0.17547400000012203,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-43.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "44",
+      "module": "witness_verify",
+      "path": "spikes/rpf-44/sample-ops-witness.json",
+      "returncode": 0,
+      "sha256": "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873",
+      "elapsed_seconds": 0.15625980000004347,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-44.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "48",
+      "module": "target_evidence",
+      "path": "spikes/rpf-48/target-agent-summary.json",
+      "returncode": 0,
+      "sha256": "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2",
+      "elapsed_seconds": 0.2102911000001768,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-48.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "49",
+      "module": "target_recovery",
+      "path": "spikes/rpf-49/recovery-summary.json",
+      "returncode": 0,
+      "sha256": "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b",
+      "elapsed_seconds": 0.19382230000019263,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-49.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "50",
+      "module": "violation_witness",
+      "path": "spikes/rpf-50/violation-witness.json",
+      "returncode": 0,
+      "sha256": "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a",
+      "elapsed_seconds": 0.1938466999999946,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-50.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "51r4",
+      "module": "config_http_witness",
+      "path": "spikes/rpf-51/rev-4/config-http-witness.json",
+      "returncode": 0,
+      "sha256": "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d",
+      "elapsed_seconds": 0.20375799999965238,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-51r4.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "52r3",
+      "module": "config_target_verify",
+      "path": "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+      "returncode": 0,
+      "sha256": "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27",
+      "elapsed_seconds": 0.2225401000000602,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-52r3.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "53r6",
+      "module": "config_live_verify",
+      "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+      "returncode": 0,
+      "sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "elapsed_seconds": 0.12742900000012014,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-53r6.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "55r2",
+      "module": "config_experiment_verify",
+      "path": "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+      "returncode": 0,
+      "sha256": "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8",
+      "elapsed_seconds": 0.2678691000000981,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-55r2.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "56r4",
+      "module": "config_pge_verify",
+      "path": "spikes/rpf-56/rev-4/config-pge-evidence.json",
+      "returncode": 0,
+      "sha256": "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b",
+      "elapsed_seconds": 0.333504400000038,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-56r4.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "57v1",
+      "module": "config_pge_coverage_verify",
+      "path": "spikes/rpf-57/config-pge-coverage-evidence.json",
+      "returncode": 0,
+      "sha256": "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7",
+      "elapsed_seconds": 0.35098489999973026,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-57v1.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "58r2",
+      "module": "pge_shared_verify",
+      "path": "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+      "returncode": 0,
+      "sha256": "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d",
+      "elapsed_seconds": 0.48770790000025954,
+      "log": ".local\\rpf-60\\diagnostics\\anchor-58r2.log"
+    }
+  ],
+  "cleanup": {
+    "ports": {
+      "8765": "CLOSED",
+      "4185": "CLOSED",
+      "11596": "CLOSED",
+      "11597": "CLOSED",
+      "11598": "CLOSED",
+      "11599": "CLOSED"
+    },
+    "owned_processes": {
+      "20236": "EXITED",
+      "10592": "EXITED",
+      "5752": "EXITED",
+      "30272": "EXITED",
+      "24708": "EXITED"
+    }
+  },
+  "source_map_counts": {
+    "new_or_changed": 16,
+    "inherited_stable": 16
+  },
+  "source_freeze": "G3_METADATA_COLD_LIVE_FINAL_IDENTICAL",
+  "full_runtime": {
+    "returncode": 0,
+    "elapsed_seconds": 543.7824079000002,
+    "snapshot": ".local\\rpf-60\\regression-snapshot-72f4b54e",
+    "source_sha256": "3402428d659a5140d8c90a108a59142b78b0beba2d6de7d2e4c9a3ce967e0ada",
+    "prerequisite_repair": "TASK_TEST_ROOT_CREATED_IN_MIRROR_NO_SOURCE_CHANGE",
+    "first_attempt": "full-runtime-first.json"
+  },
+  "repo_checks": {
+    "reviewed-artifacts": {
+      "returncode": 0,
+      "elapsed_seconds": 0.6923902999997154,
+      "log": ".local\\rpf-60\\diagnostics\\reviewed-artifacts.log"
+    },
+    "public-docs": {
+      "returncode": 0,
+      "elapsed_seconds": 0.1952820999999858,
+      "log": ".local\\rpf-60\\diagnostics\\public-docs.log"
+    }
+  }
+}

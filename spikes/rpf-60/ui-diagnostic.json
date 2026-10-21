@@ -1,0 +1,286 @@
+{
+  "status": "PASS",
+  "web_tests": {
+    "files": 16,
+    "tests": 64,
+    "status": "PASS"
+  },
+  "typecheck": "PASS",
+  "build": "PASS",
+  "build_warning": "EXISTING_CHUNK_OVER_500_KB",
+  "browser": [
+    {
+      "gate": "FREE_BROWSER",
+      "reviewed": "PASS",
+      "raw_sha_check": "PASS",
+      "bilingual": "PASS",
+      "keyboard_event_deeplink": "PASS",
+      "rpf46_recorded": "PASS",
+      "provider": 0,
+      "business": 0
+    },
+    {
+      "legacy_order_ops_selector": "PASS",
+      "canonical_overview": "API_UNAVAILABLE_FAIL_CLOSED_NO_FIXTURE"
+    },
+    {
+      "live_session": "rpf60-session-ff259b8d1bef494b",
+      "browser_create_http": 202,
+      "request_id": "9cd8a718-05d3-494a-a463-5a0e440aaa7c",
+      "completed": "PASS",
+      "raw_sha256": "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9",
+      "download_bytes_equal": "PASS",
+      "gateway_down": "GATEWAY_UNAVAILABLE_NO_FALLBACK",
+      "horizontal_overflow": false
+    },
+    {
+      "real_restart_readback": "PASS",
+      "new_deeplink": "PASS",
+      "same_live_session_id": "rpf60-session-ff259b8d1bef494b",
+      "extra_provider": 0
+    }
+  ],
+  "http": [
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1352",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions",
+      "http_method": "POST",
+      "post_sha256": "44ea0803adc8fbec0150f26c596f65ea396fc367c1f5e12721d994ffff4773cb",
+      "request_id_body": "9cd8a718-05d3-494a-a463-5a0e440aaa7c"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1352",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions",
+      "status": 202
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1353",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1353",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1354",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1354",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1355",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1355",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1356",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1356",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1357",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1357",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1358",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1358",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1359",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1359",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1376",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1377",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1377",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1378",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1378",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1379",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1379",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1380",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1380",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1381",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b/witness",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1381",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b/witness",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1382",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1382",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 503
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1536",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1537",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1536",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1537",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    },
+    {
+      "method": "Network.requestWillBeSent",
+      "request_id": "29820.1538",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "http_method": "GET"
+    },
+    {
+      "method": "Network.responseReceived",
+      "request_id": "29820.1538",
+      "url": "http://127.0.0.1:4185/effectwitness-api/cross-domain/sessions/rpf60-session-ff259b8d1bef494b",
+      "status": 200
+    }
+  ],
+  "screenshots": {
+    "reviewed-browser.png": {
+      "sha256": "9f1a9643a7d0187f3877c54a7e13fe90259615359bac4b319e34a458841c6622",
+      "bytes": 69420,
+      "location": ".local\\rpf-60\\diagnostics\\reviewed-browser.png",
+      "publication": "LOCAL_ONLY"
+    },
+    "live-start-browser.png": {
+      "sha256": "0c3326e548c1f36148c53c183936707466a43e72f054e20063bb972efee7dbaa",
+      "bytes": 96837,
+      "location": ".local\\rpf-60\\diagnostics\\live-start-browser.png",
+      "publication": "LOCAL_ONLY"
+    },
+    "live-completed-browser.png": {
+      "sha256": "dac1bf4290d52e700ae1be0122276983627f3edd8a8e46e865a6178fd3d960e0",
+      "bytes": 80210,
+      "location": ".local\\rpf-60\\diagnostics\\live-completed-browser.png",
+      "publication": "LOCAL_ONLY"
+    },
+    "gateway-down-browser.png": {
+      "sha256": "a8828a761fd654c3bf32232da693174c80dc45d62478ab196a51274a4b802802",
+      "bytes": 55215,
+      "location": ".local\\rpf-60\\diagnostics\\gateway-down-browser.png",
+      "publication": "LOCAL_ONLY"
+    }
+  },
+  "runtime_servers_final": "STOPPED",
+  "canonical_api_live": "UNAVAILABLE_CONTROL_PLANE_NOT_RUNNING_FAIL_CLOSED",
+  "physical_mobile": "NOT_RUN"
+}

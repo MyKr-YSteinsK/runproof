@@ -119,7 +119,33 @@ class Handler(BaseHTTPRequestHandler):
                 except (ValueError, UnicodeDecodeError):
                     raise LabError(400, "JSON_REJECTED")
             path = self.path
-            if self.command == "GET" and path == PREFIX + "/capabilities":
+            if path.startswith(PREFIX + "/cross-domain"):
+                from .lab_cross_domain_projection import reviewed,SCHEMA as CROSS_SCHEMA
+                cross = getattr(self.server.store,"cross_domain",None)
+                base = PREFIX + "/cross-domain"
+                if self.command == "GET" and path == base + "/reviewed/rpf-59":
+                    self.reply(200,reviewed())
+                elif self.command == "GET" and path == base + "/reviewed/rpf-59/witness":
+                    from .lab_cross_domain_contracts import ROOT
+                    reviewed()
+                    self.reply(200,(ROOT/"spikes/rpf-59/cross-domain-selection-evidence.json").read_bytes(),raw=True)
+                elif self.command == "GET" and path == base + "/capabilities":
+                    self.reply(200,cross.capabilities() if cross else {"schema_version":CROSS_SCHEMA,"enabled":False,"reason":"SERVER_OPT_IN_REQUIRED","remaining_sessions":0})
+                elif cross is None:
+                    raise LabError(409,"CROSS_DOMAIN_DISABLED")
+                elif self.command == "POST" and path == base + "/sessions":
+                    self.reply(202,cross.create(body))
+                elif self.command == "GET" and re.fullmatch(base+r"/requests/[a-f0-9-]{36}",path):
+                    self.reply(200,cross.recover(path.rsplit("/",1)[1]))
+                else:
+                    match=re.fullmatch(base+r"/sessions/(rpf60-session-[a-f0-9]{16})(/cancel|/witness)?",path)
+                    if not match:raise LabError(404,"ROUTE_NOT_FOUND")
+                    sid,action=match.groups()
+                    if self.command=="GET" and action is None:self.reply(200,cross.get(sid))
+                    elif self.command=="GET" and action=="/witness":self.reply(200,cross.witness(sid),raw=True)
+                    elif self.command=="POST" and action=="/cancel" and body=={}:self.reply(200,cross.cancel(sid))
+                    else:raise LabError(400,"REQUEST_REJECTED")
+            elif self.command == "GET" and path == PREFIX + "/capabilities":
                 self.reply(200, self.server.store.capabilities())
             elif path.startswith(PREFIX + "/explorations"):
                 live = self.server.store.exploration
@@ -169,16 +195,28 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--enable-local-simulation", action="store_true")
     parser.add_argument("--enable-paid-order-pge", action="store_true")
+    parser.add_argument("--enable-paid-cross-domain-pge", action="store_true")
     parser.add_argument("--port", type=int, default=8765)
     args = parser.parse_args()
     if not args.enable_local_simulation:
         parser.error("Explicit --enable-local-simulation required")
     token = os.environ.get("RPF_EW_LAB_GATEWAY_TOKEN", "")
-    store = SessionStore()
+    if args.enable_paid_cross_domain_pge and args.enable_paid_order_pge:
+        parser.error("One paid namespace per process")
+    if args.enable_paid_cross_domain_pge:
+        from .lab_cross_domain_contracts import WORK
+        store=SessionStore(WORK/"legacy-disabled", storage_task="rpf-60", read_only=True)
+    else:
+        store = SessionStore()
+    cross = None
     try:
         if args.enable_paid_order_pge:
             from .lab_exploration import ExplorationStore
             ExplorationStore(store, enabled=True)
+        if args.enable_paid_cross_domain_pge:
+            from .lab_cross_domain_projection import CrossDomainStore
+            cross=CrossDomainStore(enabled=True)
+            store.cross_domain=cross
         server = Gateway(args.port, token, "http://127.0.0.1:4185", store)
         print("Local controlled Lab listening on 127.0.0.1:" + str(server.server_port), flush=True)
         try:
@@ -188,6 +226,7 @@ def main():
         finally:
             server.server_close()
     finally:
+        if cross: cross.close()
         store.close()
 
 

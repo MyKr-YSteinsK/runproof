@@ -8,7 +8,13 @@ import threading
 import uuid
 from datetime import datetime, timezone
 
-from .contracts import ROOT, canonical, owned_path, quarantine_path
+from .contracts import ROOT, canonical, owned_path as original_owned_path, quarantine_path
+
+def owned_path(path, *, task="rpf-45"):
+    if task == "rpf-60":
+        from .lab_cross_domain_contracts import scoped
+        return scoped(path)
+    return original_owned_path(path, task=task)
 from .cross_contracts import CrossContracts
 from .cross_trial import run_trial
 from .witness_verify import verify_bytes
@@ -42,7 +48,8 @@ def atomic_write(path, raw, *, task="rpf-45"):
 
 
 class SessionStore:
-    def __init__(self, root=None, *, runner=run_trial, storage_task="rpf-45"):
+    def __init__(self, root=None, *, runner=run_trial, storage_task="rpf-45", read_only=False):
+        self.read_only = read_only
         self.task = storage_task
         self.exploration = None
         self.root = owned_path((root or ROOT45) / "sessions", task=self.task)
@@ -132,7 +139,7 @@ class SessionStore:
                 self.exploration and self.exploration.data["session"] and
                 self.exploration.data["session"]["status"] in BLOCKED)
             return {"schema_version": SCHEMA, "source": "LIVE_LOCAL_SIMULATION", "domains": ["order", "ops"],
-                    "mode": "LOCAL_CONTROLLED_CAPTURE", "fault": "response-lost", "enabled": not blocked and not self.closed,
+                    "mode": "LOCAL_CONTROLLED_CAPTURE", "fault": "response-lost", "enabled": not blocked and not self.closed and not self.read_only,
                     "remaining_reservations": 3 - len(self.data["sessions"]), "max_running": 1, "max_queued": 0,
                     "busy": any(s["status"] in ACTIVE for s in self.data["sessions"]) or bool(self.exploration and self.exploration.active()),
                     "limits": {"trials": 3, "steps_per_trial": 8, "seconds_per_trial": 900,
@@ -140,6 +147,8 @@ class SessionStore:
                     "explorer": "NOT_IMPLEMENTED", "issuer_authenticity": "NOT_ESTABLISHED"}
 
     def create(self, request):
+        if self.read_only:
+            raise LabError(409, "LEGACY_CAPTURE_READ_ONLY_IN_CROSS_DOMAIN_MODE")
         if (type(request) is not dict or set(request) != {"domain", "mode", "request_id"}
                 or request["domain"] not in ("order", "ops") or request["mode"] != "LOCAL_CONTROLLED_CAPTURE"
                 or type(request["request_id"]) is not str or not ID.fullmatch(request["request_id"])):

@@ -79,3 +79,5 @@
   .ew-recorded-samples { grid-template-columns: 1fr; }
   .ew-recorded-sourcebar { grid-template-columns: 1fr; }
 }
+
+.ew-cross-links{display:flex;flex-wrap:wrap;gap:12px}.ew-confirm{display:flex;align-items:start;gap:10px;margin:16px 0}.ew-confirm input{min-width:20px;min-height:20px}.ew-cross-timeline{max-height:440px;overflow:auto;overscroll-behavior:contain}.ew-cross code{overflow-wrap:anywhere}.ew-cross pre{max-height:420px;overflow:auto}.ew-cross a:focus-visible,.ew-cross button:focus-visible,.ew-cross input:focus-visible{outline:3px solid #2fc6b1;outline-offset:3px}
