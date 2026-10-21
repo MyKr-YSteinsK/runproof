@@ -1,0 +1,504 @@
+{
+  "schema": "rpf61-submission-package-v1",
+  "plan_id": "RPF-61",
+  "revision": "rev-1",
+  "prepared_date": "2026-10-21",
+  "material_status": "COMPLETE",
+  "user_submission": "NOT_RUN",
+  "portal_form": "PUBLIC_RULES_VERIFIED_LOGGED_IN_FIELDS_UNAVAILABLE",
+  "repo": "https://github.com/MyKr-YSteinsK/runproof",
+  "functional_source_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+  "parent_branch": "codex/rpf-60-cross-domain-live-lab-gateway-ui",
+  "material_branch": "codex/rpf-61-proposal-submission-evidence-package",
+  "main_unchanged_sha": "bda0cd49e50e3181f604324e94877a24b9885334",
+  "manifest_self_binding": "NO_SELF_RAW_HASH_USE_FINAL_GIT_COMMIT_IDENTITY",
+  "artifacts": [
+    {
+      "path": "README.md",
+      "bytes": 2507,
+      "sha256": "b1f2f2b44be1e5eaddc43da567f0a739ce2820e724814382c160792774678d40"
+    },
+    {
+      "path": "SUBMISSION.zh-CN.md",
+      "bytes": 7767,
+      "sha256": "e823c12227f4e4c871f415f0beece29e610952c4bf7e5ab3f7c8231f97604854"
+    },
+    {
+      "path": "SUBMISSION.en-US.md",
+      "bytes": 6798,
+      "sha256": "c4d5dd1a65409a7c2a77fa92cbbb3634b25862f63fef611833ed2c79a05ce8b9"
+    },
+    {
+      "path": "CLAIM_EVIDENCE_MATRIX.md",
+      "bytes": 9400,
+      "sha256": "a20bfe2c3299e11137889108b0b589d58dba04a37ec8802fe67b792bcb518a3f"
+    },
+    {
+      "path": "OFFICIAL_PORTAL_CHECK.md",
+      "bytes": 5137,
+      "sha256": "658a125126b2fdbe8ea2421de74817c4e9adc3a7559fa0949382ad88b1e0e8ee"
+    },
+    {
+      "path": "DEMO_180S.md",
+      "bytes": 6101,
+      "sha256": "a2c30a2d8ca7c36da042ca9b6a3be2d3f11feb6c5749048544aacff00b376563"
+    },
+    {
+      "path": "REPRODUCIBILITY.md",
+      "bytes": 4882,
+      "sha256": "34d2b77167886e8082a11099e96eb574715d64aef07b0cf17efe2136cbb7ec5b"
+    },
+    {
+      "path": "SUBMISSION_CHECKLIST.md",
+      "bytes": 3881,
+      "sha256": "e1f2bc1aa3e7ebaf1b28edfa1dd941916410b071cb831ac55f8f9494d47735a2"
+    },
+    {
+      "path": "RESULT.md",
+      "bytes": 9553,
+      "sha256": "cf7b9c9a8454d9cf49892cac185802ca4330a78f262b0d5b455332aa6b4dd543"
+    },
+    {
+      "path": "assets/reviewed-browser.png",
+      "bytes": 266143,
+      "sha256": "1395f1a7d6f15d7a84da6352efea01cd6fea3f4eb9cea2baa3b41f5d3a8d564e"
+    },
+    {
+      "path": "assets/live-start-browser.png",
+      "bytes": 433132,
+      "sha256": "e5abe629770c125838fd1f52ffd0486e897c269c4ae1a86449879d13548dac5a"
+    },
+    {
+      "path": "assets/live-completed-browser.png",
+      "bytes": 364514,
+      "sha256": "85b6fa39e56cd569e26345296a94e61f1870b30fcc92288e941bed7786298ad6"
+    },
+    {
+      "path": "assets/gateway-down-browser.png",
+      "bytes": 250134,
+      "sha256": "3b5faebe7ba0db81722ff3a558a5348e680bb4820005497dbb7da3944336df55"
+    }
+  ],
+  "sources": [
+    {
+      "id": "RPF-57",
+      "path": "spikes/rpf-57/config-pge-coverage-evidence.json",
+      "sha256": "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7",
+      "bytes": 88960,
+      "module": "config_pge_coverage_verify",
+      "exit": 0,
+      "verdict": {
+        "budget": {
+          "estimated_cost_cny_upper": 0.0387585,
+          "jvm": 2,
+          "post": 4,
+          "requests": 9,
+          "tokens": 7077,
+          "usage_known": true
+        },
+        "research": {
+          "H1": "NOT_PROVEN",
+          "L1": "TWO_REAL_ROLES_EXECUTED",
+          "L2": true,
+          "L2_status": "L2_OBSERVED_INFORMATION_GAIN_IN_THIS_RUN",
+          "L3": "NOT_PROVEN",
+          "attribution": "CORRELATIONAL_ONLY",
+          "candidate_changed": true,
+          "information_gain_proxy": 2,
+          "new_verified_fact_count": 2,
+          "new_verified_facts": [
+            "ack_unknown_reconciled",
+            "delivery_suppression_observed"
+          ]
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET_CONFIG_JAVA_HTTP",
+        "status": "PASS"
+      },
+      "pinned_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8/spikes/rpf-57/config-pge-coverage-evidence.json",
+      "verifier_sha256": "4bee4479145222f7c5707a85343c06f9d27946fa1cbe6833e3b4714f9ff31272",
+      "public_http_status": 200
+    },
+    {
+      "id": "RPF-58",
+      "path": "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+      "sha256": "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d",
+      "bytes": 77522,
+      "module": "pge_shared_verify",
+      "exit": 0,
+      "verdict": {
+        "actual": {
+          "business_http": 8,
+          "cost_cny": 0,
+          "health": 1,
+          "jvm": 1,
+          "post": 2,
+          "provider": 0,
+          "sdk": 1,
+          "sqlite_trial": 1,
+          "tokens": 0
+        },
+        "boundaries": {
+          "H1": "NOT_PROVEN",
+          "H3": "NOT_PROVEN",
+          "WorkSwarm": "NOT_PROVEN",
+          "attribution": "CORRELATIONAL_ONLY",
+          "cross_domain_information_gain": "NOT_COMPARABLE",
+          "database_independent_authority": "NOT_ESTABLISHED",
+          "independent_reproduction": "NOT_TESTED",
+          "issuer_authenticity": "NOT_ESTABLISHED",
+          "real_explorer": "NOT_EXECUTED_IN_THIS_PLAN",
+          "selection_source": "DETERMINISTIC_PORTABILITY_DRIVER"
+        },
+        "claim": "CROSS_DOMAIN_SHARED_CORE_LOCAL_CONTROLLED_EXECUTION_PROVEN",
+        "reserved_physical_budget": {
+          "business_http": 8,
+          "config_trial": 1,
+          "health": 3,
+          "jvm": 1,
+          "order_trial": 1,
+          "post": 2,
+          "provider": 0,
+          "sdk": 1,
+          "sqlite_mutation": 1,
+          "trial": 2
+        },
+        "source_kind": "BOTH_REAL_CONTROLLED",
+        "status": "PASS"
+      },
+      "pinned_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8/spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+      "verifier_sha256": "98b773f9af738e4e91ad7d9da233432b0f935eaa43d171ecefeb48225fe092dc",
+      "public_http_status": 200
+    },
+    {
+      "id": "RPF-59",
+      "path": "spikes/rpf-59/cross-domain-selection-evidence.json",
+      "sha256": "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a",
+      "bytes": 1071675,
+      "module": "pge_select_verify",
+      "exit": 0,
+      "verdict": {
+        "actual": {
+          "business_http": 8,
+          "estimated_cost_cny_upper": 0.007155,
+          "health": 1,
+          "jvm": 1,
+          "post": 2,
+          "provider": 2,
+          "sdk": 1,
+          "sqlite_trial": 1,
+          "tokens": 1332
+        },
+        "boundaries": {
+          "CAUSAL_ADVANTAGE": "NOT_PROVEN",
+          "H1": "NOT_PROVEN",
+          "H3": "NOT_PROVEN",
+          "WorkSwarm": "NOT_PROVEN",
+          "attribution": "CORRELATIONAL_ONLY",
+          "cross_domain_information_gain": "NOT_COMPARABLE",
+          "database_independent_authority": "NOT_ESTABLISHED",
+          "independent_reproduction": "NOT_TESTED",
+          "issuer_authenticity": "NOT_ESTABLISHED",
+          "real_explorer": "REAL_PROVIDER",
+          "selection_source": "REAL_EXPLORER_TOOL_CALL",
+          "target_sources": {
+            "config-java-http": "FIXTURE_SCRIPTED",
+            "order-refund": "DETERMINISTIC_ORDER_TARGET"
+          }
+        },
+        "claim": "REAL_EXPLORER_SHARED_SESSION_CONTROLLED_SELECTION_VERIFIED",
+        "research": {
+          "CAUSAL_ADVANTAGE": "NOT_PROVEN",
+          "CROSS_DOMAIN_ADAPTIVE_SELECTION_OBSERVED": "YES_OBSERVATIONAL_ONLY",
+          "DISTINCT_DOMAINS_IN_SESSION": true,
+          "H1": "NOT_PROVEN",
+          "H3": "NOT_PROVEN",
+          "TWO_DISTINCT_DOMAINS_IN_THIS_SESSION": "YES",
+          "candidate_changed": true,
+          "cross_domain_information_gain": "NOT_COMPARABLE",
+          "domain_changed": true,
+          "fact_novelty_domain_scoped": [
+            1,
+            2
+          ]
+        },
+        "reserved_budget": {
+          "business_http": 8,
+          "config_trial": 1,
+          "cost_micro_cny": 108000,
+          "health": 3,
+          "jvm": 1,
+          "order_trial": 1,
+          "post": 2,
+          "provider": 2,
+          "sdk": 1,
+          "sqlite_mutation": 1,
+          "token_reserve": 6000,
+          "trial": 2
+        },
+        "source_kind": "REAL_EXPLORER_CONTROLLED_TARGETS",
+        "status": "PASS"
+      },
+      "pinned_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8/spikes/rpf-59/cross-domain-selection-evidence.json",
+      "verifier_sha256": "51f796b75ec7c7dea2a1513d2f0e18dc626b059245eb9449decb2c0d52802433",
+      "public_http_status": 200
+    },
+    {
+      "id": "RPF-60",
+      "path": "spikes/rpf-60/cross-domain-live-evidence.json",
+      "sha256": "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9",
+      "bytes": 1069226,
+      "module": "lab_cross_domain_verify",
+      "exit": 0,
+      "verdict": {
+        "actual": {
+          "business_http": 8,
+          "estimated_cost_cny_upper": 0.007191,
+          "health": 1,
+          "jvm": 1,
+          "post": 2,
+          "provider": 2,
+          "sdk": 1,
+          "sqlite_trial": 1,
+          "tokens": 1340
+        },
+        "boundaries": {
+          "CAUSAL_ADVANTAGE": "NOT_PROVEN",
+          "H1": "NOT_PROVEN",
+          "H3": "NOT_PROVEN",
+          "WorkSwarm": "NOT_PROVEN",
+          "attribution": "CORRELATIONAL_ONLY",
+          "cross_domain_information_gain": "NOT_COMPARABLE",
+          "database_independent_authority": "NOT_ESTABLISHED",
+          "independent_reproduction": "NOT_TESTED",
+          "issuer_authenticity": "NOT_ESTABLISHED",
+          "real_explorer": "REAL_PROVIDER",
+          "selection_source": "REAL_EXPLORER_TOOL_CALL",
+          "target_sources": {
+            "config-java-http": "FIXTURE_SCRIPTED",
+            "order-refund": "DETERMINISTIC_ORDER_TARGET"
+          }
+        },
+        "claim": "REAL_EXPLORER_SHARED_SESSION_CONTROLLED_SELECTION_VERIFIED",
+        "research": {
+          "CAUSAL_ADVANTAGE": "NOT_PROVEN",
+          "CROSS_DOMAIN_ADAPTIVE_SELECTION_OBSERVED": "YES_OBSERVATIONAL_ONLY",
+          "DISTINCT_DOMAINS_IN_SESSION": true,
+          "H1": "NOT_PROVEN",
+          "H3": "NOT_PROVEN",
+          "TWO_DISTINCT_DOMAINS_IN_THIS_SESSION": "YES",
+          "candidate_changed": true,
+          "cross_domain_information_gain": "NOT_COMPARABLE",
+          "domain_changed": true,
+          "fact_novelty_domain_scoped": [
+            1,
+            2
+          ]
+        },
+        "reserved_budget": {
+          "business_http": 8,
+          "config_trial": 1,
+          "cost_micro_cny": 108000,
+          "health": 3,
+          "jvm": 1,
+          "order_trial": 1,
+          "post": 2,
+          "provider": 2,
+          "sdk": 1,
+          "sqlite_mutation": 1,
+          "token_reserve": 6000,
+          "trial": 2
+        },
+        "source_kind": "REAL_EXPLORER_CONTROLLED_TARGETS",
+        "status": "PASS"
+      },
+      "pinned_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8/spikes/rpf-60/cross-domain-live-evidence.json",
+      "verifier_sha256": "8c6848643c6513807c731936d64e929aae8576b15c43eb0b518fe3db6e39a8a9",
+      "public_http_status": 200
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "reviewed-browser.png",
+      "sha256": "1395f1a7d6f15d7a84da6352efea01cd6fea3f4eb9cea2baa3b41f5d3a8d564e",
+      "bytes": 266143,
+      "regular_file": true,
+      "status": "HASH_AND_VISUAL_REVIEW_PASS",
+      "transformation": "LOSSLESS_PNG_ENCODING_OF_SOURCE_DECODED_RGB_NO_CROP_NO_OVERLAY",
+      "source_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "permission": "RPF61_PLAN_NARROW_SCREENSHOT_EXCEPTION",
+      "sensitive_review": "NO_KEYS_COOKIES_PERSONAL_NAMES_OR_PRIVATE_PATHS_VISIBLE",
+      "rights": "PROJECT_UI_CAPTURE_AUTHORIZED_BY_CURRENT_PLAN_NO_THIRD_PARTY_MEDIA_ADDED",
+      "source_sha256": "9f1a9643a7d0187f3877c54a7e13fe90259615359bac4b319e34a458841c6622",
+      "source_bytes": 69420,
+      "source_detected_format": "JPEG_WITH_PNG_EXTENSION",
+      "decoded_rgb_sha256": "a11cf16266a9e9858209f6272388ef20cdd8a7bd01a8987175a8b294d44f2c2b",
+      "output_format": "PNG",
+      "dimensions": [
+        1266,
+        713
+      ]
+    },
+    {
+      "name": "live-start-browser.png",
+      "sha256": "e5abe629770c125838fd1f52ffd0486e897c269c4ae1a86449879d13548dac5a",
+      "bytes": 433132,
+      "regular_file": true,
+      "status": "HASH_AND_VISUAL_REVIEW_PASS",
+      "transformation": "LOSSLESS_PNG_ENCODING_OF_SOURCE_DECODED_RGB_NO_CROP_NO_OVERLAY",
+      "source_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "permission": "RPF61_PLAN_NARROW_SCREENSHOT_EXCEPTION",
+      "sensitive_review": "NO_KEYS_COOKIES_PERSONAL_NAMES_OR_PRIVATE_PATHS_VISIBLE",
+      "rights": "PROJECT_UI_CAPTURE_AUTHORIZED_BY_CURRENT_PLAN_NO_THIRD_PARTY_MEDIA_ADDED",
+      "source_sha256": "0c3326e548c1f36148c53c183936707466a43e72f054e20063bb972efee7dbaa",
+      "source_bytes": 96837,
+      "source_detected_format": "JPEG_WITH_PNG_EXTENSION",
+      "decoded_rgb_sha256": "56c66fb1c2a4c9779f75f1640f6790d8101c847a14212830a5c96a89cb5746d6",
+      "output_format": "PNG",
+      "dimensions": [
+        1266,
+        713
+      ]
+    },
+    {
+      "name": "live-completed-browser.png",
+      "sha256": "85b6fa39e56cd569e26345296a94e61f1870b30fcc92288e941bed7786298ad6",
+      "bytes": 364514,
+      "regular_file": true,
+      "status": "HASH_AND_VISUAL_REVIEW_PASS",
+      "transformation": "LOSSLESS_PNG_ENCODING_OF_SOURCE_DECODED_RGB_NO_CROP_NO_OVERLAY",
+      "source_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "permission": "RPF61_PLAN_NARROW_SCREENSHOT_EXCEPTION",
+      "sensitive_review": "NO_KEYS_COOKIES_PERSONAL_NAMES_OR_PRIVATE_PATHS_VISIBLE",
+      "rights": "PROJECT_UI_CAPTURE_AUTHORIZED_BY_CURRENT_PLAN_NO_THIRD_PARTY_MEDIA_ADDED",
+      "source_sha256": "dac1bf4290d52e700ae1be0122276983627f3edd8a8e46e865a6178fd3d960e0",
+      "source_bytes": 80210,
+      "source_detected_format": "JPEG_WITH_PNG_EXTENSION",
+      "decoded_rgb_sha256": "eadb869fe25c3d9df90ec20df9772b01668a4f06cf2445ea8c5111f50fd9b81b",
+      "output_format": "PNG",
+      "dimensions": [
+        1266,
+        713
+      ]
+    },
+    {
+      "name": "gateway-down-browser.png",
+      "sha256": "3b5faebe7ba0db81722ff3a558a5348e680bb4820005497dbb7da3944336df55",
+      "bytes": 250134,
+      "regular_file": true,
+      "status": "HASH_AND_VISUAL_REVIEW_PASS",
+      "transformation": "LOSSLESS_PNG_ENCODING_OF_SOURCE_DECODED_RGB_NO_CROP_NO_OVERLAY",
+      "source_commit": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "permission": "RPF61_PLAN_NARROW_SCREENSHOT_EXCEPTION",
+      "sensitive_review": "NO_KEYS_COOKIES_PERSONAL_NAMES_OR_PRIVATE_PATHS_VISIBLE",
+      "rights": "PROJECT_UI_CAPTURE_AUTHORIZED_BY_CURRENT_PLAN_NO_THIRD_PARTY_MEDIA_ADDED",
+      "source_sha256": "a8828a761fd654c3bf32232da693174c80dc45d62478ab196a51274a4b802802",
+      "source_bytes": 55215,
+      "source_detected_format": "JPEG_WITH_PNG_EXTENSION",
+      "decoded_rgb_sha256": "71412a8b752dbc0e217063b6349d00a2beaf7f27916582baf77e8ab203f774d7",
+      "output_format": "PNG",
+      "dimensions": [
+        1266,
+        713
+      ]
+    }
+  ],
+  "host_python": "3.14.6",
+  "current_task_actual": {
+    "provider_requests": 0,
+    "tokens": 0,
+    "cost_cny": 0,
+    "business_post": 0,
+    "refund": 0,
+    "jvm": 0,
+    "sdk": 0,
+    "live_sessions_created": 0,
+    "offline_verifier_invocations": 4,
+    "pure_reviewed_projection_invocations": 1,
+    "local_ui_browser_qa": "NOT_RUN",
+    "web_runtime_regression": "NOT_RUN_SOURCE_UNCHANGED_HISTORICAL_RECORD_ONLY",
+    "video_output": "NOT_PRODUCED"
+  },
+  "reviewed_projection": {
+    "status": "PASS",
+    "source": "REVIEWED",
+    "session_id": "rpf59-session-966ab13e1fdf471d",
+    "raw_sha256": "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a"
+  },
+  "official": {
+    "observed_date": "2026-10-21",
+    "observer_timezone": "UTC+08",
+    "announcement": "https://bbs.huaweicloud.com/blogs/882ce6baa17e4785bc3398029e6c79eb",
+    "announcement_published": "2026-09-17T11:17:37_TIMEZONE_NOT_CONFIRMED",
+    "announcement_access": "OFFICIAL_SEARCH_INDEX_FULL_TEXT_DIRECT_OPEN_TIMEOUT",
+    "internal_deadline_date": "2026-10-30",
+    "cutoff_time_timezone": "UNVERIFIED",
+    "portal": "https://developer.huaweicloud.com/competition/information/1300000328/submission",
+    "portal_access": "PC_BROWSER_PUBLIC_RULES_VERIFIED_NOT_LOGGED_IN",
+    "visible_stage_options": [
+      "初赛作品提交",
+      "DEMO提交"
+    ],
+    "current_video_requirement": "INITIAL_PROPOSAL_FIRST_DEMO_AFTER_CREATIVE_ACCEPTANCE_PER_LATEST_ANNOUNCEMENT",
+    "attachment_limits": {
+      "extension": "zip",
+      "max_megabytes": 500,
+      "comparison": "LESS_THAN_OR_EQUAL"
+    },
+    "field_limits": "UNVERIFIED",
+    "login_required": "UNVERIFIED_NOT_ATTEMPTED",
+    "news_access": "LATEST_OFFICIAL_248_BODY_READ_SUCCESS",
+    "latest_announcement": "https://openjiuwen.com/news/news-artical?id=248",
+    "latest_created": "2026-09-09",
+    "latest_updated": "2026-10-20",
+    "latest_access": "BROWSER_VISIBLE_DOM_READ",
+    "official_submission_deadline_date": "2026-11-10",
+    "login_requirement": "LATEST_ANNOUNCEMENT_REQUIRES_HUAWEI_ACCOUNT_REAL_NAME_VERIFICATION_AT_SUBMISSION",
+    "template_status": "OFFICIAL_LINKS_OBSERVED_CONTENT_NOT_INSPECTED",
+    "portal_screenshot": "PC_CAPTURE_UNAVAILABLE_DOM_PRESERVED"
+  },
+  "gaps": [
+    "EXACT_CUTOFF_TIME_TIMEZONE_AND_LOGGED_IN_FIELDS_REQUIRE_USER_CONFIRMATION",
+    "OFFICIAL_PPTX_TEMPLATE_CONTENT_NOT_INSPECTED_PPTX_AND_ZIP_OUTPUT_OUTSIDE_PLAN_WHITELIST",
+    "FINAL_TEAM_IDENTITY_REAL_NAME_VERIFICATION_AND_IP_TERMS_REQUIRE_USER_ACTION",
+    "NO_MP4_FILE_DEMO_IS_LATER_STAGE",
+    "R01_R10_FULL_DEFINITIONS_NOT_PRESENT_EXCEPT_R08_MAPPING",
+    "NO_INDEPENDENT_REPRODUCTION_ISSUER_SIGNATURE_OR_CAUSAL_ADVANTAGE"
+  ],
+  "checks": {
+    "status": "PASS",
+    "markdown_files": 9,
+    "local_links": 31,
+    "fixed_source_links": 18,
+    "public_http_200": 18,
+    "public_unavailable": [],
+    "public_docs_exit": 0,
+    "scope_old_tracked_diff": "EMPTY",
+    "copy_lengths": {
+      "zh_short": 90,
+      "zh_standard": 451,
+      "zh_detail": 1573
+    },
+    "demo_seconds": 180,
+    "privacy": "NO_PRIVATE_ABSOLUTE_PATHS_OR_SECRET_PATTERNS",
+    "screenshots": 4,
+    "claim_review": "ZH_EN_EQUIVALENT_LIMITED_CLAIMS_MANUALLY_REVIEWED"
+  },
+  "official_observation_logs": [
+    {
+      "name": "official-news-248.txt",
+      "bytes": 21962,
+      "sha256": "18e982e9276a0ef30ee3b0e0f78df5660fdd3bc2eb12a48caa701cf80e4eebbc",
+      "publication": "IGNORED_LOCAL_NON_ACCOUNT_DOM"
+    },
+    {
+      "name": "portal-desktop-state.txt",
+      "bytes": 7515,
+      "sha256": "a0a12b9c4226cc7b80f3e63dd1efaa1e6ec6cca6a1777a6d5c46753c842ee3b9",
+      "publication": "IGNORED_LOCAL_NON_ACCOUNT_DOM"
+    }
+  ]
+}
