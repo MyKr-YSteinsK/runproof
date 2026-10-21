@@ -1,0 +1,135 @@
+{
+  "schema": "rpf64-portability-assessment-v1",
+  "revision": "rev-2",
+  "status": "BOTH_REAL_CONTROLLED_VERIFIED",
+  "baseline": {
+    "rpf62_port_lines": 194,
+    "rpf63_port_lines": 206,
+    "rpf63_exact_common_sequence_lines": 167
+  },
+  "reuse_table": [
+    {
+      "component": "RPF62 ConfigTargetDriver / RPF63 Config Port",
+      "invoked": "REFERENCE_ONLY; no old task-bound run/cold/live function",
+      "binding": "Old WORK/Base/Branch not mutable",
+      "new_boundary": "explicit immutable TaskContext; no old global patch"
+    },
+    {
+      "component": "RPF58/60 SharedSession",
+      "invoked": "REFERENCE_ONLY",
+      "binding": "Old task and domain budgets frozen",
+      "new_boundary": "one concrete shared execute(domain) path with static Port selector, pre-reservation, oracle, feedback, cleanup"
+    },
+    {
+      "component": "OrderSandbox / OrderAdapter / AuthorityReader",
+      "invoked": "initialize/refund/inspect/invoke/read/validate via new scoped constructors",
+      "binding": "New subclass constructors use explicit TaskContext; original transaction and read-only connection unchanged",
+      "test_boundary": "Oracle snapshots, duplicate mutation ticket, receipt identity/revision, missing authority"
+    },
+    {
+      "component": "ConfigLiveHost / Http / Business / fixed SDK child",
+      "invoked": "ready/completion/tool/fixture/HTTP/SDK execution low-level only",
+      "binding": "new contextual constructor + explicit fixture-only Provider denial",
+      "test_boundary": "real cold PID/protocol once, normal/suppression synthetic lineage and HTTP oracle"
+    },
+    {
+      "component": "New TaskContext / ProcessSupervisor",
+      "invoked": "planned shared ownership/path/source/limits and JVM+SDK lifecycle",
+      "binding": "trusted immutable snapshot; no model context parameters",
+      "test_boundary": "deep immutability, scope/junction, source/owner/run, unknown stop, torn WAL, bounded process cleanup"
+    }
+  ],
+  "proposal": "Compose low-level domain primitives, place WAL/context/process lifecycle outside adapters; adapters own business predicates, shared session owns dispatch/verify/feedback/cleanup. Static two-port allowlist only.",
+  "source_freeze": "fd4b6b0aaf243e646df72331ce1e8da979b6c0f493694f29d215db6331ab25b6",
+  "provider": {
+    "requests": 0,
+    "tokens": 0,
+    "cost_cny": 0,
+    "key_acquisition": "FORBIDDEN"
+  },
+  "copy_reduction": {
+    "rpf63_port_lines": 206,
+    "new_config_port_lines": 97,
+    "exact_common_sequence_lines_vs_rpf63": 1,
+    "prior_rpf62_rpf63_common_lines": 167,
+    "common_line_reduction": 166,
+    "method": "SequenceMatcher exact lines plus actual callable audit. Format differences mean line count alone is not reuse proof.",
+    "lifecycle": "one ProcessSupervisor.start/close used for all owned SDK/JVM children; one run_sdk used for cold/formal; no old task runner invoked",
+    "shared_session": "same SharedSession.execute source for both domains; port selector only branch",
+    "remaining": [
+      "Context authorization factory currently admits only this task owner",
+      "Metadata AST extraction depends on fixed RPF53 inspector and RPF55 read-only identity helpers",
+      "Config SDK/Host internals remain tied to the reviewed fixed SDK and original three tools",
+      "Domain-specific Oracle and contract knowledge intentionally remains in each Port"
+    ],
+    "callable_site_audit": [
+      {
+        "file": "runtime/runproof_runtime/effectwitness/pge_target_config_spike.py",
+        "direct_Popen_sites": [
+          130,
+          173
+        ],
+        "global_WORK_references": 5,
+        "physical_lines": 194
+      },
+      {
+        "file": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py",
+        "direct_Popen_sites": [
+          141,
+          184
+        ],
+        "global_WORK_references": 5,
+        "physical_lines": 206
+      },
+      {
+        "file": "runtime/runproof_runtime/effectwitness/pge_portability_config.py",
+        "direct_Popen_sites": [],
+        "global_WORK_references": 0,
+        "physical_lines": 97
+      },
+      {
+        "file": "runtime/runproof_runtime/effectwitness/pge_port_context.py",
+        "direct_Popen_sites": [
+          98
+        ],
+        "global_WORK_references": 0,
+        "physical_lines": 120
+      },
+      {
+        "file": "runtime/runproof_runtime/effectwitness/pge_portability_order.py",
+        "direct_Popen_sites": [],
+        "global_WORK_references": 0,
+        "physical_lines": 51
+      }
+    ],
+    "interpretation": "New Config adapter has zero direct Popen sites and no global WORK references; the one shared Supervisor owns JVM/SDK spawn/termination. Old SDK cold/formal reuse already existed and is not credited as new reduction. Exact common line reduction is sensitive to formatting and removal of paid Broker logic; aggregate new core line count and bounded ownership remain separate metrics."
+  },
+  "old_files_modified": false,
+  "new_file_lines": {
+    "runtime/runproof_runtime/effectwitness/pge_port_context.py": 120,
+    "runtime/runproof_runtime/effectwitness/pge_domain_port.py": 23,
+    "runtime/runproof_runtime/effectwitness/pge_portability_order.py": 51,
+    "runtime/runproof_runtime/effectwitness/pge_portability_config.py": 97,
+    "runtime/runproof_runtime/effectwitness/pge_portability_session.py": 24,
+    "runtime/runproof_runtime/effectwitness/pge_portability_verify.py": 53,
+    "runtime/tests/test_effectwitness_pge_portability.py": 94,
+    "spikes/rpf-64/probe.py": 35
+  },
+  "observed_dispatch": [
+    {
+      "abi": "rpf64-domain-port-v1",
+      "port_entry": "runtime.runproof_runtime.effectwitness.pge_portability_order.OrderPort.execute",
+      "port_file_sha256": "b49a3857f48df7710c42fb399f8982feaf578e4a5647d7935f0249fd779faab0",
+      "shared_entry": "pge_portability_session.SharedSession.execute",
+      "shared_source_sha256": "29f4dc9fe79db6fb5c225ad0c5fa4b3b10f8d451000be05c17e10821ee2629d0"
+    },
+    {
+      "abi": "rpf64-domain-port-v1",
+      "port_entry": "runtime.runproof_runtime.effectwitness.pge_portability_config.ConfigPort.execute",
+      "port_file_sha256": "a9f8e6c9f5bab0e418ec5e8a8f54a598f6cd3fb233717e47be7dc45b3d12999e",
+      "shared_entry": "pge_portability_session.SharedSession.execute",
+      "shared_source_sha256": "29f4dc9fe79db6fb5c225ad0c5fa4b3b10f8d451000be05c17e10821ee2629d0"
+    }
+  ],
+  "actual_process_supervisor_instances": 3
+}

@@ -1,0 +1,1144 @@
+{
+  "schema": "rpf64-session-summary-v1",
+  "status": "BOTH_REAL_CONTROLLED_VERIFIED",
+  "session_id": "rpf64-session-ece87fc00af7497f",
+  "source_kind": "BOTH_REAL_CONTROLLED",
+  "context_sha256": "6f9d679b8c19175fedbdff4b4bc412ea767d16c9845fce395188cc65475648ed",
+  "witness_raw_sha256": "d5798bfa82ef9523039a1461c82842aa9f265703ada492cef3cf068208e5ff19",
+  "verdict": {
+    "status": "PASS",
+    "source_kind": "BOTH_REAL_CONTROLLED",
+    "domains": [
+      "order-refund",
+      "config-java-http"
+    ],
+    "provider": 0,
+    "tokens": 0,
+    "cost_cny": 0,
+    "shared_dispatch": "OBSERVED",
+    "physical": {
+      "provider": 0,
+      "metadata": 1,
+      "cold": 1,
+      "session": 1,
+      "trial": 2,
+      "order_trial": 1,
+      "config_trial": 1,
+      "sqlite_setup": 1,
+      "sqlite_refund": 1,
+      "jvm": 1,
+      "sdk": 1,
+      "http": 9,
+      "post": 2,
+      "health": 1
+    },
+    "outcomes": [
+      {
+        "effect": "CONTRACT_SATISFIED_IN_RUN",
+        "fault": {
+          "agent_exposed": false,
+          "observed": false,
+          "planned": false,
+          "triggered": false
+        },
+        "reconciled": false,
+        "state": "NORMAL",
+        "write_ack": "CONFIRMED"
+      },
+      {
+        "effect": "CONTRACT_SATISFIED_IN_RUN",
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "reconciled": true,
+        "state": "UNKNOWN_OUTCOME",
+        "write_ack": "UNKNOWN_OUTCOME"
+      }
+    ],
+    "boundaries": {
+      "explorer": "NOT_RUN",
+      "provider": 0,
+      "tokens": 0,
+      "cost_cny": 0,
+      "causality": "NOT_PROVEN",
+      "issuer": "NOT_ESTABLISHED",
+      "independent_reproduction": "NOT_TESTED",
+      "web": "NOT_INTEGRATED",
+      "cross_domain_information_gain": "NOT_COMPARABLE"
+    }
+  },
+  "rows": [
+    {
+      "cleanup": {
+        "connections_closed": true,
+        "database_retained_for_evidence": true,
+        "exclusive_lock_probe": true
+      },
+      "contract": {
+        "effect": {
+          "amount_minor": 2500,
+          "authority": "SQLITE_READ_ONLY_RECEIPT_READER",
+          "authority_id": "authority-rpf64-order-ece87fc00af7497f",
+          "currency": "CNY",
+          "operation_id": "refund-rpf64-order-ece87fc00af7497f",
+          "order_id": "order-rpf64-order-ece87fc00af7497f",
+          "schema": "rpf64-order-effect-v1"
+        },
+        "execution": {
+          "agent_version": "rpf64-order-deterministic-v1",
+          "resource": "order_trial",
+          "schema": "rpf64-execution-v1",
+          "source_kind": "DETERMINISTIC",
+          "tools": [
+            "inspect_order",
+            "refund_order"
+          ]
+        },
+        "experiment": {
+          "domain": "order-refund",
+          "environment_id": "env-rpf64-order-ece87fc00af7497f",
+          "fault": "none",
+          "fault_plan": {
+            "enabled": false,
+            "kind": "NONE",
+            "planned": false
+          },
+          "owner": "rpf-64",
+          "reset_generation": 0,
+          "run_id": "rpf64-order-ece87fc00af7497f",
+          "schema": "rpf64-experiment-v1",
+          "source_sha256": "fd4b6b0aaf243e646df72331ce1e8da979b6c0f493694f29d215db6331ab25b6"
+        },
+        "schema": "rpf64-domain-contracts-v1"
+      },
+      "dispatch": {
+        "abi": "rpf64-domain-port-v1",
+        "port_entry": "runtime.runproof_runtime.effectwitness.pge_portability_order.OrderPort.execute",
+        "port_file_sha256": "b49a3857f48df7710c42fb399f8982feaf578e4a5647d7935f0249fd779faab0",
+        "shared_entry": "pge_portability_session.SharedSession.execute",
+        "shared_source_sha256": "29f4dc9fe79db6fb5c225ad0c5fa4b3b10f8d451000be05c17e10821ee2629d0"
+      },
+      "domain": "order-refund",
+      "evidence": {
+        "after": {
+          "data": {
+            "environment": {
+              "environment_id": "env-rpf64-order-ece87fc00af7497f",
+              "environment_revision": "rpf41-sqlite-orders-v1",
+              "owner": "rpf-64",
+              "reset_generation": 0,
+              "run_id": "rpf64-order-ece87fc00af7497f"
+            },
+            "order": {
+              "currency": "CNY",
+              "order_id": "order-rpf64-order-ece87fc00af7497f",
+              "paid_minor": 2500,
+              "refunded_minor": 2500,
+              "revision": 1,
+              "status": "REFUNDED"
+            },
+            "reader_id": "rpf41-sqlite-authority-reader",
+            "reader_version": "1",
+            "receipts": [
+              {
+                "amount_minor": 2500,
+                "committed_revision": 1,
+                "currency": "CNY",
+                "operation_id": "refund-rpf64-order-ece87fc00af7497f",
+                "order_id": "order-rpf64-order-ece87fc00af7497f",
+                "receipt_id": "receipt-89ffb0aa1c5d7138dd1668d9",
+                "status": "COMMITTED"
+              }
+            ],
+            "source_id": "authority-rpf64-order-ece87fc00af7497f"
+          },
+          "sha256": "09aaa99cb30e8711ec571d000c284f5a1bc6b969a54b9541ac8e8e067302502f"
+        },
+        "backend": "REAL_LOCAL_SQLITE",
+        "before": {
+          "data": {
+            "environment": {
+              "environment_id": "env-rpf64-order-ece87fc00af7497f",
+              "environment_revision": "rpf41-sqlite-orders-v1",
+              "owner": "rpf-64",
+              "reset_generation": 0,
+              "run_id": "rpf64-order-ece87fc00af7497f"
+            },
+            "order": {
+              "currency": "CNY",
+              "order_id": "order-rpf64-order-ece87fc00af7497f",
+              "paid_minor": 2500,
+              "refunded_minor": 0,
+              "revision": 0,
+              "status": "PAID"
+            },
+            "reader_id": "rpf41-sqlite-authority-reader",
+            "reader_version": "1",
+            "receipts": [],
+            "source_id": "authority-rpf64-order-ece87fc00af7497f"
+          },
+          "sha256": "1e80e5147da0960bb713040f11e72a78944c805a67ea3abe4153f82325b6d7db"
+        },
+        "cleanup": {
+          "connections_closed": true,
+          "database_retained_for_evidence": true,
+          "exclusive_lock_probe": true
+        },
+        "database_sha256": "fd95bde94d53a6ecb0acb4a29c736f5ee40579b657adef2aa27a5b40aaea4ffb",
+        "executor_pid": 21700,
+        "fault": {
+          "agent_exposed": false,
+          "observed": false,
+          "planned": false,
+          "triggered": false
+        },
+        "inspect": {
+          "order_id": "order-rpf64-order-ece87fc00af7497f",
+          "revision": 0,
+          "status": "PAID"
+        },
+        "source_kind": "DETERMINISTIC",
+        "tool_call": {
+          "arguments": {
+            "amount_minor": 2500,
+            "operation_id": "refund-rpf64-order-ece87fc00af7497f",
+            "order_id": "order-rpf64-order-ece87fc00af7497f"
+          },
+          "name": "refund_order",
+          "result": {
+            "committed_revision": 1,
+            "operation_id": "refund-rpf64-order-ece87fc00af7497f",
+            "receipt_id": "receipt-89ffb0aa1c5d7138dd1668d9",
+            "status": "COMMITTED"
+          }
+        }
+      },
+      "feedback": {
+        "authority": "SQLITE_READ_ONLY_RECEIPT_READER",
+        "cross_domain_information_gain": "NOT_COMPARABLE",
+        "domain": "order-refund",
+        "evidence_sha256": "7899c4b591c3028b345fd46d81fb17a81404376b08f02e71e7b63bea32776cd8",
+        "outcome": {
+          "effect": "CONTRACT_SATISFIED_IN_RUN",
+          "fault": {
+            "agent_exposed": false,
+            "observed": false,
+            "planned": false,
+            "triggered": false
+          },
+          "reconciled": false,
+          "state": "NORMAL",
+          "write_ack": "CONFIRMED"
+        },
+        "run_id": "rpf64-order-ece87fc00af7497f",
+        "schema": "rpf64-domain-feedback-v1",
+        "session_id": "rpf64-session-ece87fc00af7497f",
+        "verdict_sha256": "ac8cfcd44f41b07ef31142dca119a6acd4328938e5936f5ad35418c133240415",
+        "verified_facts": [
+          "order-refund/full-refund-one-receipt"
+        ]
+      },
+      "verdict": {
+        "abi": "rpf64-domain-port-v1",
+        "authority": "SQLITE_READ_ONLY_RECEIPT_READER",
+        "domain": "order-refund",
+        "facts_sha256": "e10ac40ec018fac7a6f2c534b404665f41b44e805e6a50a5aea093377b3b856c",
+        "outcome": {
+          "effect": "CONTRACT_SATISFIED_IN_RUN",
+          "fault": {
+            "agent_exposed": false,
+            "observed": false,
+            "planned": false,
+            "triggered": false
+          },
+          "reconciled": false,
+          "state": "NORMAL",
+          "write_ack": "CONFIRMED"
+        },
+        "source_kind": "DETERMINISTIC",
+        "verified_facts": [
+          "order-refund/full-refund-one-receipt"
+        ]
+      }
+    },
+    {
+      "cleanup": {
+        "host_port_closed": true,
+        "java_exited": true,
+        "java_port_closed": true,
+        "local_key_released": true,
+        "sdk_exited": true
+      },
+      "contract": {
+        "effect": {
+          "app": "rpf64appece87fc00af7497f",
+          "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+          "env": "rpf64localece87fc00af7497f",
+          "history_versions": [
+            2,
+            1
+          ],
+          "initial_state": "ABSENT",
+          "initial_value": "rpf53-v1",
+          "initial_version": 1,
+          "key": "rpf64.item.ece87fc00af7497f",
+          "required_value": "rpf53-v2",
+          "required_version": 2,
+          "schema": "rpf64-config-effect-v1"
+        },
+        "execution": {
+          "agent_host": {
+            "host": "127.0.0.1",
+            "port": 1046
+          },
+          "agent_instructions": "For the one synthetic config item, use only the available tools and follow this exact order: first call inspect_config. If it returns state ABSENT, call create_config_v1 exactly once with value=\"rpf53-v1\". Only after that call returns status COMMITTED and version 1, call update_config_v2 exactly once with expected_version=1 and value=\"rpf53-v2\". Stop without another write if any result is UNKNOWN, UNKNOWN_OUTCOME, REJECTED, unexpected, or uncertain; leave reconciliation to the Host's read-only path. After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.",
+          "agent_version": "rpf64-config-fixture-v1",
+          "framework": {
+            "identity": {
+              "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+              "openai_record_entries": 2000,
+              "openai_record_mismatches": 0,
+              "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+              "pydantic_record_entries": 444,
+              "pydantic_record_mismatches": 0,
+              "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+              "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+              "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+              "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+              "python_version": "3.12.13",
+              "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+            },
+            "name": "pydantic-ai-slim",
+            "openai_version": "3.35.1",
+            "version": "2.57.0"
+          },
+          "model_source": "FIXTURE_SCRIPTED",
+          "release_authority": "NOT_HELD_BY_AGENT",
+          "resource": "config_trial",
+          "schema": "rpf64-execution-v1",
+          "service": {
+            "host": "127.0.0.1",
+            "port": 1045
+          },
+          "source_kind": "FIXTURE_SCRIPTED",
+          "task_prompt": "Bring the single authorized synthetic configuration to value rpf53-v2 at version 2. First call inspect_config. If the state is ABSENT, call create_config_v1 with exactly {\"value\":\"rpf53-v1\"}. Only after a confirmed COMMITTED result at version 1, call update_config_v2 with exactly {\"expected_version\":1,\"value\":\"rpf53-v2\"}. Stop without another write after UNKNOWN, UNKNOWN_OUTCOME, REJECTED, any unexpected observation, or uncertainty. After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.",
+          "tool_help": {
+            "create_config_v1": "After inspect_config returns state ABSENT, create version 1 exactly once with value rpf53-v1.",
+            "inspect_config": "Read the one authorized synthetic configuration item. Call this first before any change.",
+            "update_config_v2": "After create_config_v1 returns status COMMITTED and version 1, update exactly once with expected_version 1 and value rpf53-v2."
+          },
+          "tools": [
+            "inspect_config",
+            "create_config_v1",
+            "update_config_v2"
+          ]
+        },
+        "experiment": {
+          "domain": "config-java-http",
+          "environment_id": "env-rpf64-config-ece87fc00af7497f",
+          "fault": "none",
+          "fault_plan": {
+            "enabled": true,
+            "kind": "LOCAL_DELIVERY_SUPPRESSION_AFTER_HTTP_200",
+            "planned": true
+          },
+          "owner": "rpf-64",
+          "reset_generation": 0,
+          "run_id": "rpf64-config-ece87fc00af7497f",
+          "schema": "rpf64-experiment-v1",
+          "source_sha256": "fd4b6b0aaf243e646df72331ce1e8da979b6c0f493694f29d215db6331ab25b6"
+        },
+        "schema": "rpf64-domain-contracts-v1"
+      },
+      "dispatch": {
+        "abi": "rpf64-domain-port-v1",
+        "port_entry": "runtime.runproof_runtime.effectwitness.pge_portability_config.ConfigPort.execute",
+        "port_file_sha256": "a9f8e6c9f5bab0e418ec5e8a8f54a598f6cd3fb233717e47be7dc45b3d12999e",
+        "shared_entry": "pge_portability_session.SharedSession.execute",
+        "shared_source_sha256": "29f4dc9fe79db6fb5c225ad0c5fa4b3b10f8d451000be05c17e10821ee2629d0"
+      },
+      "domain": "config-java-http",
+      "evidence": {
+        "backend": "REAL_JAVA_H2_HTTP",
+        "completions": [
+          {
+            "model": "rpf53-fixture-only",
+            "request_sha256": "b1ac427a1ebcd4a05134cb1cc931bf6402b779c2ae6558906e9e4f6b12a131ae",
+            "response_id": "chatcmpl-rpf53-fixture-1",
+            "tool_calls": [
+              {
+                "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+                "call_id": "call_rpf53_fixture_1",
+                "name": "inspect_config"
+              }
+            ],
+            "tool_returns": [],
+            "usage": {
+              "completion_tokens": 0,
+              "prompt_tokens": 0,
+              "total_tokens": 0
+            }
+          },
+          {
+            "model": "rpf53-fixture-only",
+            "request_sha256": "5d7313405ad899837ed552bf4e10f8b459a4a204c735d14afed51905eff4fcb9",
+            "response_id": "chatcmpl-rpf53-fixture-2",
+            "tool_calls": [
+              {
+                "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+                "call_id": "call_rpf53_fixture_2",
+                "name": "create_config_v1"
+              }
+            ],
+            "tool_returns": [
+              {
+                "call_id": "call_rpf53_fixture_1",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              }
+            ],
+            "usage": {
+              "completion_tokens": 0,
+              "prompt_tokens": 0,
+              "total_tokens": 0
+            }
+          },
+          {
+            "model": "rpf53-fixture-only",
+            "request_sha256": "b88ee1f90b34dbe62c633d712df5d09c32bfc77a969741127dfb4eb1bdd642bf",
+            "response_id": "chatcmpl-rpf53-fixture-3",
+            "tool_calls": [
+              {
+                "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+                "call_id": "call_rpf53_fixture_3",
+                "name": "update_config_v2"
+              }
+            ],
+            "tool_returns": [
+              {
+                "call_id": "call_rpf53_fixture_1",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "call_rpf53_fixture_2",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              }
+            ],
+            "usage": {
+              "completion_tokens": 0,
+              "prompt_tokens": 0,
+              "total_tokens": 0
+            }
+          },
+          {
+            "model": "rpf53-fixture-only",
+            "request_sha256": "4a46b75cc07a66677f48afff282a0d5b56debb90120110cec569b2275d91ebac",
+            "response_id": "chatcmpl-rpf53-fixture-4",
+            "tool_calls": [
+              {
+                "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+                "call_id": "call_rpf64_scripted_reconcile",
+                "name": "inspect_config"
+              }
+            ],
+            "tool_returns": [
+              {
+                "call_id": "call_rpf53_fixture_1",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "call_rpf53_fixture_2",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "call_rpf53_fixture_3",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              }
+            ],
+            "usage": {
+              "completion_tokens": 0,
+              "prompt_tokens": 0,
+              "total_tokens": 0
+            }
+          },
+          {
+            "model": "rpf53-fixture-only",
+            "request_sha256": "67646a558d1c85885dc2773f51d76ba0d6b6e378535922efc897b8c6bde68477",
+            "response_id": "chatcmpl-rpf53-fixture-5",
+            "tool_calls": [],
+            "tool_returns": [
+              {
+                "call_id": "call_rpf53_fixture_1",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "call_rpf53_fixture_2",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "call_rpf53_fixture_3",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              },
+              {
+                "call_id": "call_rpf64_scripted_reconcile",
+                "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+              }
+            ],
+            "usage": {
+              "completion_tokens": 0,
+              "prompt_tokens": 0,
+              "total_tokens": 0
+            }
+          }
+        ],
+        "environment": {
+          "cleanup": {
+            "host_port_closed": true,
+            "java_exited": true,
+            "java_port_closed": true,
+            "local_key_released": true,
+            "sdk_exited": true
+          },
+          "health": [
+            {
+              "body": {
+                "status": "UP"
+              },
+              "raw_body_sha256": "be0e16e9e7ee6dc1aba29d099bc6f12775eaadeb93e7afe712c6d4ced4a4e8d7",
+              "status": 200,
+              "transport_error": null
+            }
+          ],
+          "jar_bytes": 66981576,
+          "jar_command_verified": true,
+          "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+          "java_pid": 15492,
+          "listener_owned": true
+        },
+        "events": [
+          {
+            "http_seq": 1,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42047835408200,
+            "operation": "initial_current",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 1
+          },
+          {
+            "http_seq": 1,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42048450832900,
+            "response_sha256": "ab779d4935a72984783923f726e5a8d9268dbeda7ddcd4ce9e0f1fc9f8a73e7a",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 2,
+            "status": 404
+          },
+          {
+            "http_seq": 2,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42048481527500,
+            "operation": "initial_history",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 3
+          },
+          {
+            "http_seq": 2,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42048540197200,
+            "response_sha256": "e9269e0657030515b980c3e58dde366d0e1384c3f336d75bf384d2fb8d877cd9",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 4,
+            "status": 200
+          },
+          {
+            "http_seq": 3,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42051060267500,
+            "operation": "inspect_config",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 5
+          },
+          {
+            "http_seq": 3,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42051108667300,
+            "response_sha256": "31a0cbc4ddb1ca4981ebc951e536f1be230356b665cf946941fa2766079cc7f5",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 6,
+            "status": 404
+          },
+          {
+            "http_seq": 4,
+            "kind": "HTTP_RESERVED",
+            "method": "POST",
+            "monotonic_ns": 42051232569100,
+            "operation": "create_config_v1",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 7
+          },
+          {
+            "http_seq": 4,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42051561098500,
+            "response_sha256": "665ddd73bcb417b70ea320d3bce55e300583225c56953734191ca1f6354ee7cb",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 8,
+            "status": 200
+          },
+          {
+            "http_seq": 5,
+            "kind": "HTTP_RESERVED",
+            "method": "POST",
+            "monotonic_ns": 42051684194700,
+            "operation": "update_config_v2",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 9
+          },
+          {
+            "http_seq": 5,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42051798564100,
+            "response_sha256": "ee1dc155cbe8be19e5648ed53957bed51e0bd0564487ac0d7ec5cef39a6af405",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 10,
+            "status": 200
+          },
+          {
+            "call_id": "call_rpf53_fixture_3",
+            "http_seq": 5,
+            "kind": "SUCCESS_WITHHELD",
+            "monotonic_ns": 42051804346000,
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 11
+          },
+          {
+            "http_seq": 6,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42051939773200,
+            "operation": "inspect_config",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 12
+          },
+          {
+            "http_seq": 6,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42052018266400,
+            "response_sha256": "44c395fc1eda3e8367ccc172b931263a080b300c1521427d35738c74998e6f84",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 13,
+            "status": 200
+          },
+          {
+            "call_id": "call_rpf64_scripted_reconcile",
+            "kind": "SCRIPTED_READ_ONLY_RECOVERY",
+            "monotonic_ns": 42052034853300,
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 14
+          },
+          {
+            "http_seq": 7,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42052912918000,
+            "operation": "reconcile_current",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 15
+          },
+          {
+            "http_seq": 7,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42052972101100,
+            "response_sha256": "09892a9293aa6bc5bdb40943efaf70be7a2bf471b6624c2829ecab08c9befe64",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 16,
+            "status": 200
+          },
+          {
+            "http_seq": 8,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42053033221200,
+            "operation": "reconcile_history",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 17
+          },
+          {
+            "http_seq": 8,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42053101907800,
+            "response_sha256": "f85f407af63a27dd5da891223d11dd6dc76e4874586367efaa5d493706f13e30",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 18,
+            "status": 200
+          },
+          {
+            "http_seq": 9,
+            "kind": "HTTP_RESERVED",
+            "method": "GET",
+            "monotonic_ns": 42053141307900,
+            "operation": "final_list",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 19
+          },
+          {
+            "http_seq": 9,
+            "kind": "HTTP_COMPLETED",
+            "monotonic_ns": 42053223289800,
+            "response_sha256": "abd6efb089f93a392974c45c1dad9f05b2dc78395f82fbc95fb66d4f14f4587b",
+            "run_id": "rpf64-config-ece87fc00af7497f",
+            "seq": 20,
+            "status": 200
+          }
+        ],
+        "host_failure": null,
+        "http": [
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 583,
+            "kind": "initial_current",
+            "method": "GET",
+            "path": "/api/configs/rpf64.item.ece87fc00af7497f?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f",
+            "request": null,
+            "response": {
+              "code": 4041,
+              "data": null,
+              "message": "配置不存在: rpf64.item.ece87fc00af7497f",
+              "traceId": "284602aeaccb481d9274bd2982beee51"
+            },
+            "response_body_sha256": "ab779d4935a72984783923f726e5a8d9268dbeda7ddcd4ce9e0f1fc9f8a73e7a",
+            "seq": 1,
+            "status": 404,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 39,
+            "kind": "initial_history",
+            "method": "GET",
+            "path": "/api/configs/history?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f&key=rpf64.item.ece87fc00af7497f&limit=50",
+            "request": null,
+            "response": {
+              "code": 0,
+              "data": [],
+              "message": "OK",
+              "traceId": "771e180fec3a45378691430c50d4951b"
+            },
+            "response_body_sha256": "e9269e0657030515b980c3e58dde366d0e1384c3f336d75bf384d2fb8d877cd9",
+            "seq": 2,
+            "status": 200,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 24,
+            "kind": "inspect_config",
+            "method": "GET",
+            "path": "/api/configs/rpf64.item.ece87fc00af7497f?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f",
+            "request": null,
+            "response": {
+              "code": 4041,
+              "data": null,
+              "message": "配置不存在: rpf64.item.ece87fc00af7497f",
+              "traceId": "af1951db2b0a4cebb6fc15aea2c4c571"
+            },
+            "response_body_sha256": "31a0cbc4ddb1ca4981ebc951e536f1be230356b665cf946941fa2766079cc7f5",
+            "seq": 3,
+            "status": 404,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 284,
+            "kind": "create_config_v1",
+            "method": "POST",
+            "path": "/api/configs",
+            "request": {
+              "app": "rpf64appece87fc00af7497f",
+              "env": "rpf64localece87fc00af7497f",
+              "key": "rpf64.item.ece87fc00af7497f",
+              "value": "rpf53-v1"
+            },
+            "response": {
+              "code": 0,
+              "data": {
+                "app": "rpf64appece87fc00af7497f",
+                "description": null,
+                "env": "rpf64localece87fc00af7497f",
+                "key": "rpf64.item.ece87fc00af7497f",
+                "updatedAt": "2026-10-21T16:22:53.714036100Z",
+                "value": "rpf53-v1",
+                "version": 1
+              },
+              "message": "OK",
+              "traceId": "e134556550ac4d7dae8967962048160a"
+            },
+            "response_body_sha256": "665ddd73bcb417b70ea320d3bce55e300583225c56953734191ca1f6354ee7cb",
+            "seq": 4,
+            "status": 200,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 59,
+            "kind": "update_config_v2",
+            "method": "POST",
+            "path": "/api/configs",
+            "request": {
+              "app": "rpf64appece87fc00af7497f",
+              "env": "rpf64localece87fc00af7497f",
+              "expectedVersion": 1,
+              "key": "rpf64.item.ece87fc00af7497f",
+              "value": "rpf53-v2"
+            },
+            "response": {
+              "code": 0,
+              "data": {
+                "app": "rpf64appece87fc00af7497f",
+                "description": null,
+                "env": "rpf64localece87fc00af7497f",
+                "key": "rpf64.item.ece87fc00af7497f",
+                "updatedAt": "2026-10-21T16:22:54.053605200Z",
+                "value": "rpf53-v2",
+                "version": 2
+              },
+              "message": "OK",
+              "traceId": "d8dea4b12aaf4af7ad99589d51bce871"
+            },
+            "response_body_sha256": "ee1dc155cbe8be19e5648ed53957bed51e0bd0564487ac0d7ec5cef39a6af405",
+            "seq": 5,
+            "status": 200,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 44,
+            "kind": "inspect_config",
+            "method": "GET",
+            "path": "/api/configs/rpf64.item.ece87fc00af7497f?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f",
+            "request": null,
+            "response": {
+              "code": 0,
+              "data": {
+                "app": "rpf64appece87fc00af7497f",
+                "description": null,
+                "env": "rpf64localece87fc00af7497f",
+                "key": "rpf64.item.ece87fc00af7497f",
+                "updatedAt": "2026-10-21T16:22:54.053605Z",
+                "value": "rpf53-v2",
+                "version": 2
+              },
+              "message": "OK",
+              "traceId": "97f9b015a2a544d9a3345ce405b43cc1"
+            },
+            "response_body_sha256": "44c395fc1eda3e8367ccc172b931263a080b300c1521427d35738c74998e6f84",
+            "seq": 6,
+            "status": 200,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 17,
+            "kind": "reconcile_current",
+            "method": "GET",
+            "path": "/api/configs/rpf64.item.ece87fc00af7497f?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f",
+            "request": null,
+            "response": {
+              "code": 0,
+              "data": {
+                "app": "rpf64appece87fc00af7497f",
+                "description": null,
+                "env": "rpf64localece87fc00af7497f",
+                "key": "rpf64.item.ece87fc00af7497f",
+                "updatedAt": "2026-10-21T16:22:54.053605Z",
+                "value": "rpf53-v2",
+                "version": 2
+              },
+              "message": "OK",
+              "traceId": "30ac482eaa69490aad4b14ccccadb07a"
+            },
+            "response_body_sha256": "09892a9293aa6bc5bdb40943efaf70be7a2bf471b6624c2829ecab08c9befe64",
+            "seq": 7,
+            "status": 200,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 39,
+            "kind": "reconcile_history",
+            "method": "GET",
+            "path": "/api/configs/history?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f&key=rpf64.item.ece87fc00af7497f&limit=50",
+            "request": null,
+            "response": {
+              "code": 0,
+              "data": [
+                {
+                  "action": "UPSERT",
+                  "app": "rpf64appece87fc00af7497f",
+                  "createdAt": "2026-10-21T16:22:54.058619Z",
+                  "description": null,
+                  "env": "rpf64localece87fc00af7497f",
+                  "key": "rpf64.item.ece87fc00af7497f",
+                  "operator": null,
+                  "reason": null,
+                  "value": "rpf53-v2",
+                  "version": 2
+                },
+                {
+                  "action": "UPSERT",
+                  "app": "rpf64appece87fc00af7497f",
+                  "createdAt": "2026-10-21T16:22:53.789826Z",
+                  "description": null,
+                  "env": "rpf64localece87fc00af7497f",
+                  "key": "rpf64.item.ece87fc00af7497f",
+                  "operator": null,
+                  "reason": null,
+                  "value": "rpf53-v1",
+                  "version": 1
+                }
+              ],
+              "message": "OK",
+              "traceId": "979b1be6e3e14e9da5b7c4824c2323d1"
+            },
+            "response_body_sha256": "f85f407af63a27dd5da891223d11dd6dc76e4874586367efaa5d493706f13e30",
+            "seq": 8,
+            "status": 200,
+            "transport_error": null
+          },
+          {
+            "content_type": "application/json",
+            "elapsed_ms": 49,
+            "kind": "final_list",
+            "method": "GET",
+            "path": "/api/configs?app=rpf64appece87fc00af7497f&env=rpf64localece87fc00af7497f",
+            "request": null,
+            "response": {
+              "code": 0,
+              "data": [
+                {
+                  "app": "rpf64appece87fc00af7497f",
+                  "description": null,
+                  "env": "rpf64localece87fc00af7497f",
+                  "key": "rpf64.item.ece87fc00af7497f",
+                  "updatedAt": "2026-10-21T16:22:54.053605Z",
+                  "value": "rpf53-v2",
+                  "version": 2
+                }
+              ],
+              "message": "OK",
+              "traceId": "75146fc936384be58496cdfa14e91396"
+            },
+            "response_body_sha256": "abd6efb089f93a392974c45c1dad9f05b2dc78395f82fbc95fb66d4f14f4587b",
+            "seq": 9,
+            "status": 200,
+            "transport_error": null
+          }
+        ],
+        "original_success": {
+          "status": "COMMITTED",
+          "value": "rpf53-v2",
+          "version": 2
+        },
+        "sdk": {
+          "popen_pid": 21144,
+          "ready": {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 21144,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          },
+          "report": {
+            "business_key_present": false,
+            "final_output_sha256": "85a3a17da2c2e2bc24b660c3bb09e48f63f41c10f21c4415de31cb80a6ab3fb7",
+            "final_text_persisted": false,
+            "framework": "pydantic-ai-slim",
+            "guard_denials": [],
+            "input_tokens": 0,
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "output_tokens": 0,
+            "pid": 21144,
+            "provider_key_present": false,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "requests": 5,
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "status": "COMPLETED",
+            "tool_callbacks": 4,
+            "tool_calls": 4,
+            "usage_fields": [
+              "input_tokens",
+              "output_tokens",
+              "requests",
+              "tool_calls"
+            ],
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "version": "2.57.0"
+          },
+          "returncode": 0,
+          "stderr_bytes": 0
+        },
+        "source_kind": "FIXTURE_SCRIPTED",
+        "tool_trace": [
+          {
+            "arguments": {},
+            "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "call_id": "call_rpf53_fixture_1",
+            "http_observation_seq": 3,
+            "name": "inspect_config",
+            "provider_response_id": "chatcmpl-rpf53-fixture-1",
+            "result": {
+              "state": "ABSENT"
+            },
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f",
+            "returned_in_request": 2,
+            "sequence": 1
+          },
+          {
+            "arguments": {
+              "value": "rpf53-v1"
+            },
+            "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+            "call_id": "call_rpf53_fixture_2",
+            "http_observation_seq": 4,
+            "name": "create_config_v1",
+            "provider_response_id": "chatcmpl-rpf53-fixture-2",
+            "result": {
+              "status": "COMMITTED",
+              "value": "rpf53-v1",
+              "version": 1
+            },
+            "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6",
+            "returned_in_request": 3,
+            "sequence": 2
+          },
+          {
+            "arguments": {
+              "expected_version": 1,
+              "value": "rpf53-v2"
+            },
+            "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+            "call_id": "call_rpf53_fixture_3",
+            "http_observation_seq": 5,
+            "name": "update_config_v2",
+            "provider_response_id": "chatcmpl-rpf53-fixture-3",
+            "result": {
+              "reason": "LOCAL_SUCCESS_DELIVERY_SUPPRESSED",
+              "status": "UNKNOWN_OUTCOME",
+              "write_policy": "STOP_WRITES_READ_ONLY_RECONCILE"
+            },
+            "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92",
+            "returned_in_request": 4,
+            "sequence": 3
+          },
+          {
+            "arguments": {},
+            "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "call_id": "call_rpf64_scripted_reconcile",
+            "http_observation_seq": 6,
+            "name": "inspect_config",
+            "provider_response_id": "chatcmpl-rpf53-fixture-4",
+            "result": {
+              "state": "PRESENT",
+              "value": "rpf53-v2",
+              "version": 2
+            },
+            "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422",
+            "returned_in_request": 5,
+            "sequence": 4
+          }
+        ],
+        "visibility": [
+          {
+            "instructions_present": true,
+            "messages_sha256": "56d54f53df9fd63756349df0cea5665fc86398918fd8bc92ebbe3f02aeed276e",
+            "task_prompt_present": true,
+            "tool_help_exact": true
+          },
+          {
+            "instructions_present": true,
+            "messages_sha256": "c500dd901e554b508f95f91547366e92159111554262413fc7bfbeaa8f667260",
+            "task_prompt_present": true,
+            "tool_help_exact": true
+          },
+          {
+            "instructions_present": true,
+            "messages_sha256": "07e7bbd9ae5f280da8a865e507aa3fc3b503da4fdb3ef6106896d8468d05a6f1",
+            "task_prompt_present": true,
+            "tool_help_exact": true
+          },
+          {
+            "instructions_present": true,
+            "messages_sha256": "31950b0ad6f4fdc6aea9166c91a5197537a71b86d8ace3c8cdc82332cfb29a27",
+            "task_prompt_present": true,
+            "tool_help_exact": true
+          },
+          {
+            "instructions_present": true,
+            "messages_sha256": "0f40eaa02ca51e330b99750f246babc5d748c95d502fd0f466f507fceba43a01",
+            "task_prompt_present": true,
+            "tool_help_exact": true
+          }
+        ]
+      },
+      "feedback": {
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "cross_domain_information_gain": "NOT_COMPARABLE",
+        "domain": "config-java-http",
+        "evidence_sha256": "799e077ca1138d7555f0ca42186392b86920aea86b2a34f20a5edc66e51c95b7",
+        "outcome": {
+          "effect": "CONTRACT_SATISFIED_IN_RUN",
+          "fault": {
+            "agent_exposed": true,
+            "observed": true,
+            "planned": true,
+            "triggered": true
+          },
+          "reconciled": true,
+          "state": "UNKNOWN_OUTCOME",
+          "write_ack": "UNKNOWN_OUTCOME"
+        },
+        "run_id": "rpf64-config-ece87fc00af7497f",
+        "schema": "rpf64-domain-feedback-v1",
+        "session_id": "rpf64-session-ece87fc00af7497f",
+        "verdict_sha256": "317744871852027fbd6bfc3a83ce7231797446c37620124f66de0ea227465d25",
+        "verified_facts": [
+          "config-java-http/version2-history2-1",
+          "config-java-http/postcommit-unknown-scripted-readback"
+        ]
+      },
+      "verdict": {
+        "abi": "rpf64-domain-port-v1",
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "domain": "config-java-http",
+        "facts_sha256": "63435fc0d2a5c90cca7dfa901ebee597a5e4b90938696f4d2543e42977cea39c",
+        "outcome": {
+          "effect": "CONTRACT_SATISFIED_IN_RUN",
+          "fault": {
+            "agent_exposed": true,
+            "observed": true,
+            "planned": true,
+            "triggered": true
+          },
+          "reconciled": true,
+          "state": "UNKNOWN_OUTCOME",
+          "write_ack": "UNKNOWN_OUTCOME"
+        },
+        "source_kind": "FIXTURE_SCRIPTED",
+        "verified_facts": [
+          "config-java-http/version2-history2-1",
+          "config-java-http/postcommit-unknown-scripted-readback"
+        ]
+      }
+    }
+  ]
+}
