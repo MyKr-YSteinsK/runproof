@@ -1,0 +1,485 @@
+{
+  "schema": "rpf63-session-summary-v1",
+  "status": "REAL_SESSION_VERIFIED",
+  "session_id": "rpf63-session-0665761f208446c7",
+  "source_kind": "REAL_EXPLORER_REAL_TARGET",
+  "verdict": {
+    "status": "PASS",
+    "source_kind": "REAL_EXPLORER_REAL_TARGET",
+    "choices": [
+      "local-delivery-suppressed-after-http200",
+      "local-delivery-suppressed-after-http200"
+    ],
+    "provider_requests": 12,
+    "replayed_provider_requests": 0,
+    "tokens": 10978,
+    "estimated_cost_cny_upper": 0.062982,
+    "reserved_tokens": 30000,
+    "reserved_cost_cny": 0.54,
+    "physical": {
+      "metadata": 1,
+      "cold": 1,
+      "session": 1,
+      "trial": 2,
+      "jvm": 2,
+      "sdk": 2,
+      "provider": 12,
+      "http": 18,
+      "post": 4,
+      "health": 2
+    },
+    "feedback": "VERIFIED_AND_BOUND_TO_SECOND_EXPLORER",
+    "L2_observed": false,
+    "causality": "NOT_PROVEN",
+    "boundaries": {
+      "domain": "CONFIG_ONLY",
+      "web": "NOT_INTEGRATED",
+      "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+      "issuer": "NOT_PROVEN",
+      "independent_reproduction": "NOT_RUN",
+      "causal_advantage": "NOT_PROVEN",
+      "production": "NOT_PROVEN",
+      "orders_target": "NOT_RUN"
+    }
+  },
+  "witness_raw_sha256": "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299",
+  "rounds": [
+    {
+      "round": 1,
+      "run_id": "rpf63-63d884da74cc814510",
+      "candidate_id": "local-delivery-suppressed-after-http200",
+      "explorer": {
+        "tool_call_id": "call_00_QIjq76rg8uQ9V2U0DbmK9121",
+        "usage": {
+          "completion_tokens": 44,
+          "prompt_tokens": 376,
+          "total_tokens": 420
+        },
+        "response_id": "de9940f8-ed92-4b4c-b315-dcef53a9db04",
+        "request_sha256": "879c8b3b74354acb73d7029c0e8af890fae15838e3bd8c73363b6a3e7246b10f"
+      },
+      "target_sdk_pid": 32688,
+      "java_pid": 31448,
+      "target_requests": [
+        {
+          "attempt": 1,
+          "response_id": "e769fbae-b54e-4888-8b69-12ef6756db31",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 30,
+            "prompt_tokens": 726,
+            "total_tokens": 756
+          },
+          "tool_call_ids": [
+            "call_00_uiLvyrANgMn0FYyr4shY3549"
+          ],
+          "returned_tool_ids": [],
+          "token_upper": 3000,
+          "input_upper": 2507
+        },
+        {
+          "attempt": 2,
+          "response_id": "7bc8f925-07a2-4416-8384-a4bd45e3dd59",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 62,
+            "prompt_tokens": 774,
+            "total_tokens": 836
+          },
+          "tool_call_ids": [
+            "call_00_WsQ4sMEuSpMiYFsJve2O9769"
+          ],
+          "returned_tool_ids": [
+            "call_00_uiLvyrANgMn0FYyr4shY3549"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1552
+        },
+        {
+          "attempt": 3,
+          "response_id": "4e1a3469-620b-4428-bfa5-3828099065f6",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 82,
+            "prompt_tokens": 866,
+            "total_tokens": 948
+          },
+          "tool_call_ids": [
+            "call_00_5dxP90NQqMN43XkeOjK07309"
+          ],
+          "returned_tool_ids": [
+            "call_00_uiLvyrANgMn0FYyr4shY3549",
+            "call_00_WsQ4sMEuSpMiYFsJve2O9769"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1679
+        },
+        {
+          "attempt": 4,
+          "response_id": "32868f08-2a51-4b0c-9084-5213c28d1aed",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 55,
+            "prompt_tokens": 1002,
+            "total_tokens": 1057
+          },
+          "tool_call_ids": [
+            "call_00_z5AF7gHH8AkSbHovqZAZ0135"
+          ],
+          "returned_tool_ids": [
+            "call_00_uiLvyrANgMn0FYyr4shY3549",
+            "call_00_WsQ4sMEuSpMiYFsJve2O9769",
+            "call_00_5dxP90NQqMN43XkeOjK07309"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1885
+        },
+        {
+          "attempt": 5,
+          "response_id": "4ac3a4b9-28c1-45ad-a470-50bd1f2aea55",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 224,
+            "prompt_tokens": 1087,
+            "total_tokens": 1311
+          },
+          "tool_call_ids": [],
+          "returned_tool_ids": [
+            "call_00_uiLvyrANgMn0FYyr4shY3549",
+            "call_00_WsQ4sMEuSpMiYFsJve2O9769",
+            "call_00_5dxP90NQqMN43XkeOjK07309",
+            "call_00_z5AF7gHH8AkSbHovqZAZ0135"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1971
+        }
+      ],
+      "target_tool_calls": [
+        {
+          "arguments": {},
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "call_id": "call_00_uiLvyrANgMn0FYyr4shY3549",
+          "http_observation_seq": 3,
+          "name": "inspect_config",
+          "provider_response_id": "e769fbae-b54e-4888-8b69-12ef6756db31",
+          "result": {
+            "state": "ABSENT"
+          },
+          "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f",
+          "returned_in_request": 2,
+          "sequence": 1
+        },
+        {
+          "arguments": {
+            "value": "rpf53-v1"
+          },
+          "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "call_id": "call_00_WsQ4sMEuSpMiYFsJve2O9769",
+          "http_observation_seq": 4,
+          "name": "create_config_v1",
+          "provider_response_id": "7bc8f925-07a2-4416-8384-a4bd45e3dd59",
+          "result": {
+            "status": "COMMITTED",
+            "value": "rpf53-v1",
+            "version": 1
+          },
+          "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6",
+          "returned_in_request": 3,
+          "sequence": 2
+        },
+        {
+          "arguments": {
+            "expected_version": 1,
+            "value": "rpf53-v2"
+          },
+          "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "call_id": "call_00_5dxP90NQqMN43XkeOjK07309",
+          "http_observation_seq": 5,
+          "name": "update_config_v2",
+          "provider_response_id": "4e1a3469-620b-4428-bfa5-3828099065f6",
+          "result": {
+            "reason": "LOCAL_SUCCESS_DELIVERY_SUPPRESSED",
+            "status": "UNKNOWN_OUTCOME",
+            "write_policy": "STOP_WRITES_READ_ONLY_RECONCILE"
+          },
+          "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92",
+          "returned_in_request": 4,
+          "sequence": 3
+        },
+        {
+          "arguments": {},
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "call_id": "call_00_z5AF7gHH8AkSbHovqZAZ0135",
+          "http_observation_seq": 6,
+          "name": "inspect_config",
+          "provider_response_id": "32868f08-2a51-4b0c-9084-5213c28d1aed",
+          "result": {
+            "state": "PRESENT",
+            "value": "rpf53-v2",
+            "version": 2
+          },
+          "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422",
+          "returned_in_request": 5,
+          "sequence": 4
+        }
+      ],
+      "oracle": {
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "effect": "CONTRACT_SATISFIED_IN_RUN",
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "recovery": "OBSERVED"
+      },
+      "feedback": {
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "candidate": "local-delivery-suppressed-after-http200",
+        "capture_sha256": "58466c4522ffa65ff9755d69284fc9a151b9b6d295a55426492b35cc0d22faa0",
+        "effect": "SATISFIED",
+        "facts": [
+          "effect.v2.history2-1",
+          "safe.two-posts",
+          "fault.suppressed.unknown-exposed",
+          "target.read-only-recovery"
+        ],
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "new_facts": [
+          "effect.v2.history2-1",
+          "safe.two-posts",
+          "fault.suppressed.unknown-exposed",
+          "target.read-only-recovery"
+        ],
+        "oracle_sha256": "89e8db5deeeee87f5018038ebb334cddb547867057bb88411b44d138764fa038",
+        "recovery": "OBSERVED",
+        "run_id": "rpf63-63d884da74cc814510"
+      },
+      "explorer_body_bytes": 903,
+      "business_http": 9,
+      "post": 2
+    },
+    {
+      "round": 2,
+      "run_id": "rpf63-634cf56ee329824d21",
+      "candidate_id": "local-delivery-suppressed-after-http200",
+      "explorer": {
+        "tool_call_id": "call_00_bDy7ZS3PfvF3EQMwXBHO0359",
+        "usage": {
+          "completion_tokens": 44,
+          "prompt_tokens": 713,
+          "total_tokens": 757
+        },
+        "response_id": "b1284be6-622c-46ea-8a4b-7ed8408cb35d",
+        "request_sha256": "a8a37ba018c8c1acac7ed622d9b3673831a4eb7ac0fed358a12a5654271050fc"
+      },
+      "target_sdk_pid": 1008,
+      "java_pid": 7456,
+      "target_requests": [
+        {
+          "attempt": 1,
+          "response_id": "9860595b-5623-4d83-aeb9-b4795ec19293",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 29,
+            "prompt_tokens": 726,
+            "total_tokens": 755
+          },
+          "tool_call_ids": [
+            "call_00_RWGSjrQPyLwVhg0DUjYr2146"
+          ],
+          "returned_tool_ids": [],
+          "token_upper": 3000,
+          "input_upper": 2507
+        },
+        {
+          "attempt": 2,
+          "response_id": "4d8f41a7-4241-4e4b-b1eb-574a60736dc9",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 57,
+            "prompt_tokens": 773,
+            "total_tokens": 830
+          },
+          "tool_call_ids": [
+            "call_00_s5n8Dtp3UFiOIGF9jJgw4792"
+          ],
+          "returned_tool_ids": [
+            "call_00_RWGSjrQPyLwVhg0DUjYr2146"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1539
+        },
+        {
+          "attempt": 3,
+          "response_id": "a6ec953f-b925-4c4a-90a3-0bb7d9eac05c",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 79,
+            "prompt_tokens": 860,
+            "total_tokens": 939
+          },
+          "tool_call_ids": [
+            "call_00_zw1jwm9SyBhR17knFmYY4236"
+          ],
+          "returned_tool_ids": [
+            "call_00_RWGSjrQPyLwVhg0DUjYr2146",
+            "call_00_s5n8Dtp3UFiOIGF9jJgw4792"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1671
+        },
+        {
+          "attempt": 4,
+          "response_id": "94a8618b-7e3d-49bc-98a4-6bf547d96e63",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 53,
+            "prompt_tokens": 993,
+            "total_tokens": 1046
+          },
+          "tool_call_ids": [
+            "call_00_75WTTlXkO14oAbYMQGVL6906"
+          ],
+          "returned_tool_ids": [
+            "call_00_RWGSjrQPyLwVhg0DUjYr2146",
+            "call_00_s5n8Dtp3UFiOIGF9jJgw4792",
+            "call_00_zw1jwm9SyBhR17knFmYY4236"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1877
+        },
+        {
+          "attempt": 5,
+          "response_id": "ad14f56c-8a39-48ef-b92b-f0f43b2b8c0b",
+          "returned_model": "deepseek-flash",
+          "usage": {
+            "completion_tokens": 247,
+            "prompt_tokens": 1076,
+            "total_tokens": 1323
+          },
+          "tool_call_ids": [],
+          "returned_tool_ids": [
+            "call_00_RWGSjrQPyLwVhg0DUjYr2146",
+            "call_00_s5n8Dtp3UFiOIGF9jJgw4792",
+            "call_00_zw1jwm9SyBhR17knFmYY4236",
+            "call_00_75WTTlXkO14oAbYMQGVL6906"
+          ],
+          "token_upper": 2400,
+          "input_upper": 1955
+        }
+      ],
+      "target_tool_calls": [
+        {
+          "arguments": {},
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "call_id": "call_00_RWGSjrQPyLwVhg0DUjYr2146",
+          "http_observation_seq": 3,
+          "name": "inspect_config",
+          "provider_response_id": "9860595b-5623-4d83-aeb9-b4795ec19293",
+          "result": {
+            "state": "ABSENT"
+          },
+          "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f",
+          "returned_in_request": 2,
+          "sequence": 1
+        },
+        {
+          "arguments": {
+            "value": "rpf53-v1"
+          },
+          "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "call_id": "call_00_s5n8Dtp3UFiOIGF9jJgw4792",
+          "http_observation_seq": 4,
+          "name": "create_config_v1",
+          "provider_response_id": "4d8f41a7-4241-4e4b-b1eb-574a60736dc9",
+          "result": {
+            "status": "COMMITTED",
+            "value": "rpf53-v1",
+            "version": 1
+          },
+          "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6",
+          "returned_in_request": 3,
+          "sequence": 2
+        },
+        {
+          "arguments": {
+            "expected_version": 1,
+            "value": "rpf53-v2"
+          },
+          "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "call_id": "call_00_zw1jwm9SyBhR17knFmYY4236",
+          "http_observation_seq": 5,
+          "name": "update_config_v2",
+          "provider_response_id": "a6ec953f-b925-4c4a-90a3-0bb7d9eac05c",
+          "result": {
+            "reason": "LOCAL_SUCCESS_DELIVERY_SUPPRESSED",
+            "status": "UNKNOWN_OUTCOME",
+            "write_policy": "STOP_WRITES_READ_ONLY_RECONCILE"
+          },
+          "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92",
+          "returned_in_request": 4,
+          "sequence": 3
+        },
+        {
+          "arguments": {},
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "call_id": "call_00_75WTTlXkO14oAbYMQGVL6906",
+          "http_observation_seq": 6,
+          "name": "inspect_config",
+          "provider_response_id": "94a8618b-7e3d-49bc-98a4-6bf547d96e63",
+          "result": {
+            "state": "PRESENT",
+            "value": "rpf53-v2",
+            "version": 2
+          },
+          "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422",
+          "returned_in_request": 5,
+          "sequence": 4
+        }
+      ],
+      "oracle": {
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "effect": "CONTRACT_SATISFIED_IN_RUN",
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "recovery": "OBSERVED"
+      },
+      "feedback": {
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "candidate": "local-delivery-suppressed-after-http200",
+        "capture_sha256": "5ec006697d50c9cf981e9cc18bda6afd5246f87d4be447ae979d47c84265888e",
+        "effect": "SATISFIED",
+        "facts": [
+          "effect.v2.history2-1",
+          "safe.two-posts",
+          "fault.suppressed.unknown-exposed",
+          "target.read-only-recovery"
+        ],
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "new_facts": [],
+        "oracle_sha256": "89e8db5deeeee87f5018038ebb334cddb547867057bb88411b44d138764fa038",
+        "recovery": "OBSERVED",
+        "run_id": "rpf63-634cf56ee329824d21"
+      },
+      "explorer_body_bytes": 2010,
+      "business_http": 9,
+      "post": 2
+    }
+  ]
+}

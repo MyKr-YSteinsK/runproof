@@ -1,0 +1,354 @@
+{
+  "schema": "rpf63-verification-diagnostic-v1",
+  "status": "PASS",
+  "witness": {
+    "path": "spikes/rpf-63/dual-agent-evidence.json",
+    "raw_sha256": "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299",
+    "bytes": 374702,
+    "schema": "rpf63-dual-agent-evidence-v1"
+  },
+  "sources": {
+    "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f",
+    "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba",
+    "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1",
+    "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474",
+    "runtime/tests/test_effectwitness_pge_dual.py": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c",
+    "spikes/rpf-63/probe.py": "bc736f7c7aa577466ec8242252cfdae850fb58b02607bfd046453d18cd69831b",
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+    "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+    "runtime/runproof_runtime/effectwitness/config_live_verify.py": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+    "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+    "runtime/runproof_runtime/effectwitness/contracts.py": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+    "runtime/runproof_runtime/effectwitness/pge_select_explorer.py": "4be251b3166efcd2d29e8683dfa85a5d44e3147f32b8e37e886594c614c448ef",
+    "runtime/runproof_runtime/effectwitness/pge_select_contracts.py": "1cd9927968657471f63c64348ad82c62696ffb5b7d7065a038c17a26e31e53d5",
+    "runtime/runproof_runtime/effectwitness/pge_select_feedback.py": "147006818a074aba4bc983f372a16b4697367522268ced654f6ce19eaef56bfa",
+    "spikes/rpf-53/probe.py": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+    "spikes/rpf-55/probe.py": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+  },
+  "source_sha256": "62ae597ae4823a3d6b55ecda13581fc4a2b6be5687e4f17665266267560cc062",
+  "verifier": {
+    "version": "rpf63-dual-agent-verifier-v1",
+    "sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474"
+  },
+  "actual_controls": {
+    "correct_missing_wrong": [
+      0,
+      2,
+      3
+    ],
+    "rehashed_semantic_controls": {
+      "role_upgrade_or_downgrade": 3,
+      "target_impersonation": 3,
+      "tool_call": 3,
+      "usage_omission": 3,
+      "duplicate_post": 3,
+      "wrong_domain": 3,
+      "cross_round": 3,
+      "fake_fault": 3,
+      "old_run": 3,
+      "future_feedback": 3,
+      "unknown_usage": 3,
+      "cleanup": 3,
+      "source": 3,
+      "price": 3,
+      "wal_reverse": 3,
+      "budget_omission": 3,
+      "feedback_call_id": 3,
+      "false_reconcile": 3,
+      "cold_pid": 3,
+      "authority": 3,
+      "missing_readback": 3
+    }
+  },
+  "verdict": {
+    "status": "PASS",
+    "source_kind": "REAL_EXPLORER_REAL_TARGET",
+    "choices": [
+      "local-delivery-suppressed-after-http200",
+      "local-delivery-suppressed-after-http200"
+    ],
+    "provider_requests": 12,
+    "replayed_provider_requests": 0,
+    "tokens": 10978,
+    "estimated_cost_cny_upper": 0.062982,
+    "reserved_tokens": 30000,
+    "reserved_cost_cny": 0.54,
+    "physical": {
+      "metadata": 1,
+      "cold": 1,
+      "session": 1,
+      "trial": 2,
+      "jvm": 2,
+      "sdk": 2,
+      "provider": 12,
+      "http": 18,
+      "post": 4,
+      "health": 2
+    },
+    "feedback": "VERIFIED_AND_BOUND_TO_SECOND_EXPLORER",
+    "L2_observed": false,
+    "causality": "NOT_PROVEN",
+    "boundaries": {
+      "domain": "CONFIG_ONLY",
+      "web": "NOT_INTEGRATED",
+      "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+      "issuer": "NOT_PROVEN",
+      "independent_reproduction": "NOT_RUN",
+      "causal_advantage": "NOT_PROVEN",
+      "production": "NOT_PROVEN",
+      "orders_target": "NOT_RUN"
+    }
+  },
+  "independent_cleanup": {
+    "ports_closed": {
+      "5125": true,
+      "5126": true,
+      "5127": true,
+      "5128": true,
+      "5082": true
+    },
+    "processes": [
+      {
+        "Id": 25204,
+        "Exited": true
+      },
+      {
+        "Id": 32688,
+        "Exited": true
+      },
+      {
+        "Id": 31448,
+        "Exited": true
+      },
+      {
+        "Id": 1008,
+        "Exited": true
+      },
+      {
+        "Id": 7456,
+        "Exited": true
+      }
+    ]
+  },
+  "privacy": "EXACT_KEY_AND_BEARER_PRIVATE_PATH_SCAN_PASS",
+  "runtime": {
+    "returncode": 0,
+    "elapsed_seconds": 390.58050229999935,
+    "log": ".local/rpf-63/diagnostics/full-runtime.log",
+    "snapshot": ".local/rpf-63/regression-snapshot-5d7e98d9",
+    "source_sha256": "62ae597ae4823a3d6b55ecda13581fc4a2b6be5687e4f17665266267560cc062",
+    "tests": 406,
+    "docker_skipped": 2,
+    "test_seconds": 388.675
+  },
+  "historical_anchors": [
+    {
+      "flag": "--expected-sha256",
+      "id": "43",
+      "module": "witness_verify",
+      "path": "spikes/rpf-43/sample-witness.json",
+      "sha256": "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e",
+      "returncode": 0,
+      "elapsed_seconds": 0.1640235999984725,
+      "log": ".local/rpf-63/diagnostics/anchor-43.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "44",
+      "module": "witness_verify",
+      "path": "spikes/rpf-44/sample-ops-witness.json",
+      "sha256": "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873",
+      "returncode": 0,
+      "elapsed_seconds": 0.14765450000049896,
+      "log": ".local/rpf-63/diagnostics/anchor-44.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "48",
+      "module": "target_evidence",
+      "path": "spikes/rpf-48/target-agent-summary.json",
+      "sha256": "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2",
+      "returncode": 0,
+      "elapsed_seconds": 0.16394639999998617,
+      "log": ".local/rpf-63/diagnostics/anchor-48.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "49",
+      "module": "target_recovery",
+      "path": "spikes/rpf-49/recovery-summary.json",
+      "sha256": "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b",
+      "returncode": 0,
+      "elapsed_seconds": 0.16923210000095423,
+      "log": ".local/rpf-63/diagnostics/anchor-49.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "50",
+      "module": "violation_witness",
+      "path": "spikes/rpf-50/violation-witness.json",
+      "sha256": "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a",
+      "returncode": 0,
+      "elapsed_seconds": 0.1777540000002773,
+      "log": ".local/rpf-63/diagnostics/anchor-50.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "51r4",
+      "module": "config_http_witness",
+      "path": "spikes/rpf-51/rev-4/config-http-witness.json",
+      "sha256": "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d",
+      "returncode": 0,
+      "elapsed_seconds": 0.16035349999947357,
+      "log": ".local/rpf-63/diagnostics/anchor-51r4.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "52r3",
+      "module": "config_target_verify",
+      "path": "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+      "sha256": "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27",
+      "returncode": 0,
+      "elapsed_seconds": 0.15682689999812283,
+      "log": ".local/rpf-63/diagnostics/anchor-52r3.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "53r6",
+      "module": "config_live_verify",
+      "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+      "sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "returncode": 0,
+      "elapsed_seconds": 0.11347179999938817,
+      "log": ".local/rpf-63/diagnostics/anchor-53r6.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "55r2",
+      "module": "config_experiment_verify",
+      "path": "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+      "sha256": "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8",
+      "returncode": 0,
+      "elapsed_seconds": 0.24857690000135335,
+      "log": ".local/rpf-63/diagnostics/anchor-55r2.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "56r4",
+      "module": "config_pge_verify",
+      "path": "spikes/rpf-56/rev-4/config-pge-evidence.json",
+      "sha256": "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b",
+      "returncode": 0,
+      "elapsed_seconds": 0.2859817999997176,
+      "log": ".local/rpf-63/diagnostics/anchor-56r4.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "57v1",
+      "module": "config_pge_coverage_verify",
+      "path": "spikes/rpf-57/config-pge-coverage-evidence.json",
+      "sha256": "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7",
+      "returncode": 0,
+      "elapsed_seconds": 0.30105860000185203,
+      "log": ".local/rpf-63/diagnostics/anchor-57v1.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "58r2",
+      "module": "pge_shared_verify",
+      "path": "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+      "sha256": "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d",
+      "returncode": 0,
+      "elapsed_seconds": 0.3940203999991354,
+      "log": ".local/rpf-63/diagnostics/anchor-58r2.log"
+    },
+    {
+      "id": "59v1",
+      "path": "spikes/rpf-59/cross-domain-selection-evidence.json",
+      "sha256": "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a",
+      "module": "pge_select_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.4907275000005029,
+      "log": ".local/rpf-63/diagnostics/anchor-59v1.log"
+    },
+    {
+      "id": "60v1",
+      "path": "spikes/rpf-60/cross-domain-live-evidence.json",
+      "sha256": "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9",
+      "module": "lab_cross_domain_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.4717342000003555,
+      "log": ".local/rpf-63/diagnostics/anchor-60v1.log"
+    },
+    {
+      "id": "62v1",
+      "path": "spikes/rpf-62/real-target-witness.json",
+      "sha256": "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4",
+      "module": "pge_target_capability_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.2657366000021284,
+      "log": ".local/rpf-63/diagnostics/anchor-62v1.log"
+    }
+  ],
+  "source_freeze": "G2_METADATA_COLD_REAL_FINAL_AND_ISOLATED_RUNTIME_IDENTICAL",
+  "wal_file": ".local/rpf-63/account/ledger.jsonl",
+  "wal_frames": 241,
+  "wal_span_seconds": 136.6394576,
+  "repo_checks": {
+    "reviewed-artifacts": {
+      "returncode": 0,
+      "elapsed_seconds": 0.6315059999978985,
+      "log": ".local/rpf-63/diagnostics/reviewed-artifacts.log"
+    },
+    "public-docs": {
+      "returncode": 0,
+      "elapsed_seconds": 0.21689589999732561,
+      "log": ".local/rpf-63/diagnostics/public-docs.log"
+    }
+  },
+  "offline_development_iterations": [
+    {
+      "order": 1,
+      "status": "FAIL",
+      "scope": "PURE_SYNTHETIC_TESTS_ONLY",
+      "reason": "Fixture mutated already-checkpointed model identity/events; PROVIDER_HISTORY_REWRITE / DOMAIN_WAL",
+      "evidence": "Tool history; no original stderr log file saved"
+    },
+    {
+      "order": 2,
+      "status": "FAIL",
+      "scope": "PURE_SYNTHETIC_TESTS_ONLY",
+      "reason": "Fixture broker request omitted fixed thinking field, request digest differed from Host actual request; TARGET_METER",
+      "evidence": "Tool history; no original stderr log file saved"
+    },
+    {
+      "order": 3,
+      "status": "PASS",
+      "scope": "5 offline tests after fixture fix"
+    },
+    {
+      "order": 4,
+      "status": "PASS",
+      "scope": "6 tests with explicit unknown-mutation and repeated-write denial"
+    },
+    {
+      "order": 5,
+      "status": "PASS",
+      "scope": "Final frozen G2 focused6 + four paths +21 CLI controls"
+    }
+  ],
+  "whitespace_check": {
+    "status": "FAIL",
+    "exit_code": 2,
+    "file": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py",
+    "line": 76,
+    "kind": "EIGHT_SPACES_ON_EMPTY_LINE",
+    "decision": "Preserve exact frozen live Source identity; known cosmetic limitation, no semantic source change",
+    "log": ".local/rpf-63/diagnostics/diff-check.log"
+  }
+}

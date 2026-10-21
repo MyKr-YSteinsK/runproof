@@ -1,0 +1,122 @@
+{
+  "schema": "rpf63-capability-assessment-v1",
+  "status": "SAFE_SEAM_ESTABLISHED",
+  "base": "68572c05a52ff2258f50fb7c4488bff8e69ea61c",
+  "branch": "codex/rpf-63-real-explorer-target-shared-config-pge",
+  "source_sha256": "62ae597ae4823a3d6b55ecda13581fc4a2b6be5687e4f17665266267560cc062",
+  "call_graph": [
+    "probe.live -> session.execute",
+    "session.ExplorerMeter -> same TaskLedger.reserve/provider",
+    "new ConfigTargetDriver.run(capability,context) -> new run_sdk",
+    "new CapabilityHost -> frozen ConfigLiveHost._ready/_completion/_tool/_provider_request",
+    "new BusinessHttp -> frozen ConfigLiveHttp.request",
+    "verify_scene -> frozen _api_response/_valid_item/_history",
+    "feedback -> body_for(second Explorer)"
+  ],
+  "authority_map": [
+    {
+      "symbol": "TargetCapabilityDriver.run",
+      "origin": "RPF62 signature reference",
+      "operation": "New static compatible protocol shape; no invocation of old task-bound Driver"
+    },
+    {
+      "symbol": "ConfigLiveHost / ConfigLiveHttp / ConfigLiveBusiness",
+      "origin": "config_live_runtime.py",
+      "operation": "Reuse pinned transport, schema, provenance, real HTTP and business primitives via new task constructors"
+    },
+    {
+      "symbol": "config_live_external.py",
+      "origin": "fixed SDK child",
+      "operation": "Unmodified child, fixed identity, three tools only, no Provider/business key"
+    },
+    {
+      "symbol": "pge_select_explorer.request / safe_response_shape",
+      "origin": "RPF59",
+      "operation": "Reuse HTTPS no-retry transport and text-free safe projection; new catalog, parser, ledger meter and feedback"
+    },
+    {
+      "symbol": "spikes/rpf-55/probe.py helpers and spikes/rpf-53/probe.py",
+      "origin": "read-only identity/lifecycle helpers",
+      "operation": "Only fixed SDK/JDK/source bundle and loopback/process inspection, never old metadata/cold/live or old task roots"
+    }
+  ],
+  "candidate_semantics": {
+    "normal": "No planned/enabled fault; real COMMITTED delivered",
+    "local-delivery-suppressed-after-http200": "HTTP200/code0/item v2 verified, original success retained, explicit UNKNOWN delivered, writes stopped; optional model inspect"
+  },
+  "budget": {
+    "target_requests_per_trial": 5,
+    "total_provider_requests": 12,
+    "target_caps": [
+      3000,
+      2400,
+      2400,
+      2400,
+      2400
+    ],
+    "explorer_each": 2400,
+    "worst_sum_tokens": 30000,
+    "permanent_cost_pool_cny": 0.54,
+    "hard_cost_cny": 0.65,
+    "input_guard": "First request serialized UTF8 bytes; later exact unchanged messages prefix + previous Provider prompt usage + added suffix bytes +512 framing guard. Prefix/config change or reported bound breach fail closed; fixed irreversible per-stage tickets and no reclaim. This is a bounded transport policy, not a separately calibrated tokenizer benchmark."
+  },
+  "copy_debt": {
+    "prior_port_lines": 194,
+    "new_port_lines": 206,
+    "exact_common_lines_sequence": 167,
+    "reason": "Old concrete constructors, scope guard, lifecycle and ledger bind RPF62 owner. Version these in new files without monkeypatch, preserving original semantics and sources. This is material lifecycle adaptation, not a fully extracted universal adapter.",
+    "remaining": [
+      "Metadata AST extraction depends on reviewed fixed helper implementation",
+      "SDK/JVM lifecycle wrapper is still copied and owner-specific",
+      "Need separately authorized stable TaskContext/process supervisor/shared Domain Port extraction before broad integration"
+    ]
+  },
+  "frozen": {
+    "old_sources_edited": false,
+    "old_task_root_used": false,
+    "old_fixture_assertion_bypassed": false,
+    "dynamic_callable": false,
+    "web_integrated": false
+  },
+  "research_status": "REAL_SESSION_VERIFIED",
+  "next_plan": "No RPF64 implementation authorized",
+  "research_verdict": {
+    "status": "PASS",
+    "source_kind": "REAL_EXPLORER_REAL_TARGET",
+    "choices": [
+      "local-delivery-suppressed-after-http200",
+      "local-delivery-suppressed-after-http200"
+    ],
+    "provider_requests": 12,
+    "replayed_provider_requests": 0,
+    "tokens": 10978,
+    "estimated_cost_cny_upper": 0.062982,
+    "reserved_tokens": 30000,
+    "reserved_cost_cny": 0.54,
+    "physical": {
+      "metadata": 1,
+      "cold": 1,
+      "session": 1,
+      "trial": 2,
+      "jvm": 2,
+      "sdk": 2,
+      "provider": 12,
+      "http": 18,
+      "post": 4,
+      "health": 2
+    },
+    "feedback": "VERIFIED_AND_BOUND_TO_SECOND_EXPLORER",
+    "L2_observed": false,
+    "causality": "NOT_PROVEN",
+    "boundaries": {
+      "domain": "CONFIG_ONLY",
+      "web": "NOT_INTEGRATED",
+      "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+      "issuer": "NOT_PROVEN",
+      "independent_reproduction": "NOT_RUN",
+      "causal_advantage": "NOT_PROVEN",
+      "production": "NOT_PROVEN",
+      "orders_target": "NOT_RUN"
+    }
+  }
+}
