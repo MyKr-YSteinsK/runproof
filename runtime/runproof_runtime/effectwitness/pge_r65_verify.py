@@ -13,12 +13,12 @@ def seal(p): return dict(schema=SCHEMA,payload=p,payload_sha256=c.digest(p),veri
 
 def verify_sdk(s,trace,comps,*,guarded=False):
     pin=c.pinned_sdk_fields(); ready,r=s['ready'],s['report']; pid=s['popen_pid']
-    c.require(type(pid) is int and pid>0 and ready['pid']==r['pid']==pid and s['stderr_bytes']==0,'SDK_PID')
+    c.require(type(pid) is int and pid>0 and ready['pid']==pid and s['stderr_bytes']==0,'SDK_PID')
     c.require(all(ready[k]==pin[k] for k in ('python_executable_sha256','sdk_site_root_binding_sha256','python_runtime_mapping_sha256')) and ready['sdk_source_sha256']==c.SDK_CORE_SHA256 and ready['openai_source_sha256']==pin['openai_core_sha256'],'SDK_IDENTITY')
     if guarded:
-        c.require(r['status']!='COMPLETED' and s['returncode']!=0 and r.get('provider_key_present',False) is False,'GUARDED_REPORT')
+        c.require(set(r)=={'status','stage','error_type','guard_code','guard_denials'} and r['status']=='SDK_ERROR' and r['stage']=='sdk_run' and type(r['error_type']) is str and r['guard_code'] is None and r['guard_denials']==[] and s['returncode']==1,'GUARDED_REPORT')
         return
-    c.require(s['returncode']==0 and r['status']=='COMPLETED' and r['guard_denials']==[] and r['framework']=='pydantic-ai-slim' and r['version']=='2.57.0' and r['openai_version']=='3.35.1','SDK_REPORT')
+    c.require(r['pid']==pid and s['returncode']==0 and r['status']=='COMPLETED' and r['guard_denials']==[] and r['framework']=='pydantic-ai-slim' and r['version']=='2.57.0' and r['openai_version']=='3.35.1','SDK_REPORT')
     c.require(r['python_executable_sha256']==pin['python_executable_sha256'] and r['sdk_source_sha256']==c.SDK_CORE_SHA256 and r['openai_source_sha256']==pin['openai_core_sha256'],'REPORT_IDENTITY')
     c.require(r['provider_key_present'] is False and r['business_key_present'] is False and r['final_text_persisted'] is False and r['requests']==len(comps) and r['tool_calls']==r['tool_callbacks']==len(trace),'SDK_PRIVACY_COUNTS')
     c.require(r['input_tokens']==sum(x['usage']['prompt_tokens'] for x in comps) and r['output_tokens']==sum(x['usage']['completion_tokens'] for x in comps),'SDK_USAGE')

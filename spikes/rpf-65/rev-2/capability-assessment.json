@@ -1,0 +1,103 @@
+{
+  "plan": "RPF-65/rev-2",
+  "abi": "rpf65-config-domain-port-v2",
+  "abi_changed": false,
+  "protocol_reason": "serialized contract shapes unchanged; base/branch/workspace/probe/source hashes provide independent revision identity",
+  "factory": {
+    "name": "assemble_host(ctx,ct,ledger,*,api_key=None)",
+    "production": "ConfigPort.execute -> assemble_host -> Host(ct,broker,ConfigLiveBusiness,journal)",
+    "tests": [
+      "signature.bind and object identity",
+      "omitted Broker mutation TypeError",
+      "unpatched execute reaches observed factory then injected setup failure with cleanup",
+      "unpatched Session/Port/factory/Broker/Host/Business/Oracle complete synthetic protocol; only process/SDK/HTTP boundaries mocked"
+    ],
+    "real_key_access_in_free_tests": false,
+    "nonmodel_placeholder": "synthetic-only-no-credential literal; no valid secret or Provider network"
+  },
+  "verifier_fix": {
+    "evidence": "fixed config_live_external.py SDK_ERROR report omits pid; P0 test reproduced KeyError",
+    "change": "ready/Popen PID binding for exact guarded SDK_ERROR; success still binds ready/report/Popen and all usage fields",
+    "weakened_authority_or_usage": false
+  },
+  "source_scope": {
+    "context": "new base/branch/root/new probe Source Map; old suffix forbidden",
+    "port": "shared factory, nested finally, GET-only reconciliation on SDK errors, scene/cleanup receipts",
+    "session": "UNCHANGED",
+    "verifier": "guarded SDK_ERROR consistency only",
+    "tests": "8 new tests (14 total focused)"
+  },
+  "supervisor": {
+    "source": "runtime/runproof_runtime/effectwitness/pge_port_context.py",
+    "sha256": "0bd2b0256be2064b46afba124715e273a7eaf09345e3cddfeb165e8d7fe133d5",
+    "methods": [
+      "start",
+      "received",
+      "close"
+    ],
+    "actual_native_use": {
+      "cold_sdk_pid": 848,
+      "java_pid": 25792,
+      "target_sdk_pid": 3108,
+      "one_shared_class_all_three": true,
+      "cleanup_all_observed": true
+    }
+  },
+  "reuse": [
+    "DomainPort four-method Protocol",
+    "ConfigLiveHost fixed registry, ready, completion, Tool Return validation and no-retry transport",
+    "ConfigLiveBusiness and HTTP read-only effect oracle",
+    "fixed SDK external source and RPF53/55 metadata inspectors"
+  ],
+  "remaining_copy_debt": [
+    "task scoped Broker state snapshots and prefix-usage proof",
+    "Host constructor/phase/fault adaptation",
+    "SDK runner and Java readiness/configuration lifecycle",
+    "readonly metadata AST inspector adaptation"
+  ],
+  "limits": {
+    "metadata": 2,
+    "cold": 1,
+    "session": 1,
+    "trial": 1,
+    "jvm": 1,
+    "sdk": 1,
+    "provider": 6,
+    "http": 12,
+    "post": 2,
+    "health": 3
+  },
+  "caps": [
+    3000,
+    2400,
+    2400,
+    2400,
+    2400,
+    2400
+  ],
+  "boundaries": {
+    "explorer": "NOT_RUN",
+    "order_real_target": "NOT_RUN",
+    "cross_domain_real_dual_agent": "NOT_PROVEN",
+    "L2": "NOT_TESTED",
+    "web": "NOT_INTEGRATED",
+    "causality": "NOT_PROVEN",
+    "independent_reproduction": "NOT_TESTED",
+    "issuer": "NOT_ESTABLISHED"
+  },
+  "rev1_evidence_untouched": true,
+  "new_port": {
+    "path": "runtime/runproof_runtime/effectwitness/pge_r65_target_config.py",
+    "sha256_lf": "8f3701adbfdfb4f4784aa261feca92404a6a71002bc73bd9e08455bf86083ea7",
+    "direct_Popen": 0,
+    "global_WORK": 0
+  },
+  "old_port": {
+    "path": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py",
+    "sha256_lf": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba",
+    "direct_Popen": 2,
+    "global_WORK": 5
+  },
+  "actual_capability": "ONE_REAL_CONFIG_TARGET_ON_REV2_CONTEXT_PORT_SESSION_WAL",
+  "source_sha256": "fef2a101a4ca1a59005182fb2e5ff08fe0db62ed446f0697ce3aa0826939141a"
+}

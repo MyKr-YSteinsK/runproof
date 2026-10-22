@@ -1,0 +1,353 @@
+{
+  "plan": "RPF-65/rev-2",
+  "status": "PARTIAL_DELIVERY_PENDING",
+  "gates": {
+    "G0": "PASS",
+    "R2-A01": "PASS",
+    "R2-A02": "PASS",
+    "R2-A03": "PASS",
+    "R2-A04": "PASS",
+    "R2-A05": "PASS",
+    "R2-A06": "PASS",
+    "R2-A07": "PASS",
+    "R2-A08": "PASS",
+    "R2-A09": "PASS",
+    "R2-A10": "NOT_RUN"
+  },
+  "focused": {
+    "returncode": 0,
+    "elapsed_seconds": 42.97171250000065,
+    "log": ".local/rpf-65-rev-2/diagnostics/focused-final.log"
+  },
+  "focused_tests": 14,
+  "development_failures": {
+    "first_focused": {
+      "tests": 13,
+      "errors": 1,
+      "seconds": 57.88,
+      "failed_test": "test_guarded_error_report_uses_ready_pid",
+      "cause": "fixed SDK SDK_ERROR report has no pid; original verifier accessed report[pid] before guarded branch",
+      "phase": "P0_BEFORE_FREEZE",
+      "correction": "ready/Popen PID binding plus exact SDK_ERROR shape; successful reports still require report pid"
+    },
+    "factory_tests": "PASS_ON_FIRST_CANDIDATE",
+    "provider_calls": 0,
+    "cold_runs": 0,
+    "second_focused": {
+      "tests": 14,
+      "errors": 1,
+      "seconds": 53.711,
+      "failed_test": "test_actual_execute_full_nonmodel_protocol",
+      "cause": "test placeholder omitted for base Host nonempty credential shape check before mocked Provider boundary",
+      "phase": "P0_TEST_FIXTURE",
+      "real_key_accessed": false,
+      "correction": "explicit synthetic-only-no-credential literal with socket and Provider transport mocked"
+    }
+  },
+  "synthetic_cli_and_controls": {
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "raw_bytes": 193784,
+    "raw_sha256": "068832ec03851bb5455e12f989b30183be7859aec6d17ca0021d94e26b1772f8",
+    "verifier": {
+      "version": "rpf65-target-config-verifier-v2",
+      "sha256": "37ee561e827862ebc6cb33e11afdc943865c63f32bcb4914c0e6657eb50e578b"
+    },
+    "source_sha256": "fef2a101a4ca1a59005182fb2e5ff08fe0db62ed446f0697ce3aa0826939141a",
+    "correct_missing_wrong": [
+      0,
+      2,
+      3
+    ],
+    "rehashed_semantic_controls": {
+      "source_promotion": 3,
+      "double_source_promotion": 3,
+      "owner": 3,
+      "abi": 3,
+      "source_map": 3,
+      "role_spoof": 3,
+      "input_cap": 3,
+      "cost_omission": 3,
+      "usage_unknown": 3,
+      "provider_model": 3,
+      "call_id": 3,
+      "tool_return": 3,
+      "repeat_post": 3,
+      "missing_readback": 3,
+      "false_authority": 3,
+      "fault_truth": 3,
+      "pid_spoof": 3,
+      "child_zombie": 3,
+      "feedback_explorer": 3,
+      "cold_pid": 3,
+      "usage_omitted": 3,
+      "authority_history": 3
+    },
+    "source_grade_direction": "SYNTHETIC_TO_REAL",
+    "validation_script_sha256": "3c20ca279db99891f0b641c5c505cf259588a22d04e618657770f02d0c79a018"
+  },
+  "historical_anchors": [
+    {
+      "flag": "--expected-sha256",
+      "id": "43",
+      "module": "witness_verify",
+      "path": "spikes/rpf-43/sample-witness.json",
+      "sha256": "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e",
+      "returncode": 0,
+      "elapsed_seconds": 0.16385550000086369,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-43.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "44",
+      "module": "witness_verify",
+      "path": "spikes/rpf-44/sample-ops-witness.json",
+      "sha256": "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873",
+      "returncode": 0,
+      "elapsed_seconds": 0.1517812000001868,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-44.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "48",
+      "module": "target_evidence",
+      "path": "spikes/rpf-48/target-agent-summary.json",
+      "sha256": "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2",
+      "returncode": 0,
+      "elapsed_seconds": 0.16529960000116262,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-48.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "49",
+      "module": "target_recovery",
+      "path": "spikes/rpf-49/recovery-summary.json",
+      "sha256": "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b",
+      "returncode": 0,
+      "elapsed_seconds": 0.17144009999901755,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-49.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "50",
+      "module": "violation_witness",
+      "path": "spikes/rpf-50/violation-witness.json",
+      "sha256": "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a",
+      "returncode": 0,
+      "elapsed_seconds": 0.17277290000129142,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-50.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "51r4",
+      "module": "config_http_witness",
+      "path": "spikes/rpf-51/rev-4/config-http-witness.json",
+      "sha256": "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d",
+      "returncode": 0,
+      "elapsed_seconds": 0.1656235000009474,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-51r4.log"
+    },
+    {
+      "flag": "--expected-sha256",
+      "id": "52r3",
+      "module": "config_target_verify",
+      "path": "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+      "sha256": "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27",
+      "returncode": 0,
+      "elapsed_seconds": 0.16760779999822262,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-52r3.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "53r6",
+      "module": "config_live_verify",
+      "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+      "sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "returncode": 0,
+      "elapsed_seconds": 0.12955850000071223,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-53r6.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "55r2",
+      "module": "config_experiment_verify",
+      "path": "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+      "sha256": "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8",
+      "returncode": 0,
+      "elapsed_seconds": 0.26574880000043777,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-55r2.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "56r4",
+      "module": "config_pge_verify",
+      "path": "spikes/rpf-56/rev-4/config-pge-evidence.json",
+      "sha256": "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b",
+      "returncode": 0,
+      "elapsed_seconds": 0.3281669000007241,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-56r4.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "57v1",
+      "module": "config_pge_coverage_verify",
+      "path": "spikes/rpf-57/config-pge-coverage-evidence.json",
+      "sha256": "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7",
+      "returncode": 0,
+      "elapsed_seconds": 0.3086457999997947,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-57v1.log"
+    },
+    {
+      "flag": "--sha256",
+      "id": "58r2",
+      "module": "pge_shared_verify",
+      "path": "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+      "sha256": "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d",
+      "returncode": 0,
+      "elapsed_seconds": 0.41597340000043914,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-58r2.log"
+    },
+    {
+      "id": "59v1",
+      "path": "spikes/rpf-59/cross-domain-selection-evidence.json",
+      "sha256": "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a",
+      "module": "pge_select_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.5280927999992855,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-59v1.log"
+    },
+    {
+      "id": "60v1",
+      "path": "spikes/rpf-60/cross-domain-live-evidence.json",
+      "sha256": "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9",
+      "module": "lab_cross_domain_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.5073049000002356,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-60v1.log"
+    },
+    {
+      "id": "62v1",
+      "path": "spikes/rpf-62/real-target-witness.json",
+      "sha256": "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4",
+      "module": "pge_target_capability_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.27952449999975215,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-62v1.log"
+    },
+    {
+      "id": "63v1",
+      "path": "spikes/rpf-63/dual-agent-evidence.json",
+      "sha256": "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299",
+      "module": "pge_dual_verify",
+      "flag": "--sha256",
+      "returncode": 0,
+      "elapsed_seconds": 0.3197018000009848,
+      "log": ".local/rpf-65-rev-2/diagnostics/anchor-63v1.log"
+    }
+  ],
+  "reviewed_and_public": {
+    "reviewed": {
+      "returncode": 0,
+      "elapsed_seconds": 0.7426892000003136,
+      "log": ".local/rpf-65-rev-2/diagnostics/reviewed.log"
+    },
+    "public": {
+      "returncode": 0,
+      "elapsed_seconds": 0.23631170000044222,
+      "log": ".local/rpf-65-rev-2/diagnostics/public.log"
+    }
+  },
+  "runtime": {
+    "returncode": 0,
+    "elapsed_seconds": 582.135394500001,
+    "log": ".local/rpf-65-rev-2/diagnostics/runtime-full-first.log",
+    "snapshot": ".local/rpf-65-rev-2/snapshots/e33023d2",
+    "input_checks": {
+      "r65rev2": {
+        "files": 24,
+        "sha256": "fef2a101a4ca1a59005182fb2e5ff08fe0db62ed446f0697ce3aa0826939141a",
+        "all_present": true
+      },
+      "r60-required-inputs": {
+        "files": 32,
+        "sha256": "3402428d659a5140d8c90a108a59142b78b0beba2d6de7d2e4c9a3ce967e0ada",
+        "all_present": true
+      }
+    },
+    "tracked_or_explicit_paths": 637,
+    "source_sha256": "fef2a101a4ca1a59005182fb2e5ff08fe0db62ed446f0697ce3aa0826939141a",
+    "python": "3.14.6",
+    "old_private_roots_copied": false,
+    "provider_key_in_child_environment": false,
+    "tests": 426,
+    "test_seconds": 580.182,
+    "skipped": 2,
+    "skip_reason": "Docker provider unavailable: RuntimeFailure",
+    "failures": 0,
+    "errors": 0,
+    "single_full_green": true,
+    "full_runs": 1
+  },
+  "real_witness": {
+    "source_kind": "REAL_PROVIDER_TARGET_CONFIG",
+    "raw_bytes": 197496,
+    "raw_sha256": "2c8691137603cc69d9a1cf92f7800da65dd803bd8e49291187caecac6c5eea2d",
+    "verifier": {
+      "version": "rpf65-target-config-verifier-v2",
+      "sha256": "37ee561e827862ebc6cb33e11afdc943865c63f32bcb4914c0e6657eb50e578b"
+    },
+    "source_sha256": "fef2a101a4ca1a59005182fb2e5ff08fe0db62ed446f0697ce3aa0826939141a",
+    "correct_missing_wrong": [
+      0,
+      2,
+      3
+    ],
+    "rehashed_semantic_controls": {
+      "source_promotion": 3,
+      "double_source_promotion": 3,
+      "owner": 3,
+      "abi": 3,
+      "source_map": 3,
+      "role_spoof": 3,
+      "input_cap": 3,
+      "cost_omission": 3,
+      "usage_unknown": 3,
+      "provider_model": 3,
+      "call_id": 3,
+      "tool_return": 3,
+      "repeat_post": 3,
+      "missing_readback": 3,
+      "false_authority": 3,
+      "fault_truth": 3,
+      "pid_spoof": 3,
+      "child_zombie": 3,
+      "feedback_explorer": 3,
+      "cold_pid": 3,
+      "usage_omitted": 3,
+      "authority_history": 3
+    },
+    "source_grade_direction": "REAL_TO_SYNTHETIC",
+    "validation_script_sha256": "3c20ca279db99891f0b641c5c505cf259588a22d04e618657770f02d0c79a018"
+  },
+  "whitespace": {
+    "before_freeze_staged": 0,
+    "before_freeze_unstaged": 0
+  },
+  "source_sha256": "fef2a101a4ca1a59005182fb2e5ff08fe0db62ed446f0697ce3aa0826939141a",
+  "verifier": {
+    "version": "rpf65-target-config-verifier-v2",
+    "sha256": "37ee561e827862ebc6cb33e11afdc943865c63f32bcb4914c0e6657eb50e578b"
+  },
+  "source_changed_after_freeze": false,
+  "delivery": {
+    "status": "PENDING_FOCUSED_COMMIT_PUSH_READBACK"
+  },
+  "rev1_history": {
+    "status": "PARTIAL_DIAGNOSTIC_EVIDENCE_ACCEPTED",
+    "single_full_green": false,
+    "raw_local_wal_read_or_independently_verified": false,
+    "tracked_public_evidence_edited": false
+  }
+}

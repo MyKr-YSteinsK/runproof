@@ -1,5 +1,5 @@
 """RPF65 synthetic state machine and independently reanchored semantic attacks."""
-import copy, hashlib, os, subprocess, sys, unittest, uuid
+import copy, hashlib, inspect, os, subprocess, sys, unittest, uuid
 from pathlib import Path
 from unittest.mock import patch
 from runtime.runproof_runtime.effectwitness import pge_r65_context as c, pge_r65_target_config as config, pge_r65_session as session, pge_r65_verify as v
@@ -101,6 +101,107 @@ def controls(payload,folder):
     c.require(set(attacks.values())=={3},'SEMANTIC_ATTACK_ACCEPTED'); return {'correct_missing_wrong':codes,'rehashed_semantic_controls':attacks}
 
 class R65Tests(unittest.TestCase):
+    def fresh(self):
+        ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002),(45003,45004),synthetic=True)
+        ctx.root.mkdir(parents=True,exist_ok=False)
+        return ctx,c.Ledger(ctx,ctx.root/'account',create=True)
+    def test_production_factory_signature_and_identity(self):
+        ctx,ledger=self.fresh(); ct=ctx.contract()
+        with patch('subprocess.Popen') as spawn,patch('socket.socket') as network:
+            client,broker,host,journal=config.assemble_host(ctx,ct,ledger)
+            bound=inspect.signature(config.Host).bind(ct,broker,host.business,journal,fixture=False,api_key=None)
+            self.assertIs(bound.arguments['ledger'],broker)
+            self.assertIs(host.ledger.total,ledger); self.assertIs(host.journal.ledger,ledger)
+            self.assertIs(host.business.client,client); self.assertIs(client.total,ledger)
+            self.assertIsNone(host.api_key); self.assertFalse(host.fixture)
+            spawn.assert_not_called();network.assert_not_called()
+        self.assertEqual(sum(ledger.read()['counts'].values()),0)
+    def test_missing_broker_factory_mutation_is_rejected(self):
+        ctx,ledger=self.fresh(); original=config.Host
+        def omitted(ct,broker,business,journal,**kw): return original(ct,business,journal,**kw)
+        with patch.object(config,'Host',side_effect=omitted),patch('subprocess.Popen') as spawn,patch('socket.socket') as network:
+            with self.assertRaisesRegex(TypeError,'journal'):config.assemble_host(ctx,ctx.contract(),ledger)
+            spawn.assert_not_called();network.assert_not_called()
+        with self.assertRaises(TypeError):inspect.signature(original).bind(ctx.contract(),object(),object(),fixture=False,api_key=None)
+    def test_actual_execute_reaches_same_factory_and_cleans_setup_error(self):
+        ctx,ledger=self.fresh(); original=config.assemble_host; built=[]
+        def observed(*args,**kw):
+            value=original(*args,**kw);built.append(value);return value
+        port=config.ConfigPort()
+        # execute itself is never replaced. Stop only after its real factory.
+        with patch.object(config,'assemble_host',side_effect=observed) as factory,patch.object(c,'helpers',side_effect=RuntimeError('SYNTHETIC_AFTER_FACTORY')),patch('subprocess.Popen') as spawn,patch('socket.socket') as network:
+            with self.assertRaisesRegex(RuntimeError,'SYNTHETIC_AFTER_FACTORY'):port.execute(ctx,ctx.contract(),ledger)
+            factory.assert_called_once_with(ctx,ctx.contract(),ledger,api_key=None)
+            spawn.assert_not_called();network.assert_not_called()
+        client,broker,host,journal=built[0]
+        self.assertIs(host.ledger,broker);self.assertIsNone(client._api_key);self.assertIsNone(host.api_key);self.assertIsNone(port.api_key)
+        self.assertEqual(ledger.read()['counts']['jvm'],0)
+        self.assertTrue((ctx.folder(ctx.contract())/'environment-cleanup.json').exists())
+    def test_context_rejects_rev1_root_and_probe_identity(self):
+        ctx,ledger=self.fresh();p=ctx.public();p['workspace']='.local/rpf-65'
+        with self.assertRaises(Exception):c.TaskContext(c.ROOT/p['workspace'],c.canonical(p))
+        self.assertIn('spikes/rpf-65/rev-2/probe.py',ctx.public()['sources'])
+        self.assertNotIn('spikes/rpf-65/probe.py',ctx.public()['sources'])
+        with self.assertRaises(Exception):c.make_context('98e1e526fcc24743',(45001,45002),(45003,45004),synthetic=True)
+    def test_actual_execute_full_nonmodel_protocol(self):
+        ctx,ledger=self.fresh();ct=ctx.contract();jar=ctx.root/'jar/config-center-server-1.0.0.jar';jar.parent.mkdir()
+        with jar.open('wb') as f:f.truncate(c.SOURCE_JAR_BYTES)
+        ctx.once(ctx.root/'preflight/metadata.json',{'sources':c.sources(),'java':{'synthetic':True},'sdk':c.pinned_sdk_fields()})
+        class Proc:
+            pid=456
+            def __init__(self,*a,**kw):self.returncode=None
+            def poll(self):return self.returncode
+            def terminate(self):self.returncode=0
+            def kill(self):self.returncode=0
+            def wait(self,timeout=None):return self.returncode
+        class Log:
+            overflow=False
+            def __init__(self,*a):pass
+            def close(self,*a):pass
+        class Old:
+            JAVA=Path('synthetic-java')
+            _java_identity=staticmethod(lambda:{'synthetic':True})
+            _sha_file=staticmethod(lambda p:c.SOURCE_JAR_SHA256)
+            _port_closed=staticmethod(lambda p:True)
+            _java_env=staticmethod(lambda *a:{})
+            _RedactedJavaLog=Log
+            _actual_process_command_line=staticmethod(lambda p:'synthetic')
+            _split_windows_command_line=staticmethod(lambda s:[])
+            _argv_jar_path_matches=staticmethod(lambda *a:True)
+            _listener_owned=staticmethod(lambda *a:True)
+            _external_connections=staticmethod(lambda p:[])
+            _health_get=staticmethod(lambda *a,**k:{'status':200,'body':{'status':'UP'},'transport_error':None})
+        def sdk_stub(ctx,ct,ledger,sdk,folder,host,**kw):
+            t=ledger.reserve('sdk',domain=c.DOMAIN,run_id=ct['experiment']['run_id']);result=drive(host,ct,789)
+            ledger.settle(t,popen_pid=789,status='COMPLETED');ledger.append('PROCESS_CLEANUP',resource='sdk',pid=789,process_exited=True);return result
+        # Only external boundaries are synthetic; Session/Port/factory/Host/Broker
+        # and real ConfigLiveBusiness/Oracle implementations execute unchanged.
+        with patch.object(c,'helpers',return_value=(None,Old())),patch.object(config,'Http',FakeHttp),patch('subprocess.Popen',Proc),patch.object(config,'run_sdk',sdk_stub),patch('socket.socket') as network:
+            row=session.Session().execute(ctx,ledger,config.ConfigPort('synthetic-only-no-credential'))
+            network.assert_not_called()
+        self.assertEqual(row['verdict']['effect'],'CONTRACT_SATISFIED_IN_RUN')
+        self.assertTrue(row['verdict']['fault']['agent_exposed']);self.assertTrue(all(row['cleanup'].values()))
+        self.assertIsNone(c.strict_json((ctx.folder(ct)/'scene-capture.json').read_bytes())['host_failure'])
+    def test_post_limit_and_nonrefund(self):
+        ctx,ledger=self.fresh()
+        for operation in c.TOOLS[1:]:
+            t=ledger.reserve('post',operation=operation);ledger.settle(t,status=200,unknown=False)
+        with self.assertRaises(Exception):ledger.reserve('post',operation='update_config_v2')
+        with self.assertRaises(Exception):ledger.settle('post-1',status=200)
+        self.assertEqual(ledger.read()['counts']['post'],2)
+    def test_provider_usage_unknown_blocks_broker(self):
+        ctx,ledger=self.fresh();broker=config.BrokerLedger(ledger,ctx.contract()['experiment']['run_id'])
+        record=broker.reserve({'messages':[]},[]);broker.fail_unknown(record,'SYNTHETIC_TRANSPORT_UNKNOWN')
+        with self.assertRaises(Exception):broker.reserve({'messages':[]},[])
+        with self.assertRaises(Exception):ledger.reserve('sdk')
+        self.assertTrue(ledger.read()['unknown'])
+    def test_guarded_error_report_uses_ready_pid(self):
+        p=synthetic_payload();s=copy.deepcopy(p['row']['evidence']['sdk'])
+        s['report']={'status':'SDK_ERROR','stage':'sdk_run','error_type':'APIStatusError','guard_code':None,'guard_denials':[]};s['returncode']=1
+        # The fixed SDK error report deliberately omits pid; ready/Popen bind it.
+        v.verify_sdk(s,[],[],guarded=True)
+        s['ready']['pid']=999
+        with self.assertRaises(Exception):v.verify_sdk(s,[],[],guarded=True)
     def test_synthetic_session(self):
         p=synthetic_payload(); result=v.verify_payload(p); self.assertEqual(result['source_kind'],c.SYNTHETIC); self.assertEqual(result['physical']['provider'],5)
     def test_semantic_controls(self):

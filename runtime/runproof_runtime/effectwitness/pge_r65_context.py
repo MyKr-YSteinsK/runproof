@@ -8,8 +8,8 @@ from .config_experiment_verify import pinned_sdk_fields
 from .pge_port_context import ProcessSupervisor, helpers
 
 ROOT = Path(__file__).resolve().parents[3]
-BASE = 'a4d956c0b69f7dacd34e842676d10c1898353cdf'
-BRANCH = 'codex/rpf-65-real-config-target-port-bridge'
+BASE = 'ddb3490543504377a2d2603ee6b088910399a723'
+BRANCH = 'codex/rpf-65-rev2-real-config-target-factory-repair'
 ABI = 'rpf65-config-domain-port-v2'
 DOMAIN = 'config-java-http'
 MODEL = 'deepseek-flash'
@@ -22,7 +22,7 @@ PRICE = {'checked_date':'2026-10-22', 'url':'https://api-docs.deepseek.com/quick
 BOUNDARIES = dict(explorer='NOT_RUN', order_real_target='NOT_RUN', cross_domain_real_dual_agent='NOT_PROVEN', L2='NOT_TESTED', web='NOT_INTEGRATED', causality='NOT_PROVEN', independent_reproduction='NOT_TESTED', issuer='NOT_ESTABLISHED')
 UNKNOWN = dict(status='UNKNOWN_OUTCOME', reason='LOCAL_SUCCESS_DELIVERY_SUPPRESSED', write_policy='STOP_WRITES_READ_ONLY_RECONCILE')
 RECOVERY = ' After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.'
-NEW_FILES = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in ('pge_r65_context','pge_r65_target_config','pge_r65_session','pge_r65_verify')) + ('runtime/tests/test_effectwitness_pge_r65.py','spikes/rpf-65/probe.py')
+NEW_FILES = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in ('pge_r65_context','pge_r65_target_config','pge_r65_session','pge_r65_verify')) + ('runtime/tests/test_effectwitness_pge_r65.py','spikes/rpf-65/rev-2/probe.py')
 
 def sources():
     pending = list(NEW_FILES) + ['spikes/rpf-53/probe.py','spikes/rpf-55/probe.py','runtime/runproof_runtime/effectwitness/pge_portability_config.py','runtime/runproof_runtime/effectwitness/config_live_external.py','spikes/rpf-53/rev-6/config-live-evidence.json']
@@ -58,7 +58,7 @@ class TaskContext:
         require(set(p)=={'schema','abi','owner','base','branch','session_id','workspace','sources','limits','caps','price','contract','cold_contract','boundaries','source_kind'}, 'CONTEXT_FIELDS')
         require(p['schema']=='rpf65-task-context-v2' and p['abi']==ABI and p['owner']=='rpf-65' and p['base']==BASE and p['branch']==BRANCH and p['limits']==LIMITS and p['caps']==list(CAPS) and p['price']==PRICE and p['boundaries']==BOUNDARIES and p['source_kind'] in (REAL,SYNTHETIC), 'CONTEXT_IDENTITY')
         suffix=p['session_id'].removeprefix('rpf65-session-')
-        require(re.fullmatch('[0-9a-f]{16}',suffix) is not None and p['workspace']=='.local/rpf-65'+('/tests/'+suffix if synthetic else '') and self.root==ROOT/p['workspace'] and p['sources']==sources(), 'CONTEXT_SOURCE_ROOT')
+        require(re.fullmatch('[0-9a-f]{16}',suffix) is not None and suffix!='98e1e526fcc24743' and p['workspace']=='.local/rpf-65-rev-2'+('/tests/'+suffix if synthetic else '') and self.root==ROOT/p['workspace'] and p['sources']==sources(), 'CONTEXT_SOURCE_ROOT')
         for ct in (p['contract'],p['cold_contract']): validate_contract(ct); require(ct['experiment']['source_sha256']==digest(p['sources']), 'CONTRACT_SOURCE')
         require(p['contract']['experiment']['run_id']=='rpf65-config-'+suffix and p['cold_contract']['experiment']['run_id']=='rpf65-cold-'+suffix, 'RUN_IDENTITY')
         require(p['contract']['execution']['model_source']=='REAL_PROVIDER' and p['cold_contract']['execution']['model_source']=='FIXTURE_SCRIPTED', 'SOURCE_ROLES')
@@ -75,7 +75,7 @@ class TaskContext:
     def contract(self,domain=DOMAIN): require(domain==DOMAIN,'STATIC_DOMAIN'); return self.public()['contract']
 
 def make_context(suffix,ports,cold_ports,*,synthetic=False):
-    sm=sources(); p=dict(schema='rpf65-task-context-v2',abi=ABI,owner='rpf-65',base=BASE,branch=BRANCH,session_id='rpf65-session-'+suffix,workspace='.local/rpf-65'+('/tests/'+suffix if synthetic else ''),sources=sm,limits=LIMITS,caps=list(CAPS),price=PRICE,contract=contract(suffix,digest(sm),ports),cold_contract=contract(suffix,digest(sm),cold_ports,cold=True),boundaries=BOUNDARIES,source_kind=SYNTHETIC if synthetic else REAL)
+    sm=sources(); p=dict(schema='rpf65-task-context-v2',abi=ABI,owner='rpf-65',base=BASE,branch=BRANCH,session_id='rpf65-session-'+suffix,workspace='.local/rpf-65-rev-2'+('/tests/'+suffix if synthetic else ''),sources=sm,limits=LIMITS,caps=list(CAPS),price=PRICE,contract=contract(suffix,digest(sm),ports),cold_contract=contract(suffix,digest(sm),cold_ports,cold=True),boundaries=BOUNDARIES,source_kind=SYNTHETIC if synthetic else REAL)
     return TaskContext(ROOT/p['workspace'],canonical(p))
 
 def replay(frames,context):

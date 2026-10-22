@@ -111,13 +111,31 @@ def run_sdk(ctx,ct,ledger,sdk,folder,host,*,cold=False):
  finally:
   supervisor.close();thread=host._thread;host.close();cleanup={'sdk_exited':supervisor.cleanup['process_exited'],'host_thread_stopped':thread is None or not thread.is_alive(),'host_port_closed':old._port_closed(ct['execution']['agent_host']['port'])};ctx.once(folder/'sdk-cleanup.json',cleanup);c.require(all(cleanup.values()),'SDK_CLEANUP')
 
+def assemble_host(ctx, ct, ledger, *, api_key=None):
+ """Production factory, also exercised without credentials/processes/network."""
+ c.validate_contract(ct)
+ c.require(ct==ctx.contract() and ledger.context is ctx,'FACTORY_CONTEXT_LEDGER')
+ journal=Journal(ledger,ct['experiment']['run_id'])
+ client=Http(ctx,ct,secrets.token_urlsafe(32),journal,ledger)
+ broker=BrokerLedger(ledger,ct['experiment']['run_id'])
+ business=ConfigLiveBusiness(ct,client)
+ host=Host(ct,broker,business,journal,fixture=False,api_key=api_key)
+ c.require(host.ledger is broker and broker.total is ledger and host.business is business and business.client is client and host.journal is journal and journal.ledger is ledger,'FACTORY_INJECTION')
+ return client,broker,host,journal
+
 class ConfigPort:
  def __init__(self,api_key=None): self.api_key=api_key
  def validate_contract(self,ctx,ct): c.validate_contract(ct); c.require(ct==ctx.contract() and ctx.public()['source_kind'] in (c.REAL,c.SYNTHETIC),'CONFIG_CONTEXT')
  def execute(self,ctx,ct,ledger):
-  self.validate_contract(ctx,ct);h,old=c.helpers();meta=c.strict_json((ctx.root/'preflight/metadata.json').read_bytes());c.require(meta['sources']==c.sources() and old._java_identity()==meta['java'],'PIN_DRIFT');folder=ctx.folder(ct);folder.mkdir(parents=True,exist_ok=False);temp=folder/'java-tmp';temp.mkdir();jar=ctx.scope(ctx.root/'jar/config-center-server-1.0.0.jar');c.require(old._sha_file(jar)==c.SOURCE_JAR_SHA256 and jar.stat().st_size==c.SOURCE_JAR_BYTES,'JAR_PIN')
-  j=Journal(ledger,ct['experiment']['run_id']);client=Http(ctx,ct,secrets.token_urlsafe(32),j,ledger);broker=BrokerLedger(ledger,ct['experiment']['run_id']);host=Host(ct,ConfigLiveBusiness(ct,client),j,fixture=False,api_key=self.api_key);jp=ct['execution']['service']['port'];supervisor=c.ProcessSupervisor(ctx,ledger,ct,'jvm');env={'source_level':'REAL_JAVA_H2_LOCAL_SIMULATION','authority':'SAME_SERVICE_READ_ONLY_HTTP','jar_sha256':c.SOURCE_JAR_SHA256,'jar_bytes':c.SOURCE_JAR_BYTES,'java_pid':None,'jar_command_verified':False,'listener_owned':False,'health':[]};log=sdk=None
+  self.validate_contract(ctx,ct)
+  client,broker,host,j=assemble_host(ctx,ct,ledger,api_key=self.api_key)
+  folder=ctx.folder(ct); jp=ct['execution']['service']['port']
+  supervisor=c.ProcessSupervisor(ctx,ledger,ct,'jvm')
+  env={'source_level':'REAL_JAVA_H2_LOCAL_SIMULATION','authority':'SAME_SERVICE_READ_ONLY_HTTP','jar_sha256':c.SOURCE_JAR_SHA256,'jar_bytes':c.SOURCE_JAR_BYTES,'java_pid':None,'jar_command_verified':False,'listener_owned':False,'health':[]}
+  log=sdk=old=None; initial_ok=False
   try:
+   h,old=c.helpers();meta=c.strict_json((ctx.root/'preflight/metadata.json').read_bytes());c.require(meta['sources']==c.sources() and old._java_identity()==meta['java'],'PIN_DRIFT')
+   folder.mkdir(parents=True,exist_ok=False);temp=folder/'java-tmp';temp.mkdir();jar=ctx.scope(ctx.root/'jar/config-center-server-1.0.0.jar');c.require(old._sha_file(jar)==c.SOURCE_JAR_SHA256 and jar.stat().st_size==c.SOURCE_JAR_BYTES,'JAR_PIN')
    c.require(old._port_closed(jp),'JAVA_PORT');args=[str(old.JAVA),f'-Djava.io.tmpdir={temp}','-jar',str(jar),'--spring.profiles.active=local','--server.address=127.0.0.1',f'--server.port={jp}','--security.api-keys[0].key=${CONFIG_CENTER_API_KEY}','--security.api-keys[0].app='+ct['effect']['app'],'--security.api-keys[0].env='+ct['effect']['env']];proc=supervisor.start(args,old._java_env(temp,client._api_key),folder);env['java_pid']=proc.pid;supervisor.received(status='STARTED');log=old._RedactedJavaLog(proc,client._api_key.encode('ascii'));env['jar_command_verified']=old._argv_jar_path_matches(old._split_windows_command_line(old._actual_process_command_line(proc.pid)),jar,ctx.root);c.require(env['jar_command_verified'],'JAVA_ARGV')
    until=time.monotonic()+150
    while time.monotonic()<until and proc.poll() is None and not log.overflow and not old._listener_owned(proc.pid,jp):time.sleep(.25)
@@ -125,12 +143,29 @@ class ConfigPort:
     ticket=ledger.reserve('health',domain=c.DOMAIN,run_id=ct['experiment']['run_id']);item=old._health_get(jp,timeout=5);ledger.settle(ticket,status=item['status'],response_sha256=c.digest(item['body']));env['health'].append(item)
     if item['status']==200 and type(item['body']) is dict and item['body'].get('status')=='UP':break
    env['health']=[{'status':x['status'],'body':{'status':'UP' if type(x['body']) is dict and x['body'].get('status')=='UP' else 'NOT_UP'},'raw_body_sha256':c.digest(x['body']),'transport_error':x['transport_error']} for x in env['health']];c.require(env['health'][-1]['body']=={'status':'UP'},'JAVA_READY');env['listener_owned']=old._listener_owned(proc.pid,jp);c.require(env['listener_owned'] and not old._external_connections(proc.pid) and client.initial_state_valid(),'JAVA_INITIAL')
-   sdk=run_sdk(ctx,ct,ledger,meta['sdk'],folder,host);client.stop_writes=True;client.final_readback(reconcile=True);client.request('final_list');c.require(not old._external_connections(proc.pid),'JAVA_NETWORK')
+   initial_ok=True
+   sdk=run_sdk(ctx,ct,ledger,meta['sdk'],folder,host)
   finally:
-   ctx.once(folder/'business-received-before-cleanup.json',{'http':client.observations,'tool_trace':host.tool_trace,'sdk':sdk,'host_failure':host.failure});supervisor.close();thread=host._thread;host.close()
-   if log:log.close(folder/'java-redacted.log')
-   client._api_key=None;host.api_key=None;self.api_key=None;env['cleanup']={'java_exited':supervisor.cleanup['process_exited'],'java_port_closed':old._port_closed(jp),'sdk_exited':sdk is not None,'host_port_closed':old._port_closed(ct['execution']['agent_host']['port']),'local_key_released':True,'host_thread_stopped':thread is None or not thread.is_alive()}
-  return {'contracts':ct,'requests':broker.data['requests'],'tool_rejections':host.tool_rejections,'http':client.observations,'events':j.events,'tool_trace':host.tool_trace,'completions':host.provider_responses,'visibility':host.visible_contract_checks,'sdk':sdk,'environment':env,'original_success':host.original_success,'host_failure':host.failure}
+   client.stop_writes=True
+   try:
+    if initial_ok:
+     client.final_readback(reconcile=True);client.request('final_list');c.require(not old._external_connections(supervisor.proc.pid),'JAVA_NETWORK')
+   finally:
+    # A failure in receipt creation or readback must still close owned children.
+    try:ctx.once(folder/'business-received-before-cleanup.json',{'http':client.observations,'tool_trace':host.tool_trace,'sdk':sdk,'host_failure':host.failure})
+    finally:
+     try:supervisor.close()
+     finally:
+      thread=host._thread
+      try:host.close()
+      finally:
+       client._api_key=None;host.api_key=None;self.api_key=None
+       if log:log.close(folder/'java-redacted.log')
+       env['cleanup']={'java_exited':supervisor.cleanup is not None and supervisor.cleanup['process_exited'],'java_port_closed':old is not None and old._port_closed(jp),'sdk_exited':sdk is not None,'host_port_closed':old is not None and old._port_closed(ct['execution']['agent_host']['port']),'local_key_released':True,'host_thread_stopped':thread is None or not thread.is_alive()}
+       ctx.once(folder/'environment-cleanup.json',env)
+  scene={'contracts':ct,'requests':broker.data['requests'],'tool_rejections':host.tool_rejections,'http':client.observations,'events':j.events,'tool_trace':host.tool_trace,'completions':host.provider_responses,'visibility':host.visible_contract_checks,'sdk':sdk,'environment':env,'original_success':host.original_success,'host_failure':host.failure}
+  ctx.once(folder/'scene-capture.json',scene)
+  return scene
  def verify(self,ctx,ct,e):
   from .pge_r65_verify import verify_scene
   self.validate_contract(ctx,ct); return verify_scene(ct,e,real=ctx.public()['source_kind']==c.REAL)
