@@ -1,0 +1,985 @@
+{
+  "task": "RPF-66/rev-1",
+  "g0": {
+    "plan": "RPF-66/rev-1",
+    "root_identity": "D:/CS/runproof",
+    "remote": "https://github.com/MyKr-YSteinsK/runproof.git",
+    "visibility": "public",
+    "base": "4081b7b94484bac3c726e0bef22be273b7470839",
+    "parent_branch": "codex/rpf-65-rev2-real-config-target-factory-repair",
+    "parent_remote_sha": "4081b7b94484bac3c726e0bef22be273b7470839",
+    "main_remote_sha": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "new_branch": "codex/rpf-66-real-explorer-target-feedback-session",
+    "new_branch_absent_local_and_remote": true,
+    "fourteen_create_only_paths_absent_base_same_remote_tree_and_disk": true,
+    "new_root_absent_before_creation": true,
+    "ignore_pattern": "/.local/",
+    "parent_reparse_checked": true,
+    "git_hooks": [],
+    "push_effects": "NO_FEATURE_PUSH_WORKFLOW_NO_DEPLOY",
+    "user_status": [
+      "?? docs/reviews/"
+    ],
+    "protected_contents_accessed": false,
+    "old_task_runtime_read": false,
+    "source_pin_inspection_exception": "ONLY_FIXED_ORIGINAL_SDK_JDK_SOURCE_JAR_READONLY",
+    "official_sources_checked": [
+      "https://api-docs.deepseek.com/quick_start/pricing/",
+      "https://api-docs.deepseek.com/guides/tool_calls/"
+    ],
+    "usd_peak_input_output_per_million": [
+      0.3,
+      1.2
+    ],
+    "guard_multiplier": 15,
+    "is_invoice": false,
+    "status": "PASS"
+  },
+  "source_freeze": {
+    "status": "PASS",
+    "sources": {
+      "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+      "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+      "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "runtime/runproof_runtime/effectwitness/config_live_verify.py": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+      "runtime/runproof_runtime/effectwitness/config_pge_contracts.py": "4577cbf968cf290a2005b6d9cef511a85c3725320d525b3f02fdf727b933035f",
+      "runtime/runproof_runtime/effectwitness/config_pge_explorer.py": "f3c0282c9cd1dceaf15ceba8a85f9651130a2e2af2a08c527acae44508002d1c",
+      "runtime/runproof_runtime/effectwitness/config_pge_session.py": "a4d320e5c0ac13b1fee7fbd47c37055c1a2f786a5efeca386254cf84458c09b1",
+      "runtime/runproof_runtime/effectwitness/config_pge_target.py": "342cf305e134ac8c1c2b81eabb704b8aef4efeeeadb776f01329d734b69241b5",
+      "runtime/runproof_runtime/effectwitness/config_pge_verify.py": "697ccd3ec7d5b2ef0d3c7b4c8327b9a5bc7907f40e2a55046d6099d116b622e6",
+      "runtime/runproof_runtime/effectwitness/contracts.py": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+      "runtime/runproof_runtime/effectwitness/effect_oracle.py": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "runtime/runproof_runtime/effectwitness/orders.py": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+      "runtime/runproof_runtime/effectwitness/pge_domain_port.py": "79835650efe04c7581143ec5a2d0e060d8cc0240e7c14373a1b2e6531d4230b8",
+      "runtime/runproof_runtime/effectwitness/pge_port_context.py": "0bd2b0256be2064b46afba124715e273a7eaf09345e3cddfeb165e8d7fe133d5",
+      "runtime/runproof_runtime/effectwitness/pge_portability_config.py": "a9f8e6c9f5bab0e418ec5e8a8f54a598f6cd3fb233717e47be7dc45b3d12999e",
+      "runtime/runproof_runtime/effectwitness/pge_portability_order.py": "b49a3857f48df7710c42fb399f8982feaf578e4a5647d7935f0249fd779faab0",
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py": "22f80f97e8e25c3c19cb622af6ca3a60548afe120dccf9ee698997f271e052d7",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": "830f2a9758faf5231d952c017ead43f567ab6d704ed5c88b175b7bf75a0584cb",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py": "07e42aa88569acc65ecbb49fa7d11f5c3adc75a137b264bf89eca6de7a65e1c6",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "31d29681f01f3268ac4250eeacda2d55585d4c8ab736ca9b25661d2f1db84753",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": "6773d4601142899fe9098a5b3467e80d9128569071d16223aa21cb09d603c4da",
+      "runtime/runproof_runtime/effectwitness/pge_select_config_port.py": "fe7dc90fccf7ac5ab807675f7b62a55a7ff53cf4c5d9e091b09712614561729a",
+      "runtime/runproof_runtime/effectwitness/pge_select_contracts.py": "1cd9927968657471f63c64348ad82c62696ffb5b7d7065a038c17a26e31e53d5",
+      "runtime/runproof_runtime/effectwitness/pge_select_explorer.py": "4be251b3166efcd2d29e8683dfa85a5d44e3147f32b8e37e886594c614c448ef",
+      "runtime/runproof_runtime/effectwitness/pge_select_feedback.py": "147006818a074aba4bc983f372a16b4697367522268ced654f6ce19eaef56bfa",
+      "runtime/runproof_runtime/effectwitness/pge_select_session.py": "3b576e693a59bb6c1b1655af68cef4606a54c13348661b162c99a0290377cf39",
+      "runtime/runproof_runtime/effectwitness/pge_select_verify.py": "51f796b75ec7c7dea2a1513d2f0e18dc626b059245eb9449decb2c0d52802433",
+      "runtime/runproof_runtime/models.py": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+      "runtime/tests/test_effectwitness_pge_r66.py": "a2ea37e1c493ab26cd0e8752ef6c971ec406e1ae418210a855705152fbc7d3f5",
+      "spikes/rpf-53/probe.py": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+      "spikes/rpf-53/rev-6/config-live-evidence.json": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "spikes/rpf-55/probe.py": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+      "spikes/rpf-66/probe.py": "6eef4d130abaeb950e06121e24dfa35404c87574c8be66c7bbd6140021a372ae"
+    },
+    "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441",
+    "verifier": {
+      "version": "rpf66-dual-agent-verifier-v1",
+      "sha256": "6773d4601142899fe9098a5b3467e80d9128569071d16223aa21cb09d603c4da"
+    },
+    "new_source_files": [
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py",
+      "runtime/tests/test_effectwitness_pge_r66.py",
+      "spikes/rpf-66/probe.py"
+    ],
+    "raw_new_hashes": {
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py": "22f80f97e8e25c3c19cb622af6ca3a60548afe120dccf9ee698997f271e052d7",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": "830f2a9758faf5231d952c017ead43f567ab6d704ed5c88b175b7bf75a0584cb",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "31d29681f01f3268ac4250eeacda2d55585d4c8ab736ca9b25661d2f1db84753",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py": "07e42aa88569acc65ecbb49fa7d11f5c3adc75a137b264bf89eca6de7a65e1c6",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": "6773d4601142899fe9098a5b3467e80d9128569071d16223aa21cb09d603c4da",
+      "runtime/tests/test_effectwitness_pge_r66.py": "a2ea37e1c493ab26cd0e8752ef6c971ec406e1ae418210a855705152fbc7d3f5",
+      "spikes/rpf-66/probe.py": "6eef4d130abaeb950e06121e24dfa35404c87574c8be66c7bbd6140021a372ae"
+    },
+    "free_gates": {
+      "full": {
+        "command": [
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "runtime/tests",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 868.3333222000001,
+        "log": ".local/rpf-66/diagnostics/full-a7cb0a34.log",
+        "tests": 437,
+        "tail": "cy_sampling_plan_incompatibility_fails_closed) ... ok\r\ntest_trial_evidence_denominator_cannot_be_forged (test_statistical.StatisticalContractTests.test_trial_evidence_denominator_cannot_be_forged) ... ok\r\ntest_wilson_reference_and_edge_cases (test_statistical.StatisticalContractTests.test_wilson_reference_and_edge_cases) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 437 tests in 866.390s\r\n\r\nOK (skipped=2)\r\n",
+        "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+      },
+      "full_attempts": [
+        {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "runtime/tests",
+            "-p",
+            "test_*.py",
+            "-v"
+          ],
+          "returncode": 1,
+          "elapsed_seconds": 523.6243934999984,
+          "log": ".local/rpf-66/diagnostics/full-6978a74f.log",
+          "tests": 437,
+          "source_digest": "7d6574258bee88c34d5359c25ae9ef57534aa49099c6c04d98583be0f767d7ff"
+        },
+        {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "runtime/tests",
+            "-p",
+            "test_*.py",
+            "-v"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 868.3333222000001,
+          "log": ".local/rpf-66/diagnostics/full-a7cb0a34.log",
+          "tests": 437,
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "runtime/tests",
+            "-p",
+            "test_*.py",
+            "-v"
+          ],
+          "returncode": 4294967295,
+          "elapsed_seconds": 159.822654399999,
+          "log": ".local/rpf-66/diagnostics/full-serialfinal.log",
+          "tests": null,
+          "source_digest": "7d6574258bee88c34d5359c25ae9ef57534aa49099c6c04d98583be0f767d7ff"
+        }
+      ],
+      "focused": {
+        "command": [
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "unittest",
+          "runtime.tests.test_effectwitness_pge_r66",
+          "-v"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 109.12858009999763,
+        "log": ".local/rpf-66/diagnostics/focused-853d38ff.log",
+        "tests": 11,
+        "tail": "ess_pge_r66.R66Tests.test_semantic_attacks) ... ok\r\ntest_unknown_blocks_both_roles_and_writes (runtime.tests.test_effectwitness_pge_r66.R66Tests.test_unknown_blocks_both_roles_and_writes) ... ok\r\ntest_write_after_unknown_rejected_before_io (runtime.tests.test_effectwitness_pge_r66.R66Tests.test_write_after_unknown_rejected_before_io) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 11 tests in 108.722s\r\n\r\nOK\r\n",
+        "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+      },
+      "reviewed": {
+        "command": [
+          "-X",
+          "utf8",
+          "-B",
+          "runtime/verify-reviewed-artifacts.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.6625917999990634,
+        "log": ".local/rpf-66/diagnostics/reviewed-bdc1ddfa.log",
+        "tests": null,
+        "tail": "PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison + 1 Policy/2 Gates/2 Decisions + 3 RPF-28 runs; source=cd31a021550f680a3ca512d210b9533a262fb734a769d4f8d3f6bee11adacaf7\r\n",
+        "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+      },
+      "public": {
+        "command": [
+          "-X",
+          "utf8",
+          "-B",
+          "ci/verify-public-docs.py"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 0.22311619999891263,
+        "log": ".local/rpf-66/diagnostics/public-bdc1ddfa.log",
+        "tests": null,
+        "tail": "PUBLIC_DOCS_PASS files=18 pairs=7\r\n",
+        "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+      },
+      "synthetic": {
+        "correct_missing_wrong": [
+          0,
+          2,
+          3
+        ],
+        "reanchored_semantic_controls": {
+          "source_promotion": 3,
+          "double_source_promotion": 3,
+          "owner": 3,
+          "abi": 3,
+          "source_map": 3,
+          "root": 3,
+          "role": 3,
+          "round": 3,
+          "input_cap": 3,
+          "cost_omission": 3,
+          "token_pool": 3,
+          "usage_unknown": 3,
+          "model": 3,
+          "call_id": 3,
+          "tool_result": 3,
+          "repeat_post": 3,
+          "missing_oracle": 3,
+          "authority": 3,
+          "fault_truth": 3,
+          "pid": 3,
+          "cleanup": 3,
+          "future_feedback": 3,
+          "feedback_hash": 3,
+          "cold_pid": 3,
+          "missing_usage": 3,
+          "history": 3,
+          "candidate": 3,
+          "explorer_tool_id": 3,
+          "explorer_response_id": 3,
+          "wal_missing": 3,
+          "wal_reorder": 3,
+          "normal_false_trigger": 3,
+          "cold_promotion": 3,
+          "issuer_claim": 3,
+          "L2_fabrication": 3
+        },
+        "verdict": {
+          "status": "PASS",
+          "source_kind": "SYNTHETIC_TEST_ONLY",
+          "rounds": [
+            {
+              "candidate_id": "local-delivery-suppressed-after-http200",
+              "verdict": {
+                "effect": "CONTRACT_SATISFIED_IN_RUN",
+                "agent": "CONTRACT_SATISFIED_IN_RUN",
+                "fault": {
+                  "planned": true,
+                  "triggered": true,
+                  "observed": true,
+                  "agent_exposed": true
+                },
+                "recovery": "OBSERVED",
+                "authority": "SAME_SERVICE_READ_ONLY_HTTP"
+              },
+              "new_facts": [
+                "effect.v2.history2-1",
+                "safe.two-posts",
+                "fault.suppressed.unknown-exposed",
+                "target.read-only-recovery"
+              ]
+            },
+            {
+              "candidate_id": "local-delivery-suppressed-after-http200",
+              "verdict": {
+                "effect": "CONTRACT_SATISFIED_IN_RUN",
+                "agent": "CONTRACT_SATISFIED_IN_RUN",
+                "fault": {
+                  "planned": true,
+                  "triggered": true,
+                  "observed": true,
+                  "agent_exposed": true
+                },
+                "recovery": "OBSERVED",
+                "authority": "SAME_SERVICE_READ_ONLY_HTTP"
+              },
+              "new_facts": []
+            }
+          ],
+          "L2_observed": false,
+          "physical": {
+            "metadata": 1,
+            "cold": 1,
+            "session": 1,
+            "trial": 2,
+            "jvm": 2,
+            "sdk": 2,
+            "provider": 12,
+            "http": 18,
+            "post": 4,
+            "health": 2
+          },
+          "reserved_tokens": 30200,
+          "reserved_cost_cny_upper": 0.1328805,
+          "tokens": 6160,
+          "cost_cny_guard_estimate": 0.03528,
+          "boundaries": {
+            "order_real_target": "NOT_RUN",
+            "cross_domain_real_dual_agent": "NOT_PROVEN",
+            "web": "NOT_INTEGRATED",
+            "causality": "NOT_PROVEN",
+            "independent_reproduction": "NOT_TESTED",
+            "issuer": "NOT_ESTABLISHED",
+            "release": "NOT_AUTHORIZED"
+          }
+        }
+      },
+      "anchors": [
+        {
+          "id": "43",
+          "module": "witness_verify",
+          "path": "spikes/rpf-43/sample-witness.json",
+          "flag": "--expected-sha256",
+          "sha256": "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.witness_verify",
+            "spikes/rpf-43/sample-witness.json",
+            "--expected-sha256",
+            "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.13848809999763034,
+          "log": ".local/rpf-66/diagnostics/anchor-43-bdc1ddfa.log",
+          "tests": null,
+          "tail": "NLY\",\"contract_outcome\":\"CONTRACT_SATISFIED_IN_RUN\",\"fault_activation\":\"TRIGGERED\",\"file_sha256\":\"ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e\",\"issuer_authenticity\":\"NOT_ESTABLISHED\",\"reason_codes\":[],\"reproduction\":\"NOT_TESTED\",\"schema_version\":\"rpf-effect-witness-v1\",\"status\":\"VERIFIED_ANCHORED\",\"trust_level\":\"MANAGED_LOCAL_SIMULATION_BOUNDED\",\"verifier_id\":\"runproof-effectwitness-offline-verifier\",\"verifier_version\":\"1\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "44",
+          "module": "witness_verify",
+          "path": "spikes/rpf-44/sample-ops-witness.json",
+          "flag": "--expected-sha256",
+          "sha256": "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.witness_verify",
+            "spikes/rpf-44/sample-ops-witness.json",
+            "--expected-sha256",
+            "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.15627350000067963,
+          "log": ".local/rpf-66/diagnostics/anchor-44-bdc1ddfa.log",
+          "tests": null,
+          "tail": "\",\"contract_outcome\":\"CONTRACT_SATISFIED_IN_RUN\",\"fault_activation\":\"TRIGGERED\",\"file_sha256\":\"21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873\",\"issuer_authenticity\":\"NOT_ESTABLISHED\",\"reason_codes\":[],\"reproduction\":\"NOT_TESTED\",\"schema_version\":\"rpf-effect-witness-v2\",\"status\":\"VERIFIED_ANCHORED\",\"trust_level\":\"CONTROLLED_LOCAL_SIMULATION_BOUNDED\",\"verifier_id\":\"runproof-effectwitness-offline-verifier\",\"verifier_version\":\"2\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "48",
+          "module": "target_evidence",
+          "path": "spikes/rpf-48/target-agent-summary.json",
+          "flag": "--expected-sha256",
+          "sha256": "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.target_evidence",
+            "spikes/rpf-48/target-agent-summary.json",
+            "--expected-sha256",
+            "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.16226479999750154,
+          "log": ".local/rpf-66/diagnostics/anchor-48-bdc1ddfa.log",
+          "tests": null,
+          "tail": "{\"attribution\":\"CORRELATIONAL_ONLY\",\"contract_outcome\":\"CONTRACT_SATISFIED_IN_RUN\",\"file_sha256\":\"c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2\",\"issuer_authenticity\":\"NOT_ESTABLISHED\",\"reproduction\":\"NOT_TESTED\",\"schema_version\":\"rpf-target-evidence-v1\",\"source_level\":\"EXTERNAL_AGENT_EFFECT_VERIFIED\",\"status\":\"CONTENT_VERIFIED_ANCHORED\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "49",
+          "module": "target_recovery",
+          "path": "spikes/rpf-49/recovery-summary.json",
+          "flag": "--expected-sha256",
+          "sha256": "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.target_recovery",
+            "spikes/rpf-49/recovery-summary.json",
+            "--expected-sha256",
+            "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.16111699999964912,
+          "log": ".local/rpf-66/diagnostics/anchor-49-bdc1ddfa.log",
+          "tests": null,
+          "tail": "ution\":\"CORRELATIONAL_ONLY\",\"computed_steps\":7,\"contract_outcome\":\"CONTRACT_SATISFIED_IN_RUN\",\"estimated_cost_cny_upper\":0.015393,\"file_sha256\":\"04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b\",\"issuer_authenticity\":\"NOT_ESTABLISHED\",\"provider_http_attempts\":4,\"reasons\":[],\"reproduction\":\"NOT_TESTED\",\"schema_version\":\"rpf-target-recovery-v1\",\"status\":\"CONTENT_VERIFIED_ANCHORED\",\"tokens\":3961,\"verdict\":\"AGENT_RECOVERY_VERIFIED\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "50",
+          "module": "violation_witness",
+          "path": "spikes/rpf-50/violation-witness.json",
+          "flag": "--expected-sha256",
+          "sha256": "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.violation_witness",
+            "spikes/rpf-50/violation-witness.json",
+            "--expected-sha256",
+            "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.15855249999731313,
+          "log": ".local/rpf-66/diagnostics/anchor-50-bdc1ddfa.log",
+          "tests": null,
+          "tail": "{\"exit_code\":0,\"external_sha256\":\"b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a\",\"issuer_authenticity\":\"NOT_ESTABLISHED\",\"reasons\":[],\"status\":\"VERIFIED_ANCHORED\",\"verdict\":\"VIOLATION_CONFIRMED\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "51r4",
+          "module": "config_http_witness",
+          "path": "spikes/rpf-51/rev-4/config-http-witness.json",
+          "flag": "--expected-sha256",
+          "sha256": "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.config_http_witness",
+            "spikes/rpf-51/rev-4/config-http-witness.json",
+            "--expected-sha256",
+            "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.16070699999909266,
+          "log": ".local/rpf-66/diagnostics/anchor-51r4-bdc1ddfa.log",
+          "tests": null,
+          "tail": "VERIFIED_ANCHORED CONTRACT_SATISFIED_IN_RUN\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "52r3",
+          "module": "config_target_verify",
+          "path": "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+          "flag": "--expected-sha256",
+          "sha256": "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.config_target_verify",
+            "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+            "--expected-sha256",
+            "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.15655469999910565,
+          "log": ".local/rpf-66/diagnostics/anchor-52r3-bdc1ddfa.log",
+          "tests": null,
+          "tail": "{\"status\":\"VERIFIED_ANCHORED\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "53r6",
+          "module": "config_live_verify",
+          "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+          "flag": "--sha256",
+          "sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.config_live_verify",
+            "spikes/rpf-53/rev-6/config-live-evidence.json",
+            "--sha256",
+            "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.12257170000157203,
+          "log": ".local/rpf-66/diagnostics/anchor-53r6-bdc1ddfa.log",
+          "tests": null,
+          "tail": "",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "55r2",
+          "module": "config_experiment_verify",
+          "path": "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+          "flag": "--sha256",
+          "sha256": "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.config_experiment_verify",
+            "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+            "--sha256",
+            "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.25076509999780683,
+          "log": ".local/rpf-66/diagnostics/anchor-55r2-bdc1ddfa.log",
+          "tests": null,
+          "tail": "{\"PGE_CLOSED_LOOP\":\"NOT_PROVEN\",\"execution_source_identity\":\"RPF55_REV2_INITIAL_FROZEN\",\"source_kind\":\"FIXTURE_TARGET_CONTROLLED_JAVA_HTTP\",\"status\":\"PASS\",\"verifier_identity\":{\"sha256\":\"41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3\",\"version\":\"rpf55-config-experiment-verifier-v2.1\"}}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "56r4",
+          "module": "config_pge_verify",
+          "path": "spikes/rpf-56/rev-4/config-pge-evidence.json",
+          "flag": "--sha256",
+          "sha256": "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.config_pge_verify",
+            "spikes/rpf-56/rev-4/config-pge-evidence.json",
+            "--sha256",
+            "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.27814280000166036,
+          "log": ".local/rpf-66/diagnostics/anchor-56r4-bdc1ddfa.log",
+          "tests": null,
+          "tail": "{\"budget\":{\"estimated_cost_cny_upper\":0.0424755,\"jvm\":2,\"post\":4,\"requests\":10,\"tokens\":7624,\"usage_known\":true},\"research\":{\"H1\":\"NOT_PROVEN\",\"L1\":\"TWO_REAL_ROLES_EXECUTED\",\"L2\":false,\"information_gain_proxy\":0},\"source_kind\":\"REAL_EXPLORER_REAL_TARGET_CONFIG_JAVA_HTTP\",\"status\":\"PASS\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "57v1",
+          "module": "config_pge_coverage_verify",
+          "path": "spikes/rpf-57/config-pge-coverage-evidence.json",
+          "flag": "--sha256",
+          "sha256": "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.config_pge_coverage_verify",
+            "spikes/rpf-57/config-pge-coverage-evidence.json",
+            "--sha256",
+            "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.29420179999942775,
+          "log": ".local/rpf-66/diagnostics/anchor-57v1-bdc1ddfa.log",
+          "tests": null,
+          "tail": "tokens\":7077,\"usage_known\":true},\"research\":{\"H1\":\"NOT_PROVEN\",\"L1\":\"TWO_REAL_ROLES_EXECUTED\",\"L2\":true,\"L2_status\":\"L2_OBSERVED_INFORMATION_GAIN_IN_THIS_RUN\",\"L3\":\"NOT_PROVEN\",\"attribution\":\"CORRELATIONAL_ONLY\",\"candidate_changed\":true,\"information_gain_proxy\":2,\"new_verified_fact_count\":2,\"new_verified_facts\":[\"ack_unknown_reconciled\",\"delivery_suppression_observed\"]},\"source_kind\":\"REAL_EXPLORER_REAL_TARGET_CONFIG_JAVA_HTTP\",\"status\":\"PASS\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "58r2",
+          "module": "pge_shared_verify",
+          "path": "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+          "flag": "--sha256",
+          "sha256": "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.pge_shared_verify",
+            "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+            "--sha256",
+            "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.3850133999985701,
+          "log": ".local/rpf-66/diagnostics/anchor-58r2-bdc1ddfa.log",
+          "tests": null,
+          "tail": "_reproduction\":\"NOT_TESTED\",\"issuer_authenticity\":\"NOT_ESTABLISHED\",\"real_explorer\":\"NOT_EXECUTED_IN_THIS_PLAN\",\"selection_source\":\"DETERMINISTIC_PORTABILITY_DRIVER\"},\"claim\":\"CROSS_DOMAIN_SHARED_CORE_LOCAL_CONTROLLED_EXECUTION_PROVEN\",\"reserved_physical_budget\":{\"business_http\":8,\"config_trial\":1,\"health\":3,\"jvm\":1,\"order_trial\":1,\"post\":2,\"provider\":0,\"sdk\":1,\"sqlite_mutation\":1,\"trial\":2},\"source_kind\":\"BOTH_REAL_CONTROLLED\",\"status\":\"PASS\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "59v1",
+          "module": "pge_select_verify",
+          "path": "spikes/rpf-59/cross-domain-selection-evidence.json",
+          "flag": "--sha256",
+          "sha256": "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.pge_select_verify",
+            "spikes/rpf-59/cross-domain-selection-evidence.json",
+            "--sha256",
+            "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.4678254000027664,
+          "log": ".local/rpf-66/diagnostics/anchor-59v1-bdc1ddfa.log",
+          "tests": null,
+          "tail": "OT_PROVEN\",\"TWO_DISTINCT_DOMAINS_IN_THIS_SESSION\":\"YES\",\"candidate_changed\":true,\"cross_domain_information_gain\":\"NOT_COMPARABLE\",\"domain_changed\":true,\"fact_novelty_domain_scoped\":[1,2]},\"reserved_budget\":{\"business_http\":8,\"config_trial\":1,\"cost_micro_cny\":108000,\"health\":3,\"jvm\":1,\"order_trial\":1,\"post\":2,\"provider\":2,\"sdk\":1,\"sqlite_mutation\":1,\"token_reserve\":6000,\"trial\":2},\"source_kind\":\"REAL_EXPLORER_CONTROLLED_TARGETS\",\"status\":\"PASS\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "60v1",
+          "module": "lab_cross_domain_verify",
+          "path": "spikes/rpf-60/cross-domain-live-evidence.json",
+          "flag": "--sha256",
+          "sha256": "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.lab_cross_domain_verify",
+            "spikes/rpf-60/cross-domain-live-evidence.json",
+            "--sha256",
+            "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.4710150999999314,
+          "log": ".local/rpf-66/diagnostics/anchor-60v1-bdc1ddfa.log",
+          "tests": null,
+          "tail": "OT_PROVEN\",\"TWO_DISTINCT_DOMAINS_IN_THIS_SESSION\":\"YES\",\"candidate_changed\":true,\"cross_domain_information_gain\":\"NOT_COMPARABLE\",\"domain_changed\":true,\"fact_novelty_domain_scoped\":[1,2]},\"reserved_budget\":{\"business_http\":8,\"config_trial\":1,\"cost_micro_cny\":108000,\"health\":3,\"jvm\":1,\"order_trial\":1,\"post\":2,\"provider\":2,\"sdk\":1,\"sqlite_mutation\":1,\"token_reserve\":6000,\"trial\":2},\"source_kind\":\"REAL_EXPLORER_CONTROLLED_TARGETS\",\"status\":\"PASS\"}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "62v1",
+          "module": "pge_target_capability_verify",
+          "path": "spikes/rpf-62/real-target-witness.json",
+          "flag": "--sha256",
+          "sha256": "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.pge_target_capability_verify",
+            "spikes/rpf-62/real-target-witness.json",
+            "--sha256",
+            "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.2706270999988192,
+          "log": ".local/rpf-66/diagnostics/anchor-62v1-bdc1ddfa.log",
+          "tests": null,
+          "tail": "agent_exposed\":true,\"channel\":\"EXPLICIT_UNKNOWN_TOOL_RESULT\",\"observed\":true,\"planned\":true,\"triggered\":true},\"model_read_only_recovery\":\"OBSERVED\",\"physical\":{\"cold\":1,\"health\":1,\"http\":9,\"jvm\":1,\"metadata\":1,\"post\":2,\"provider\":5,\"sdk\":1,\"trial\":1},\"provider\":5,\"reconcile\":\"INDEPENDENT_GET_CURRENT_HISTORY_LIST\",\"reserved_cost_cny\":0.216,\"reserved_tokens\":12000,\"role\":\"TARGET\",\"source_kind\":\"REAL_PROVIDER_TARGET\",\"status\":\"PASS\",\"tokens\":4945}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "63v1",
+          "module": "pge_dual_verify",
+          "path": "spikes/rpf-63/dual-agent-evidence.json",
+          "flag": "--sha256",
+          "sha256": "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.pge_dual_verify",
+            "spikes/rpf-63/dual-agent-evidence.json",
+            "--sha256",
+            "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.29366360000130953,
+          "log": ".local/rpf-66/diagnostics/anchor-63v1-bdc1ddfa.log",
+          "tests": null,
+          "tail": "uppressed-after-http200\",\"local-delivery-suppressed-after-http200\"],\"estimated_cost_cny_upper\":0.062982,\"feedback\":\"VERIFIED_AND_BOUND_TO_SECOND_EXPLORER\",\"physical\":{\"cold\":1,\"health\":2,\"http\":18,\"jvm\":2,\"metadata\":1,\"post\":4,\"provider\":12,\"sdk\":2,\"session\":1,\"trial\":2},\"provider_requests\":12,\"replayed_provider_requests\":0,\"reserved_cost_cny\":0.54,\"reserved_tokens\":30000,\"source_kind\":\"REAL_EXPLORER_REAL_TARGET\",\"status\":\"PASS\",\"tokens\":10978}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "64",
+          "module": "pge_portability_verify",
+          "path": "spikes/rpf-64/portability-witness.json",
+          "flag": "--sha256",
+          "sha256": "d5798bfa82ef9523039a1461c82842aa9f265703ada492cef3cf068208e5ff19",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.pge_portability_verify",
+            "spikes/rpf-64/portability-witness.json",
+            "--sha256",
+            "d5798bfa82ef9523039a1461c82842aa9f265703ada492cef3cf068208e5ff19"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.30093319999650703,
+          "log": ".local/rpf-66/diagnostics/anchor-64-bdc1ddfa.log",
+          "tests": null,
+          "tail": "UN\",\"fault\":{\"agent_exposed\":true,\"observed\":true,\"planned\":true,\"triggered\":true},\"reconciled\":true,\"state\":\"UNKNOWN_OUTCOME\",\"write_ack\":\"UNKNOWN_OUTCOME\"}],\"physical\":{\"cold\":1,\"config_trial\":1,\"health\":1,\"http\":9,\"jvm\":1,\"metadata\":1,\"order_trial\":1,\"post\":2,\"provider\":0,\"sdk\":1,\"session\":1,\"sqlite_refund\":1,\"sqlite_setup\":1,\"trial\":2},\"provider\":0,\"shared_dispatch\":\"OBSERVED\",\"source_kind\":\"BOTH_REAL_CONTROLLED\",\"status\":\"PASS\",\"tokens\":0}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        },
+        {
+          "id": "65r2",
+          "module": "pge_r65_verify",
+          "path": "spikes/rpf-65/rev-2/target-witness.json",
+          "flag": "--sha256",
+          "sha256": "2c8691137603cc69d9a1cf92f7800da65dd803bd8e49291187caecac6c5eea2d",
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "runtime.runproof_runtime.effectwitness.pge_r65_verify",
+            "spikes/rpf-65/rev-2/target-witness.json",
+            "--sha256",
+            "2c8691137603cc69d9a1cf92f7800da65dd803bd8e49291187caecac6c5eea2d"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 0.7992486000002827,
+          "log": ".local/rpf-66/diagnostics/anchor-65r2-bdc1ddfa.log",
+          "tests": null,
+          "tail": "\":1,\"http\":9,\"jvm\":1,\"metadata\":1,\"post\":2,\"provider\":5,\"sdk\":1,\"session\":1,\"trial\":1},\"reserved_cost_cny_upper\":0.065817,\"reserved_tokens\":12600,\"source_kind\":\"REAL_PROVIDER_TARGET_CONFIG\",\"status\":\"PASS\",\"tokens\":4841,\"verdict\":{\"agent\":\"CONTRACT_SATISFIED_IN_RUN\",\"authority\":\"SAME_SERVICE_READ_ONLY_HTTP\",\"effect\":\"CONTRACT_SATISFIED_IN_RUN\",\"fault\":{\"agent_exposed\":true,\"observed\":true,\"planned\":true,\"triggered\":true},\"recovery\":\"OBSERVED\"}}\r\n",
+          "source_digest": "fb2948460d742bea8d405904c553ada412515d851b4c008893c4341830d9f441"
+        }
+      ],
+      "snapshot": {
+        "files": 651,
+        "source_inputs": {
+          "rpf66": {
+            "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": true,
+            "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_external.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_runtime.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_verify.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_explorer.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_session.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_target.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_verify.py": true,
+            "runtime/runproof_runtime/effectwitness/contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/effect_oracle.py": true,
+            "runtime/runproof_runtime/effectwitness/orders.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_domain_port.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_port_context.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_portability_config.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_portability_order.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_r66_context.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_r66_session.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_select_config_port.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_select_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_select_explorer.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_select_feedback.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_select_session.py": true,
+            "runtime/runproof_runtime/effectwitness/pge_select_verify.py": true,
+            "runtime/runproof_runtime/models.py": true,
+            "runtime/tests/test_effectwitness_pge_r66.py": true,
+            "spikes/rpf-53/probe.py": true,
+            "spikes/rpf-53/rev-6/config-live-evidence.json": true,
+            "spikes/rpf-55/probe.py": true,
+            "spikes/rpf-66/probe.py": true
+          },
+          "rpf60": {
+            "runtime/runproof_runtime/effectwitness/lab_cross_domain_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/lab_cross_domain.py": true,
+            "runtime/runproof_runtime/effectwitness/lab_cross_domain_projection.py": true,
+            "runtime/runproof_runtime/effectwitness/lab_cross_domain_verify.py": true,
+            "runtime/runproof_runtime/effectwitness/lab_gateway.py": true,
+            "runtime/runproof_runtime/effectwitness/lab_store.py": true,
+            "runtime/tests/test_effectwitness_lab_cross_domain.py": true,
+            "runtime/tests/test_effectwitness_lab_cross_domain_gateway.py": true,
+            "web/src/features/effectwitness/CrossDomainPage.tsx": true,
+            "web/src/features/effectwitness/crossDomainApi.ts": true,
+            "web/src/features/effectwitness/crossDomainCopy.ts": true,
+            "web/src/features/effectwitness/crossDomainApi.test.ts": true,
+            "web/src/App.tsx": true,
+            "web/src/components/AppShell.tsx": true,
+            "web/src/features/effectwitness/lab.css": true,
+            "vite.config.ts": true,
+            "runtime/runproof_runtime/effectwitness/orders.py": true,
+            "runtime/runproof_runtime/effectwitness/contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/effect_oracle.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_target.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/config_pge_session.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_runtime.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_external.py": true,
+            "runtime/runproof_runtime/effectwitness/config_live_verify.py": true,
+            "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": true,
+            "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": true,
+            "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": true,
+            "spikes/rpf-53/probe.py": true,
+            "spikes/rpf-55/probe.py": true,
+            "runtime/runproof_runtime/models.py": true
+          }
+        },
+        "snapshot": ".local/rpf-66/snapshots/a7cb0a34"
+      }
+    },
+    "helpers": {
+      "free_checks.py": "aeaac415a3fe69d94e9c4d3750850ff1f938f7c8293fb6aef22a5c68439b109f",
+      "post_run.py": "747c18dc976ebeb147d1d550b6fb2f2dcb0190717ec8da52d9c96aae5b755895",
+      "retry_full.py": "b7f1a94f70d016cef05cf946a00904fe7b209007d251bfb26409d1da3b014b7d",
+      "metadata_stage.py": "9a4da1429c78b0a647b997cc6c61550fb3fd27c5d9fd5594dc2be174ae459d83"
+    },
+    "format_check_exit_codes": [
+      0,
+      0
+    ],
+    "frozen_at_unix": 1792662721.5026476
+  },
+  "sdk_metadata": {
+    "context_sha256": "661e9e16604ef71cd2645c12b71633d25a58948fac179025008a89d78978edc1",
+    "java": {
+      "executable_sha256": "9da06bd6c880c0c8d1a63e3716f8ef7996f146c41e6d339e4eafc93df28392f9",
+      "identity_source": "JDK_RELEASE_FILE_NO_PROCESS",
+      "release_sha256": "00d3211a59bc9f2577f93962e9210de8578c49fd2625022cb38606817d3a71f9",
+      "version": "17.0.12"
+    },
+    "sdk": {
+      "configured_executable_matches_sys": true,
+      "openai": {
+        "record_entries": 2000,
+        "record_hashed_entries": 1999,
+        "record_mismatches": 0,
+        "record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+        "version": "3.35.1"
+      },
+      "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+      "pydantic": {
+        "record_entries": 444,
+        "record_hashed_entries": 443,
+        "record_mismatches": 0,
+        "record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+        "version": "2.57.0"
+      },
+      "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+      "python_version": "3.12.13",
+      "sdk_core_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+      "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+    },
+    "source_bundle": {
+      "jar_bytes": 66981576,
+      "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+      "manifest_sha256": "33861f89974fab845521b38aeefbc62d2579e5fe7daa4b79af52230a90e1f343",
+      "source_commit": "0258b9cef02ea74a40989d035c79256c776409c0",
+      "source_file_count": 110,
+      "source_total_bytes": 393800
+    },
+    "sources": {
+      "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+      "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+      "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "runtime/runproof_runtime/effectwitness/config_live_verify.py": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+      "runtime/runproof_runtime/effectwitness/config_pge_contracts.py": "4577cbf968cf290a2005b6d9cef511a85c3725320d525b3f02fdf727b933035f",
+      "runtime/runproof_runtime/effectwitness/config_pge_explorer.py": "f3c0282c9cd1dceaf15ceba8a85f9651130a2e2af2a08c527acae44508002d1c",
+      "runtime/runproof_runtime/effectwitness/config_pge_session.py": "a4d320e5c0ac13b1fee7fbd47c37055c1a2f786a5efeca386254cf84458c09b1",
+      "runtime/runproof_runtime/effectwitness/config_pge_target.py": "342cf305e134ac8c1c2b81eabb704b8aef4efeeeadb776f01329d734b69241b5",
+      "runtime/runproof_runtime/effectwitness/config_pge_verify.py": "697ccd3ec7d5b2ef0d3c7b4c8327b9a5bc7907f40e2a55046d6099d116b622e6",
+      "runtime/runproof_runtime/effectwitness/contracts.py": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+      "runtime/runproof_runtime/effectwitness/effect_oracle.py": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "runtime/runproof_runtime/effectwitness/orders.py": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+      "runtime/runproof_runtime/effectwitness/pge_domain_port.py": "79835650efe04c7581143ec5a2d0e060d8cc0240e7c14373a1b2e6531d4230b8",
+      "runtime/runproof_runtime/effectwitness/pge_port_context.py": "0bd2b0256be2064b46afba124715e273a7eaf09345e3cddfeb165e8d7fe133d5",
+      "runtime/runproof_runtime/effectwitness/pge_portability_config.py": "a9f8e6c9f5bab0e418ec5e8a8f54a598f6cd3fb233717e47be7dc45b3d12999e",
+      "runtime/runproof_runtime/effectwitness/pge_portability_order.py": "b49a3857f48df7710c42fb399f8982feaf578e4a5647d7935f0249fd779faab0",
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py": "22f80f97e8e25c3c19cb622af6ca3a60548afe120dccf9ee698997f271e052d7",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": "830f2a9758faf5231d952c017ead43f567ab6d704ed5c88b175b7bf75a0584cb",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py": "07e42aa88569acc65ecbb49fa7d11f5c3adc75a137b264bf89eca6de7a65e1c6",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "31d29681f01f3268ac4250eeacda2d55585d4c8ab736ca9b25661d2f1db84753",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": "6773d4601142899fe9098a5b3467e80d9128569071d16223aa21cb09d603c4da",
+      "runtime/runproof_runtime/effectwitness/pge_select_config_port.py": "fe7dc90fccf7ac5ab807675f7b62a55a7ff53cf4c5d9e091b09712614561729a",
+      "runtime/runproof_runtime/effectwitness/pge_select_contracts.py": "1cd9927968657471f63c64348ad82c62696ffb5b7d7065a038c17a26e31e53d5",
+      "runtime/runproof_runtime/effectwitness/pge_select_explorer.py": "4be251b3166efcd2d29e8683dfa85a5d44e3147f32b8e37e886594c614c448ef",
+      "runtime/runproof_runtime/effectwitness/pge_select_feedback.py": "147006818a074aba4bc983f372a16b4697367522268ced654f6ce19eaef56bfa",
+      "runtime/runproof_runtime/effectwitness/pge_select_session.py": "3b576e693a59bb6c1b1655af68cef4606a54c13348661b162c99a0290377cf39",
+      "runtime/runproof_runtime/effectwitness/pge_select_verify.py": "51f796b75ec7c7dea2a1513d2f0e18dc626b059245eb9449decb2c0d52802433",
+      "runtime/runproof_runtime/models.py": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+      "runtime/tests/test_effectwitness_pge_r66.py": "a2ea37e1c493ab26cd0e8752ef6c971ec406e1ae418210a855705152fbc7d3f5",
+      "spikes/rpf-53/probe.py": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+      "spikes/rpf-53/rev-6/config-live-evidence.json": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "spikes/rpf-55/probe.py": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+      "spikes/rpf-66/probe.py": "6eef4d130abaeb950e06121e24dfa35404c87574c8be66c7bbd6140021a372ae"
+    },
+    "status": "PASS"
+  },
+  "metadata_process": {
+    "returncode": 0,
+    "runner_pid": 8712,
+    "inspector_pids": [
+      30172
+    ],
+    "elapsed_seconds": 7.172968099999707
+  },
+  "pre_freeze_incidents": {
+    "phase": "P1_BEFORE_SOURCE_FREEZE",
+    "first_full": {
+      "tests": 437,
+      "errors": 1,
+      "skipped": 2,
+      "error": "WinError_10053",
+      "test": "ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+      "root_cause": "NOT_PROVEN"
+    },
+    "isolated_same_snapshot_diagnostic": {
+      "tests": 1,
+      "result": "PASS",
+      "seconds": 0.129
+    },
+    "serial_same_source_retry": {
+      "status": "CANCELLED_BY_OWNER_BEFORE_COMPLETION",
+      "reason": "material prefix configuration omission discovered before freeze",
+      "owned_runner_pids": [
+        25896,
+        22676
+      ],
+      "owned_child_pid": 29044,
+      "returncode": 4294967295
+    },
+    "repair_scope": [
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py",
+      "runtime/tests/test_effectwitness_pge_r66.py"
+    ],
+    "repair": "same non-message key set required; test deletion/addition/modification",
+    "paid_calls": 0,
+    "metadata_calls": 0,
+    "cold_calls": 0
+  },
+  "cold": {
+    "status": "PASS",
+    "source_kind": "FIXTURE_SCRIPTED",
+    "pid": 6412,
+    "requests": 5,
+    "tool_callbacks": 4,
+    "checks": {
+      "cleanup": true,
+      "protocol": true,
+      "provider_zero": true
+    }
+  },
+  "frozen_raw_source_unchanged": true
+}

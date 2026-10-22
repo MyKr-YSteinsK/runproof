@@ -1,0 +1,73 @@
+{
+  "task": "RPF-66/rev-1",
+  "abi": "rpf66-config-pge-session-v1",
+  "scope": "CONFIG_SINGLE_DOMAIN",
+  "context": "NEW_VERSIONED_OWNER",
+  "physical_ledger": "ONE_WAL_ALL_ROLES",
+  "direct_reuse": [
+    "ProcessSupervisor",
+    "DomainPort structural protocol",
+    "ConfigLiveHost transport/tool validation",
+    "ConfigLiveHttp and ConfigLiveBusiness",
+    "config_live_external.py",
+    "Explorer request/shape/fingerprint"
+  ],
+  "versioned_copy_debt": [
+    {
+      "new": "pge_r66_context.py",
+      "reference": "pge_r65_context.py",
+      "new_lines": 166,
+      "reference_lines": 137,
+      "exact_matching_lines_approx": 103,
+      "new_bytes": 15261
+    },
+    {
+      "new": "pge_r66_target_config.py",
+      "reference": "pge_r65_target_config.py",
+      "new_lines": 173,
+      "reference_lines": 173,
+      "exact_matching_lines_approx": 165,
+      "new_bytes": 18011
+    },
+    {
+      "new": "pge_r66_verify.py",
+      "reference": "pge_r65_verify.py",
+      "new_lines": 164,
+      "reference_lines": 128,
+      "exact_matching_lines_approx": 89,
+      "new_bytes": 22318
+    },
+    {
+      "new": "pge_r66_explorer.py",
+      "reference": "pge_dual_session.py",
+      "new_lines": 39,
+      "reference_lines": 54,
+      "exact_matching_lines_approx": 22,
+      "new_bytes": 4237
+    }
+  ],
+  "shared_factory": "assemble_host(ctx, ct, ledger, *, api_key=None)",
+  "factory_invariants": [
+    "host.ledger is broker",
+    "broker.total is ledger",
+    "business.client is client",
+    "journal.ledger is ledger"
+  ],
+  "history_mutation": false,
+  "monkey_patch_history": false,
+  "next_extraction_candidates": [
+    "owner-neutral context contract catalog",
+    "role-aware WAL policy",
+    "configuration host/Oracle adapter"
+  ],
+  "limitations": [
+    "single controlled config domain",
+    "task-versioned orchestration remains",
+    "same-service HTTP authority",
+    "no issuer signature",
+    "no independent reproduction",
+    "no causal proof",
+    "no production release authority"
+  ],
+  "new_safety_repair": "Target request non-message key set and values must both remain identical; omission/addition/change tests before freeze"
+}
