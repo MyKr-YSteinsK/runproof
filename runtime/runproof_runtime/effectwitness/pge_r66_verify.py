@@ -7,8 +7,8 @@ from .config_live_verify import _history
 from .pge_r66_session import dispatch_identity, feedback
 from .pge_portability_config import verify_sdk as verify_cold_sdk
 
-SCHEMA='rpf66-dual-agent-witness-v1'
-def identity(): return {'version':'rpf66-dual-agent-verifier-v1','sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
+SCHEMA='rpf66-dual-agent-witness-v2'
+def identity(): return {'version':'rpf66-dual-agent-verifier-v2','sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
 def seal(p): return dict(schema=SCHEMA,payload=p,payload_sha256=c.digest(p),verifier_identity=identity())
 
 def verify_sdk(s,trace,comps,*,guarded=False):
@@ -72,10 +72,50 @@ def verify_scene(ct,s,*,real):
     c.require(set(env['cleanup'])=={'java_exited','java_port_closed','sdk_exited','host_port_closed','host_thread_stopped','local_key_released'} and all(x is True for x in env['cleanup'].values()) and 1<=len(env['health'])<=3 and env['health'][-1]['status']==200 and env['health'][-1]['body']=={'status':'UP'} and env['health'][-1]['transport_error'] is None,'ENV_CLEANUP_HEALTH')
     return dict(effect='CONTRACT_SATISFIED_IN_RUN',agent='AGENT_FAIL_GUARDED' if guarded else 'CONTRACT_SATISFIED_IN_RUN',fault=dict.fromkeys(('planned','triggered','observed','agent_exposed'),suppressed),recovery='OBSERVED' if len(trace)==4 else 'NOT_OBSERVED_SAFE_STOP' if suppressed else 'NOT_APPLICABLE',authority='SAME_SERVICE_READ_ONLY_HTTP')
 
+def validate_safe_shape(s):
+    from .pge_r66_target_config import SHAPE_SCHEMA,SHAPE_MAX_BYTES,TOP_KEYS,CHOICE_KEYS,MESSAGE_KEYS,USAGE_KEYS,FINISH
+    types={'null','boolean','integer','number','object','array','string','OTHER'}
+    def exact(value,names):c.require(type(value) is dict and set(value)==set(names),'SAFE_SHAPE_FIELDS')
+    def fieldset(x,allowed):
+        exact(x,('known','unknown_count'));c.require(type(x['known']) is list and x['known']==sorted(set(x['known'])) and set(x['known'])<=set(allowed) and type(x['unknown_count']) is int and 0<=x['unknown_count']<=1000001,'SAFE_SHAPE_KEY_SET')
+    def hint(x):
+        exact(x,('type','valid','sha256'));c.require(x['type'] in types and type(x['valid']) is bool,'SAFE_SHAPE_ID_TYPE');c.require((x['type']=='string' and type(x['sha256']) is str and re.fullmatch('[0-9a-f]{64}',x['sha256']) is not None) if x['valid'] else x['sha256'] is None,'SAFE_SHAPE_ID_HINT')
+    exact(s,('schema','response_type','fields','object','created_nonnegative_integer','model','response_id','choices_type','choices_count','choices','usage'))
+    c.require(s['schema']==SHAPE_SCHEMA and len(c.canonical(s))<=SHAPE_MAX_BYTES and s['response_type'] in types and s['object'] in ('chat.completion','OTHER') and type(s['created_nonnegative_integer']) is bool and s['model'] in (*c.MODELS,'OTHER') and s['choices_type'] in types and (s['choices_count'] is None or type(s['choices_count']) is int and 0<=s['choices_count']<=1000001) and type(s['choices']) is list and len(s['choices'])<=2,'SAFE_SHAPE_ENUM')
+    fieldset(s['fields'],TOP_KEYS);hint(s['response_id'])
+    for ch in s['choices']:
+        exact(ch,('type','fields','index_type','index_zero','finish_reason','message_type','message_fields','message_role','tool_calls_present','tool_calls_type','tool_calls_count','tools'))
+        c.require(all(ch[k] in types for k in ('type','index_type','message_type','tool_calls_type')) and type(ch['index_zero']) is bool and ch['finish_reason'] in (*FINISH,'NULL','MISSING','OTHER') and ch['message_role'] in ('assistant','user','system','tool','OTHER') and type(ch['tool_calls_present']) is bool and (ch['tool_calls_count'] is None or type(ch['tool_calls_count']) is int and 0<=ch['tool_calls_count']<=1000001) and type(ch['tools']) is list and len(ch['tools'])<=2,'SAFE_SHAPE_CHOICE_ENUM');fieldset(ch['fields'],CHOICE_KEYS);fieldset(ch['message_fields'],MESSAGE_KEYS)
+        for t in ch['tools']:
+            exact(t,('type','fields','call_type','id','function_type','function_fields','name','arguments_type','arguments_keys_valid','index_valid'))
+            c.require(all(t[k] in types for k in ('type','function_type','arguments_type')) and t['call_type'] in ('function','OTHER') and t['name'] in (*c.TOOLS,'OTHER') and type(t['arguments_keys_valid']) is bool and type(t['index_valid']) is bool,'SAFE_SHAPE_TOOL_ENUM');fieldset(t['fields'],('id','type','function','index'));fieldset(t['function_fields'],('name','arguments'));hint(t['id'])
+    u=s['usage'];exact(u,('type','confidence','fields'));exact(u['fields'],USAGE_KEYS);c.require(u['type'] in types and u['confidence']=='UNTRUSTED_OBSERVED_HINT','SAFE_SHAPE_USAGE_ENUM')
+    for x in u['fields'].values():
+        exact(x,('present','type','nonnegative','value'));c.require(type(x['present']) is bool and x['type'] in types and type(x['nonnegative']) is bool and (x['value'] is None or type(x['value']) is int and 0<=x['value']<=1000000),'SAFE_SHAPE_USAGE_WIDTH')
+
+def verify_shapes(ctx,account,scene,index):
+    from .pge_r66_target_config import SHAPE_SCHEMA,SHAPE_MAX_BYTES,USAGE_KEYS,shape_conditions
+    events=account['events'];records=scene['requests']
+    shapes=[e for e in events if e['kind']=='PROVIDER_SHAPE_OBSERVED' and e.get('round')==index]
+    accepted=[e for e in events if e['kind']=='PROVIDER_PARSE_ACCEPTED' and e.get('round')==index]
+    rejected=[e for e in events if e['kind']=='PROVIDER_PARSE_REJECTED' and e.get('round')==index]
+    c.require(len(shapes)==len(accepted)==len(records) and not rejected,'PROVIDER_SHAPE_COUNTS')
+    for i,(event,done,record) in enumerate(zip(shapes,accepted,records)):
+        receipt=event['receipt'];shape=receipt['shape'];validate_safe_shape(shape);c.require(set(event)=={'kind','monotonic_ns','run_id','round','provider_ticket','receipt_sha256','receipt'} and set(done)=={'kind','monotonic_ns','run_id','round','provider_ticket','receipt_sha256'} and len(c.canonical(receipt))<=12288,'SHAPE_EVENT_FIELDS');ticket=account['tickets'][record['ticket']];settled=account['results'][record['ticket']]
+        c.require(set(receipt)=={'schema','source_kind','context_sha256','role','round','run_id','ticket','request_sha256','http_status','stage','shape','conditions','transport_code','compatibility'} and receipt['schema']=='rpf66-provider-shape-receipt-v1' and receipt['source_kind']==ctx.public()['source_kind'] and receipt['context_sha256']==c.digest(ctx.public()) and receipt['role']=='TARGET' and receipt['round']==index and receipt['run_id']==record['run_id'] and receipt['ticket']==event['provider_ticket']==done['provider_ticket']==record['ticket'] and receipt['request_sha256']==record['request_sha256'],'SHAPE_SCOPE')
+        c.require(event['receipt_sha256']==done['receipt_sha256']==record['shape_sha256']==c.digest(receipt) and ticket['monotonic_ns']<event['monotonic_ns']<done['monotonic_ns']<settled['monotonic_ns'],'SHAPE_BEFORE_PARSE_SETTLE')
+        c.require(receipt['http_status']==200 and receipt['stage']=='BEFORE_STRICT_VALIDATION' and receipt['transport_code'] is None and receipt['compatibility']=='STRICT_NO_NORMALIZATION' and receipt['conditions']==[] and shape_conditions(shape)==[],'SHAPE_REJECTION_CANNOT_SUCCEED')
+        c.require(shape['schema']==SHAPE_SCHEMA and len(c.canonical(shape))<=SHAPE_MAX_BYTES and shape['response_id']=={'type':'string','valid':True,'sha256':c.digest(record['response_id'])} and shape['model']==record['returned_model'],'SHAPE_IDENTITY')
+        ch=shape['choices'][0];comp=scene['completions'][i];calls=comp['tool_calls'];c.require(shape['choices_type']=='array' and shape['choices_count']==len(shape['choices'])==1 and ch['type']=='object' and ch['index_type']=='integer' and ch['index_zero'] is True and ch['finish_reason']==('tool_calls' if calls else 'stop') and ch['fields']['unknown_count']==0 and ch['message_role']=='assistant' and len(ch['tools'])==len(calls),'SHAPE_CHOICE_SEMANTICS')
+        for hint,call in zip(ch['tools'],calls):c.require(hint['name']==call['name'] and hint['id']=={'type':'string','valid':True,'sha256':c.digest(call['call_id'])} and hint['arguments_keys_valid'] is True,'SHAPE_TOOL_BINDING')
+        c.require(shape['usage']['confidence']=='UNTRUSTED_OBSERVED_HINT' and shape['usage']['type']=='object','SHAPE_HINT_NOT_AUTHORITY')
+        for key in USAGE_KEYS:c.require(shape['usage']['fields'][key]=={'present':True,'type':'integer','nonnegative':True,'value':record['usage'][key]},'SHAPE_USAGE_BINDING')
+
 def verify_round(ctx,account,row,index,prior):
     counts,tickets,results,events=account['counts'],account['tickets'],account['results'],account['events']
     real=ctx.public()['source_kind']==c.REAL
     candidate=row['candidate_id'];ct=ctx.contract(index,candidate);s=row['evidence'];verdict=verify_scene(ct,s,real=real);run=ct['experiment']['run_id']
+    verify_shapes(ctx,account,s,index)
     c.require(set(row)=={'round','candidate_id','contract','dispatch','evidence','verdict','cleanup','feedback','body','observation','provider_ticket','selection'} and row['round']==index and row['contract']==ct and row['dispatch']==dispatch_identity() and row['verdict']==verdict and row['cleanup']==s['environment']['cleanup'] and row['feedback']==feedback(ct,s,verdict,[r['feedback'] for r in prior]),'ROW_BINDING')
     scoped=[e for e in events if e.get('round')==index]
     ordered=[]
@@ -93,7 +133,7 @@ def verify_round(ctx,account,row,index,prior):
     for state in states:
         current=state['requests']; c.require(len(current)>=len(previous),'HISTORY_REMOVED')
         for a,b in zip(previous,current):
-            keys=('attempt','run_id','role','ticket','request_sha256','input_upper','token_upper','proof','started_monotonic_ns','tool_returns')+(('status','usage','response_id','returned_model') if a['status']=='RECEIVED' else ())
+            keys=('attempt','run_id','role','ticket','request_sha256','input_upper','token_upper','proof','started_monotonic_ns','tool_returns')+(('status','usage','response_id','returned_model') if a['status']=='RECEIVED' else ())+(('shape_sha256',) if 'shape_sha256' in a else ())
             c.require(all(a[k]==b[k] for k in keys),'HISTORY_REWRITE')
         previous=current
     tokens=0; cost=0
@@ -111,7 +151,7 @@ def verify_round(ctx,account,row,index,prior):
         tokens+=u['total_tokens']; cost+=u['prompt_tokens']*4.5+u['completion_tokens']*18
     from . import pge_r66_explorer as explorer
     body=explorer.body_for(prior);ob=row['observation'];shape=ob['shape'];explorer.validate_response_shape(shape)
-    c.require(row['body']==body and ob['request_sha256']==c.digest(body) and ob['http_status']==200 and ob['attempt']==row['provider_ticket'],'EXPLORER_BODY')
+    c.require(row['body']==explorer.body_receipt(body,prior) and ob['request_sha256']==c.digest(body) and ob['http_status']==200 and ob['attempt']==row['provider_ticket'],'EXPLORER_BODY')
     selection=row['selection'];args=c.strict_json(selection['function']['arguments'].encode())
     c.require(set(selection)=={'id','type','function'} and selection['type']=='function' and re.fullmatch('[A-Za-z0-9_-]{1,128}',selection['id']) is not None and set(selection['function'])=={'name','arguments'} and selection['function']['name']=='select_experiment' and args=={'candidate_id':candidate} and selection['id'] not in {r['selection']['id'] for r in prior},'EXPLORER_SELECTION')
     c.require(shape['model'] in c.MODELS and shape['choices_count']==1 and shape['choices_type']=='array' and shape['response_type']=='object','EXPLORER_RESPONSE')
@@ -122,6 +162,11 @@ def verify_round(ctx,account,row,index,prior):
     c.require(not any(r['observation']['shape']['response_id']==shape['response_id'] for r in prior),'EXPLORER_RESPONSE_REPLAY')
     if real:c.require(re.fullmatch('[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',shape['response_id']) is not None,'REAL_EXPLORER_ID')
     choice=[e for e in scoped if e['kind']=='CHOICE_FROZEN'];c.require(len(choice)==1 and choice[0]['selection_sha256']==c.digest(selection) and choice[0]['candidate_id']==candidate and choice[0]['contract_sha256']==c.digest(ct) and choice[0]['provider_ticket']==row['provider_ticket'] and t['monotonic_ns']<z['monotonic_ns']<=ob['received_monotonic_ns']+10**9 and z['monotonic_ns']<choice[0]['monotonic_ns']<ordered[0],'CHOICE_ORDER')
+    selection_receipt=choice[0]['receipt']
+    expected_receipt={'schema':'rpf66-explorer-selection-v2','source_kind':ctx.public()['source_kind'],'context_sha256':c.digest(ctx.public()),'round':index,'run_id':run,'candidate_id':candidate,'selection':selection,'provider_ticket':row['provider_ticket'],'response_id':shape['response_id'],'model':shape['model'],'usage':u,'request_sha256':c.digest(body),'contract_sha256':c.digest(ct)}
+    c.require(selection_receipt==expected_receipt and choice[0]['receipt_sha256']==c.digest(expected_receipt),'SELECTION_EARLY_RECEIPT')
+    first_target=next(t for t in tickets.values() if t['resource']=='jvm' and t['round']==index)
+    c.require(choice[0]['monotonic_ns']<first_target['monotonic_ns'],'SELECTION_BEFORE_SIDE_EFFECT')
     if prior:
         previous=next(e for e in events if e['kind']=='FEEDBACK_FROZEN' and e.get('round')==index-1)
         c.require(previous['monotonic_ns']<t['monotonic_ns'],'FEEDBACK_BEFORE_SECOND_PROVIDER')

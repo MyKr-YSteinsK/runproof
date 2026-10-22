@@ -1,9 +1,63 @@
 """RPF66 context-injected configuration port; real Host and one shared supervisor."""
-import copy, hashlib, secrets, time
+import copy, hashlib, secrets, time, re
 from . import pge_r66_context as c
 from .pge_domain_port import DomainPort
 from .config_live_runtime import ConfigLiveHost, ConfigLiveHttp, ConfigLiveBusiness, ConfigLiveMemoryBackend, ProviderLedger, LiveRuntimeRejected, _http_contract, _api_response, _valid_item
 from .config_live_verify import _history
+from .config_live_contracts import TOOL_ARGUMENT_KEYS
+from .config_live_runtime import _validate_provider_response
+
+SHAPE_SCHEMA='rpf66-provider-safe-shape-v1'
+SHAPE_MAX_BYTES=8192
+TOP_KEYS=('id','object','created','model','system_fingerprint','choices','usage','service_tier','prompt_cache_hit_tokens')
+CHOICE_KEYS=('index','message','finish_reason','logprobs')
+MESSAGE_KEYS=('role','content','tool_calls','reasoning_content','refusal')
+FINISH=('stop','tool_calls','length','content_filter','aborted','insufficient_system_resource')
+USAGE_KEYS=('prompt_tokens','completion_tokens','total_tokens')
+
+def value_type(value):
+ return 'null' if value is None else 'boolean' if type(value) is bool else 'integer' if type(value) is int else 'number' if type(value) is float else 'object' if type(value) is dict else 'array' if type(value) is list else 'string' if type(value) is str else 'OTHER'
+def fields(value,allowed):
+ return {'known':sorted(k for k in allowed if type(value) is dict and k in value),'unknown_count':min(1000001,len(set(value)-set(allowed))) if type(value) is dict else 0}
+def identity_hint(value):
+ valid=type(value) is str and re.fullmatch('[A-Za-z0-9_-]{1,160}',value) is not None
+ return {'type':value_type(value),'valid':valid,'sha256':c.digest(value) if valid else None}
+def safe_shape(data):
+ d=data if type(data) is dict else {};choices=d.get('choices');rows=[]
+ for ch in choices[:2] if type(choices) is list else []:
+  obj=ch if type(ch) is dict else {};msg=obj.get('message');m=msg if type(msg) is dict else {};calls=m.get('tool_calls');tools=[]
+  for call in calls[:2] if type(calls) is list else []:
+   z=call if type(call) is dict else {};fn=z.get('function');f=fn if type(fn) is dict else {};name=f.get('name');valid_args=False
+   if name in c.TOOLS and type(f.get('arguments')) is str and len(f['arguments'].encode())<=8192:
+    try:args=c.strict_json(f['arguments'].encode());valid_args=type(args) is dict and set(args)==set(TOOL_ARGUMENT_KEYS[name])
+    except Exception:pass
+   tools.append({'type':value_type(call),'fields':fields(call,('id','type','function','index')),'call_type':'function' if z.get('type')=='function' else 'OTHER','id':identity_hint(z.get('id')),'function_type':value_type(fn),'function_fields':fields(fn,('name','arguments')),'name':name if name in c.TOOLS else 'OTHER','arguments_type':value_type(f.get('arguments')),'arguments_keys_valid':valid_args,'index_valid':'index' not in z or type(z['index']) is int and z['index']==0})
+  index=obj.get('index');fr=obj.get('finish_reason')
+  rows.append({'type':value_type(ch),'fields':fields(ch,CHOICE_KEYS),'index_type':value_type(index),'index_zero':type(index) is int and index==0,'finish_reason':fr if fr in FINISH else 'NULL' if 'finish_reason' in obj and fr is None else 'MISSING' if 'finish_reason' not in obj else 'OTHER','message_type':value_type(msg),'message_fields':fields(msg,MESSAGE_KEYS),'message_role':m.get('role') if m.get('role') in ('assistant','user','system','tool') else 'OTHER','tool_calls_present':'tool_calls' in m,'tool_calls_type':value_type(calls),'tool_calls_count':min(1000001,len(calls)) if type(calls) is list else None,'tools':tools})
+ u=d.get('usage');usage=u if type(u) is dict else {}
+ shape={'schema':SHAPE_SCHEMA,'response_type':value_type(data),'fields':fields(data,TOP_KEYS),'object':'chat.completion' if d.get('object')=='chat.completion' else 'OTHER','created_nonnegative_integer':type(d.get('created')) is int and d['created']>=0,'model':d.get('model') if d.get('model') in c.MODELS else 'OTHER','response_id':identity_hint(d.get('id')),'choices_type':value_type(choices),'choices_count':min(1000001,len(choices)) if type(choices) is list else None,'choices':rows,'usage':{'type':value_type(u),'confidence':'UNTRUSTED_OBSERVED_HINT','fields':{k:{'present':k in usage,'type':value_type(usage.get(k)),'nonnegative':type(usage.get(k)) is int and usage[k]>=0,'value':usage[k] if type(usage.get(k)) is int and 0<=usage[k]<=1000000 else None} for k in USAGE_KEYS}}}
+ c.require(len(c.canonical(shape))<=SHAPE_MAX_BYTES,'SAFE_SHAPE_BOUND');return shape
+
+def shape_conditions(s):
+ reasons=[]
+ def check(ok,code):
+  if not ok:reasons.append(code)
+ check(s['response_type']=='object','RESPONSE_TYPE');check(s['fields']['unknown_count']==0 and {'id','object','created','model','choices','usage'}<=set(s['fields']['known']),'RESPONSE_FIELDS')
+ check(s['object']=='chat.completion' and s['created_nonnegative_integer'] and s['model'] in c.MODELS and s['response_id']['valid'],'RESPONSE_IDENTITY')
+ check(s['choices_type']=='array','CHOICES_TYPE');check(s['choices_count']==1,'CHOICES_COUNT')
+ if s['choices_count']==1 and s['choices']:
+  ch=s['choices'][0];check(ch['type']=='object','CHOICE_TYPE');check(ch['fields']['unknown_count']==0,'CHOICE_UNKNOWN_FIELDS');check({'index','message','finish_reason'}<=set(ch['fields']['known']),'CHOICE_REQUIRED_FIELDS');check(ch['index_type']=='integer','CHOICE_INDEX_TYPE');check(ch['index_zero'],'CHOICE_INDEX_NONZERO');check(ch['finish_reason'] in ('stop','tool_calls'),'CHOICE_FINISH_REASON')
+  check(ch['message_type']=='object','MESSAGE_TYPE');check(ch['message_fields']['unknown_count']==0,'MESSAGE_UNKNOWN_FIELDS');check(ch['message_role']=='assistant','MESSAGE_ROLE');check(ch['tool_calls_type'] in ('null','array'),'TOOL_CALLS_TYPE');n=ch['tool_calls_count'] or 0;check(n<=1,'TOOL_CALLS_COUNT');check((n==1 and ch['finish_reason']=='tool_calls') or (n==0 and ch['finish_reason']=='stop'),'TOOL_FINISH_MISMATCH')
+  for t in ch['tools']:
+   check(t['type']=='object' and t['index_valid'] and t['fields']['unknown_count']==0 and t['call_type']=='function' and t['id']['valid'] and t['function_type']=='object' and t['function_fields']['unknown_count']==0 and set(t['function_fields']['known'])=={'name','arguments'},'TOOL_STRUCTURE');check(t['name'] in c.TOOLS and t['arguments_type']=='string' and t['arguments_keys_valid'],'TOOL_ARGUMENTS')
+ u=s['usage'];values=[u['fields'][k]['value'] for k in USAGE_KEYS];check(u['type']=='object' and all(u['fields'][k]['present'] and u['fields'][k]['type']=='integer' and u['fields'][k]['nonnegative'] and u['fields'][k]['value'] is not None for k in USAGE_KEYS),'USAGE_FIELDS')
+ if all(type(x) is int for x in values):check(values[0]+values[1]==values[2] and values[1]<=256,'USAGE_SUM_OR_OUTPUT')
+ return reasons
+
+SAFE_CODES={'PROVIDER_RESPONSE_FIELDS','PROVIDER_RESPONSE_IDENTITY','PROVIDER_CHOICE','PROVIDER_MESSAGE','PARALLEL_TOOL_CALLS_REJECTED','PROVIDER_FINISH_REASON','PROVIDER_TOOL_CALL','PROVIDER_TOOL_INDEX','PROVIDER_USAGE_INVALID','PROVIDER_OUTPUT_TOKEN_LIMIT','PROVIDER_TRANSPORT_ERROR','PROVIDER_RESPONSE_SIZE','PROVIDER_CONTENT_TYPE','PROVIDER_JSON_INVALID','PROVIDER_RESPONSE_ID_REUSED','TOOL_CALL_ID_DUPLICATE_OR_BUDGET','PROVIDER_TOOL_ARGUMENTS','INVALID_TARGET_SHAPE','PROVIDER_USAGE_BOUND','PROVIDER_CALL_FAILED'}
+def safe_code(exc):
+ code=getattr(exc,'code','PROVIDER_JSON_INVALID' if isinstance(exc,(ValueError,UnicodeError)) else 'PROVIDER_TRANSPORT_ERROR')
+ return code if code in SAFE_CODES or re.fullmatch('PROVIDER_HTTP_STATUS_[1-5][0-9][0-9]',code or '') else 'PROVIDER_CALL_FAILED'
 
 class Journal:
  def __init__(self,ledger,run):self.ledger,self.run,self.events=ledger,run,[]
@@ -42,7 +96,7 @@ class BrokerLedger:
         c.require(data['model'] in c.MODELS,'MODEL')
         record.update(status='RECEIVED',usage=u,response_id=data['id'],returned_model=data['model']);self.checkpoint();self.total.settle(record['ticket'],usage=u,response_id=data['id'],status='RECEIVED')
     def fail_unknown(self,record,code):
-        record['failure_code']=code;self.checkpoint();self.total.settle(record['ticket'],status='UNKNOWN',unknown=True)
+        record.update(failure_code=code,status='UNKNOWN');self.checkpoint();self.total.settle(record['ticket'],status='UNKNOWN',unknown=True)
 
 class Host(ConfigLiveHost):
     def __init__(self,contracts,ledger,business,journal,*,fixture=False,api_key=None):
@@ -84,15 +138,34 @@ class Host(ConfigLiveHost):
         c.require(visible,'CAPABILITY_RECOVERY_POLICY_VISIBLE')
         self.journal.add('CAPABILITY_INPUT_FROZEN',messages_sha256=c.digest(body.get('messages')),recovery_policy_visible=visible)
         if self.activated:self.journal.add('MODEL_UNKNOWN_INPUT_FROZEN',messages_sha256=c.digest(body.get('messages')))
-        result=super()._completion(body)
+        try:result=super()._completion(body)
+        except Exception as exc:
+            if not self.fixture and self.ledger.data['requests'] and self.ledger.data['requests'][-1]['status']=='RESERVED_USAGE_UNKNOWN':self.ledger.fail_unknown(self.ledger.data['requests'][-1],safe_code(exc))
+            raise
         if self.activated:
             self.journal.add('MODEL_UNKNOWN_INPUT_ACCEPTED',request_sha256=self.provider_responses[-1]['request_sha256'],response_id=self.provider_responses[-1]['response_id'])
         return result
+    def _shape_receipt(self,body,data,*,transport_code=None):
+        record=self.ledger.data['requests'][-1];total=self.journal.ledger;ctx=total.context;shape=safe_shape(data)
+        conditions=shape_conditions(shape) if transport_code is None else ['NOT_OBSERVED']
+        receipt={'schema':'rpf66-provider-shape-receipt-v1','source_kind':ctx.public()['source_kind'],'context_sha256':c.digest(ctx.public()),'role':'TARGET','round':self.contracts['experiment']['round'],'run_id':self.contracts['experiment']['run_id'],'ticket':record['ticket'],'request_sha256':c.digest(body),'http_status':200 if transport_code is None else int(transport_code.rsplit('_',1)[1]) if transport_code.startswith('PROVIDER_HTTP_STATUS_') else None,'stage':'BEFORE_STRICT_VALIDATION' if transport_code is None else 'TRANSPORT_OR_DECODE_NOT_OBSERVED','shape':shape,'conditions':conditions,'transport_code':transport_code,'compatibility':'STRICT_NO_NORMALIZATION'}
+        c.require(record['status']=='RESERVED_USAGE_UNKNOWN' and record['request_sha256']==receipt['request_sha256'] and len(c.canonical(receipt))<=12288,'SHAPE_SCOPE')
+        ctx.once(ctx.root/'provider-shapes'/(record['ticket']+'.json'),receipt);total.append('PROVIDER_SHAPE_OBSERVED',run_id=receipt['run_id'],provider_ticket=record['ticket'],receipt_sha256=c.digest(receipt),receipt=receipt);record['shape_sha256']=c.digest(receipt);self.ledger.checkpoint();return receipt
     def _provider_request(self,body):
-        data=super()._provider_request(body)
-        calls=data.get('choices',[{}])[0].get('message',{}).get('tool_calls',[])
-        c.require(calls is None or type(calls) is list and len(calls)<=1,'MULTIPLE_TARGET_TOOLS_REJECTED')
-        return data
+        try:data=super()._provider_request(body)
+        except Exception as exc:
+            code=safe_code(exc);receipt=self._shape_receipt(body,None,transport_code=code);self.journal.ledger.append('PROVIDER_PARSE_REJECTED',run_id=receipt['run_id'],provider_ticket=receipt['ticket'],receipt_sha256=c.digest(receipt),stage='TRANSPORT_OR_DECODE',code=code);raise LiveRuntimeRejected(code,'PROVIDER') from None
+        receipt=self._shape_receipt(body,data)
+        try:
+            checked,message,calls=_validate_provider_response(copy.deepcopy(data))
+            if receipt['conditions']:raise LiveRuntimeRejected('INVALID_TARGET_SHAPE','PROVIDER')
+            c.require(checked['id'] not in {x['response_id'] for x in self.provider_responses},'PROVIDER_RESPONSE_ID_REUSED')
+            for call in calls:
+                args=c.strict_json(call['function']['arguments'].encode());c.require(type(args) is dict and set(args)==set(TOOL_ARGUMENT_KEYS[call['function']['name']]),'PROVIDER_TOOL_ARGUMENTS');c.require(call['id'] not in self.intents,'TOOL_CALL_ID_DUPLICATE_OR_BUDGET')
+            record=self.ledger.data['requests'][-1];u=checked['usage'];ProviderLedger._validate_usage({k:u[k] for k in USAGE_KEYS},record['token_upper']);c.require(u['prompt_tokens']<=record['input_upper'] and u['completion_tokens']<=256,'PROVIDER_USAGE_BOUND')
+        except Exception as exc:
+            code=safe_code(exc);self.journal.ledger.append('PROVIDER_PARSE_REJECTED',run_id=receipt['run_id'],provider_ticket=receipt['ticket'],receipt_sha256=c.digest(receipt),stage='STRICT_RESPONSE_VALIDATION',code=code);raise LiveRuntimeRejected(code,'PROVIDER') from None
+        self.journal.ledger.append('PROVIDER_PARSE_ACCEPTED',run_id=receipt['run_id'],provider_ticket=receipt['ticket'],receipt_sha256=c.digest(receipt));return data
     def _fixture_response(self,request):
         if self.fixture_index!=3 or not self.contracts['experiment']['fault_plan']['enabled']:return super()._fixture_response(request)
         data=super()._fixture_response(request)

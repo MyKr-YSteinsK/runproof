@@ -8,12 +8,14 @@ from runtime.runproof_runtime.effectwitness.config_live_contracts import TOOL_AR
 def registry():
     return [{'type':'function','function':{'name':n,'description':c.TOOL_HELP[n],'parameters':{'type':'object','properties':{k:{'type':'integer' if k=='expected_version' else 'string'} for k in TOOL_ARGUMENT_KEYS[n]},'required':list(TOOL_ARGUMENT_KEYS[n]),'additionalProperties':False},'strict':True}} for n in c.TOOLS]
 
-def drive(host,ct,pid,*,cold=False):
+def drive(host,ct,pid,*,cold=False,bad_final=False):
     pin=c.pinned_sdk_fields(); ready=dict(framework='pydantic-ai-slim',version='2.57.0',openai_version='3.35.1',pid=pid,python_executable_sha256=pin['python_executable_sha256'],sdk_source_sha256=c.SDK_CORE_SHA256,openai_source_sha256=pin['openai_core_sha256'],sdk_site_root_binding_sha256=pin['sdk_site_root_binding_sha256'],python_runtime_mapping_sha256=pin['python_runtime_mapping_sha256'])
     host._ready(ready); messages=[{'role':'system','content':ct['execution']['agent_instructions']},{'role':'user','content':ct['execution']['task_prompt']}]
     def response(body):
-        data=host._fixture_response(body); data['id']=str(uuid.uuid4()); data['model']=c.MODEL; data['usage']=dict(prompt_tokens=500,completion_tokens=50,total_tokens=550); return data
-    with patch.object(host,'_provider_request',response):
+        data=host._fixture_response(body); data['id']=str(uuid.uuid4()); data['model']=c.MODEL; data['usage']=dict(prompt_tokens=500,completion_tokens=50,total_tokens=550)
+        if bad_final and data['choices'][0]['finish_reason']=='stop':data['choices'][0]['finish_reason']='length'
+        return data
+    with patch.object(config.ConfigLiveHost,'_provider_request',autospec=True,side_effect=lambda self,body:response(body)):
         for _ in range(5):
             data=host._completion(dict(model='rpf53-fixture-only' if cold else c.MODEL,messages=copy.deepcopy(messages),tools=registry(),tool_choice='auto',parallel_tool_calls=False,max_tokens=256))
             msg=data['choices'][0]['message']; messages.append(msg)
@@ -53,7 +55,7 @@ def synthetic_choice(candidates):
     data={'id':str(uuid.uuid4()),'model':c.MODEL,'usage':dict(prompt_tokens=300,completion_tokens=30,total_tokens=330),'choices':[{'finish_reason':'tool_calls','message':{'role':'assistant','content':None,'tool_calls':[selection]}}]}
     observation={'shape':explorer.safe_response_shape(data),'attempt':ticket,'request_sha256':c.digest(body),'http_status':200,'received_monotonic_ns':__import__('time').monotonic_ns()}
     meter.received(ticket,data);selection=explorer.parse_selection(data,{r['selection']['id'] for r in rows})
-    return dict(body=body,observation=observation,provider_ticket=ticket,selection=selection)
+    return dict(body=explorer.body_receipt(body,rows),observation=observation,provider_ticket=ticket,selection=selection)
  return choose
 
 def fresh():
@@ -82,7 +84,7 @@ def mutations():
  def reorder(p):p['ledger'][2],p['ledger'][3]=p['ledger'][3],p['ledger'][2];rechain(p)
  def normal_false(p):
     row=next((r for r in p['rows'] if r['candidate_id']==c.CANDIDATES[0]),p['rows'][0]);row['verdict']['fault']['triggered']=not row['verdict']['fault']['triggered']
- return {
+ attacks={
  'source_promotion':lambda p:p.update(source_kind=c.REAL if p['source_kind']==c.SYNTHETIC else c.SYNTHETIC),
  'double_source_promotion':lambda p:(p.update(source_kind=c.REAL if p['source_kind']==c.SYNTHETIC else c.SYNTHETIC),p['context'].update(source_kind=p['source_kind'])),
  'owner':lambda p:p['context'].update(owner='rpf-65'),
@@ -104,7 +106,7 @@ def mutations():
  'fault_truth':lambda p:scene(p).update(original_success={'fake':True}),
  'pid':lambda p:scene(p)['sdk'].update(popen_pid=1),
  'cleanup':lambda p:scene(p)['environment']['cleanup'].update(java_exited=False),
- 'future_feedback':lambda p:p['rows'][1]['body']['messages'].append({'role':'user','content':'future facts'}),
+ 'future_feedback':lambda p:p['rows'][1]['body'].update(prior_feedback_sha256='0'*64),
  'feedback_hash':lambda p:p['rows'][0]['feedback'].update(oracle_sha256='0'*64),
  'cold_pid':lambda p:p['cold']['sdk'].update(popen_pid=42),
  'missing_usage':lambda p:scene(p)['requests'][0].update(usage=None),
@@ -118,6 +120,38 @@ def mutations():
  'issuer_claim':lambda p:p['boundaries'].update(issuer='SIGNED'),
  'L2_fabrication':lambda p:p['rows'][1]['feedback'].update(new_facts=['fabricated']),
  }
+
+ def shape_attack(p,mutate):
+    event=next(f['event'] for f in p['ledger'] if f['event']['kind']=='PROVIDER_SHAPE_OBSERVED');old=event['receipt_sha256'];mutate(event['receipt']);new=c.digest(event['receipt']);event['receipt_sha256']=new
+    for frame in p['ledger']:
+        e=frame['event']
+        if e.get('receipt_sha256')==old:e['receipt_sha256']=new
+        for record in e.get('requests',[]):
+            if record.get('shape_sha256')==old:record['shape_sha256']=new
+    for row in p['rows']:
+        for record in row['evidence']['requests']:
+            if record.get('shape_sha256')==old:record['shape_sha256']=new
+    rechain(p)
+ def missing_shape(p):
+    i=next(i for i,f in enumerate(p['ledger']) if f['event']['kind']=='PROVIDER_SHAPE_OBSERVED');p['ledger'].pop(i);rechain(p)
+ def rejected(p):
+    e=next(f['event'] for f in p['ledger'] if f['event']['kind']=='PROVIDER_PARSE_ACCEPTED');e.update(kind='PROVIDER_PARSE_REJECTED',code='PROVIDER_CHOICE',stage='STRICT_RESPONSE_VALIDATION');rechain(p)
+ def historical_shape(p):
+    event=next(f['event'] for f in p['ledger'] if f['event']['kind']=='PROVIDER_STATE' and any(r['status']=='RECEIVED' and 'shape_sha256' in r for r in f['event']['requests']));next(r for r in event['requests'] if r['status']=='RECEIVED')['shape_sha256']='0'*64;rechain(p)
+ def lost_selection(p):
+    e=next(f['event'] for f in p['ledger'] if f['event']['kind']=='CHOICE_FROZEN');e['receipt']['selection'].pop('id');e['receipt_sha256']=c.digest(e['receipt']);rechain(p)
+ attacks.update({
+  'shape_unknown_choice_keys':lambda p:shape_attack(p,lambda r:r['shape']['choices'][0]['fields'].update(unknown_count=1)),
+  'shape_length_rejected':lambda p:shape_attack(p,lambda r:r['shape']['choices'][0].update(finish_reason='length')),
+  'shape_forced_stop':lambda p:shape_attack(p,lambda r:r['shape']['choices'][0].update(finish_reason='stop')),
+  'shape_index_false':lambda p:shape_attack(p,lambda r:r['shape']['choices'][0].update(index_zero=False)),
+  'shape_cross_role':lambda p:shape_attack(p,lambda r:r.update(role='EXPLORER')),
+  'shape_usage_hint_promoted':lambda p:shape_attack(p,lambda r:r['shape']['usage'].update(confidence='TRUSTED_SETTLED')),
+  'shape_request_scope':lambda p:shape_attack(p,lambda r:r.update(request_sha256='0'*64)),
+  'shape_absent':missing_shape,'shape_rejected_as_success':rejected,'original_selection_id_absent':lost_selection,
+  'partial_as_success':lambda p:p.update(rows=p['rows'][:1]),'provider_shape_history_rewrite':historical_shape,
+ })
+ return attacks
 
 def controls(payload,folder):
  folder.mkdir(parents=True,exist_ok=False)
@@ -200,6 +234,51 @@ class R66Tests(unittest.TestCase):
      self.assertEqual(row['verdict']['effect'],'CONTRACT_SATISFIED_IN_RUN')
      self.assertTrue(row['verdict']['fault']['agent_exposed']);self.assertTrue(all(row['cleanup'].values()))
      self.assertIsNone(c.strict_json((ctx.folder(ct)/'scene-capture.json').read_bytes())['host_failure'])
+ def test_actual_execute_failure_keeps_selection_and_reconcile(self):
+     ctx,ledger=fresh();ct=ctx.contract();jar=ctx.root/'jar/config-center-server-1.0.0.jar';jar.parent.mkdir()
+     with jar.open('wb') as f:f.truncate(c.SOURCE_JAR_BYTES)
+     ctx.once(ctx.root/'preflight/metadata.json',{'sources':c.sources(),'java':{'synthetic':True},'sdk':c.pinned_sdk_fields()})
+     class Proc:
+         counter=0
+         pid=None
+         def __init__(self,*a,**kw):
+             Proc.counter+=1;self.pid=456+Proc.counter;self.returncode=None
+         def poll(self):return self.returncode
+         def terminate(self):self.returncode=0
+         def kill(self):self.returncode=0
+         def wait(self,timeout=None):return self.returncode
+     class Log:
+         overflow=False
+         def __init__(self,*a):pass
+         def close(self,*a):pass
+     class Old:
+         JAVA=Path('synthetic-java')
+         _java_identity=staticmethod(lambda:{'synthetic':True})
+         _sha_file=staticmethod(lambda p:c.SOURCE_JAR_SHA256)
+         _port_closed=staticmethod(lambda p:True)
+         _java_env=staticmethod(lambda *a:{})
+         _RedactedJavaLog=Log
+         _actual_process_command_line=staticmethod(lambda p:'synthetic')
+         _split_windows_command_line=staticmethod(lambda s:[])
+         _argv_jar_path_matches=staticmethod(lambda *a:True)
+         _listener_owned=staticmethod(lambda *a:True)
+         _external_connections=staticmethod(lambda p:[])
+         _health_get=staticmethod(lambda *a,**k:{'status':200,'body':{'status':'UP'},'transport_error':None})
+     def sdk_stub(ctx,ct,ledger,sdk,folder,host,**kw):
+         t=ledger.reserve('sdk',domain=c.DOMAIN,run_id=ct['experiment']['run_id'])
+         try:result=drive(host,ct,789+ct['experiment']['round'],bad_final=True)
+         except config.LiveRuntimeRejected as exc:
+             host.failure={'domain':'PROVIDER','code':exc.code};result={'popen_pid':789+ct['experiment']['round'],'ready':host.runtime,'report':{'status':'SDK_ERROR','stage':'sdk_run','error_type':'ModelHTTPError','guard_code':None,'guard_denials':[]},'returncode':1,'stderr_bytes':0}
+         ledger.settle(t,popen_pid=789+ct['experiment']['round'],status='COMPLETED');ledger.append('PROCESS_CLEANUP',resource='sdk',pid=789+ct['experiment']['round'],process_exited=True);return result
+     # Only external boundaries are synthetic; Session/Port/factory/Host/Broker
+     # and real ConfigLiveBusiness/Oracle implementations execute unchanged.
+     with patch.object(c,'helpers',return_value=(None,Old())),patch.object(config,'Http',FakeHttp),patch('subprocess.Popen',Proc),patch.object(config,'run_sdk',sdk_stub),patch('socket.socket') as network:
+         with self.assertRaises(Exception):session.Session().execute(ctx,ledger,config.ConfigPort('synthetic-only-no-credential'),choose=synthetic_choice((c.CANDIDATES[1],c.CANDIDATES[0])))
+         network.assert_not_called()
+     scene=c.strict_json((ctx.folder(ct)/'scene-capture.json').read_bytes());receipt=c.strict_json((ctx.root/'session-receipt.json').read_bytes())
+     self.assertEqual(receipt['status'],'NOT_COMPLETE');self.assertEqual(receipt['completed_rounds'],0);self.assertEqual(len(receipt['selections']),1);self.assertEqual(receipt['selections'][0]['selection']['id'],'select_round_1')
+     self.assertTrue((ctx.root/'explorer-selections/selection-1.json').exists());self.assertTrue(ledger.read()['unknown']);self.assertEqual([o['kind'] for o in scene['http'][-3:]],['reconcile_current','reconcile_history','final_list']);self.assertTrue(all(scene['environment']['cleanup'].values()))
+     self.assertFalse(any(e['kind'] in ('DOMAIN_VERIFIED','FEEDBACK_FROZEN') for e in ledger.read()['events']))
  def test_unknown_blocks_both_roles_and_writes(self):
     ctx,ledger=fresh();broker=config.BrokerLedger(ledger,ctx.contract()['experiment']['run_id']);record=broker.reserve({'messages':[]},[]);broker.fail_unknown(record,'SYNTHETIC_UNKNOWN')
     with self.assertRaises(Exception):explorer.ExplorerMeter(ledger,2,ctx.contract(2)['experiment']['run_id']).reserve_request('EXPLORER',2,explorer.body_for([]))
@@ -215,7 +294,7 @@ class R66Tests(unittest.TestCase):
     ctx,ledger=fresh()
     with (ledger.path/'mutation.lock').open('xb'):pass
     with self.assertRaises(FileExistsError):ledger.append('TEST')
-    with self.assertRaises(Exception):ctx.scope(c.ROOT/'.local/rpf-65')
+    with self.assertRaises(Exception):ctx.scope(c.ROOT/'.local/rpf-66')
     with (ledger.path/'ledger.jsonl').open('ab') as f:f.write(b'{')
     with self.assertRaises(Exception):ledger.read()
  def test_input_prefix_guard(self):
@@ -233,4 +312,107 @@ class R66Tests(unittest.TestCase):
     ctx,_=fresh();ct=ctx.contract();j=type('J',(),{'add':lambda *a,**k:None})();backend=config.ConfigLiveMemoryBackend();host=config.Host(ct,config.ProviderLedger.fixture_only('synthetic'),backend,j);host.tool_trace=[{},{},{}];host.activated=True
     with self.assertRaises(Exception):host._tool(dict(call_id='fake',name='update_config_v2',arguments={}))
     self.assertEqual(backend.version,0)
+
+def minimal_response(*,tool=False):
+ msg={'role':'assistant','content':None}
+ if tool:msg['tool_calls']=[{'id':'call_'+uuid.uuid4().hex,'type':'function','function':{'name':'inspect_config','arguments':'{}'}}]
+ return {'id':str(uuid.uuid4()),'object':'chat.completion','created':1,'model':c.MODEL,'choices':[{'index':0,'message':msg,'finish_reason':'tool_calls' if tool else 'stop'}],'usage':{'prompt_tokens':10,'completion_tokens':2,'total_tokens':12}}
+
+def ready_host(host,pid=789):
+ pin=c.pinned_sdk_fields();host._ready(dict(framework='pydantic-ai-slim',version='2.57.0',openai_version='3.35.1',pid=pid,python_executable_sha256=pin['python_executable_sha256'],sdk_source_sha256=c.SDK_CORE_SHA256,openai_source_sha256=pin['openai_core_sha256'],sdk_site_root_binding_sha256=pin['sdk_site_root_binding_sha256'],python_runtime_mapping_sha256=pin['python_runtime_mapping_sha256']))
+
+def completion_body(ct):return dict(model=c.MODEL,messages=[{'role':'system','content':ct['execution']['agent_instructions']},{'role':'user','content':ct['execution']['task_prompt']}],tools=registry(),tool_choice='auto',parallel_tool_calls=False,max_tokens=256)
+
+def response_cases():
+ def changed(fn,tool=False):
+  value=minimal_response(tool=tool);fn(value);return value
+ return {
+ 'finish_length':changed(lambda d:d['choices'][0].update(finish_reason='length')),
+ 'finish_content_filter':changed(lambda d:d['choices'][0].update(finish_reason='content_filter')),
+ 'finish_null':changed(lambda d:d['choices'][0].update(finish_reason=None)),
+ 'finish_other':changed(lambda d:d['choices'][0].update(finish_reason='private-value')),
+ 'missing_index':changed(lambda d:d['choices'][0].pop('index')),
+ 'index_nonzero':changed(lambda d:d['choices'][0].update(index=1)),
+ 'index_boolean':changed(lambda d:d['choices'][0].update(index=False)),
+ 'choice_scalar':changed(lambda d:d.update(choices=[1])),
+ 'choice_unknown_field':changed(lambda d:d['choices'][0].update(new_field='private-value')),
+ 'choices_empty':changed(lambda d:d.update(choices=[])),
+ 'choices_double':changed(lambda d:d['choices'].append(copy.deepcopy(d['choices'][0]))),
+ 'message_scalar':changed(lambda d:d['choices'][0].update(message='private-value')),
+ 'message_role':changed(lambda d:d['choices'][0]['message'].update(role='user')),
+ 'tools_scalar':changed(lambda d:d['choices'][0]['message'].update(tool_calls='private-value')),
+ 'tools_falsey_object':changed(lambda d:d['choices'][0]['message'].update(tool_calls={})),
+ 'tools_double':changed(lambda d:d['choices'][0]['message']['tool_calls'].append(copy.deepcopy(d['choices'][0]['message']['tool_calls'][0])),True),
+ 'tool_index_invalid':changed(lambda d:d['choices'][0]['message']['tool_calls'][0].update(index=1),True),
+ 'tool_unallowed':changed(lambda d:d['choices'][0]['message']['tool_calls'][0]['function'].update(name='delete_everything'),True),
+ 'tool_arguments':changed(lambda d:d['choices'][0]['message']['tool_calls'][0]['function'].update(arguments='{"extra":1}'),True),
+ 'response_id_invalid':changed(lambda d:d.update(id='private id / invalid')),
+ 'model_unallowed':changed(lambda d:d.update(model='private-model')),
+ 'usage_missing':changed(lambda d:d['usage'].pop('total_tokens')),
+ 'usage_negative':changed(lambda d:d['usage'].update(prompt_tokens=-1)),
+ 'usage_sum':changed(lambda d:d['usage'].update(total_tokens=999)),
+ 'usage_output_cap':changed(lambda d:d['usage'].update(completion_tokens=257,total_tokens=267)),
+ 'usage_input_cap':changed(lambda d:d['usage'].update(prompt_tokens=9000,total_tokens=9002)),
+ 'http200_error_object':{'error':{'message':'private-value'}},
+ }
+
+class R66ShapeTests(unittest.TestCase):
+ def exercise(self,value,*,expect_ok=False,transport=None):
+  ctx,ledger=fresh();ct=ctx.contract();client,broker,host,j=config.assemble_host(ctx,ct,ledger,api_key='synthetic-only');ready_host(host);body=completion_body(ct)
+  from runtime.runproof_runtime.effectwitness import config_live_runtime as base
+  class Reply:
+   status=200 if transport!='http500' else 500
+   def read(self,n):return (b'x'*262145 if transport=='oversize' else b'not-json' if transport=='non_json' else c.canonical(value))[:n]
+   def getheader(self,*a):return 'application/json'
+  class Connection:
+   calls=0
+   def request(self,*a,**kw):
+    Connection.calls+=1
+    if transport=='timeout':raise TimeoutError()
+   def getresponse(self):return Reply()
+   def close(self):pass
+  with patch.object(base.http.client,'HTTPSConnection',return_value=Connection()),patch.object(base.ssl,'create_default_context',return_value=None):
+   if expect_ok:host._completion(body)
+   else:
+    with self.assertRaises(Exception):host._completion(body)
+  self.assertEqual(Connection.calls,1)
+  events=ledger.read()['events'];shape=next(e for e in events if e['kind']=='PROVIDER_SHAPE_OBSERVED');record=broker.data['requests'][0]
+  self.assertEqual(shape['provider_ticket'],record['ticket']);self.assertEqual(shape['receipt']['request_sha256'],record['request_sha256']);self.assertTrue((ctx.root/'provider-shapes'/(record['ticket']+'.json')).exists())
+  if expect_ok:
+   self.assertEqual(record['status'],'RECEIVED');self.assertFalse(ledger.read()['unknown']);self.assertEqual(shape['receipt']['conditions'],[])
+  else:
+   self.assertEqual(record['status'],'UNKNOWN');self.assertTrue(ledger.read()['unknown']);self.assertIsNone(record['usage']);self.assertLess(shape['monotonic_ns'],next(e['monotonic_ns'] for e in events if e['kind']=='PROVIDER_PARSE_REJECTED'));self.assertLess(next(e['monotonic_ns'] for e in events if e['kind']=='PROVIDER_PARSE_REJECTED'),next(e['monotonic_ns'] for e in events if e['kind']=='RESULT'))
+   with self.assertRaises(Exception):ledger.reserve('sdk',run_id=ct['experiment']['run_id'])
+  return ctx,ledger,host,shape['receipt']
+ def test_actual_transport_parser_positive_stop_and_tool(self):
+  for tool in (False,True):
+   with self.subTest(tool=tool):self.exercise(minimal_response(tool=tool),expect_ok=True)
+ def test_actual_transport_parser_negative_matrix(self):
+  for name,value in response_cases().items():
+   with self.subTest(name=name):
+    _,_,_,receipt=self.exercise(value)
+    if name=='finish_length':self.assertIn('CHOICE_FINISH_REASON',receipt['conditions']);self.assertEqual(receipt['shape']['choices'][0]['finish_reason'],'length')
+    if name=='missing_index':self.assertIn('CHOICE_REQUIRED_FIELDS',receipt['conditions'])
+    if name=='choice_unknown_field':self.assertIn('CHOICE_UNKNOWN_FIELDS',receipt['conditions'])
+ def test_transport_size_json_timeout_status(self):
+  for kind in ('oversize','non_json','timeout','http500'):
+   with self.subTest(kind=kind):
+    _,_,_,receipt=self.exercise(minimal_response(),transport=kind);self.assertEqual(receipt['conditions'],['NOT_OBSERVED']);self.assertEqual(receipt['stage'],'TRANSPORT_OR_DECODE_NOT_OBSERVED')
+ def test_privacy_canary_never_persisted_or_reversibly_encoded(self):
+  import base64
+  canary='sk-'+uuid.uuid4().hex+uuid.uuid4().hex;value=minimal_response();value['choices'][0]['message'].update(content=canary,reasoning_content=canary);value['choices'][0][canary]=canary
+  ctx,ledger,host,receipt=self.exercise(value);raw=(ledger.path/'ledger.jsonl').read_bytes()+(ctx.root/'provider-shapes/provider-1.json').read_bytes()
+  for needle in (canary.encode(),base64.b64encode(canary.encode()),canary.encode().hex().encode()):self.assertNotIn(needle,raw)
+  self.assertLessEqual(len(c.canonical(receipt['shape'])),config.SHAPE_MAX_BYTES)
+ def test_response_and_tool_id_reuse_is_unknown(self):
+  for duplicate_tool in (False,True):
+   ctx,ledger=fresh();ct=ctx.contract();_,broker,host,_=config.assemble_host(ctx,ct,ledger,api_key='synthetic-only');ready_host(host);first=minimal_response(tool=True);second=copy.deepcopy(first)
+   if duplicate_tool:second['id']=str(uuid.uuid4())
+   with patch.object(config.ConfigLiveHost,'_provider_request',autospec=True,side_effect=[first,second]):
+    host._completion(completion_body(ct))
+    with self.assertRaises(Exception):host._completion(completion_body(ct))
+   self.assertTrue(ledger.read()['unknown']);self.assertEqual(broker.data['requests'][-1]['status'],'UNKNOWN')
+ def test_shape_width_is_bounded(self):
+  value=minimal_response();value['choices']=[value['choices'][0]]*100;value['usage']['prompt_tokens']=10**100;shape=config.safe_shape(value);self.assertEqual(len(shape['choices']),2);self.assertLess(len(c.canonical(shape)),8192);self.assertIsNone(shape['usage']['fields']['prompt_tokens']['value'])
+
 if __name__=='__main__':unittest.main()

@@ -17,17 +17,17 @@ def feedback(ct,e,verdict,prior):
 class Session:
  def execute(self,ctx,ledger,port,choose=explorer.choose):
   c.require(type(port) is ConfigPort and ledger.context is ctx,'STATIC_PORT_ALLOWLIST')
-  ticket=ledger.reserve('session',session_id=ctx.public()['session_id']);rows=[]
+  ticket=ledger.reserve('session',session_id=ctx.public()['session_id']);rows=[];selections=[]
   try:
    for index in (1,2):
     choice=choose(ctx,ledger,index,port.api_key,rows);selection=choice['selection'];candidate=c.strict_json(selection['function']['arguments'].encode())['candidate_id'];ct=ctx.contract(index,candidate);run=ct['experiment']['run_id']
-    ledger.append('CHOICE_FROZEN',run_id=run,selection_sha256=c.digest(selection),candidate_id=candidate,contract_sha256=c.digest(ct),provider_ticket=choice['provider_ticket'])
+    selections.append(explorer.freeze_selection(ctx,ledger,index,choice,rows))
     trial=ledger.reserve('trial',domain=c.DOMAIN,run_id=run)
     ledger.append('PORT_ENTERED',domain=c.DOMAIN,run_id=run,dispatch=dispatch_identity(),contract_sha256=c.digest(ct))
     # ConfigPort releases its local key reference per round; Session retains the
     # parent-only credential for the next independently admitted round.
     key=port.api_key;e=port.execute(ctx,ct,ledger);port.api_key=key;key=None
-    verdict=port.verify(ctx,ct,e)
+    verdict=port.verify(ctx,ct,e);c.require(verdict['agent']=='CONTRACT_SATISFIED_IN_RUN','AGENT_NOT_COMPLETE')
     ledger.append('DOMAIN_VERIFIED',domain=c.DOMAIN,run_id=run,evidence_sha256=c.digest(e),verdict_sha256=c.digest(verdict))
     cleanup=port.cleanup(ctx,ct,e);ledger.append('DOMAIN_CLEANUP',domain=c.DOMAIN,run_id=run,cleanup=cleanup)
     fb=feedback(ct,e,verdict,[r['feedback'] for r in rows]);ledger.append('FEEDBACK_FROZEN',domain=c.DOMAIN,run_id=run,tool_call_id=selection['id'],feedback_sha256=c.digest(fb))
@@ -35,7 +35,7 @@ class Session:
     ledger.settle(trial,status='COMPLETED',evidence_sha256=c.digest(e));ctx.once(ctx.root/f'round-{index}-verified.json',row);rows.append(row)
    ledger.settle(ticket,status='COMPLETED',rows_sha256=c.digest(rows));return rows
   finally:
-   port.api_key=None;ctx.once(ctx.root/'session-receipt.json',dict(completed_rounds=len(rows),rows=rows,ledger=ledger.frames))
+   port.api_key=None;ctx.once(ctx.root/'session-receipt.json',dict(schema='rpf66-session-receipt-v2',status='COMPLETE' if len(rows)==2 else 'NOT_COMPLETE',completed_rounds=len(rows),selections=selections,rows=rows,ledger=ledger.frames))
 
 def cold(ctx,ledger,meta):
     ct=ctx.public()['cold_contract']; folder=ctx.folder(ct); folder.mkdir(parents=True,exist_ok=False)

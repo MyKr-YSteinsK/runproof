@@ -8,9 +8,9 @@ from .config_experiment_verify import pinned_sdk_fields
 from .pge_port_context import ProcessSupervisor, helpers
 
 ROOT = Path(__file__).resolve().parents[3]
-BASE = '4081b7b94484bac3c726e0bef22be273b7470839'
-BRANCH = 'codex/rpf-66-real-explorer-target-feedback-session'
-ABI = 'rpf66-config-pge-session-v1'
+BASE = '7ccc34e6f6c188cb927211f144dd174287927356'
+BRANCH = 'codex/rpf-66-rev2-provider-choice-shape-diagnostic'
+ABI = 'rpf66-config-pge-session-v2'
 DOMAIN = 'config-java-http'
 MODEL = 'deepseek-flash'
 MODELS = (MODEL, 'DeepSeek-V4.1-Flash-1017')
@@ -24,7 +24,7 @@ EXPLORER_CAP = 2500
 BOUNDARIES = dict(order_real_target='NOT_RUN', cross_domain_real_dual_agent='NOT_PROVEN', web='NOT_INTEGRATED', causality='NOT_PROVEN', independent_reproduction='NOT_TESTED', issuer='NOT_ESTABLISHED', release='NOT_AUTHORIZED')
 UNKNOWN = dict(status='UNKNOWN_OUTCOME', reason='LOCAL_SUCCESS_DELIVERY_SUPPRESSED', write_policy='STOP_WRITES_READ_ONLY_RECONCILE')
 RECOVERY = ' After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.'
-NEW_FILES = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in ('pge_r66_context','pge_r66_explorer','pge_r66_target_config','pge_r66_session','pge_r66_verify')) + ('runtime/tests/test_effectwitness_pge_r66.py','spikes/rpf-66/probe.py')
+NEW_FILES = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in ('pge_r66_context','pge_r66_explorer','pge_r66_target_config','pge_r66_session','pge_r66_verify')) + ('runtime/tests/test_effectwitness_pge_r66.py','spikes/rpf-66/rev-2/probe.py')
 
 def sources():
     pending = list(NEW_FILES) + ['spikes/rpf-53/probe.py','spikes/rpf-55/probe.py','runtime/runproof_runtime/effectwitness/pge_portability_config.py','runtime/runproof_runtime/effectwitness/config_live_external.py','spikes/rpf-53/rev-6/config-live-evidence.json']
@@ -45,7 +45,7 @@ def sources():
 def contract(suffix, source, ports=(45001,45002), *, cold=False, round_index=1, candidate=CANDIDATES[1]):
     require(re.fullmatch('[0-9a-f]{16}',suffix) is not None and len(ports)==2 and len(set(ports))==2 and all(type(p) is int and 1024<=p<=65535 for p in ports), 'CONTRACT_PARAMETERS')
     require(round_index in (0,1,2) and candidate in CANDIDATES and cold==(round_index==0), 'CONTRACT_ROUND')
-    run = 'rpf66-'+('cold-' if cold else 'config-')+suffix
+    run = 'rpf66r2-'+('cold-' if cold else 'config-')+suffix
     return {'schema':'rpf66-domain-contracts-v2', 'execution':{'schema':'rpf66-execution-v2','role':'TARGET','agent_version':'rpf66-config-target-v2','source_kind':'FIXTURE_SCRIPTED' if cold else REAL,'model_source':'FIXTURE_SCRIPTED' if cold else 'REAL_PROVIDER','model':'rpf53-fixture-only' if cold else MODEL,'framework':{'name':'pydantic-ai-slim','version':'2.57.0','openai_version':'3.35.1','identity':pinned_sdk_fields()},'tools':list(TOOLS),'tool_help':TOOL_HELP,'agent_instructions':AGENT_INSTRUCTIONS+RECOVERY,'task_prompt':TASK_PROMPT+RECOVERY,'service':{'host':'127.0.0.1','port':ports[0]},'agent_host':{'host':'127.0.0.1','port':ports[1]},'release_authority':'NOT_HELD_BY_AGENT'}, 'effect':{'schema':'rpf66-config-effect-v2','app':'rpf66app'+suffix,'env':'rpf66local'+suffix,'key':'rpf66.item.'+suffix,'initial_state':'ABSENT','initial_value':'rpf53-v1','required_value':'rpf53-v2','initial_version':1,'required_version':2,'history_versions':[2,1],'authority':'SAME_SERVICE_READ_ONLY_HTTP'}, 'experiment':{'schema':'rpf66-experiment-v2','owner':'rpf-66','domain':DOMAIN,'run_id':run,'environment_id':'env-'+run,'reset_generation':0,'round':round_index,'candidate_id':candidate,'source_sha256':source,'fault_plan':{'planned':candidate==CANDIDATES[1],'enabled':candidate==CANDIDATES[1],'kind':'LOCAL_DELIVERY_SUPPRESSION_AFTER_HTTP_200' if candidate==CANDIDATES[1] else 'NONE'}}}
 
 def validate_contract(ct):
@@ -58,7 +58,7 @@ def context_public(suffix, ports, cold_ports, synthetic):
     for index in (1,2):
         token=hashlib.sha256((suffix+str(index)).encode()).hexdigest()[:16]
         rounds.append({k:contract(token,digest(sm),ports[(index-1)*2:index*2],round_index=index,candidate=k) for k in CANDIDATES})
-    return dict(schema='rpf66-task-context-v1',abi=ABI,owner='rpf-66',base=BASE,branch=BRANCH,session_id='rpf66-session-'+suffix,workspace='.local/rpf-66'+('/tests/'+suffix if synthetic else ''),sources=sm,limits=LIMITS,caps=list(CAPS),explorer_cap=EXPLORER_CAP,price=PRICE,rounds=rounds,cold_contract=contract(suffix,digest(sm),cold_ports,cold=True,round_index=0),boundaries=BOUNDARIES,source_kind=SYNTHETIC if synthetic else REAL)
+    return dict(schema='rpf66-task-context-v2',abi=ABI,owner='rpf-66',revision='rev-2',base=BASE,branch=BRANCH,session_id='rpf66r2-session-'+suffix,workspace='.local/rpf-66-rev-2'+('/tests/'+suffix if synthetic else ''),sources=sm,limits=LIMITS,caps=list(CAPS),explorer_cap=EXPLORER_CAP,price=PRICE,rounds=rounds,cold_contract=contract(suffix,digest(sm),cold_ports,cold=True,round_index=0),boundaries=BOUNDARIES,source_kind=SYNTHETIC if synthetic else REAL)
 
 @dataclass(frozen=True)
 class TaskContext:
@@ -66,7 +66,7 @@ class TaskContext:
     frozen: bytes
     def __post_init__(self):
         p=self.public(); synthetic=p['source_kind']==SYNTHETIC
-        suffix=p['session_id'].removeprefix('rpf66-session-')
+        suffix=p['session_id'].removeprefix('rpf66r2-session-')
         ports=tuple(row[CANDIDATES[0]]['execution'][k]['port'] for row in p['rounds'] for k in ('service','agent_host'))
         cold=p['cold_contract'];cp=tuple(cold['execution'][k]['port'] for k in ('service','agent_host'))
         require(p==context_public(suffix,ports,cp,synthetic) and self.root==ROOT/p['workspace'],'CONTEXT_IDENTITY_SOURCE_ROOT')
@@ -99,7 +99,7 @@ def replay(frames,context):
     for i,f in enumerate(frames):
         require(set(f)=={'seq','previous','event','sha256'} and f['seq']==i and f['previous']==previous and f['sha256']==digest({k:v for k,v in f.items() if k!='sha256'}),'WAL_CHAIN')
         e=f['event']; require(type(e['monotonic_ns']) is int and (not events or e['monotonic_ns']>=events[-1]['monotonic_ns']) and e['monotonic_ns']-frames[0]['event']['monotonic_ns']<=7200*10**9,'WAL_TIME')
-        if i==0:require(e['kind']=='OWNER' and e['owner']=='rpf-66' and e['context_sha256']==digest(context),'WAL_OWNER')
+        if i==0:require(e['kind']=='OWNER' and e['owner']=='rpf-66' and e.get('revision')=='rev-2' and e.get('workspace')==context['workspace'] and e['context_sha256']==digest(context),'WAL_OWNER')
         sessions=[t for t in tickets.values() if t['resource']=='session']
         if sessions:require(e['monotonic_ns']-sessions[0]['monotonic_ns']<=1800*10**9,'SESSION_DEADLINE')
         if 'run_id' in e: require(e['run_id'] in runs and e.get('round')==runs[e['run_id']],'WAL_RUN_ROUND')
@@ -132,7 +132,7 @@ def replay(frames,context):
 class Ledger:
     def __init__(self,ctx,path,*,create=False):
         self.context,self.path=ctx,ctx.scope(path)
-        if create: self.path.mkdir(exist_ok=False); self.append('OWNER',owner='rpf-66',context_sha256=digest(ctx.public()))
+        if create: self.path.mkdir(exist_ok=False); self.append('OWNER',owner='rpf-66',revision='rev-2',workspace=ctx.public()['workspace'],context_sha256=digest(ctx.public()))
         self.read()
     def read(self):
         raw=(self.path/'ledger.jsonl').read_bytes(); require(raw.endswith(b'\n'),'TORN_WAL'); self.frames=[strict_json(x) for x in raw.splitlines()]; return replay(self.frames,self.context.public())
@@ -159,7 +159,7 @@ def metadata(ctx,ledger):
  h,old=helpers();ticket=ledger.reserve('metadata');pin=pinned_sdk_fields();direct=h.resolve_direct_python(pin)
  tree=ast.parse((ROOT/'spikes/rpf-53/probe.py').read_text(encoding='utf-8'));fn=next(n for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='_sdk_identity');assignment=next(n for n in fn.body if isinstance(n,ast.Assign) and any(isinstance(t,ast.Name) and t.id=='script' for t in n.targets))
  script=ast.literal_eval(assignment.value).replace('base=pathlib.Path(sys.prefix,"Lib","site-packages").resolve(strict=True)','base=pathlib.Path(sys.argv[1]).resolve(strict=True); sys.path.insert(0,str(base))').replace('venv_root=pathlib.Path(sys.prefix).resolve(strict=True)','venv_root=base.parent.parent')
- folder=ctx.scope(ctx.root/'diagnostics');result=subprocess.run([str(direct),'-I','-B','-X','utf8','-c',script,str(old.SDK_SITE.resolve(strict=True)),str(direct)],cwd=folder,env=old._sdk_env(folder),stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=45);require(result.returncode==0 and not result.stderr,'METADATA_PROCESS')
+ folder=ctx.scope(ctx.root/'diagnostics');folder.mkdir(exist_ok=True);result=subprocess.run([str(direct),'-I','-B','-X','utf8','-c',script,str(old.SDK_SITE.resolve(strict=True)),str(direct)],cwd=folder,env=old._sdk_env(folder),stdout=subprocess.PIPE,stderr=subprocess.PIPE,timeout=45);require(result.returncode==0 and not result.stderr,'METADATA_PROCESS')
  sdk=strict_json(result.stdout);sdk['python_launcher_sha256']=old._sha_file(old.SDK_LAUNCHER);sdk.pop('base_executable_sha256',None);require(h.identity_fields(sdk)==pin and sdk['pydantic']['record_mismatches']==sdk['openai']['record_mismatches']==0,'SDK_PIN')
  source=old._verify_source_bundle();java=old._java_identity();jar=ctx.scope(ctx.root/'jar/config-center-server-1.0.0.jar');jar.parent.mkdir(exist_ok=True)
  with old.SOURCE_JAR.open('rb') as src,jar.open('xb') as dst:shutil.copyfileobj(src,dst)

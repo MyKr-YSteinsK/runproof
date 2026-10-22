@@ -1,0 +1,86 @@
+{
+  "task": "RPF-66/rev-2",
+  "comparison": [
+    {
+      "option": "strict + safe diagnostics",
+      "decision": "IMPLEMENTED_DEFAULT",
+      "evidence": "production Host seam/strict validator/one HTTP transaction, pre-parser bounded receipts"
+    },
+    {
+      "option": "evidence-backed benign compatibility",
+      "decision": "NOT_ENABLED_NO_CONFIRMED_NEED",
+      "evidence": "rev1 precise choice condition unavailable in public retained evidence"
+    },
+    {
+      "option": "bypass/forced stop",
+      "decision": "PROHIBITED",
+      "evidence": "length/content_filter/null/index/unknown fields/usage negative controls"
+    }
+  ],
+  "FROZEN": [
+    "same frozen config effects/candidates/tools",
+    "one physical WAL",
+    "output cap256 unchanged",
+    "Provider14/token35000/CNY0.75 nonrefundable",
+    "independent Oracle before feedback",
+    "one new session after free gates",
+    "old private runtime roots not read"
+  ],
+  "RECOMMENDED": [
+    "original super transport boundary, shape first, strict validation next",
+    "original Explorer ToolCall ID frozen before Target",
+    "no normalization without evidence"
+  ],
+  "DELEGATED_TO_CODEX": {
+    "new_abi": "rpf66-config-pge-session-v2",
+    "new_shape_schema": "rpf66-provider-safe-shape-v1",
+    "shape_max_bytes": 8192,
+    "receipt_max_bytes": 12288,
+    "choices_projected_max": 2,
+    "tools_projected_per_choice_max": 2,
+    "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+    "transport_or_decode_failure": "NOT_OBSERVED",
+    "persisted_body": "SOURCE_RECONSTRUCTABLE_HASH_RECEIPT",
+    "new_port_range": [
+      35000,
+      39999
+    ],
+    "observed_windows_dynamic_tcp_range": [
+      1024,
+      15000
+    ]
+  },
+  "PROVIDER_CHOICE_DIAGNOSIS": "NOT_OBSERVED",
+  "rev1_exact_condition": "INSUFFICIENT_DIAGNOSTICS_NOT_RETROACTIVELY_INFERRED",
+  "strict_parser_changes": false,
+  "sdk_changes": false,
+  "output_cap_changes": false,
+  "prompt_changes": false,
+  "new_observability": [
+    "choice condition matrix",
+    "safe shape plus parser disposition bound to provider ticket",
+    "raw legal Explorer ToolCall ID in early receipt",
+    "immutable derived checkpoint shape hash"
+  ],
+  "remaining_limits": [
+    "transport status/body details not exposed by original super error boundary are NOT_OBSERVED",
+    "shape hints do not establish billing for rejected responses",
+    "task-specific versioned Context/Host/Session/Verifier copy debt remains",
+    "no issuer signature, independent reproduction or causal claim",
+    "mandatory complete Runtime gate failed in both attempted Windows interpreter environments",
+    "new R66 strict timestamp assertion fails when two ordered events have equal monotonic_ns on tested Windows Python3.12",
+    "system Python3.14 historical fixture WinError10053 reproduced; exact root cause not established",
+    "no real Provider choice condition observed; historical source repairs require expanded whitelist"
+  ],
+  "real_status": "BLOCKED",
+  "diagnosis_scope": "FREE_SYNTHETIC",
+  "source_state": "CANDIDATE_NOT_FROZEN",
+  "source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+  "combined_metadata": "NOT_RUN",
+  "cold": "NOT_RUN",
+  "live": "NOT_RUN",
+  "full_runtime": "FAIL",
+  "parent_windows_python312_compatibility": "NOT_ESTABLISHED",
+  "own_python312_equal_timestamp_assertion": "KNOWN_FAILURE_NOT_HIDDEN",
+  "freeze_activated": false
+}
