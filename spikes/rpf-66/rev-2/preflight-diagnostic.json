@@ -1,0 +1,166 @@
+{
+  "task": "RPF-66/rev-2",
+  "status": "BLOCKED",
+  "G0": {
+    "base": "7ccc34e6f6c188cb927211f144dd174287927356",
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "branch": "codex/rpf-66-rev2-provider-choice-shape-diagnostic",
+    "root": "D:/CS/runproof",
+    "remote": "https://github.com/MyKr-YSteinsK/runproof.git",
+    "user_status": [
+      "?? docs/reviews/"
+    ],
+    "new_branch_absent_local_remote": true,
+    "eight_paths_absent_disk_base_remote_same_tree": true,
+    "new_root_absent": true,
+    "parent_links_checked": true,
+    "hooks_empty": true,
+    "feature_push_no_workflow_or_deploy": true,
+    "old_runtime_roots_read": false,
+    "old_unknown_unchanged": true,
+    "source_original_hashes": {
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py": "22f80f97e8e25c3c19cb622af6ca3a60548afe120dccf9ee698997f271e052d7",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": "830f2a9758faf5231d952c017ead43f567ab6d704ed5c88b175b7bf75a0584cb",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "31d29681f01f3268ac4250eeacda2d55585d4c8ab736ca9b25661d2f1db84753",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py": "07e42aa88569acc65ecbb49fa7d11f5c3adc75a137b264bf89eca6de7a65e1c6",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": "6773d4601142899fe9098a5b3467e80d9128569071d16223aa21cb09d603c4da",
+      "runtime/tests/test_effectwitness_pge_r66.py": "a2ea37e1c493ab26cd0e8752ef6c971ec406e1ae418210a855705152fbc7d3f5",
+      "spikes/rpf-66/README.md": "682fb4fe2f93941fa3385b1897d1f23c6003638eacad0db02020723d7472ee3b",
+      "spikes/rpf-66/RESULT.md": "cf196260dc34dadc55d02f843fdc74e665e07ddbcd73c73f3f6ec988e3ac6466",
+      "spikes/rpf-66/capability-assessment.json": "fce55f605cbb692ee9bc0be49a68607e1d018bb6e703bbce1909e7e4b7a790a6",
+      "spikes/rpf-66/preflight-diagnostic.json": "ee769a1f9d7af4a6d331b4649b956ed041c6a27fefd096d542a485df9661c561",
+      "spikes/rpf-66/probe.py": "6eef4d130abaeb950e06121e24dfa35404c87574c8be66c7bbd6140021a372ae",
+      "spikes/rpf-66/session-summary.json": "e92180dcf40f0ea8cc3270ba1909892aa68c6734ec506e3ee3638db9ac91265f",
+      "spikes/rpf-66/verification-diagnostic.json": "f85704e3d3a06e70d534424c6724e9c77515fc25e07060858e0d6715740d7b3f"
+    },
+    "status": "PASS"
+  },
+  "source_candidate": {
+    "state": "NOT_FROZEN",
+    "sources": {
+      "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+      "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+      "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "runtime/runproof_runtime/effectwitness/config_live_verify.py": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+      "runtime/runproof_runtime/effectwitness/config_pge_contracts.py": "4577cbf968cf290a2005b6d9cef511a85c3725320d525b3f02fdf727b933035f",
+      "runtime/runproof_runtime/effectwitness/config_pge_explorer.py": "f3c0282c9cd1dceaf15ceba8a85f9651130a2e2af2a08c527acae44508002d1c",
+      "runtime/runproof_runtime/effectwitness/config_pge_session.py": "a4d320e5c0ac13b1fee7fbd47c37055c1a2f786a5efeca386254cf84458c09b1",
+      "runtime/runproof_runtime/effectwitness/config_pge_target.py": "342cf305e134ac8c1c2b81eabb704b8aef4efeeeadb776f01329d734b69241b5",
+      "runtime/runproof_runtime/effectwitness/config_pge_verify.py": "697ccd3ec7d5b2ef0d3c7b4c8327b9a5bc7907f40e2a55046d6099d116b622e6",
+      "runtime/runproof_runtime/effectwitness/contracts.py": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+      "runtime/runproof_runtime/effectwitness/effect_oracle.py": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "runtime/runproof_runtime/effectwitness/orders.py": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+      "runtime/runproof_runtime/effectwitness/pge_domain_port.py": "79835650efe04c7581143ec5a2d0e060d8cc0240e7c14373a1b2e6531d4230b8",
+      "runtime/runproof_runtime/effectwitness/pge_port_context.py": "0bd2b0256be2064b46afba124715e273a7eaf09345e3cddfeb165e8d7fe133d5",
+      "runtime/runproof_runtime/effectwitness/pge_portability_config.py": "a9f8e6c9f5bab0e418ec5e8a8f54a598f6cd3fb233717e47be7dc45b3d12999e",
+      "runtime/runproof_runtime/effectwitness/pge_portability_order.py": "b49a3857f48df7710c42fb399f8982feaf578e4a5647d7935f0249fd779faab0",
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py": "a6b4a5a1dcfbd5097a14f1aae1c3458ec14ce2dd30a5f34852d257a2f7479e71",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": "d4140ced303e2a89e643accc4d81a52de4d78a455ead85f14f101ce12c536609",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py": "f41d6f736be2d50713587c2d251e1ceb837c27866b35682382ae12c8f912ab64",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "41081ef409798b13b29321567fc90de44df1cb463f710808a13e6955814ccdf6",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": "85440c8c2dc8c4aa1db50486dc8303ab5f6e012ca8710844a45be2cd4bc67227",
+      "runtime/runproof_runtime/effectwitness/pge_select_config_port.py": "fe7dc90fccf7ac5ab807675f7b62a55a7ff53cf4c5d9e091b09712614561729a",
+      "runtime/runproof_runtime/effectwitness/pge_select_contracts.py": "1cd9927968657471f63c64348ad82c62696ffb5b7d7065a038c17a26e31e53d5",
+      "runtime/runproof_runtime/effectwitness/pge_select_explorer.py": "4be251b3166efcd2d29e8683dfa85a5d44e3147f32b8e37e886594c614c448ef",
+      "runtime/runproof_runtime/effectwitness/pge_select_feedback.py": "147006818a074aba4bc983f372a16b4697367522268ced654f6ce19eaef56bfa",
+      "runtime/runproof_runtime/effectwitness/pge_select_session.py": "3b576e693a59bb6c1b1655af68cef4606a54c13348661b162c99a0290377cf39",
+      "runtime/runproof_runtime/effectwitness/pge_select_verify.py": "51f796b75ec7c7dea2a1513d2f0e18dc626b059245eb9449decb2c0d52802433",
+      "runtime/runproof_runtime/models.py": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+      "runtime/tests/test_effectwitness_pge_r66.py": "8dc4bc2ae21554e87c8b068ad6045b51e1b16aab3d6ee9b3315517032f268b09",
+      "spikes/rpf-53/probe.py": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+      "spikes/rpf-53/rev-6/config-live-evidence.json": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "spikes/rpf-55/probe.py": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+      "spikes/rpf-66/rev-2/probe.py": "151f0ac1584e13025fda5218a7ed09e2e7a4c03a5240c3454833ca27992b546c"
+    },
+    "source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+    "raw_sources": {
+      "runtime/runproof_runtime/effectwitness/pge_r66_context.py": "a6b4a5a1dcfbd5097a14f1aae1c3458ec14ce2dd30a5f34852d257a2f7479e71",
+      "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": "d4140ced303e2a89e643accc4d81a52de4d78a455ead85f14f101ce12c536609",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "41081ef409798b13b29321567fc90de44df1cb463f710808a13e6955814ccdf6",
+      "runtime/runproof_runtime/effectwitness/pge_r66_session.py": "f41d6f736be2d50713587c2d251e1ceb837c27866b35682382ae12c8f912ab64",
+      "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": "85440c8c2dc8c4aa1db50486dc8303ab5f6e012ca8710844a45be2cd4bc67227",
+      "runtime/tests/test_effectwitness_pge_r66.py": "8dc4bc2ae21554e87c8b068ad6045b51e1b16aab3d6ee9b3315517032f268b09",
+      "spikes/rpf-66/rev-2/probe.py": "151f0ac1584e13025fda5218a7ed09e2e7a4c03a5240c3454833ca27992b546c"
+    },
+    "verifier": {
+      "version": "rpf66-dual-agent-verifier-v2",
+      "sha256": "85440c8c2dc8c4aa1db50486dc8303ab5f6e012ca8710844a45be2cd4bc67227"
+    }
+  },
+  "source_freeze": "NOT_RUN",
+  "expected_pins": {
+    "python_sdk": "3.12.13",
+    "pydantic_ai_slim": "2.57.0",
+    "openai": "3.35.1",
+    "java": "17.0.12",
+    "jar_bytes": 66981576,
+    "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
+  },
+  "actual_combined_metadata": "NOT_RUN",
+  "pinned_interpreter_file_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+  "metadata": "NOT_RUN",
+  "cold": "NOT_RUN",
+  "price_P0_readonly_checked": {
+    "checked_date": "2026-10-22",
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "input_usd_per_million": 0.3,
+    "output_usd_per_million": 1.2,
+    "cny_per_usd_guard": 15,
+    "input_micro_cny_per_token": 4.5,
+    "output_micro_cny_per_token": 18,
+    "is_invoice": false
+  },
+  "price_P2_P3": "NOT_RUN",
+  "paid_gate": "NOT_RUN",
+  "key_read": false,
+  "old_private_roots_read": false,
+  "safe_shape": {
+    "schema": "rpf66-provider-safe-shape-v1",
+    "shape_max_bytes": 8192,
+    "receipt_max_bytes": 12288,
+    "choices_max": 2,
+    "tools_per_choice_max": 2,
+    "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+    "compatibility": "STRICT_NO_NORMALIZATION",
+    "forbidden": [
+      "raw JSON",
+      "content/reasoning",
+      "raw function arguments",
+      "prompts",
+      "secret/header",
+      "private paths"
+    ]
+  },
+  "strict_condition_map": {
+    "CHOICE_TYPE": "object required",
+    "CHOICE_UNKNOWN_FIELDS": "only index/message/finish_reason/logprobs",
+    "CHOICE_REQUIRED_FIELDS": "index/message/finish_reason required",
+    "CHOICE_INDEX_TYPE": "exact int, bool rejected",
+    "CHOICE_INDEX_NONZERO": "index zero",
+    "CHOICE_FINISH_REASON": "only stop/tool_calls"
+  },
+  "format_exit_codes": [
+    0,
+    0
+  ],
+  "free_helpers_sha256": {
+    "manage.py": "73b9ecf3c38d7e7d327c50515a5cf77fa93c2ed095202e18c24307eecb6c46af",
+    "blocked-report.py": "181bb081fa9753088422eca7bed168bc9f5db14dd81d4ea3fe4ce3660e6adc69"
+  },
+  "cleanup": {
+    "formal_context_wal_absent": true,
+    "source_freeze_absent": true,
+    "owned_test_pids_absent": [
+      33900,
+      19344,
+      13788,
+      7124,
+      33972
+    ],
+    "formal_ports": "NOT_APPLICABLE_NO_TRIAL",
+    "unused_report_template_removed": true
+  }
+}
