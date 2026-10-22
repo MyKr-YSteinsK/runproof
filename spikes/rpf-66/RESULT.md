@@ -1,6 +1,6 @@
 # TASK_RESULT｜RPF-66/rev-1
 
-**Status: PARTIAL**。已完成新双角色 Context/Session/Port/WAL/Verifier 实现和免费验收；唯一真实 Session 在首轮 Target 最后一个响应遭 `PROVIDER_CHOICE` 拒绝后停止。业务已独立只读读回，但没有完整 Domain Verdict、Verified Feedback、第二轮或真实 Witness。不是 Agent FAIL 或双轮通过。当前 focused commit / push / 远端读回待交付收口。
+**Status: PARTIAL**。已完成新双角色 Context/Session/Port/WAL/Verifier 实现和免费验收；唯一真实 Session 在首轮 Target 最后一个响应遭 `PROVIDER_CHOICE` 拒绝后停止。业务已独立只读读回，但没有完整 Domain Verdict、Verified Feedback、第二轮或真实 Witness。不是 Agent FAIL 或双轮通过。source commit `017a67ebf587f60594e82a6cec16b4fa8817f728` 已普通 push，fresh ls-remote/GitHub API 双读一致；本回执仅补充交付事实，任务仍为 PARTIAL。
 
 ## 1. 身份与保护
 
@@ -80,11 +80,27 @@ Session=`rpf66-session-f6ce096b8312436f`；已尝试 round1 Run=`rpf66-config-27
 | A07 | PASS | 如实验证首轮已提交ACK抑制/曝光/只读恢复；normal和第二轮NOT_RUN |
 | A08 | NOT_RUN | 无真实完整Witness，不运行近似证书/真实负控 |
 | A09 | PASS | 自有cleanup/GET取证/隐私边界/437最终回归/18历史，未知保留 |
-| A10 | NOT_RUN | 待focused commit /普通push / fresh双读收口 |
+| A10 | PASS | source commit普通push、fresh ls-remote/GitHub API同SHA，main/parent不变；仅补交付回执 |
 
 ## 9. Git / 交付
 
-待同一授权分支 focused commit→普通push→fresh ls-remote与GitHub API双读，随后仅更新本节交付回执。source/Witness历史不会改动；最终自身commit SHA仅在聊天回执报告。
+已交付 source commit=`017a67ebf587f60594e82a6cec16b4fa8817f728`，普通push至唯一授权分支；新进程ls-remote与独立GitHub API均读回同SHA。main仍为`bda0cd49e50e3181f604324e94877a24b9885334`，RPF65 parent仍为`4081b7b94484bac3c726e0bef22be273b7470839`。本次仅为RESULT/verification交付补充commit；其最终自身SHA在聊天回执报告，不回填未来SHA或amend历史。冻结源码和历史证据原字节保持。
+
+精确新增13路径：
+
+- `runtime/runproof_runtime/effectwitness/pge_r66_context.py`
+- `runtime/runproof_runtime/effectwitness/pge_r66_explorer.py`
+- `runtime/runproof_runtime/effectwitness/pge_r66_target_config.py`
+- `runtime/runproof_runtime/effectwitness/pge_r66_session.py`
+- `runtime/runproof_runtime/effectwitness/pge_r66_verify.py`
+- `runtime/tests/test_effectwitness_pge_r66.py`
+- `spikes/rpf-66/probe.py`
+- `spikes/rpf-66/README.md`
+- `spikes/rpf-66/RESULT.md`
+- `spikes/rpf-66/preflight-diagnostic.json`
+- `spikes/rpf-66/verification-diagnostic.json`
+- `spikes/rpf-66/session-summary.json`
+- `spikes/rpf-66/capability-assessment.json`
 
 `main merge / PR / deploy / competition portal` 均 `NOT_RUN/NOT_AUTHORIZED`。`docs/reviews/`保持用户owned未跟踪。
 

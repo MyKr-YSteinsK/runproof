@@ -750,8 +750,16 @@
   "frozen_source_unchanged": true,
   "maven": "NOT_APPLICABLE_NOT_RUN",
   "web_build": "NOT_APPLICABLE_NOT_RUN",
-  "source_commit": "PENDING",
-  "remote": "PENDING",
+  "source_commit": "017a67ebf587f60594e82a6cec16b4fa8817f728",
+  "remote": {
+    "status": "PASS_SOURCE_COMMIT_DOUBLE_READ",
+    "branch": "codex/rpf-66-real-explorer-target-feedback-session",
+    "ls_remote_sha": "017a67ebf587f60594e82a6cec16b4fa8817f728",
+    "github_api_sha": "017a67ebf587f60594e82a6cec16b4fa8817f728",
+    "main_unchanged": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "rpf65_parent_unchanged": "4081b7b94484bac3c726e0bef22be273b7470839",
+    "receipt_commit": "FINAL_CHAT_AFTER_ORDINARY_PUSH"
+  },
   "initial_free_development": {
     "focused_tests": 10,
     "errors": 5,
@@ -792,6 +800,6 @@
     "A07": "PASS",
     "A08": "NOT_RUN",
     "A09": "PASS",
-    "A10": "NOT_RUN"
+    "A10": "PASS"
   }
 }
