@@ -140,6 +140,19 @@ def mutations():
     event=next(f['event'] for f in p['ledger'] if f['event']['kind']=='PROVIDER_STATE' and any(r['status']=='RECEIVED' and 'shape_sha256' in r for r in f['event']['requests']));next(r for r in event['requests'] if r['status']=='RECEIVED')['shape_sha256']='0'*64;rechain(p)
  def lost_selection(p):
     e=next(f['event'] for f in p['ledger'] if f['event']['kind']=='CHOICE_FROZEN');e['receipt']['selection'].pop('id');e['receipt_sha256']=c.digest(e['receipt']);rechain(p)
+ def shape_reversed(p):
+    frames=p['ledger'];a=next(i for i,f in enumerate(frames) if f['event']['kind']=='PROVIDER_SHAPE_OBSERVED');b=next(i for i,f in enumerate(frames) if f['event']['kind']=='PROVIDER_PARSE_ACCEPTED')
+    stamp=frames[a]['event']['monotonic_ns']
+    for f in frames[a:b+1]:f['event']['monotonic_ns']=stamp
+    frames[a],frames[b]=frames[b],frames[a];rechain(p)
+ def parse_replay(p):
+    frames=p['ledger'];i=next(i for i,f in enumerate(frames) if f['event']['kind']=='PROVIDER_PARSE_ACCEPTED');frames.insert(i+1,copy.deepcopy(frames[i]));rechain(p)
+ def clock_reverse(p):
+    p['ledger'][2]['event']['monotonic_ns']=p['ledger'][1]['event']['monotonic_ns']-1;rechain(p)
+ def cross_ticket(p):
+    e=next(f['event'] for f in p['ledger'] if f['event']['kind']=='PROVIDER_PARSE_ACCEPTED');e['provider_ticket']='provider-1';rechain(p)
+ def selection_late(p):
+    frames=p['ledger'];a=next(i for i,f in enumerate(frames) if f['event']['kind']=='CHOICE_FROZEN');b=next(i for i,f in enumerate(frames) if f['event']['kind']=='RESERVE' and f['event']['resource']=='jvm');frames[a],frames[b]=frames[b],frames[a];rechain(p)
  attacks.update({
   'shape_unknown_choice_keys':lambda p:shape_attack(p,lambda r:r['shape']['choices'][0]['fields'].update(unknown_count=1)),
   'shape_length_rejected':lambda p:shape_attack(p,lambda r:r['shape']['choices'][0].update(finish_reason='length')),
@@ -150,6 +163,8 @@ def mutations():
   'shape_request_scope':lambda p:shape_attack(p,lambda r:r.update(request_sha256='0'*64)),
   'shape_absent':missing_shape,'shape_rejected_as_success':rejected,'original_selection_id_absent':lost_selection,
   'partial_as_success':lambda p:p.update(rows=p['rows'][:1]),'provider_shape_history_rewrite':historical_shape,
+  'equal_clock_shape_parse_reordered':shape_reversed,'accepted_parse_replayed':parse_replay,
+  'raw_clock_decreasing':clock_reverse,'accepted_parse_cross_ticket':cross_ticket,'selection_after_jvm':selection_late,
  })
  return attacks
 
@@ -376,12 +391,13 @@ class R66ShapeTests(unittest.TestCase):
    else:
     with self.assertRaises(Exception):host._completion(body)
   self.assertEqual(Connection.calls,1)
-  events=ledger.read()['events'];shape=next(e for e in events if e['kind']=='PROVIDER_SHAPE_OBSERVED');record=broker.data['requests'][0]
+  account=ledger.read();events=account['events'];shape=next(e for e in events if e['kind']=='PROVIDER_SHAPE_OBSERVED');record=broker.data['requests'][0]
   self.assertEqual(shape['provider_ticket'],record['ticket']);self.assertEqual(shape['receipt']['request_sha256'],record['request_sha256']);self.assertTrue((ctx.root/'provider-shapes'/(record['ticket']+'.json')).exists())
   if expect_ok:
    self.assertEqual(record['status'],'RECEIVED');self.assertFalse(ledger.read()['unknown']);self.assertEqual(shape['receipt']['conditions'],[])
   else:
-   self.assertEqual(record['status'],'UNKNOWN');self.assertTrue(ledger.read()['unknown']);self.assertIsNone(record['usage']);self.assertLess(shape['monotonic_ns'],next(e['monotonic_ns'] for e in events if e['kind']=='PROVIDER_PARSE_REJECTED'));self.assertLess(next(e['monotonic_ns'] for e in events if e['kind']=='PROVIDER_PARSE_REJECTED'),next(e['monotonic_ns'] for e in events if e['kind']=='RESULT'))
+   self.assertEqual(record['status'],'UNKNOWN');self.assertTrue(ledger.read()['unknown']);self.assertIsNone(record['usage'])
+   rejected=next(e for e in events if e['kind']=='PROVIDER_PARSE_REJECTED');settled=next(e for e in events if e['kind']=='RESULT');v.wal_order(account,shape,rejected,settled)
    with self.assertRaises(Exception):ledger.reserve('sdk',run_id=ct['experiment']['run_id'])
   return ctx,ledger,host,shape['receipt']
  def test_actual_transport_parser_positive_stop_and_tool(self):
@@ -414,5 +430,35 @@ class R66ShapeTests(unittest.TestCase):
    self.assertTrue(ledger.read()['unknown']);self.assertEqual(broker.data['requests'][-1]['status'],'UNKNOWN')
  def test_shape_width_is_bounded(self):
   value=minimal_response();value['choices']=[value['choices'][0]]*100;value['usage']['prompt_tokens']=10**100;shape=config.safe_shape(value);self.assertEqual(len(shape['choices']),2);self.assertLess(len(c.canonical(shape)),8192);self.assertIsNone(shape['usage']['fields']['prompt_tokens']['value'])
+
+class R66ClockTests(unittest.TestCase):
+ @classmethod
+ def setUpClass(cls):
+  with patch('time.monotonic_ns',return_value=10**12):cls.payload=synthetic_payload()
+ def test_equal_clock_full_session_keeps_raw_clock(self):
+  p=copy.deepcopy(self.payload);self.assertEqual({f['event']['monotonic_ns'] for f in p['ledger']},{10**12});self.assertEqual(v.verify_payload(p)['status'],'PASS')
+ def test_equal_clock_actual_rejected_transport(self):
+  with patch('time.monotonic_ns',return_value=10**12):
+   ctx,ledger,host,receipt=R66ShapeTests().exercise(response_cases()['tool_unallowed'])
+  account=ledger.read();selected=[f for f in ledger.frames if f['event']['kind'] in ('PROVIDER_SHAPE_OBSERVED','PROVIDER_PARSE_REJECTED','RESULT')]
+  self.assertEqual([f['seq'] for f in selected],sorted({f['seq'] for f in selected}));self.assertEqual({f['event']['monotonic_ns'] for f in selected},{10**12})
+ def test_strictly_increasing_clock_uses_same_wal_order(self):
+  p=copy.deepcopy(self.payload)
+  for i,f in enumerate(p['ledger']):f['event']['monotonic_ns']+=i
+  # Domain event mirrors retain their original raw clocks; order helper is tested
+  # against replayed physical frames, independently of scene reanchoring.
+  rechain(p);a=c.replay(p['ledger'],p['context']);v.wal_order(a,a['events'][0],a['events'][-1])
+ def test_equal_clock_reverse_rechain_rejected(self):
+  p=copy.deepcopy(self.payload);mutations()['equal_clock_shape_parse_reordered'](p)
+  with self.assertRaises(Exception):v.verify_payload(p)
+ def test_missing_replayed_cross_ticket_and_clock_reverse(self):
+  for name in ('shape_absent','accepted_parse_replayed','accepted_parse_cross_ticket','raw_clock_decreasing','selection_after_jvm'):
+   with self.subTest(name=name):
+    p=copy.deepcopy(self.payload);mutations()[name](p)
+    with self.assertRaises(Exception):v.verify_payload(p)
+ def test_detached_or_duplicate_event_identity_rejected(self):
+  a=c.replay(self.payload['ledger'],self.payload['context']);first,last=a['events'][0],a['events'][-1]
+  for other in (copy.deepcopy(first),last):
+   with self.assertRaises(Exception):v.wal_order(a,other,last)
 
 if __name__=='__main__':unittest.main()

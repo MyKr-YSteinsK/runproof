@@ -7,9 +7,19 @@ from .config_live_verify import _history
 from .pge_r66_session import dispatch_identity, feedback
 from .pge_portability_config import verify_sdk as verify_cold_sdk
 
-SCHEMA='rpf66-dual-agent-witness-v2'
-def identity(): return {'version':'rpf66-dual-agent-verifier-v2','sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
+SCHEMA='rpf66-dual-agent-witness-v3'
+def identity(): return {'version':'rpf66-dual-agent-verifier-v3','sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
 def seal(p): return dict(schema=SCHEMA,payload=p,payload_sha256=c.digest(p),verifier_identity=identity())
+
+def wal_position(account,event):
+    # replay() established frame seq/hash-chain and nondecreasing raw clocks.
+    positions=[i for i,e in enumerate(account['events']) if e is event]
+    c.require(len(positions)==1,'WAL_EVENT_IDENTITY');return positions[0]
+
+def wal_order(account,*events,code='WAL_CAUSAL_ORDER'):
+    positions=[wal_position(account,e) for e in events]
+    clocks=[e['monotonic_ns'] for e in events]
+    c.require(len(positions)>=2 and positions==sorted(set(positions)) and clocks==sorted(clocks),code)
 
 def verify_sdk(s,trace,comps,*,guarded=False):
     pin=c.pinned_sdk_fields(); ready,r=s['ready'],s['report']; pid=s['popen_pid']
@@ -103,7 +113,9 @@ def verify_shapes(ctx,account,scene,index):
     for i,(event,done,record) in enumerate(zip(shapes,accepted,records)):
         receipt=event['receipt'];shape=receipt['shape'];validate_safe_shape(shape);c.require(set(event)=={'kind','monotonic_ns','run_id','round','provider_ticket','receipt_sha256','receipt'} and set(done)=={'kind','monotonic_ns','run_id','round','provider_ticket','receipt_sha256'} and len(c.canonical(receipt))<=12288,'SHAPE_EVENT_FIELDS');ticket=account['tickets'][record['ticket']];settled=account['results'][record['ticket']]
         c.require(set(receipt)=={'schema','source_kind','context_sha256','role','round','run_id','ticket','request_sha256','http_status','stage','shape','conditions','transport_code','compatibility'} and receipt['schema']=='rpf66-provider-shape-receipt-v1' and receipt['source_kind']==ctx.public()['source_kind'] and receipt['context_sha256']==c.digest(ctx.public()) and receipt['role']=='TARGET' and receipt['round']==index and receipt['run_id']==record['run_id'] and receipt['ticket']==event['provider_ticket']==done['provider_ticket']==record['ticket'] and receipt['request_sha256']==record['request_sha256'],'SHAPE_SCOPE')
-        c.require(event['receipt_sha256']==done['receipt_sha256']==record['shape_sha256']==c.digest(receipt) and ticket['monotonic_ns']<event['monotonic_ns']<done['monotonic_ns']<settled['monotonic_ns'],'SHAPE_BEFORE_PARSE_SETTLE')
+        c.require(event['receipt_sha256']==done['receipt_sha256']==record['shape_sha256']==c.digest(receipt),'SHAPE_RECEIPT_HASH')
+        c.require(ticket['role']=='TARGET' and ticket['run_id']==record['run_id'] and ticket['round']==index and settled['ticket']==record['ticket'],'SHAPE_TICKET_OWNER')
+        wal_order(account,ticket,event,done,settled,code='SHAPE_BEFORE_PARSE_SETTLE')
         c.require(receipt['http_status']==200 and receipt['stage']=='BEFORE_STRICT_VALIDATION' and receipt['transport_code'] is None and receipt['compatibility']=='STRICT_NO_NORMALIZATION' and receipt['conditions']==[] and shape_conditions(shape)==[],'SHAPE_REJECTION_CANNOT_SUCCEED')
         c.require(shape['schema']==SHAPE_SCHEMA and len(c.canonical(shape))<=SHAPE_MAX_BYTES and shape['response_id']=={'type':'string','valid':True,'sha256':c.digest(record['response_id'])} and shape['model']==record['returned_model'],'SHAPE_IDENTITY')
         ch=shape['choices'][0];comp=scene['completions'][i];calls=comp['tool_calls'];c.require(shape['choices_type']=='array' and shape['choices_count']==len(shape['choices'])==1 and ch['type']=='object' and ch['index_type']=='integer' and ch['index_zero'] is True and ch['finish_reason']==('tool_calls' if calls else 'stop') and ch['fields']['unknown_count']==0 and ch['message_role']=='assistant' and len(ch['tools'])==len(calls),'SHAPE_CHOICE_SEMANTICS')
@@ -120,8 +132,8 @@ def verify_round(ctx,account,row,index,prior):
     scoped=[e for e in events if e.get('round')==index]
     ordered=[]
     for kind,field,value in [('PORT_ENTERED','contract_sha256',c.digest(ct)),('DOMAIN_VERIFIED','evidence_sha256',c.digest(s)),('DOMAIN_CLEANUP','cleanup',row['cleanup']),('FEEDBACK_FROZEN','feedback_sha256',c.digest(row['feedback']))]:
-        matches=[e for e in scoped if e['kind']==kind];c.require(len(matches)==1 and matches[0]['run_id']==run and matches[0][field]==value,'SESSION_'+kind);ordered.append(matches[0]['monotonic_ns'])
-    c.require(ordered==sorted(set(ordered)),'FEEDBACK_ORDER')
+        matches=[e for e in scoped if e['kind']==kind];c.require(len(matches)==1 and matches[0]['run_id']==run and matches[0][field]==value,'SESSION_'+kind);ordered.append(matches[0])
+    wal_order(account,*ordered,code='FEEDBACK_ORDER')
     c.require(next(e for e in scoped if e['kind']=='PORT_ENTERED')['dispatch']==row['dispatch'] and next(e for e in scoped if e['kind']=='DOMAIN_VERIFIED')['verdict_sha256']==c.digest(verdict),'DISPATCH_BINDING')
     http_t=[t for t in tickets.values() if t['resource']=='http' and t['round']==index]; c.require(len(http_t)==len(s['http']),'HTTP_WAL_OMISSION')
     for t,o in zip(http_t,s['http']):
@@ -161,15 +173,16 @@ def verify_round(ctx,account,row,index,prior):
     c.require(t['role']=='EXPLORER' and t['round']==index and t['run_id']==run and t['request_sha256']==c.digest(body) and t['input_upper']==len(c.canonical(body)) and t['proof']=={'kind':'FULL_SERIALIZED_BYTES','body_bytes':len(c.canonical(body))} and z['usage']==u and z['response_id']==shape['response_id'] and z['model']==shape['model'] and z['status']=='RECEIVED' and u['prompt_tokens']<=t['input_upper'] and u['completion_tokens']<=128,'EXPLORER_WAL')
     c.require(not any(r['observation']['shape']['response_id']==shape['response_id'] for r in prior),'EXPLORER_RESPONSE_REPLAY')
     if real:c.require(re.fullmatch('[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}',shape['response_id']) is not None,'REAL_EXPLORER_ID')
-    choice=[e for e in scoped if e['kind']=='CHOICE_FROZEN'];c.require(len(choice)==1 and choice[0]['selection_sha256']==c.digest(selection) and choice[0]['candidate_id']==candidate and choice[0]['contract_sha256']==c.digest(ct) and choice[0]['provider_ticket']==row['provider_ticket'] and t['monotonic_ns']<z['monotonic_ns']<=ob['received_monotonic_ns']+10**9 and z['monotonic_ns']<choice[0]['monotonic_ns']<ordered[0],'CHOICE_ORDER')
+    choice=[e for e in scoped if e['kind']=='CHOICE_FROZEN'];c.require(len(choice)==1 and choice[0]['selection_sha256']==c.digest(selection) and choice[0]['candidate_id']==candidate and choice[0]['contract_sha256']==c.digest(ct) and choice[0]['provider_ticket']==row['provider_ticket'] and z['monotonic_ns']<=ob['received_monotonic_ns']+10**9,'CHOICE_ORDER')
+    wal_order(account,t,z,choice[0],ordered[0],code='CHOICE_ORDER')
     selection_receipt=choice[0]['receipt']
     expected_receipt={'schema':'rpf66-explorer-selection-v2','source_kind':ctx.public()['source_kind'],'context_sha256':c.digest(ctx.public()),'round':index,'run_id':run,'candidate_id':candidate,'selection':selection,'provider_ticket':row['provider_ticket'],'response_id':shape['response_id'],'model':shape['model'],'usage':u,'request_sha256':c.digest(body),'contract_sha256':c.digest(ct)}
     c.require(selection_receipt==expected_receipt and choice[0]['receipt_sha256']==c.digest(expected_receipt),'SELECTION_EARLY_RECEIPT')
     first_target=next(t for t in tickets.values() if t['resource']=='jvm' and t['round']==index)
-    c.require(choice[0]['monotonic_ns']<first_target['monotonic_ns'],'SELECTION_BEFORE_SIDE_EFFECT')
+    wal_order(account,choice[0],first_target,code='SELECTION_BEFORE_SIDE_EFFECT')
     if prior:
         previous=next(e for e in events if e['kind']=='FEEDBACK_FROZEN' and e.get('round')==index-1)
-        c.require(previous['monotonic_ns']<t['monotonic_ns'],'FEEDBACK_BEFORE_SECOND_PROVIDER')
+        wal_order(account,previous,t,code='FEEDBACK_BEFORE_SECOND_PROVIDER')
     fb_event=next(e for e in scoped if e['kind']=='FEEDBACK_FROZEN');c.require(fb_event['tool_call_id']==selection['id'],'FEEDBACK_SELECTION')
     trial=next(t for t in tickets.values() if t['resource']=='trial' and t['round']==index);c.require(results[trial['ticket']]['status']=='COMPLETED' and results[trial['ticket']]['evidence_sha256']==c.digest(s),'TRIAL_SETTLED')
     health=[t for t in tickets.values() if t['resource']=='health' and t['round']==index];c.require(len(health)==len(s['environment']['health']),'HEALTH_ACCOUNT')
