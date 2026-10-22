@@ -292,7 +292,21 @@
     "free_model_text_persisted": false
   },
   "delivery": {
-    "status": "PENDING_FOCUSED_COMMIT_PUSH_AND_READBACK"
+    "status": "PASS_SOURCE_COMMIT_PUSHED_AND_TWO_READBACKS_MATCHED",
+    "source_commit": "e28c8113dbf52bd4e8d47cc6993cf78b5a73ccd7",
+    "branch": "codex/rpf-65-real-config-target-port-bridge",
+    "ls_remote_sha": "e28c8113dbf52bd4e8d47cc6993cf78b5a73ccd7",
+    "github_api_sha": "e28c8113dbf52bd4e8d47cc6993cf78b5a73ccd7",
+    "main_sha": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "parent_sha": "7896e9789015da946b5a057c620b2faa90b57318",
+    "rpf64_sha": "a4d956c0b69f7dacd34e842676d10c1898353cdf",
+    "post_push_worktree": [
+      "?? docs/reviews/"
+    ],
+    "merged": false,
+    "deployed": false,
+    "pull_request_created": false,
+    "receipt_only_followup_commit": "final SHA reported in post-push chat; frozen sources unchanged"
   },
   "acceptance": {
     "A-01": "PASS",
@@ -304,6 +318,6 @@
     "A-07": "NOT_RUN",
     "A-08": "PASS_COMBINED_WITH_FIRST_FULL_FAILURE_RECORDED",
     "A-09": "PASS",
-    "A-10": "PENDING_DELIVERY"
+    "A-10": "PASS"
   }
 }

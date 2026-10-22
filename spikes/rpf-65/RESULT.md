@@ -22,7 +22,7 @@
 | A-07 | NOT_RUN | 没有真实证书；合成 CLI `0/2/3` 和 22 类重锚攻击有效 |
 | A-08 | PASS | 组合验证：首轮418项因快照漏输入而2失败/12错误/2 Docker skip；补齐8个 tracked 输入后，受影响13项全部通过。未声称单轮全绿；focused/历史16锚/Reviewed/Public 通过 |
 | A-09 | PASS | 真实费用/Provider/POST 为零，cold 已退出、端口关闭；未决预约与失败现场保留 |
-| A-10 | NOT_RUN | 本结果待 focused commit、普通 push 和 fresh 远端读回 |
+| A-10 | PASS | 12个白名单文件已 focused commit、普通 push；ls-remote 与 GitHub API 读回同一 source commit；本回执仅补充文档事实 |
 
 工程任务尚未 COMPLETE；真实 Target 经版本化 Port 的研究假设为 `NOT_PROVEN`。不作 `EVIDENCE_ACCEPTED` 或 `STAGE_ADVANCED` 决定。
 
@@ -76,6 +76,6 @@ Focused tests=6 PASS；历史16件原锚校验全部 exit0；Reviewed/Public exi
 
 本轮应交付12个新增白名单文件：4个 Runtime、1个测试、probe、README、RESULT、4个诊断/评估摘要。第13个真实 Witness 因证据不成立而不创建。旧文件不改，`docs/reviews/` 保持原顶层未跟踪状态。
 
-交付待 commit→普通 push→fresh ls-remote/GitHub SHA 读回；最终 commit SHA 在提交后的聊天 TASK_RESULT 中提供，本文件不回填自身未来 SHA。main/parent 不推送；PR、合并、部署、发布、比赛登录/报名/上传均 NOT_RUN。
+12文件 source commit `e28c8113dbf52bd4e8d47cc6993cf78b5a73ccd7` 已普通 push 到指定分支；fresh ls-remote 与 GitHub API 均读回同一 SHA。交付后工作树仅保留原顶层 `?? docs/reviews/`。本次收口补充仅更新 RESULT 与 verification-diagnostic 的已观察交付事实，不修改冻结源码；最终文档回执 commit SHA 在聊天 TASK_RESULT 提供，不回填自身未来 SHA。main/parent SHA 均保持原值；PR、合并、部署、发布、比赛登录/报名/上传均 NOT_RUN。
 
 需要 Architect 审查本次平台失败与测试覆盖缺口。rev-2 的最小未实施修复为：`Host(ct, broker, ConfigLiveBusiness(ct,client), j, ...)`，增加实际 factory/binding 单测；明确允许改变冻结的源码与新 Source Identity，指定新的任务根/分支/额度后重新执行免费 Gate 和唯一真实 Trial。本轮 occupied root/分支与消费记录必须保留。
