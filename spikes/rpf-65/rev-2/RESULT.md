@@ -1,6 +1,6 @@
 # TASK_RESULT｜RPF-65/rev-2
 
-**Status: PARTIAL（技术 Gate 已通过，等待 Git 交付）**。本修订完成真实 ConfigPort 工厂修复及唯一受控真实 Target Trial；任务整体 COMPLETE 仍需 focused commit、普通 push 和远端双读回执。`STAGE_ADVANCED` 与证据接受由 Architect 决定。
+**Status: COMPLETE**。本修订完成真实 ConfigPort 工厂修复、唯一受控真实 Target Trial、独立 Witness 验证及 source commit 的普通 push/远端双读。`STAGE_ADVANCED` 与证据接受由 Architect 决定。
 
 ## 1. 身份、隔离与历史保护
 
@@ -42,7 +42,7 @@ Source Freeze 前 staged/unstaged 空白检查均 exit0，免费验证完成后�
 | R2-A07 | PASS | 新真实原件及外部锚、CLI0/2/3、22类重锚负控全部拒绝 |
 | R2-A08 | PASS | focused14、合成22、历史16、Reviewed/Public；fresh full426单轮通过/2 Docker skip |
 | R2-A09 | PASS | TARGET5/Explorer0、4841实际tokens、12600预约、费用守卫内、所有资源结算/清理 |
-| R2-A10 | NOT_RUN | 等待本次交付 commit/push/fresh ls-remote 与 GitHub API 双读 |
+| R2-A10 | PASS | source commit 已普通push，fresh ls-remote/GitHub API均与本地SHA一致；旧分支不动 |
 
 ## 4. 免费验证与固定环境
 
@@ -84,7 +84,7 @@ Session=`rpf65-session-1dc782fc322142a0`；Run=`rpf65-config-1dc782fc322142a0`�
 
 当前实际修改4个既有白名单文件：`pge_r65_context.py`、`pge_r65_target_config.py`、`pge_r65_verify.py`、`test_effectwitness_pge_r65.py`；`pge_r65_session.py`无需修改。新增本rev-2八个create-only文件。rev-1公开证据及其他旧源码/历史证书不改，用户目录保持原样。
 
-本结果候选等待普通push和远端双读；不把本地commit当已交付。最后commit SHA在提交后的聊天TASK_RESULT提供，不循环回填自身未来SHA。main/RPF64/rev-1分支不推送、不合并；PR、force/rebase/amend已推送历史、release/deploy、比赛登录/报名/上传均NOT_RUN。
+Source commit `f96b730f954b0aabe17fcd8e40ab5a0f2b3a85dc` 已普通push到唯一新分支，fresh ls-remote与GitHub API均读回同一SHA，工作树仅保留原顶层 `?? docs/reviews/`。本次收口只更新RESULT与verification-diagnostic的已观察交付事实，最后回执commit SHA在聊天TASK_RESULT提供，不循环回填自身未来SHA。main/RPF64/rev-1分支不推送、不合并；PR、force/rebase/amend已推送历史、release/deploy、比赛登录/报名/上传均NOT_RUN。
 
 本轮证明：在RPF64结构协议/ProcessSupervisor基础上，**新版本Context/ConfigPort/Session与同一物理WAL**完成了一例真实配置Target闭环。没有宣称旧RPF64 `SharedSession.execute`直接运行真模型。三个native child实际共用同一个ProcessSupervisor实现。Host/Broker/metadata/SDK/Java生命周期仍有任务适配复制债，详见capability-assessment，不称完全泛化。
 

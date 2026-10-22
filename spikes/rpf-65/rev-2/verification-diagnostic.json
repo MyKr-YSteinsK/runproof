@@ -1,6 +1,6 @@
 {
   "plan": "RPF-65/rev-2",
-  "status": "PARTIAL_DELIVERY_PENDING",
+  "status": "COMPLETE",
   "gates": {
     "G0": "PASS",
     "R2-A01": "PASS",
@@ -12,7 +12,7 @@
     "R2-A07": "PASS",
     "R2-A08": "PASS",
     "R2-A09": "PASS",
-    "R2-A10": "NOT_RUN"
+    "R2-A10": "PASS"
   },
   "focused": {
     "returncode": 0,
@@ -342,7 +342,22 @@
   },
   "source_changed_after_freeze": false,
   "delivery": {
-    "status": "PENDING_FOCUSED_COMMIT_PUSH_READBACK"
+    "status": "PASS",
+    "source_commit": "f96b730f954b0aabe17fcd8e40ab5a0f2b3a85dc",
+    "ordinary_push": true,
+    "branch": "codex/rpf-65-rev2-real-config-target-factory-repair",
+    "ls_remote_sha": "f96b730f954b0aabe17fcd8e40ab5a0f2b3a85dc",
+    "github_api_sha": "f96b730f954b0aabe17fcd8e40ab5a0f2b3a85dc",
+    "main_sha_unchanged": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "rpf64_sha_unchanged": "a4d956c0b69f7dacd34e842676d10c1898353cdf",
+    "rev1_sha_unchanged": "ddb3490543504377a2d2603ee6b088910399a723",
+    "post_push_worktree": [
+      "?? docs/reviews/"
+    ],
+    "pull_request": false,
+    "merged": false,
+    "deployed": false,
+    "receipt_followup_commit": "final SHA in post-push chat; source/witness frozen unchanged"
   },
   "rev1_history": {
     "status": "PARTIAL_DIAGNOSTIC_EVIDENCE_ACCEPTED",
