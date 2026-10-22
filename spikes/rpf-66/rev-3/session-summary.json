@@ -1,0 +1,1057 @@
+{
+  "task": "RPF-66/rev-3",
+  "status": "PARTIAL",
+  "source_digest": "eb6250b39f0e11c29089424a2fa7741216298949c31f176088a3ff1038b10156",
+  "source_state": "FROZEN",
+  "source_commit": "0105c7c33cca5d5f4875438005b40f6376a0f3db",
+  "physical": {
+    "metadata": 1,
+    "cold": 1,
+    "session": 1,
+    "trial": 1,
+    "jvm": 1,
+    "sdk": 1,
+    "provider": 6,
+    "http": 9,
+    "post": 2,
+    "health": 1
+  },
+  "context": "CREATED",
+  "session_id": "rpf66r3-session-2a91f9293c1047c6",
+  "completed_rounds": 0,
+  "failure": {
+    "code": "HOST_FAILURE",
+    "counts": {
+      "cold": 1,
+      "health": 1,
+      "http": 9,
+      "jvm": 1,
+      "metadata": 1,
+      "post": 2,
+      "provider": 6,
+      "sdk": 1,
+      "session": 1,
+      "trial": 1
+    },
+    "error_type": "LiveContractRejected"
+  },
+  "provider": [
+    {
+      "ticket": "provider-1",
+      "round": 1,
+      "role": "EXPLORER",
+      "run_id": "rpf66r3-config-272b62efab7db68f",
+      "status": "RECEIVED",
+      "response_id": "52ee7935-948c-4969-aa86-93d2dde41bbc",
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 44,
+        "prompt_tokens": 376,
+        "total_tokens": 420
+      },
+      "reserved_cap": 2500,
+      "input_upper": 903,
+      "output_cap": 128,
+      "request_sha256": "879c8b3b74354acb73d7029c0e8af890fae15838e3bd8c73363b6a3e7246b10f",
+      "failure_code": null,
+      "shape_sha256": null
+    },
+    {
+      "ticket": "provider-2",
+      "round": 1,
+      "role": "TARGET",
+      "run_id": "rpf66r3-config-272b62efab7db68f",
+      "status": "RECEIVED",
+      "response_id": "e0f58e2f-369b-4db2-a108-1483a616d9df",
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 30,
+        "prompt_tokens": 702,
+        "total_tokens": 732
+      },
+      "reserved_cap": 3000,
+      "input_upper": 2367,
+      "output_cap": 256,
+      "request_sha256": "7aa6e21891e8fb53474ef53bd2e174cb2df4fd1009f70f008229f0e527e53578",
+      "failure_code": null,
+      "shape_sha256": "e102724f6119c8fe0b54f785ae496f971a6aa025db935ef8cdd60abb30c6a1d1"
+    },
+    {
+      "ticket": "provider-3",
+      "round": 1,
+      "role": "TARGET",
+      "run_id": "rpf66r3-config-272b62efab7db68f",
+      "status": "RECEIVED",
+      "response_id": "7c0033e3-45d6-498f-9bf7-753ae83099a0",
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 57,
+        "prompt_tokens": 750,
+        "total_tokens": 807
+      },
+      "reserved_cap": 2400,
+      "input_upper": 1528,
+      "output_cap": 256,
+      "request_sha256": "d8ae4074fe3738175101f18e52df8c1c15a9da796d41d27373d2728e96688d52",
+      "failure_code": null,
+      "shape_sha256": "6f2c7a3d0b472294018c6cfcb914ea39bd7dd1dff5482236b4f398c4cf4de8e6"
+    },
+    {
+      "ticket": "provider-4",
+      "round": 1,
+      "role": "TARGET",
+      "run_id": "rpf66r3-config-272b62efab7db68f",
+      "status": "RECEIVED",
+      "response_id": "67c5dd6e-cfec-4450-9ca3-f855254ed9b3",
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 80,
+        "prompt_tokens": 837,
+        "total_tokens": 917
+      },
+      "reserved_cap": 2400,
+      "input_upper": 1648,
+      "output_cap": 256,
+      "request_sha256": "90d14522b562bee3322b0979b5aeded18ce9a9f9dd069f7cd30f60970016bf59",
+      "failure_code": null,
+      "shape_sha256": "8c6463eae65867afa72e51f04ab7a67db2b696eedfe0b16de1f1ed7333004b40"
+    },
+    {
+      "ticket": "provider-5",
+      "round": 1,
+      "role": "TARGET",
+      "run_id": "rpf66r3-config-272b62efab7db68f",
+      "status": "RECEIVED",
+      "response_id": "56613f12-93dd-4f21-955a-1570fb6f463a",
+      "model": "deepseek-flash",
+      "usage": {
+        "completion_tokens": 83,
+        "prompt_tokens": 971,
+        "total_tokens": 1054
+      },
+      "reserved_cap": 2400,
+      "input_upper": 1857,
+      "output_cap": 256,
+      "request_sha256": "a7355c3d3c4a2afbbcc82d5429269516d8427e8ba95fb99d5f11e25ad7b9326a",
+      "failure_code": null,
+      "shape_sha256": "b9331fb5eae1ee789abcabc15d3200dc1ba60aa9df723fd1a482577179bb3c6e"
+    },
+    {
+      "ticket": "provider-6",
+      "round": 1,
+      "role": "TARGET",
+      "run_id": "rpf66r3-config-272b62efab7db68f",
+      "status": "UNKNOWN",
+      "response_id": null,
+      "model": null,
+      "usage": "UNKNOWN",
+      "reserved_cap": 2400,
+      "input_upper": 2048,
+      "output_cap": 256,
+      "request_sha256": "e0faac31ef2ee942aa1db2a452e2598185691f2956d05f920d523031017b3d55",
+      "failure_code": "PROVIDER_CHOICE",
+      "shape_sha256": "a07c891df4095d492c0ee95e042d9b5c0b5123296a644551b776608ff63d3ff2"
+    }
+  ],
+  "known_tokens": 3930,
+  "unknown_provider_tickets": [
+    "provider-6"
+  ],
+  "total_actual_tokens": "UNKNOWN",
+  "known_cost_cny_guard": 0.021654,
+  "reserved_tokens": 15100,
+  "reserved_cost_cny_guard": 0.0719235,
+  "unsettled_tickets": [
+    "session-1",
+    "trial-1"
+  ],
+  "invoice": "NOT_QUERIED",
+  "guard_is_invoice": false,
+  "nonrefundable": true,
+  "paid_retry": 0,
+  "old_rev1_unknown": "NOT_READ_NOT_REFUNDED",
+  "rounds": [
+    {
+      "round": 1,
+      "status": "NOT_COMPLETE",
+      "candidate": "local-delivery-suppressed-after-http200",
+      "selection": {
+        "candidate_id": "local-delivery-suppressed-after-http200",
+        "context_sha256": "d250b6fc34bd69672a4079860fd741aa5c6100e1e537f7384ff1118327ab7706",
+        "contract_sha256": "ad9c714279f31165876d5b73e91d3db10ad96c5d12f38b5848509cc6e805e2a6",
+        "model": "deepseek-flash",
+        "provider_ticket": "provider-1",
+        "request_sha256": "879c8b3b74354acb73d7029c0e8af890fae15838e3bd8c73363b6a3e7246b10f",
+        "response_id": "52ee7935-948c-4969-aa86-93d2dde41bbc",
+        "round": 1,
+        "run_id": "rpf66r3-config-272b62efab7db68f",
+        "schema": "rpf66-explorer-selection-v2",
+        "selection": {
+          "function": {
+            "arguments": "{\"candidate_id\": \"local-delivery-suppressed-after-http200\"}",
+            "name": "select_experiment"
+          },
+          "id": "call_00_SOBgYRPrzE1ALpIyAjb79951",
+          "type": "function"
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET",
+        "usage": {
+          "completion_tokens": 44,
+          "prompt_tokens": 376,
+          "total_tokens": 420
+        }
+      },
+      "readback": {
+        "current_v2": true,
+        "history_2_1": true,
+        "unique_list": true
+      },
+      "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+      "fault": {
+        "planned": true,
+        "triggered": true,
+        "observed": true,
+        "agent_exposed": true
+      },
+      "recovery": "OBSERVED",
+      "agent": "NOT_COMPLETE",
+      "host_failure": {
+        "code": "PROVIDER_CHOICE",
+        "domain": "PROVIDER"
+      },
+      "sdk": {
+        "popen_pid": 30200,
+        "ready": {
+          "framework": "pydantic-ai-slim",
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "pid": 30200,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "version": "2.57.0"
+        },
+        "report": {
+          "error_type": "ModelHTTPError",
+          "guard_code": null,
+          "guard_denials": [],
+          "stage": "sdk_run",
+          "status": "SDK_ERROR"
+        },
+        "returncode": 1,
+        "stderr_bytes": 0
+      },
+      "environment": {
+        "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+        "cleanup": {
+          "host_port_closed": true,
+          "host_thread_stopped": true,
+          "java_exited": true,
+          "java_port_closed": true,
+          "local_key_released": true,
+          "sdk_exited": true
+        },
+        "health": [
+          {
+            "body": {
+              "status": "UP"
+            },
+            "raw_body_sha256": "5b0476659e29abee2964f2d4892d6d586faa9fdf8167dd1f59b2b3222dae3ab9",
+            "status": 200,
+            "transport_error": null
+          }
+        ],
+        "jar_bytes": 66981576,
+        "jar_command_verified": true,
+        "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+        "java_pid": 21620,
+        "listener_owned": true,
+        "source_level": "REAL_JAVA_H2_LOCAL_SIMULATION"
+      },
+      "tools": [
+        {
+          "sequence": 1,
+          "name": "inspect_config",
+          "call_id": "call_00_MxE20In4wmgTbV8sLcU80928",
+          "provider_response_id": "e0f58e2f-369b-4db2-a108-1483a616d9df",
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f",
+          "returned_in_request": 2,
+          "http_observation_seq": 3
+        },
+        {
+          "sequence": 2,
+          "name": "create_config_v1",
+          "call_id": "call_00_C2PyaXKvKb2cZCJJvfJx6624",
+          "provider_response_id": "7c0033e3-45d6-498f-9bf7-753ae83099a0",
+          "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6",
+          "returned_in_request": 3,
+          "http_observation_seq": 4
+        },
+        {
+          "sequence": 3,
+          "name": "update_config_v2",
+          "call_id": "call_00_CUCRqqX1gNKZ19yWS71B6715",
+          "provider_response_id": "67c5dd6e-cfec-4450-9ca3-f855254ed9b3",
+          "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92",
+          "returned_in_request": 4,
+          "http_observation_seq": 5
+        },
+        {
+          "sequence": 4,
+          "name": "inspect_config",
+          "call_id": "call_00_FYrfzuzKVLd0f9ZScGPx4136",
+          "provider_response_id": "56613f12-93dd-4f21-955a-1570fb6f463a",
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422",
+          "returned_in_request": null,
+          "http_observation_seq": 6
+        }
+      ],
+      "http": [
+        {
+          "seq": 1,
+          "kind": "initial_current",
+          "method": "GET",
+          "status": 404,
+          "response_body_sha256": "1867445d78439854da683593fffbd0ef025a63374ff20c5a7557cbc176715a1f",
+          "transport_error": null
+        },
+        {
+          "seq": 2,
+          "kind": "initial_history",
+          "method": "GET",
+          "status": 200,
+          "response_body_sha256": "142ab263e6306cc0d69cea251cbed34e70dc5b7d4ec0043e1c4c72f5b3ac967e",
+          "transport_error": null
+        },
+        {
+          "seq": 3,
+          "kind": "inspect_config",
+          "method": "GET",
+          "status": 404,
+          "response_body_sha256": "82bf267942917e75bde930eede5c7a7b8a9f5c5901ee6ea23034270db787976f",
+          "transport_error": null
+        },
+        {
+          "seq": 4,
+          "kind": "create_config_v1",
+          "method": "POST",
+          "status": 200,
+          "response_body_sha256": "44e51b1657d406e9b1d7099f9033c4658c67830fe6953958cd73bdc5efd51e89",
+          "transport_error": null
+        },
+        {
+          "seq": 5,
+          "kind": "update_config_v2",
+          "method": "POST",
+          "status": 200,
+          "response_body_sha256": "b97d0020376dd6fd5ac4b430850d1f451977b77d9dfc312179c5178c099adc25",
+          "transport_error": null
+        },
+        {
+          "seq": 6,
+          "kind": "inspect_config",
+          "method": "GET",
+          "status": 200,
+          "response_body_sha256": "ca9f1c8034a545453dc0292f0a6c3c1640d459de36272e18486988d6ca4dcb37",
+          "transport_error": null
+        },
+        {
+          "seq": 7,
+          "kind": "reconcile_current",
+          "method": "GET",
+          "status": 200,
+          "response_body_sha256": "314743114ce603025779e83b241bebfdd6630ed78b7094e7f9fe2e29fa081161",
+          "transport_error": null
+        },
+        {
+          "seq": 8,
+          "kind": "reconcile_history",
+          "method": "GET",
+          "status": 200,
+          "response_body_sha256": "445f712a016f796277e48feff3ad90eaae10d01f2c8d0b5ec0b457eef13c0ee2",
+          "transport_error": null
+        },
+        {
+          "seq": 9,
+          "kind": "final_list",
+          "method": "GET",
+          "status": 200,
+          "response_body_sha256": "7c6c2ea6e8382d41d2456e5b1ff0c4203d0d793f3a23e4fcdf14b6d793f43943",
+          "transport_error": null
+        }
+      ],
+      "feedback": "NOT_FROZEN",
+      "post_after_unknown": 0
+    },
+    {
+      "round": 2,
+      "status": "NOT_RUN",
+      "candidate": "NOT_RUN",
+      "fault": "NOT_RUN"
+    }
+  ],
+  "candidate_coverage": {
+    "normal": "NOT_RUN",
+    "local-delivery-suppressed-after-http200": [
+      1
+    ]
+  },
+  "L2_observed": "NOT_RUN",
+  "safe_shapes": [
+    {
+      "receipt": {
+        "compatibility": "STRICT_NO_NORMALIZATION",
+        "conditions": [],
+        "context_sha256": "d250b6fc34bd69672a4079860fd741aa5c6100e1e537f7384ff1118327ab7706",
+        "http_status": 200,
+        "request_sha256": "7aa6e21891e8fb53474ef53bd2e174cb2df4fd1009f70f008229f0e527e53578",
+        "role": "TARGET",
+        "round": 1,
+        "run_id": "rpf66r3-config-272b62efab7db68f",
+        "schema": "rpf66-provider-shape-receipt-v1",
+        "shape": {
+          "choices": [
+            {
+              "fields": {
+                "known": [
+                  "finish_reason",
+                  "index",
+                  "logprobs",
+                  "message"
+                ],
+                "unknown_count": 0
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_fields": {
+                "known": [
+                  "content",
+                  "role",
+                  "tool_calls"
+                ],
+                "unknown_count": 0
+              },
+              "message_role": "assistant",
+              "message_type": "object",
+              "tool_calls_count": 1,
+              "tool_calls_present": true,
+              "tool_calls_type": "array",
+              "tools": [
+                {
+                  "arguments_keys_valid": true,
+                  "arguments_type": "string",
+                  "call_type": "function",
+                  "fields": {
+                    "known": [
+                      "function",
+                      "id",
+                      "index",
+                      "type"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_fields": {
+                    "known": [
+                      "arguments",
+                      "name"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_type": "object",
+                  "id": {
+                    "sha256": "a0d6e6d04ac29a90a883d978a840129ceaccbb9306cf8d6c3b0abe66c2b3007d",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "inspect_config",
+                  "type": "object"
+                }
+              ],
+              "type": "object"
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_nonnegative_integer": true,
+          "fields": {
+            "known": [
+              "choices",
+              "created",
+              "id",
+              "model",
+              "object",
+              "system_fingerprint",
+              "usage"
+            ],
+            "unknown_count": 0
+          },
+          "model": "deepseek-flash",
+          "object": "chat.completion",
+          "response_id": {
+            "sha256": "8a48fe70396208882fba30388810cfa845c609c47af2f64bb2b55abeb2e1dd82",
+            "type": "string",
+            "valid": true
+          },
+          "response_type": "object",
+          "schema": "rpf66-provider-safe-shape-v1",
+          "usage": {
+            "confidence": "UNTRUSTED_OBSERVED_HINT",
+            "fields": {
+              "completion_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 30
+              },
+              "prompt_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 702
+              },
+              "total_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 732
+              }
+            },
+            "type": "object"
+          }
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET",
+        "stage": "BEFORE_STRICT_VALIDATION",
+        "ticket": "provider-2",
+        "transport_code": null
+      },
+      "receipt_sha256": "e102724f6119c8fe0b54f785ae496f971a6aa025db935ef8cdd60abb30c6a1d1"
+    },
+    {
+      "receipt": {
+        "compatibility": "STRICT_NO_NORMALIZATION",
+        "conditions": [],
+        "context_sha256": "d250b6fc34bd69672a4079860fd741aa5c6100e1e537f7384ff1118327ab7706",
+        "http_status": 200,
+        "request_sha256": "d8ae4074fe3738175101f18e52df8c1c15a9da796d41d27373d2728e96688d52",
+        "role": "TARGET",
+        "round": 1,
+        "run_id": "rpf66r3-config-272b62efab7db68f",
+        "schema": "rpf66-provider-shape-receipt-v1",
+        "shape": {
+          "choices": [
+            {
+              "fields": {
+                "known": [
+                  "finish_reason",
+                  "index",
+                  "logprobs",
+                  "message"
+                ],
+                "unknown_count": 0
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_fields": {
+                "known": [
+                  "content",
+                  "role",
+                  "tool_calls"
+                ],
+                "unknown_count": 0
+              },
+              "message_role": "assistant",
+              "message_type": "object",
+              "tool_calls_count": 1,
+              "tool_calls_present": true,
+              "tool_calls_type": "array",
+              "tools": [
+                {
+                  "arguments_keys_valid": true,
+                  "arguments_type": "string",
+                  "call_type": "function",
+                  "fields": {
+                    "known": [
+                      "function",
+                      "id",
+                      "index",
+                      "type"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_fields": {
+                    "known": [
+                      "arguments",
+                      "name"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_type": "object",
+                  "id": {
+                    "sha256": "1c6122bdda308e2f885c59e48b2422ff6cd65d71145d5c41f01a96122a35806a",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "create_config_v1",
+                  "type": "object"
+                }
+              ],
+              "type": "object"
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_nonnegative_integer": true,
+          "fields": {
+            "known": [
+              "choices",
+              "created",
+              "id",
+              "model",
+              "object",
+              "system_fingerprint",
+              "usage"
+            ],
+            "unknown_count": 0
+          },
+          "model": "deepseek-flash",
+          "object": "chat.completion",
+          "response_id": {
+            "sha256": "19fc4ba8dbeaf423eb173fd586529cdd8ede853c666e73277641bf0f4cba1ce7",
+            "type": "string",
+            "valid": true
+          },
+          "response_type": "object",
+          "schema": "rpf66-provider-safe-shape-v1",
+          "usage": {
+            "confidence": "UNTRUSTED_OBSERVED_HINT",
+            "fields": {
+              "completion_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 57
+              },
+              "prompt_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 750
+              },
+              "total_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 807
+              }
+            },
+            "type": "object"
+          }
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET",
+        "stage": "BEFORE_STRICT_VALIDATION",
+        "ticket": "provider-3",
+        "transport_code": null
+      },
+      "receipt_sha256": "6f2c7a3d0b472294018c6cfcb914ea39bd7dd1dff5482236b4f398c4cf4de8e6"
+    },
+    {
+      "receipt": {
+        "compatibility": "STRICT_NO_NORMALIZATION",
+        "conditions": [],
+        "context_sha256": "d250b6fc34bd69672a4079860fd741aa5c6100e1e537f7384ff1118327ab7706",
+        "http_status": 200,
+        "request_sha256": "90d14522b562bee3322b0979b5aeded18ce9a9f9dd069f7cd30f60970016bf59",
+        "role": "TARGET",
+        "round": 1,
+        "run_id": "rpf66r3-config-272b62efab7db68f",
+        "schema": "rpf66-provider-shape-receipt-v1",
+        "shape": {
+          "choices": [
+            {
+              "fields": {
+                "known": [
+                  "finish_reason",
+                  "index",
+                  "logprobs",
+                  "message"
+                ],
+                "unknown_count": 0
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_fields": {
+                "known": [
+                  "content",
+                  "role",
+                  "tool_calls"
+                ],
+                "unknown_count": 0
+              },
+              "message_role": "assistant",
+              "message_type": "object",
+              "tool_calls_count": 1,
+              "tool_calls_present": true,
+              "tool_calls_type": "array",
+              "tools": [
+                {
+                  "arguments_keys_valid": true,
+                  "arguments_type": "string",
+                  "call_type": "function",
+                  "fields": {
+                    "known": [
+                      "function",
+                      "id",
+                      "index",
+                      "type"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_fields": {
+                    "known": [
+                      "arguments",
+                      "name"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_type": "object",
+                  "id": {
+                    "sha256": "14301ff46677d15f8553e50aedd04253832d32b4290e7c6bfa6d8482b0734339",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "update_config_v2",
+                  "type": "object"
+                }
+              ],
+              "type": "object"
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_nonnegative_integer": true,
+          "fields": {
+            "known": [
+              "choices",
+              "created",
+              "id",
+              "model",
+              "object",
+              "system_fingerprint",
+              "usage"
+            ],
+            "unknown_count": 0
+          },
+          "model": "deepseek-flash",
+          "object": "chat.completion",
+          "response_id": {
+            "sha256": "3983a3fc6df33e7825e5be0828bbf4ec56700239131aadfcfcce74f3f6cae869",
+            "type": "string",
+            "valid": true
+          },
+          "response_type": "object",
+          "schema": "rpf66-provider-safe-shape-v1",
+          "usage": {
+            "confidence": "UNTRUSTED_OBSERVED_HINT",
+            "fields": {
+              "completion_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 80
+              },
+              "prompt_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 837
+              },
+              "total_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 917
+              }
+            },
+            "type": "object"
+          }
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET",
+        "stage": "BEFORE_STRICT_VALIDATION",
+        "ticket": "provider-4",
+        "transport_code": null
+      },
+      "receipt_sha256": "8c6463eae65867afa72e51f04ab7a67db2b696eedfe0b16de1f1ed7333004b40"
+    },
+    {
+      "receipt": {
+        "compatibility": "STRICT_NO_NORMALIZATION",
+        "conditions": [],
+        "context_sha256": "d250b6fc34bd69672a4079860fd741aa5c6100e1e537f7384ff1118327ab7706",
+        "http_status": 200,
+        "request_sha256": "a7355c3d3c4a2afbbcc82d5429269516d8427e8ba95fb99d5f11e25ad7b9326a",
+        "role": "TARGET",
+        "round": 1,
+        "run_id": "rpf66r3-config-272b62efab7db68f",
+        "schema": "rpf66-provider-shape-receipt-v1",
+        "shape": {
+          "choices": [
+            {
+              "fields": {
+                "known": [
+                  "finish_reason",
+                  "index",
+                  "logprobs",
+                  "message"
+                ],
+                "unknown_count": 0
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_fields": {
+                "known": [
+                  "content",
+                  "role",
+                  "tool_calls"
+                ],
+                "unknown_count": 0
+              },
+              "message_role": "assistant",
+              "message_type": "object",
+              "tool_calls_count": 1,
+              "tool_calls_present": true,
+              "tool_calls_type": "array",
+              "tools": [
+                {
+                  "arguments_keys_valid": true,
+                  "arguments_type": "string",
+                  "call_type": "function",
+                  "fields": {
+                    "known": [
+                      "function",
+                      "id",
+                      "index",
+                      "type"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_fields": {
+                    "known": [
+                      "arguments",
+                      "name"
+                    ],
+                    "unknown_count": 0
+                  },
+                  "function_type": "object",
+                  "id": {
+                    "sha256": "328269ef11ce87ae4910f03e7566a515cbe563ffa87045d112decae6d578dc7a",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "inspect_config",
+                  "type": "object"
+                }
+              ],
+              "type": "object"
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_nonnegative_integer": true,
+          "fields": {
+            "known": [
+              "choices",
+              "created",
+              "id",
+              "model",
+              "object",
+              "system_fingerprint",
+              "usage"
+            ],
+            "unknown_count": 0
+          },
+          "model": "deepseek-flash",
+          "object": "chat.completion",
+          "response_id": {
+            "sha256": "887d45cedb2b0262fa46339125e643b38de758826d5ac86afb169e672b0c03e8",
+            "type": "string",
+            "valid": true
+          },
+          "response_type": "object",
+          "schema": "rpf66-provider-safe-shape-v1",
+          "usage": {
+            "confidence": "UNTRUSTED_OBSERVED_HINT",
+            "fields": {
+              "completion_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 83
+              },
+              "prompt_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 971
+              },
+              "total_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 1054
+              }
+            },
+            "type": "object"
+          }
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET",
+        "stage": "BEFORE_STRICT_VALIDATION",
+        "ticket": "provider-5",
+        "transport_code": null
+      },
+      "receipt_sha256": "b9331fb5eae1ee789abcabc15d3200dc1ba60aa9df723fd1a482577179bb3c6e"
+    },
+    {
+      "receipt": {
+        "compatibility": "STRICT_NO_NORMALIZATION",
+        "conditions": [
+          "CHOICE_FINISH_REASON",
+          "TOOL_FINISH_MISMATCH"
+        ],
+        "context_sha256": "d250b6fc34bd69672a4079860fd741aa5c6100e1e537f7384ff1118327ab7706",
+        "http_status": 200,
+        "request_sha256": "e0faac31ef2ee942aa1db2a452e2598185691f2956d05f920d523031017b3d55",
+        "role": "TARGET",
+        "round": 1,
+        "run_id": "rpf66r3-config-272b62efab7db68f",
+        "schema": "rpf66-provider-shape-receipt-v1",
+        "shape": {
+          "choices": [
+            {
+              "fields": {
+                "known": [
+                  "finish_reason",
+                  "index",
+                  "logprobs",
+                  "message"
+                ],
+                "unknown_count": 0
+              },
+              "finish_reason": "length",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_fields": {
+                "known": [
+                  "content",
+                  "role"
+                ],
+                "unknown_count": 0
+              },
+              "message_role": "assistant",
+              "message_type": "object",
+              "tool_calls_count": null,
+              "tool_calls_present": false,
+              "tool_calls_type": "null",
+              "tools": [],
+              "type": "object"
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_nonnegative_integer": true,
+          "fields": {
+            "known": [
+              "choices",
+              "created",
+              "id",
+              "model",
+              "object",
+              "system_fingerprint",
+              "usage"
+            ],
+            "unknown_count": 0
+          },
+          "model": "deepseek-flash",
+          "object": "chat.completion",
+          "response_id": {
+            "sha256": "474a042e6b6b3947b1236c5f5a89ec1bf51feee62d265af6d9426b89356aeab8",
+            "type": "string",
+            "valid": true
+          },
+          "response_type": "object",
+          "schema": "rpf66-provider-safe-shape-v1",
+          "usage": {
+            "confidence": "UNTRUSTED_OBSERVED_HINT",
+            "fields": {
+              "completion_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 256
+              },
+              "prompt_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 1084
+              },
+              "total_tokens": {
+                "nonnegative": true,
+                "present": true,
+                "type": "integer",
+                "value": 1340
+              }
+            },
+            "type": "object"
+          }
+        },
+        "source_kind": "REAL_EXPLORER_REAL_TARGET",
+        "stage": "BEFORE_STRICT_VALIDATION",
+        "ticket": "provider-6",
+        "transport_code": null
+      },
+      "receipt_sha256": "a07c891df4095d492c0ee95e042d9b5c0b5123296a644551b776608ff63d3ff2"
+    }
+  ],
+  "parser_rejections": [
+    {
+      "provider_ticket": "provider-6",
+      "round": 1,
+      "stage": "STRICT_RESPONSE_VALIDATION",
+      "code": "PROVIDER_CHOICE",
+      "receipt_sha256": "a07c891df4095d492c0ee95e042d9b5c0b5123296a644551b776608ff63d3ff2"
+    }
+  ],
+  "PROVIDER_CHOICE_DIAGNOSIS": "CONFIRMED_CONDITION",
+  "rev1_actual_condition": "NOT_INFERRED",
+  "wal": {
+    "frames": 147,
+    "raw_sha256": "f3b29a84ca1371f717704b5b0ee12efaaefba71982e471b3288d49f81bf6ac45",
+    "canonical_physical_bytes_match": true,
+    "chain": "PASS",
+    "owner_revision": "rev-3"
+  },
+  "witness_sha256": null,
+  "real_controls": "NOT_RUN",
+  "boundaries": {
+    "order_real_target": "NOT_RUN",
+    "cross_domain_real_dual_agent": "NOT_PROVEN",
+    "web": "NOT_INTEGRATED",
+    "causality": "NOT_PROVEN",
+    "independent_reproduction": "NOT_TESTED",
+    "issuer": "NOT_ESTABLISHED",
+    "release": "NOT_AUTHORIZED"
+  }
+}

@@ -1,0 +1,474 @@
+{
+  "task": "RPF-66/rev-3",
+  "HTTP": {
+    "testcase": "ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+    "attempts": [
+      {
+        "order": 1,
+        "label": "1",
+        "execution": {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\http-observe.py",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\snapshots\\base-13c8abc1",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\diagnostics\\http-events-1.json"
+          ],
+          "elapsed": 0.6099544000026071,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "interpreter_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "log": ".local/rpf-66-rev-3/diagnostics/http-1.log",
+          "parent_pid": 32276,
+          "pid": 31828,
+          "skipped": 0,
+          "source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+          "tests": 1
+        },
+        "observations": {
+          "pid": 31828,
+          "parent_pid": 32276,
+          "python": "3.14.6",
+          "source_scope": "BASELINE_UNCHANGED_TESTCASE",
+          "token": "PRESENCE_ONLY",
+          "raw_headers_retained": false,
+          "events": [
+            {
+              "seq": 0,
+              "kind": "SOCKET_BIND",
+              "port": 0,
+              "monotonic_ns": 49013590263100
+            },
+            {
+              "seq": 1,
+              "kind": "SOCKET_BIND",
+              "port": 4477,
+              "monotonic_ns": 49013590854300
+            },
+            {
+              "seq": 2,
+              "kind": "CLIENT_SEND",
+              "bytes": 163,
+              "monotonic_ns": 49013601751100
+            },
+            {
+              "seq": 3,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49013601783100
+            },
+            {
+              "seq": 4,
+              "kind": "CLIENT_SEND",
+              "bytes": 163,
+              "monotonic_ns": 49013619738800
+            },
+            {
+              "seq": 5,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49013619823100
+            }
+          ],
+          "ports_closed_after_test": {
+            "4477": true
+          },
+          "shutdown": "ORIGINAL_TEST_FINALLY_THEN_OBSERVED_PORT_CLOSED",
+          "observer_timing_may_influence_race": true
+        },
+        "executed_snapshot_source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+        "controller_source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+        "original_test_raw_sha256": "2fd0da2c9211ba3475aba45b71ba0e31016da162bd8e3f01a802148dcd77ac4e"
+      },
+      {
+        "order": 2,
+        "label": "3",
+        "execution": {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\http-observe.py",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\snapshots\\base-13c8abc1",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\diagnostics\\http-events-3.json"
+          ],
+          "elapsed": 0.6358120999939274,
+          "errors": 1,
+          "exit": 1,
+          "failures": 0,
+          "interpreter_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "log": ".local/rpf-66-rev-3/diagnostics/http-3.log",
+          "parent_pid": 32284,
+          "pid": 33296,
+          "skipped": 0,
+          "source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+          "tests": 1
+        },
+        "observations": {
+          "pid": 33296,
+          "parent_pid": 32284,
+          "python": "3.12.13",
+          "source_scope": "BASELINE_UNCHANGED_TESTCASE",
+          "token": "PRESENCE_ONLY",
+          "raw_headers_retained": false,
+          "events": [
+            {
+              "seq": 0,
+              "kind": "SOCKET_BIND",
+              "port": 0,
+              "monotonic_ns": 49014750000000
+            },
+            {
+              "seq": 1,
+              "kind": "SOCKET_BIND",
+              "port": 4481,
+              "monotonic_ns": 49014750000000
+            },
+            {
+              "seq": 2,
+              "kind": "CLIENT_SEND",
+              "bytes": 163,
+              "monotonic_ns": 49014750000000
+            },
+            {
+              "seq": 3,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49014765000000
+            },
+            {
+              "seq": 4,
+              "kind": "CLIENT_SEND",
+              "bytes": 163,
+              "monotonic_ns": 49014765000000
+            },
+            {
+              "seq": 5,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49014765000000
+            }
+          ],
+          "ports_closed_after_test": {
+            "4481": true
+          },
+          "shutdown": "ORIGINAL_TEST_FINALLY_THEN_OBSERVED_PORT_CLOSED",
+          "observer_timing_may_influence_race": true
+        },
+        "executed_snapshot_source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+        "controller_source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+        "original_test_raw_sha256": "2fd0da2c9211ba3475aba45b71ba0e31016da162bd8e3f01a802148dcd77ac4e"
+      },
+      {
+        "order": 3,
+        "label": "4",
+        "execution": {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\http-observe.py",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\snapshots\\candidate-http-9ef24363",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\diagnostics\\http-events-4.json"
+          ],
+          "elapsed": 0.7116191000022809,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "interpreter_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "log": ".local/rpf-66-rev-3/diagnostics/http-4.log",
+          "parent_pid": 32216,
+          "pid": 31460,
+          "skipped": 0,
+          "source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+          "tests": 1
+        },
+        "observations": {
+          "pid": 31460,
+          "parent_pid": 32216,
+          "python": "3.14.6",
+          "source_scope": "BASELINE_UNCHANGED_TESTCASE",
+          "token": "PRESENCE_ONLY",
+          "raw_headers_retained": false,
+          "events": [
+            {
+              "seq": 0,
+              "kind": "SOCKET_BIND",
+              "port": 0,
+              "monotonic_ns": 49189826830700
+            },
+            {
+              "seq": 1,
+              "kind": "SOCKET_BIND",
+              "port": 14884,
+              "monotonic_ns": 49189827831500
+            },
+            {
+              "seq": 2,
+              "kind": "CLIENT_SEND",
+              "bytes": 164,
+              "monotonic_ns": 49189838338800
+            },
+            {
+              "seq": 3,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49189838434400
+            },
+            {
+              "seq": 4,
+              "kind": "CLIENT_SEND",
+              "bytes": 164,
+              "monotonic_ns": 49189839506100
+            },
+            {
+              "seq": 5,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49189839760700
+            }
+          ],
+          "ports_closed_after_test": {
+            "14884": true
+          },
+          "shutdown": "ORIGINAL_TEST_FINALLY_THEN_OBSERVED_PORT_CLOSED",
+          "observer_timing_may_influence_race": true
+        },
+        "executed_snapshot_source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+        "controller_source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+        "original_test_raw_sha256": "2fd0da2c9211ba3475aba45b71ba0e31016da162bd8e3f01a802148dcd77ac4e"
+      },
+      {
+        "order": 4,
+        "label": "5",
+        "execution": {
+          "command": [
+            "-X",
+            "utf8",
+            "-B",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\http-observe.py",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\snapshots\\base-13c8abc1",
+            "D:\\CS\\runproof\\.local\\rpf-66-rev-3\\diagnostics\\http-events-5.json"
+          ],
+          "elapsed": 0.7092531000016606,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "interpreter_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "log": ".local/rpf-66-rev-3/diagnostics/http-5.log",
+          "parent_pid": 32936,
+          "pid": 3088,
+          "skipped": 0,
+          "source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+          "tests": 1
+        },
+        "observations": {
+          "pid": 3088,
+          "parent_pid": 32936,
+          "python": "3.14.6",
+          "source_scope": "BASELINE_UNCHANGED_TESTCASE",
+          "token": "PRESENCE_ONLY",
+          "raw_headers_retained": false,
+          "events": [
+            {
+              "seq": 0,
+              "kind": "SOCKET_BIND",
+              "port": 0,
+              "monotonic_ns": 49191132264400
+            },
+            {
+              "seq": 1,
+              "kind": "SOCKET_BIND",
+              "port": 14888,
+              "monotonic_ns": 49191132821900
+            },
+            {
+              "seq": 2,
+              "kind": "CLIENT_SEND",
+              "bytes": 164,
+              "monotonic_ns": 49191154218400
+            },
+            {
+              "seq": 3,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49191154252500
+            },
+            {
+              "seq": 4,
+              "kind": "CLIENT_SEND",
+              "bytes": 164,
+              "monotonic_ns": 49191155243800
+            },
+            {
+              "seq": 5,
+              "kind": "CLIENT_SEND",
+              "bytes": 2,
+              "monotonic_ns": 49191155455200
+            }
+          ],
+          "ports_closed_after_test": {
+            "14888": true
+          },
+          "shutdown": "ORIGINAL_TEST_FINALLY_THEN_OBSERVED_PORT_CLOSED",
+          "observer_timing_may_influence_race": true
+        },
+        "executed_snapshot_source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+        "controller_source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+        "original_test_raw_sha256": "2fd0da2c9211ba3475aba45b71ba0e31016da162bd8e3f01a802148dcd77ac4e"
+      }
+    ],
+    "count": 4,
+    "limit": 4,
+    "bucket": "C_EXACT_RACE_ROOT_UNCONFIRMED",
+    "baseline_and_candidate_case_bytes_identical": true,
+    "full_suite_observer": false,
+    "raw_header_retained": false,
+    "observer_timing_may_affect_race": true,
+    "counter_label_note": "four executions; labels1,3,4,5 reflect a corrected report-file counting issue, not five runs"
+  },
+  "environment": {
+    "314": {
+      "execution": {
+        "command": [
+          "-X",
+          "utf8",
+          "-B",
+          "-c",
+          "import sys,time,json; from runtime.runproof_runtime import observability as o; values=[time.monotonic_ns() for _ in range(1000)]; print(json.dumps(dict(python=sys.version.split()[0],otel_sdk_available=o.SDK_AVAILABLE,adjacent_equal=sum(a==b for a,b in zip(values,values[1:])),adjacent_reverse=sum(a>b for a,b in zip(values,values[1:])),clock_implementation=time.get_clock_info('monotonic').implementation,clock_resolution=time.get_clock_info('monotonic').resolution)))"
+        ],
+        "elapsed": 0.6125991000008071,
+        "errors": 0,
+        "exit": 0,
+        "failures": 0,
+        "interpreter_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+        "log": ".local/rpf-66-rev-3/diagnostics/environment-314-80d8090f.log",
+        "parent_pid": 31652,
+        "pid": 11256,
+        "skipped": 0,
+        "source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+        "tests": null
+      },
+      "observation": {
+        "python": "3.14.6",
+        "otel_sdk_available": true,
+        "adjacent_equal": 169,
+        "adjacent_reverse": 0,
+        "clock_implementation": "QueryPerformanceCounter()",
+        "clock_resolution": 1e-07
+      }
+    },
+    "312": {
+      "execution": {
+        "command": [
+          "-X",
+          "utf8",
+          "-B",
+          "-c",
+          "import sys,time,json; from runtime.runproof_runtime import observability as o; values=[time.monotonic_ns() for _ in range(1000)]; print(json.dumps(dict(python=sys.version.split()[0],otel_sdk_available=o.SDK_AVAILABLE,adjacent_equal=sum(a==b for a,b in zip(values,values[1:])),adjacent_reverse=sum(a>b for a,b in zip(values,values[1:])),clock_implementation=time.get_clock_info('monotonic').implementation,clock_resolution=time.get_clock_info('monotonic').resolution)))"
+        ],
+        "elapsed": 0.08653559999947902,
+        "errors": 0,
+        "exit": 0,
+        "failures": 0,
+        "interpreter_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "log": ".local/rpf-66-rev-3/diagnostics/environment-312-80d8090f.log",
+        "parent_pid": 31652,
+        "pid": 15000,
+        "skipped": 0,
+        "source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+        "tests": null
+      },
+      "observation": {
+        "python": "3.12.13",
+        "otel_sdk_available": false,
+        "adjacent_equal": 999,
+        "adjacent_reverse": 0,
+        "clock_implementation": "GetTickCount64()",
+        "clock_resolution": 0.015625
+      }
+    }
+  },
+  "baseline312": {
+    "command": [
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "runtime.tests.test_effectwitness_pge_shared_core.SharedTests.test_cold_closed_host_capture_first_and_no_second_after_pass",
+      "runtime.tests.test_observability.ObservabilityContractTests.test_enabled_export_is_bounded_and_not_per_span_blocking",
+      "-v"
+    ],
+    "elapsed": 0.4246625000014319,
+    "errors": 2,
+    "exit": 1,
+    "failures": 0,
+    "interpreter_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "log": ".local/rpf-66-rev-3/diagnostics/baseline312-c30db9f9.log",
+    "parent_pid": 31272,
+    "pid": 33468,
+    "skipped": 0,
+    "source_digest": "ba2e4d523d5ab7055acdb8d346c815ad976b68b1a257372ff1d6c01512b9dc13",
+    "tests": 2
+  },
+  "new_r66_py312": {
+    "command": [
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "runtime.tests.test_effectwitness_pge_r66.R66ClockTests",
+      "runtime.tests.test_effectwitness_pge_r66.R66ShapeTests",
+      "-v"
+    ],
+    "elapsed": 57.15758569999889,
+    "errors": 0,
+    "exit": 0,
+    "failures": 0,
+    "interpreter_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "log": ".local/rpf-66-rev-3/diagnostics/py312-17b83c70.log",
+    "parent_pid": 15316,
+    "pid": 35260,
+    "skipped": 0,
+    "source_digest": "eb6250b39f0e11c29089424a2fa7741216298949c31f176088a3ff1038b10156",
+    "tests": 12
+  },
+  "historical312": {
+    "provenance": "spikes/rpf-66/rev-2/verification-diagnostic.json",
+    "source_digest": "ab63f721505701e8432a26dfb22ed815dce06353c9e4a9a85a74648dab2eb53a",
+    "failures": 1,
+    "errors": 21,
+    "skipped": 2,
+    "parent_compatibility": "NOT_ESTABLISHED"
+  },
+  "buckets": {
+    "CLOCK_BASELINE_REPRODUCED": [
+      "COLD_EVENT_ORDER"
+    ],
+    "CLOCK_PREDICATES_SOURCE_INSPECTED": [
+      "FEEDBACK_CAUSAL_ORDER",
+      "SESSION_MONOTONIC_ORDER",
+      "SESSION_LINEAGE"
+    ],
+    "DEPENDENCY_BASELINE_REPRODUCED": [
+      "traceparent / OTel SDK unavailable"
+    ],
+    "ROOT_UNCONFIRMED": [
+      "ACTUAL_CALLABLE"
+    ],
+    "OWN_R66_FIXED": [
+      "equal monotonic_ns strict assertion / WAL shape & selection ordering"
+    ]
+  },
+  "canonical_ci": {
+    "os": "ubuntu-latest",
+    "python": "3.12",
+    "status": "NOT_RUN"
+  },
+  "windows312_full": "NOT_RUN_THIS_REVISION",
+  "main_gate": "WINDOWS_PYTHON_3_14_FULL_UNFILTERED"
+}

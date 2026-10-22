@@ -1,0 +1,61 @@
+{
+  "task": "RPF-66/rev-3",
+  "status": "PARTIAL",
+  "comparison": [
+    {
+      "option": "strict + bounded safe diagnostics",
+      "decision": "RETAINED"
+    },
+    {
+      "option": "evidence-backed benign compatibility",
+      "decision": "NOT_ENABLED_NO_CONFIRMED_NEED"
+    },
+    {
+      "option": "forced stop or usage repair",
+      "decision": "PROHIBITED"
+    }
+  ],
+  "FROZEN": [
+    "same business effects/candidates/tools/prompts",
+    "Provider14/token35000/CNY0.75",
+    "output256/128",
+    "source-before-paid",
+    "old protected source unchanged"
+  ],
+  "RECOMMENDED": [
+    "Windows parent Python3.14 main full gate",
+    "SDK child pinned Python3.12.13",
+    "WAL seq/hash/ticket causality plus nondecreasing original clocks"
+  ],
+  "DELEGATED_TO_CODEX": {
+    "abi": "rpf66-config-pge-session-v3",
+    "wal_order": "unique event identity in replayed frame sequence",
+    "clock_tests_added": 6,
+    "synthetic_controls": 52,
+    "formal_port_range": [
+      40000,
+      44999
+    ]
+  },
+  "PROVIDER_CHOICE_DIAGNOSIS": "CONFIRMED_CONDITION",
+  "real_shape_count": 5,
+  "old_rev1_condition": "UNKNOWN_NOT_RETROACTIVELY_INFERRED",
+  "remaining_limits": [
+    "task-specific Context/Host/Session/Verifier copy debt",
+    "Windows3.12 parent full compatibility not established",
+    "old HTTP fixture race exact root cause unconfirmed",
+    "no new Linux3.12 hosted CI",
+    "same-service read-only authority only",
+    "no issuer signature/independent reproduction/causal claim",
+    "Rejected Target response ID is retained as a legal SHA256 fingerprint only; original ID unavailable. Frozen source was not repaired after trial."
+  ],
+  "boundaries": {
+    "order_real_target": "NOT_RUN",
+    "cross_domain_real_dual_agent": "NOT_PROVEN",
+    "web": "NOT_INTEGRATED",
+    "causality": "NOT_PROVEN",
+    "independent_reproduction": "NOT_TESTED",
+    "issuer": "NOT_ESTABLISHED",
+    "release": "NOT_AUTHORIZED"
+  }
+}
