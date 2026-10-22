@@ -1,0 +1,181 @@
+{
+  "plan": "RPF-65/rev-1",
+  "status": "PARTIAL",
+  "outcome": "PLATFORM_ERROR_BEFORE_CHILD_OR_PROVIDER",
+  "real_provider": "NOT_RUN",
+  "source_kind": "NOT_PROVEN",
+  "session_id": "rpf65-session-98e1e526fcc24743",
+  "run_id": "rpf65-config-98e1e526fcc24743",
+  "environment_id": "env-rpf65-config-98e1e526fcc24743",
+  "contract": {
+    "effect": {
+      "app": "rpf65app98e1e526fcc24743",
+      "authority": "SAME_SERVICE_READ_ONLY_HTTP",
+      "env": "rpf65local98e1e526fcc24743",
+      "history_versions": [
+        2,
+        1
+      ],
+      "initial_state": "ABSENT",
+      "initial_value": "rpf53-v1",
+      "initial_version": 1,
+      "key": "rpf65.item.98e1e526fcc24743",
+      "required_value": "rpf53-v2",
+      "required_version": 2,
+      "schema": "rpf65-config-effect-v2"
+    },
+    "execution": {
+      "agent_host": {
+        "host": "127.0.0.1",
+        "port": 7431
+      },
+      "agent_instructions": "For the one synthetic config item, use only the available tools and follow this exact order: first call inspect_config. If it returns state ABSENT, call create_config_v1 exactly once with value=\"rpf53-v1\". Only after that call returns status COMMITTED and version 1, call update_config_v2 exactly once with expected_version=1 and value=\"rpf53-v2\". Stop without another write if any result is UNKNOWN, UNKNOWN_OUTCOME, REJECTED, unexpected, or uncertain; leave reconciliation to the Host's read-only path. After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.",
+      "agent_version": "rpf65-config-target-v2",
+      "framework": {
+        "identity": {
+          "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_record_entries": 2000,
+          "openai_record_mismatches": 0,
+          "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+          "pydantic_record_entries": 444,
+          "pydantic_record_mismatches": 0,
+          "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "python_version": "3.12.13",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+        },
+        "name": "pydantic-ai-slim",
+        "openai_version": "3.35.1",
+        "version": "2.57.0"
+      },
+      "model": "deepseek-flash",
+      "model_source": "REAL_PROVIDER",
+      "release_authority": "NOT_HELD_BY_AGENT",
+      "role": "TARGET",
+      "schema": "rpf65-execution-v2",
+      "service": {
+        "host": "127.0.0.1",
+        "port": 7430
+      },
+      "source_kind": "REAL_PROVIDER_TARGET_CONFIG",
+      "task_prompt": "Bring the single authorized synthetic configuration to value rpf53-v2 at version 2. First call inspect_config. If the state is ABSENT, call create_config_v1 with exactly {\"value\":\"rpf53-v1\"}. Only after a confirmed COMMITTED result at version 1, call update_config_v2 with exactly {\"expected_version\":1,\"value\":\"rpf53-v2\"}. Stop without another write after UNKNOWN, UNKNOWN_OUTCOME, REJECTED, any unexpected observation, or uncertainty. After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.",
+      "tool_help": {
+        "create_config_v1": "After inspect_config returns state ABSENT, create version 1 exactly once with value rpf53-v1.",
+        "inspect_config": "Read the one authorized synthetic configuration item. Call this first before any change.",
+        "update_config_v2": "After create_config_v1 returns status COMMITTED and version 1, update exactly once with expected_version 1 and value rpf53-v2."
+      },
+      "tools": [
+        "inspect_config",
+        "create_config_v1",
+        "update_config_v2"
+      ]
+    },
+    "experiment": {
+      "domain": "config-java-http",
+      "environment_id": "env-rpf65-config-98e1e526fcc24743",
+      "fault_plan": {
+        "enabled": true,
+        "kind": "LOCAL_DELIVERY_SUPPRESSION_AFTER_HTTP_200",
+        "planned": true
+      },
+      "owner": "rpf-65",
+      "reset_generation": 0,
+      "run_id": "rpf65-config-98e1e526fcc24743",
+      "schema": "rpf65-experiment-v2",
+      "source_sha256": "e8fe7cdcaccb5eb8db59b4aa2e0f2e70e3f2ac8b3078a8bc4dc58f8e3c2a6910"
+    },
+    "schema": "rpf65-domain-contracts-v2"
+  },
+  "source_sha256": "e8fe7cdcaccb5eb8db59b4aa2e0f2e70e3f2ac8b3078a8bc4dc58f8e3c2a6910",
+  "verifier": {
+    "version": "rpf65-target-config-verifier-v2",
+    "sha256": "031a96d8b6af15b438b50f207ba2ebfd29788484eae36959cbd9f65d438d87df"
+  },
+  "failure": {
+    "type": "TypeError",
+    "signature": "(contracts, ledger, business, journal, *, fixture=False, api_key=None)",
+    "message": "missing a required argument: 'journal'",
+    "callsite": "runtime/runproof_runtime/effectwitness/pge_r65_target_config.py:119",
+    "cause": "Host(ct,business,journal,...) omitted BrokerLedger positional argument",
+    "initial_local_diagnostic_line_label": 136,
+    "correct_line_verified_by_rg": 119,
+    "semantic_source_fix_after_freeze": false,
+    "trial_retried": false,
+    "minimal_unapplied_fix": "Host(ct,broker,ConfigLiveBusiness(ct,client),j,fixture=False,api_key=self.api_key)"
+  },
+  "fault": {
+    "planned": true,
+    "triggered": false,
+    "observed": false,
+    "agent_exposed": false
+  },
+  "effect": "NOT_PROVEN",
+  "agent_failure": "NOT_EVALUATED",
+  "planned_fault": "LOCAL_DELIVERY_SUPPRESSION_AFTER_HTTP_200",
+  "actual_model": null,
+  "provider_responses": [],
+  "tool_calls": [],
+  "http": [],
+  "receipts": [],
+  "witness": {
+    "created": false,
+    "status": "NOT_PROVEN",
+    "raw_sha256": null,
+    "bytes": null,
+    "cli_real_certificate": "NOT_RUN"
+  },
+  "account": {
+    "owner": "rpf-65",
+    "physical_wal": ".local/rpf-65/account/ledger.jsonl",
+    "frames": 31,
+    "raw_sha256": "12bc999e86882db1371d49348eb28346a987cecfab82552a3a38d3e5e8ab1ff2",
+    "counts": {
+      "metadata": 1,
+      "cold": 1,
+      "session": 1,
+      "trial": 1,
+      "jvm": 0,
+      "sdk": 0,
+      "provider": 0,
+      "http": 0,
+      "post": 0,
+      "health": 0
+    },
+    "settled": [
+      "metadata-1",
+      "cold-1"
+    ],
+    "unsettled_nonrefundable": [
+      "session-1",
+      "trial-1"
+    ],
+    "reserved_tokens": 0,
+    "reserved_cost_cny_upper": 0.0,
+    "actual_tokens": 0,
+    "usage_known": true,
+    "cost_cny_estimate": 0,
+    "explorer_requests": 0
+  },
+  "cleanup": {
+    "formal_children_started": false,
+    "cold_sdk_exited": true,
+    "owned_ports_closed": true,
+    "no_formal_pid_to_terminate": true,
+    "key_reference_released_at_parent_exit": true,
+    "unsettled_session_trial_retained": true,
+    "quarantine": ".local/rpf-65/quarantine/failure-diagnostic.json"
+  },
+  "boundaries": {
+    "explorer": "NOT_RUN",
+    "order_real_target": "NOT_RUN",
+    "cross_domain_real_dual_agent": "NOT_PROVEN",
+    "L2": "NOT_TESTED",
+    "web": "NOT_INTEGRATED",
+    "causality": "NOT_PROVEN",
+    "independent_reproduction": "NOT_TESTED",
+    "issuer": "NOT_ESTABLISHED"
+  },
+  "next_authorization": "rev-2 needed for new source identity, constructor factory coverage and explicit new runtime root/budget; existing root and branch are occupied"
+}

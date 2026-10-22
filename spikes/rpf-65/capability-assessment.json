@@ -1,0 +1,138 @@
+{
+  "plan": "RPF-65/rev-1",
+  "status": "PARTIAL",
+  "abi": "rpf65-config-domain-port-v2",
+  "selected_domain": "config-java-http",
+  "comparison": {
+    "A_config_real_target": {
+      "decision": "SELECTED",
+      "reuse": "fixed SDK, three tools, Java H2 HTTP, controlled ACK suppression",
+      "actual": "metadata/cold PASS; formal factory TypeError; no Provider/Java business"
+    },
+    "B_order_real_target": {
+      "decision": "NOT_RUN_OUTSIDE_SCOPE",
+      "cost": "different SDK tool registry/authority/fault adapter; RPF49 historical owner cannot be reused directly"
+    },
+    "C_protocol_only": {
+      "decision": "INSUFFICIENT_FOR_A05",
+      "cost": "zero Provider; synthetic semantics only"
+    }
+  },
+  "actual_call_graph_cold": [
+    "probe.cold",
+    "session.cold",
+    "Host(ConfigLiveHost)",
+    "run_sdk",
+    "ProcessSupervisor.start/received/close",
+    "fixed config_live_external.py -> PydanticAI/OpenAI -> loopback Host",
+    "fixture -> memory backend (no business HTTP)"
+  ],
+  "formal_call_graph_observed": [
+    "probe.live",
+    "Session.execute",
+    "ConfigPort.execute",
+    "BrokerLedger constructor",
+    "Host argument binding TypeError (before body)"
+  ],
+  "supervisor_reuse": {
+    "source": "runtime/runproof_runtime/effectwitness/pge_port_context.py",
+    "sha256": "0bd2b0256be2064b46afba124715e273a7eaf09345e3cddfeb165e8d7fe133d5",
+    "methods": [
+      "start",
+      "received",
+      "close"
+    ],
+    "minimal_context": [
+      "scope",
+      "once",
+      "public"
+    ],
+    "minimal_ledger": [
+      "reserve",
+      "settle",
+      "append"
+    ],
+    "actually_observed": "cold SDK only; JVM and formal SDK NOT_RUN"
+  },
+  "structural_domain_port": {
+    "source": "runtime/runproof_runtime/effectwitness/pge_domain_port.py",
+    "sha256": "79835650efe04c7581143ec5a2d0e060d8cc0240e7c14373a1b2e6531d4230b8",
+    "methods": [
+      "validate_contract",
+      "execute",
+      "verify",
+      "cleanup"
+    ],
+    "old_select_or_projection_used": false,
+    "runtime_checkable": false
+  },
+  "copy_debt": {
+    "metadata": "new context.metadata adapted readonly old metadata; retained AST-pinned inspector and JAR copier",
+    "broker": "adapted RPF63 BrokerLedger state snapshots/prefix upper proof; new role/cost/caps replay",
+    "host": "adapted RPF63 Host constructor, fault and tool phase guard; base protocol methods reused",
+    "sdk": "adapted RPF64 run_sdk for explicit cold/real flag and shared supervisor; PID binding",
+    "java": "adapted RPF64 ConfigPort lifecycle, pinned arguments, readiness, GET oracle and finally; formal path not reached",
+    "full_old_runner_entrypoints_called": false,
+    "old_globals_mutated": false,
+    "known_maintenance_failure": "constructor signature copied but callsite missed broker; synthetic fake_scene bypassed real factory"
+  },
+  "counts": {
+    "runtime/runproof_runtime/effectwitness/pge_target_capability.py": {
+      "sha256_lf": "740655bdd078ae93da55ec83eb8a700a3e55b5a188c893e01b6f1223b25eb38d",
+      "lines": 100,
+      "direct_popen": 0,
+      "global_WORK_references": 2
+    },
+    "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": {
+      "sha256_lf": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba",
+      "lines": 206,
+      "direct_popen": 2,
+      "global_WORK_references": 5
+    },
+    "runtime/runproof_runtime/effectwitness/pge_portability_config.py": {
+      "sha256_lf": "a9f8e6c9f5bab0e418ec5e8a8f54a598f6cd3fb233717e47be7dc45b3d12999e",
+      "lines": 97,
+      "direct_popen": 0,
+      "global_WORK_references": 0
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r65_target_config.py": {
+      "sha256_lf": "5fee017422e42d156c5b3b260e1a4838df50e9d401bb98b534fc774c6fcaaeb3",
+      "lines": 138,
+      "direct_popen": 0,
+      "global_WORK_references": 0
+    },
+    "runtime/runproof_runtime/effectwitness/pge_target_config_spike.py": {
+      "sha256_lf": "5ee96446aade25748b766bb61e153a76a87ad92762cb8a8b276673efe660fc80",
+      "lines": 194,
+      "direct_popen": 2,
+      "global_WORK_references": 5
+    }
+  },
+  "v1_incompatibilities": [
+    "rpf64 owner/root/source bounds",
+    "Provider=0 WAL",
+    "fixture-only Host/model/SDK report",
+    "fixed order-config session",
+    "real-source rejecting projection/verifier"
+  ],
+  "future_minimal_seam": "testable business/Host factory with explicit broker parameter; no new framework proposed",
+  "hypothesis": "REAL_TARGET_PORT_BRIDGE_NOT_PROVEN",
+  "complete_generic_or_cross_domain_claim": false,
+  "actual_reuse_methods": {
+    "ConfigLiveHost": [
+      "start",
+      "close",
+      "_ready",
+      "_completion",
+      "_tool",
+      "_verify_tool_returns",
+      "_fixture_response"
+    ],
+    "ConfigLiveHost._provider_request": "NOT_RUN",
+    "ConfigLiveHttp.request": "SYNTHETIC_ONLY_NOT_RUN_REAL",
+    "ConfigLiveBusiness.invoke": "SYNTHETIC_ONLY_NOT_RUN_REAL",
+    "metadata_inspector": "fixed spikes/rpf-53/probe.py:_sdk_identity AST string and spikes/rpf-55/probe.py:resolve_direct_python",
+    "all_source_hashes": "preflight-diagnostic.json:source_freeze.sources"
+  },
+  "counts_scope": "RPF62 capability wrapper and task-bound Java driver reported separately; line counts are not portability proof"
+}
