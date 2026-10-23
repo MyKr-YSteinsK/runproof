@@ -40,7 +40,7 @@ Oracle、Tool回注、故障四状态、第一反馈、第二轮、L2均NOT_RUN�
 | R4-A04 | FAIL | 完整免费实施门禁未建立，不能进入P2 |
 | R4-A05～A08 | NOT_RUN | 无Freeze/metadata/cold/paid/真实Witness |
 | R4-A09 | PASS | Provider/Key/业务副作用0，旧根与用户目录保护 |
-| R4-A10 | NOT_RUN | 交付双读待同轮回执补记 |
+| R4-A10 | PASS | 首提交普通push及Git/GitHub API双读一致，最终receipt另报 |
 
 离线诊断init exit0、verify exit0，admit按预期exit3且资源0。12例属于协议调查夹具，不是focused24、≥60重锚语义攻击或真实证书负控。focused/full/历史18/Reviewed/Public均NOT_RUN：在协议前置冲突明确后未运行不能解锁P2的昂贵门禁，未复用rev-3 full为本轮PASS。Windows3.12父全量NOT_ESTABLISHED；Ubuntu3.12 hosted CI NOT_RUN。
 
@@ -51,3 +51,5 @@ Oracle、Tool回注、故障四状态、第一反馈、第二轮、L2均NOT_RUN�
 交付采取本分支focused commit与普通push，并以fresh ls-remote及GitHub API双读。最终SHA在聊天回执提供，本文不回填自身最终SHA。
 
 下一版合同需明确授权一个请求级严格响应输出上限：可允许原验证器接收显式cap参数，或明确允许任务拥有的完整严格验证器承担cap相关验证并调整“必须原解析器”条款。仍须保留length拒绝、usage一致性、ID/Tool/字段校验、UNKNOWN停写及完整Source绑定。当前合同下不采用这些越界方案。
+
+交付核实：首提交 8dae5d8a99f28aa4abedec8104e38d170a050e45 已普通push；fresh ls-remote与独立GitHub API均返回该SHA。main/旧rev-3远端SHA保持原值；本分支Actions runs=0。JSON解析5件通过、条件Witness不存在；metadata/cold/admit/live均实测exit3且未消费资源。staged及unstaged diff --check通过。后续仅提交本交付回执，最终远端SHA在聊天单独报告。

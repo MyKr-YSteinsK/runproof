@@ -12,8 +12,31 @@
       "exit": 3,
       "expected": "BLOCKED_NO_RESOURCES",
       "mode": "admit"
+    },
+    {
+      "exit": 3,
+      "expected": "BLOCKED_NO_RESOURCES",
+      "mode": "metadata"
+    },
+    {
+      "exit": 3,
+      "expected": "BLOCKED_NO_RESOURCES",
+      "mode": "cold"
+    },
+    {
+      "exit": 3,
+      "expected": "BLOCKED_NO_RESOURCES",
+      "mode": "live"
     }
   ],
+  "delivery": {
+    "commit": "8dae5d8a99f28aa4abedec8104e38d170a050e45",
+    "final_receipt_commit": "REPORTED_IN_CHAT",
+    "fresh_ls_remote": "8dae5d8a99f28aa4abedec8104e38d170a050e45",
+    "github_api": "8dae5d8a99f28aa4abedec8104e38d170a050e45",
+    "hosted_runs": 0,
+    "ordinary_push": "PASS"
+  },
   "diagnostic": {
     "business_jvm_starts": 0,
     "cases": [
@@ -139,6 +162,10 @@
     "witness": "NOT_CREATED"
   },
   "focused_24": "NOT_RUN",
+  "format_checks": {
+    "staged": "PASS",
+    "unstaged": "PASS"
+  },
   "full_windows314": "NOT_RUN",
   "gates": {
     "G0": "PASS",
@@ -151,7 +178,7 @@
     "R4-A07": "NOT_RUN",
     "R4-A08": "NOT_RUN",
     "R4-A09": "PASS",
-    "R4-A10": "NOT_RUN"
+    "R4-A10": "PASS"
   },
   "historical_18": "NOT_RUN",
   "hosted_ci": "NOT_RUN",
