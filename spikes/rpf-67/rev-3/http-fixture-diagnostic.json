@@ -1,0 +1,457 @@
+{
+  "plan": "RPF-67/rev-3",
+  "status": "PASS",
+  "source_kind": "SYNTHETIC_TEST_ONLY",
+  "baseline": {
+    "attempts": 10,
+    "fixture_sha256": "6dd3fd4b49adb689b310557340e2bfc380cb10726e63db7519ecda6bd318e59d",
+    "groups": 1,
+    "provider": 0,
+    "result": {
+      "command": [
+        "-m",
+        "unittest",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+        "-v"
+      ],
+      "cwd": ".local\\rpf-67-rev-3\\snapshots\\http-baseline-57ce448d58",
+      "elapsed": 1.3217679999979737,
+      "errors": 5,
+      "exit": 1,
+      "failures": 0,
+      "label": "http-baseline",
+      "log": ".local\\rpf-67-rev-3\\diagnostics\\http-baseline-f74656a8.log",
+      "parent_pid": 27496,
+      "pid": 32244,
+      "skipped": 0,
+      "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
+      "status": "COMPLETE",
+      "tests": 10
+    },
+    "source_kind": "SYNTHETIC_TEST_ONLY"
+  },
+  "post": {
+    "fixture_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+    "proofs": [
+      {
+        "fixture_source_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+        "label": "client-abort",
+        "provider": 0,
+        "rows": [
+          {
+            "business_calls": 0,
+            "cleanup": true
+          }
+        ],
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "PASS"
+      },
+      {
+        "fixture_source_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+        "label": "framing",
+        "provider": 0,
+        "rows": [
+          {
+            "case": "missing",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.011535499997989973,
+            "status": 400
+          },
+          {
+            "case": "negative",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.014520600001560524,
+            "status": 400
+          },
+          {
+            "case": "zero",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.015511999998125248,
+            "status": 400
+          },
+          {
+            "case": "huge",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.0009737000000313856,
+            "status": 400
+          },
+          {
+            "case": "duplicate",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.014560299998265691,
+            "status": 400
+          },
+          {
+            "case": "transfer",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.01454110000122455,
+            "status": 400
+          },
+          {
+            "case": "short",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.015335500000219326,
+            "status": 400
+          },
+          {
+            "case": "stalled",
+            "cleanup": true,
+            "code": "FIXTURE_REQUEST_SIZE",
+            "elapsed": 0.2629551999998512,
+            "status": 400
+          },
+          {
+            "case": "unauth-short",
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "elapsed": 0.0010492000001249835,
+            "status": 400
+          },
+          {
+            "case": "unauth-stalled",
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "elapsed": 0.26425380000000587,
+            "status": 400
+          }
+        ],
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "PASS"
+      },
+      {
+        "fixture_source_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+        "label": "normal",
+        "provider": 0,
+        "rows": [
+          {
+            "callbacks": 3,
+            "cleanup": true,
+            "requests": 8,
+            "status": 200
+          }
+        ],
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "PASS"
+      },
+      {
+        "fixture_source_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+        "label": "rejections",
+        "provider": 0,
+        "rows": [
+          {
+            "case": "host",
+            "cleanup": true,
+            "code": "FIXTURE_HOST_HEADER",
+            "status": 400
+          },
+          {
+            "case": "origin",
+            "cleanup": true,
+            "code": "FIXTURE_ORIGIN",
+            "status": 400
+          },
+          {
+            "case": "type",
+            "cleanup": true,
+            "code": "FIXTURE_CONTENT_TYPE",
+            "status": 400
+          },
+          {
+            "case": "route",
+            "cleanup": true,
+            "code": "FIXTURE_ROUTE",
+            "status": 400
+          },
+          {
+            "case": "json",
+            "cleanup": true,
+            "code": "INVALID_JSON",
+            "status": 400
+          },
+          {
+            "case": "method",
+            "cleanup": true,
+            "code": "FIXTURE_METHOD",
+            "status": 405
+          }
+        ],
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "PASS"
+      },
+      {
+        "fixture_source_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+        "label": "stress20",
+        "provider": 0,
+        "rows": [
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 1,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 2,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 3,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 4,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 5,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 6,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 7,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 8,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 9,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 10,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 11,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 12,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 13,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 14,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 15,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 16,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 17,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 18,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 19,
+            "requests": 2,
+            "status": 400
+          },
+          {
+            "cleanup": true,
+            "code": "FIXTURE_AUTH",
+            "fixture": 20,
+            "requests": 2,
+            "status": 400
+          }
+        ],
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "PASS"
+      }
+    ],
+    "provider": 0,
+    "result": {
+      "command": [
+        "-m",
+        "unittest",
+        "runtime.tests.test_effectwitness_config_target",
+        "runtime.tests.test_effectwitness_pge_r67",
+        "-v"
+      ],
+      "cwd": ".local\\rpf-67-rev-3\\snapshots\\focused-b8c49a22cc",
+      "elapsed": 51.281918299999234,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "focused",
+      "log": ".local\\rpf-67-rev-3\\diagnostics\\focused-9f0527b6.log",
+      "parent_pid": 16808,
+      "pid": 24864,
+      "skipped": 0,
+      "source_digest": "02739974284fc41975a60b3160d41f938f080338a2e3e7517d2724c4a3fec001",
+      "status": "COMPLETE",
+      "tests": 52
+    },
+    "source_digest": "02739974284fc41975a60b3160d41f938f080338a2e3e7517d2724c4a3fec001",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "status": "PASS",
+    "stress_fixtures": 20,
+    "stress_requests": 40
+  },
+  "legacy_sdk": {
+    "backend_state": [
+      2,
+      "rpf52-v2"
+    ],
+    "callbacks": 3,
+    "completions": 4,
+    "elapsed": 2.958123300002626,
+    "fixture_raw_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+    "host_failure": null,
+    "java": 0,
+    "original_script_sha256": "8bba56d53408c27200724c86538778ca915951776310bdc126b682a0cc5615aa",
+    "pid": 11124,
+    "process_gone": true,
+    "provider": 0,
+    "report": {
+      "final_text_persisted": false,
+      "framework": "pydantic-ai-slim",
+      "guard_denials": [],
+      "input_tokens": 0,
+      "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+      "openai_version": "3.35.1",
+      "output_tokens": 0,
+      "pid": 11124,
+      "python_version": "3.12.13",
+      "requests": 4,
+      "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+      "status": "COMPLETED",
+      "tool_calls": 3,
+      "version": "2.57.0"
+    },
+    "returncode": 0,
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "status": "PASS",
+    "stderr_bytes": 0,
+    "thread_gone": true
+  },
+  "scope": {
+    "historical": {
+      "current_lf_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+      "current_raw_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+      "historical_raw_sha256": "6dd3fd4b49adb689b310557340e2bfc380cb10726e63db7519ecda6bd318e59d",
+      "historical_reexecution": "NOT_CLAIMED",
+      "historical_witness_sha256": "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27",
+      "path": "runtime/runproof_runtime/effectwitness/config_target_bridge.py",
+      "rejection_code": "FIXTURE_AUTH"
+    },
+    "only_changed": "ConfigTargetFixtureHost.start",
+    "original_script_unchanged": true,
+    "status": "PASS"
+  },
+  "identity": {
+    "path": "runtime/runproof_runtime/effectwitness/config_target_bridge.py",
+    "historical_raw_sha256": "6dd3fd4b49adb689b310557340e2bfc380cb10726e63db7519ecda6bd318e59d",
+    "historical_witness_sha256": "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27",
+    "current_raw_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+    "current_lf_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+    "rejection_code": "FIXTURE_AUTH",
+    "historical_reexecution": "NOT_CLAIMED"
+  },
+  "mechanism": {
+    "max_body_bytes": 65536,
+    "absolute_read_deadline_seconds": 0.25,
+    "rejected_body_json_parsed": false,
+    "untrusted_content_persisted": false,
+    "auth_before_dispatch": true,
+    "normal_200_routes_unchanged": true,
+    "ambiguous_framing_rejected": true,
+    "client_retries": 0
+  },
+  "root_cause": "Unread request body plus connection close is a source-supported hypothesis; Windows kernel cause not uniquely established",
+  "development_attempts": [
+    {
+      "log": ".local/rpf-67-rev-3/http-development-01.log",
+      "tests": 5,
+      "errors": 1,
+      "failures": 1,
+      "reason": "New test expected wrong JSON code and passed str to bytes-only strict_json; production HTTP stress20/framing passed; corrected only new tests"
+    }
+  ],
+  "provider": 0
+}

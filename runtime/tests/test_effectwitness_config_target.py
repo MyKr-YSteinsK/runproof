@@ -7,6 +7,8 @@ import socket
 import sys
 import time
 import unittest
+import uuid
+from contextlib import contextmanager
 from pathlib import Path
 
 from runtime.runproof_runtime.effectwitness.config_target_bridge import (
@@ -517,6 +519,172 @@ class ConfigTargetVerifierBoundaryTests(unittest.TestCase):
         self.assertTrue(candidate.is_file())
         audit("open", (str(candidate), "r", os.O_RDONLY))
         self.assertEqual(denied, [])
+
+
+class ConfigTargetHttpRejectionRegressionTests(unittest.TestCase):
+    @contextmanager
+    def fixture(self):
+        frozen = contracts()
+        with socket.socket() as sock:
+            sock.bind(("127.0.0.1", 0))
+            port = sock.getsockname()[1]
+        frozen["execution"]["agent_host"]["port"] = port
+        frozen["experiment"]["agent_host_port"] = port
+        frozen["experiment"]["execution_digest"] = digest(frozen["execution"])
+        validate_contracts(frozen)
+        backend = ConfigTargetInMemoryDiagnosticBackend(frozen)
+        tools = ConfigTargetToolHost(frozen, backend)
+        fixture = ConfigTargetFixtureHost(frozen, tools, "a" * 64, "b" * 64)
+        fixture.start()
+        thread = fixture._thread
+        try:
+            yield frozen, backend, tools, fixture
+        finally:
+            start = time.monotonic()
+            fixture.close()
+            self.assertLess(time.monotonic() - start, 2)
+            self.assertFalse(thread.is_alive())
+            with socket.socket() as sock:
+                sock.settimeout(0.2)
+                self.assertNotEqual(sock.connect_ex(("127.0.0.1", port)), 0)
+
+    def request(self, fixture, path, body=b"{}", *, method="POST", headers=None):
+        values = {"Host": f"127.0.0.1:{fixture.port}",
+                  "Authorization": "Bearer " + fixture.FIXTURE_TOKEN,
+                  "Content-Type": "application/json"}
+        values.update(headers or {})
+        connection = http.client.HTTPConnection("127.0.0.1", fixture.port, timeout=2)
+        try:
+            connection.request(method, path, body=body, headers=values)
+            response = connection.getresponse()
+            result = strict_json(response.read())
+            self.assertEqual(response.getheader("Connection"), "close")
+            return response.status, result
+        finally:
+            connection.close()
+
+    def record(self, label, rows):
+        folder = ROOT / ".local/rpf-67-rev-3/http-tests"
+        folder.mkdir(parents=True, exist_ok=True)
+        with (folder / (label + "-" + uuid.uuid4().hex + ".json")).open("xb") as f:
+            f.write(canonical({"status": "PASS", "label": label, "rows": rows,
+                               "provider": 0, "source_kind": "SYNTHETIC_TEST_ONLY",
+                               "fixture_source_sha256": __import__("hashlib").sha256(
+                                   (ROOT / "runtime/runproof_runtime/effectwitness/config_target_bridge.py").read_bytes()).hexdigest()}))
+
+    def test_twenty_fresh_hosts_two_auth_rejections_sticky_code(self):
+        rows = []
+        for index in range(20):
+            with self.fixture() as (_, backend, tools, fixture):
+                before = list(backend.observations)
+                for _ in range(2):
+                    self.assertEqual(self.request(fixture, "/ready", headers={
+                        "Authorization": "Bearer wrong", "Origin": ""}),
+                        (400, {"error": "FIXTURE_AUTH"}))
+                    self.assertEqual(fixture.first_failure_code, "FIXTURE_AUTH")
+                self.assertIsNone(fixture.runtime)
+                self.assertEqual(tools.tool_trace, [])
+                self.assertEqual(fixture.completions, [])
+                self.assertEqual(backend.observations, before)
+            rows.append({"fixture": index + 1, "requests": 2, "status": 400,
+                         "code": "FIXTURE_AUTH", "cleanup": True})
+        self.record("stress20", rows)
+
+    def test_rejection_matrix_preserves_auth_host_origin_type_route_method(self):
+        rows = []
+        for name, path, method, headers, body, code, status in [
+            ("host", "/ready", "POST", {"Host": "invalid"}, b"{}", "FIXTURE_HOST_HEADER", 400),
+            ("origin", "/ready", "POST", {"Origin": ""}, b"{}", "FIXTURE_ORIGIN", 400),
+            ("type", "/ready", "POST", {"Content-Type": "text/plain"}, b"{}", "FIXTURE_CONTENT_TYPE", 400),
+            ("route", "/absent", "POST", {}, b"{}", "FIXTURE_ROUTE", 400),
+            ("json", "/ready", "POST", {}, b"{", "INVALID_JSON", 400),
+            ("method", "/ready", "GET", {}, b"", "FIXTURE_METHOD", 405),
+        ]:
+            with self.fixture() as (_, backend, tools, fixture):
+                before = list(backend.observations)
+                self.assertEqual(self.request(fixture, path, method=method, headers=headers, body=body), (status, {"error": code}))
+                self.assertIsNone(fixture.runtime)
+                self.assertEqual(tools.tool_trace, [])
+                self.assertEqual(backend.observations, before)
+            rows.append({"case": name, "status": status, "code": code, "cleanup": True})
+        self.record("rejections", rows)
+
+    def raw_request(self, fixture, length, *, data=b"", half_close=False, extra="", auth=True):
+        with socket.create_connection(("127.0.0.1", fixture.port), timeout=2) as sock:
+            token = fixture.FIXTURE_TOKEN if auth else "wrong"
+            head = (f"POST /ready HTTP/1.1\r\nHost: 127.0.0.1:{fixture.port}\r\n"
+                    f"Authorization: Bearer {token}\r\nContent-Type: application/json\r\n")
+            if length is not None:
+                head += "Content-Length: " + length + "\r\n"
+            sock.sendall((head + extra + "\r\n").encode() + data)
+            if half_close:
+                sock.shutdown(socket.SHUT_WR)
+            response = http.client.HTTPResponse(sock)
+            response.begin()
+            return response.status, strict_json(response.read())
+
+    def test_bounded_missing_large_ambiguous_short_and_stalled_body(self):
+        rows = []
+        for name, length, data, half_close, extra, auth in [
+            ("missing", None, b"", False, "", True),
+            ("negative", "-1", b"", False, "", True),
+            ("zero", "0", b"", False, "", True),
+            ("huge", "99999999999999999999", b"", False, "", True),
+            ("duplicate", "2", b"", False, "Content-Length: 3\r\n", True),
+            ("transfer", "2", b"", False, "Transfer-Encoding: chunked\r\n", True),
+            ("short", "8", b"{}", True, "", True),
+            ("stalled", "8", b"{}", False, "", True),
+            ("unauth-short", "8", b"{}", True, "", False),
+            ("unauth-stalled", "8", b"{}", False, "", False),
+        ]:
+            with self.fixture() as (_, backend, tools, fixture):
+                before = list(backend.observations)
+                start = time.monotonic()
+                status, result = self.raw_request(fixture, length, data=data, half_close=half_close, extra=extra, auth=auth)
+                elapsed = time.monotonic() - start
+                code = "FIXTURE_REQUEST_SIZE" if auth else "FIXTURE_AUTH"
+                self.assertEqual((status, result), (400, {"error": code}))
+                self.assertLess(elapsed, 2)
+                self.assertEqual(tools.tool_trace, [])
+                self.assertEqual(backend.observations, before)
+            rows.append({"case": name, "status": status, "code": code, "elapsed": elapsed, "cleanup": True})
+        self.record("framing", rows)
+
+    def test_client_abort_has_bounded_thread_and_port_cleanup(self):
+        with self.fixture() as (_, _, tools, fixture):
+            with socket.create_connection(("127.0.0.1", fixture.port), timeout=2) as sock:
+                sock.sendall((f"POST /ready HTTP/1.1\r\nHost: 127.0.0.1:{fixture.port}\r\n"
+                              "Authorization: Bearer wrong\r\nContent-Length: 8\r\n\r\n{}").encode())
+            self.assertEqual(tools.tool_trace, [])
+        self.record("client-abort", [{"cleanup": True, "business_calls": 0}])
+
+    def test_normal_ready_completion_and_three_callbacks_remain_200(self):
+        with self.fixture() as (frozen, backend, tools, fixture):
+            ready = dict(framework="pydantic-ai-slim", version="2.57.0", openai_version="3.35.1",
+                         python_version="3.12.13", pid=os.getpid(), sdk_source_sha256="a" * 64,
+                         openai_source_sha256="b" * 64)
+            self.assertEqual(self.request(fixture, "/ready", canonical(ready)), (200, {"status": "SDK_RUNTIME_CONNECTED"}))
+            registry = [{"type": "function", "function": {"name": name, "parameters": {
+                "type": "object", "properties": properties, "required": list(properties), "additionalProperties": False}}}
+                for name, properties in [("inspect_config", {}), ("create_config_v1", {"value": {"type": "string"}}),
+                                         ("update_config_v2", {"expected_version": {"type": "integer"}, "value": {"type": "string"}})]]
+            messages = []
+            for index in range(4):
+                request = dict(model="rpf52-fixture", stream=False, parallel_tool_calls=False, tools=registry, messages=messages)
+                status, data = self.request(fixture, "/v1/chat/completions", canonical(request))
+                self.assertEqual(status, 200)
+                message = data["choices"][0]["message"]
+                messages.append(message)
+                if index < 3:
+                    call = message["tool_calls"][0]
+                    value = dict(call_id=call["id"], name=call["function"]["name"], arguments=strict_json(call["function"]["arguments"].encode()))
+                    status, result = self.request(fixture, "/tool", canonical(value))
+                    self.assertEqual(status, 200)
+                    messages.append(dict(role="tool", tool_call_id=call["id"], content=canonical(result).decode()))
+            self.assertEqual(len(tools.tool_trace), 3)
+            self.assertEqual(backend._state, (2, "rpf52-v2"))
+            self.assertIsNone(fixture.first_failure_code)
+        self.record("normal", [{"requests": 8, "callbacks": 3, "status": 200, "cleanup": True}])
 
 
 if __name__ == "__main__":

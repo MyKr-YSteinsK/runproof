@@ -109,6 +109,9 @@ def controls(original):
     add('parse-before-reserve-equal-clock',swap_kind('PROVIDER_PARSE_ACCEPTED','RESERVE'))
     add('tool-before-parse-equal-clock',swap_kind('INTENT','PROVIDER_PARSE_ACCEPTED'))
     add('sdk-mixed-feedback-drift',request_mutation(1,'sdk_feedback_preserved',False))
+    add('legacy-history-relabel',lambda p:p['context']['legacy_fixture'].update(historical_raw_sha256=p['context']['legacy_fixture']['current_raw_sha256']))
+    add('legacy-old-source-as-current',lambda p:p['context']['sources'][p['context']['legacy_fixture']['path']].update(raw=p['context']['legacy_fixture']['historical_raw_sha256'],lf=p['context']['legacy_fixture']['historical_raw_sha256']))
+    add('http-error-code-flip',lambda p:p['context']['legacy_fixture'].update(rejection_code='FIXTURE_ORIGIN'))
     return rows
 
 class RPF67Tests(unittest.TestCase):
@@ -117,6 +120,13 @@ class RPF67Tests(unittest.TestCase):
     def test_production_sqlite_reconcile(self):
         result=v.verify(self.witness);self.assertTrue(result['optional_reconcile']);self.assertEqual(result['provider_requests'],0)
     def test_safe_stop_and_controller_readback(self):self.assertFalse(v.verify(self.safe)['optional_reconcile'])
+    def test_legacy_current_source_and_history_are_distinct(self):
+        identity=c.legacy_identity();sources=c.sources()
+        self.assertNotEqual(identity['historical_raw_sha256'],identity['current_raw_sha256'])
+        self.assertEqual(sources[identity['path']],dict(raw=identity['current_raw_sha256'],lf=identity['current_lf_sha256']))
+        self.assertIn('runtime/tests/test_effectwitness_config_target.py',sources)
+        self.assertEqual(identity['historical_reexecution'],'NOT_CLAIMED')
+        self.assertEqual(identity['rejection_code'],'FIXTURE_AUTH')
     def test_plain_null_production_path(self):
         witness=s.synthetic(mixed=False);self.assertEqual(v.verify(witness)['provider_requests'],0);self.assertTrue(all(not r['response']['content_is_nonempty'] for r in witness['payload']['order']['sdk']['requests'][:-1]))
     def test_semantic_reanchored_controls(self):
@@ -125,7 +135,7 @@ class RPF67Tests(unittest.TestCase):
             with self.subTest(label=label):
                 with self.assertRaises(Exception):v.verify_bytes(c.canonical(candidate),c.digest(candidate))
     def test_cli_0_2_3(self):
-        root=c.ROOT/'.local/rpf-67-rev-2/tests'/secrets.token_hex(8);root.mkdir();path=root/'synthetic.json';raw=c.canonical(self.witness);path.write_bytes(raw)
+        root=c.ROOT/'.local/rpf-67-rev-3/tests'/secrets.token_hex(8);root.mkdir();path=root/'synthetic.json';raw=c.canonical(self.witness);path.write_bytes(raw)
         command=[sys.executable,'-X','utf8','-B','-m','runtime.runproof_runtime.effectwitness.pge_r67_order_verify',str(path)]
         for args,expected in ((['--sha256',c.sha(raw)],0),([],2),(['--sha256','0'*64],3)):
             result=subprocess.run(command+args,cwd=c.ROOT,capture_output=True);self.assertEqual(result.returncode,expected,result.stdout)
@@ -155,7 +165,7 @@ class RPF67Tests(unittest.TestCase):
     def test_sdk_guards_and_usage_type(self):
         path=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r67_order_child.py';spec=importlib.util.spec_from_file_location('r67guard',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
         with self.assertRaises(TypeError):m._validated_run_usage(object(),dict)
-        denied=[];files=[];root=c.ROOT/'.local/rpf-67-rev-2';guard=m._guard_events(23456,root,root,[Path(sys.base_prefix)],path,denied,files)
+        denied=[];files=[];root=c.ROOT/'.local/rpf-67-rev-3';guard=m._guard_events(23456,root,root,[Path(sys.base_prefix)],path,denied,files)
         for event,args in [('socket.connect',(None,('example.com',443))),('socket.getaddrinfo',('example.com',)),('subprocess.Popen',()),('open',(str(c.ROOT/'AGENTS.md'),'w',0))]:
             with self.subTest(event=event):
                 with self.assertRaises(PermissionError):guard(event,args)

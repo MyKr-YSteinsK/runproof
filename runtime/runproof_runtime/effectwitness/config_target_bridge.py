@@ -356,7 +356,43 @@ class ConfigTargetFixtureHost:
             def log_message(self, _format, *args):
                 return
 
+            def _bounded_body(self, *, keep: bool):
+                # Reject ambiguous framing; never follow an untrusted huge length.
+                lengths = self.headers.get_all("Content-Length", [])
+                text = lengths[0] if len(lengths) == 1 else ""
+                _reject(0 < len(text) <= 5 and text.isascii() and text.isdigit()
+                        and 0 < int(text) <= 65536
+                        and self.headers.get("Transfer-Encoding") is None,
+                        "FIXTURE_REQUEST_SIZE")
+                self._body_attempted = True
+                remaining = int(text)
+                deadline = time.monotonic() + 0.25
+                previous_timeout = self.connection.gettimeout()
+                chunks = []
+                try:
+                    while remaining:
+                        timeout = deadline - time.monotonic()
+                        _reject(timeout > 0, "FIXTURE_REQUEST_SIZE")
+                        self.connection.settimeout(timeout)
+                        try:
+                            chunk = self.rfile.read1(min(remaining, 8192))
+                        except TimeoutError:
+                            raise TargetBridgeRejected("FIXTURE_REQUEST_SIZE") from None
+                        _reject(bool(chunk), "FIXTURE_REQUEST_SIZE")
+                        remaining -= len(chunk)
+                        if keep:
+                            chunks.append(chunk)
+                    return b"".join(chunks) if keep else None
+                finally:
+                    self.connection.settimeout(previous_timeout)
+
             def _send(self, status: int, value: dict):
+                if status >= 400 and not getattr(self, "_body_attempted", False):
+                    try:
+                        # Consume bounded bytes without JSON parsing or business calls.
+                        self._bounded_body(keep=False)
+                    except (TargetBridgeRejected, OSError):
+                        pass  # Preserve the original rejection even on short/aborted input.
                 raw = canonical(value)
                 self.send_response(status)
                 self.send_header("Content-Type", "application/json")
@@ -380,7 +416,7 @@ class ConfigTargetFixtureHost:
                     length_text = self.headers.get("Content-Length", "")
                     _reject(length_text.isdigit() and 0 < int(length_text) <= 65536,
                             "FIXTURE_REQUEST_SIZE")
-                    value = strict_json(self.rfile.read(int(length_text)))
+                    value = strict_json(self._bounded_body(keep=True))
                     if self.path == "/ready":
                         result = host._ready(value)
                     elif self.path == "/tool":

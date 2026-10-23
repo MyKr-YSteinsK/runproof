@@ -1,0 +1,504 @@
+{
+  "plan": "RPF-67/rev-3",
+  "status": "Partial",
+  "source_kind": "REAL_PROVIDER_TARGET_ORDER",
+  "real_response_observed": true,
+  "receipts": [
+    {
+      "wal_seq": 37,
+      "frame_sha256": "0762cadf90706a82776274a4a32a8b374291e03f49aba069dc1dfbd603416c5b",
+      "receipt_sha256": "457984c6159ebdf7228ce55b0c907ff029d3aeb8f44dc0e8c3e76469218e558e",
+      "receipt": {
+        "cold": false,
+        "context_sha256": "f1cf3c94c7caa74c04ce41eaeb8b96120c2dedf05a8afd9abeebfe5da2bf9c5b",
+        "fixture": false,
+        "projection_id": "provider-1",
+        "raw_bytes": 704,
+        "raw_sha256": "26e6e26c27ff94d2d410a6fe04054b87f409a4feb2e5f602d0040aaf7840ab1e",
+        "request_sha256": "a8eb2a215009e0d95ebb0c55652cc8e0bab32f5ae2480044110609d5456c3c5a",
+        "role": "TARGET",
+        "run_id": "rpf67r3-order-6cf7e1e2c42ab47d",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 46,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "array",
+              "tool_count": 1,
+              "tools": [
+                {
+                  "arguments_json_object": true,
+                  "arguments_type": "string",
+                  "function_unknown_count": 0,
+                  "id": {
+                    "sha256": "0daeda7a9d02a65967c9f36eda93dc39ca17a32d2ceb497f29e16a4dd0e5cc98",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "inspect_order",
+                  "type": "function",
+                  "unknown_count": 0
+                }
+              ],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "fcd063bc4a7e954a0741a87b5c0de7522888c7f3dad1b421902126bb5044cbf3",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 66
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 648
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 714
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-1"
+      },
+      "conditions": {
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "choice_identity": true,
+        "finish_reason": true,
+        "message": true,
+        "privacy": true,
+        "tool_container": true,
+        "finish_tool_alignment": true,
+        "content": true,
+        "tool_envelope": true,
+        "usage": true
+      }
+    },
+    {
+      "wal_seq": 45,
+      "frame_sha256": "3eeed1e345150cb9cace01f539fdbaa1d0126b4ef953b1c15c1ca6317a34ac66",
+      "receipt_sha256": "fc8ed0e8a35ceba81b753665992ca06d6ea9e8ce47c77f16d9c5e5fc07331b2a",
+      "receipt": {
+        "cold": false,
+        "context_sha256": "f1cf3c94c7caa74c04ce41eaeb8b96120c2dedf05a8afd9abeebfe5da2bf9c5b",
+        "fixture": false,
+        "projection_id": "provider-2",
+        "raw_bytes": 876,
+        "raw_sha256": "988a7eae94bb80cd8dce872ee2745046353e603348895832986631d6c3742fe2",
+        "request_sha256": "78a4abf8dd19a3d7025e9bb599a69766d7c65ca0bd37e1f51256a676a97aadec",
+        "role": "TARGET",
+        "run_id": "rpf67r3-order-6cf7e1e2c42ab47d",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 133,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "array",
+              "tool_count": 1,
+              "tools": [
+                {
+                  "arguments_json_object": true,
+                  "arguments_type": "string",
+                  "function_unknown_count": 0,
+                  "id": {
+                    "sha256": "16988197482d9cfea8ee2f438a7af77b5ba5725617de1c29d44a58783b06c9e2",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "refund_order",
+                  "type": "function",
+                  "unknown_count": 0
+                }
+              ],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "4c1588c862f336a201f5d8a424e58908d8207b0469317d21bca45ab05d60fb84",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 143
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 761
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 904
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-2"
+      },
+      "conditions": {
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "choice_identity": true,
+        "finish_reason": true,
+        "message": true,
+        "privacy": true,
+        "tool_container": true,
+        "finish_tool_alignment": true,
+        "content": true,
+        "tool_envelope": true,
+        "usage": true
+      }
+    },
+    {
+      "wal_seq": 58,
+      "frame_sha256": "b5e069c0a6e814e6c860719919d2c061c0503cb9c337836985f02fe8b1434c23",
+      "receipt_sha256": "04c29f3a6dbdf602b78cd59faa4a3553dfb467ef66d2769db495b1dc0d79a47a",
+      "receipt": {
+        "cold": false,
+        "context_sha256": "f1cf3c94c7caa74c04ce41eaeb8b96120c2dedf05a8afd9abeebfe5da2bf9c5b",
+        "fixture": false,
+        "projection_id": "provider-3",
+        "raw_bytes": 796,
+        "raw_sha256": "5de9454b950b638b504f57e37b48da2d9827d36020a8bd5ef87ec7610666d928",
+        "request_sha256": "6284af587287350fff4d39e6c16b248de9ed1cdba26dd8734420dfc0da118a16",
+        "role": "TARGET",
+        "run_id": "rpf67r3-order-6cf7e1e2c42ab47d",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 130,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "array",
+              "tool_count": 1,
+              "tools": [
+                {
+                  "arguments_json_object": true,
+                  "arguments_type": "string",
+                  "function_unknown_count": 0,
+                  "id": {
+                    "sha256": "2a92ba77563cf1f796650c6f0597ab409bbdf75b062db063a6e50c5a97a464ed",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "reconcile_order",
+                  "type": "function",
+                  "unknown_count": 0
+                }
+              ],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "a8c36a9b3d62fb6fc2c34bd6cb5fae457834e744425bb567991b4c83f22f9050",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 86
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 982
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 1068
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-3"
+      },
+      "conditions": {
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "choice_identity": true,
+        "finish_reason": true,
+        "message": true,
+        "privacy": true,
+        "tool_container": true,
+        "finish_tool_alignment": true,
+        "content": true,
+        "tool_envelope": true,
+        "usage": true
+      }
+    }
+  ],
+  "dispositions": [
+    {
+      "wal_seq": 38,
+      "event": {
+        "conditions": {
+          "choice_identity": true,
+          "content": true,
+          "finish_reason": true,
+          "finish_tool_alignment": true,
+          "message": true,
+          "privacy": true,
+          "response_fields": true,
+          "response_identity": true,
+          "single_choice": true,
+          "tool_container": true,
+          "tool_envelope": true,
+          "usage": true
+        },
+        "kind": "PROVIDER_PARSE_ACCEPTED",
+        "monotonic_ns": 31086257459600,
+        "policy": "rpf67-order-content-with-single-valid-tool-v1",
+        "projection_id": "provider-1",
+        "proof_sha256": "407d50b574b1d27cff24020639b178f6e1e19bf51bf98844d84ba234399ce3e5",
+        "request_sha256": "a8eb2a215009e0d95ebb0c55652cc8e0bab32f5ae2480044110609d5456c3c5a",
+        "run_id": "rpf67r3-order-6cf7e1e2c42ab47d",
+        "ticket": "provider-1",
+        "usage": {
+          "completion_tokens": 66,
+          "prompt_tokens": 648,
+          "total_tokens": 714
+        },
+        "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+      },
+      "frame_sha256": "20099c3ef3df27633feb6cba05c2e06863dbdd42f988f3fb51427d8e61fd1027"
+    },
+    {
+      "wal_seq": 46,
+      "event": {
+        "conditions": {
+          "choice_identity": true,
+          "content": true,
+          "finish_reason": true,
+          "finish_tool_alignment": true,
+          "message": true,
+          "privacy": true,
+          "response_fields": true,
+          "response_identity": true,
+          "single_choice": true,
+          "tool_container": true,
+          "tool_envelope": true,
+          "usage": true
+        },
+        "kind": "PROVIDER_PARSE_ACCEPTED",
+        "monotonic_ns": 31088174057500,
+        "policy": "rpf67-order-content-with-single-valid-tool-v1",
+        "projection_id": "provider-2",
+        "proof_sha256": "137ea5733585f57226e88fea49d08206c6fa428d7fd3cd3c5a1551155c21a6c4",
+        "request_sha256": "78a4abf8dd19a3d7025e9bb599a69766d7c65ca0bd37e1f51256a676a97aadec",
+        "run_id": "rpf67r3-order-6cf7e1e2c42ab47d",
+        "ticket": "provider-2",
+        "usage": {
+          "completion_tokens": 143,
+          "prompt_tokens": 761,
+          "total_tokens": 904
+        },
+        "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+      },
+      "frame_sha256": "65a9f00e4b4f466f4f1334c88b1083543906b5100b696ea7df71537ebdbb1aa1"
+    },
+    {
+      "wal_seq": 59,
+      "event": {
+        "conditions": {
+          "choice_identity": true,
+          "content": true,
+          "finish_reason": true,
+          "finish_tool_alignment": true,
+          "message": true,
+          "privacy": true,
+          "response_fields": true,
+          "response_identity": true,
+          "single_choice": true,
+          "tool_container": true,
+          "tool_envelope": true,
+          "usage": true
+        },
+        "kind": "PROVIDER_PARSE_ACCEPTED",
+        "monotonic_ns": 31090588430700,
+        "policy": "rpf67-order-content-with-single-valid-tool-v1",
+        "projection_id": "provider-3",
+        "proof_sha256": "c80abcea7f9b6a468ec1119029570db0980348a2b0e2768f37b21efa98626473",
+        "request_sha256": "6284af587287350fff4d39e6c16b248de9ed1cdba26dd8734420dfc0da118a16",
+        "run_id": "rpf67r3-order-6cf7e1e2c42ab47d",
+        "ticket": "provider-3",
+        "usage": {
+          "completion_tokens": 86,
+          "prompt_tokens": 982,
+          "total_tokens": 1068
+        },
+        "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+      },
+      "frame_sha256": "3a74565d8fc3660ed16192437a3de33db4b7f67c39c186cb31c71ba1ad64f60a"
+    }
+  ],
+  "torn": null,
+  "policy": "rpf67-order-content-with-single-valid-tool-v1",
+  "rev1_actual_shape": "NOT_RETAINED_NOT_INFERRED",
+  "synthetic_sdk": "PASS",
+  "privacy": {
+    "raw_body_persisted": false,
+    "model_content_or_reasoning_persisted": false,
+    "short_text_hash_persisted": false,
+    "raw_argument_text_or_hash_persisted": false,
+    "rejected_raw_ids_persisted": false
+  },
+  "real_shape_conclusion": "Three legal mixed-content single-tool responses accepted; no Provider-format rejection; fourth request blocked before reserve/send",
+  "pre_send_failure": {
+    "actual_input_upper": "NOT_RECORDED",
+    "actual_suffix_bytes": "NOT_RECORDED",
+    "admissible_input_upper_max": 2088,
+    "admissible_new_suffix_bytes_max": 594,
+    "inference": "Integer lower bounds follow from INPUT_BOUND at slot4 after three completed requests; exact rejected request metadata was not persisted",
+    "inferred_input_upper_min": 2089,
+    "inferred_suffix_bytes_min": 595,
+    "margin_bytes": 512,
+    "model_request_recorded": false,
+    "output_cap": 512,
+    "prior_verified_prompt_tokens": 982,
+    "reserved": false,
+    "sent": false,
+    "slot_token_cap": 2600,
+    "stage": "POST_COMMIT_READ_ONLY"
+  }
+}

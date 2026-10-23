@@ -6,15 +6,15 @@ from .effect_oracle import evaluate_order_effect
 from .contracts import ENV_REVISION, READER_ID
 from .pge_r67_order_driver import shape_conditions,validate_shape,POLICY
 
-VERSION='rpf67-order-witness-verifier-v2'
+VERSION='rpf67-order-witness-verifier-v3'
 def identity():
     raw=Path(__file__).read_bytes();return dict(version=VERSION,raw=c.sha(raw),lf=c.sha(raw.replace(b'\r\n',b'\n')))
-def seal(payload):return dict(schema='rpf67-order-witness-v2',verifier=identity(),payload=payload,payload_sha256=c.digest(payload))
+def seal(payload):return dict(schema='rpf67-order-witness-v3',verifier=identity(),payload=payload,payload_sha256=c.digest(payload))
 def verify(value):
     c.require(re.search(r'sk-[A-Za-z0-9_-]{16,}|C:[/\\]+Users[/\\]+|Bearer [A-Za-z0-9_-]{16,}',c.canonical(value).decode()) is None,'CREDENTIAL_OR_PRIVATE_PATH')
-    c.require(type(value) is dict and set(value)=={'schema','verifier','payload','payload_sha256'} and value['schema']=='rpf67-order-witness-v2' and value['verifier']==identity() and value['payload_sha256']==c.digest(value['payload']),'ENVELOPE_VERIFIER')
+    c.require(type(value) is dict and set(value)=={'schema','verifier','payload','payload_sha256'} and value['schema']=='rpf67-order-witness-v3' and value['verifier']==identity() and value['payload_sha256']==c.digest(value['payload']),'ENVELOPE_VERIFIER')
     p=value['payload'];c.require(set(p)=={'context','frames','order','outcome','admission','boundaries'},'PAYLOAD_FIELDS')
-    ctx=p['context'];ct=ctx['contract'];suffix=ct['experiment']['run_id'].removeprefix('rpf67r2-order-');synthetic=ctx['source_kind']==c.SYNTHETIC
+    ctx=p['context'];ct=ctx['contract'];suffix=ct['experiment']['run_id'].removeprefix('rpf67r3-order-');synthetic=ctx['source_kind']==c.SYNTHETIC
     c.require(ctx==c.public(suffix,ct['execution']['port'],synthetic),'CONTEXT_SOURCE_IDENTITY');c.validate_contract(ct)
     c.require(p['boundaries']==c.BOUNDARIES,'BOUNDARIES')
     a=c.replay(p['frames'],ctx);c.require(not a['unknown'] and set(a['tickets'])==set(a['results']),'UNSETTLED_OR_UNKNOWN')
@@ -28,7 +28,7 @@ def verify(value):
             c.require(event['status']=='READ_ONLY' and event['connection']=='SQLITE_MODE_RO_QUERY_ONLY','READER_CONNECTION');authority.append(event)
             snapshot=event['snapshot'];data=snapshot['data']
             c.require(set(snapshot)=={'data','sha256'} and snapshot['sha256']==c.digest(data) and set(data)=={'reader_id','reader_version','source_id','environment','order','receipts'},'AUTHORITY_SNAPSHOT')
-            c.require(data['reader_id']==READER_ID and data['reader_version']=='1' and data['source_id']==f['authority_id'] and data['environment']==dict(owner='rpf-67-rev-2',run_id=x['run_id'],environment_id=x['environment_id'],environment_revision=ENV_REVISION,reset_generation=0),'READER_IDENTITY_GENERATION')
+            c.require(data['reader_id']==READER_ID and data['reader_version']=='1' and data['source_id']==f['authority_id'] and data['environment']==dict(owner='rpf-67-rev-3',run_id=x['run_id'],environment_id=x['environment_id'],environment_revision=ENV_REVISION,reset_generation=0),'READER_IDENTITY_GENERATION')
     c.require([z['phase'] for z in authority] in (['BEFORE','AFTER_COMMIT_BEFORE_UNKNOWN','CONTROLLER_FINAL_RECONCILE'],['BEFORE','AFTER_COMMIT_BEFORE_UNKNOWN','OPTIONAL_AGENT_RECONCILE','CONTROLLER_FINAL_RECONCILE']),'AUTHORITY_PHASES')
     c.require(e['before']==authority[0]['snapshot'] and e['committed']==authority[1]['snapshot'] and e['after']==authority[-1]['snapshot'],'AUTHORITY_BINDING')
     outcome=evaluate_order_effect(f,x['environment_id'],e['before']['data'],e['after']['data']);c.require(outcome['contract_outcome']=='CONTRACT_SATISFIED_IN_RUN' and p['outcome']==outcome and e['committed']['data']==e['after']['data'],'ORDER_ORACLE')
