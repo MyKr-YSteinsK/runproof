@@ -1,0 +1,728 @@
+{
+  "plan": "RPF-67/rev-2",
+  "status": "Partial",
+  "source_kind": "NOT_RUN",
+  "business_outcome": "INCONCLUSIVE",
+  "Agent_outcome": "NOT_RUN",
+  "Platform_outcome": "NOT_RUN",
+  "context": null,
+  "resource_counts": {
+    "metadata": 0,
+    "cold": 0,
+    "session": 0,
+    "trial": 0,
+    "sdk": 0,
+    "host": 0,
+    "sqlite_setup": 0,
+    "sqlite_refund": 0,
+    "provider": 0,
+    "authority": 0
+  },
+  "unknown": false,
+  "all_tickets_settled": true,
+  "provider_requests": 0,
+  "explorer": 0,
+  "java": 0,
+  "reserved_tokens": 0,
+  "reserved_cost_guard_cny": 0,
+  "tokens": 0,
+  "actual_invoice": "NOT_OBSERVED",
+  "known_usage_cost_guard_cny": 0,
+  "provider_tickets": [],
+  "outstanding_tickets": [],
+  "physical_wal": ".local/rpf-67-rev-2/wal.jsonl",
+  "failure": null,
+  "os_cleanup": {
+    "candidate_sources_unchanged": true,
+    "formal_context_wal_not_created": true,
+    "formal_key_never_read": true,
+    "formal_resources": {
+      "authority": 0,
+      "cold": 0,
+      "host": 0,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 0,
+      "session": 0,
+      "sqlite_refund": 0,
+      "sqlite_setup": 0,
+      "trial": 0
+    },
+    "free_database_wal_logs_retained": true,
+    "free_sdk_fixture_cleanup": true,
+    "free_sdk_reports": [
+      {
+        "business_key_present": false,
+        "denied_files": [],
+        "guard_denials": [],
+        "path": ".local\\rpf-67-rev-2\\tests\\092ceec36e5295a1\\sdk-scratch\\child-report.json",
+        "pid": 8020,
+        "provider_key_present": false,
+        "status": "COMPLETED"
+      },
+      {
+        "business_key_present": false,
+        "denied_files": [],
+        "guard_denials": [],
+        "path": ".local\\rpf-67-rev-2\\tests\\fa137f092483c147\\sdk-scratch\\child-report.json",
+        "pid": 20068,
+        "provider_key_present": false,
+        "status": "COMPLETED"
+      },
+      {
+        "business_key_present": false,
+        "denied_files": [],
+        "guard_denials": [],
+        "path": ".local\\rpf-67-rev-2\\snapshots\\focused-60aecccaaf\\.local\\rpf-67-rev-2\\tests\\fcf6c08b92a080ef\\sdk-scratch\\child-report.json",
+        "pid": 30148,
+        "provider_key_present": false,
+        "status": "COMPLETED"
+      },
+      {
+        "business_key_present": false,
+        "denied_files": [],
+        "guard_denials": [],
+        "path": ".local\\rpf-67-rev-2\\snapshots\\full-99db1db07f\\.local\\rpf-67-rev-2\\tests\\8f9fc48f0a7b4c46\\sdk-scratch\\child-report.json",
+        "pid": 23696,
+        "provider_key_present": false,
+        "status": "COMPLETED"
+      }
+    ],
+    "host_thread_port_cleanup": "All free test runner processes and recorded SDK child PIDs gone; fixture host threads end with these processes; SDK proof separately records port_closed/process_gone",
+    "no_live_retry": true,
+    "old_runtime_read": false,
+    "pid_observations": [
+      {
+        "original_process_gone": true,
+        "pid": 1092,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 2092,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 2432,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 2996,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 3044,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 3580,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 3608,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 3668,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 4012,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 5908,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 6800,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 7300,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 7668,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 8020,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 8908,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 9004,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 10640,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 10868,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 11584,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 12372,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 12544,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 13924,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 14472,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 14936,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 15364,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 15388,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 16540,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 16548,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 18232,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 18692,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 18940,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 19200,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 19308,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 19368,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 19376,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 20068,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 21456,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 22012,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 22492,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 22520,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 22620,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 22716,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 22740,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 23464,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 23696,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 23748,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 23984,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 24848,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 25620,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 25764,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 25796,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 26020,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 26060,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 26288,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 26932,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 27244,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 27292,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 27340,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 27560,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 27740,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 28096,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 28412,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 28484,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 28620,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 28688,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 28780,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29224,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29316,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29352,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29592,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29632,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29708,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 29964,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30012,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30052,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30064,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30148,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30220,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30256,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30436,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30612,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30640,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30672,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30780,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30812,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30880,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30968,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 30988,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31024,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31092,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31096,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31432,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31472,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31484,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31516,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31528,
+        "pid_reused": false
+      },
+      {
+        "original_process_gone": true,
+        "pid": 31608,
+        "pid_reused": false
+      }
+    ],
+    "protected_user_content_read": false,
+    "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
+    "source_freeze": "NOT_RUN",
+    "status": "PASS"
+  },
+  "boundaries": {
+    "Explorer": "NOT_RUN",
+    "L2": "NOT_TESTED",
+    "web": "NOT_INTEGRATED",
+    "cross_domain_same_session": "NOT_PROVEN",
+    "causality": "NOT_PROVEN",
+    "issuer": "NOT_ESTABLISHED",
+    "independent_reproduction": "NOT_TESTED",
+    "production_release": "NOT_AUTHORIZED"
+  },
+  "delivery": null,
+  "Witness": "NOT_RUN_PATH_ABSENT",
+  "admission_stop": {
+    "Provider": "NOT_RUN",
+    "Witness": "NOT_RUN_PATH_ABSENT",
+    "cold": "NOT_RUN",
+    "credential_lookup": false,
+    "diagnostic": {
+      "first_full_error": "ConnectionAbortedError WinError10053 on HTTP getresponse",
+      "inference": "Original handler rejects auth before reading request body then sends Connection:close; unread body/Windows connection teardown may race. Inference only, no protected source or environment changed.",
+      "protected_fixture_unchanged": true,
+      "result": {
+        "command": [
+          "-m",
+          "unittest",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "runtime.tests.test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code",
+          "-v"
+        ],
+        "cwd": ".local\\rpf-67-rev-2\\snapshots\\full-99db1db07f",
+        "elapsed": 1.7467848999986018,
+        "errors": 1,
+        "exit": 1,
+        "failures": 0,
+        "label": "http-race-diagnostic",
+        "log": ".local\\rpf-67-rev-2\\diagnostics\\http-race-diagnostic-261644da.log",
+        "parent_pid": 29708,
+        "pid": 31024,
+        "skipped": 0,
+        "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
+        "status": "COMPLETE",
+        "tests": 10
+      },
+      "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b"
+    },
+    "first_complete": {
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "runtime/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": ".local\\rpf-67-rev-2\\snapshots\\full-99db1db07f",
+      "elapsed": 1673.7476988999988,
+      "errors": 1,
+      "exit": 1,
+      "failures": 0,
+      "label": "full-01",
+      "log": ".local\\rpf-67-rev-2\\diagnostics\\full-01-bbc7408b.log",
+      "parent_pid": 2092,
+      "pid": 28484,
+      "skipped": 2,
+      "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
+      "status": "COMPLETE",
+      "tests": 473
+    },
+    "formal_resources": {
+      "authority": 0,
+      "cold": 0,
+      "host": 0,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 0,
+      "session": 0,
+      "sqlite_refund": 0,
+      "sqlite_setup": 0,
+      "trial": 0
+    },
+    "gate": "R2-A04",
+    "main_wal": "NOT_CREATED",
+    "metadata": "NOT_RUN",
+    "next_required_authorization": [
+      "runtime/runproof_runtime/effectwitness/config_target_bridge.py: Windows HTTP rejection connection close handling",
+      "only necessary focused regression in runtime/tests/test_effectwitness_config_target.py",
+      "new free gates and separate future paid admission; no resuming this stopped task"
+    ],
+    "paid_gate": "NOT_RUN",
+    "reason": "Original protected config HTTP fixture failed first complete full run and again second full entry; second stopped after observed ERROR; no third attempt or protected fix authorized",
+    "second": {
+      "cancellation": {
+        "pid": 25620,
+        "reason": "Second full attempt already ERROR in protected original HTTP fixture; stop remaining free tests; no paid gate",
+        "stopped": true
+      },
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "runtime/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "completed_test_lines": 175,
+      "cwd": ".local\\rpf-67-rev-2\\snapshots\\full02-5c1a72c752",
+      "elapsed": 240.26773740000135,
+      "errors": 1,
+      "exit": 4294967295,
+      "failures": 0,
+      "label": "full-02",
+      "log": ".local\\rpf-67-rev-2\\diagnostics\\full-02-d488575e.log",
+      "no_final_unittest_summary": true,
+      "observed_error_tests": [
+        "test_fixture_http_4xx_preserves_first_enumerated_rejection_code (test_effectwitness_config_target.ConfigTargetDiagnosticBackendTests.test_fixture_http_4xx_preserves_first_enumerated_rejection_code) ... ERROR"
+      ],
+      "parent_pid": 29708,
+      "parser_summary_errors": 0,
+      "pid": 25620,
+      "skipped": 1,
+      "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
+      "status": "CANCELLED_AFTER_OBSERVED_ERROR",
+      "tests": null
+    },
+    "source_changed_between_final_attempts": false,
+    "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
+    "source_freeze": "NOT_RUN",
+    "status": "FAIL",
+    "task_status": "Partial"
+  }
+}

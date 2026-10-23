@@ -21,11 +21,14 @@ def execute(ctx,ledger,driver,*,admission=None):
         if hasattr(port,'reader'):
             try:port.reader.available=True;port.read('FAILURE_READ_ONLY_RECONCILE');port.reader.available=False
             except Exception:pass
-        ctx.once(ctx.root/'failure.json',dict(error_type=type(error).__name__,code=str(error) if type(error) is ValueError else 'REDACTED',trace=getattr(port,'trace',[]),driver_failure=driver.failure,counts=ledger.read()['counts'],unknown=ledger.read()['unknown']))
+            finally:port.reader.available=False
+        try:account=ledger.read();counts=account['counts'];unknown=account['unknown'];diagnostics=[e for e in account['events'] if e['kind'] in ('PROVIDER_SHAPE_OBSERVED','PROVIDER_PARSE_REJECTED')]
+        except Exception:counts=None;unknown=True;diagnostics=[dict(state='TORN_DIAGNOSTIC',action='STOP_NO_RESEND_NO_RECEIPT_DELETE')]
+        ctx.once(ctx.root/'failure.json',dict(error_type=type(error).__name__,code=str(error) if type(error) is ValueError else 'REDACTED',trace=getattr(port,'trace',[]),driver_failure=driver.failure,counts=counts,unknown=unknown,response_diagnostics=diagnostics))
         raise
-def synthetic(*,reconcile=True):
+def synthetic(*,reconcile=True,mixed=True):
     suffix=secrets.token_hex(8);ctx=c.make_context(suffix,free_port(),synthetic=True);ctx.root.mkdir(parents=True)
-    ledger=c.Ledger(ctx,create=True);return execute(ctx,ledger,ScriptDriver(ctx,ledger,fixture=True,reconcile=reconcile))
+    ledger=c.Ledger(ctx,create=True);return execute(ctx,ledger,ScriptDriver(ctx,ledger,fixture=True,reconcile=reconcile,mixed=mixed))
 
 class ColdPort(OrderPort):
     """Memory protocol fixture only: no OrderSandbox, AuthorityReader or DB write."""
@@ -43,12 +46,12 @@ class ColdPort(OrderPort):
         else:result=dict(status='COMMITTED',operation_id=f['operation_id'],readonly=True,fixture=True)
         t=dict(**self.pending,result=result,result_sha256=c.digest(result));self.trace.append(t);self.pending=None;return result
 def initialize():
-    root=c.ROOT/'.local/rpf-67';c.require(root.is_dir() and not (root/'context.json').exists(),'INIT_ONCE')
+    root=c.ROOT/'.local/rpf-67-rev-2';c.require(root.is_dir() and not (root/'context.json').exists(),'INIT_ONCE')
     c.require(subprocess.check_output(['git','branch','--show-current'],cwd=c.ROOT,text=True).strip()==c.BRANCH and subprocess.check_output(['git','rev-parse','HEAD'],cwd=c.ROOT,text=True).strip()==c.BASE,'INIT_GIT_IDENTITY')
     c.require(c.strict((root/'g0.json').read_bytes())['status']=='PASS','G0_REQUIRED')
     ctx=c.make_context(secrets.token_hex(8),free_port());ctx.once(root/'context.json',ctx.public());c.Ledger(ctx,create=True);return ctx
 def load():
-    p=c.strict((c.ROOT/'.local/rpf-67/context.json').read_bytes());return c.Context(c.ROOT/p['workspace'],c.canonical(p))
+    p=c.strict((c.ROOT/'.local/rpf-67-rev-2/context.json').read_bytes());return c.Context(c.ROOT/p['workspace'],c.canonical(p))
 def cold(ctx,ledger):
     c.require(ledger.read()['counts']['metadata']==1 and ledger.read()['results']['metadata-1']['status']=='PASS','METADATA_REQUIRED')
     port=ColdPort(ctx,ledger);driver=Driver(ctx,ledger,fixture=True,cold=True);result=driver.run(port)
@@ -57,7 +60,7 @@ def cold(ctx,ledger):
 def freeze_check(ctx):
     freeze=c.strict((ctx.root/'source-freeze.json').read_bytes());free=c.strict((ctx.root/'free-gates.json').read_bytes())
     c.require(freeze['sources']==c.sources()==ctx.public()['sources'] and freeze['source_digest']==ctx.public()['source_digest'] and freeze['diff_check']=={'staged':0,'unstaged':0},'SOURCE_FREEZE')
-    c.require(free['source_digest']==ctx.public()['source_digest'] and free['status']=='PASS' and free['full']['exit']==0 and free['full']['errors']==free['full']['failures']==0 and free['focused']['exit']==0 and len(free['anchors'])==21 and all(z['exit']==0 for z in free['anchors']) and free['semantic_controls']>=30,'FREE_GATES')
+    c.require(free['source_digest']==ctx.public()['source_digest'] and free['status']=='PASS' and free['full']['exit']==0 and free['full']['errors']==free['full']['failures']==0 and free['focused']['exit']==0 and len(free['anchors'])==21 and all(z['exit']==0 for z in free['anchors']) and free['semantic_controls']>=55 and free['mixed_sdk_e2e']['status']=='PASS' and free['mixed_sdk_e2e']['source_digest']==ctx.public()['source_digest'],'FREE_GATES')
     return freeze,free
 def admit(ctx,ledger):
     ctx.check();freeze,free=freeze_check(ctx);a=ledger.read()

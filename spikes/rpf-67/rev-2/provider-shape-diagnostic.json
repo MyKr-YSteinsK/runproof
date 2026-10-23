@@ -1,0 +1,68 @@
+{
+  "plan": "RPF-67/rev-2",
+  "status": "Partial",
+  "source_kind": "NOT_OBSERVED",
+  "real_response_observed": false,
+  "policy": "rpf67-order-content-with-single-valid-tool-v1",
+  "receipt_limit_bytes": 12288,
+  "shape_limit_bytes": 8192,
+  "mixed_content_limit_utf8_bytes": 512,
+  "receipts": [],
+  "parser_dispositions": [],
+  "rev1_actual_shape": "NOT_RETAINED_NOT_INFERRED",
+  "rev1_public_parser_reproducer": {
+    "base": "09411b48c432ce45d225552015e2c2039eb8375c",
+    "cases": [
+      {
+        "case": "plain-null-tool",
+        "result": "ACCEPTED",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      },
+      {
+        "case": "mixed-content-tool",
+        "result": "FINISH_SHAPE",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      },
+      {
+        "case": "stop-tool",
+        "result": "FINISH_SHAPE",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      },
+      {
+        "case": "tool-finish-no-call",
+        "result": "FINISH_SHAPE",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      }
+    ],
+    "old_private_root_read": false,
+    "original_source_sha256": "2b2c321792f1accad1786b8168ab10002afad3445c94f8578a79886df7d2bc67",
+    "provider_added": 0,
+    "rev1_actual_shape": "NOT_RETAINED_NOT_INFERRED"
+  },
+  "mixed_sdk_free": {
+    "status": "PASS",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "pid": 30148,
+    "callbacks": 3,
+    "provider": 0,
+    "refunds": 1,
+    "sdk_content_preserved": true
+  },
+  "privacy": {
+    "raw_response_persisted": false,
+    "content_or_reasoning_persisted": false,
+    "short_content_hash_persisted": false,
+    "raw_arguments_or_arguments_hash_persisted": false,
+    "failed_raw_ids_persisted": false
+  },
+  "boundaries": {
+    "Explorer": "NOT_RUN",
+    "L2": "NOT_TESTED",
+    "web": "NOT_INTEGRATED",
+    "cross_domain_same_session": "NOT_PROVEN",
+    "causality": "NOT_PROVEN",
+    "issuer": "NOT_ESTABLISHED",
+    "independent_reproduction": "NOT_TESTED",
+    "production_release": "NOT_AUTHORIZED"
+  }
+}
