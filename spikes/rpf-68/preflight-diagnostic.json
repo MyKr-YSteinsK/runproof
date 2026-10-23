@@ -156,9 +156,32 @@
     "R68-A07": "NOT_RUN",
     "R68-A08": "NOT_RUN",
     "R68-A09": "PASS",
-    "R68-A10": "NOT_RUN"
+    "R68-A10": "PASS"
   },
   "delivery": {
-    "status": "NOT_RUN"
+    "source_commit": "3d0ebc6d5bea315c0933b08d7c3a263342d8cf02",
+    "source_push": "PASS",
+    "source_remote_git_ls_remote": {
+      "codex/rpf-68-shared-cross-domain-real-pge": "3d0ebc6d5bea315c0933b08d7c3a263342d8cf02",
+      "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+      "codex/rpf-67-rev4-terminal-input-budget-recovery": "87980e9c887a64fbb6bba486493655d0ec59cd94"
+    },
+    "source_remote_github_connector_rest_api": {
+      "codex/rpf-68-shared-cross-domain-real-pge": "3d0ebc6d5bea315c0933b08d7c3a263342d8cf02",
+      "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+      "codex/rpf-67-rev4-terminal-input-budget-recovery": "87980e9c887a64fbb6bba486493655d0ec59cd94"
+    },
+    "parent_main_unchanged": true,
+    "ordinary_push_only": true,
+    "receipt_commit": "REPORTED_IN_CHAT_AFTER_ITS_PUSH",
+    "hosted_ci": "NOT_RUN",
+    "merge_deploy_release": "NOT_RUN",
+    "github_cli_attempts": [
+      "EOF",
+      "EOF"
+    ],
+    "anonymous_rest_attempt": "403 rate limit exhausted",
+    "api_recovery": "connected GitHub REST tool succeeded",
+    "observed_utc": "2026-10-23T13:39:21.364044+00:00"
   }
 }

@@ -66,5 +66,55 @@
   "order_domain_started_in_failed_probe": false,
   "real_witness": "ABSENT",
   "real_witness_negatives": "NOT_RUN",
-  "provider_key_read": false
+  "provider_key_read": false,
+  "synthetic_failure_cleanup_os_second_readback": {
+    "observed_utc": "2026-10-23T13:34:55.683120+00:00",
+    "rows": [
+      {
+        "pid": 30484,
+        "resource": "sdk",
+        "os_second_readback": "NOT_PRESENT",
+        "captured_cleanup": {
+          "clock": 43300779398200,
+          "cold": false,
+          "domain": "config-java-http",
+          "key_reference_released": true,
+          "kind": "PROCESS_CLEANUP",
+          "pid": 30484,
+          "port_closed": true,
+          "process_gone": true,
+          "resource": "sdk",
+          "round": 1,
+          "session_id": "rpf68-151dea22934de5ff",
+          "thread_gone": true
+        }
+      },
+      {
+        "pid": 20052,
+        "resource": "jvm",
+        "os_second_readback": "NOT_PRESENT",
+        "captured_cleanup": {
+          "clock": 43302044583500,
+          "domain": "config-java-http",
+          "key_reference_released": true,
+          "kind": "PROCESS_CLEANUP",
+          "pid": 20052,
+          "port_closed": true,
+          "process_gone": true,
+          "resource": "jvm",
+          "round": 1,
+          "session_id": "rpf68-151dea22934de5ff"
+        }
+      }
+    ]
+  },
+  "failure_oracle_readback": [
+    {
+      "path": ".local/rpf-68/tests/151dea22934de5ff/runs/rpf68-151dea22934de5ff-1/failure-business-readback.json",
+      "sha256": "f777472771854334401b398fbd38ecb22e50bc87a0cef7446b51d5fa3ece8075",
+      "oracle": {
+        "contract_outcome": "CONTRACT_SATISFIED_IN_RUN"
+      }
+    }
+  ]
 }

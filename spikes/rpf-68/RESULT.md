@@ -3,7 +3,7 @@
 Status: Blocked
 
 - `TASK_COMPLETE=BLOCKED`；`EVIDENCE_ACCEPTED/STAGE_ADVANCED=ARCHITECT_REVIEW_REQUIRED`。
-- Base `87980e9c887a64fbb6bba486493655d0ec59cd94`；branch `codex/rpf-68-shared-cross-domain-real-pge`。commit/push：待交付回执；main只读不合并。
+- Base `87980e9c887a64fbb6bba486493655d0ec59cd94`；branch `codex/rpf-68-shared-cross-domain-real-pge`。源码commit `3d0ebc6d5bea315c0933b08d7c3a263342d8cf02` 已普通push，并由git ls-remote与GitHub REST API双读一致；main只读不合并。
 - 最终验证Source LF `71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf`；raw/LF闭包见preflight。这不是正式Source Freeze。
 
 ## 结果与阻塞
@@ -34,7 +34,7 @@ Status: Blocked
 | A04 | PASS | 最终源全量Runtime/118synthetic/CLI/历史锚 |
 | A05–A08 | NOT_RUN | 冻结/cold/admit/付费/Witness停在硬门禁前 |
 | A09 | PASS | 0Provider、停写后RO核对、cleanup，保护历史/private |
-| A10 | NOT_RUN | 架构报告完成，Git交付待末次双回读 |
+| A10 | PASS | 中文TASK_RESULT/架构路线完成；源码push和远端双读一致；回执最终SHA在对话交付 |
 
 完整命令/PID/cwd/exit/日志SHA见verification-diagnostic。初期失败、较早Source和缺失PID显式保留，未改标PASS。新日志/DB/WAL均位于ignored本任务根；不提交原始自由模型文本、密钥。最终判断不能替代Architect接受。
 
@@ -362,3 +362,7 @@ Status: Blocked
 ```
 
 下一步建议：新Plan先批准并证明逐槽协议预算，再考虑公共Core迁移；当前无第三域推广证据。建议不构成新会话/费用授权。
+
+## Git 交付回执
+
+源码提交 `3d0ebc6d5bea315c0933b08d7c3a263342d8cf02` 已普通push；Git与已连接GitHub REST API均确认该分支SHA，父分支 `87980e9c887a64fbb6bba486493655d0ec59cd94`、main `bda0cd49e50e3181f604324e94877a24b9885334` 未变。GitHub CLI早期EOF/匿名API限流已记录，改用已连接工具完成验证。最终公开回执commit将在普通push后由对话报告其SHA，不做自引用amend。未PR、merge、CI dispatch、deploy/release或赛事上传。工作区仅保留用户-owned `?? docs/reviews/` 顶层标记，未进入或读取。
