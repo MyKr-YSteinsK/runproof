@@ -7,8 +7,8 @@ from .config_live_verify import _history
 from .pge_r66_session import dispatch_identity, feedback
 from .pge_portability_config import verify_sdk as verify_cold_sdk
 
-SCHEMA='rpf66-dual-agent-witness-v3'
-def identity(): return {'version':'rpf66-dual-agent-verifier-v3','sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
+SCHEMA='rpf66-dual-agent-witness-v5'
+def identity(): return {'version':'rpf66-dual-agent-verifier-v5','sha256':hashlib.sha256(Path(__file__).read_bytes().replace(b'\r\n',b'\n')).hexdigest()}
 def seal(p): return dict(schema=SCHEMA,payload=p,payload_sha256=c.digest(p),verifier_identity=identity())
 
 def wal_position(account,event):
@@ -22,6 +22,7 @@ def wal_order(account,*events,code='WAL_CAUSAL_ORDER'):
     c.require(len(positions)>=2 and positions==sorted(set(positions)) and clocks==sorted(clocks),code)
 
 def verify_sdk(s,trace,comps,*,guarded=False):
+    c.require(s['child_script']==c.child_identity() and s['child_script_argv_verified'] is True,'CHILD_SCRIPT_IDENTITY')
     pin=c.pinned_sdk_fields(); ready,r=s['ready'],s['report']; pid=s['popen_pid']
     c.require(type(pid) is int and pid>0 and ready['pid']==pid and s['stderr_bytes']==0,'SDK_PID')
     c.require(all(ready[k]==pin[k] for k in ('python_executable_sha256','sdk_site_root_binding_sha256','python_runtime_mapping_sha256')) and ready['sdk_source_sha256']==c.SDK_CORE_SHA256 and ready['openai_source_sha256']==pin['openai_core_sha256'],'SDK_IDENTITY')
@@ -116,7 +117,7 @@ def verify_shapes(ctx,account,scene,index):
         c.require(event['receipt_sha256']==done['receipt_sha256']==record['shape_sha256']==c.digest(receipt),'SHAPE_RECEIPT_HASH')
         c.require(ticket['role']=='TARGET' and ticket['run_id']==record['run_id'] and ticket['round']==index and settled['ticket']==record['ticket'],'SHAPE_TICKET_OWNER')
         wal_order(account,ticket,event,done,settled,code='SHAPE_BEFORE_PARSE_SETTLE')
-        c.require(receipt['http_status']==200 and receipt['stage']=='BEFORE_STRICT_VALIDATION' and receipt['transport_code'] is None and receipt['compatibility']=='STRICT_NO_NORMALIZATION' and receipt['conditions']==[] and shape_conditions(shape)==[],'SHAPE_REJECTION_CANNOT_SUCCEED')
+        c.require(receipt['http_status']==200 and receipt['stage']=='BEFORE_STRICT_VALIDATION' and receipt['transport_code'] is None and receipt['compatibility']=='STRICT_NO_NORMALIZATION' and receipt['conditions']==[] and shape_conditions(shape,record['output_cap'])==[],'SHAPE_REJECTION_CANNOT_SUCCEED')
         c.require(shape['schema']==SHAPE_SCHEMA and len(c.canonical(shape))<=SHAPE_MAX_BYTES and shape['response_id']=={'type':'string','valid':True,'sha256':c.digest(record['response_id'])} and shape['model']==record['returned_model'],'SHAPE_IDENTITY')
         ch=shape['choices'][0];comp=scene['completions'][i];calls=comp['tool_calls'];c.require(shape['choices_type']=='array' and shape['choices_count']==len(shape['choices'])==1 and ch['type']=='object' and ch['index_type']=='integer' and ch['index_zero'] is True and ch['finish_reason']==('tool_calls' if calls else 'stop') and ch['fields']['unknown_count']==0 and ch['message_role']=='assistant' and len(ch['tools'])==len(calls),'SHAPE_CHOICE_SEMANTICS')
         for hint,call in zip(ch['tools'],calls):c.require(hint['name']==call['name'] and hint['id']=={'type':'string','valid':True,'sha256':c.digest(call['call_id'])} and hint['arguments_keys_valid'] is True,'SHAPE_TOOL_BINDING')
@@ -145,16 +146,21 @@ def verify_round(ctx,account,row,index,prior):
     for state in states:
         current=state['requests']; c.require(len(current)>=len(previous),'HISTORY_REMOVED')
         for a,b in zip(previous,current):
-            keys=('attempt','run_id','role','ticket','request_sha256','input_upper','token_upper','proof','started_monotonic_ns','tool_returns')+(('status','usage','response_id','returned_model') if a['status']=='RECEIVED' else ())+(('shape_sha256',) if 'shape_sha256' in a else ())
+            keys=('attempt','run_id','role','ticket','request_sha256','input_upper','token_upper','output_cap','binding','proof','started_monotonic_ns','tool_returns')+(('status','usage','response_id','returned_model') if a['status']=='RECEIVED' else ())+(('shape_sha256',) if 'shape_sha256' in a else ())
             c.require(all(a[k]==b[k] for k in keys),'HISTORY_REWRITE')
         previous=current
     tokens=0; cost=0
     for i,(r,comp) in enumerate(zip(records,comps)):
         t=tickets[r['ticket']]; z=results[r['ticket']]; u=r['usage']; ProviderLedger._validate_usage(u,r['token_upper'])
         c.require(r['attempt']==i+1 and r['role']==t['role']=='TARGET' and r['run_id']==t['run_id']==run and r['status']=='RECEIVED' and r['failure_code'] is None and z['status']=='RECEIVED' and r['request_sha256']==t['request_sha256']==comp['request_sha256'] and r['response_id']==comp['response_id']==z['response_id'] and r['usage']==comp['usage']==z['usage'] and r['returned_model']==comp['model'] and r['returned_model'] in c.MODELS,'PROVIDER_USAGE_BINDING')
-        c.require(r['token_upper']==t['token_upper'] and r['input_upper']==t['input_upper'] and r['proof']==t['proof'] and u['prompt_tokens']<=t['input_upper'] and u['completion_tokens']<=256,'USAGE_CAP')
+        c.require(r['token_upper']==t['token_upper'] and r['input_upper']==t['input_upper'] and r['proof']==t['proof'] and u['prompt_tokens']<=t['input_upper'] and u['completion_tokens']<=r['output_cap'],'USAGE_CAP')
         c.require(r['tool_returns']==comp['tool_returns'] and r['returned_tool_ids']==[x['call_id'] for x in comp['tool_returns']] and r['tool_call_ids']==[x['call_id'] for x in comp['tool_calls']] and r['agent_contract_visibility']==s['visibility'][i],'PROVIDER_CALL_BINDING')
         c.require(re.fullmatch('[0-9a-f]{64}',r['tool_schema_sha256']) is not None and len({x['tool_schema_sha256'] for x in records})==1,'TOOL_SCHEMA')
+        c.require(r['binding']==t['binding'] and r['output_cap']==t['output_cap'] and r['request_sha256']==r['binding']['outbound_request_sha256'],'OUTBOUND_BINDING')
+        b=r['binding'];c.validate_binding(b,run,i+1)
+        st=c.stage_for(ct,i+1,s['tool_trace'][:i],r['tool_returns'],stop_writes=ct['experiment']['fault_plan']['enabled'] and i>=3)
+        c.require(b['stage']==st and b['sdk_messages_sha256']==s['visibility'][i]['messages_sha256'],'STAGE_EVIDENCE_BINDING')
+        if i:c.require(b['outbound_config_sha256']==records[i-1]['binding']['outbound_config_sha256'],'CONFIG_PREFIX_DRIFT')
         proof=t['proof']
         if i==0: c.require(proof=={'kind':'FULL_SERIALIZED_BYTES','body_bytes':t['input_upper']},'FIRST_INPUT_PROOF')
         else:

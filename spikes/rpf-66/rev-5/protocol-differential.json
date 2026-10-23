@@ -1,0 +1,253 @@
+{
+  "status": "PASS",
+  "source_digest": "fffa545ba355676ef25405f731d610e63dbfefe983d7b2138ac7506e72cfecfa",
+  "abi": "rpf66-config-pge-session-v5",
+  "protected_raw_sha256": {
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+    "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe"
+  },
+  "protected_bytes_equal_rev4_receipt": true,
+  "child_original_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+  "child": {
+    "schema": "rpf66-child-v5",
+    "raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+    "lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+    "max_tokens": 512
+  },
+  "child_exact_byte_diff_only_model_settings": true,
+  "child_diff": [
+    "--- original-child\n",
+    "+++ v5-child\n",
+    "@@ -340,3 +340,3 @@\n",
+    "                     instructions=config[\"instructions\"],",
+    "-                    model_settings={\"max_tokens\": 256, \"parallel_tool_calls\": False})",
+    "+                    model_settings={\"max_tokens\": 512, \"parallel_tool_calls\": False})",
+    "                 result = await agent.run(config[\"task_prompt\"],"
+  ],
+  "copied_lines": {
+    "parser_original": 53,
+    "parser_versioned": 55,
+    "completion_original": 118,
+    "completion_versioned": 119,
+    "child_original": 405,
+    "child_versioned": 405
+  },
+  "original_12_matrix": [
+    {
+      "finish": "stop",
+      "output": 0,
+      "result": "ACCEPTED"
+    },
+    {
+      "finish": "stop",
+      "output": 128,
+      "result": "ACCEPTED"
+    },
+    {
+      "finish": "stop",
+      "output": 256,
+      "result": "ACCEPTED"
+    },
+    {
+      "finish": "stop",
+      "output": 257,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT"
+    },
+    {
+      "finish": "stop",
+      "output": 300,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT"
+    },
+    {
+      "finish": "stop",
+      "output": 512,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT"
+    },
+    {
+      "finish": "stop",
+      "output": 513,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT"
+    },
+    {
+      "finish": "length",
+      "output": 128,
+      "result": "PROVIDER_CHOICE"
+    },
+    {
+      "finish": "length",
+      "output": 256,
+      "result": "PROVIDER_CHOICE"
+    },
+    {
+      "finish": "length",
+      "output": 512,
+      "result": "PROVIDER_CHOICE"
+    },
+    {
+      "finish": "content_filter",
+      "output": 128,
+      "result": "PROVIDER_CHOICE"
+    },
+    {
+      "finish": "aborted",
+      "output": 128,
+      "result": "PROVIDER_CHOICE"
+    }
+  ],
+  "low_output_differential_cases": 32,
+  "generation_policy": {
+    "child_settings": 512,
+    "sdk_http_field": "max_completion_tokens OR max_tokens, exactly one, value512",
+    "nonterminal": 256,
+    "normal_terminal_attempt": 4,
+    "suppressed_terminal_attempt": 5,
+    "terminal": 512,
+    "sixth": "REJECT_BEFORE_SEND",
+    "caps": [
+      3000,
+      2400,
+      2400,
+      2400,
+      2800,
+      2000
+    ],
+    "two_round_reservations": 35000
+  },
+  "immutable_nonmessages_fields": "all except messages and terminal-only max_tokens transition; fixed max_completion_tokens removal/thinking-disabled normalization retained from original Host",
+  "seven_step_chain": [
+    "fixed Python3.12 + pinned packages + task-owned child512",
+    "Host inbound digest and fixed SDK request-cap validation",
+    "versioned complete + verified Tool stage + outgoing canonical256/512",
+    "Broker reserve + physical fsync WAL + SDK/outbound binding",
+    "original HTTPS transport serialization + bounded safe-shape receipt",
+    "versioned original-equivalent parser + reserved-ticket account + request-specific cap + strict Host IDs/tools/usage",
+    "SDK original response passthrough + RunUsage + same-service independent GET Oracle"
+  ],
+  "binding_guards": [
+    "durable ticket required before HTTPS",
+    "SDK and outbound canonical request SHA separated",
+    "normalized nonmessage config digests equal",
+    "original message prefixes and previous trusted usage plus suffix bytes plus512 framing",
+    "strict finish length rejection at both caps",
+    "unknown stops all paid and POST"
+  ],
+  "tests": "see verification-diagnostic.json for final focused/full and real-child300/512 fixture results",
+  "synthetic_only": true,
+  "provider_calls_in_diagnostic": 0,
+  "limitations": [
+    "parser helper preserves original mutation/error behavior; full strict boundary also includes original safe-shape, Tool arguments, uniqueness and Broker input bounds in Host",
+    "SDK/free HTTP responses are transport fixtures, not real Provider",
+    "issuer is not a third-party signature",
+    "same-service HTTP Oracle is independent of tool result, not external database audit"
+  ],
+  "real_terminal_requests": [
+    {
+      "ticket": "provider-11",
+      "role": "TARGET",
+      "round": 2,
+      "run_id": "rpf66r5-config-e459abe3b967a890",
+      "request_sha256": "4a2caf6e8571f4b4fe13d35ce80ee93ac0c0e8531bcf1d589040f7547eb40199",
+      "token_upper": 2800,
+      "input_upper": 2027,
+      "output_cap": 512,
+      "binding": {
+        "outbound_config_sha256": "0a9d488012b3697939a350b6b85755292c829328babeea6841a7fcc3721a846a",
+        "outbound_max_tokens": 512,
+        "outbound_messages_sha256": "adfd91711317128231b475b6030323c8d7030a9e7535343b7b6e8765a9100cba",
+        "outbound_request_sha256": "4a2caf6e8571f4b4fe13d35ce80ee93ac0c0e8531bcf1d589040f7547eb40199",
+        "schema": "rpf66-request-binding-v5",
+        "sdk_config_sha256": "0a9d488012b3697939a350b6b85755292c829328babeea6841a7fcc3721a846a",
+        "sdk_messages_sha256": "adfd91711317128231b475b6030323c8d7030a9e7535343b7b6e8765a9100cba",
+        "sdk_normalized_sha256": "4a2caf6e8571f4b4fe13d35ce80ee93ac0c0e8531bcf1d589040f7547eb40199",
+        "sdk_request_sha256": "e477b537d20b34204a631bc66bc112ab8caadf9df8c5d089bdbe75e73d641b03",
+        "sdk_requested_max_tokens": 512,
+        "stage": {
+          "attempt": 5,
+          "candidate_id": "local-delivery-suppressed-after-http200",
+          "completed_tools": [
+            {
+              "call_id": "call_00_vkGJNI0iGEt10ClgFh7T5659",
+              "name": "inspect_config",
+              "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+            },
+            {
+              "call_id": "call_00_4rEodlimy9rXSbxxWIwi6730",
+              "name": "create_config_v1",
+              "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+            },
+            {
+              "call_id": "call_00_1GATIHIo2voc9uYDNarj3428",
+              "name": "update_config_v2",
+              "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+            },
+            {
+              "call_id": "call_00_9Iw61CrHfgyMl62ksJcO4419",
+              "name": "inspect_config",
+              "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+            }
+          ],
+          "outbound_max_tokens": 512,
+          "round": 2,
+          "run_id": "rpf66r5-config-e459abe3b967a890",
+          "schema": "rpf66-terminal-stage-v5",
+          "stop_writes": true,
+          "terminal": true
+        }
+      },
+      "status": "RECEIVED",
+      "usage": {
+        "completion_tokens": 299,
+        "prompt_tokens": 1077,
+        "total_tokens": 1376
+      },
+      "response_id": "46f6835c-d0ee-4a8d-90dc-b3b5145adc49",
+      "returned_model": "deepseek-flash",
+      "tool_call_ids": [],
+      "returned_tool_ids": [
+        "call_00_vkGJNI0iGEt10ClgFh7T5659",
+        "call_00_4rEodlimy9rXSbxxWIwi6730",
+        "call_00_1GATIHIo2voc9uYDNarj3428",
+        "call_00_9Iw61CrHfgyMl62ksJcO4419"
+      ],
+      "cost_guard_micro_cny": 18337.5
+    }
+  ],
+  "price_check": {
+    "status": "PASS",
+    "checked_date": "2026-10-23",
+    "input_usd_per_million": 0.3,
+    "output_usd_per_million": 1.2,
+    "model": "deepseek-flash",
+    "cny_per_usd_guard": 15,
+    "max_token_reservations": 35000,
+    "max_guard_cny_if_all_output": 0.63,
+    "not_invoice": true,
+    "official_pricing": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "official_completion": "https://api-docs.deepseek.com/api/create-chat-completion/",
+    "api_max_tokens_supports_512": true
+  },
+  "runtime_scope": "REAL",
+  "real_terminal_by_round": [
+    {
+      "round": 1,
+      "candidate": "local-delivery-suppressed-after-http200",
+      "target_requests": 4,
+      "tool_callbacks": 3,
+      "recovery": "NOT_OBSERVED_SAFE_STOP",
+      "qualified_terminal_512": "NOT_RUN_SAFE_STOP_BEFORE_OPTIONAL_INSPECT",
+      "last_output_cap": 256,
+      "last_completion_tokens": 150
+    },
+    {
+      "round": 2,
+      "candidate": "local-delivery-suppressed-after-http200",
+      "target_requests": 5,
+      "tool_callbacks": 4,
+      "recovery": "OBSERVED",
+      "qualified_terminal_512": "PASS",
+      "last_output_cap": 512,
+      "last_completion_tokens": 299
+    }
+  ]
+}

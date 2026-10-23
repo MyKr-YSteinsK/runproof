@@ -1,0 +1,38 @@
+{
+  "plan": "RPF-66/rev-5",
+  "status": "Partial",
+  "abi": "rpf66-config-pge-session-v5",
+  "implementation": "task-owned complete versioned boundary; original parser, Host, child unchanged",
+  "copy_debt": {
+    "parser_original": 53,
+    "parser_versioned": 55,
+    "completion_original": 118,
+    "completion_versioned": 119,
+    "child_original": 405,
+    "child_versioned": 405
+  },
+  "sdk_child": {
+    "schema": "rpf66-child-v5",
+    "raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+    "lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+    "max_tokens": 512
+  },
+  "original_scripts_unchanged": true,
+  "real_scope": "configuration domain only",
+  "L2": false,
+  "boundaries": {
+    "order_real_target": "NOT_RUN",
+    "cross_domain_real_dual_agent": "NOT_PROVEN",
+    "web": "NOT_INTEGRATED",
+    "causality": "NOT_PROVEN",
+    "independent_reproduction": "NOT_TESTED",
+    "issuer": "NOT_ESTABLISHED",
+    "release": "NOT_AUTHORIZED"
+  },
+  "issuer": "NOT_A_THIRD_PARTY_SIGNATURE",
+  "oracle": "INDEPENDENT_GET_SAME_SERVICE_NOT_EXTERNAL_DATABASE",
+  "causality": "NOT_PROVEN",
+  "independent_reproduction": "NOT_TESTED",
+  "canonical_state_updated": false,
+  "next_step": "Architect review of versioned boundary and bounded evidence; public parameter extraction requires future contract"
+}

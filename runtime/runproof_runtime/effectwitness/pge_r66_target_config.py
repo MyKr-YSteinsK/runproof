@@ -5,7 +5,8 @@ from .pge_domain_port import DomainPort
 from .config_live_runtime import ConfigLiveHost, ConfigLiveHttp, ConfigLiveBusiness, ConfigLiveMemoryBackend, ProviderLedger, LiveRuntimeRejected, _http_contract, _api_response, _valid_item
 from .config_live_verify import _history
 from .config_live_contracts import TOOL_ARGUMENT_KEYS
-from .config_live_runtime import _validate_provider_response
+from .pge_r66_response_v5 import validate as _validate_provider_response
+from .pge_r66_completion_v5 import complete
 
 SHAPE_SCHEMA='rpf66-provider-safe-shape-v1'
 SHAPE_MAX_BYTES=8192
@@ -38,7 +39,7 @@ def safe_shape(data):
  shape={'schema':SHAPE_SCHEMA,'response_type':value_type(data),'fields':fields(data,TOP_KEYS),'object':'chat.completion' if d.get('object')=='chat.completion' else 'OTHER','created_nonnegative_integer':type(d.get('created')) is int and d['created']>=0,'model':d.get('model') if d.get('model') in c.MODELS else 'OTHER','response_id':identity_hint(d.get('id')),'choices_type':value_type(choices),'choices_count':min(1000001,len(choices)) if type(choices) is list else None,'choices':rows,'usage':{'type':value_type(u),'confidence':'UNTRUSTED_OBSERVED_HINT','fields':{k:{'present':k in usage,'type':value_type(usage.get(k)),'nonnegative':type(usage.get(k)) is int and usage[k]>=0,'value':usage[k] if type(usage.get(k)) is int and 0<=usage[k]<=1000000 else None} for k in USAGE_KEYS}}}
  c.require(len(c.canonical(shape))<=SHAPE_MAX_BYTES,'SAFE_SHAPE_BOUND');return shape
 
-def shape_conditions(s):
+def shape_conditions(s,output_cap=256):
  reasons=[]
  def check(ok,code):
   if not ok:reasons.append(code)
@@ -51,7 +52,7 @@ def shape_conditions(s):
   for t in ch['tools']:
    check(t['type']=='object' and t['index_valid'] and t['fields']['unknown_count']==0 and t['call_type']=='function' and t['id']['valid'] and t['function_type']=='object' and t['function_fields']['unknown_count']==0 and set(t['function_fields']['known'])=={'name','arguments'},'TOOL_STRUCTURE');check(t['name'] in c.TOOLS and t['arguments_type']=='string' and t['arguments_keys_valid'],'TOOL_ARGUMENTS')
  u=s['usage'];values=[u['fields'][k]['value'] for k in USAGE_KEYS];check(u['type']=='object' and all(u['fields'][k]['present'] and u['fields'][k]['type']=='integer' and u['fields'][k]['nonnegative'] and u['fields'][k]['value'] is not None for k in USAGE_KEYS),'USAGE_FIELDS')
- if all(type(x) is int for x in values):check(values[0]+values[1]==values[2] and values[1]<=256,'USAGE_SUM_OR_OUTPUT')
+ if all(type(x) is int for x in values):check(values[0]+values[1]==values[2] and values[1]<=output_cap,'USAGE_SUM_OR_OUTPUT')
  return reasons
 
 SAFE_CODES={'PROVIDER_RESPONSE_FIELDS','PROVIDER_RESPONSE_IDENTITY','PROVIDER_CHOICE','PROVIDER_MESSAGE','PARALLEL_TOOL_CALLS_REJECTED','PROVIDER_FINISH_REASON','PROVIDER_TOOL_CALL','PROVIDER_TOOL_INDEX','PROVIDER_USAGE_INVALID','PROVIDER_OUTPUT_TOKEN_LIMIT','PROVIDER_TRANSPORT_ERROR','PROVIDER_RESPONSE_SIZE','PROVIDER_CONTENT_TYPE','PROVIDER_JSON_INVALID','PROVIDER_RESPONSE_ID_REUSED','TOOL_CALL_ID_DUPLICATE_OR_BUDGET','PROVIDER_TOOL_ARGUMENTS','INVALID_TARGET_SHAPE','PROVIDER_USAGE_BOUND','PROVIDER_CALL_FAILED'}
@@ -78,21 +79,25 @@ class BrokerLedger:
     """Ephemeral SDK index; every state is fsynced in the one session WAL."""
     def __init__(self,total,run_id):self.total,self.run_id,self.data,self.previous_body=total,run_id,{'requests':[]},None
     def checkpoint(self):self.total.append('PROVIDER_STATE',role='TARGET',run_id=self.run_id,requests=self.data['requests'])
-    def reserve(self,body,returns):
+    def reserve(self,body,returns,*,sdk_body,stage):
         records=self.data['requests'];c.require(all(r['status']=='RECEIVED' for r in records) and len(records)<6,'UNKNOWN_USAGE_OR_TARGET_LIMIT')
         messages=body['messages'];prior=self.previous_body
         if prior is None:input_upper=len(c.canonical(body));proof={'kind':'FULL_SERIALIZED_BYTES','body_bytes':input_upper}
         else:
-            pm=prior['messages'];c.require(set(body)==set(prior) and messages[:len(pm)]==pm and all(body[k]==prior[k] for k in body if k!='messages'),'INPUT_PREFIX_CHANGED')
+            pm=prior['messages'];c.require(set(body)==set(prior) and messages[:len(pm)]==pm and all(body[k]==prior[k] for k in body if k not in ('messages','max_tokens')) and (body['max_tokens']==prior['max_tokens']==256 or prior['max_tokens']==256 and body['max_tokens']==512 and stage['terminal']),'INPUT_PREFIX_CHANGED')
             extra=len(c.canonical(messages[len(pm):]));input_upper=records[-1]['usage']['prompt_tokens']+extra+512
             proof={'kind':'UNCHANGED_PREFIX_USAGE_PLUS_SUFFIX_BYTES_PLUS_512','previous_request_sha256':c.digest(prior),'prefix_sha256':c.digest(pm),'suffix_bytes':extra,'previous_prompt_tokens':records[-1]['usage']['prompt_tokens'],'framing_guard':512}
-        cap=c.CAPS[len(records)];c.require(input_upper+256<=cap,'REQUEST_INPUT_BOUND')
-        ticket=self.total.reserve('provider',role='TARGET',run_id=self.run_id,request_sha256=c.digest(body),token_upper=cap,input_upper=input_upper,output_cap=256,proof=proof,cost_micro_cny_upper=input_upper*4.5+256*18)
-        record={'attempt':len(records)+1,'run_id':self.run_id,'role':'TARGET','ticket':ticket,'request_sha256':c.digest(body),'token_upper':cap,'input_upper':input_upper,'proof':proof,'status':'RESERVED_USAGE_UNKNOWN','usage':None,'response_id':None,'returned_model':None,'tool_returns':returns,'failure_code':None,'started_monotonic_ns':time.monotonic_ns()}
+        cap=c.CAPS[len(records)];out=stage['outbound_max_tokens'];c.require(input_upper+out<=cap,'REQUEST_INPUT_BOUND')
+        normalized=copy.deepcopy(sdk_body);normalized.pop('max_completion_tokens',None);normalized['thinking']={'type':'disabled'};normalized['max_tokens']=512
+        config=lambda x:{k:v for k,v in x.items() if k not in ('messages','max_tokens')}
+        binding=dict(schema='rpf66-request-binding-v5',sdk_request_sha256=c.digest(sdk_body),outbound_request_sha256=c.digest(body),sdk_normalized_sha256=c.digest(normalized),sdk_config_sha256=c.digest(config(normalized)),outbound_config_sha256=c.digest(config(body)),sdk_messages_sha256=c.digest(sdk_body['messages']),outbound_messages_sha256=c.digest(body['messages']),sdk_requested_max_tokens=sdk_body.get('max_tokens',sdk_body.get('max_completion_tokens')),outbound_max_tokens=out,stage=stage)
+        c.validate_binding(binding,self.run_id,len(records)+1)
+        ticket=self.total.reserve('provider',role='TARGET',run_id=self.run_id,request_sha256=c.digest(body),token_upper=cap,input_upper=input_upper,output_cap=out,binding=binding,proof=proof,cost_micro_cny_upper=input_upper*4.5+out*18)
+        record={'attempt':len(records)+1,'run_id':self.run_id,'role':'TARGET','ticket':ticket,'request_sha256':c.digest(body),'token_upper':cap,'input_upper':input_upper,'output_cap':out,'binding':binding,'proof':proof,'status':'RESERVED_USAGE_UNKNOWN','usage':None,'response_id':None,'returned_model':None,'tool_returns':returns,'failure_code':None,'started_monotonic_ns':time.monotonic_ns()}
         records.append(record);self.previous_body=copy.deepcopy(body);self.checkpoint();return record
     def received(self,record,data):
         u={k:data['usage'].get(k) for k in ('prompt_tokens','completion_tokens','total_tokens')};ProviderLedger._validate_usage(u,record['token_upper'])
-        c.require(u['prompt_tokens']<=record['input_upper'] and u['completion_tokens']<=256,'REPORTED_USAGE_BOUND')
+        c.require(u['prompt_tokens']<=record['input_upper'] and u['completion_tokens']<=record['output_cap'],'REPORTED_USAGE_BOUND')
         c.require(data['model'] in c.MODELS,'MODEL')
         record.update(status='RECEIVED',usage=u,response_id=data['id'],returned_model=data['model']);self.checkpoint();self.total.settle(record['ticket'],usage=u,response_id=data['id'],status='RECEIVED')
     def fail_unknown(self,record,code):
@@ -138,31 +143,49 @@ class Host(ConfigLiveHost):
         c.require(visible,'CAPABILITY_RECOVERY_POLICY_VISIBLE')
         self.journal.add('CAPABILITY_INPUT_FROZEN',messages_sha256=c.digest(body.get('messages')),recovery_policy_visible=visible)
         if self.activated:self.journal.add('MODEL_UNKNOWN_INPUT_FROZEN',messages_sha256=c.digest(body.get('messages')))
-        try:result=super()._completion(body)
+        try:result=complete(self,body)
         except Exception as exc:
             if not self.fixture and self.ledger.data['requests'] and self.ledger.data['requests'][-1]['status']=='RESERVED_USAGE_UNKNOWN':self.ledger.fail_unknown(self.ledger.data['requests'][-1],safe_code(exc))
+            elif not self.fixture:
+                code=getattr(exc,'code','PRE_ADMISSION_REJECTED')
+                allowed={'REQUEST_INPUT_BOUND','COMPLETION_TOOL_STAGE','SDK_V5_REQUEST_CAP','STAGE_POSTS','STAGE_BUSINESS_HTTP','INPUT_PREFIX_CHANGED','UNKNOWN_USAGE_OR_TARGET_LIMIT'}
+                self.journal.ledger.append('PROVIDER_PRE_ADMISSION_REJECTED',run_id=self.contracts['experiment']['run_id'],attempt=len(self.ledger.data['requests'])+1,code=code if code in allowed else 'PRE_ADMISSION_REJECTED')
             raise
         if self.activated:
             self.journal.add('MODEL_UNKNOWN_INPUT_ACCEPTED',request_sha256=self.provider_responses[-1]['request_sha256'],response_id=self.provider_responses[-1]['response_id'])
         return result
+    def request_policy(self,body,returns):
+        c.require(len(set(body)&{'max_tokens','max_completion_tokens'})==1 and body.get('max_tokens',body.get('max_completion_tokens'))==512,'SDK_V5_REQUEST_CAP')
+        if self.fixture:return {'outbound_max_tokens':256}
+        attempt=len(self.ledger.data['requests'])+1
+        if isinstance(self.business,ConfigLiveBusiness):
+            observations=self.business.client.observations
+            for tool in self.tool_trace:
+                row=observations[tool['http_observation_seq']-1]
+                c.require(row['transport_error'] is None and (row['status']==200 or tool['name']=='inspect_config' and row['status']==404),'STAGE_BUSINESS_HTTP')
+            writes=[o for o in observations if o['method']=='POST']
+            c.require(len(writes)==min(max(len(self.tool_trace)-1,0),2) and all(o['status']==200 and o['response']['code']==0 for o in writes),'STAGE_POSTS')
+        return c.stage_for(self.contracts,attempt,self.tool_trace,returns,stop_writes=self.activated)
     def _shape_receipt(self,body,data,*,transport_code=None):
         record=self.ledger.data['requests'][-1];total=self.journal.ledger;ctx=total.context;shape=safe_shape(data)
-        conditions=shape_conditions(shape) if transport_code is None else ['NOT_OBSERVED']
+        conditions=shape_conditions(shape,record['output_cap']) if transport_code is None else ['NOT_OBSERVED']
         receipt={'schema':'rpf66-provider-shape-receipt-v1','source_kind':ctx.public()['source_kind'],'context_sha256':c.digest(ctx.public()),'role':'TARGET','round':self.contracts['experiment']['round'],'run_id':self.contracts['experiment']['run_id'],'ticket':record['ticket'],'request_sha256':c.digest(body),'http_status':200 if transport_code is None else int(transport_code.rsplit('_',1)[1]) if transport_code.startswith('PROVIDER_HTTP_STATUS_') else None,'stage':'BEFORE_STRICT_VALIDATION' if transport_code is None else 'TRANSPORT_OR_DECODE_NOT_OBSERVED','shape':shape,'conditions':conditions,'transport_code':transport_code,'compatibility':'STRICT_NO_NORMALIZATION'}
         c.require(record['status']=='RESERVED_USAGE_UNKNOWN' and record['request_sha256']==receipt['request_sha256'] and len(c.canonical(receipt))<=12288,'SHAPE_SCOPE')
         ctx.once(ctx.root/'provider-shapes'/(record['ticket']+'.json'),receipt);total.append('PROVIDER_SHAPE_OBSERVED',run_id=receipt['run_id'],provider_ticket=record['ticket'],receipt_sha256=c.digest(receipt),receipt=receipt);record['shape_sha256']=c.digest(receipt);self.ledger.checkpoint();return receipt
     def _provider_request(self,body):
+        record=self.ledger.data['requests'][-1];account=self.ledger.total.read();ticket=account['tickets'][record['ticket']]
+        c.require(record['status']=='RESERVED_USAGE_UNKNOWN' and c.digest(body)==record['request_sha256']==ticket['request_sha256'] and body['max_tokens']==record['output_cap']==ticket['output_cap'] and record['binding']==ticket['binding'],'OUTBOUND_PRETRANSPORT_BINDING')
         try:data=super()._provider_request(body)
         except Exception as exc:
             code=safe_code(exc);receipt=self._shape_receipt(body,None,transport_code=code);self.journal.ledger.append('PROVIDER_PARSE_REJECTED',run_id=receipt['run_id'],provider_ticket=receipt['ticket'],receipt_sha256=c.digest(receipt),stage='TRANSPORT_OR_DECODE',code=code);raise LiveRuntimeRejected(code,'PROVIDER') from None
         receipt=self._shape_receipt(body,data)
         try:
-            checked,message,calls=_validate_provider_response(copy.deepcopy(data))
+            checked,message,calls=_validate_provider_response(copy.deepcopy(data),authorization=self.ledger.data['requests'][-1],account=self.ledger.total.read())
             if receipt['conditions']:raise LiveRuntimeRejected('INVALID_TARGET_SHAPE','PROVIDER')
             c.require(checked['id'] not in {x['response_id'] for x in self.provider_responses},'PROVIDER_RESPONSE_ID_REUSED')
             for call in calls:
                 args=c.strict_json(call['function']['arguments'].encode());c.require(type(args) is dict and set(args)==set(TOOL_ARGUMENT_KEYS[call['function']['name']]),'PROVIDER_TOOL_ARGUMENTS');c.require(call['id'] not in self.intents,'TOOL_CALL_ID_DUPLICATE_OR_BUDGET')
-            record=self.ledger.data['requests'][-1];u=checked['usage'];ProviderLedger._validate_usage({k:u[k] for k in USAGE_KEYS},record['token_upper']);c.require(u['prompt_tokens']<=record['input_upper'] and u['completion_tokens']<=256,'PROVIDER_USAGE_BOUND')
+            record=self.ledger.data['requests'][-1];u=checked['usage'];ProviderLedger._validate_usage({k:u[k] for k in USAGE_KEYS},record['token_upper']);c.require(u['prompt_tokens']<=record['input_upper'] and u['completion_tokens']<=record['output_cap'],'PROVIDER_USAGE_BOUND')
         except Exception as exc:
             code=safe_code(exc);self.journal.ledger.append('PROVIDER_PARSE_REJECTED',run_id=receipt['run_id'],provider_ticket=receipt['ticket'],receipt_sha256=c.digest(receipt),stage='STRICT_RESPONSE_VALIDATION',code=code);raise LiveRuntimeRejected(code,'PROVIDER') from None
         self.journal.ledger.append('PROVIDER_PARSE_ACCEPTED',run_id=receipt['run_id'],provider_ticket=receipt['ticket'],receipt_sha256=c.digest(receipt));return data
@@ -176,9 +199,9 @@ def run_sdk(ctx,ct,ledger,sdk,folder,host,*,cold=False):
  h,old=c.helpers();scratch=ctx.scope(folder/'sdk-scratch');scratch.mkdir();direct=h.resolve_direct_python(sdk);supervisor=c.ProcessSupervisor(ctx,ledger,ct,'cold' if cold else 'sdk');result=None
  try:
   host.start(ct['execution']['agent_host']['port']);cfg={'port':host.port,'token':host.token,'write_root':str(scratch),'sdk_readonly_path':str(old.SDK_SITE.resolve()),'sdk_site_root_binding_sha256':sdk['sdk_site_root_binding_sha256'],'python_runtime_mapping_sha256':sdk['python_runtime_mapping_sha256'],'instructions':ct['execution']['agent_instructions'],'task_prompt':ct['execution']['task_prompt'],'model':'rpf53-fixture-only' if cold else c.MODEL,'max_runtime_seconds':180,'fixture':cold}
-  proc=supervisor.start([str(direct),'-I','-B',str(c.ROOT/'runtime/runproof_runtime/effectwitness/config_live_external.py')],old._sdk_env(scratch),scratch,stdio=True);host.expected_pid=proc.pid;stdout,stderr=proc.communicate(c.canonical(cfg),timeout=180)
+  proc=supervisor.start([str(direct),'-I','-B',str(c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py')],old._sdk_env(scratch),scratch,stdio=True);host.expected_pid=proc.pid;script=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py';argv=old._split_windows_command_line(old._actual_process_command_line(proc.pid));c.require(str(script).casefold() in [str(x).casefold() for x in argv],'CHILD_SCRIPT_ARGV');stdout,stderr=proc.communicate(c.canonical(cfg),timeout=180)
   parsed=c.strict_json(stdout);allowed={'status','framework','version','openai_version','pid','python_executable_sha256','usage_type','usage_fields','requests','input_tokens','output_tokens','tool_calls','tool_callbacks','sdk_source_sha256','openai_source_sha256','final_output_sha256','final_text_persisted','guard_denials','provider_key_present','business_key_present','stage','error_type','guard_code','denied_files'};c.require(type(parsed) is dict and set(parsed)<=allowed,'SDK_REPORT_FIELDS');report={k:v for k,v in parsed.items() if k!='denied_files'}
-  result={'popen_pid':proc.pid,'ready':host.runtime,'report':report,'returncode':proc.returncode,'stderr_bytes':len(stderr)};ctx.once(folder/'sdk-received-before-cleanup.json',{'sdk':result,'tool_trace':host.tool_trace,'completions':host.provider_responses,'events':host.journal.events});supervisor.received(status=report['status'],report_sha256=c.digest(report));return result
+  result={'child_script':c.child_identity(),'child_script_argv_verified':True,'popen_pid':proc.pid,'ready':host.runtime,'report':report,'returncode':proc.returncode,'stderr_bytes':len(stderr)};ctx.once(folder/'sdk-received-before-cleanup.json',{'sdk':result,'tool_trace':host.tool_trace,'completions':host.provider_responses,'events':host.journal.events});supervisor.received(status=report['status'],report_sha256=c.digest(report));return result
  except Exception as exc:
   ctx.once(folder/'sdk-failure.json',{'error_type':type(exc).__name__,'code':getattr(exc,'code','SDK_UNAVAILABLE'),'ready':host.runtime});raise
  finally:

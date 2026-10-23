@@ -17,14 +17,14 @@ def drive(host,ct,pid,*,cold=False,bad_final=False):
         return data
     with patch.object(config.ConfigLiveHost,'_provider_request',autospec=True,side_effect=lambda self,body:response(body)):
         for _ in range(5):
-            data=host._completion(dict(model='rpf53-fixture-only' if cold else c.MODEL,messages=copy.deepcopy(messages),tools=registry(),tool_choice='auto',parallel_tool_calls=False,max_tokens=256))
+            data=host._completion(dict(model='rpf53-fixture-only' if cold else c.MODEL,messages=copy.deepcopy(messages),tools=registry(),tool_choice='auto',parallel_tool_calls=False,max_tokens=512))
             msg=data['choices'][0]['message']; messages.append(msg)
             if not msg.get('tool_calls'):break
             for call in msg.get('tool_calls',[]):
                 result=host._tool(dict(call_id=call['id'],name=call['function']['name'],arguments=c.strict_json(call['function']['arguments'].encode())))
                 messages.append(dict(role='tool',tool_call_id=call['id'],content=c.canonical(result).decode()))
     r=dict(status='COMPLETED',framework='pydantic-ai-slim',version='2.57.0',openai_version='3.35.1',pid=pid,python_executable_sha256=pin['python_executable_sha256'],sdk_source_sha256=c.SDK_CORE_SHA256,openai_source_sha256=pin['openai_core_sha256'],guard_denials=[],provider_key_present=False,business_key_present=False,final_text_persisted=False,tool_calls=len(host.tool_trace),tool_callbacks=len(host.tool_trace),requests=len(host.provider_responses),input_tokens=0 if cold else 500*len(host.provider_responses),output_tokens=0 if cold else 50*len(host.provider_responses))
-    return dict(popen_pid=pid,ready=ready,report=r,returncode=0,stderr_bytes=0)
+    return dict(child_script=c.child_identity(),child_script_argv_verified=True,popen_pid=pid,ready=ready,report=r,returncode=0,stderr_bytes=0)
 
 class FakeHttp(config.Http):
  def request(self,kind,*,reconcile=False):
@@ -166,6 +166,25 @@ def mutations():
   'equal_clock_shape_parse_reordered':shape_reversed,'accepted_parse_replayed':parse_replay,
   'raw_clock_decreasing':clock_reverse,'accepted_parse_cross_ticket':cross_ticket,'selection_after_jvm':selection_late,
  })
+ def binding_attack(p,key,value,stage=False):
+    event=next(f['event'] for f in p['ledger'] if f['event']['kind']=='RESERVE' and f['event'].get('role')=='TARGET')
+    target=event['binding']['stage'] if stage else event['binding'];target[key]=value;rechain(p)
+ attacks.update({
+  'v5_sdk_cap':lambda p:binding_attack(p,'sdk_requested_max_tokens',256),
+  'v5_nonterminal_512':lambda p:binding_attack(p,'outbound_max_tokens',512),
+  'v5_sdk_hash_type':lambda p:binding_attack(p,'sdk_request_sha256','invalid'),
+  'v5_outbound_hash':lambda p:binding_attack(p,'outbound_request_sha256','0'*64),
+  'v5_config_drift':lambda p:binding_attack(p,'sdk_config_sha256','0'*64),
+  'v5_message_drift':lambda p:binding_attack(p,'sdk_messages_sha256','0'*64),
+  'v5_early_terminal':lambda p:binding_attack(p,'terminal',True,True),
+  'v5_sixth_request':lambda p:binding_attack(p,'attempt',6,True),
+  'v5_missing_tools':lambda p:binding_attack(p,'completed_tools',[{'name':'update_config_v2'}],True),
+  'v5_cross_run':lambda p:binding_attack(p,'run_id','another-run',True),
+  'v5_foreign_candidate':lambda p:binding_attack(p,'candidate_id','uncontrolled',True),
+  'v5_stage_cap':lambda p:binding_attack(p,'outbound_max_tokens',128,True),
+  'v5_child_source':lambda p:p['rows'][0]['evidence']['sdk']['child_script'].update(lf_sha256='0'*64),
+  'v5_child_argv':lambda p:p['rows'][0]['evidence']['sdk'].update(child_script_argv_verified=False),
+ })
  return attacks
 
 def controls(payload,folder):
@@ -283,7 +302,7 @@ class R66Tests(unittest.TestCase):
          t=ledger.reserve('sdk',domain=c.DOMAIN,run_id=ct['experiment']['run_id'])
          try:result=drive(host,ct,789+ct['experiment']['round'],bad_final=True)
          except config.LiveRuntimeRejected as exc:
-             host.failure={'domain':'PROVIDER','code':exc.code};result={'popen_pid':789+ct['experiment']['round'],'ready':host.runtime,'report':{'status':'SDK_ERROR','stage':'sdk_run','error_type':'ModelHTTPError','guard_code':None,'guard_denials':[]},'returncode':1,'stderr_bytes':0}
+             host.failure={'domain':'PROVIDER','code':exc.code};result={'child_script':c.child_identity(),'child_script_argv_verified':True,'popen_pid':789+ct['experiment']['round'],'ready':host.runtime,'report':{'status':'SDK_ERROR','stage':'sdk_run','error_type':'ModelHTTPError','guard_code':None,'guard_denials':[]},'returncode':1,'stderr_bytes':0}
          ledger.settle(t,popen_pid=789+ct['experiment']['round'],status='COMPLETED');ledger.append('PROCESS_CLEANUP',resource='sdk',pid=789+ct['experiment']['round'],process_exited=True);return result
      # Only external boundaries are synthetic; Session/Port/factory/Host/Broker
      # and real ConfigLiveBusiness/Oracle implementations execute unchanged.
@@ -295,7 +314,7 @@ class R66Tests(unittest.TestCase):
      self.assertTrue((ctx.root/'explorer-selections/selection-1.json').exists());self.assertTrue(ledger.read()['unknown']);self.assertEqual([o['kind'] for o in scene['http'][-3:]],['reconcile_current','reconcile_history','final_list']);self.assertTrue(all(scene['environment']['cleanup'].values()))
      self.assertFalse(any(e['kind'] in ('DOMAIN_VERIFIED','FEEDBACK_FROZEN') for e in ledger.read()['events']))
  def test_unknown_blocks_both_roles_and_writes(self):
-    ctx,ledger=fresh();broker=config.BrokerLedger(ledger,ctx.contract()['experiment']['run_id']);record=broker.reserve({'messages':[]},[]);broker.fail_unknown(record,'SYNTHETIC_UNKNOWN')
+    ctx,ledger=fresh();broker=config.BrokerLedger(ledger,ctx.contract()['experiment']['run_id']);body={'messages':[],'max_tokens':256,'thinking':{'type':'disabled'}};sdk={**body,'max_tokens':512};st=c.stage_for(ctx.contract(),1,[],[],stop_writes=False);record=broker.reserve(body,[],sdk_body=sdk,stage=st);broker.fail_unknown(record,'SYNTHETIC_UNKNOWN')
     with self.assertRaises(Exception):explorer.ExplorerMeter(ledger,2,ctx.contract(2)['experiment']['run_id']).reserve_request('EXPLORER',2,explorer.body_for([]))
     with self.assertRaises(Exception):ledger.reserve('post',run_id=ctx.contract()['experiment']['run_id'])
     t=ledger.reserve('http',run_id=ctx.contract()['experiment']['run_id'],method='GET');ledger.settle(t,status=200)
@@ -313,11 +332,11 @@ class R66Tests(unittest.TestCase):
     with (ledger.path/'ledger.jsonl').open('ab') as f:f.write(b'{')
     with self.assertRaises(Exception):ledger.read()
  def test_input_prefix_guard(self):
-    ctx,ledger=fresh();broker=config.BrokerLedger(ledger,ctx.contract()['experiment']['run_id']);r=broker.reserve({'messages':[],'model':c.MODEL},[]);broker.received(r,{'id':str(uuid.uuid4()),'model':c.MODEL,'usage':dict(prompt_tokens=10,completion_tokens=1,total_tokens=11)})
-    with self.assertRaises(Exception):broker.reserve({'messages':[],'model':'changed'},[])
+    ctx,ledger=fresh();broker=config.BrokerLedger(ledger,ctx.contract()['experiment']['run_id']);body={'messages':[],'model':c.MODEL,'max_tokens':256,'thinking':{'type':'disabled'}};sdk={**body,'max_tokens':512};st=c.stage_for(ctx.contract(),1,[],[],stop_writes=False);r=broker.reserve(body,[],sdk_body=sdk,stage=st);broker.received(r,{'id':str(uuid.uuid4()),'model':c.MODEL,'usage':dict(prompt_tokens=10,completion_tokens=1,total_tokens=11)})
+    with self.assertRaises(Exception):broker.reserve({'messages':[],'model':'changed','max_tokens':256},[],sdk_body=sdk,stage=st)
     for malformed in ({'messages':[]},{'messages':[],'model':c.MODEL,'temperature':1},{'messages':[{'role':'user','content':'replaced'}],'model':'changed'}):
         with self.subTest(malformed=malformed):
-            with self.assertRaises(Exception):broker.reserve(malformed,[])
+            with self.assertRaises(Exception):broker.reserve(malformed,[],sdk_body=sdk,stage=st)
  def test_explorer_arguments_and_replay(self):
     data={'model':c.MODEL,'id':str(uuid.uuid4()),'choices':[{'finish_reason':'tool_calls','message':{'role':'assistant','tool_calls':[{'id':'x','type':'function','function':{'name':'select_experiment','arguments':'{"candidate_id":"normal","extra":1}'}}]}}]}
     with self.assertRaises(Exception):explorer.parse_selection(data,set())
@@ -336,7 +355,7 @@ def minimal_response(*,tool=False):
 def ready_host(host,pid=789):
  pin=c.pinned_sdk_fields();host._ready(dict(framework='pydantic-ai-slim',version='2.57.0',openai_version='3.35.1',pid=pid,python_executable_sha256=pin['python_executable_sha256'],sdk_source_sha256=c.SDK_CORE_SHA256,openai_source_sha256=pin['openai_core_sha256'],sdk_site_root_binding_sha256=pin['sdk_site_root_binding_sha256'],python_runtime_mapping_sha256=pin['python_runtime_mapping_sha256']))
 
-def completion_body(ct):return dict(model=c.MODEL,messages=[{'role':'system','content':ct['execution']['agent_instructions']},{'role':'user','content':ct['execution']['task_prompt']}],tools=registry(),tool_choice='auto',parallel_tool_calls=False,max_tokens=256)
+def completion_body(ct):return dict(model=c.MODEL,messages=[{'role':'system','content':ct['execution']['agent_instructions']},{'role':'user','content':ct['execution']['task_prompt']}],tools=registry(),tool_choice='auto',parallel_tool_calls=False,max_tokens=512)
 
 def response_cases():
  def changed(fn,tool=False):
@@ -424,9 +443,12 @@ class R66ShapeTests(unittest.TestCase):
   for duplicate_tool in (False,True):
    ctx,ledger=fresh();ct=ctx.contract();_,broker,host,_=config.assemble_host(ctx,ct,ledger,api_key='synthetic-only');ready_host(host);first=minimal_response(tool=True);second=copy.deepcopy(first)
    if duplicate_tool:second['id']=str(uuid.uuid4())
+   host.business=config.ConfigLiveMemoryBackend();body=completion_body(ct)
    with patch.object(config.ConfigLiveHost,'_provider_request',autospec=True,side_effect=[first,second]):
-    host._completion(completion_body(ct))
-    with self.assertRaises(Exception):host._completion(completion_body(ct))
+    host._completion(body);call=first['choices'][0]['message']['tool_calls'][0]
+    result=host._tool(dict(call_id=call['id'],name='inspect_config',arguments={}))
+    body['messages'] += [first['choices'][0]['message'],dict(role='tool',tool_call_id=call['id'],content=c.canonical(result).decode())]
+    with self.assertRaises(Exception):host._completion(body)
    self.assertTrue(ledger.read()['unknown']);self.assertEqual(broker.data['requests'][-1]['status'],'UNKNOWN')
  def test_shape_width_is_bounded(self):
   value=minimal_response();value['choices']=[value['choices'][0]]*100;value['usage']['prompt_tokens']=10**100;shape=config.safe_shape(value);self.assertEqual(len(shape['choices']),2);self.assertLess(len(c.canonical(shape)),8192);self.assertIsNone(shape['usage']['fields']['prompt_tokens']['value'])
@@ -462,3 +484,87 @@ class R66ClockTests(unittest.TestCase):
    with self.assertRaises(Exception):v.wal_order(a,other,last)
 
 if __name__=='__main__':unittest.main()
+
+
+class R66V5Tests(unittest.TestCase):
+ def test_parser_differential_and_terminal_range(self):
+  from runtime.runproof_runtime.effectwitness import pge_r66_response_v5 as parser
+  from runtime.runproof_runtime.effectwitness.config_live_runtime import _validate_provider_response as original
+  ctx,ledger=fresh();ct=ctx.contract();body=completion_body(ct);_,broker,host,_=config.assemble_host(ctx,ct,ledger,api_key='synthetic');ready_host(host)
+  req=copy.deepcopy(body);req.update(max_tokens=256,thinking={'type':'disabled'});st=host.request_policy(body,[])
+  rec=broker.reserve(req,[],sdk_body=body,stage=st)
+  values=[minimal_response(),minimal_response(tool=True)]+list(response_cases().values())
+  for output in (0,128,256):
+   value=minimal_response();value['usage'].update(completion_tokens=output,total_tokens=10+output);values.append(value)
+  def outcome(fn,value):
+   try:return ('PASS',fn(value),value)
+   except Exception as exc:return (getattr(exc,'code',type(exc).__name__),value)
+  for value in values:
+   with self.subTest(value=c.digest(value)):
+    self.assertEqual(outcome(original,copy.deepcopy(value)),outcome(lambda d:parser.validate(d,authorization=rec,account=ledger.read()),copy.deepcopy(value)))
+  terminal=copy.deepcopy(rec);terminal.update(attempt=5,output_cap=512)
+  trace=[dict(call_id='id'+str(i),name=name,result_sha256='0'*64) for i,name in enumerate(list(c.TOOLS)+['inspect_config'])]
+  terminal['binding']['stage']=c.stage_for(ct,5,trace,[dict(call_id=x['call_id'],result_sha256=x['result_sha256']) for x in trace],stop_writes=True)
+  terminal['binding']['outbound_max_tokens']=512
+  account=copy.deepcopy(ledger.read());account['tickets'][terminal['ticket']].update({k:terminal[k] for k in ('request_sha256','binding','input_upper','output_cap','token_upper')})
+  for output in (257,300,512,513):
+   value=minimal_response();value['usage'].update(completion_tokens=output,total_tokens=10+output)
+   if output<=512:self.assertEqual(parser.validate(copy.deepcopy(value),authorization=terminal,account=account)[0]['usage'],value['usage'])
+   else:
+    with self.assertRaises(Exception):parser.validate(value,authorization=terminal,account=account)
+   with self.assertRaises(Exception):parser.validate(copy.deepcopy(value),authorization=rec,account=ledger.read())
+  for finish in ('length','content_filter','aborted',None):
+   for output in (128,256,300,512):
+    value=minimal_response();value['choices'][0]['finish_reason']=finish;value['usage'].update(completion_tokens=output,total_tokens=10+output)
+    with self.assertRaises(Exception):parser.validate(value,authorization=terminal,account=account)
+ def test_child_exact_diff_and_guards(self):
+  import runpy
+  old=(c.ROOT/'runtime/runproof_runtime/effectwitness/config_live_external.py').read_bytes()
+  new=(c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py').read_bytes()
+  self.assertEqual(new,old.replace(b'model_settings={"max_tokens": 256,',b'model_settings={"max_tokens": 512,'))
+  ctx,_=fresh();mod=runpy.run_path(str(c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py'))
+  denied=[];guard=mod['_guard_events'](45002,ctx.root,ctx.root/'sdk',[],c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py',denied,[])
+  for event,args in [('socket.connect',(None,('127.0.0.1',45003))),('socket.getaddrinfo',('invalid.example',)),('open',(str(ctx.root.parent/'outside'),'r',0)),('subprocess.Popen',('x',)),('socket.bind',(None,('127.0.0.1',0)))]:
+   with self.subTest(event=event):
+    with self.assertRaises(PermissionError):guard(event,args)
+ def test_real_child_wire_usage_300_and_512(self):
+  from runtime.runproof_runtime.effectwitness import config_live_runtime as base
+  import importlib.util
+  fixed=Path(os.environ.get('RPF66_FIXED_SDK_PUBLIC_ROOT',str(c.ROOT)))
+  source=fixed/'spikes/rpf-55/probe.py'
+  self.assertEqual(hashlib.sha256(source.read_bytes().replace(b'\r\n',b'\n')).hexdigest(),c.sources()['spikes/rpf-55/probe.py'])
+  other=fixed/'spikes/rpf-53/probe.py';self.assertEqual(hashlib.sha256(other.read_bytes().replace(b'\r\n',b'\n')).hexdigest(),c.sources()['spikes/rpf-53/probe.py'])
+  spec=importlib.util.spec_from_file_location('rpf66_free_fixed_sdk_helpers',source);helpers=importlib.util.module_from_spec(spec);before_path=list(sys.path)
+  try:spec.loader.exec_module(helpers)
+  finally:sys.path[:]=before_path
+  for candidate,output in zip(c.CANDIDATES,(300,512)):
+   ctx,ledger=fresh();ct=ctx.contract(1,candidate);run=ct['experiment']['run_id'];journal=config.Journal(ledger,run);client=FakeHttp(ctx,ct,'synthetic',journal,ledger);client.initial_state_valid()
+   broker=config.BrokerLedger(ledger,run);host=config.Host(ct,broker,config.ConfigLiveBusiness(ct,client),journal,api_key='synthetic');folder=ctx.folder(ct);folder.mkdir(parents=True);seen=[]
+   class Reply:
+    status=200
+    def getheader(self,*a):return 'application/json'
+    def read(self,n):return self.raw[:n]
+   class Connection:
+    def request(self,method,path,raw,headers):
+     body=c.strict_json(raw);record=broker.data['requests'][-1];self.reply=Reply();self.reply.raw=b''
+     selfcheck=hashlib.sha256(raw).hexdigest();assert selfcheck==record['request_sha256']==record['binding']['outbound_request_sha256'];assert ledger.read()['tickets'][record['ticket']]['request_sha256']==selfcheck
+     seen.append((body['max_tokens'],record['binding']['sdk_requested_max_tokens']))
+     data=host._fixture_response(body);data['id']=str(uuid.uuid4());data['model']=c.MODEL
+     count=output if data['choices'][0]['finish_reason']=='stop' else 30
+     data['usage']=dict(prompt_tokens=500,completion_tokens=count,total_tokens=500+count);self.reply.raw=c.canonical(data)
+    def getresponse(self):return self.reply
+    def close(self):pass
+   with patch.object(c,'helpers',return_value=(helpers,helpers.old)),patch.object(base.http.client,'HTTPSConnection',side_effect=lambda *a,**k:Connection()),patch.object(base.ssl,'create_default_context',return_value=None):
+    result=config.run_sdk(ctx,ct,ledger,c.pinned_sdk_fields(),folder,host)
+   self.assertEqual(seen,[(256,512)]*(3 if candidate==c.CANDIDATES[0] else 4)+[(512,512)])
+   v.verify_sdk(result,host.tool_trace,host.provider_responses);self.assertEqual(host.provider_responses[-1]['usage']['completion_tokens'],output)
+   self.assertEqual(broker.data['requests'][-1]['output_cap'],512);self.assertFalse(ledger.read()['unknown'])
+   ledger.read();self.assertTrue(all(r['status']=='RECEIVED' for r in broker.data['requests']))
+   with self.assertRaises(Exception):host.request_policy(completion_body(ct),[dict(call_id=x['call_id'],result_sha256=x['result_sha256']) for x in host.tool_trace])
+ def test_pre_send_input_bound_and_sixth_slot(self):
+  ctx,ledger=fresh();ct=ctx.contract();_,broker,host,_=config.assemble_host(ctx,ct,ledger,api_key='synthetic');ready_host(host);body=completion_body(ct);body['messages'][1]['content']+='x'*4000
+  with patch.object(config.ConfigLiveHost,'_provider_request') as wire:
+   with self.assertRaises(Exception):host._completion(body)
+   wire.assert_not_called()
+  self.assertEqual(ledger.read()['counts']['provider'],0)
+  with self.assertRaises(Exception):c.stage_for(ct,6,[],[],stop_writes=True)

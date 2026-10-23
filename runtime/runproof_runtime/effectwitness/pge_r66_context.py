@@ -8,23 +8,50 @@ from .config_experiment_verify import pinned_sdk_fields
 from .pge_port_context import ProcessSupervisor, helpers
 
 ROOT = Path(__file__).resolve().parents[3]
-BASE = '8c087a4c8e3a57e90f14c92aca4550e5da5ed861'
-BRANCH = 'codex/rpf-66-rev3-runtime-gate-recovery'
-ABI = 'rpf66-config-pge-session-v3'
+BASE = '80c76013feb3335b4df72bc33f58e7d7f71c6611'
+BRANCH = 'codex/rpf-66-rev5-versioned-response-contract'
+ABI = 'rpf66-config-pge-session-v5'
 DOMAIN = 'config-java-http'
 MODEL = 'deepseek-flash'
 MODELS = (MODEL, 'DeepSeek-V4.1-Flash-1017')
 REAL = 'REAL_EXPLORER_REAL_TARGET'
 SYNTHETIC = 'SYNTHETIC_TEST_ONLY'
 LIMITS = dict(metadata=1, cold=1, session=1, trial=2, jvm=2, sdk=2, provider=14, http=24, post=4, health=6)
-CAPS = (3000, 2400, 2400, 2400, 2400, 2400)
+CAPS = (3000, 2400, 2400, 2400, 2800, 2000)
 PRICE = {'checked_date':'2026-10-23', 'url':'https://api-docs.deepseek.com/quick_start/pricing/', 'input_usd_per_million':0.3, 'output_usd_per_million':1.2, 'cny_per_usd_guard':15, 'input_micro_cny_per_token':4.5, 'output_micro_cny_per_token':18, 'is_invoice':False}
 CANDIDATES = ('normal','local-delivery-suppressed-after-http200')
 EXPLORER_CAP = 2500
 BOUNDARIES = dict(order_real_target='NOT_RUN', cross_domain_real_dual_agent='NOT_PROVEN', web='NOT_INTEGRATED', causality='NOT_PROVEN', independent_reproduction='NOT_TESTED', issuer='NOT_ESTABLISHED', release='NOT_AUTHORIZED')
 UNKNOWN = dict(status='UNKNOWN_OUTCOME', reason='LOCAL_SUCCESS_DELIVERY_SUPPRESSED', write_policy='STOP_WRITES_READ_ONLY_RECONCILE')
 RECOVERY = ' After UNKNOWN_OUTCOME, never call either write tool again. You may call inspect_config once for read-only recovery, then stop.'
-NEW_FILES = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in ('pge_r66_context','pge_r66_explorer','pge_r66_target_config','pge_r66_session','pge_r66_verify')) + ('runtime/tests/test_effectwitness_pge_r66.py','spikes/rpf-66/rev-3/probe.py')
+NEW_FILES = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in ('pge_r66_context','pge_r66_explorer','pge_r66_target_config','pge_r66_session','pge_r66_verify','pge_r66_response_v5','pge_r66_completion_v5','pge_r66_sdk_child_v5')) + ('runtime/tests/test_effectwitness_pge_r66.py','spikes/rpf-66/rev-5/probe.py')
+
+def child_identity():
+    raw=(ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py').read_bytes()
+    return dict(schema='rpf66-child-v5',raw_sha256=hashlib.sha256(raw).hexdigest(),lf_sha256=hashlib.sha256(raw.replace(b'\r\n',b'\n')).hexdigest(),max_tokens=512)
+
+def stage_for(ct,attempt,trace,returns,*,stop_writes):
+    suppressed=ct['experiment']['fault_plan']['enabled'];terminal_attempt=5 if suppressed else 4
+    names=[x['name'] for x in trace];expected=list(TOOLS)+(['inspect_config'] if suppressed else [])
+    require(1<=attempt<=terminal_attempt and len(trace)==attempt-1 and names==expected[:len(trace)],'COMPLETION_TOOL_STAGE')
+    require(returns==[dict(call_id=x['call_id'],result_sha256=x['result_sha256']) for x in trace],'STAGE_TOOL_RETURNS')
+    terminal=attempt==terminal_attempt
+    require(not terminal or (not suppressed or stop_writes),'TERMINAL_READ_ONLY')
+    return dict(schema='rpf66-terminal-stage-v5',candidate_id=ct['experiment']['candidate_id'],run_id=ct['experiment']['run_id'],round=ct['experiment']['round'],attempt=attempt,completed_tools=[dict(call_id=x['call_id'],name=x['name'],result_sha256=x['result_sha256']) for x in trace],terminal=terminal,stop_writes=bool(stop_writes),outbound_max_tokens=512 if terminal else 256)
+
+def validate_binding(b,run,attempt):
+    require(set(b)=={'schema','sdk_request_sha256','outbound_request_sha256','sdk_normalized_sha256','sdk_config_sha256','outbound_config_sha256','sdk_messages_sha256','outbound_messages_sha256','sdk_requested_max_tokens','outbound_max_tokens','stage'},'REQUEST_BINDING_FIELDS')
+    require(b['schema']=='rpf66-request-binding-v5' and b['sdk_requested_max_tokens']==512,'SDK_REQUEST_MAX')
+    for k in ('sdk_request_sha256','outbound_request_sha256','sdk_normalized_sha256','sdk_config_sha256','outbound_config_sha256','sdk_messages_sha256','outbound_messages_sha256'):require(type(b[k]) is str and re.fullmatch('[0-9a-f]{64}',b[k]) is not None,'REQUEST_BINDING_HASH')
+    require(b['sdk_config_sha256']==b['outbound_config_sha256'] and b['sdk_messages_sha256']==b['outbound_messages_sha256'],'REQUEST_CONFIG_DRIFT')
+    st=b['stage'];require(set(st)=={'schema','candidate_id','run_id','round','attempt','completed_tools','terminal','stop_writes','outbound_max_tokens'} and st['schema']=='rpf66-terminal-stage-v5' and st['candidate_id'] in CANDIDATES and st['run_id']==run and st['attempt']==attempt and st['round'] in (1,2),'REQUEST_STAGE_SCOPE')
+    terminal_attempt=5 if st['candidate_id']==CANDIDATES[1] else 4
+    require(1<=attempt<=terminal_attempt and type(st['terminal']) is bool and st['terminal']==(attempt==terminal_attempt),'SINGLE_TERMINAL')
+    expected=list(TOOLS)+(['inspect_config'] if st['candidate_id']==CANDIDATES[1] else [])
+    require(len(st['completed_tools'])==attempt-1 and [x['name'] for x in st['completed_tools']]==expected[:attempt-1],'STAGE_TOOL_LINEAGE')
+    require(not st['terminal'] or st['candidate_id']==CANDIDATES[0] or st['stop_writes'] is True,'TERMINAL_UNKNOWN_READBACK')
+    require(st['outbound_max_tokens']==b['outbound_max_tokens']==(512 if st['terminal'] else 256),'REQUEST_STAGE_CAP')
+
 
 def sources():
     pending = list(NEW_FILES) + ['spikes/rpf-53/probe.py','spikes/rpf-55/probe.py','runtime/runproof_runtime/effectwitness/pge_portability_config.py','runtime/runproof_runtime/effectwitness/config_live_external.py','spikes/rpf-53/rev-6/config-live-evidence.json']
@@ -45,7 +72,7 @@ def sources():
 def contract(suffix, source, ports=(45001,45002), *, cold=False, round_index=1, candidate=CANDIDATES[1]):
     require(re.fullmatch('[0-9a-f]{16}',suffix) is not None and len(ports)==2 and len(set(ports))==2 and all(type(p) is int and 1024<=p<=65535 for p in ports), 'CONTRACT_PARAMETERS')
     require(round_index in (0,1,2) and candidate in CANDIDATES and cold==(round_index==0), 'CONTRACT_ROUND')
-    run = 'rpf66r3-'+('cold-' if cold else 'config-')+suffix
+    run = 'rpf66r5-'+('cold-' if cold else 'config-')+suffix
     return {'schema':'rpf66-domain-contracts-v2', 'execution':{'schema':'rpf66-execution-v2','role':'TARGET','agent_version':'rpf66-config-target-v2','source_kind':'FIXTURE_SCRIPTED' if cold else REAL,'model_source':'FIXTURE_SCRIPTED' if cold else 'REAL_PROVIDER','model':'rpf53-fixture-only' if cold else MODEL,'framework':{'name':'pydantic-ai-slim','version':'2.57.0','openai_version':'3.35.1','identity':pinned_sdk_fields()},'tools':list(TOOLS),'tool_help':TOOL_HELP,'agent_instructions':AGENT_INSTRUCTIONS+RECOVERY,'task_prompt':TASK_PROMPT+RECOVERY,'service':{'host':'127.0.0.1','port':ports[0]},'agent_host':{'host':'127.0.0.1','port':ports[1]},'release_authority':'NOT_HELD_BY_AGENT'}, 'effect':{'schema':'rpf66-config-effect-v2','app':'rpf66app'+suffix,'env':'rpf66local'+suffix,'key':'rpf66.item.'+suffix,'initial_state':'ABSENT','initial_value':'rpf53-v1','required_value':'rpf53-v2','initial_version':1,'required_version':2,'history_versions':[2,1],'authority':'SAME_SERVICE_READ_ONLY_HTTP'}, 'experiment':{'schema':'rpf66-experiment-v2','owner':'rpf-66','domain':DOMAIN,'run_id':run,'environment_id':'env-'+run,'reset_generation':0,'round':round_index,'candidate_id':candidate,'source_sha256':source,'fault_plan':{'planned':candidate==CANDIDATES[1],'enabled':candidate==CANDIDATES[1],'kind':'LOCAL_DELIVERY_SUPPRESSION_AFTER_HTTP_200' if candidate==CANDIDATES[1] else 'NONE'}}}
 
 def validate_contract(ct):
@@ -58,7 +85,7 @@ def context_public(suffix, ports, cold_ports, synthetic):
     for index in (1,2):
         token=hashlib.sha256((suffix+str(index)).encode()).hexdigest()[:16]
         rounds.append({k:contract(token,digest(sm),ports[(index-1)*2:index*2],round_index=index,candidate=k) for k in CANDIDATES})
-    return dict(schema='rpf66-task-context-v3',abi=ABI,owner='rpf-66',revision='rev-3',base=BASE,branch=BRANCH,session_id='rpf66r3-session-'+suffix,workspace='.local/rpf-66-rev-3'+('/tests/'+suffix if synthetic else ''),sources=sm,limits=LIMITS,caps=list(CAPS),explorer_cap=EXPLORER_CAP,price=PRICE,rounds=rounds,cold_contract=contract(suffix,digest(sm),cold_ports,cold=True,round_index=0),boundaries=BOUNDARIES,source_kind=SYNTHETIC if synthetic else REAL)
+    return dict(schema='rpf66-task-context-v5',abi=ABI,owner='rpf-66',revision='rev-5',base=BASE,branch=BRANCH,session_id='rpf66r5-session-'+suffix,workspace='.local/rpf-66-rev-5'+('/tests/'+suffix if synthetic else ''),sources=sm,limits=LIMITS,caps=list(CAPS),explorer_cap=EXPLORER_CAP,price=PRICE,rounds=rounds,cold_contract=contract(suffix,digest(sm),cold_ports,cold=True,round_index=0),boundaries=BOUNDARIES,source_kind=SYNTHETIC if synthetic else REAL)
 
 @dataclass(frozen=True)
 class TaskContext:
@@ -66,7 +93,7 @@ class TaskContext:
     frozen: bytes
     def __post_init__(self):
         p=self.public(); synthetic=p['source_kind']==SYNTHETIC
-        suffix=p['session_id'].removeprefix('rpf66r3-session-')
+        suffix=p['session_id'].removeprefix('rpf66r5-session-')
         ports=tuple(row[CANDIDATES[0]]['execution'][k]['port'] for row in p['rounds'] for k in ('service','agent_host'))
         cold=p['cold_contract'];cp=tuple(cold['execution'][k]['port'] for k in ('service','agent_host'))
         require(p==context_public(suffix,ports,cp,synthetic) and self.root==ROOT/p['workspace'],'CONTEXT_IDENTITY_SOURCE_ROOT')
@@ -99,7 +126,7 @@ def replay(frames,context):
     for i,f in enumerate(frames):
         require(set(f)=={'seq','previous','event','sha256'} and f['seq']==i and f['previous']==previous and f['sha256']==digest({k:v for k,v in f.items() if k!='sha256'}),'WAL_CHAIN')
         e=f['event']; require(type(e['monotonic_ns']) is int and (not events or e['monotonic_ns']>=events[-1]['monotonic_ns']) and e['monotonic_ns']-frames[0]['event']['monotonic_ns']<=7200*10**9,'WAL_TIME')
-        if i==0:require(e['kind']=='OWNER' and e['owner']=='rpf-66' and e.get('revision')=='rev-3' and e.get('workspace')==context['workspace'] and e['context_sha256']==digest(context),'WAL_OWNER')
+        if i==0:require(e['kind']=='OWNER' and e['owner']=='rpf-66' and e.get('revision')=='rev-5' and e.get('workspace')==context['workspace'] and e['context_sha256']==digest(context),'WAL_OWNER')
         sessions=[t for t in tickets.values() if t['resource']=='session']
         if sessions:require(e['monotonic_ns']-sessions[0]['monotonic_ns']<=1800*10**9,'SESSION_DEADLINE')
         if 'run_id' in e: require(e['run_id'] in runs and e.get('round')==runs[e['run_id']],'WAL_RUN_ROUND')
@@ -118,7 +145,8 @@ def replay(frames,context):
                 rd=e['round'];role=e['role'];require(role in ('TARGET','EXPLORER'),'PROVIDER_ROLE')
                 key=(role,rd);roles[key]=roles.get(key,0)+1;n=roles[key]
                 require(n<=(6 if role=='TARGET' else 1),'ROLE_LIMIT')
-                cap=CAPS[n-1] if role=='TARGET' else EXPLORER_CAP;out=256 if role=='TARGET' else 128
+                cap=CAPS[n-1] if role=='TARGET' else EXPLORER_CAP;out=e['binding']['outbound_max_tokens'] if role=='TARGET' else 128
+                if role=='TARGET':validate_binding(e['binding'],e['run_id'],n);require(e['request_sha256']==e['binding']['outbound_request_sha256'],'OUTBOUND_REQUEST_BINDING')
                 require(e['token_upper']==cap and e['output_cap']==out and type(e['input_upper']) is int and 0<e['input_upper'] and e['input_upper']+out<=cap,'PROVIDER_BOUND')
                 require(e['cost_micro_cny_upper']==e['input_upper']*4.5+out*18,'COST_RESERVATION')
                 reserved+=cap;cost+=e['cost_micro_cny_upper'];require(reserved<=35000 and cost<=750000,'POOL_EXHAUSTED')
@@ -132,7 +160,7 @@ def replay(frames,context):
 class Ledger:
     def __init__(self,ctx,path,*,create=False):
         self.context,self.path=ctx,ctx.scope(path)
-        if create: self.path.mkdir(exist_ok=False); self.append('OWNER',owner='rpf-66',revision='rev-3',workspace=ctx.public()['workspace'],context_sha256=digest(ctx.public()))
+        if create: self.path.mkdir(exist_ok=False); self.append('OWNER',owner='rpf-66',revision='rev-5',workspace=ctx.public()['workspace'],context_sha256=digest(ctx.public()))
         self.read()
     def read(self):
         raw=(self.path/'ledger.jsonl').read_bytes(); require(raw.endswith(b'\n'),'TORN_WAL'); self.frames=[strict_json(x) for x in raw.splitlines()]; return replay(self.frames,self.context.public())
