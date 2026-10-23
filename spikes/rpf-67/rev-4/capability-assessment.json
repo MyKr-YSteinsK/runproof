@@ -1,0 +1,47 @@
+{
+  "plan": "RPF-67/rev-4",
+  "status": "PARTIAL",
+  "owner": "rpf-67-rev-4",
+  "abi": "rpf67-order-real-target-v4",
+  "comparison": {
+    "rev3": "Three accepted responses; exact rejected fourth suffix NOT_RECORDED; no final stop/Witness.",
+    "rev4": "Full terminal budget proof, durable no-send refusal, independent source and actual result in session-summary."
+  },
+  "scope": {
+    "existing_files": 5,
+    "new_nonconditional_files": 9,
+    "witness_conditional": true,
+    "original_port_child_business_methods": "UNCHANGED",
+    "session_owner": "BOUND_BEFORE_DATABASE_INITIALIZATION"
+  },
+  "budgets": {
+    "caps": [
+      3000,
+      2600,
+      2600,
+      4200,
+      1400,
+      1200
+    ],
+    "maximum_pool": 15000,
+    "maximum_calls": 6,
+    "protocol_maximum_calls": 4,
+    "maximum_refunds": 1,
+    "maximum_cny_guard": 0.45
+  },
+  "authority": {
+    "TASK_COMPLETE": false,
+    "EVIDENCE_ACCEPTED": "ARCHITECT_REVIEW_REQUIRED",
+    "STAGE_ADVANCED": "ARCHITECT_REVIEW_REQUIRED"
+  },
+  "boundaries": {
+    "Explorer": "NOT_RUN",
+    "L2": "NOT_TESTED",
+    "web": "NOT_INTEGRATED",
+    "cross_domain_same_session": "NOT_PROVEN",
+    "causality": "NOT_PROVEN",
+    "issuer": "NOT_ESTABLISHED",
+    "independent_reproduction": "NOT_TESTED",
+    "production_release": "NOT_AUTHORIZED"
+  }
+}

@@ -138,9 +138,16 @@ class Driver:
         cap=512 if port.fault['agent_exposed'] else 256
         out=copy.deepcopy(body);out.pop('max_completion_tokens',None);out['max_tokens']=cap;out['thinking']={'type':'disabled'}
         current=copy.deepcopy(messages);suffix=messages[len(self.prior_messages):] if self.prior_messages is not None else messages
-        upper=len(c.canonical(out)) if not self.requests else self.requests[-1]['response']['usage']['prompt_tokens']+len(c.canonical(suffix))+512
+        previous=None if not self.requests else (self.requests[-1]['request'],self.requests[-1]['response']['usage'])
+        upper=len(c.canonical(out)) if previous is None else previous[1]['prompt_tokens']+len(c.canonical(suffix))+512
         request=dict(sdk_request_sha256=c.digest(body),request_sha256=c.digest(out),configuration_sha256=c.digest(config),messages_sha256=c.digest(messages),input_upper=upper,output_cap=cap,stage='POST_COMMIT_READ_ONLY' if cap==512 else 'PRE_COMMIT',tool_returns=line,schema_sha256=c.digest(tools),canonical_bytes=len(c.canonical(out)),sdk_feedback_preserved=True)
-        c.require(len(self.requests)<6 and upper+cap<=c.CAPS[len(self.requests)],'INPUT_BOUND')
+        ordinal=len(self.requests)+1;c.require(ordinal<=4,'NORMAL_PROTOCOL_EXHAUSTED')
+        request.update(ordinal=ordinal,previous_trusted_prompt_tokens_or_null=None if previous is None else previous[1]['prompt_tokens'],canonical_suffix_bytes=0 if previous is None else len(c.canonical(suffix)),framing_guard_bytes=0 if previous is None else 512,slot_cap=c.CAPS[ordinal-1])
+        if len(port.trace)==3:request['stage']='POST_RECONCILE_TERMINAL'
+        accepted=c.request_budget(request,previous,ordinal,len(port.trace))
+        if not accepted:
+            self.failure='PLATFORM_PRE_SEND_BUDGET';self.ledger.reject_budget(request,cold=self.cold)
+            raise ValueError('INPUT_BOUND')
         self.prior_messages=current;return out,request
     def completion(self,body,port):
         c.require(self.ready is not None and port.pending is None and self.failure is None,'SDK_READY_OR_PENDING')
@@ -192,7 +199,8 @@ class Driver:
                     else:c.require(self.path=='/v1/chat/completions','HOST_ROUTE');result=driver.completion(value,port)
                     raw=c.canonical(result);self.send_response(200);self.send_header('Content-Type','application/json');self.send_header('Content-Length',str(len(raw)));self.end_headers();self.wfile.write(raw)
                 except BaseException as error:
-                    driver.failure=type(error).__name__+':'+(str(error) if type(error) is ValueError and re.fullmatch('[A-Z0-9_]+',str(error)) else 'REDACTED');self.send_response(409);self.end_headers()
+                    if driver.failure is None:driver.failure=type(error).__name__+':'+(str(error) if type(error) is ValueError and re.fullmatch('[A-Z0-9_]+',str(error)) else 'REDACTED')
+                    self.send_response(409);self.end_headers()
         resource='cold' if self.cold else 'sdk';ticket=self.ledger.reserve(resource);host_ticket=None
         if not self.cold:host_ticket=self.ledger.reserve('host')
         server=None;thread=None;start=time.monotonic();report=None

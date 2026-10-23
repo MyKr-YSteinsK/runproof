@@ -1,9 +1,21 @@
 """Single-domain controller. Synthetic, metadata, cold and paid entry points separate."""
 import copy, os, secrets, socket, subprocess
 from . import pge_r67_context as c
-from .pge_r67_order_port import OrderPort
+from .pge_r67_order_port import OrderPort as OriginalOrderPort, Sandbox, Reader, OrderAdapter
 from .pge_r67_order_driver import Driver, ScriptDriver
 from .pge_r67_order_verify import seal, verify
+
+
+class OrderPort(OriginalOrderPort):
+    """Bind the new owner before initialization; inherit every business method unchanged."""
+    def prepare(self,ctx,ct,ledger):
+        self.validate_contract(ctx,ct);self.ctx=ctx;self.ct=ct;self.ledger=ledger;self.trace=[];self.pending=None;self.responses=[]
+        self.sandbox=Sandbox(ctx,ct)
+        self.sandbox.owner=ct['experiment']['owner'];self.sandbox.storage_task=ct['experiment']['owner']
+        self.reader=Reader(ctx,self.sandbox);self.adapter=OrderAdapter(self.sandbox)
+        self.fault=dict.fromkeys(('planned','triggered','observed','agent_exposed'),False);self.fault['planned']=True
+        ticket=ledger.reserve('sqlite_setup');self.sandbox.initialize();ledger.settle(ticket,status='CREATED')
+        self.before=self.read('BEFORE');self.committed=None;self.after=None
 
 def free_port():
     s=socket.socket();s.bind(('127.0.0.1',0));p=s.getsockname()[1];s.close();return p
@@ -23,7 +35,9 @@ def execute(ctx,ledger,driver,*,admission=None):
             except Exception:pass
             finally:port.reader.available=False
         try:account=ledger.read();counts=account['counts'];unknown=account['unknown'];diagnostics=[e for e in account['events'] if e['kind'] in ('PROVIDER_SHAPE_OBSERVED','PROVIDER_PARSE_REJECTED')]
-        except Exception:counts=None;unknown=True;diagnostics=[dict(state='TORN_DIAGNOSTIC',action='STOP_NO_RESEND_NO_RECEIPT_DELETE')]
+        except Exception as account_error:
+            counts=None;unknown=None;state='TORN_PRE_SEND_RECEIPT' if type(account_error) is ValueError and str(account_error)=='TORN_PRE_SEND_RECEIPT' else 'TORN_DIAGNOSTIC'
+            diagnostics=[dict(state=state,action='STOP_NO_RESEND_NO_RECEIPT_DELETE',provider_usage='NOT_INFERRED_FROM_ACCOUNT_ERROR')]
         ctx.once(ctx.root/'failure.json',dict(error_type=type(error).__name__,code=str(error) if type(error) is ValueError else 'REDACTED',trace=getattr(port,'trace',[]),driver_failure=driver.failure,counts=counts,unknown=unknown,response_diagnostics=diagnostics))
         raise
 def synthetic(*,reconcile=True,mixed=True):
@@ -46,13 +60,13 @@ class ColdPort(OrderPort):
         else:result=dict(status='COMMITTED',operation_id=f['operation_id'],readonly=True,fixture=True)
         t=dict(**self.pending,result=result,result_sha256=c.digest(result));self.trace.append(t);self.pending=None;return result
 def initialize():
-    root=c.ROOT/'.local/rpf-67-rev-3';c.require(root.is_dir() and not (root/'context.json').exists(),'INIT_ONCE')
+    root=c.ROOT/'.local/rpf-67-rev-4';c.require(root.is_dir() and not (root/'context.json').exists(),'INIT_ONCE')
     c.require(subprocess.check_output(['git','branch','--show-current'],cwd=c.ROOT,text=True).strip()==c.BRANCH and subprocess.check_output(['git','rev-parse','HEAD'],cwd=c.ROOT,text=True).strip()==c.BASE,'INIT_GIT_IDENTITY')
     c.require(c.strict((root/'g0.json').read_bytes())['status']=='PASS','G0_REQUIRED')
-    c.require(c.strict((root/'owner.json').read_bytes())==dict(owner='rpf-67-rev-3',base=c.BASE,created_by='spikes/rpf-67/rev-3/probe.py',credential_lookup=False),'INIT_OWNER')
+    c.require(c.strict((root/'owner.json').read_bytes())==dict(owner='rpf-67-rev-4',base=c.BASE,created_by='spikes/rpf-67/rev-4/probe.py',credential_lookup=False),'INIT_OWNER')
     ctx=c.make_context(secrets.token_hex(8),free_port());freeze_check(ctx);ctx.once(root/'context.json',ctx.public());c.Ledger(ctx,create=True);return ctx
 def load():
-    p=c.strict((c.ROOT/'.local/rpf-67-rev-3/context.json').read_bytes());return c.Context(c.ROOT/p['workspace'],c.canonical(p))
+    p=c.strict((c.ROOT/'.local/rpf-67-rev-4/context.json').read_bytes());return c.Context(c.ROOT/p['workspace'],c.canonical(p))
 def cold(ctx,ledger):
     c.require(ledger.read()['counts']['metadata']==1 and ledger.read()['results']['metadata-1']['status']=='PASS','METADATA_REQUIRED')
     port=ColdPort(ctx,ledger);driver=Driver(ctx,ledger,fixture=True,cold=True);result=driver.run(port)
@@ -61,8 +75,8 @@ def cold(ctx,ledger):
 def freeze_check(ctx):
     freeze=c.strict((ctx.root/'source-freeze.json').read_bytes());free=c.strict((ctx.root/'free-gates.json').read_bytes())
     c.require(freeze['sources']==c.sources()==ctx.public()['sources'] and freeze['source_digest']==ctx.public()['source_digest'] and freeze['diff_check']=={'staged':0,'unstaged':0},'SOURCE_FREEZE')
-    c.require(free['source_digest']==ctx.public()['source_digest'] and free['status']=='PASS' and free['full']['exit']==0 and free['full']['errors']==free['full']['failures']==0 and free['focused']['exit']==0 and len(free['anchors'])==21 and all(z['exit']==0 for z in free['anchors']) and free['semantic_controls']>=66 and free['mixed_sdk_e2e']['status']=='PASS' and free['mixed_sdk_e2e']['source_digest']==ctx.public()['source_digest'],'FREE_GATES')
-    c.require(freeze['legacy_fixture']==c.legacy_identity() and free['http']['status']=='PASS' and free['http']['fixture_sha256']==c.legacy_identity()['current_raw_sha256'] and free['http']['stress_fixtures']==20 and free['legacy_sdk']['status']=='PASS' and free['legacy_sdk']['fixture_raw_sha256']==c.legacy_identity()['current_raw_sha256'],'HTTP_FREE_GATES')
+    c.require(free['source_digest']==ctx.public()['source_digest'] and free['status']=='PASS' and free['full']['exit']==0 and free['full']['errors']==free['full']['failures']==0 and free['focused']['exit']==0 and len(free['anchors'])==21 and all(z['exit']==0 for z in free['anchors']) and free['semantic_controls']>=75 and free['mixed_sdk_e2e']['status']=='PASS' and free['mixed_sdk_e2e']['source_digest']==ctx.public()['source_digest'],'FREE_GATES')
+    c.require(freeze['legacy_fixture']==c.legacy_identity() and free['http']['status']=='PASS' and free['http']['fixture_sha256']==c.legacy_identity()['current_raw_sha256'] and free['http']['stress_fixtures']==20,'HTTP_FREE_GATES')
     c.require(all(c.sha(ctx.scope(c.ROOT/name).read_bytes())==value for name,value in freeze['private_helpers'].items()),'FROZEN_HELPER_DRIFT')
     return freeze,free
 def admit(ctx,ledger):

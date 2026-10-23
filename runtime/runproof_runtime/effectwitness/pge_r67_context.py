@@ -5,13 +5,13 @@ from dataclasses import dataclass
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-BASE = '7858badb829265b738fc7ccf2de31711df51d9c8'
-BRANCH = 'codex/rpf-67-rev3-http-fixture-runtime-recovery'
-ABI = 'rpf67-order-real-target-v3'
+BASE = '2d57f0461e76911d3b4f6b3feae7935e1413113a'
+BRANCH = 'codex/rpf-67-rev4-terminal-input-budget-recovery'
+ABI = 'rpf67-order-real-target-v4'
 REAL = 'REAL_PROVIDER_TARGET_ORDER'
 SYNTHETIC = 'SYNTHETIC_TEST_ONLY'
 TOOLS = ('inspect_order', 'refund_order', 'reconcile_order')
-CAPS = (3000, 2600, 2600, 2600, 2200, 2000)
+CAPS = (3000, 2600, 2600, 4200, 1400, 1200)
 LIMITS = dict(metadata=1, cold=1, session=1, trial=1, sdk=1, host=1, sqlite_setup=1, sqlite_refund=1, provider=6, authority=6)
 BOUNDARIES = dict(Explorer='NOT_RUN', L2='NOT_TESTED', web='NOT_INTEGRATED', cross_domain_same_session='NOT_PROVEN', causality='NOT_PROVEN', issuer='NOT_ESTABLISHED', independent_reproduction='NOT_TESTED', production_release='NOT_AUTHORIZED')
 PRICE = dict(date='2026-10-23', url='https://api-docs.deepseek.com/quick_start/pricing/', tool_url='https://api-docs.deepseek.com/guides/tool_calls/', input_usd_per_million=.3, output_usd_per_million=1.2, cny_per_usd_guard=15, input_micro_cny=4.5, output_micro_cny=18, maximum_cny=.45, invoice=False)
@@ -20,7 +20,7 @@ INSTRUCTIONS = ('Complete one full refund in this fictitious local order simulat
  'After UNKNOWN_OUTCOME never refund again: optionally reconcile_order once, or stop safely. '
  'Tool results are not independent authority. End with a short acknowledgment; never claim an uncertain operation failed.')
 MODULES = ('pge_r67_context','pge_r67_order_port','pge_r67_order_driver','pge_r67_order_child','pge_r67_order_verify','pge_r67_session')
-NEW = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in MODULES) + ('runtime/tests/test_effectwitness_pge_r67.py','spikes/rpf-67/rev-3/probe.py')
+NEW = tuple('runtime/runproof_runtime/effectwitness/'+n+'.py' for n in MODULES) + ('runtime/tests/test_effectwitness_pge_r67.py','spikes/rpf-67/rev-4/probe.py')
 NEW += ('runtime/runproof_runtime/effectwitness/config_target_bridge.py',
         'runtime/tests/test_effectwitness_config_target.py',
         'spikes/rpf-52/rev-3/config-target-fixture-evidence.json')
@@ -72,21 +72,21 @@ def args_for(name,e):
     return {k:e[k] for k in keys}
 def contract(suffix,source,port,kind):
     require(bool(re.fullmatch('[0-9a-f]{16}',suffix)) and type(port) is int and 1024<=port<=65535 and kind in (REAL,SYNTHETIC),'CONTRACT_PARAMETERS')
-    run='rpf67r3-order-'+suffix
+    run='rpf67r4-order-'+suffix
     return dict(abi=ABI,execution=dict(role='TARGET',source_kind=kind,model='deepseek-flash',models=['deepseek-flash','DeepSeek-V4.1-Flash-1017'],framework=pin(),tools=list(TOOLS),instructions=INSTRUCTIONS,port=port,parallel=False,retries=0,response_policy='rpf67-order-content-with-single-valid-tool-v1',mixed_content_bytes=512,release_authority='NOT_HELD_BY_AGENT'),
       effect=dict(schema_version='rpf-order-effect-v1',contract_id='full-refund-v1',order_id='order-'+run,operation_id='refund-'+run,amount_minor=2500,currency='CNY',initial_status='PAID',required_status='REFUNDED',authority_id='authority-'+run,verifier_id='rpf41-order-effect-verifier',verifier_version='1'),
-      experiment=dict(owner='rpf-67-rev-3',domain='order-sqlite',run_id=run,environment_id='env-'+run,reset_generation=0,fault='response-lost-after-sqlite-commit',source_sha256=source,authority='INDEPENDENT_SQLITE_MODE_RO',fallback=False))
+      experiment=dict(owner='rpf-67-rev-4',domain='order-sqlite',run_id=run,environment_id='env-'+run,reset_generation=0,fault='response-lost-after-sqlite-commit',source_sha256=source,authority='INDEPENDENT_SQLITE_MODE_RO',fallback=False))
 def validate_contract(ct):
-    require(ct==contract(ct['experiment']['run_id'].removeprefix('rpf67r3-order-'),ct['experiment']['source_sha256'],ct['execution']['port'],ct['execution']['source_kind']),'FROZEN_CONTRACT')
+    require(ct==contract(ct['experiment']['run_id'].removeprefix('rpf67r4-order-'),ct['experiment']['source_sha256'],ct['execution']['port'],ct['execution']['source_kind']),'FROZEN_CONTRACT')
 def public(suffix,port,synthetic=False):
     sm=sources();kind=SYNTHETIC if synthetic else REAL
-    return dict(owner='rpf-67-rev-3',abi=ABI,base=BASE,branch=BRANCH,source_kind=kind,workspace='.local/rpf-67-rev-3'+('/tests/'+suffix if synthetic else ''),sources=sm,source_digest=source_digest(sm),legacy_fixture=legacy_identity(),limits=LIMITS,caps=list(CAPS),price=PRICE,boundaries=BOUNDARIES,contract=contract(suffix,source_digest(sm),port,kind))
+    return dict(owner='rpf-67-rev-4',abi=ABI,base=BASE,branch=BRANCH,source_kind=kind,workspace='.local/rpf-67-rev-4'+('/tests/'+suffix if synthetic else ''),sources=sm,source_digest=source_digest(sm),legacy_fixture=legacy_identity(),limits=LIMITS,caps=list(CAPS),price=PRICE,boundaries=BOUNDARIES,contract=contract(suffix,source_digest(sm),port,kind))
 @dataclass(frozen=True)
 class Context:
     root:Path
     frozen:bytes
     def __post_init__(self):
-        p=self.public();ct=p['contract'];suffix=ct['experiment']['run_id'].removeprefix('rpf67r3-order-')
+        p=self.public();ct=p['contract'];suffix=ct['experiment']['run_id'].removeprefix('rpf67r4-order-')
         require(p==public(suffix,ct['execution']['port'],p['source_kind']==SYNTHETIC) and self.root==ROOT/p['workspace'],'CONTEXT_SOURCE_IDENTITY');self.scope(self.root)
     def public(self):return strict(self.frozen)
     @property
@@ -99,6 +99,67 @@ class Context:
     def check(self):require(self.public()['sources']==sources(),'SOURCE_DRIFT')
 def make_context(suffix,port,*,synthetic=False):
     p=public(suffix,port,synthetic);return Context(ROOT/p['workspace'],canonical(p))
+
+PROOF_FIELDS={'ordinal','previous_trusted_prompt_tokens_or_null','canonical_suffix_bytes','framing_guard_bytes','slot_cap'}
+def request_budget(q,previous,ordinal,trace_count):
+    require(set(q)=={'sdk_request_sha256','request_sha256','configuration_sha256','messages_sha256','input_upper','output_cap','stage','tool_returns','schema_sha256','canonical_bytes','sdk_feedback_preserved'}|PROOF_FIELDS,'REQUEST_PROOF_FIELDS')
+    require(type(ordinal) is int and 1<=ordinal<=4 and trace_count==ordinal-1,'REQUEST_CHECKPOINT')
+    require(sum(CAPS)==15000 and CAPS==(3000,2600,2600,4200,1400,1200),'STATIC_POOL')
+    stage='POST_RECONCILE_TERMINAL' if trace_count==3 else 'POST_COMMIT_READ_ONLY' if trace_count==2 else 'PRE_COMMIT'
+    require(q['ordinal']==ordinal and q['stage']==stage and q['output_cap']==(256 if ordinal<=2 else 512) and q['slot_cap']==CAPS[ordinal-1],'REQUEST_STAGE_SLOT')
+    for k in ('canonical_bytes','canonical_suffix_bytes','framing_guard_bytes','input_upper','output_cap','slot_cap','ordinal'):
+        require(type(q[k]) is int and 0<=q[k]<=262144,'REQUEST_INTEGER')
+    require(q['canonical_bytes']>0 and q['input_upper']>0 and q['sdk_feedback_preserved'] is True,'REQUEST_POSITIVE_FEEDBACK')
+    require(all(type(q[k]) is str and re.fullmatch('[0-9a-f]{64}',q[k]) for k in ('request_sha256','sdk_request_sha256','configuration_sha256','messages_sha256','schema_sha256')),'REQUEST_HASH')
+    if previous is None:
+        require(ordinal==1 and q['previous_trusted_prompt_tokens_or_null'] is None and q['framing_guard_bytes']==0 and q['input_upper']==q['canonical_bytes'] and q['canonical_suffix_bytes']==0,'FIRST_INPUT_PROOF')
+    else:
+        prior,usage=previous
+        require(type(q['previous_trusted_prompt_tokens_or_null']) is int and q['previous_trusted_prompt_tokens_or_null']==usage['prompt_tokens'] and q['framing_guard_bytes']==512,'TRUSTED_PROMPT_GUARD')
+        require(q['canonical_suffix_bytes']==q['canonical_bytes']-prior['canonical_bytes']+1 and q['canonical_suffix_bytes']>0 and q['input_upper']==usage['prompt_tokens']+q['canonical_suffix_bytes']+512,'SUFFIX_INPUT_PROOF')
+    require(bool(re.fullmatch('[0-9a-f]{64}',q['request_sha256'])),'REQUEST_HASH')
+    return q['input_upper']+q['output_cap']<=q['slot_cap']
+
+def budget_protocol(events,context):
+    states={True:dict(previous=None,count=0,trace=0,pending=None,rejected=False,returns=[],call_ids=[]),False:dict(previous=None,count=0,trace=0,pending=None,rejected=False,returns=[],call_ids=[])}
+    rejected=False
+    def checkpoint(q,st,cold):
+        if st['previous']:
+            prior=st['previous'][0]
+            require(all(q[k]==prior[k] for k in ('configuration_sha256','schema_sha256')),'BUDGET_CONFIGURATION_DRIFT')
+        if cold:
+            require(type(q['tool_returns']) is list and [t['call_id'] for t in q['tool_returns']]==st['call_ids'],'COLD_BUDGET_TOOL_IDS')
+        else:require(q['tool_returns']==st['returns'],'BUDGET_TOOL_RETURNS')
+    for e in events:
+        k=e['kind']
+        if k=='RESERVE' and e['resource'] in ('provider','sqlite_refund'):
+            require(not rejected,'PRE_SEND_STOP_WRITES')
+        if k=='MODEL_REQUEST':
+            st=states[e['cold']];q=e['request'];require(not st['rejected'] and st['pending'] is None,'BUDGET_PENDING_OR_REJECTED')
+            # Cold memory callbacks deliberately omit business TOOL_RETURN events.
+            trace=st['count'] if e['cold'] else st['trace']
+            checkpoint(q,st,e['cold'])
+            require(request_budget(q,st['previous'],st['count']+1,trace),'INPUT_BOUND')
+            require(e['ordinal']==q['ordinal'],'REQUEST_ORDINAL');st['pending']=q;st['count']+=1
+        elif k=='MODEL_RESPONSE':
+            st=states[e['cold']];require(st['pending'] is not None,'RESPONSE_WITHOUT_REQUEST')
+            call=e['response']['call']
+            if call:
+                require(st['count']<=3 and call['name']==TOOLS[st['count']-1],'BUDGET_RESPONSE_TOOL_ORDER');st['call_ids'].append(call['call_id'])
+            else:require(st['count'] in (3,4) and e['response']['finish_reason']=='stop','BUDGET_TERMINAL_STOP')
+            st['previous']=(st['pending'],e['response']['usage']);st['pending']=None
+        elif k=='TOOL_RETURN' and not e.get('cold'):
+            st=states[False];require(st['trace']<3 and e['name']==TOOLS[st['trace']],'BUDGET_RETURN_ORDER');st['trace']+=1;st['returns'].append(dict(call_id=e['call_id'],result_sha256=e['result_sha256']))
+        elif k=='PRE_SEND_BUDGET_REJECTED':
+            r=e['receipt'];q=r['request'];st=states[r['cold']]
+            require(set(r)=={'schema','owner','context_sha256','run_id','ordinal','stage','previous_trusted_prompt_tokens_or_null','canonical_suffix_bytes','framing_guard_bytes','input_upper','output_cap','slot_cap','model_request_sha256','reason','decision','provider_reserved','network_sent','cold','request'} and r['schema']=='rpf67-pre-send-budget-v4' and len(canonical(r))<=8192,'PRE_SEND_SCHEMA')
+            require(not st['rejected'] and st['pending'] is None and r['owner']==context['owner'] and r['run_id']==context['contract']['experiment']['run_id'] and r['context_sha256']==digest(context),'PRE_SEND_SCOPE_ORDER')
+            require(r['reason']=='INPUT_BOUND' and r['decision']=='NO_PROVIDER_REQUEST' and r['provider_reserved'] is False and r['network_sent'] is False and type(r['cold']) is bool,'PRE_SEND_DECISION')
+            require(all(r[k]==q[k] and type(r[k]) is type(q[k]) for k in PROOF_FIELDS|{'stage','input_upper','output_cap'}) and r['model_request_sha256']==q['request_sha256'] and e['receipt_sha256']==digest(r),'PRE_SEND_PROOF_BINDING')
+            checkpoint(q,st,r['cold'])
+            require(not request_budget(q,st['previous'],st['count']+1,st['count'] if r['cold'] else st['trace']),'PRE_SEND_NOT_REJECTED')
+            require(not any(z['kind']=='RESERVE' and z['resource']=='provider' and z['ticket']=='provider-'+str(r['ordinal']) for z in events),'PRE_SEND_NO_RESERVATION')
+            st['rejected']=True;rejected=True
 
 def response_protocol(events,context,tickets,results):
     from .pge_r67_order_driver import validate_shape,shape_conditions,POLICY
@@ -142,9 +203,9 @@ def replay(frames,context):
     for i,f in enumerate(frames):
         require(set(f)=={'seq','previous','event','sha256'} and f['seq']==i and f['previous']==previous and f['sha256']==digest({k:v for k,v in f.items() if k!='sha256'}),'WAL_CHAIN')
         e=f['event'];require(type(e['monotonic_ns']) is int and (not events or e['monotonic_ns']>=events[-1]['monotonic_ns']),'WAL_TIME')
-        require(e['kind'] in {'OWNER','RESERVE','RESULT','MODEL_REQUEST','MODEL_RESPONSE','PROVIDER_SHAPE_OBSERVED','PROVIDER_PARSE_ACCEPTED','PROVIDER_PARSE_REJECTED','INTENT','TOOL_RETURN','FAULT_EXPOSED','PROCESS_START','SDK_READY','PROCESS_CLEANUP','ADMISSION','SOURCE_FREEZE','VERDICT'},'WAL_EVENT_KIND')
+        require(e['kind'] in {'OWNER','RESERVE','RESULT','MODEL_REQUEST','MODEL_RESPONSE','PROVIDER_SHAPE_OBSERVED','PROVIDER_PARSE_ACCEPTED','PROVIDER_PARSE_REJECTED','INTENT','TOOL_RETURN','FAULT_EXPOSED','PROCESS_START','SDK_READY','PROCESS_CLEANUP','ADMISSION','SOURCE_FREEZE','VERDICT','PRE_SEND_BUDGET_REJECTED'},'WAL_EVENT_KIND')
         if e['kind']=='PROVIDER_PARSE_REJECTED':unknown=True
-        if i==0:require(e==dict(kind='OWNER',monotonic_ns=e['monotonic_ns'],owner='rpf-67-rev-3',run_id=run,context_sha256=digest(context)),'WAL_OWNER')
+        if i==0:require(e==dict(kind='OWNER',monotonic_ns=e['monotonic_ns'],owner='rpf-67-rev-4',run_id=run,context_sha256=digest(context)),'WAL_OWNER')
         require(e.get('run_id')==run,'WAL_RUN_SCOPE')
         session=next((t for t in tickets.values() if t['resource']=='session'),None)
         if session:require(e['monotonic_ns']-session['monotonic_ns']<=1200*10**9,'SESSION_DEADLINE')
@@ -154,7 +215,7 @@ def replay(frames,context):
             require(not any(k not in results and t['resource'] in ('provider','sqlite_refund') for k,t in tickets.items()) or r=='authority','UNSETTLED_STOP')
             counts[r]+=1;require(counts[r]<=LIMITS[r],'RESOURCE_LIMIT')
             if r=='provider':
-                n=counts[r];out=e['output_cap'];require(e['role']=='TARGET' and e['token_upper']==CAPS[n-1] and out==(512 if e['stage']=='POST_COMMIT_READ_ONLY' else 256),'PROVIDER_STAGE_CAP')
+                n=counts[r];out=e['output_cap'];require(n<=4 and e['role']=='TARGET' and e['token_upper']==CAPS[n-1] and out==(512 if e['stage'] in ('POST_COMMIT_READ_ONLY','POST_RECONCILE_TERMINAL') else 256),'PROVIDER_STAGE_CAP')
                 require(type(e['input_upper']) is int and e['input_upper']>0 and e['input_upper']+out<=CAPS[n-1],'INPUT_BOUND')
                 require(e['cost_micro_cny_upper']==e['input_upper']*4.5+out*18,'PRICE_RESERVATION')
                 reserved+=CAPS[n-1];cost+=e['cost_micro_cny_upper'];require(reserved<=15000 and cost<=450000,'PERMANENT_POOL')
@@ -162,14 +223,14 @@ def replay(frames,context):
         elif e['kind']=='RESULT':
             require(e['ticket'] in tickets and e['ticket'] not in results,'SETTLEMENT_REPLAY');results[e['ticket']]=e;unknown|=bool(e.get('unknown'))
         events.append(e);previous=digest(f)
-    transactions=response_protocol(events,context,tickets,results)
+    budget_protocol(events,context);transactions=response_protocol(events,context,tickets,results)
     unknown|=any(e['kind']=='PROVIDER_PARSE_REJECTED' for e in events)
     return dict(events=events,counts=counts,tickets=tickets,results=results,unknown=unknown,reserved_tokens=reserved,reserved_cost_micro_cny=cost,transactions=transactions)
 class Ledger:
     def __init__(self,ctx,*,create=False):
-        self.ctx=ctx;self.path=ctx.scope(ctx.root/'wal.jsonl');self._pending_shape=None
+        self.ctx=ctx;self.path=ctx.scope(ctx.root/'wal.jsonl');self._pending_shape=None;self._pending_budget=None
         if create:
-            require(not self.path.exists(),'WAL_EXISTS');self.append('OWNER',owner='rpf-67-rev-3',context_sha256=digest(ctx.public()))
+            require(not self.path.exists(),'WAL_EXISTS');self.append('OWNER',owner='rpf-67-rev-4',context_sha256=digest(ctx.public()))
         self.read()
     def read(self):
         raw=self.path.read_bytes();require(raw.endswith(b'\n'),'TORN_WAL');self.frames=[strict(x) for x in raw.splitlines()];account=replay(self.frames,self.ctx.public())
@@ -178,7 +239,20 @@ class Ledger:
             self.ctx.scope(p);require(re.fullmatch('(provider|fixture|cold)-[1-6]',p.stem),'TORN_DIAGNOSTIC');found[p.stem]=sha(p.read_bytes())
         pending=self._pending_shape
         if pending is not None and pending[0] not in expected:expected[pending[0]]=pending[1]
-        require(found==expected,'TORN_DIAGNOSTIC');return account
+        require(found==expected,'TORN_DIAGNOSTIC')
+        expected={str(e['receipt']['ordinal']):e['receipt_sha256'] for e in account['events'] if e['kind']=='PRE_SEND_BUDGET_REJECTED'};folder=self.ctx.scope(self.ctx.root/'pre-send');found={}
+        for p in folder.glob('*.json') if folder.exists() else []:
+            self.ctx.scope(p);require(re.fullmatch('[1-4]',p.stem),'TORN_PRE_SEND_RECEIPT');found[p.stem]=sha(p.read_bytes())
+        pending=self._pending_budget
+        if pending is not None and pending[0] not in expected:expected[pending[0]]=pending[1]
+        require(found==expected,'TORN_PRE_SEND_RECEIPT');return account
+    def reject_budget(self,request,*,cold=False):
+        self.read();r=dict(schema='rpf67-pre-send-budget-v4',owner=self.ctx.public()['owner'],context_sha256=digest(self.ctx.public()),run_id=self.ctx.ct['experiment']['run_id'],cold=cold,request=request,**{k:request[k] for k in PROOF_FIELDS|{'stage','input_upper','output_cap'}},model_request_sha256=request['request_sha256'],reason='INPUT_BOUND',decision='NO_PROVIDER_REQUEST',provider_reserved=False,network_sent=False)
+        require(self._pending_budget is None,'PRE_SEND_ALREADY_PENDING');self._pending_budget=(str(r['ordinal']),digest(r))
+        try:
+            require(len(canonical(r))<=8192,'PRE_SEND_SIZE');self.ctx.once(self.ctx.root/'pre-send'/(str(r['ordinal'])+'.json'),r);self.append('PRE_SEND_BUDGET_REJECTED',receipt=r,receipt_sha256=digest(r))
+        finally:self._pending_budget=None
+        self.read()
     def observe(self,receipt):
         self.read();key=receipt['projection_id'];require(self._pending_shape is None,'SHAPE_ALREADY_PENDING');self._pending_shape=(key,digest(receipt))
         try:
@@ -197,7 +271,7 @@ class Ledger:
             self.frames=frames+[f];return f['seq']
         finally:lock.unlink()
     def reserve(self,resource,**data):
-        self.ctx.check();ticket=resource+'-'+str(self.read()['counts'][resource]+1);self.append('RESERVE',resource=resource,ticket=ticket,**data);return ticket
+        self.ctx.check();account=self.read();require(not any(e['kind']=='PRE_SEND_BUDGET_REJECTED' for e in account['events']) or resource=='authority','PRE_SEND_STOP_WRITES');ticket=resource+'-'+str(account['counts'][resource]+1);self.append('RESERVE',resource=resource,ticket=ticket,**data);return ticket
     def settle(self,ticket,**data):self.append('RESULT',ticket=ticket,**data)
 
 def sdk_helpers():

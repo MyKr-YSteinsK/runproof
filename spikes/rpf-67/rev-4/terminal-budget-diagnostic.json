@@ -1,0 +1,556 @@
+{
+  "plan": "RPF-67/rev-4",
+  "caps": [
+    3000,
+    2600,
+    2600,
+    4200,
+    1400,
+    1200
+  ],
+  "sum_caps": 15000,
+  "slot5_slot6": "UNREACHABLE_NORMAL_PROTOCOL",
+  "method": "PREVIOUS_STRICTLY_VERIFIED_PROMPT_PLUS_CANONICAL_SUFFIX_PLUS_512",
+  "terminal_output_cap": 512,
+  "boundary": {
+    "boundary_rows": [
+      {
+        "context_sha256": "54ca2d41b080028e6009abbcb3f1763486b331c24c1672d588ccfe9a5b1c206d",
+        "delta": -1,
+        "method": "PRODUCTION_VALIDATE_REQUEST_FULL_SQLITE_RECEIPT_LEGAL_TRUSTED_PRIOR_USAGE",
+        "model_responses": 4,
+        "provider": 0,
+        "refunds": 1,
+        "request": {
+          "canonical_bytes": 4221,
+          "canonical_suffix_bytes": 1386,
+          "configuration_sha256": "733921f0ca3b309812e6491c9eae1ef33669c52482a37b2f96eff453a31dc14e",
+          "framing_guard_bytes": 512,
+          "input_upper": 3687,
+          "messages_sha256": "76d5b7efeafcb01dfc308f3880e926e72f780c7e41f36e05d09c45eb4652990b",
+          "ordinal": 4,
+          "output_cap": 512,
+          "previous_trusted_prompt_tokens_or_null": 1789,
+          "request_sha256": "f68d94a499d848fa5ea7673dd8504c7dea1b2f2e2501e67f4273cb4d9a540682",
+          "schema_sha256": "e3dde21a7d6c6544b099c9d87c96c04b725cd437ed7fbc2059ea13c06e30d0ca",
+          "sdk_feedback_preserved": true,
+          "sdk_request_sha256": "f2841ed02ee4cb1e53c9963dd2d4bff46a2c8a8dcd32ab5d655893f1f78128ed",
+          "slot_cap": 4200,
+          "stage": "POST_RECONCILE_TERMINAL",
+          "tool_returns": [
+            {
+              "call_id": "fixture-call-1",
+              "result_sha256": "453e5cf751d6a1e153d94a4988006b83c7df4c82820d5fcb7b8020c074a28414"
+            },
+            {
+              "call_id": "fixture-call-2",
+              "result_sha256": "cf98f32a2dacd85c9bc817a6d722b6530dd2d7375afb510f2f94dfbfb1fb79f0"
+            },
+            {
+              "call_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "result_sha256": "7d8a04698ab5ce89c1e73cfdd0e328df8f3b722296778c9e4d2b6ddcfe4a210d"
+            }
+          ]
+        },
+        "result": "ACCEPTED_FOURTH_RESPONSE",
+        "status": "PASS",
+        "unknown": false
+      },
+      {
+        "context_sha256": "f1a3468fa80f33bdef593c644b6b2a5f0d76aa62977d1a2814419dce3e4214ee",
+        "delta": 0,
+        "method": "PRODUCTION_VALIDATE_REQUEST_FULL_SQLITE_RECEIPT_LEGAL_TRUSTED_PRIOR_USAGE",
+        "model_responses": 4,
+        "provider": 0,
+        "refunds": 1,
+        "request": {
+          "canonical_bytes": 4221,
+          "canonical_suffix_bytes": 1386,
+          "configuration_sha256": "733921f0ca3b309812e6491c9eae1ef33669c52482a37b2f96eff453a31dc14e",
+          "framing_guard_bytes": 512,
+          "input_upper": 3688,
+          "messages_sha256": "1a1ee125de5602f91aec104a01a457609cbc8b8b0c2d2d35fef644d6661c1799",
+          "ordinal": 4,
+          "output_cap": 512,
+          "previous_trusted_prompt_tokens_or_null": 1790,
+          "request_sha256": "f94c7fd709450d7829e493725e09ea28e9f0e9a59c67fa1459bc718a950e7d23",
+          "schema_sha256": "e3dde21a7d6c6544b099c9d87c96c04b725cd437ed7fbc2059ea13c06e30d0ca",
+          "sdk_feedback_preserved": true,
+          "sdk_request_sha256": "b5faf75dd4ff959ce8f25312056b5f318e8aa570935807a8397decb146252b46",
+          "slot_cap": 4200,
+          "stage": "POST_RECONCILE_TERMINAL",
+          "tool_returns": [
+            {
+              "call_id": "fixture-call-1",
+              "result_sha256": "eef7ee3b5d037b1eea67230ccc49d559bcefa317900c926b46cab116fda4829d"
+            },
+            {
+              "call_id": "fixture-call-2",
+              "result_sha256": "cf6149279e584285d24576d2d5c52cdaea0b759277d3154c99c02629137caa15"
+            },
+            {
+              "call_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "result_sha256": "631626f8dfd3b1f24f2bc0ba5b0e9b43110ef4bc5d3ab89c404ccece94190765"
+            }
+          ]
+        },
+        "result": "ACCEPTED_FOURTH_RESPONSE",
+        "status": "PASS",
+        "unknown": false
+      },
+      {
+        "context_sha256": "33dde678c73f2350c131bc92d74a8feabb17e19f6cd478e3b0eab852be6f5e86",
+        "delta": 1,
+        "method": "PRODUCTION_VALIDATE_REQUEST_FULL_SQLITE_RECEIPT_LEGAL_TRUSTED_PRIOR_USAGE",
+        "model_responses": 3,
+        "provider": 0,
+        "refunds": 1,
+        "request": {
+          "canonical_bytes": 4221,
+          "canonical_suffix_bytes": 1386,
+          "configuration_sha256": "733921f0ca3b309812e6491c9eae1ef33669c52482a37b2f96eff453a31dc14e",
+          "framing_guard_bytes": 512,
+          "input_upper": 3689,
+          "messages_sha256": "7461f434bbff36dde9dd410b5fd94fa449bfbed38870f20397493299d57f3994",
+          "ordinal": 4,
+          "output_cap": 512,
+          "previous_trusted_prompt_tokens_or_null": 1791,
+          "request_sha256": "214aabb741a2d83b61a26727a0a9b5e6b24d028881854cf1fa7de10000b2de79",
+          "schema_sha256": "e3dde21a7d6c6544b099c9d87c96c04b725cd437ed7fbc2059ea13c06e30d0ca",
+          "sdk_feedback_preserved": true,
+          "sdk_request_sha256": "c9caf756ef149515cef74d8c5ecc654cb2c37c6a974d2becb9d19008fbd085ea",
+          "slot_cap": 4200,
+          "stage": "POST_RECONCILE_TERMINAL",
+          "tool_returns": [
+            {
+              "call_id": "fixture-call-1",
+              "result_sha256": "7ad840649414026597372239e85a6fefd6dbc8348950dfe276af7ec52e8bf7fb"
+            },
+            {
+              "call_id": "fixture-call-2",
+              "result_sha256": "9e05f73f12cc9c57110b8512ee9fbc4950d3c0412f3af1a3716c4b528dd761a8"
+            },
+            {
+              "call_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+              "result_sha256": "8200f8be497bbc176cc374eaf4391ff7a485e12e51c7719f86a44db672bce43e"
+            }
+          ]
+        },
+        "result": "PRE_SEND_REJECT",
+        "status": "PASS",
+        "unknown": false
+      }
+    ],
+    "sdk_byte_audit": {
+      "cleanup": {
+        "connections_closed": true,
+        "database_retained_for_evidence": true,
+        "exclusive_lock_probe": true
+      },
+      "literal_tool_return_bytes_equal": true,
+      "provider": 0,
+      "receipt_bytes": 284,
+      "sdk": {
+        "child_sha256": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c",
+        "cold": false,
+        "fixture": true,
+        "port_closed": true,
+        "process_gone": true,
+        "process_pid": 17256,
+        "ready": {
+          "framework": "pydantic-ai-slim",
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "pid": 17256,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "version": "2.57.0"
+        },
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 3591,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 80,
+          "pid": 17256,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 4,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 3,
+          "tool_calls": 3,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "requests": [
+          {
+            "fixture": true,
+            "request": {
+              "canonical_bytes": 2033,
+              "canonical_suffix_bytes": 0,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard_bytes": 0,
+              "input_upper": 2033,
+              "messages_sha256": "fda2301f84d747888d919adbf19760bfd681709d416c6a5c21548ee39861a052",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_trusted_prompt_tokens_or_null": null,
+              "request_sha256": "077b1fcd7ff0bb48482b6dc06b821cb7f7698841248bf640bbb88bca4b539edb",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_feedback_preserved": true,
+              "sdk_request_sha256": "f7cbc73f8d7b96f13c5f94a693634157cf860d85651a2749939a0a5f4015d1d4",
+              "slot_cap": 3000,
+              "stage": "PRE_COMMIT",
+              "tool_returns": []
+            },
+            "response": {
+              "call": {
+                "arguments": {
+                  "order_id": "order-rpf67r4-order-bd6bb6f7449b9489"
+                },
+                "call_id": "fixture-call-1",
+                "name": "inspect_order"
+              },
+              "content_bytes": 73,
+              "content_is_nonempty": true,
+              "content_persisted": false,
+              "filter": false,
+              "finish_reason": "tool_calls",
+              "model": "deepseek-flash",
+              "policy": "rpf67-order-content-with-single-valid-tool-v1",
+              "raw_sha256": "7d6c3c4a9bb8585ae18b532ac6ec6980d11d642f920a6bd108e47fc5c143a1ee",
+              "reasoning_persisted": false,
+              "response_id": "fixture-response-1",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 648,
+                "total_tokens": 668
+              }
+            },
+            "ticket": null
+          },
+          {
+            "fixture": true,
+            "request": {
+              "canonical_bytes": 2454,
+              "canonical_suffix_bytes": 422,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard_bytes": 512,
+              "input_upper": 1582,
+              "messages_sha256": "7434c1986421807d451f7194ba446342f10e9ff10e9211a20aacef4cebcddca4",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_trusted_prompt_tokens_or_null": 648,
+              "request_sha256": "a0cadb82801d3d920a87e5eec31f8be48d029d98bc0ae0e02b6a69e8b01a31a5",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_feedback_preserved": true,
+              "sdk_request_sha256": "625f7f24b2ef1ed210e4864ce09c38c4cc3858ef2b6036d289e350727199d3fb",
+              "slot_cap": 2600,
+              "stage": "PRE_COMMIT",
+              "tool_returns": [
+                {
+                  "call_id": "fixture-call-1",
+                  "result_sha256": "b70d82c360716e0893d5a3469e37c273df6c8de6c13b27dd31e7bc3618c0f94c"
+                }
+              ]
+            },
+            "response": {
+              "call": {
+                "arguments": {
+                  "amount_minor": 2500,
+                  "operation_id": "refund-rpf67r4-order-bd6bb6f7449b9489",
+                  "order_id": "order-rpf67r4-order-bd6bb6f7449b9489"
+                },
+                "call_id": "fixture-call-2",
+                "name": "refund_order"
+              },
+              "content_bytes": 73,
+              "content_is_nonempty": true,
+              "content_persisted": false,
+              "filter": false,
+              "finish_reason": "tool_calls",
+              "model": "deepseek-flash",
+              "policy": "rpf67-order-content-with-single-valid-tool-v1",
+              "raw_sha256": "4e0669dcce76f51aa7a1dc4e3f81ec7aeffd577769997bca618be9d8f76171cc",
+              "reasoning_persisted": false,
+              "response_id": "fixture-response-2",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 761,
+                "total_tokens": 781
+              }
+            },
+            "ticket": null
+          },
+          {
+            "fixture": true,
+            "request": {
+              "canonical_bytes": 3061,
+              "canonical_suffix_bytes": 608,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard_bytes": 512,
+              "input_upper": 1881,
+              "messages_sha256": "035b4c31c11f50eed4990286ef696b88f4a5b123fe76022f60eabe851582fbb4",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_trusted_prompt_tokens_or_null": 761,
+              "request_sha256": "bab36d4622b5e1127b96848abe51b890cc81941ed1dec1f70e0adac26474ae97",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_feedback_preserved": true,
+              "sdk_request_sha256": "b0679b5bacf76c6b35e483b7f186db70d3166a4ddaf7491577f5b8bc6da7a0a4",
+              "slot_cap": 2600,
+              "stage": "POST_COMMIT_READ_ONLY",
+              "tool_returns": [
+                {
+                  "call_id": "fixture-call-1",
+                  "result_sha256": "b70d82c360716e0893d5a3469e37c273df6c8de6c13b27dd31e7bc3618c0f94c"
+                },
+                {
+                  "call_id": "fixture-call-2",
+                  "result_sha256": "565bdafefff5cca2dbfb4a63aaf21e35d5036d9df4d5e0ddd709e0b7ff0860ae"
+                }
+              ]
+            },
+            "response": {
+              "call": {
+                "arguments": {
+                  "operation_id": "refund-rpf67r4-order-bd6bb6f7449b9489"
+                },
+                "call_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                "name": "reconcile_order"
+              },
+              "content_bytes": 512,
+              "content_is_nonempty": true,
+              "content_persisted": false,
+              "filter": false,
+              "finish_reason": "tool_calls",
+              "model": "deepseek-flash",
+              "policy": "rpf67-order-content-with-single-valid-tool-v1",
+              "raw_sha256": "a966d2c023b4a68dbaa8877c5da0b4e9191a6103af2ec3504fd2c277e3e37fab",
+              "reasoning_persisted": false,
+              "response_id": "fixture-response-3",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 982,
+                "total_tokens": 1002
+              }
+            },
+            "ticket": null
+          },
+          {
+            "fixture": true,
+            "request": {
+              "canonical_bytes": 4446,
+              "canonical_suffix_bytes": 1386,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard_bytes": 512,
+              "input_upper": 2880,
+              "messages_sha256": "672d724875e9790d2b9d7c7e782c529caf2657298afeb36b3b1d0a4bbbdacded",
+              "ordinal": 4,
+              "output_cap": 512,
+              "previous_trusted_prompt_tokens_or_null": 982,
+              "request_sha256": "b62ffa516cf80193cbf7cb5ab740bcc60a855930c471765ce39066baad579441",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_feedback_preserved": true,
+              "sdk_request_sha256": "5797cedab4f9704be66bdca3edd84e62fde40412b6685633c0b92832c750619e",
+              "slot_cap": 4200,
+              "stage": "POST_RECONCILE_TERMINAL",
+              "tool_returns": [
+                {
+                  "call_id": "fixture-call-1",
+                  "result_sha256": "b70d82c360716e0893d5a3469e37c273df6c8de6c13b27dd31e7bc3618c0f94c"
+                },
+                {
+                  "call_id": "fixture-call-2",
+                  "result_sha256": "565bdafefff5cca2dbfb4a63aaf21e35d5036d9df4d5e0ddd709e0b7ff0860ae"
+                },
+                {
+                  "call_id": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+                  "result_sha256": "10aec3df1b6f0d1a247d84001748dafecd16b04ca075c741ef049135649d2b9b"
+                }
+              ]
+            },
+            "response": {
+              "call": null,
+              "content_bytes": 15,
+              "content_is_nonempty": true,
+              "content_persisted": false,
+              "filter": false,
+              "finish_reason": "stop",
+              "model": "deepseek-flash",
+              "policy": "rpf67-order-content-with-single-valid-tool-v1",
+              "raw_sha256": "5c03bf7d025e3b67ea62cbb9fbc08b259d23ff84b8ad932a6f2f6f64d1b22643",
+              "reasoning_persisted": false,
+              "response_id": "fixture-response-4",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 1200,
+                "total_tokens": 1220
+              }
+            },
+            "ticket": null
+          }
+        ]
+      },
+      "source_digest": "434d32a26a422ddc3ea6079ed43a492ae80b3728d6d38a887945d10ed1e7de75",
+      "status": "PASS"
+    },
+    "source_digest": "434d32a26a422ddc3ea6079ed43a492ae80b3728d6d38a887945d10ed1e7de75",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "status": "PASS"
+  },
+  "live_requests": [
+    {
+      "cold": false,
+      "fixture": false,
+      "kind": "MODEL_REQUEST",
+      "monotonic_ns": 39483258619000,
+      "ordinal": 1,
+      "request": {
+        "canonical_bytes": 2033,
+        "canonical_suffix_bytes": 0,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard_bytes": 0,
+        "input_upper": 2033,
+        "messages_sha256": "4454cb84c99b1118bc9e5d5e98cc96232c3f5c54933b12e25c0ee1532d3b69c8",
+        "ordinal": 1,
+        "output_cap": 256,
+        "previous_trusted_prompt_tokens_or_null": null,
+        "request_sha256": "25cbd70cd375a2e0c8b6f2dabc544c8cb739dfe7c338ead86e072764ff5aebc5",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_feedback_preserved": true,
+        "sdk_request_sha256": "58b715f16ef15d81f9e0b10911bd161fb65c1579a2e06e0ba735c86758e2dec2",
+        "slot_cap": 3000,
+        "stage": "PRE_COMMIT",
+        "tool_returns": []
+      },
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-1"
+    },
+    {
+      "cold": false,
+      "fixture": false,
+      "kind": "MODEL_REQUEST",
+      "monotonic_ns": 39484713353700,
+      "ordinal": 2,
+      "request": {
+        "canonical_bytes": 2458,
+        "canonical_suffix_bytes": 426,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard_bytes": 512,
+        "input_upper": 1574,
+        "messages_sha256": "99a48a9006df05585ff01f7d90c1ef80fe06812a18c0facd2ab00b8dc34b38f9",
+        "ordinal": 2,
+        "output_cap": 256,
+        "previous_trusted_prompt_tokens_or_null": 636,
+        "request_sha256": "eccb7b5f2ad4a730a8e6aba620e48b52af27a0d2151545e71ca327a37706edb8",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_feedback_preserved": true,
+        "sdk_request_sha256": "b32edbd30cbfab0111b43f8fa50f43b2c0fd16f051ecba6b643ccf024e53f87d",
+        "slot_cap": 2600,
+        "stage": "PRE_COMMIT",
+        "tool_returns": [
+          {
+            "call_id": "call_00_SgRDOiw1OvLupYF325iJ6711",
+            "result_sha256": "54f6984fef518df2f7f4395bc6f5804fd919e30d356ac99c230e9ea2d4a20db1"
+          }
+        ]
+      },
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-2"
+    },
+    {
+      "cold": false,
+      "fixture": false,
+      "kind": "MODEL_REQUEST",
+      "monotonic_ns": 39486959713800,
+      "ordinal": 3,
+      "request": {
+        "canonical_bytes": 3156,
+        "canonical_suffix_bytes": 699,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard_bytes": 512,
+        "input_upper": 1951,
+        "messages_sha256": "a9cab6bc92d17e0f40e5e4c4e6a7ed97cdc22e3823074040112550a18511dc25",
+        "ordinal": 3,
+        "output_cap": 512,
+        "previous_trusted_prompt_tokens_or_null": 740,
+        "request_sha256": "6e5ccec1a002b927bbca98c179eb5218f3f31993d154edbbd1edbd0017a71548",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_feedback_preserved": true,
+        "sdk_request_sha256": "ca45eaab1019d38776306e58bee6ea3efa5fc9522e41c799ebee48f8de7f2101",
+        "slot_cap": 2600,
+        "stage": "POST_COMMIT_READ_ONLY",
+        "tool_returns": [
+          {
+            "call_id": "call_00_SgRDOiw1OvLupYF325iJ6711",
+            "result_sha256": "54f6984fef518df2f7f4395bc6f5804fd919e30d356ac99c230e9ea2d4a20db1"
+          },
+          {
+            "call_id": "call_00_Qkg97FIvDCjvaxFypeuG9181",
+            "result_sha256": "cd8d64240e4ac0db9ca9925fbaccad08605727530f5fa104d80ba561c2193663"
+          }
+        ]
+      },
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-3"
+    },
+    {
+      "cold": false,
+      "fixture": false,
+      "kind": "MODEL_REQUEST",
+      "monotonic_ns": 39488915643200,
+      "ordinal": 4,
+      "request": {
+        "canonical_bytes": 3875,
+        "canonical_suffix_bytes": 720,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard_bytes": 512,
+        "input_upper": 2178,
+        "messages_sha256": "730cd8fa2a8353188eb008e13eb16322cf1b4b7b820edade723ae0ce00137516",
+        "ordinal": 4,
+        "output_cap": 512,
+        "previous_trusted_prompt_tokens_or_null": 946,
+        "request_sha256": "0cd502e2082bb51f3ac8ea1cf6c7ba4e491ba2e8ee08c133a884d253013ca754",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_feedback_preserved": true,
+        "sdk_request_sha256": "391cf894027cf85bd41d0b8ecb8e2dce8f4efaf853b22f2f9eab59dc49c736f9",
+        "slot_cap": 4200,
+        "stage": "POST_RECONCILE_TERMINAL",
+        "tool_returns": [
+          {
+            "call_id": "call_00_SgRDOiw1OvLupYF325iJ6711",
+            "result_sha256": "54f6984fef518df2f7f4395bc6f5804fd919e30d356ac99c230e9ea2d4a20db1"
+          },
+          {
+            "call_id": "call_00_Qkg97FIvDCjvaxFypeuG9181",
+            "result_sha256": "cd8d64240e4ac0db9ca9925fbaccad08605727530f5fa104d80ba561c2193663"
+          },
+          {
+            "call_id": "call_00_Wwckod0CidSj4Ltew5Yf2166",
+            "result_sha256": "89f4660ea86afd4f1e0b98e2564380a21ac6f9239f9c0c539797e9b9af9f9747"
+          }
+        ]
+      },
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-4"
+    }
+  ],
+  "live_pre_send_rejections": [],
+  "crash_tests": {
+    "receipt_before_wal": "PASS",
+    "wal_without_receipt": "PASS",
+    "orphan_policy": "TORN_PRE_SEND_RECEIPT_PERMANENT_NO_RESEND",
+    "source": "runtime/tests/test_effectwitness_pge_r67.py"
+  },
+  "prior_rev3_exact_suffix": "NOT_RECORDED_NOT_BACKFILLED"
+}

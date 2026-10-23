@@ -1,0 +1,548 @@
+{
+  "plan": "RPF-67/rev-4",
+  "status": "OBSERVED",
+  "policy": "rpf67-order-content-with-single-valid-tool-v1",
+  "events": [
+    {
+      "kind": "PROVIDER_SHAPE_OBSERVED",
+      "monotonic_ns": 39484285609100,
+      "receipt": {
+        "cold": false,
+        "context_sha256": "3ffae4c0f9a9456beb73bb68d8a9e2a7d2a23b277578fceb5367a808e052c7b6",
+        "fixture": false,
+        "projection_id": "provider-1",
+        "raw_bytes": 698,
+        "raw_sha256": "822c0df56007a32662985044c4c24849af76d0aa2e1ad4d4d1147df70b7d962d",
+        "request_sha256": "25cbd70cd375a2e0c8b6f2dabc544c8cb739dfe7c338ead86e072764ff5aebc5",
+        "role": "TARGET",
+        "run_id": "rpf67r4-order-3bf00c748770bdbb",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 40,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "array",
+              "tool_count": 1,
+              "tools": [
+                {
+                  "arguments_json_object": true,
+                  "arguments_type": "string",
+                  "function_unknown_count": 0,
+                  "id": {
+                    "sha256": "ebf3c3889a23b784fbf737ff997482572a82f3d80679478a6619d015faea4efa",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "inspect_order",
+                  "type": "function",
+                  "unknown_count": 0
+                }
+              ],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "fb1b4424b7692b50a61789c28899feca7417e666f078a22de05b47dc00dfa62c",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 61
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 636
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 697
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-1"
+      },
+      "receipt_sha256": "843f17a9ba237cede2166d95bfd8efb63452b5c207d71a4fe26ad1ab75a55e08",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb"
+    },
+    {
+      "conditions": {
+        "choice_identity": true,
+        "content": true,
+        "finish_reason": true,
+        "finish_tool_alignment": true,
+        "message": true,
+        "privacy": true,
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "tool_container": true,
+        "tool_envelope": true,
+        "usage": true
+      },
+      "kind": "PROVIDER_PARSE_ACCEPTED",
+      "monotonic_ns": 39484323529800,
+      "policy": "rpf67-order-content-with-single-valid-tool-v1",
+      "projection_id": "provider-1",
+      "proof_sha256": "f8ab947a5005021f0c9f61e745fb7539c036b3eb1a03a3ab188b93f8f6646f58",
+      "request_sha256": "25cbd70cd375a2e0c8b6f2dabc544c8cb739dfe7c338ead86e072764ff5aebc5",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-1",
+      "usage": {
+        "completion_tokens": 61,
+        "prompt_tokens": 636,
+        "total_tokens": 697
+      },
+      "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+    },
+    {
+      "kind": "PROVIDER_SHAPE_OBSERVED",
+      "monotonic_ns": 39485906651400,
+      "receipt": {
+        "cold": false,
+        "context_sha256": "3ffae4c0f9a9456beb73bb68d8a9e2a7d2a23b277578fceb5367a808e052c7b6",
+        "fixture": false,
+        "projection_id": "provider-2",
+        "raw_bytes": 866,
+        "raw_sha256": "dfbc80f0d0e6b9da92e2901b87d63b07921c2cd61f84ffe757cc3190579cc4e0",
+        "request_sha256": "eccb7b5f2ad4a730a8e6aba620e48b52af27a0d2151545e71ca327a37706edb8",
+        "role": "TARGET",
+        "run_id": "rpf67r4-order-3bf00c748770bdbb",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 123,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "array",
+              "tool_count": 1,
+              "tools": [
+                {
+                  "arguments_json_object": true,
+                  "arguments_type": "string",
+                  "function_unknown_count": 0,
+                  "id": {
+                    "sha256": "dac0c11c4eb1025b6d8a1ba7fe678b880cbfb3c0b117bf4de13fe7c67da3e915",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "refund_order",
+                  "type": "function",
+                  "unknown_count": 0
+                }
+              ],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "e7520821ab436b7803596f3760090823992e3f2b8b2c3a06f7258f2ac73bd09d",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 132
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 740
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 872
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-2"
+      },
+      "receipt_sha256": "b354eb0441c4d7d9cf599e32902813d8d43945f4b756d58c905722738f9e4f48",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb"
+    },
+    {
+      "conditions": {
+        "choice_identity": true,
+        "content": true,
+        "finish_reason": true,
+        "finish_tool_alignment": true,
+        "message": true,
+        "privacy": true,
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "tool_container": true,
+        "tool_envelope": true,
+        "usage": true
+      },
+      "kind": "PROVIDER_PARSE_ACCEPTED",
+      "monotonic_ns": 39485987106900,
+      "policy": "rpf67-order-content-with-single-valid-tool-v1",
+      "projection_id": "provider-2",
+      "proof_sha256": "e463a772ac6279bf755ac9501951d7765a184e83e49aca5188bafb7186f6e4d5",
+      "request_sha256": "eccb7b5f2ad4a730a8e6aba620e48b52af27a0d2151545e71ca327a37706edb8",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-2",
+      "usage": {
+        "completion_tokens": 132,
+        "prompt_tokens": 740,
+        "total_tokens": 872
+      },
+      "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+    },
+    {
+      "kind": "PROVIDER_SHAPE_OBSERVED",
+      "monotonic_ns": 39488135422600,
+      "receipt": {
+        "cold": false,
+        "context_sha256": "3ffae4c0f9a9456beb73bb68d8a9e2a7d2a23b277578fceb5367a808e052c7b6",
+        "fixture": false,
+        "projection_id": "provider-3",
+        "raw_bytes": 767,
+        "raw_sha256": "a4757170f4eeb91409baae8d2fbb6823a1d7bbf7f92d47a635c2d607ad0d91e7",
+        "request_sha256": "6e5ccec1a002b927bbca98c179eb5218f3f31993d154edbbd1edbd0017a71548",
+        "role": "TARGET",
+        "run_id": "rpf67r4-order-3bf00c748770bdbb",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 101,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "tool_calls",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "array",
+              "tool_count": 1,
+              "tools": [
+                {
+                  "arguments_json_object": true,
+                  "arguments_type": "string",
+                  "function_unknown_count": 0,
+                  "id": {
+                    "sha256": "0de895512d42b19d36dd9d4ae271fd5d279aaebce9c8394cb97fc437e17349cb",
+                    "type": "string",
+                    "valid": true
+                  },
+                  "index_valid": true,
+                  "name": "reconcile_order",
+                  "type": "function",
+                  "unknown_count": 0
+                }
+              ],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "a0275e6906615654cd1899daf046b59f692dd782d23f745a89a00c46c1b6e048",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 78
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 946
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 1024
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-3"
+      },
+      "receipt_sha256": "da08cacd8cc093062a24481b94479b7aa2eaf9c6e44d2dd87f328b4fb400f84a",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb"
+    },
+    {
+      "conditions": {
+        "choice_identity": true,
+        "content": true,
+        "finish_reason": true,
+        "finish_tool_alignment": true,
+        "message": true,
+        "privacy": true,
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "tool_container": true,
+        "tool_envelope": true,
+        "usage": true
+      },
+      "kind": "PROVIDER_PARSE_ACCEPTED",
+      "monotonic_ns": 39488181565700,
+      "policy": "rpf67-order-content-with-single-valid-tool-v1",
+      "projection_id": "provider-3",
+      "proof_sha256": "224d39397e66de8f222ec87e0d0b4480c67c77aab5ce6a29b47be78595843fc7",
+      "request_sha256": "6e5ccec1a002b927bbca98c179eb5218f3f31993d154edbbd1edbd0017a71548",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-3",
+      "usage": {
+        "completion_tokens": 78,
+        "prompt_tokens": 946,
+        "total_tokens": 1024
+      },
+      "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+    },
+    {
+      "kind": "PROVIDER_SHAPE_OBSERVED",
+      "monotonic_ns": 39490110719300,
+      "receipt": {
+        "cold": false,
+        "context_sha256": "3ffae4c0f9a9456beb73bb68d8a9e2a7d2a23b277578fceb5367a808e052c7b6",
+        "fixture": false,
+        "projection_id": "provider-4",
+        "raw_bytes": 660,
+        "raw_sha256": "7154d4589179c2ef28a48f95fb7f08d40f59f029b782ea8d79c75d1053f84740",
+        "request_sha256": "0cd502e2082bb51f3ac8ea1cf6c7ba4e491ba2e8ee08c133a884d253013ca754",
+        "role": "TARGET",
+        "run_id": "rpf67r4-order-3bf00c748770bdbb",
+        "schema": "rpf67-shape-receipt-v2",
+        "shape": {
+          "choices": [
+            {
+              "content": {
+                "bytes": 198,
+                "nonempty": true,
+                "type": "string",
+                "utf8_valid": true
+              },
+              "finish_reason": "stop",
+              "index_type": "integer",
+              "index_zero": true,
+              "message_type": "object",
+              "message_unknown_count": 0,
+              "reasoning": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "refusal": {
+                "bytes": 0,
+                "nonempty": false,
+                "type": "MISSING",
+                "utf8_valid": true
+              },
+              "role": "assistant",
+              "tool_calls_type": "MISSING",
+              "tool_count": null,
+              "tools": [],
+              "unknown_count": 0
+            }
+          ],
+          "choices_count": 1,
+          "choices_type": "array",
+          "created_valid": true,
+          "known_fields": [
+            "choices",
+            "created",
+            "id",
+            "model",
+            "object",
+            "system_fingerprint",
+            "usage"
+          ],
+          "model": "deepseek-flash",
+          "object_valid": true,
+          "response_id": {
+            "sha256": "6021d22fe30a2c2ae3cb9c9f261b30f8d15922805f9d47b1e6fe144f42f225c2",
+            "type": "string",
+            "valid": true
+          },
+          "schema": "rpf67-provider-safe-shape-v2",
+          "top_type": "object",
+          "unknown_count": 0,
+          "usage": {
+            "completion_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 51
+            },
+            "prompt_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 1139
+            },
+            "total_tokens": {
+              "valid_nonnegative_integer": true,
+              "value": 1190
+            }
+          },
+          "usage_confidence": "UNTRUSTED_OBSERVED_HINT",
+          "usage_type": "object"
+        },
+        "stage": "BEFORE_STRICT_PARSE",
+        "status": 200,
+        "ticket": "provider-4"
+      },
+      "receipt_sha256": "866b67ffa0813b12e4f4d3618228883b53747e102cae5876130c7495bb248b7f",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb"
+    },
+    {
+      "conditions": {
+        "choice_identity": true,
+        "content": true,
+        "finish_reason": true,
+        "finish_tool_alignment": true,
+        "message": true,
+        "privacy": true,
+        "response_fields": true,
+        "response_identity": true,
+        "single_choice": true,
+        "tool_container": true,
+        "tool_envelope": true,
+        "usage": true
+      },
+      "kind": "PROVIDER_PARSE_ACCEPTED",
+      "monotonic_ns": 39490168151100,
+      "policy": "rpf67-order-content-with-single-valid-tool-v1",
+      "projection_id": "provider-4",
+      "proof_sha256": "62c26652f35701fcd954ef37381ffa5cf7e97a90c5c3fadb7a98fb1eed2494bd",
+      "request_sha256": "0cd502e2082bb51f3ac8ea1cf6c7ba4e491ba2e8ee08c133a884d253013ca754",
+      "run_id": "rpf67r4-order-3bf00c748770bdbb",
+      "ticket": "provider-4",
+      "usage": {
+        "completion_tokens": 51,
+        "prompt_tokens": 1139,
+        "total_tokens": 1190
+      },
+      "usage_confidence": "VERIFIED_PROVIDER_USAGE"
+    }
+  ],
+  "free_text": "NOT_PERSISTED",
+  "private_reasoning": "NOT_PERSISTED",
+  "short_content_hash": "NOT_PERSISTED",
+  "invoice": "NOT_QUERIED"
+}

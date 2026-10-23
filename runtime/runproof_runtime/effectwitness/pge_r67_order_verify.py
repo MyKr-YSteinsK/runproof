@@ -6,15 +6,15 @@ from .effect_oracle import evaluate_order_effect
 from .contracts import ENV_REVISION, READER_ID
 from .pge_r67_order_driver import shape_conditions,validate_shape,POLICY
 
-VERSION='rpf67-order-witness-verifier-v3'
+VERSION='rpf67-order-witness-verifier-v4'
 def identity():
     raw=Path(__file__).read_bytes();return dict(version=VERSION,raw=c.sha(raw),lf=c.sha(raw.replace(b'\r\n',b'\n')))
-def seal(payload):return dict(schema='rpf67-order-witness-v3',verifier=identity(),payload=payload,payload_sha256=c.digest(payload))
+def seal(payload):return dict(schema='rpf67-order-witness-v4',verifier=identity(),payload=payload,payload_sha256=c.digest(payload))
 def verify(value):
     c.require(re.search(r'sk-[A-Za-z0-9_-]{16,}|C:[/\\]+Users[/\\]+|Bearer [A-Za-z0-9_-]{16,}',c.canonical(value).decode()) is None,'CREDENTIAL_OR_PRIVATE_PATH')
-    c.require(type(value) is dict and set(value)=={'schema','verifier','payload','payload_sha256'} and value['schema']=='rpf67-order-witness-v3' and value['verifier']==identity() and value['payload_sha256']==c.digest(value['payload']),'ENVELOPE_VERIFIER')
+    c.require(type(value) is dict and set(value)=={'schema','verifier','payload','payload_sha256'} and value['schema']=='rpf67-order-witness-v4' and value['verifier']==identity() and value['payload_sha256']==c.digest(value['payload']),'ENVELOPE_VERIFIER')
     p=value['payload'];c.require(set(p)=={'context','frames','order','outcome','admission','boundaries'},'PAYLOAD_FIELDS')
-    ctx=p['context'];ct=ctx['contract'];suffix=ct['experiment']['run_id'].removeprefix('rpf67r3-order-');synthetic=ctx['source_kind']==c.SYNTHETIC
+    ctx=p['context'];ct=ctx['contract'];suffix=ct['experiment']['run_id'].removeprefix('rpf67r4-order-');synthetic=ctx['source_kind']==c.SYNTHETIC
     c.require(ctx==c.public(suffix,ct['execution']['port'],synthetic),'CONTEXT_SOURCE_IDENTITY');c.validate_contract(ct)
     c.require(p['boundaries']==c.BOUNDARIES,'BOUNDARIES')
     a=c.replay(p['frames'],ctx);c.require(not a['unknown'] and set(a['tickets'])==set(a['results']),'UNSETTLED_OR_UNKNOWN')
@@ -28,7 +28,7 @@ def verify(value):
             c.require(event['status']=='READ_ONLY' and event['connection']=='SQLITE_MODE_RO_QUERY_ONLY','READER_CONNECTION');authority.append(event)
             snapshot=event['snapshot'];data=snapshot['data']
             c.require(set(snapshot)=={'data','sha256'} and snapshot['sha256']==c.digest(data) and set(data)=={'reader_id','reader_version','source_id','environment','order','receipts'},'AUTHORITY_SNAPSHOT')
-            c.require(data['reader_id']==READER_ID and data['reader_version']=='1' and data['source_id']==f['authority_id'] and data['environment']==dict(owner='rpf-67-rev-3',run_id=x['run_id'],environment_id=x['environment_id'],environment_revision=ENV_REVISION,reset_generation=0),'READER_IDENTITY_GENERATION')
+            c.require(data['reader_id']==READER_ID and data['reader_version']=='1' and data['source_id']==f['authority_id'] and data['environment']==dict(owner='rpf-67-rev-4',run_id=x['run_id'],environment_id=x['environment_id'],environment_revision=ENV_REVISION,reset_generation=0),'READER_IDENTITY_GENERATION')
     c.require([z['phase'] for z in authority] in (['BEFORE','AFTER_COMMIT_BEFORE_UNKNOWN','CONTROLLER_FINAL_RECONCILE'],['BEFORE','AFTER_COMMIT_BEFORE_UNKNOWN','OPTIONAL_AGENT_RECONCILE','CONTROLLER_FINAL_RECONCILE']),'AUTHORITY_PHASES')
     c.require(e['before']==authority[0]['snapshot'] and e['committed']==authority[1]['snapshot'] and e['after']==authority[-1]['snapshot'],'AUTHORITY_BINDING')
     outcome=evaluate_order_effect(f,x['environment_id'],e['before']['data'],e['after']['data']);c.require(outcome['contract_outcome']=='CONTRACT_SATISFIED_IN_RUN' and p['outcome']==outcome and e['committed']['data']==e['after']['data'],'ORDER_ORACLE')
@@ -58,9 +58,9 @@ def verify(value):
         choice=shape['choices'][0];c.require(shape['response_id']['sha256']==c.sha(r['response_id'].encode()) and choice['finish_reason']==r['finish_reason'] and choice['content']['nonempty'] is r['content_is_nonempty'] and choice['content']['bytes']==r['content_bytes'] and r['policy']==POLICY and q['sdk_feedback_preserved'] is True,'SHAPE_RESPONSE_BINDING')
         if r['call']:c.require(choice['tools'][0]['id']['sha256']==c.sha(r['call']['call_id'].encode()) and choice['tools'][0]['name']==r['call']['name'],'SHAPE_TOOL_BINDING')
         c.require({k:z['value'] for k,z in shape['usage'].items()}==r['usage'],'SHAPE_USAGE_BINDING')
-        c.require(set(q)=={'sdk_request_sha256','request_sha256','configuration_sha256','messages_sha256','input_upper','output_cap','stage','tool_returns','schema_sha256','canonical_bytes','sdk_feedback_preserved'} and all(re.fullmatch('[0-9a-f]{64}',q[k]) for k in ('sdk_request_sha256','request_sha256','configuration_sha256','messages_sha256','schema_sha256')),'REQUEST_BINDING')
+        c.require(set(q)=={'sdk_request_sha256','request_sha256','configuration_sha256','messages_sha256','input_upper','output_cap','stage','tool_returns','schema_sha256','canonical_bytes','sdk_feedback_preserved'}|c.PROOF_FIELDS and all(re.fullmatch('[0-9a-f]{64}',q[k]) for k in ('sdk_request_sha256','request_sha256','configuration_sha256','messages_sha256','schema_sha256')),'REQUEST_BINDING')
         c.require(configuration is None or configuration==q['configuration_sha256'],'NONMESSAGE_DRIFT');configuration=q['configuration_sha256'];c.require(schema is None or schema==q['schema_sha256'],'SCHEMA_DRIFT');schema=q['schema_sha256']
-        c.require(q['stage']==('PRE_COMMIT' if i<2 else 'POST_COMMIT_READ_ONLY') and q['output_cap']==(256 if i<2 else 512) and type(q['input_upper']) is int and q['input_upper']>0 and q['input_upper']+q['output_cap']<=c.CAPS[i],'STAGE_CAP_INPUT')
+        c.require(q['stage']==('PRE_COMMIT' if i<2 else 'POST_COMMIT_READ_ONLY' if i==2 else 'POST_RECONCILE_TERMINAL') and q['output_cap']==(256 if i<2 else 512) and type(q['input_upper']) is int and q['input_upper']>0 and q['input_upper']+q['output_cap']<=c.CAPS[i],'STAGE_CAP_INPUT')
         if i==0:c.require(q['input_upper']==q['canonical_bytes'],'FIRST_CANONICAL_BYTES')
         c.require(q['tool_returns']==[dict(call_id=t['call_id'],result_sha256=t['result_sha256']) for t in trace[:i]],'TOOL_RETURN_REINJECTION')
         c.require(set(r)=={'response_id','model','finish_reason','call','usage','content_bytes','content_is_nonempty','policy','raw_sha256','reasoning_persisted','content_persisted','filter'} and r['response_id'] not in seen and re.fullmatch('[A-Za-z0-9_-]{1,160}',r['response_id']) and r['model'] in ct['execution']['models'] and r['reasoning_persisted'] is False and r['content_persisted'] is False and r['filter'] is False,'RESPONSE_PROOF');seen.add(r['response_id'])

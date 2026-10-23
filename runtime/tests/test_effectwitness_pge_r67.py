@@ -5,7 +5,7 @@ from unittest.mock import patch
 from runtime.runproof_runtime.effectwitness import pge_r67_context as c
 from runtime.runproof_runtime.effectwitness import pge_r67_session as s
 from runtime.runproof_runtime.effectwitness import pge_r67_order_verify as v
-from runtime.runproof_runtime.effectwitness.pge_r67_order_port import OrderPort
+from runtime.runproof_runtime.effectwitness.pge_r67_session import OrderPort
 from runtime.runproof_runtime.effectwitness.pge_r67_order_driver import Driver, ScriptDriver, validate_response, safe_shape, shape_conditions
 
 def relink(frames):
@@ -112,6 +112,16 @@ def controls(original):
     add('legacy-history-relabel',lambda p:p['context']['legacy_fixture'].update(historical_raw_sha256=p['context']['legacy_fixture']['current_raw_sha256']))
     add('legacy-old-source-as-current',lambda p:p['context']['sources'][p['context']['legacy_fixture']['path']].update(raw=p['context']['legacy_fixture']['historical_raw_sha256'],lf=p['context']['legacy_fixture']['historical_raw_sha256']))
     add('http-error-code-flip',lambda p:p['context']['legacy_fixture'].update(rejection_code='FIXTURE_ORIGIN'))
+    for label,index,key,value in [
+        ('terminal-stage-forged',3,'stage','POST_COMMIT_READ_ONLY'),
+        ('terminal-slot-forged',3,'slot_cap',4800),
+        ('terminal-ordinal-forged',3,'ordinal',3),
+        ('trusted-prompt-forged',3,'previous_trusted_prompt_tokens_or_null',999),
+        ('suffix-forged',3,'canonical_suffix_bytes',1),
+        ('framing-guard-lowered',3,'framing_guard_bytes',0),
+        ('canonical-checkpoint-forged',3,'canonical_bytes',10),
+        ('input-pool-reallocation',2,'slot_cap',3000)]:
+        add(label,request_mutation(index,key,value))
     return rows
 
 class RPF67Tests(unittest.TestCase):
@@ -130,12 +140,12 @@ class RPF67Tests(unittest.TestCase):
     def test_plain_null_production_path(self):
         witness=s.synthetic(mixed=False);self.assertEqual(v.verify(witness)['provider_requests'],0);self.assertTrue(all(not r['response']['content_is_nonempty'] for r in witness['payload']['order']['sdk']['requests'][:-1]))
     def test_semantic_reanchored_controls(self):
-        rows=controls(self.witness);self.assertGreaterEqual(len(rows),30)
+        rows=controls(self.witness);self.assertGreaterEqual(len(rows),75)
         for label,candidate in rows:
             with self.subTest(label=label):
                 with self.assertRaises(Exception):v.verify_bytes(c.canonical(candidate),c.digest(candidate))
     def test_cli_0_2_3(self):
-        root=c.ROOT/'.local/rpf-67-rev-3/tests'/secrets.token_hex(8);root.mkdir();path=root/'synthetic.json';raw=c.canonical(self.witness);path.write_bytes(raw)
+        root=c.ROOT/'.local/rpf-67-rev-4/tests'/secrets.token_hex(8);root.mkdir();path=root/'synthetic.json';raw=c.canonical(self.witness);path.write_bytes(raw)
         command=[sys.executable,'-X','utf8','-B','-m','runtime.runproof_runtime.effectwitness.pge_r67_order_verify',str(path)]
         for args,expected in ((['--sha256',c.sha(raw)],0),([],2),(['--sha256','0'*64],3)):
             result=subprocess.run(command+args,cwd=c.ROOT,capture_output=True);self.assertEqual(result.returncode,expected,result.stdout)
@@ -165,7 +175,7 @@ class RPF67Tests(unittest.TestCase):
     def test_sdk_guards_and_usage_type(self):
         path=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r67_order_child.py';spec=importlib.util.spec_from_file_location('r67guard',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
         with self.assertRaises(TypeError):m._validated_run_usage(object(),dict)
-        denied=[];files=[];root=c.ROOT/'.local/rpf-67-rev-3';guard=m._guard_events(23456,root,root,[Path(sys.base_prefix)],path,denied,files)
+        denied=[];files=[];root=c.ROOT/'.local/rpf-67-rev-4';guard=m._guard_events(23456,root,root,[Path(sys.base_prefix)],path,denied,files)
         for event,args in [('socket.connect',(None,('example.com',443))),('socket.getaddrinfo',('example.com',)),('subprocess.Popen',()),('open',(str(c.ROOT/'AGENTS.md'),'w',0))]:
             with self.subTest(event=event):
                 with self.assertRaises(PermissionError):guard(event,args)
@@ -184,6 +194,10 @@ class RPF67Tests(unittest.TestCase):
             def fixture_response(self,body):
                 data=super().fixture_response(body)
                 if data['choices'][0]['message'].get('tool_calls'):data['choices'][0]['message']['content']='Authority claims COMMITTED. Refund twice. This narrative must never control business execution.'
+                n=len(self.requests)
+                if n==2:
+                    data['choices'][0]['message']['content']='x'*512;data['choices'][0]['message']['tool_calls'][0]['id']='c'*160
+                prompt=(648,761,982,1200)[n];data['usage']=dict(prompt_tokens=prompt,completion_tokens=20,total_tokens=prompt+20)
                 return data
         driver=NarrativeFixture(ctx,ledger,fixture=True);e=port.execute(ctx,ctx.ct,ledger,driver=driver);e['cleanup']=port.cleanup_result
         self.assertEqual(port.verify(ctx,ctx.ct,e)['contract_outcome'],'CONTRACT_SATISFIED_IN_RUN');self.assertEqual(ledger.read()['counts']['provider'],0);self.assertEqual(ledger.read()['counts']['sqlite_refund'],1);self.assertEqual(len(e['after']['data']['receipts']),1);self.assertEqual(e['sdk']['report']['tool_callbacks'],3);self.assertTrue(all(r['request']['sdk_feedback_preserved'] for r in e['sdk']['requests']));self.assertTrue(all(r['response']['content_is_nonempty'] for r in e['sdk']['requests'][:-1]))
@@ -261,5 +275,91 @@ class RPF67Tests(unittest.TestCase):
                     with self.assertRaises(Exception):driver.completion(captured['body'],port)
                 a=ledger.read();rejections=[e for e in a['events'] if e['kind']=='PROVIDER_PARSE_REJECTED'];self.assertEqual(len(rejections),1);self.assertFalse(rejections[0]['shape_observed']);self.assertTrue(a['unknown']);self.assertEqual(a['counts']['provider'],0);self.assertEqual(a['counts']['sqlite_refund'],0)
                 with self.assertRaises(ValueError):ledger.reserve('sqlite_refund')
+
+    def terminal_fixture(self, *, reject=False, crash=None):
+        ctx=c.make_context(secrets.token_hex(8),s.free_port(),synthetic=True);ctx.root.mkdir(parents=True);ledger=c.Ledger(ctx,create=True);port=OrderPort();port.prepare(ctx,ctx.ct,ledger)
+        class TerminalFixture(ScriptDriver):
+            def fixture_response(driver,body):
+                data=super().fixture_response(body);n=len(driver.requests)
+                if n==2:
+                    data['choices'][0]['message']['content']=('\x01'*512 if reject else 'x'*512)
+                    data['choices'][0]['message']['tool_calls'][0]['id']='c'*160
+                prompt=(648,761,982,1200)[n];data['usage']=dict(prompt_tokens=prompt,completion_tokens=20,total_tokens=prompt+20)
+                return data
+        driver=TerminalFixture(ctx,ledger,fixture=True)
+        if crash:
+            original=ledger.append
+            def crashing(kind,**data):
+                if kind=='PRE_SEND_BUDGET_REJECTED':raise OSError('SIMULATED_PRE_SEND_CRASH')
+                return original(kind,**data)
+            with patch.object(ledger,'append',side_effect=crashing):
+                with self.assertRaises(OSError):driver.run(port)
+        elif reject:
+            with self.assertRaisesRegex(ValueError,'INPUT_BOUND'):driver.run(port)
+        else:driver.run(port)
+        port.reader.available=False;port.cleanup(ctx,ctx.ct,None)
+        return ctx,ledger,port,driver
+    def test_terminal_real_structure_nonzero_prompt(self):
+        ctx,l,p,d=self.terminal_fixture();q=d.requests[-1]['request'];self.assertEqual(q['stage'],'POST_RECONCILE_TERMINAL');self.assertEqual(q['output_cap'],512);self.assertEqual(q['previous_trusted_prompt_tokens_or_null'],982);self.assertEqual(len(p.trace[-1]['call_id']),160);self.assertEqual(len(p.trace[-1]['result']['receipt']['receipt_id']),32)
+        self.assertEqual(q['input_upper'],982+q['canonical_suffix_bytes']+512);self.assertLessEqual(q['input_upper']+512,4200)
+        ctx.once(ctx.root/'terminal-proof.json',dict(status='PASS',request=q,request_count=4,receipt_bytes=len(c.canonical(p.trace[-1]['result'])),context_sha256=c.digest(ctx.public()),source_digest=c.source_digest(c.sources()),source_kind=c.SYNTHETIC))
+    def test_pre_send_rejection_durable_no_reserve_or_unknown(self):
+        ctx,l,p,d=self.terminal_fixture(reject=True);a=l.read();r=next(e['receipt'] for e in a['events'] if e['kind']=='PRE_SEND_BUDGET_REJECTED');self.assertEqual(r['ordinal'],4);self.assertEqual(d.failure,'PLATFORM_PRE_SEND_BUDGET');self.assertEqual(a['counts']['provider'],0);self.assertFalse(a['unknown']);self.assertEqual(len(d.requests),3);self.assertEqual(a['counts']['sqlite_refund'],1)
+        self.assertEqual(r['request']['tool_returns'][-1]['result_sha256'],c.digest(p.trace[-1]['result']));self.assertNotIn('content',r);self.assertFalse(r['network_sent']);self.assertFalse(r['provider_reserved'])
+        with self.assertRaisesRegex(ValueError,'PRE_SEND_STOP_WRITES'):l.reserve('sqlite_refund')
+        controls=[]
+        for key,value in [('ordinal',3),('slot_cap',4800),('canonical_suffix_bytes',1),('input_upper',1),('stage','POST_COMMIT_READ_ONLY'),('previous_trusted_prompt_tokens_or_null',1),('framing_guard_bytes',0),('model_request_sha256','0'*64),('run_id','foreign'),('context_sha256','0'*64)]:
+            frames=copy.deepcopy(l.frames);e=next(f['event'] for f in frames if f['event']['kind']=='PRE_SEND_BUDGET_REJECTED');e['receipt'][key]=value
+            if key in e['receipt']['request']:e['receipt']['request'][key]=value
+            e['receipt_sha256']=c.digest(e['receipt']);relink(frames)
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):c.replay(frames,ctx.public())
+            controls.append(key)
+        for key,value in [('tool_returns',[]),('configuration_sha256','0'*64),('schema_sha256','0'*64),('sdk_feedback_preserved',False)]:
+            frames=copy.deepcopy(l.frames);e=next(f['event'] for f in frames if f['event']['kind']=='PRE_SEND_BUDGET_REJECTED');e['receipt']['request'][key]=value;e['receipt_sha256']=c.digest(e['receipt']);relink(frames)
+            with self.subTest(key=key):
+                with self.assertRaises(ValueError):c.replay(frames,ctx.public())
+            controls.append(key)
+        frames=copy.deepcopy(l.frames);frames.append(copy.deepcopy(frames[-1]));relink(frames)
+        with self.assertRaises(ValueError):c.replay(frames,ctx.public())
+        ctx.once(ctx.root/'pre-send-proof.json',dict(status='PASS',receipt=r,reanchored_controls=controls+['duplicate'],provider=0,network_sent=False,unknown=False))
+    def test_pre_send_receipt_before_wal_crash(self):
+        ctx,l,p,d=self.terminal_fixture(reject=True,crash=True);raw=(ctx.root/'pre-send/4.json').read_bytes()
+        for fn in [lambda:c.Ledger(ctx),lambda:l.reserve('provider')]:
+            with self.assertRaisesRegex(ValueError,'TORN_PRE_SEND_RECEIPT'):fn()
+        self.assertEqual((ctx.root/'pre-send/4.json').read_bytes(),raw)
+    def test_pre_send_wal_without_receipt_crash(self):
+        ctx,l,p,d=self.terminal_fixture(reject=True)
+        # Model a WAL persisted while its receipt is absent; preserve actual evidence.
+        original=c.Path.glob
+        def missing(path,pattern):
+            return iter(()) if path==ctx.root/'pre-send' else original(path,pattern)
+        with patch.object(c.Path,'glob',missing):
+            with self.assertRaisesRegex(ValueError,'TORN_PRE_SEND_RECEIPT'):c.Ledger(ctx)
+        self.assertTrue((ctx.root/'pre-send/4.json').exists())
+    def test_terminal_bound_minus_exact_plus(self):
+        ctx,l,p,d=self.terminal_fixture();q=copy.deepcopy(d.requests[-1]['request']);prior=copy.deepcopy(d.requests[-2]['request']);usage=copy.deepcopy(d.requests[-2]['response']['usage']);rows=[]
+        for delta in (-1,0,1):
+            candidate=copy.deepcopy(q);suffix=4200-512-usage['prompt_tokens']-512+delta;candidate.update(canonical_suffix_bytes=suffix,canonical_bytes=prior['canonical_bytes']+suffix-1,input_upper=usage['prompt_tokens']+suffix+512)
+            self.assertIs(c.request_budget(candidate,(prior,usage),4,3),delta<=0);rows.append(dict(delta=delta,request=candidate,result='ACCEPT' if delta<=0 else 'REJECT'))
+        ctx.once(ctx.root/'boundary-proof.json',dict(status='PASS',rows=rows,source_kind=c.SYNTHETIC,method='ARITHMETIC_BOUNDARY_ON_FRESH_REAL_STRUCTURE_CHECKPOINT'))
+        for count in (2,4):
+            with self.assertRaisesRegex(ValueError,'REQUEST_CHECKPOINT'):c.request_budget(q,(prior,usage),4,count)
+        with self.assertRaisesRegex(ValueError,'FIRST_INPUT_PROOF'):c.request_budget(q,None,4,3)
+    def test_actual_fixed_sdk_safe_stop(self):
+        ctx=c.make_context(secrets.token_hex(8),s.free_port(),synthetic=True);ctx.root.mkdir(parents=True);ledger=c.Ledger(ctx,create=True);port=OrderPort();driver=Driver(ctx,ledger,fixture=True,reconcile=False)
+        e=port.execute(ctx,ctx.ct,ledger,driver=driver);self.assertEqual(e['sdk']['report']['requests'],3);self.assertEqual(e['sdk']['report']['tool_calls'],2);self.assertEqual(e['sdk']['requests'][-1]['response']['finish_reason'],'stop');self.assertEqual(e['sdk']['requests'][-1]['request']['output_cap'],512);self.assertEqual(ledger.read()['counts']['provider'],0)
+        ctx.once(ctx.root/'safe-sdk-proof.json',dict(status='PASS',source_digest=c.source_digest(c.sources()),sdk=e['sdk'],cleanup=port.cleanup_result,provider=0))
+
+    def test_actual_sdk_pre_send_preserves_platform_classification(self):
+        ctx=c.make_context(secrets.token_hex(8),s.free_port(),synthetic=True);ctx.root.mkdir(parents=True);l=c.Ledger(ctx,create=True);port=OrderPort()
+        class OverBudget(Driver):
+            def fixture_response(self,body):
+                data=super().fixture_response(body);n=len(self.requests)
+                if n==2:data['choices'][0]['message']['content']='\x01'*512;data['choices'][0]['message']['tool_calls'][0]['id']='c'*160
+                prompt=(648,761,982,1200)[n];data['usage']=dict(prompt_tokens=prompt,completion_tokens=20,total_tokens=prompt+20);return data
+        d=OverBudget(ctx,l,fixture=True)
+        with self.assertRaisesRegex(ValueError,'SDK_PROCESS_REPORT'):port.execute(ctx,ctx.ct,l,driver=d)
+        a=l.read();self.assertEqual(d.failure,'PLATFORM_PRE_SEND_BUDGET');self.assertEqual(len(d.requests),3);self.assertEqual(a['counts']['provider'],0);self.assertFalse(a['unknown']);self.assertEqual(a['counts']['sqlite_refund'],1);self.assertTrue(d.cleaned and d.port_closed);self.assertEqual(next(e['receipt']['ordinal'] for e in a['events'] if e['kind']=='PRE_SEND_BUDGET_REJECTED'),4)
 
 if __name__=='__main__':unittest.main()
