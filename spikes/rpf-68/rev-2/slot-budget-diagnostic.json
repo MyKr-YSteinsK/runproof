@@ -1,0 +1,901 @@
+{
+  "plan": "RPF-68",
+  "revision": "rev-2",
+  "status": "BLOCKED",
+  "base": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+  "branch": "codex/rpf-68-rev2-slot-budget-shared-session",
+  "owner": "rpf-68-rev-2",
+  "abi": "rpf68-shared-real-cross-domain-v2",
+  "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+  "before_after": {
+    "config4": [
+      2400,
+      4600
+    ],
+    "config5": [
+      2800,
+      4300
+    ],
+    "reachable": [
+      30400,
+      34100
+    ],
+    "global": [
+      35000,
+      35000
+    ],
+    "unusable_extra": [
+      4600,
+      900
+    ]
+  },
+  "caps": {
+    "EXPLORER": [
+      2500
+    ],
+    "config-java-http": [
+      3000,
+      2400,
+      2400,
+      4600,
+      4300
+    ],
+    "order-sqlite": [
+      3000,
+      2600,
+      2600,
+      4200
+    ]
+  },
+  "budget_version": "rpf68-slot-budget-v2",
+  "reachable_formula": "2*2500 +16700+12400=34100",
+  "maximum_provider_requests": 11,
+  "cost_guard_micro_cny": 750000,
+  "all_output_rate_guard_micro_cny": 613800,
+  "official_price_refresh": "NOT_RUN",
+  "invoice": "NOT_QUERIED",
+  "budget_component": {
+    "actual_provider_calls": 0,
+    "component_provider_ticket_count": 11,
+    "frames_sha256": "6f97078659f3c16f1b7d2bb407ff80077b5e66aaeb27b1ae7e54cacd14b7df2d",
+    "global_tokens": 35000,
+    "no_network": true,
+    "not_a_session_witness": true,
+    "old_30400_rejected": "BUDGET_CONTRACT",
+    "pid": 10088,
+    "reserved_tokens": 34100,
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "source_kind": "SYNTHETIC_BUDGET_COMPONENT_ONLY",
+    "spare_without_permission": 900,
+    "status": "PASS",
+    "workspace": ".local/rpf-68-rev-2/tests/6d69aaadc025d303"
+  },
+  "old_counterexample": {
+    "previous_prompt": 490,
+    "suffix_bytes": 1192,
+    "framing_guard": 512,
+    "output_cap": 512,
+    "required": 2706,
+    "old_cap": 2400,
+    "new_cap": 4600,
+    "actual_current_fixed_sdk_stage4_pass": true,
+    "does_not_prove_maximum": true
+  },
+  "stage_local_positive": {
+    "claim": "STAGE_LOCAL_MAX_IDS_CONTENT_FULL_RECEIPTS_NOT_ALL_LEGAL_COMBINATIONS",
+    "counts": {
+      "authority_read": 5,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 9,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "provider": 0,
+    "rows": [
+      {
+        "business_sha256": "72ecdc35fe2f442addc13a89fde65ebbc73c1b18e7b86c1e24e5793e334547cb",
+        "cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true
+        },
+        "domain": "config-java-http",
+        "explorer_request": {
+          "input_upper": 791,
+          "messages_sha256": "1528b01bc9f50960a890e06d92d7905a2af132c0acf3ecaafc7ca38898a1781a",
+          "ordinal": 1,
+          "output_cap": 128,
+          "prior_feedback_sha256": null,
+          "prior_tool_call_id": null,
+          "request_sha256": "e987aff20289b18fe8205a40a682e35fdabdf44f3befc1c957e843bd1e960efb",
+          "slot_cap": 2500,
+          "slot_contract_sha256": "6042a29fe21d296c1ec53145b94e74ce499ad63abed2329fad63462c830c2383",
+          "slot_scope": {
+            "domain": "config-java-http",
+            "global_tokens": 35000,
+            "ordinal": 1,
+            "output_cap": 128,
+            "reachable_tokens": 34100,
+            "role": "EXPLORER",
+            "round": 1,
+            "slot_cap": 2500,
+            "version": "rpf68-slot-budget-v2"
+          }
+        },
+        "explorer_tool_id_bytes": 160,
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "requests": [
+          {
+            "canonical_bytes": 1516,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 0,
+            "input_upper": 1516,
+            "messages_sha256": "65c3574504ec50920b5f1b1723f8dc9ff21bfd2d815151c368f23fb64f780144",
+            "ordinal": 1,
+            "output_cap": 256,
+            "previous_prompt": null,
+            "request_sha256": "ee514f8fefec0c9705cdb10c855a6c83d475bbfdadc781628cffb5cb46665f3d",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "f55d0650d252e981781ee64325d18d4b138aadb62c23d328d09a5efaf2411d89",
+            "slot_cap": 3000,
+            "slot_contract_sha256": "5b8830dc058270764607dab07b4db6738c27baf3f1e3efa5419c2028eabb62ab",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 3000,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 0,
+            "tool_returns": []
+          },
+          {
+            "canonical_bytes": 2038,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 1465,
+            "messages_sha256": "025744b2ab18951ad74f8e189633eef120b5cb261302acc1138048130b902206",
+            "ordinal": 2,
+            "output_cap": 256,
+            "previous_prompt": 430,
+            "request_sha256": "a38b1cc7ddf0abe5157ca59fb5c793349daa0668a06da66e2c1d77242af164b1",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "4ed389d22b4eaeb2cd11e44c1f1633e92cac6dae1f870b9adb5140f33ebe4c2b",
+            "slot_cap": 2400,
+            "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 2400,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 523,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 2625,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 1560,
+            "messages_sha256": "450ea99e6723ca1f23f70dac287ba3a2bcaa6bdfeb05e266754b981e1fe8b0f7",
+            "ordinal": 3,
+            "output_cap": 256,
+            "previous_prompt": 460,
+            "request_sha256": "1327ba8bfcecf23623c6aef351a60a969588c5e53253ec243e462baac37ababe",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "a178f78fd30c7748b1d32fb2f36d3430759ed2bbfd1ef623ab8b2128e33a57f9",
+            "slot_cap": 2400,
+            "slot_contract_sha256": "f6bb8a749e4539da5ad058c7c9064b3553ee25776f7ef6d28671b4ed5544273d",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 3,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 2400,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 588,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 3816,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 2194,
+            "messages_sha256": "f7c070972843226ee746cb3bc8afb50cba866539f1b7971ac66c5a4aadbbe028",
+            "ordinal": 4,
+            "output_cap": 512,
+            "previous_prompt": 490,
+            "request_sha256": "dbe158f50682df9b1aaa318d890dfa5a5a84b12078e92bd32c1cf490ba9d0337",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "3fa706316a44d6aca473bf0b01dcc2c946319e1904f21ebc62dadd8a65adba33",
+            "slot_cap": 4600,
+            "slot_contract_sha256": "092d0d0a8ef8c8f5b60d8fc2bf3f97e97edccb72c51be88548c17fd6a55d41fe",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 4600,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "READ_ONLY",
+            "suffix_bytes": 1192,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 4376,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 1593,
+            "messages_sha256": "618eff14aa15307e25e9c8074713f255edb5e3dd932acfb9800abf69e67f3b90",
+            "ordinal": 5,
+            "output_cap": 512,
+            "previous_prompt": 520,
+            "request_sha256": "1253559dc5c3cde925fd9cc607f9e697e8b5807e8bc43018300032aeae8494a0",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "3749c538bb42c0e5e60e6f93a566e1bf5ad6001120d948a003c296f868fced79",
+            "slot_cap": 4300,
+            "slot_contract_sha256": "cb2b2b81c3e5fd1567e6c9d7a292e4095000f6bbee75a4f201603b0b7de2b94b",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 5,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 4300,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "READ_ONLY",
+            "suffix_bytes": 561,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              },
+              {
+                "call_id": "fixture-1-4-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+              }
+            ]
+          }
+        ],
+        "sdk_cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "sdk_pid": 12472,
+        "sdk_report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 2450,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 100,
+          "pid": 12472,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 5,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 4,
+          "tool_calls": 4,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        }
+      },
+      {
+        "business_sha256": "50c0078912fd52e4d6ba3c5fd48ed9b57a07d049c4b61cd55989a49df49d97f2",
+        "cleanup": {
+          "connections_closed": true,
+          "database_retained": true,
+          "exclusive_lock_probe": true
+        },
+        "domain": "order-sqlite",
+        "explorer_request": {
+          "input_upper": 1983,
+          "messages_sha256": "ce9c3f4f998fc277181abffaa6bcc9054279b586800b1d42f3b3a7d63e79efc9",
+          "ordinal": 1,
+          "output_cap": 128,
+          "prior_feedback_sha256": "e6b46d63b5a83f45647deb255a140db86efa860ab7d9a14e105a996c546f7df6",
+          "prior_tool_call_id": "fixture-explorer-call-1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "request_sha256": "bad84efd92b5a95c2e71b9c23e977b2faa93ad6477773ecd3c258a0366859e6a",
+          "slot_cap": 2500,
+          "slot_contract_sha256": "bcc32036f8cbdb445581c26acc21b037b85621c82e37a16229896716ac6dfb2b",
+          "slot_scope": {
+            "domain": "order-sqlite",
+            "global_tokens": 35000,
+            "ordinal": 1,
+            "output_cap": 128,
+            "reachable_tokens": 34100,
+            "role": "EXPLORER",
+            "round": 2,
+            "slot_cap": 2500,
+            "version": "rpf68-slot-budget-v2"
+          }
+        },
+        "explorer_tool_id_bytes": 160,
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "evidence_gaps": [],
+          "receipt_hash": "214f60c99deb1935b0925ca2bbfdffa567abb5c86f9a28746ca1b2779704395f",
+          "state_diff": {
+            "refunded_minor": {
+              "after": 2500,
+              "before": 0
+            },
+            "revision": {
+              "after": 1,
+              "before": 0
+            },
+            "status": {
+              "after": "REFUNDED",
+              "before": "PAID"
+            }
+          },
+          "verifier_id": "rpf41-order-effect-verifier",
+          "verifier_version": "1",
+          "violated_rules": []
+        },
+        "requests": [
+          {
+            "canonical_bytes": 1806,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 0,
+            "input_upper": 1806,
+            "messages_sha256": "9e8c0d1a36c13c0fc148119391f0c9ad5b71a9d29af66a533fac792fd653a7d9",
+            "ordinal": 1,
+            "output_cap": 256,
+            "previous_prompt": null,
+            "request_sha256": "fa719634d11af7705307e01b8a443492efef83eb02c16346f46a9b926e6172ff",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "5a17c54fe87f1afb8bd1ea111d9413ddeb489827735fee634a5af8e81d4beb99",
+            "slot_cap": 3000,
+            "slot_contract_sha256": "59e2c8862c4b4b500ba6f2292cb5516b56467f7a66e549ab69c2a1496509ba24",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 3000,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 0,
+            "tool_returns": []
+          },
+          {
+            "canonical_bytes": 2440,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 512,
+            "input_upper": 1577,
+            "messages_sha256": "b9d519bb82a3c1f13335ef316c812859c547479cd40991d4c2a98d07db7d1164",
+            "ordinal": 2,
+            "output_cap": 256,
+            "previous_prompt": 430,
+            "request_sha256": "0e423d3af74e5fefd017b74d4654e4029e97a4457e30431475c9ed4c4ee03126",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "7bb4e391c50dea80989206597cca4b52cb56ec89b64893a4384f4efb5dbc3f32",
+            "slot_cap": 2600,
+            "slot_contract_sha256": "e1b17be99723197a9ba05430287eafc09f560c06e33d71e623e1f68537115fa8",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 2600,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 635,
+            "tool_returns": [
+              {
+                "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0bbb4672ecb9ba821b720599a2467d96055935a52d2a51e80a0d79c46a96a63e"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 3256,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 512,
+            "input_upper": 1789,
+            "messages_sha256": "31dad7c186d17614951f6795d9e668511a85c1afc524b91ef7283ac6620c487c",
+            "ordinal": 3,
+            "output_cap": 512,
+            "previous_prompt": 460,
+            "request_sha256": "77a129c4a3b107306d0d8b9c5d1ed8025fdd1e7cf9f3f8b18fe90f4d0ea74bd7",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "734b1d7ebcea32efd9e74438621377c5d604af4396bee720c2c5bbb4bf321ebe",
+            "slot_cap": 2600,
+            "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 3,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 2600,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "READ_ONLY",
+            "suffix_bytes": 817,
+            "tool_returns": [
+              {
+                "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0bbb4672ecb9ba821b720599a2467d96055935a52d2a51e80a0d79c46a96a63e"
+              },
+              {
+                "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "d8631bc3c238e74f1b30d0c9f426bf7e095d7e9b53c4e9f68ecb860af5324b6a"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 4629,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 512,
+            "input_upper": 2376,
+            "messages_sha256": "44738f4dfed82543827c4fb9208abc4d30a296fda160d946d4b009c9ebff6ac7",
+            "ordinal": 4,
+            "output_cap": 512,
+            "previous_prompt": 490,
+            "request_sha256": "fcf2e835aa3fee5af7b871cb3add6cdd3d79afac207a0218a545a3c5eeb55199",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "fbaca43b093e3b32716d538bd61f0e0325203bab1759af39cdd9366cb1b81e8c",
+            "slot_cap": 4200,
+            "slot_contract_sha256": "567812a5f85209f68572a35ca94c41794e0f7f8073238acc05aee835b0b08643",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 4200,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "POST_RECONCILE_TERMINAL",
+            "suffix_bytes": 1374,
+            "tool_returns": [
+              {
+                "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0bbb4672ecb9ba821b720599a2467d96055935a52d2a51e80a0d79c46a96a63e"
+              },
+              {
+                "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "d8631bc3c238e74f1b30d0c9f426bf7e095d7e9b53c4e9f68ecb860af5324b6a"
+              },
+              {
+                "call_id": "fixture-2-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "b635a42241a67e86d5940101f9590f7d4a49e42de723bfb2f41a645ac572ca1b"
+              }
+            ]
+          }
+        ],
+        "sdk_cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "sdk_pid": 23356,
+        "sdk_report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 1900,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 80,
+          "pid": 23356,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 4,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 3,
+          "tool_calls": 3,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        }
+      }
+    ],
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "status": "PASS",
+    "witness_sha256": "d57ea780bab07537590e45b02c29cf5cce7b8d9e2ce1ee7eb6ca2249501abd6e",
+    "workspace": ".local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+  },
+  "counterexamples": [
+    {
+      "mode": "legacy-commit-mixed",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "order-sqlite",
+      "round": 2,
+      "ordinal": 3,
+      "request": {
+        "canonical_bytes": 3766,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard": 512,
+        "input_upper": 2299,
+        "messages_sha256": "b3860bf3bf766e237912cf4c50317433c8a620df9939fd631f6a567a6a0a8727",
+        "ordinal": 3,
+        "output_cap": 512,
+        "previous_prompt": 460,
+        "request_sha256": "b26873437215399d16679fbcb14fea7d918137f2db682a0f10c04b08065b8fc2",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_request_sha256": "16d342c40f69f4abe77d35e8655fc851ea681ecd852f8c538ff828528baeae5f",
+        "slot_cap": 2600,
+        "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+        "slot_scope": {
+          "domain": "order-sqlite",
+          "global_tokens": 35000,
+          "ordinal": 3,
+          "output_cap": 512,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 2600,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "READ_ONLY",
+        "suffix_bytes": 1327,
+        "tool_returns": [
+          {
+            "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "04821cafc27274262e42402d9e03d45bfa8108c755a544a4178487f97878803c"
+          },
+          {
+            "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "6f65f53ae7e0e5badcd3818772312234145da0f9d363a75141e174034e667500"
+          }
+        ]
+      },
+      "receipt_sha256": "60ab10b5a094bf17bc93fcdf092f74ca629ff0dac882c01586d46aa7f216fafb",
+      "required": 2811,
+      "cap": 2600,
+      "excess": 211,
+      "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14",
+      "counts": {
+        "authority_read": 4,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 9,
+        "config_post": 2,
+        "explorer_calls": 2,
+        "host": 2,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 2,
+        "session": 1,
+        "sqlite_refund": 1,
+        "sqlite_setup": 1,
+        "trial": 2
+      },
+      "unknown": false,
+      "blocked": true
+    },
+    {
+      "mode": "every-tool-mixed",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "order-sqlite",
+      "round": 2,
+      "ordinal": 3,
+      "request": {
+        "canonical_bytes": 4276,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard": 512,
+        "input_upper": 2299,
+        "messages_sha256": "e63619bc0d11ca37c2ccb8a08e09e3a76e474fd8b0e08f53ff78225fa6a877c2",
+        "ordinal": 3,
+        "output_cap": 512,
+        "previous_prompt": 460,
+        "request_sha256": "cba892ae922d34bb3e830c6872d4f78073a158ef4d9f8ebf424efed5978c4425",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_request_sha256": "72f4e476ed5f65a08394fd73575f1683aa68a1db7a68410bdc4798d93c4da5b4",
+        "slot_cap": 2600,
+        "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+        "slot_scope": {
+          "domain": "order-sqlite",
+          "global_tokens": 35000,
+          "ordinal": 3,
+          "output_cap": 512,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 2600,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "READ_ONLY",
+        "suffix_bytes": 1327,
+        "tool_returns": [
+          {
+            "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "ad91c3b9a304ca6357efb130963359308f3ffbca5eb34f1c708bc96b4f02bb23"
+          },
+          {
+            "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "ab1e4e2ac5366b59b18e271a227f71c710fe9e406ed986631cb5363aef8f780f"
+          }
+        ]
+      },
+      "receipt_sha256": "00694aec862e2afa484a7bb634264880b10888280b3c677c375e6568c6b6644a",
+      "required": 2811,
+      "cap": 2600,
+      "excess": 211,
+      "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2",
+      "counts": {
+        "authority_read": 4,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 9,
+        "config_post": 2,
+        "explorer_calls": 2,
+        "host": 2,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 2,
+        "session": 1,
+        "sqlite_refund": 1,
+        "sqlite_setup": 1,
+        "trial": 2
+      },
+      "unknown": false,
+      "blocked": true
+    },
+    {
+      "mode": "trusted-upper-first",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "config-java-http",
+      "round": 1,
+      "ordinal": 2,
+      "request": {
+        "canonical_bytes": 2548,
+        "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+        "framing_guard": 512,
+        "input_upper": 3061,
+        "messages_sha256": "252ac95d7adabafa30a64c998099cda1ce20b0b8987727409980a7c8902a086c",
+        "ordinal": 2,
+        "output_cap": 256,
+        "previous_prompt": 1516,
+        "request_sha256": "f34752f0b0f1eeb716daea8f834f3e15d2cd40f3fb24ca0423882308becf1471",
+        "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+        "sdk_request_sha256": "f25b54be709a397a1f8af3514a9fea2a23a861718cfc2a01f4c3ab5b5f9fb4fa",
+        "slot_cap": 2400,
+        "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+        "slot_scope": {
+          "domain": "config-java-http",
+          "global_tokens": 35000,
+          "ordinal": 2,
+          "output_cap": 256,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 2400,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "PRE_COMMIT",
+        "suffix_bytes": 1033,
+        "tool_returns": [
+          {
+            "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+          }
+        ]
+      },
+      "receipt_sha256": "67a108cb3cc253e545ef2cb01570af4ec7304a8531597421c4d060567e9e6680",
+      "required": 3317,
+      "cap": 2400,
+      "excess": 917,
+      "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727",
+      "counts": {
+        "authority_read": 2,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 6,
+        "config_post": 0,
+        "explorer_calls": 1,
+        "host": 1,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 1,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 1
+      },
+      "unknown": false,
+      "blocked": true
+    },
+    {
+      "mode": "8192-byte-valid-json-arguments",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "config-java-http",
+      "round": 1,
+      "ordinal": 2,
+      "request": {
+        "canonical_bytes": 9940,
+        "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+        "framing_guard": 512,
+        "input_upper": 9367,
+        "messages_sha256": "62d24a2546b437095dde43fe868bf287335040d65a5c7574a111013f99d7d600",
+        "ordinal": 2,
+        "output_cap": 256,
+        "previous_prompt": 430,
+        "request_sha256": "f2a48b8f1b25c4e181d90031937fc47f8669afe6be5fb6c8e94d6cfa99ca4826",
+        "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+        "sdk_request_sha256": "89d4281916dc99c569bf381ee2b69fd18cb1f0c61188678d6fc2bfa725077d42",
+        "slot_cap": 2400,
+        "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+        "slot_scope": {
+          "domain": "config-java-http",
+          "global_tokens": 35000,
+          "ordinal": 2,
+          "output_cap": 256,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 2400,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "PRE_COMMIT",
+        "suffix_bytes": 8425,
+        "tool_returns": [
+          {
+            "call_id": "fixture-1-call-1",
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+          }
+        ]
+      },
+      "receipt_sha256": "48a4ad8910d55fdb46027f116e5e592891e3a5c0688548e80ec2e4f40fd87c06",
+      "required": 9623,
+      "cap": 2400,
+      "excess": 7223,
+      "workspace": ".local/rpf-68-rev-2/tests/32f7250993fe6eb5",
+      "counts": {
+        "authority_read": 2,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 6,
+        "config_post": 0,
+        "explorer_calls": 1,
+        "host": 1,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 1,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 1
+      },
+      "unknown": false,
+      "blocked": true
+    }
+  ],
+  "boundary_validation": {
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "runtime.tests.test_effectwitness_pge_r68",
+      "-v"
+    ],
+    "test": "test_v2_production_slot_boundaries",
+    "scope": "production validate_request arithmetic cap-1/cap/cap+1 for both Explorer rounds and all Target slots; not a proof that every boundary is reachable by a complete valid SDK prefix",
+    "durable_refusal": "actual fixed SDK failures persisted receipt-before-WAL; orphan/missing receipt tests pass"
+  },
+  "envelope_proof": {
+    "proven_constraints": [
+      "exact two domains/four candidates/tool allowlist and fixed business values",
+      "tool/response IDs <=160 ASCII bytes",
+      "ordinary mixed content <=512 UTF8 bytes; no reasoning/refusal",
+      "tool arguments JSON <=8192 bytes and exact parsed argument object",
+      "previous prompt must be nonnegative and <= preceding request input_upper",
+      "actual SDK does preserve valid JSON whitespace; actual suffix8425 observed"
+    ],
+    "sufficiency": "FAIL",
+    "not_proven": [
+      "all legal combinations fit schedule",
+      "all admitted previous prompt values are realizable by real Provider tokenizer",
+      "actual Provider usage/response distribution",
+      "absolute worst-case external HTTP field/time or third-domain behavior"
+    ],
+    "why_no_normalization": "current Plan forbids changing accepted protocol/payload, deleting mixed content, truncating IDs/suffix or reducing512 guards/output"
+  },
+  "formal_freeze_cold_admission": "NOT_RUN"
+}

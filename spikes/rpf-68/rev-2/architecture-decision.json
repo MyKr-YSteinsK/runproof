@@ -1,0 +1,702 @@
+{
+  "plan": "RPF-68",
+  "revision": "rev-2",
+  "status": "BLOCKED",
+  "base": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+  "branch": "codex/rpf-68-rev2-slot-budget-shared-session",
+  "owner": "rpf-68-rev-2",
+  "abi": "rpf68-shared-real-cross-domain-v2",
+  "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+  "VERIFIED_FINDINGS": [
+    {
+      "classification": "CURRENT_STATE",
+      "claim": "CAPS/Context/Driver/replay/Verifier及Admission门禁绑定v2；可达34100，全局35000未扩大。组件重放11张票累计34100，不发生网络。",
+      "source": [
+        "pge_r68_contracts.py:8-11,38-48",
+        "pge_r68_context.py:24",
+        "pge_r68_budget.py:6,15",
+        "pge_r68_driver.py:44-66",
+        "pge_r68_session.py:freeze_check",
+        "pge_r68_verify.py:verify/verify_domain"
+      ],
+      "evidence": {
+        "actual_provider_calls": 0,
+        "component_provider_ticket_count": 11,
+        "frames_sha256": "6f97078659f3c16f1b7d2bb407ff80077b5e66aaeb27b1ae7e54cacd14b7df2d",
+        "global_tokens": 35000,
+        "no_network": true,
+        "not_a_session_witness": true,
+        "old_30400_rejected": "BUDGET_CONTRACT",
+        "pid": 10088,
+        "reserved_tokens": 34100,
+        "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+        "source_kind": "SYNTHETIC_BUDGET_COMPONENT_ONLY",
+        "spare_without_permission": 900,
+        "status": "PASS",
+        "workspace": ".local/rpf-68-rev-2/tests/6d69aaadc025d303"
+      }
+    },
+    {
+      "classification": "CURRENT_STATE",
+      "claim": "旧2706反例配置4通过，配置5=2105<=4300；订单3无mixed时2301<=2600、订单4带完整receipt及512 mixed时2888<=4200，Explorer ToolCall ID160完整反馈通过。",
+      "source": "terminal_positive.py; pge_r68_driver.py:Driver.completion",
+      "evidence": {
+        "command": {
+          "command": [
+            "python",
+            "-X",
+            "utf8",
+            "-B",
+            "D:\\CS\\runproof\\.local\\rpf-68-rev-2\\terminal_positive.py"
+          ],
+          "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+          "elapsed_seconds": 44.839,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "log_sha256": "d3b70b2a9b9010184c6e66077a81b988533b8d4990db3bb66e3945f72910275c",
+          "parent_pid": 3220,
+          "pid": 3312,
+          "skips": 0,
+          "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+          "started_utc": "2026-10-23T15:17:56.348848+00:00",
+          "tests": null
+        },
+        "output_sha256": "2e5a6211df803db86728ad22027086d6467cb79eeed8567ede638ce28007b86a"
+      }
+    },
+    {
+      "classification": "CURRENT_STATE",
+      "claim": "合法max ID/mixed组合使订单3=2811>2600；前一严格fixture prompt可达首请求input_upper1516时配置2=3317>2400；全部在Provider前拒绝。",
+      "source": "pge_r68_session.py:max_envelope; pge_r68_driver.py:exchange",
+      "evidence": {
+        "output_sha256": "dd22e9b3e3a901c88a4f4b7beeb1640947a9fcc9a5fac4a2799ff051aa75eee5",
+        "cases": [
+          {
+            "mode": "legacy-commit-mixed",
+            "source_kind": "SYNTHETIC_TEST_ONLY",
+            "domain": "order-sqlite",
+            "round": 2,
+            "ordinal": 3,
+            "request": {
+              "canonical_bytes": 3766,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 2299,
+              "messages_sha256": "b3860bf3bf766e237912cf4c50317433c8a620df9939fd631f6a567a6a0a8727",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_prompt": 460,
+              "request_sha256": "b26873437215399d16679fbcb14fea7d918137f2db682a0f10c04b08065b8fc2",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "16d342c40f69f4abe77d35e8655fc851ea681ecd852f8c538ff828528baeae5f",
+              "slot_cap": 2600,
+              "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 3,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 2600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1327,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "04821cafc27274262e42402d9e03d45bfa8108c755a544a4178487f97878803c"
+                },
+                {
+                  "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6f65f53ae7e0e5badcd3818772312234145da0f9d363a75141e174034e667500"
+                }
+              ]
+            },
+            "receipt_sha256": "60ab10b5a094bf17bc93fcdf092f74ca629ff0dac882c01586d46aa7f216fafb",
+            "required": 2811,
+            "cap": 2600,
+            "excess": 211,
+            "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14",
+            "counts": {
+              "authority_read": 4,
+              "cold": 0,
+              "config_health": 1,
+              "config_http": 9,
+              "config_post": 2,
+              "explorer_calls": 2,
+              "host": 2,
+              "jvm": 1,
+              "metadata": 0,
+              "provider": 0,
+              "sdk": 2,
+              "session": 1,
+              "sqlite_refund": 1,
+              "sqlite_setup": 1,
+              "trial": 2
+            },
+            "unknown": false,
+            "blocked": true
+          },
+          {
+            "mode": "every-tool-mixed",
+            "source_kind": "SYNTHETIC_TEST_ONLY",
+            "domain": "order-sqlite",
+            "round": 2,
+            "ordinal": 3,
+            "request": {
+              "canonical_bytes": 4276,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 2299,
+              "messages_sha256": "e63619bc0d11ca37c2ccb8a08e09e3a76e474fd8b0e08f53ff78225fa6a877c2",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_prompt": 460,
+              "request_sha256": "cba892ae922d34bb3e830c6872d4f78073a158ef4d9f8ebf424efed5978c4425",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "72f4e476ed5f65a08394fd73575f1683aa68a1db7a68410bdc4798d93c4da5b4",
+              "slot_cap": 2600,
+              "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 3,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 2600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1327,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "ad91c3b9a304ca6357efb130963359308f3ffbca5eb34f1c708bc96b4f02bb23"
+                },
+                {
+                  "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "ab1e4e2ac5366b59b18e271a227f71c710fe9e406ed986631cb5363aef8f780f"
+                }
+              ]
+            },
+            "receipt_sha256": "00694aec862e2afa484a7bb634264880b10888280b3c677c375e6568c6b6644a",
+            "required": 2811,
+            "cap": 2600,
+            "excess": 211,
+            "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2",
+            "counts": {
+              "authority_read": 4,
+              "cold": 0,
+              "config_health": 1,
+              "config_http": 9,
+              "config_post": 2,
+              "explorer_calls": 2,
+              "host": 2,
+              "jvm": 1,
+              "metadata": 0,
+              "provider": 0,
+              "sdk": 2,
+              "session": 1,
+              "sqlite_refund": 1,
+              "sqlite_setup": 1,
+              "trial": 2
+            },
+            "unknown": false,
+            "blocked": true
+          },
+          {
+            "mode": "trusted-upper-first",
+            "source_kind": "SYNTHETIC_TEST_ONLY",
+            "domain": "config-java-http",
+            "round": 1,
+            "ordinal": 2,
+            "request": {
+              "canonical_bytes": 2548,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 3061,
+              "messages_sha256": "252ac95d7adabafa30a64c998099cda1ce20b0b8987727409980a7c8902a086c",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 1516,
+              "request_sha256": "f34752f0b0f1eeb716daea8f834f3e15d2cd40f3fb24ca0423882308becf1471",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "f25b54be709a397a1f8af3514a9fea2a23a861718cfc2a01f4c3ab5b5f9fb4fa",
+              "slot_cap": 2400,
+              "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 2400,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 1033,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                }
+              ]
+            },
+            "receipt_sha256": "67a108cb3cc253e545ef2cb01570af4ec7304a8531597421c4d060567e9e6680",
+            "required": 3317,
+            "cap": 2400,
+            "excess": 917,
+            "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727",
+            "counts": {
+              "authority_read": 2,
+              "cold": 0,
+              "config_health": 1,
+              "config_http": 6,
+              "config_post": 0,
+              "explorer_calls": 1,
+              "host": 1,
+              "jvm": 1,
+              "metadata": 0,
+              "provider": 0,
+              "sdk": 1,
+              "session": 1,
+              "sqlite_refund": 0,
+              "sqlite_setup": 0,
+              "trial": 1
+            },
+            "unknown": false,
+            "blocked": true
+          }
+        ]
+      }
+    },
+    {
+      "classification": "CURRENT_STATE",
+      "claim": "8192-byte合法JSON参数（仅尾部空白、语义未改）被parser和固定SDK接纳并原样回注，配置2=430+8425+512+256=9623>2400，0POST。",
+      "source": "pge_r68_driver.py:32 parse / Driver.completion; argument_envelope.py",
+      "evidence": {
+        "command": {
+          "command": [
+            "python",
+            "-X",
+            "utf8",
+            "-B",
+            "D:\\CS\\runproof\\.local\\rpf-68-rev-2\\argument_envelope.py"
+          ],
+          "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+          "elapsed_seconds": 28.174,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "log_sha256": "c9ea74da89ab5669d3402a81608c31c9872fa4bd1734671f4857dda3fb332102",
+          "parent_pid": 27140,
+          "pid": 11316,
+          "skips": 0,
+          "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+          "started_utc": "2026-10-23T15:21:37.156365+00:00",
+          "tests": null
+        },
+        "output_sha256": "beb815d62e73161b0649c7437c91fa5dab25eccac32e25b5fb0b3fc2bec18e31",
+        "case": {
+          "mode": "8192-byte-valid-json-arguments",
+          "source_kind": "SYNTHETIC_TEST_ONLY",
+          "domain": "config-java-http",
+          "round": 1,
+          "ordinal": 2,
+          "request": {
+            "canonical_bytes": 9940,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 9367,
+            "messages_sha256": "62d24a2546b437095dde43fe868bf287335040d65a5c7574a111013f99d7d600",
+            "ordinal": 2,
+            "output_cap": 256,
+            "previous_prompt": 430,
+            "request_sha256": "f2a48b8f1b25c4e181d90031937fc47f8669afe6be5fb6c8e94d6cfa99ca4826",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "89d4281916dc99c569bf381ee2b69fd18cb1f0c61188678d6fc2bfa725077d42",
+            "slot_cap": 2400,
+            "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 2400,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 8425,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-call-1",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              }
+            ]
+          },
+          "receipt_sha256": "48a4ad8910d55fdb46027f116e5e592891e3a5c0688548e80ec2e4f40fd87c06",
+          "required": 9623,
+          "cap": 2400,
+          "excess": 7223,
+          "workspace": ".local/rpf-68-rev-2/tests/32f7250993fe6eb5",
+          "counts": {
+            "authority_read": 2,
+            "cold": 0,
+            "config_health": 1,
+            "config_http": 6,
+            "config_post": 0,
+            "explorer_calls": 1,
+            "host": 1,
+            "jvm": 1,
+            "metadata": 0,
+            "provider": 0,
+            "sdk": 1,
+            "session": 1,
+            "sqlite_refund": 0,
+            "sqlite_setup": 0,
+            "trial": 1
+          },
+          "unknown": false,
+          "blocked": true
+        }
+      }
+    },
+    {
+      "classification": "CURRENT_STATE",
+      "claim": "12 focused、140 semantic negatives、19历史原锚+Reviewed/Public以及额外RPF67原件通过；最终源码完整Runtime通过。",
+      "source": "runtime/tests/test_effectwitness_pge_r68.py; verification-diagnostic.json",
+      "evidence": {
+        "focused": {
+          "command": [
+            "python",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "unittest",
+            "runtime.tests.test_effectwitness_pge_r68",
+            "-v"
+          ],
+          "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+          "elapsed_seconds": 222.602,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "log_sha256": "a62d38612e5635f47c35114f9837207a3ebf8e756157b3e3131fd5fb6ade084c",
+          "parent_pid": 9200,
+          "pid": 4564,
+          "skips": 0,
+          "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+          "started_utc": "2026-10-23T15:13:05.363489+00:00",
+          "tests": 12
+        },
+        "full": {
+          "command": [
+            "python",
+            "-X",
+            "utf8",
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "runtime/tests",
+            "-p",
+            "test_*.py",
+            "-v"
+          ],
+          "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+          "elapsed_seconds": 1718.958,
+          "errors": 0,
+          "exit": 0,
+          "failures": 0,
+          "log_sha256": "651c3d5a6849a1d7cdc6241c178613e085d7a9377055e54fdedfdc2d58fd6487",
+          "parent_pid": 15544,
+          "pid": 9832,
+          "skips": 2,
+          "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+          "started_utc": "2026-10-23T15:16:51.041882+00:00",
+          "tests": 498
+        },
+        "control_count": 140
+      }
+    },
+    {
+      "classification": "CURRENT_STATE",
+      "claim": "四个禁止修改R68源码raw SHA保持，rev1公开文件Git blob身份保持，旧私有运行根未读取。Guard213行未改；新运行仅在rev2根。",
+      "source": "preflight-diagnostic.json:old_bytes_readback; git diff exact allowlist",
+      "evidence": {
+        "authorized_static_sdk_jar": "READ_ONLY_PINNED_FILES_ONLY",
+        "checks": [
+          {
+            "matches_rev1_record": true,
+            "path": "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py",
+            "raw_sha256": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235"
+          },
+          {
+            "matches_rev1_record": true,
+            "path": "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py",
+            "raw_sha256": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612"
+          },
+          {
+            "matches_rev1_record": true,
+            "path": "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py",
+            "raw_sha256": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb"
+          },
+          {
+            "matches_rev1_record": true,
+            "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py",
+            "raw_sha256": "16f2024537a5f329bab5f11a3860ff2d6b5488fa5448ecc83539b5a75ba2251d"
+          },
+          {
+            "git_blob_bytes_sha256": "b099518cbf1a64989029165b9bc0d30ef82acb5a4228dfe72b0616aa62b9e400",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/probe.py",
+            "working_raw_sha256": "b099518cbf1a64989029165b9bc0d30ef82acb5a4228dfe72b0616aa62b9e400"
+          },
+          {
+            "git_blob_bytes_sha256": "4fc93f5e07d8710930e3a2dd1bddb29c96ab27ce24c921fab2b4a108646b9dd8",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/README.md",
+            "working_raw_sha256": "4fc93f5e07d8710930e3a2dd1bddb29c96ab27ce24c921fab2b4a108646b9dd8"
+          },
+          {
+            "git_blob_bytes_sha256": "4b051f87099f6ccf48b1bafa5026dc52aef756279f88dd47cea126a5f9306da8",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/RESULT.md",
+            "working_raw_sha256": "4b051f87099f6ccf48b1bafa5026dc52aef756279f88dd47cea126a5f9306da8"
+          },
+          {
+            "git_blob_bytes_sha256": "a8567b81121c7953211cc6dd5e5bba45dc6ff9f4dd624a3c33e43b0172c89dd4",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/preflight-diagnostic.json",
+            "working_raw_sha256": "a8567b81121c7953211cc6dd5e5bba45dc6ff9f4dd624a3c33e43b0172c89dd4"
+          },
+          {
+            "git_blob_bytes_sha256": "d35a09e45528db859ca88788cfdb1236c8462b02efa7ff38e28a581796f3be6d",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/verification-diagnostic.json",
+            "working_raw_sha256": "d35a09e45528db859ca88788cfdb1236c8462b02efa7ff38e28a581796f3be6d"
+          },
+          {
+            "git_blob_bytes_sha256": "1b174e53b9f5cbd7d62981fee35e6bdb3b1ba5da3402a8547e9a4dfc6cc0d49c",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/architecture-decision.json",
+            "working_raw_sha256": "1b174e53b9f5cbd7d62981fee35e6bdb3b1ba5da3402a8547e9a4dfc6cc0d49c"
+          },
+          {
+            "git_blob_bytes_sha256": "668a8e9c96893502c0494ad399ce68b564d5cf01a32a082edb33f877d13ada1c",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/capability-assessment.json",
+            "working_raw_sha256": "668a8e9c96893502c0494ad399ce68b564d5cf01a32a082edb33f877d13ada1c"
+          },
+          {
+            "git_blob_bytes_sha256": "2ccb7caadb8165a13ec967ff5cc794ca33b6de80ec7804c28b278aa0fcfe114b",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/session-summary.json",
+            "working_raw_sha256": "2ccb7caadb8165a13ec967ff5cc794ca33b6de80ec7804c28b278aa0fcfe114b"
+          },
+          {
+            "git_blob_bytes_sha256": "a1ac0f9ea635f14883cfd49fe5b3e89ea25332d4c88a518c04ab751b1997ca62",
+            "lf_git_bytes_unchanged": true,
+            "path": "spikes/rpf-68/budget-and-source-diagnostic.json",
+            "working_raw_sha256": "a1ac0f9ea635f14883cfd49fe5b3e89ea25332d4c88a518c04ab751b1997ca62"
+          }
+        ],
+        "docs_reviews": "NOT_ENTERED",
+        "historical_ledger_db_markers": "NOT_READ",
+        "readonly_source_raw_checks": 4,
+        "rev1_public_git_bytes_checks": 9,
+        "status": "PASS"
+      }
+    },
+    {
+      "classification": "TARGET_INTENT",
+      "claim": "真实共享Provider闭环、真实Witness/负控仍待证明。",
+      "source": "RPF-68 rev-2 P3/P4",
+      "evidence": "A05-A08 NOT_RUN, Provider Key not read"
+    }
+  ],
+  "CODEX_ENGINEERING_JUDGMENT": [
+    {
+      "observation": "晚期配置槽修好后，订单3与早期配置2仍存在合法拒绝。",
+      "mechanism_or_root_cause_hypothesis": "逐槽CAP表与完整协议长度、可信previous prompt范围未形成闭合的可达性合同；总池余额不能修复局部不等式。",
+      "evidence_for": [
+        "order3 2811>2600",
+        "config2 3317>2400",
+        "stage-local terminal positive passes"
+      ],
+      "evidence_against_or_missing": [
+        "usage均合成，不知道实际Provider分布",
+        "高prompt1516只是验证器允许的上界，不证明tokenizer实际可达"
+      ],
+      "possible_counterexample": "真实Provider常用短ID/短content/较低usage，单次可能成功；仍不能代替本Plan的合法输入门禁。",
+      "impact": "不能用一次真实成功或继续局部加槽代替完整预算合同。",
+      "confidence": "HIGH",
+      "cheap_next_test": "下一授权先固定所有合法序列字段及usage范围，做逐阶段不等式可满足性矩阵。"
+    },
+    {
+      "observation": "严格业务参数值固定，合法JSON文本仍可膨胀到8192字节并被SDK保留。",
+      "mechanism_or_root_cause_hypothesis": "语义参数白名单与原字节回注长度是不同约束，parse后的业务安全不自动保证下次输入容量。",
+      "evidence_for": [
+        "Driver.parse args<=8192",
+        "fixed SDK suffix8425; config2 required9623",
+        "0POST and durable pre-send receipt"
+      ],
+      "evidence_against_or_missing": [
+        "未观测真实Provider主动生成8192空白",
+        "没有授权改变参数编码上限/原样回注协议"
+      ],
+      "possible_counterexample": "不同SDK可能规范化参数JSON，但本轮固定SDK实测没有。",
+      "impact": "必须联合审查协议编码、原样回注和预算；不能擅自strip空白或压缩ToolReturn。",
+      "confidence": "HIGH",
+      "cheap_next_test": "只读列举字段上限及SDK序列化行为；新Plan批准后比较等价且可证明不低估的协议方案。"
+    },
+    {
+      "observation": "普通四配对与140攻击全绿，最大合法路径仍失败。",
+      "mechanism_or_root_cause_hypothesis": "攻击拒绝覆盖与合法路径容量覆盖互相独立。",
+      "evidence_for": [
+        "12 focused/140 CLI negatives",
+        "3类边界反例",
+        "final-source full Runtime exit0 recorded in verification diagnostic"
+      ],
+      "evidence_against_or_missing": [
+        "未度量完整状态空间覆盖率",
+        "性能与Provider成功率没有测量"
+      ],
+      "possible_counterexample": "更系统的正控生成器可直接共用现有严格Verifier，无需先公共Core重构。",
+      "impact": "把语义拒绝、合法路径可达性、真实模型证据作为分开的硬门禁。",
+      "confidence": "HIGH",
+      "cheap_next_test": "用有限schema生成可达prefix，不用负控总数代替容量证明。"
+    },
+    {
+      "observation": "rev2只改7个许可源即可延续双域复用；213行guard和owner constructor债未消失。",
+      "mechanism_or_root_cause_hypothesis": "任务版本化保护历史，但公共能力初始化及Source schema尚未稳定。",
+      "evidence_for": [
+        "exact seven modified sources",
+        "unchanged config/order/child modules",
+        "old public hashes unchanged"
+      ],
+      "evidence_against_or_missing": [
+        "无第三域/外部Agent证据",
+        "没有成本对照或迁移实测"
+      ],
+      "possible_counterexample": "领域永远有限时继续task-owned可能更经济。",
+      "impact": "先稳定可满足合同，再决定Core提取时机。",
+      "confidence": "MEDIUM",
+      "cheap_next_test": "预算方案获批后，先对纯guard/owner seam做只读ABI设计与历史证书兼容矩阵。"
+    }
+  ],
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    {
+      "path": "继续task-owned联合协议/预算验证",
+      "benefit": "在现有两域上消除已复现的合法输入阻断，历史源不变。",
+      "code_touched": "未来批准范围内contracts/driver/session/verify/test/probe；当前不更改冻结协议。",
+      "complexity": "MEDIUM",
+      "security_history_cost": "保持原样回注/权限/旧证书；任何缩小协议或新预算必须明确批准。",
+      "prerequisite": "先决定合法编码/长度与逐槽数学约束",
+      "worst_failure_mode": "再次只调部分CAP，早期或下一槽继续失败",
+      "why_now": "最高信息增益，可直接用0Provider反例否定错误方案。"
+    },
+    {
+      "path": "版本化抽取owner/Source/Budget/Verifier/SDK guard Core",
+      "benefit": "减少213行guard复制、Source闭包和constructor注入分叉。",
+      "code_touched": "未来公共Core新路径与双域适配；不可直接改冻结旧源",
+      "complexity": "HIGH",
+      "security_history_cost": "ABI兼容、旧证书原始/当前Source双轨、权限与receipt crash回归",
+      "prerequisite": "已知可满足的协议预算；迁移和写路径批准",
+      "worst_failure_mode": "抽取后保留同一不满足约束，只增加回归面",
+      "why_now": "可规划，当前不优先实施。"
+    },
+    {
+      "path": "外部Agent/MCP/Web/第三域",
+      "benefit": "检验外部运行时及第三域能力接口",
+      "code_touched": "未来外部adapter/网络认证/工具授权/Context/Source/Verifier/Web",
+      "complexity": "HIGH",
+      "security_history_cost": "新凭据、网络、异步UNKNOWN、不可信工具与前端redaction；历史Issuer不升级",
+      "prerequisite": "共享两域真实证据和新域/数据/网络/费用独立授权",
+      "worst_failure_mode": "未校准预算叠加外部协议与权限漂移",
+      "why_now": "无第三域证据，暂不实施。"
+    }
+  ],
+  "NEXT_DECISION_RECOMMENDATION": {
+    "priority": "下一研发目标先形成可满足的联合协议长度/逐槽预算合同，以0Provider固定SDK和约束矩阵验证，再单独准入真实共享会话；不创作或执行RPF-69。",
+    "why_higher_value_than_more_dedicated_code": "8192参数、mixed/ID、可信prompt与晚期槽是同一跨阶段约束；追加专属模块或单点加槽不能给出闭合容量证明。",
+    "opposite": "先公共Core ABI/guard抽取，暂停所有真实Provider",
+    "switch_conditions": "Architect以安全补丁集中化为首要目标，批准新Core路径、双版本兼容与迁移；仍不能绕过容量Gate。",
+    "minimum_next_test": "字段编码上限×阶段×候选×允许previous usage的可达prefix矩阵，分别报告采样、受约束证明及不可覆盖项。",
+    "requires_new_authorization": [
+      "接受协议/参数编码上限或序列化规则变更（若采用）",
+      "新逐槽预算/调用与费用合同（若采用）",
+      "重新正式Source Freeze/冷启动/真实会话费用",
+      "如抽取Core则新路径/迁移范围",
+      "外部域/MCP/Web/网络/凭据/部署均需单独授权"
+    ],
+    "third_domain_limit": "现catalog/instructions/Oracle/round/typed registry仅两个受控域；拒绝第三域是当前权限约束，未证明推广能力。",
+    "authority": "ARCHITECT_REVIEW_REQUIRED"
+  },
+  "POTENTIAL_GENERALIZATION_DEBT": [
+    {
+      "category": "VERIFIED_DEFECT",
+      "item": "冻结逐槽表不能容纳所有已接受合法协议输入；order3/config2反例有实际SDK证据。",
+      "source": "slot-budget-diagnostic.json:counterexamples"
+    },
+    {
+      "category": "TECHNICAL_DEBT",
+      "item": "SDK guard213行重复；Order Sandbox/Reader、Config Http constructor注入owner，公共能力仍带任务身份。",
+      "source": "pge_r68_sdk_child.py:14-226; pge_r68_order_port.py:Sandbox/Reader; pge_r68_config_port.py:Http"
+    },
+    {
+      "category": "TECHNICAL_DEBT",
+      "item": "Source闭包须并存旧证书原SHA与当前修复SHA，不能替换历史bridge Source。",
+      "source": {
+        "path": "runtime/runproof_runtime/effectwitness/config_target_bridge.py",
+        "current_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+        "historical_certificate_sha256": "6dd3fd4b49adb689b310557340e2bfc380cb10726e63db7519ecda6bd318e59d",
+        "historical_source_not_rewritten": true
+      }
+    },
+    {
+      "category": "TECHNICAL_DEBT",
+      "item": "单WAL资源共享已在两域fixture验证，但round/工具/Oracle绑定两域，不能推广第三域或并发Agent。",
+      "source": "pge_r68_contracts.py:DOMAINS/TOOLS; pge_r68_session.py:REGISTRY/SharedSession"
+    },
+    {
+      "category": "OBSERVABILITY_GAP",
+      "item": "真实Provider usage、价格、费用/终止率未测；usage_confidence需结合synthetic source_kind解读。",
+      "source": "A05-A08 NOT_RUN; Driver.exchange"
+    },
+    {
+      "category": "OBSERVABILITY_GAP",
+      "item": "失败free context未保存SDK Host端口坐标；保留原清理OS bind结果和thread/key释放、子PID晚次回读，不能声称所有历史端口都另有晚次外部连接试验。初次max CLI父PID未保留。",
+      "source": "cleanup-second-readback.json; verification-diagnostic.json"
+    },
+    {
+      "category": "OBSERVABILITY_GAP",
+      "item": "仅命令墙钟有实测，未分离SDK/Java/Oracle阶段，不做性能或SLA结论。",
+      "source": {
+        "full_seconds": 1718.958,
+        "focused_seconds": 222.602,
+        "terminal_seconds": 44.839
+      }
+    },
+    {
+      "category": "FUTURE_RESEARCH_QUESTION",
+      "item": "外部不可信Agent/MCP及异步工具是否仍可单WAL身份、安全权限和独立Oracle验证。",
+      "source": "external_third_domain NOT_PROVEN"
+    }
+  ],
+  "selected_single_architecture": "task-owned shared kernel v2 with unchanged typed business ports; no parallel implementation",
+  "review_authority": "ARCHITECT_REVIEW_REQUIRED"
+}

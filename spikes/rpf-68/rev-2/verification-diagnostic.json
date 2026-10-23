@@ -1,0 +1,5029 @@
+{
+  "plan": "RPF-68",
+  "revision": "rev-2",
+  "status": "BLOCKED",
+  "base": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+  "branch": "codex/rpf-68-rev2-slot-budget-shared-session",
+  "owner": "rpf-68-rev-2",
+  "abi": "rpf68-shared-real-cross-domain-v2",
+  "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "unittest",
+        "runtime.tests.test_effectwitness_pge_r68",
+        "-v"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 222.602,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "a62d38612e5635f47c35114f9837207a3ebf8e756157b3e3131fd5fb6ade084c",
+      "parent_pid": 9200,
+      "pid": 4564,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:13:05.363489+00:00",
+      "tests": 12
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\CS\\runproof\\.local\\rpf-68-rev-2\\controls.py"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 119.827,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "b691e5459fdee0ac208739d581d8c3f8da487a9b52c0a31469577e9662845e52",
+      "parent_pid": 13692,
+      "pid": 26900,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:46.025650+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\CS\\runproof\\.local\\rpf-68-rev-2\\terminal_positive.py"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 44.839,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "d3b70b2a9b9010184c6e66077a81b988533b8d4990db3bb66e3945f72910275c",
+      "parent_pid": 3220,
+      "pid": 3312,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:56.348848+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\CS\\runproof\\.local\\rpf-68-rev-2\\argument_envelope.py"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 28.174,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "c9ea74da89ab5669d3402a81608c31c9872fa4bd1734671f4857dda3fb332102",
+      "parent_pid": 27140,
+      "pid": 11316,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:21:37.156365+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\CS\\runproof\\.local\\rpf-68-rev-2\\receipt_controls.py"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 2.169,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "fb66d744c4d27d544bf0a476152cf8abeca19f2ce28de28f7503ba7256574830",
+      "parent_pid": 13068,
+      "pid": 30724,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:36:11.415248+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r67_order_verify",
+        "spikes/rpf-67/rev-4/order-target-witness.json",
+        "--sha256",
+        "a2ab94b70a144e389b324cb4731aba6d48a28fc0e77646c54c20a490d2b72c26"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.822,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "2e2dc674ffdfe537f34a13a38b4e2cba6135a79af43ce8712990750bae6023c0",
+      "parent_pid": 34532,
+      "pid": 32928,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:15.621444+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.witness_verify",
+        "spikes/rpf-43/sample-witness.json",
+        "--expected-sha256",
+        "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.36,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "c1beb46b130ce465a8dbee5f1437e7936c7ef73f5218e0d2586adf7deefd484b",
+      "parent_pid": 34532,
+      "pid": 34580,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:01.155711+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.witness_verify",
+        "spikes/rpf-44/sample-ops-witness.json",
+        "--expected-sha256",
+        "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.398,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "a62ace157bf1d67d3be657e553984a2e70a12d9f69b2b295479249ae281c85ec",
+      "parent_pid": 34532,
+      "pid": 18576,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:01.528796+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.target_evidence",
+        "spikes/rpf-48/target-agent-summary.json",
+        "--expected-sha256",
+        "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.36,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "903723d3b325ae9a866b0ed1044c7c6355761b59da085bb945e2c606406ddc70",
+      "parent_pid": 34532,
+      "pid": 28516,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:01.940320+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.target_recovery",
+        "spikes/rpf-49/recovery-summary.json",
+        "--expected-sha256",
+        "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.445,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "f7a85b6f794b2c438569694ed22e6f3360da61703a9eefdc94fc19c7292c7596",
+      "parent_pid": 34532,
+      "pid": 27240,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:02.305442+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.violation_witness",
+        "spikes/rpf-50/violation-witness.json",
+        "--expected-sha256",
+        "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.358,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "0e2669d18cfbe3d08814e3b0cfad06e831c85bb52155cfa702ae717305e69a32",
+      "parent_pid": 34532,
+      "pid": 28732,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:02.754656+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_http_witness",
+        "spikes/rpf-51/rev-4/config-http-witness.json",
+        "--expected-sha256",
+        "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.364,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "d667a4412d5fd4b0841f6c5035fca8c137221244b247ad07b4e99fab5ca59267",
+      "parent_pid": 34532,
+      "pid": 12364,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:03.117009+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_target_verify",
+        "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+        "--expected-sha256",
+        "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.353,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "a74f0e57b674155be1485bf9431e1a536e5bc3f00541a80e47d7ac0be342c762",
+      "parent_pid": 34532,
+      "pid": 17592,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:03.486518+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_live_verify",
+        "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "--sha256",
+        "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.434,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parent_pid": 34532,
+      "pid": 19572,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:03.844134+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_experiment_verify",
+        "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+        "--sha256",
+        "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.612,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "8a346a50a1539873a63e83ec663c0b8d41065553cc8cfe8323a1c9d043043173",
+      "parent_pid": 34532,
+      "pid": 3572,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:04.292269+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_pge_verify",
+        "spikes/rpf-56/rev-4/config-pge-evidence.json",
+        "--sha256",
+        "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.632,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "e2e468363d6e4a0214ee45c92c7fc807edd601e551206c5ad6463829516da4cc",
+      "parent_pid": 34532,
+      "pid": 22828,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:04.910098+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_pge_coverage_verify",
+        "spikes/rpf-57/config-pge-coverage-evidence.json",
+        "--sha256",
+        "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.768,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "0fe2bb79a3f01ed78d31e165a0fae004c71ffd4f790fd007c71e37933f9411aa",
+      "parent_pid": 34532,
+      "pid": 10852,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:05.546513+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_shared_verify",
+        "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+        "--sha256",
+        "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.77,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "3e7e477e3de8385f542d35757c2305c2435221972fa95b5c0954a9bb1337719e",
+      "parent_pid": 34532,
+      "pid": 28336,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:06.330050+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_select_verify",
+        "spikes/rpf-59/cross-domain-selection-evidence.json",
+        "--sha256",
+        "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.841,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "5dda2d22c76aa503fd29b38f590fa70c1b8b61eb27df001280bba0666d53a454",
+      "parent_pid": 34532,
+      "pid": 7100,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:07.114593+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.lab_cross_domain_verify",
+        "spikes/rpf-60/cross-domain-live-evidence.json",
+        "--sha256",
+        "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.917,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "b5a5edd9fce0d5520e16e7a9b2bac6c3f47310e51c4506849a6b393ebdb239ac",
+      "parent_pid": 34532,
+      "pid": 16956,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:07.961711+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_target_capability_verify",
+        "spikes/rpf-62/real-target-witness.json",
+        "--sha256",
+        "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.675,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "8f8d5fdddf7ad8979715f4525aceabda6cd7e92ba519111a7f928a619f5de24c",
+      "parent_pid": 34532,
+      "pid": 3308,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:08.893457+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_dual_verify",
+        "spikes/rpf-63/dual-agent-evidence.json",
+        "--sha256",
+        "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.678,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "55ed3e6ba72ba36a72bb17f55dee9618bcac65750738365ed9806ba42e7ca665",
+      "parent_pid": 34532,
+      "pid": 23420,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:09.581871+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_portability_verify",
+        "spikes/rpf-64/portability-witness.json",
+        "--sha256",
+        "d5798bfa82ef9523039a1461c82842aa9f265703ada492cef3cf068208e5ff19"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.681,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "ced5d4f21b36c78878c27c6e4f52aae2d680a41ad864f7016a6bda7af0bc8683",
+      "parent_pid": 34532,
+      "pid": 16928,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:10.265836+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r65_verify",
+        "spikes/rpf-65/rev-2/target-witness.json",
+        "--sha256",
+        "2c8691137603cc69d9a1cf92f7800da65dd803bd8e49291187caecac6c5eea2d"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 1.185,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "7529b5d7ed11565c4ef32615722e0a683aa4dd19775aff6a92c055e2da015ffc",
+      "parent_pid": 34532,
+      "pid": 26288,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:10.952847+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r66_verify",
+        "spikes/rpf-66/rev-5/dual-agent-witness.json",
+        "--sha256",
+        "68dad2804edd3668e1e4b4ed19d18034b79d5fa1892e9fea75aaeb9080c4f3c5"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 1.809,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "19f9ef58c472ce7639ca662febd374892a2df85393d4b37333a923a9d86d02b8",
+      "parent_pid": 34532,
+      "pid": 30108,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:12.153254+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "runtime/verify-reviewed-artifacts.py"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 1.049,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "672ee889968f5f19453058932c6538cc17c5d05bd366f6e9bb7bec62d1781fcc",
+      "parent_pid": 34532,
+      "pid": 7992,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:13.976122+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "ci/verify-public-docs.py"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 0.582,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "e0647ec67a2b43dc8423f0b48665fbb250a033365b2d5f339d9761f7992f9cca",
+      "parent_pid": 34532,
+      "pid": 29144,
+      "skips": 0,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:17:15.030963+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "runtime/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+      "elapsed_seconds": 1718.958,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "651c3d5a6849a1d7cdc6241c178613e085d7a9377055e54fdedfdc2d58fd6487",
+      "parent_pid": 15544,
+      "pid": 9832,
+      "skips": 2,
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "started_utc": "2026-10-23T15:16:51.041882+00:00",
+      "tests": 498
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "spikes/rpf-68/rev-2/probe.py",
+        "max-envelope"
+      ],
+      "cwd": ".",
+      "pid": "NOT_RECORDED",
+      "terminal_wrapper_exit": 1,
+      "stdout_status": "FAIL",
+      "scenario_codes": "SDK_PROCESS_REPORT caused by durable PLATFORM_PRE_SEND_BUDGET",
+      "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+      "result_sha256": "dd22e9b3e3a901c88a4f4b7beeb1640947a9fcc9a5fac4a2799ff051aa75eee5",
+      "note": "initial shell command did not retain parent PID; native SDK/JVM PIDs are retained in each case. No success claim from exit0."
+    }
+  ],
+  "gates": {
+    "G0": "PASS",
+    "R2-A01": "PASS",
+    "R2-A02": "PASS",
+    "R2-A03": "FAIL",
+    "R2-A04": "PASS",
+    "R2-A05": "NOT_RUN",
+    "R2-A06": "NOT_RUN",
+    "R2-A07": "NOT_RUN",
+    "R2-A08": "NOT_RUN",
+    "R2-A09": "PASS",
+    "R2-A10": "NOT_RUN"
+  },
+  "gate_scope_notes": {
+    "R2-A01": "P0/synthetic immutable Context + one physical WAL + typed ports verified; formal frozen Context NOT_CREATED",
+    "R2-A02": "versioned schedule/Context/Driver/replay/Verifier and Admission source guard aligned; component replay reaches34100. Formal Admission NOT_RUN",
+    "R2-A03": "stage-local positive passes; unrestricted legal combinations fail at order3/config2; no paid",
+    "R2-A09": "owned SDK/JVM PIDs second OS readback; original cleanup used OS bind probes for ports, parent exit/thread join; late independent SDK-port coordinates absent in failed free cases, explicitly retained as observability gap"
+  },
+  "focused": {
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "runtime.tests.test_effectwitness_pge_r68",
+      "-v"
+    ],
+    "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+    "elapsed_seconds": 222.602,
+    "errors": 0,
+    "exit": 0,
+    "failures": 0,
+    "log_sha256": "a62d38612e5635f47c35114f9837207a3ebf8e756157b3e3131fd5fb6ade084c",
+    "parent_pid": 9200,
+    "pid": 4564,
+    "skips": 0,
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "started_utc": "2026-10-23T15:13:05.363489+00:00",
+    "tests": 12
+  },
+  "full": {
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "runtime/tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "cwd": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172",
+    "elapsed_seconds": 1718.958,
+    "errors": 0,
+    "exit": 0,
+    "failures": 0,
+    "log_sha256": "651c3d5a6849a1d7cdc6241c178613e085d7a9377055e54fdedfdc2d58fd6487",
+    "parent_pid": 15544,
+    "pid": 9832,
+    "skips": 2,
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "started_utc": "2026-10-23T15:16:51.041882+00:00",
+    "tests": 498
+  },
+  "full_runtime_processes": 1,
+  "full_runtime_limit": 2,
+  "synthetic_controls": {
+    "controls": 140,
+    "rows": [
+      {
+        "code": "{\"L2\":\"NOT_ESTABLISHED\",\"boundaries\":{\"L2\":\"NOT_ESTABLISHED\",\"causality\":\"NOT_PROVEN\",\"external_third_domain\":\"NOT_PROVEN\",\"independent_reproduction\":\"NOT_TESTED\",\"issuer\":\"NOT_ESTABLISHED\",\"release\":\"NOT_AUTHORIZED\",\"web\":\"NOT_INTEGRATED\"},\"cross_domain_feedback\":true,\"known_tokens\":5170,\"provider\":0,\"reserved_tokens\":0,\"source_kind\":\"SYNTHETIC_TEST_ONLY\",\"status\":\"PASS\"}",
+        "exit": 0,
+        "expected": 0,
+        "label": "original",
+        "pid": 3652,
+        "raw_sha256": "eb7231e97dafaa73a95c1f714d782e8c1f408f5cf5dc2d1bccd3254174487d8a",
+        "stderr_empty": true
+      },
+      {
+        "code": "EXTERNAL_RAW_ANCHOR_REQUIRED",
+        "exit": 2,
+        "expected": 2,
+        "label": "missing",
+        "pid": 25584,
+        "raw_sha256": "eb7231e97dafaa73a95c1f714d782e8c1f408f5cf5dc2d1bccd3254174487d8a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXTERNAL_RAW_SHA",
+        "exit": 3,
+        "expected": 3,
+        "label": "wrong",
+        "pid": 21580,
+        "raw_sha256": "eb7231e97dafaa73a95c1f714d782e8c1f408f5cf5dc2d1bccd3254174487d8a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-owner",
+        "pid": 20028,
+        "raw_sha256": "97f97d549d35a97ea3fd9b1890a65a03ae7a4b687d35c1f934263fba4a73ebfc",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-abi",
+        "pid": 9716,
+        "raw_sha256": "dcd491d24e290117b059c0b11160648556463dca19c800f83da8c18d3c3a952d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-base",
+        "pid": 21720,
+        "raw_sha256": "b2e1ca3b0485a8228a04e31e769785ef9f4f7be982c42ef8473c74bc24fe6044",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-branch",
+        "pid": 4468,
+        "raw_sha256": "57c55ffa49765598aea5a36c5d9ffdaff90204bd404da5c25e6423bf84e90c03",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-source_kind",
+        "pid": 34148,
+        "raw_sha256": "48a6e3ab3fc1b5d2b94394aad10bc08a2fc7e7f8793c3a2914a3f03be30d1cc0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-workspace",
+        "pid": 23668,
+        "raw_sha256": "b6adf8b2c0fd83bb95eebaf31e4f21762dcc16fe8eefa3c4033a616007819238",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_PARAMETERS",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-session_id",
+        "pid": 23744,
+        "raw_sha256": "f5a43ea25329a76208610017ece3cf39f79bb20ec4bd20adfd2e4d3d1bd946b6",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-source_digest",
+        "pid": 20796,
+        "raw_sha256": "8d2db4547d2c045d0a47471ac3f6a1385db40cfd489b5189d1e76cba338eada7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "source-current-raw",
+        "pid": 7304,
+        "raw_sha256": "0880a0738b20f9239b85a28229a1bcc92559627312f1c393e3b44a6412564717",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "source-lf-history-relabel",
+        "pid": 20892,
+        "raw_sha256": "747a95c50a326745942f8443eb718d2c98240b4dcb0adc00241f8cbd04a17f25",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-provider",
+        "pid": 15404,
+        "raw_sha256": "943d80d0dbccf920b45d13022432c6c3a7d47b71525adb691af0ac00a7866d90",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-sqlite_refund",
+        "pid": 28732,
+        "raw_sha256": "a3a8bccc11ff87cc8926935a4fb148f06cd7f4e355975e580391dc8fbbd17bbe",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-config_post",
+        "pid": 34424,
+        "raw_sha256": "1517bbcc2054310d15aa510cf4a23cf91d5e0a937953f4801f1d90c6caf909da",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-jvm",
+        "pid": 7500,
+        "raw_sha256": "2963c0acf3134c2e5b6551d8b330c4d0dc0305704421e3178adafde6ee020e1b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-trial",
+        "pid": 6996,
+        "raw_sha256": "ebb1c06c6e3e705b36723b9b5a808dc625f142c0587834b77cc0ae367733cd3c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-sdk",
+        "pid": 32620,
+        "raw_sha256": "3e24a31e6a82a62c901028936e96790958c393ebbabefb8e3c4d7463ba750622",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-cold",
+        "pid": 16948,
+        "raw_sha256": "5d10e0a15d0806754edd4eb6adacb8816d28a906bf1acbc33c14472764115e68",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-authority_read",
+        "pid": 33184,
+        "raw_sha256": "99261ae558f29c5393b9fcf8ef3c645ce55789d9bff7c8980256fad36e48292c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-causality",
+        "pid": 5056,
+        "raw_sha256": "adad5f6c4c976c041c498c7000c0c3057e45ff45252fa9f233782925391a3b4c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-issuer",
+        "pid": 11920,
+        "raw_sha256": "b9c3387d55bdc265d42c8dd08815473b93da93bd1e2750a9da64f08699e6eec0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-L2",
+        "pid": 1272,
+        "raw_sha256": "85947f3ae3c0acf526c287df291403e9dd5f8b8442d9a2ad4e90ba27781d7ce7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-release",
+        "pid": 16956,
+        "raw_sha256": "696599f32d000c63b719dc477d35dff2c06650e10172ff25a5721a55a893170c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TWO_DOMAINS",
+        "exit": 3,
+        "expected": 3,
+        "label": "swap-domains",
+        "pid": 24044,
+        "raw_sha256": "c5a0243687e63b0dc2aba284722c3f8003606ddb705fce99bbf2ae8b8066d4e5",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TWO_DOMAINS",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-tag-as-order",
+        "pid": 27276,
+        "raw_sha256": "6720cfe88de01cbe3fad528151d7e83ae5f164f6e09457be525511b469c0e720",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "second-round-as-first",
+        "pid": 27188,
+        "raw_sha256": "4906073dce84f09a61114858164522d76397a456b7be0c50395beb1a9edbc6c6",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:KeyError",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-candidate-in-config",
+        "pid": 14252,
+        "raw_sha256": "61628f01205650b7945402e9535e8ed4d6fb8f07bbc37b0b5d674ccab43958bd",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:KeyError",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-candidate-in-order",
+        "pid": 24716,
+        "raw_sha256": "30266bb6f428f57b6c2270cb34fb3a0694a4afb7c60d1cc78f95cf354a3cca4d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-foreign-facts",
+        "pid": 14980,
+        "raw_sha256": "97ea05d72e9adb71f2cc753be4035a16bfc89605c2b07221593a00aa59ba3d17",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-unverified-verdict",
+        "pid": 18928,
+        "raw_sha256": "d82aebe3dd61a28cd681f3704fd2fcc1d2dd2e90b414181866887266653f7c16",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-source-contract",
+        "pid": 28528,
+        "raw_sha256": "ae1fcc9b653a6844a4a4df763b719fe5e7827efd9dffc31086feaec557a46183",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-source-event",
+        "pid": 23444,
+        "raw_sha256": "0f79eb1d86be803d114e557eb8085e96f9060dc67b5f52f4a4bd70eddb02f6bd",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-choice-id",
+        "pid": 12096,
+        "raw_sha256": "8e16559d5b63e038c207ca5ede19d8874a4ee56e13a5d2b9ca5d83d91114d7cd",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-domain-upgrade",
+        "pid": 5028,
+        "raw_sha256": "6cda62f43adc679b25d253fb8e8fe778456a63242e759f88f4b9dd6ba5c53b7b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FEEDBACK_INPUT_LINEAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-feedback-sha",
+        "pid": 26412,
+        "raw_sha256": "c99ddfe692fbb2efec0f655110f65cb3a3ac75c4bbcfa24443267e7e4df86658",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FEEDBACK_INPUT_LINEAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-tool-id",
+        "pid": 17176,
+        "raw_sha256": "593d08cb3b13cb1a24be74b4cc751cd75e77d494ee5650f9c53fa629df4fb4d6",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-messages-hash",
+        "pid": 25368,
+        "raw_sha256": "a4df2325bd0d5a67a8fbfd48626e3da7a0df68f80514abfad1652fd573bb5816",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-input-truncated",
+        "pid": 33876,
+        "raw_sha256": "b301c51b44369991f7e8893e8ec8e019b90c0dbb7a1aa593efb9cc234734a99f",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:ORIGINAL_SELECTION",
+        "exit": 3,
+        "expected": 3,
+        "label": "original-selection-id",
+        "pid": 13212,
+        "raw_sha256": "492a751b3fa4cb508b17a51e671ec7fbc27b57214fd63788efc8d694f2226ef7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_WAL_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "choice-response-role",
+        "pid": 33388,
+        "raw_sha256": "b569b669d2063cf42915b137b868e8d03bba9dc9b989654aafc76580d7717698",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:HTTP_SEQUENCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-as-order-backend",
+        "pid": 23868,
+        "raw_sha256": "4bb7cff76db83da251165008882b9ae62d99806b4a1876dde4ec7468a6bec605",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_ORACLE",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-as-config-backend",
+        "pid": 23440,
+        "raw_sha256": "178546dbc7d9c46e40708afb79846973777630abdc697d6ad60809c55fca1fed",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-planned",
+        "pid": 21100,
+        "raw_sha256": "b5bc86b1f03a1e651b69d2b3ed8589bdf4aa25ec822989aa3a23e5a3db8824fd",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-triggered",
+        "pid": 33380,
+        "raw_sha256": "7797ae136c99d1c8b0842dec43464d18a0cf531018e4c2a53606bc3a27e727cc",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-observed",
+        "pid": 15244,
+        "raw_sha256": "e713144a04220796c13f17d0aec8014f322c43c1a24087d83182ab310f72e03a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-agent_exposed",
+        "pid": 21616,
+        "raw_sha256": "2ee9e1380d733198851878a7306f532559d7db4b2c5fb302189c82507720c41f",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-status",
+        "pid": 17976,
+        "raw_sha256": "2a966179eea5bec8364f67434adf76fbb1554a01e2deb73a27b76a425e2022a9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-requests",
+        "pid": 29420,
+        "raw_sha256": "e5297a86656c356232e3f7a33aa29180f83c342908b9000cbc6223f27161698c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-tool_callbacks",
+        "pid": 25220,
+        "raw_sha256": "c789808a90db058a7029980255b70302b50f444f8ffad892f4a5b4f8fd17e624",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-input_tokens",
+        "pid": 33148,
+        "raw_sha256": "f25afd87f8d123878bd61466201199b8c653422961fe75cfc2a15ebc700578ca",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-output_tokens",
+        "pid": 19504,
+        "raw_sha256": "15b79500605ab7108ccf1cf46341daae565447410c519b61360261ece9fcc89a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-provider_key_present",
+        "pid": 14652,
+        "raw_sha256": "fa2dc6b8049bd0f75ae8cbbfe422d446679353e15df58cd7734dd7e40b0c965c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-business_key_present",
+        "pid": 33104,
+        "raw_sha256": "922657ce2bd3f72d192295979d9c3ea82b81b39a3b6e29e21f14bb2acfb49998",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-guard_denials",
+        "pid": 21764,
+        "raw_sha256": "3443076cde2300a57d42b878c85ea1cf8dc1038efec17e0fab3487e6e52ed892",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-final_text_persisted",
+        "pid": 4496,
+        "raw_sha256": "b68c142abc00469e29eda2ba6d1509ac151841cb5a5c9ed193bef9a9bdcadb55",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-child-source",
+        "pid": 6824,
+        "raw_sha256": "ad7d1299d1888e71c55f3fd26d59d76730e44d65f275473d5a08dc1d2654c16b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-python-pin",
+        "pid": 24140,
+        "raw_sha256": "cd51d159798cc9a9e87a63972d0c20aad9ef89a375d1a86f82d698adcdb350e8",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-openai-pin",
+        "pid": 31436,
+        "raw_sha256": "ef432cafdb0149a8b487cf5d5d5ccfab71d24e5f780c0f7312f0c895e1c12357",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-process_gone",
+        "pid": 34332,
+        "raw_sha256": "e83012e303fbb1f72d6bfd9b4a66b836c2f0ae688c6c52f23f8d109306db75f2",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-thread_gone",
+        "pid": 24884,
+        "raw_sha256": "7700bc326cd31ce45ec3b4b0ae4da1dbcef20c561329c3dc96f9486c73b7fbf3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-port_closed",
+        "pid": 30484,
+        "raw_sha256": "6e6458701438845991be7ed631458a4b1838945148f94d1a9b2aabfdfd631820",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-key_reference_released",
+        "pid": 29392,
+        "raw_sha256": "8f1b39dd978e2f3468161752688c9707c3c28d5bdb03ee348156b1d1d2932012",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-planned",
+        "pid": 33580,
+        "raw_sha256": "cb90cd928ab27a76ab6620b62fab3987a9819367ba11d272462eee8086107f2c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-triggered",
+        "pid": 23612,
+        "raw_sha256": "6ed2e4d5f54ff3be3816e9d3fea5668de6f374b81d691954b6130dbf86941d70",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-observed",
+        "pid": 31336,
+        "raw_sha256": "a2afa13c3c672c7e60bd8dfd2738bbf458f09cf1e33bb06474a4c42298f063a0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-agent_exposed",
+        "pid": 16060,
+        "raw_sha256": "de251a74b5c03251dc295781767ba66ea57abf8e809f945079a81202cdf2e7cd",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-status",
+        "pid": 34068,
+        "raw_sha256": "e9aa7e68ec039cc316f5e296444465044eea0721e51fcfe424731f4be3e9bf26",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-requests",
+        "pid": 22452,
+        "raw_sha256": "cf49a3c14972e9cb2063cad908e366685ec939368bb7d07aeddb3e3321ccd007",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-tool_callbacks",
+        "pid": 3800,
+        "raw_sha256": "0c425dc47ba56e18a7121ee6a1be606a94e608212fb88f510744e9070ce0ec27",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-input_tokens",
+        "pid": 25004,
+        "raw_sha256": "7f3326474e3071f4e6ac832cd2861a11940008c2af9ce1c4d869dbb0c175de3c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-output_tokens",
+        "pid": 8808,
+        "raw_sha256": "7b55d70a87077e7bc0f784cc6a760f8068147511e2eebbab951bdf39a05634c5",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-provider_key_present",
+        "pid": 8304,
+        "raw_sha256": "bbd69c7b68f06b49a7368812e579704d75acce7b350f75e5a97c15e52dbcaded",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-business_key_present",
+        "pid": 9604,
+        "raw_sha256": "ce4501f884614cf04f6dd35237b13905eb7d74bd8d01515393765cc580f7a80b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-guard_denials",
+        "pid": 22132,
+        "raw_sha256": "697e905ae44d3ce66351405faa31460b334084d03e0794178a9c1638f22c6725",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-final_text_persisted",
+        "pid": 24828,
+        "raw_sha256": "39376703172e952af966847b6c66b38a583f078af9e0edf767e985878e4023d6",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-child-source",
+        "pid": 6884,
+        "raw_sha256": "c5b4a0e07a3be032e400bf06a3080819fc914098aa2ee04096c9bd5e4267a48b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-python-pin",
+        "pid": 1984,
+        "raw_sha256": "c00a94f551b2e15f5552dfba784e0010a68cb2a10b36ce416476b9f0982f5ba4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-openai-pin",
+        "pid": 15432,
+        "raw_sha256": "66873a1332711a7dc888c1d586554e367898dc6eaba08464a0f63a1773919066",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-process_gone",
+        "pid": 34116,
+        "raw_sha256": "83e017fc042bd64144aa4d274003bd8b557efeb95a95d70ec252dbf740bdcb95",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-thread_gone",
+        "pid": 28844,
+        "raw_sha256": "a16632ed48042e15ef3cea8e5295895b0c8724984e5329fc6ff138206331a943",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-port_closed",
+        "pid": 14460,
+        "raw_sha256": "c5ee7ce76e1574dc6f4c41f9fa80ad64534697e72d5e7b67c6e5f80a94432dc5",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-key_reference_released",
+        "pid": 10272,
+        "raw_sha256": "23a91a7a5b992809d4bd703eecb666c6cefcceb5abdc837f6266ad78cb4719ba",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:MODEL_SLOT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-input_upper",
+        "pid": 34752,
+        "raw_sha256": "02cd98e42c1d4338390f82d18eb77e1d4dfefe90abab2caff27615896c1453f6",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-previous_prompt",
+        "pid": 11652,
+        "raw_sha256": "c69d5a5d91f5076cbce2bd3ce009056ef279de2e2d94de806c9ceeb59e243d5b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-suffix_bytes",
+        "pid": 4748,
+        "raw_sha256": "2e08843b9834f184b7399013369c13ebae75e321024deddb84892e5922515f27",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-framing_guard",
+        "pid": 29484,
+        "raw_sha256": "696619df39dc5863c5a4dbbdbe2bdf0ba223fb1749336056adecb1ce2eca34a1",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-output_cap",
+        "pid": 14936,
+        "raw_sha256": "4b22cefcdd1a28fb854b2d9c6f3f4cba0bf1723535b9612f74ef440bfe343a3d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-slot_cap",
+        "pid": 18076,
+        "raw_sha256": "2bc97b7a7e39b04dda5ff59f7726386688fdb6ddc4dc0844dbe37d3d55d49eeb",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_STAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-ordinal",
+        "pid": 34540,
+        "raw_sha256": "da949bbcb82e91bf9a82cc7b92accc6f0f9ee774f1a7d659a85f5c761a2cace1",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TOOL_REINJECTION",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-tool_returns",
+        "pid": 13544,
+        "raw_sha256": "8afe0875398f61096550195175601d5af245ca378859f321dd2a0dec9aff75a3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-canonical_bytes",
+        "pid": 20632,
+        "raw_sha256": "0f2ad2c37699b76f06fb3bb340b3dca2bca8b1d2b462d489a599c716a176cf3d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONFIGURATION_DRIFT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-configuration_sha256",
+        "pid": 16688,
+        "raw_sha256": "2ce86c24e7bf70b2baeadf852bd6fc23c458348b3beb529e9eb44e2283b138a5",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SCHEMA_DRIFT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-schema_sha256",
+        "pid": 8412,
+        "raw_sha256": "df459413e106107243c74395787262a15b36fb717f0368add32f70131b5e8d97",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SHAPE_RESPONSE_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-length",
+        "pid": 7040,
+        "raw_sha256": "77396ce0c3bec4cb8e96a0544148876e6582147b0bd44249cb8f9fe3333dc368",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-unknown-usage",
+        "pid": 31592,
+        "raw_sha256": "6187c05ee1561aa412fec85cc2af903786e3052fbad49d92cb22cd6531bd67a4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-usage-overflow",
+        "pid": 25156,
+        "raw_sha256": "023fc0f5e617beb99abcc04d94b5632d7d7dad2e0879d26d35fa00d60dfbdd41",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-reused-id",
+        "pid": 31036,
+        "raw_sha256": "53cd3ffbc48d46aa0d8236b5b4c1e431a764451915f41f54edcabdf09a6d3cca",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-wrong-model",
+        "pid": 30400,
+        "raw_sha256": "0d255bb445154e1bc81d7f009b0266b2f1e7e19fdd4899391060158946d9e318",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SHAPE_RESPONSE_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-extra-tool-at-stop",
+        "pid": 17208,
+        "raw_sha256": "58c7db67f3d318a77c3f35cca646467e81e43d01c8f0c79cd01a87fb0da67c41",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-command_verified",
+        "pid": 33836,
+        "raw_sha256": "6b1341145ca803deb2e79ec4e21b64bec33acb06b00b9ee519ea8c6555cc0e5b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-listener_owned",
+        "pid": 33408,
+        "raw_sha256": "72904d4e4adebec4195797acf3b684390ab3eaa05d117d960c5ec2dc7864c6ce",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-jar_sha256",
+        "pid": 12832,
+        "raw_sha256": "fe9738386d111fdc56c375b7f6981ac8dd6fe2134ba78c0c68405b14dac37348",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-jar_bytes",
+        "pid": 34312,
+        "raw_sha256": "780ec0c89c223d404ab96a77fe5dbd547bf81c7a9908bd094800030b5649120f",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:HTTP_REQUEST_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-missing-history",
+        "pid": 11672,
+        "raw_sha256": "1d0fd5f5df98dba508d96b9444d49899ba72747a3da9de4c9a453dad5a2c3fbb",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-wrong-effect",
+        "pid": 31732,
+        "raw_sha256": "1af1737f3f07b52610e6f5cd01edae8994cff0665da1c48806a2864e343ec15b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-wrong-amount",
+        "pid": 28820,
+        "raw_sha256": "64b4abacf6fb0793862389f4643d9c421d9d46dd46496594f50feb187f7b1a34",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-wrong-operation",
+        "pid": 1940,
+        "raw_sha256": "a2d98b8bd236e6832bd18516fd3a69e9a28e357d5630c4ef89648d541c27f90e",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_TOOL_ORDER",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-double-refund",
+        "pid": 34132,
+        "raw_sha256": "87e17bfa0d658b9e9a453cd08730b9067b783051373d0700873011f6b78f2433",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_ORACLE",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-missing-receipt",
+        "pid": 13800,
+        "raw_sha256": "2d3a9fb45be738a6cfff1e63022d0da5483d91b6f4cc8b392a3cfba17b3d47c8",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_AUTHORITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-forged-reader",
+        "pid": 31660,
+        "raw_sha256": "f6cbd018c7539931cfa15a2dc2a8f5ef271ae7e247d5ec2100d80bf4133ac8f4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_AUTHORITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-cross-owner",
+        "pid": 18176,
+        "raw_sha256": "85672f2adc466a566343975ef55a0d7566c603f293e6145272f675142934582c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_AUTHORITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-foreign-authority",
+        "pid": 2160,
+        "raw_sha256": "a4ffcdb6ad5a8d454c357dddded980daf1c90e4cfdfcc70787b2cb196b351526",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:ORACLE_VERDICT",
+        "exit": 3,
+        "expected": 3,
+        "label": "oracle-model-authority",
+        "pid": 31608,
+        "raw_sha256": "5bce7946111c9ebcbdd20fb97a90fadcbf35b249fd3978c6b962ad55fe714703",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:WAL_SCOPE_TIME",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-session-foreign",
+        "pid": 34196,
+        "raw_sha256": "c21c73c4d583791eafbca3a45939e495192279bf340228d6a00c1efe080e8394",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:MODEL_SCOPE_ORDER",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-explorer-role-as-target",
+        "pid": 34320,
+        "raw_sha256": "def6bfb73377012126fcc2fbfbf0968aba688d49e6465f5413138f292f3eaacf",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:MODEL_SCOPE_ORDER",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-first-domain-as-second",
+        "pid": 23452,
+        "raw_sha256": "5cf580e18a9b3bafc39e23b05d4c9e76418faee4240f7c5909396b5e172ad923",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:ROUND_EVENT_COUNT",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-delete-first-domain-verified",
+        "pid": 7340,
+        "raw_sha256": "3fc96f272c4fb629ca2c43fdd9274dc78315033cf2a4fbd148f79f309d082c2a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TICKET_SEQUENCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-double-resource",
+        "pid": 25112,
+        "raw_sha256": "6cfb10b51e5df1c1104598a0719588a52230ac374d49f7786a366bedb3117a4a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-parse-before-shape",
+        "pid": 25240,
+        "raw_sha256": "5d96440f81a987691e6bbd9d3278b68ff9d24ae67b76694e26663e6de8b9e0ae",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-cap-config-java-http-4",
+        "pid": 26160,
+        "raw_sha256": "ee0b2108bf33e618474de9faf1b04be4530578a0a3af6407c94fbb4224ad90f9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-cap-config-java-http-5",
+        "pid": 34448,
+        "raw_sha256": "d6f565d7a7a372b4d5b9c6c4bde0c7a7dadf85d391954def87a34f976e473b51",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-cap-order-sqlite-3",
+        "pid": 25076,
+        "raw_sha256": "af6c23ca034035274b287336ea6b727dd3fd93b6555f053bf4f76d618ed92345",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-cap-order-sqlite-4",
+        "pid": 33972,
+        "raw_sha256": "9c552dbaee90ff27202bda7781b9bc7a9aaafafb3a0d0692a7727486f5d3937b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-version",
+        "pid": 18280,
+        "raw_sha256": "4f48ff439442447f4258264df7356ac53551f48325b643637fbabb4aca991af1",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-role",
+        "pid": 8212,
+        "raw_sha256": "43109490329aa1bc73741a252e322391baa89b59f21bab7cd53518019bf57e16",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-domain",
+        "pid": 34384,
+        "raw_sha256": "f602473446818acac378e2feb421e5d4ad023866a1ca394f747d9afeb55e4982",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-round",
+        "pid": 32752,
+        "raw_sha256": "8900bd5d055d8ce587176399d206e70c3c372fd627aaddbda8369f6a8456d501",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-ordinal",
+        "pid": 28584,
+        "raw_sha256": "449b43ecdafec2665351f64ba7150267f2e7e5a660f9ea91e54351185b3a5fed",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-reachable_tokens",
+        "pid": 1012,
+        "raw_sha256": "866b71c4883946c441a4f55d8328319500b6c39ba1f107a7d43c49e91e3599b0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-reanchored-scope-global_tokens",
+        "pid": 32092,
+        "raw_sha256": "929986d192510275f517c650962beb7c88d2692627460441b807e23a38ef5ee3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-slot_contract_sha256",
+        "pid": 31612,
+        "raw_sha256": "565ab2fcce42725873dd9763842741ba083f4ecff8ec2add5d514994b24bb629",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-output_cap",
+        "pid": 3180,
+        "raw_sha256": "fad708c9294afe6125713d7447fe64fb155c047d6506dd5db6a69dfdd4787fdd",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_STAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-stage",
+        "pid": 31348,
+        "raw_sha256": "329fb83d74e5438c9c5e8d7daa6341777fae869088e020c92c78fe0109335d3c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-input_upper",
+        "pid": 25940,
+        "raw_sha256": "8ab3fb35a6324af05308cef7555eecc1db6b40e9dd1a9aaba2a1c70e08a33c45",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-previous_prompt",
+        "pid": 10372,
+        "raw_sha256": "b441b793f37b68e5bfa7794dcfcc8b7f4d7b38ed4d2e8b35b55e894894b97730",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SLOT_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-request_sha256",
+        "pid": 11016,
+        "raw_sha256": "408850229ec905ba04260d2b10dd30c13cc8aa0c430dda05daf59edfe10a2ab7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-framing_guard",
+        "pid": 27852,
+        "raw_sha256": "76e341b282b65ce846cc9e540ca29c20b2f265479a8f31aa116a19edbf66db99",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TOOL_REINJECTION",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-proof-tool_returns",
+        "pid": 1968,
+        "raw_sha256": "24ee4a7e994b9f5076d86c404e095e24e2ab181d109903e50145dd9b21032ace",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-context-reachable_tokens",
+        "pid": 32412,
+        "raw_sha256": "1f44ed245b12411cdb5f25e5d4062734df531ab41290a6d9c2ad475b53549d5e",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-context-global_tokens",
+        "pid": 7912,
+        "raw_sha256": "9be7057751a2acc184c9bbee26ea31d40b7260faa0bd2f3bd76445bcbde9b5aa",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "v2-context-budget_version",
+        "pid": 33420,
+        "raw_sha256": "c26fe1b152697193d936bd341a27b46b3a87180b3a6333993bd16040aeb9ce69",
+        "stderr_empty": true
+      }
+    ],
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "status": "PASS"
+  },
+  "new_budget_special_controls": 22,
+  "ordinary_candidate_pairings": 4,
+  "ordinary_sdk_target_processes": 8,
+  "ordinary_business_source": "REAL_CONTROLLED_JAVA_H2_AND_SQLITE",
+  "model_source": "SYNTHETIC_TEST_ONLY",
+  "terminal_stage_positive": {
+    "claim": "STAGE_LOCAL_MAX_IDS_CONTENT_FULL_RECEIPTS_NOT_ALL_LEGAL_COMBINATIONS",
+    "counts": {
+      "authority_read": 5,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 9,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "provider": 0,
+    "rows": [
+      {
+        "business_sha256": "72ecdc35fe2f442addc13a89fde65ebbc73c1b18e7b86c1e24e5793e334547cb",
+        "cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true
+        },
+        "domain": "config-java-http",
+        "explorer_request": {
+          "input_upper": 791,
+          "messages_sha256": "1528b01bc9f50960a890e06d92d7905a2af132c0acf3ecaafc7ca38898a1781a",
+          "ordinal": 1,
+          "output_cap": 128,
+          "prior_feedback_sha256": null,
+          "prior_tool_call_id": null,
+          "request_sha256": "e987aff20289b18fe8205a40a682e35fdabdf44f3befc1c957e843bd1e960efb",
+          "slot_cap": 2500,
+          "slot_contract_sha256": "6042a29fe21d296c1ec53145b94e74ce499ad63abed2329fad63462c830c2383",
+          "slot_scope": {
+            "domain": "config-java-http",
+            "global_tokens": 35000,
+            "ordinal": 1,
+            "output_cap": 128,
+            "reachable_tokens": 34100,
+            "role": "EXPLORER",
+            "round": 1,
+            "slot_cap": 2500,
+            "version": "rpf68-slot-budget-v2"
+          }
+        },
+        "explorer_tool_id_bytes": 160,
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "requests": [
+          {
+            "canonical_bytes": 1516,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 0,
+            "input_upper": 1516,
+            "messages_sha256": "65c3574504ec50920b5f1b1723f8dc9ff21bfd2d815151c368f23fb64f780144",
+            "ordinal": 1,
+            "output_cap": 256,
+            "previous_prompt": null,
+            "request_sha256": "ee514f8fefec0c9705cdb10c855a6c83d475bbfdadc781628cffb5cb46665f3d",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "f55d0650d252e981781ee64325d18d4b138aadb62c23d328d09a5efaf2411d89",
+            "slot_cap": 3000,
+            "slot_contract_sha256": "5b8830dc058270764607dab07b4db6738c27baf3f1e3efa5419c2028eabb62ab",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 3000,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 0,
+            "tool_returns": []
+          },
+          {
+            "canonical_bytes": 2038,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 1465,
+            "messages_sha256": "025744b2ab18951ad74f8e189633eef120b5cb261302acc1138048130b902206",
+            "ordinal": 2,
+            "output_cap": 256,
+            "previous_prompt": 430,
+            "request_sha256": "a38b1cc7ddf0abe5157ca59fb5c793349daa0668a06da66e2c1d77242af164b1",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "4ed389d22b4eaeb2cd11e44c1f1633e92cac6dae1f870b9adb5140f33ebe4c2b",
+            "slot_cap": 2400,
+            "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 2400,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 523,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 2625,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 1560,
+            "messages_sha256": "450ea99e6723ca1f23f70dac287ba3a2bcaa6bdfeb05e266754b981e1fe8b0f7",
+            "ordinal": 3,
+            "output_cap": 256,
+            "previous_prompt": 460,
+            "request_sha256": "1327ba8bfcecf23623c6aef351a60a969588c5e53253ec243e462baac37ababe",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "a178f78fd30c7748b1d32fb2f36d3430759ed2bbfd1ef623ab8b2128e33a57f9",
+            "slot_cap": 2400,
+            "slot_contract_sha256": "f6bb8a749e4539da5ad058c7c9064b3553ee25776f7ef6d28671b4ed5544273d",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 3,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 2400,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 588,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 3816,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 2194,
+            "messages_sha256": "f7c070972843226ee746cb3bc8afb50cba866539f1b7971ac66c5a4aadbbe028",
+            "ordinal": 4,
+            "output_cap": 512,
+            "previous_prompt": 490,
+            "request_sha256": "dbe158f50682df9b1aaa318d890dfa5a5a84b12078e92bd32c1cf490ba9d0337",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "3fa706316a44d6aca473bf0b01dcc2c946319e1904f21ebc62dadd8a65adba33",
+            "slot_cap": 4600,
+            "slot_contract_sha256": "092d0d0a8ef8c8f5b60d8fc2bf3f97e97edccb72c51be88548c17fd6a55d41fe",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 4600,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "READ_ONLY",
+            "suffix_bytes": 1192,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 4376,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 1593,
+            "messages_sha256": "618eff14aa15307e25e9c8074713f255edb5e3dd932acfb9800abf69e67f3b90",
+            "ordinal": 5,
+            "output_cap": 512,
+            "previous_prompt": 520,
+            "request_sha256": "1253559dc5c3cde925fd9cc607f9e697e8b5807e8bc43018300032aeae8494a0",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "3749c538bb42c0e5e60e6f93a566e1bf5ad6001120d948a003c296f868fced79",
+            "slot_cap": 4300,
+            "slot_contract_sha256": "cb2b2b81c3e5fd1567e6c9d7a292e4095000f6bbee75a4f201603b0b7de2b94b",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 5,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 4300,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "READ_ONLY",
+            "suffix_bytes": 561,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              },
+              {
+                "call_id": "fixture-1-4-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+              }
+            ]
+          }
+        ],
+        "sdk_cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "sdk_pid": 12472,
+        "sdk_report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 2450,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 100,
+          "pid": 12472,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 5,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 4,
+          "tool_calls": 4,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        }
+      },
+      {
+        "business_sha256": "50c0078912fd52e4d6ba3c5fd48ed9b57a07d049c4b61cd55989a49df49d97f2",
+        "cleanup": {
+          "connections_closed": true,
+          "database_retained": true,
+          "exclusive_lock_probe": true
+        },
+        "domain": "order-sqlite",
+        "explorer_request": {
+          "input_upper": 1983,
+          "messages_sha256": "ce9c3f4f998fc277181abffaa6bcc9054279b586800b1d42f3b3a7d63e79efc9",
+          "ordinal": 1,
+          "output_cap": 128,
+          "prior_feedback_sha256": "e6b46d63b5a83f45647deb255a140db86efa860ab7d9a14e105a996c546f7df6",
+          "prior_tool_call_id": "fixture-explorer-call-1xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "request_sha256": "bad84efd92b5a95c2e71b9c23e977b2faa93ad6477773ecd3c258a0366859e6a",
+          "slot_cap": 2500,
+          "slot_contract_sha256": "bcc32036f8cbdb445581c26acc21b037b85621c82e37a16229896716ac6dfb2b",
+          "slot_scope": {
+            "domain": "order-sqlite",
+            "global_tokens": 35000,
+            "ordinal": 1,
+            "output_cap": 128,
+            "reachable_tokens": 34100,
+            "role": "EXPLORER",
+            "round": 2,
+            "slot_cap": 2500,
+            "version": "rpf68-slot-budget-v2"
+          }
+        },
+        "explorer_tool_id_bytes": 160,
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "evidence_gaps": [],
+          "receipt_hash": "214f60c99deb1935b0925ca2bbfdffa567abb5c86f9a28746ca1b2779704395f",
+          "state_diff": {
+            "refunded_minor": {
+              "after": 2500,
+              "before": 0
+            },
+            "revision": {
+              "after": 1,
+              "before": 0
+            },
+            "status": {
+              "after": "REFUNDED",
+              "before": "PAID"
+            }
+          },
+          "verifier_id": "rpf41-order-effect-verifier",
+          "verifier_version": "1",
+          "violated_rules": []
+        },
+        "requests": [
+          {
+            "canonical_bytes": 1806,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 0,
+            "input_upper": 1806,
+            "messages_sha256": "9e8c0d1a36c13c0fc148119391f0c9ad5b71a9d29af66a533fac792fd653a7d9",
+            "ordinal": 1,
+            "output_cap": 256,
+            "previous_prompt": null,
+            "request_sha256": "fa719634d11af7705307e01b8a443492efef83eb02c16346f46a9b926e6172ff",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "5a17c54fe87f1afb8bd1ea111d9413ddeb489827735fee634a5af8e81d4beb99",
+            "slot_cap": 3000,
+            "slot_contract_sha256": "59e2c8862c4b4b500ba6f2292cb5516b56467f7a66e549ab69c2a1496509ba24",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 3000,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 0,
+            "tool_returns": []
+          },
+          {
+            "canonical_bytes": 2440,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 512,
+            "input_upper": 1577,
+            "messages_sha256": "b9d519bb82a3c1f13335ef316c812859c547479cd40991d4c2a98d07db7d1164",
+            "ordinal": 2,
+            "output_cap": 256,
+            "previous_prompt": 430,
+            "request_sha256": "0e423d3af74e5fefd017b74d4654e4029e97a4457e30431475c9ed4c4ee03126",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "7bb4e391c50dea80989206597cca4b52cb56ec89b64893a4384f4efb5dbc3f32",
+            "slot_cap": 2600,
+            "slot_contract_sha256": "e1b17be99723197a9ba05430287eafc09f560c06e33d71e623e1f68537115fa8",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 2600,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 635,
+            "tool_returns": [
+              {
+                "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0bbb4672ecb9ba821b720599a2467d96055935a52d2a51e80a0d79c46a96a63e"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 3256,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 512,
+            "input_upper": 1789,
+            "messages_sha256": "31dad7c186d17614951f6795d9e668511a85c1afc524b91ef7283ac6620c487c",
+            "ordinal": 3,
+            "output_cap": 512,
+            "previous_prompt": 460,
+            "request_sha256": "77a129c4a3b107306d0d8b9c5d1ed8025fdd1e7cf9f3f8b18fe90f4d0ea74bd7",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "734b1d7ebcea32efd9e74438621377c5d604af4396bee720c2c5bbb4bf321ebe",
+            "slot_cap": 2600,
+            "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 3,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 2600,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "READ_ONLY",
+            "suffix_bytes": 817,
+            "tool_returns": [
+              {
+                "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0bbb4672ecb9ba821b720599a2467d96055935a52d2a51e80a0d79c46a96a63e"
+              },
+              {
+                "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "d8631bc3c238e74f1b30d0c9f426bf7e095d7e9b53c4e9f68ecb860af5324b6a"
+              }
+            ]
+          },
+          {
+            "canonical_bytes": 4629,
+            "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+            "framing_guard": 512,
+            "input_upper": 2376,
+            "messages_sha256": "44738f4dfed82543827c4fb9208abc4d30a296fda160d946d4b009c9ebff6ac7",
+            "ordinal": 4,
+            "output_cap": 512,
+            "previous_prompt": 490,
+            "request_sha256": "fcf2e835aa3fee5af7b871cb3add6cdd3d79afac207a0218a545a3c5eeb55199",
+            "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+            "sdk_request_sha256": "fbaca43b093e3b32716d538bd61f0e0325203bab1759af39cdd9366cb1b81e8c",
+            "slot_cap": 4200,
+            "slot_contract_sha256": "567812a5f85209f68572a35ca94c41794e0f7f8073238acc05aee835b0b08643",
+            "slot_scope": {
+              "domain": "order-sqlite",
+              "global_tokens": 35000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 4200,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "POST_RECONCILE_TERMINAL",
+            "suffix_bytes": 1374,
+            "tool_returns": [
+              {
+                "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0bbb4672ecb9ba821b720599a2467d96055935a52d2a51e80a0d79c46a96a63e"
+              },
+              {
+                "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "d8631bc3c238e74f1b30d0c9f426bf7e095d7e9b53c4e9f68ecb860af5324b6a"
+              },
+              {
+                "call_id": "fixture-2-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "b635a42241a67e86d5940101f9590f7d4a49e42de723bfb2f41a645ac572ca1b"
+              }
+            ]
+          }
+        ],
+        "sdk_cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "sdk_pid": 23356,
+        "sdk_report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 1900,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 80,
+          "pid": 23356,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 4,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 3,
+          "tool_calls": 3,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        }
+      }
+    ],
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "status": "PASS",
+    "witness_sha256": "d57ea780bab07537590e45b02c29cf5cce7b8d9e2ce1ee7eb6ca2249501abd6e",
+    "workspace": ".local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+  },
+  "max_envelope": {
+    "cases": [
+      {
+        "blocked": true,
+        "cleanup": [
+          {
+            "clock": 49720872287500,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 5068,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-80885cfe1f441a14",
+            "thread_gone": true
+          },
+          {
+            "clock": 49723035589200,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 14824,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-80885cfe1f441a14"
+          },
+          {
+            "clock": 49731246968500,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 13928,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-80885cfe1f441a14",
+            "thread_gone": true
+          }
+        ],
+        "counts": {
+          "authority_read": 4,
+          "cold": 0,
+          "config_health": 1,
+          "config_http": 9,
+          "config_post": 2,
+          "explorer_calls": 2,
+          "host": 2,
+          "jvm": 1,
+          "metadata": 0,
+          "provider": 0,
+          "sdk": 2,
+          "session": 1,
+          "sqlite_refund": 1,
+          "sqlite_setup": 1,
+          "trial": 2
+        },
+        "elapsed_seconds": 38.855,
+        "error": {
+          "code": "SDK_PROCESS_REPORT",
+          "type": "ValueError"
+        },
+        "mode": "legacy-commit-mixed",
+        "pre_send": [
+          {
+            "clock": 49730447714900,
+            "cold": false,
+            "domain": "order-sqlite",
+            "kind": "PRE_SEND_REJECTED",
+            "receipt": {
+              "network_sent": false,
+              "provider_reserved": false,
+              "reason": "INPUT_BOUND",
+              "request": {
+                "canonical_bytes": 3766,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 2299,
+                "messages_sha256": "b3860bf3bf766e237912cf4c50317433c8a620df9939fd631f6a567a6a0a8727",
+                "ordinal": 3,
+                "output_cap": 512,
+                "previous_prompt": 460,
+                "request_sha256": "b26873437215399d16679fbcb14fea7d918137f2db682a0f10c04b08065b8fc2",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "16d342c40f69f4abe77d35e8655fc851ea681ecd852f8c538ff828528baeae5f",
+                "slot_cap": 2600,
+                "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 35000,
+                  "ordinal": 3,
+                  "output_cap": 512,
+                  "reachable_tokens": 34100,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 2600,
+                  "version": "rpf68-slot-budget-v2"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 1327,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "result_sha256": "04821cafc27274262e42402d9e03d45bfa8108c755a544a4178487f97878803c"
+                  },
+                  {
+                    "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "result_sha256": "6f65f53ae7e0e5badcd3818772312234145da0f9d363a75141e174034e667500"
+                  }
+                ]
+              },
+              "scope": {
+                "cold": false,
+                "domain": "order-sqlite",
+                "role": "TARGET",
+                "round": 2
+              }
+            },
+            "receipt_id": "2-target-3-reject",
+            "receipt_sha256": "60ab10b5a094bf17bc93fcdf092f74ca629ff0dac882c01586d46aa7f216fafb",
+            "role": "TARGET",
+            "round": 2,
+            "session_id": "rpf68r2-80885cfe1f441a14"
+          }
+        ],
+        "previous_usage": "SYNTHETIC_STRICTLY_PARSED_HINT_NOT_REAL_PROVIDER_MEASUREMENT",
+        "provider_key_read": false,
+        "requests": [
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 1516,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 0,
+              "input_upper": 1516,
+              "messages_sha256": "50e470d9abf9b18ba4ec89243fb861188ce2cba12849310eb4aa7e8e6cbf8735",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "58278d6104f995227eeb7c589a2cc662788cdf6dca95dad90602dea8c1a913b0",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "4215028b053ffbb084af947cb0e5d82c5ca52301ebd084751e2b3eba8d1fac95",
+              "slot_cap": 3000,
+              "slot_contract_sha256": "5b8830dc058270764607dab07b4db6738c27baf3f1e3efa5419c2028eabb62ab",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 3000,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 2038,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 1465,
+              "messages_sha256": "244d8d7a616ec0631ae0ff2ee75228823a17ea59ab8e7d69c313d65f5071dd8e",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 430,
+              "request_sha256": "72c45d8d4870b0cea9734ba46495985ef90d2a30704a640c12027bd04b18c3af",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "d4d41d62856f886a4265e3ff2f68e258042fd11107f0d6098809d6667c39c032",
+              "slot_cap": 2400,
+              "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 2400,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 523,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 2625,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 1560,
+              "messages_sha256": "dc4e8ce163c8d0a75862157205b56a54d8a4fd9e4ddfa68046f16be50980a3d2",
+              "ordinal": 3,
+              "output_cap": 256,
+              "previous_prompt": 460,
+              "request_sha256": "9202431dd87341c8d5e5a1851e7104dada7b02a91bb58b97eb03d2506b20f907",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "6f0ac5c34acc92d0818ea2a30775ddd90cb0c27a93d3030c6ebbd5e395f2efc8",
+              "slot_cap": 2400,
+              "slot_contract_sha256": "f6bb8a749e4539da5ad058c7c9064b3553ee25776f7ef6d28671b4ed5544273d",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 3,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 2400,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 588,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                },
+                {
+                  "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 3816,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 2194,
+              "messages_sha256": "182c53d293d3aeb63009964510715e8c93c2ae6bb2e8ff5f1e63a1bff6708422",
+              "ordinal": 4,
+              "output_cap": 512,
+              "previous_prompt": 490,
+              "request_sha256": "606ba07a9d6e1c3a4970c90d0e91ec2e6c15bc544e0d1f858bff2e87a61568c7",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "580f04831025f5d64edfc86f9837de7a2b970c4ff8b04fa84ad184fd733b4d14",
+              "slot_cap": 4600,
+              "slot_contract_sha256": "092d0d0a8ef8c8f5b60d8fc2bf3f97e97edccb72c51be88548c17fd6a55d41fe",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 4,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 4600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1192,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                },
+                {
+                  "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                },
+                {
+                  "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 4376,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 1593,
+              "messages_sha256": "bc5fd3270228ed6c4271d1d89860c837a6610e07133f81d272e8a98f824d645d",
+              "ordinal": 5,
+              "output_cap": 512,
+              "previous_prompt": 520,
+              "request_sha256": "a0e6605552f5ebbe0b22d6204cddaecee40f70e82d587ea4f1719a24c900acf6",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "f68d1a91b15c30d0aecb46a429b9f8a9c3faefe905d0b6f71580d0db6744c51c",
+              "slot_cap": 4300,
+              "slot_contract_sha256": "cb2b2b81c3e5fd1567e6c9d7a292e4095000f6bbee75a4f201603b0b7de2b94b",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 5,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 4300,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 561,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                },
+                {
+                  "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                },
+                {
+                  "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+                },
+                {
+                  "call_id": "fixture-1-4-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "order-sqlite",
+            "request": {
+              "canonical_bytes": 1806,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 0,
+              "input_upper": 1806,
+              "messages_sha256": "d1e7e9e33f77211cc638904f612616c6ecbdd0054de4682bf19bfd3fa54ca797",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "18ff6a0b2719b266eb6b840eaf583f8144dd8d775679fd53a09754d58f075b22",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "8fef21eb17ff67485bd74ae6cee3f4f5ee1f06b33ee59e8cee04179e47ee4a35",
+              "slot_cap": 3000,
+              "slot_contract_sha256": "59e2c8862c4b4b500ba6f2292cb5516b56467f7a66e549ab69c2a1496509ba24",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 3000,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "round": 2
+          },
+          {
+            "domain": "order-sqlite",
+            "request": {
+              "canonical_bytes": 2440,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 1577,
+              "messages_sha256": "aae580a9dc267a693178fcc99397f804cf60f8fe5c4458fdf1b3cfe74828510f",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 430,
+              "request_sha256": "77508c3432a4211c4cefbd9471949f1912e7897b0a6c997d07d5328edfc3b588",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "7beede1c0d4e6164e53ce9b4ca96ffe654a384183fd0245c6f5c182f9885978d",
+              "slot_cap": 2600,
+              "slot_contract_sha256": "e1b17be99723197a9ba05430287eafc09f560c06e33d71e623e1f68537115fa8",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 2600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 635,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "04821cafc27274262e42402d9e03d45bfa8108c755a544a4178487f97878803c"
+                }
+              ]
+            },
+            "round": 2
+          },
+          {
+            "domain": "order-sqlite",
+            "request": {
+              "canonical_bytes": 3766,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 2299,
+              "messages_sha256": "b3860bf3bf766e237912cf4c50317433c8a620df9939fd631f6a567a6a0a8727",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_prompt": 460,
+              "request_sha256": "b26873437215399d16679fbcb14fea7d918137f2db682a0f10c04b08065b8fc2",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "16d342c40f69f4abe77d35e8655fc851ea681ecd852f8c538ff828528baeae5f",
+              "slot_cap": 2600,
+              "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 3,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 2600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1327,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "04821cafc27274262e42402d9e03d45bfa8108c755a544a4178487f97878803c"
+                },
+                {
+                  "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6f65f53ae7e0e5badcd3818772312234145da0f9d363a75141e174034e667500"
+                }
+              ]
+            },
+            "round": 2
+          }
+        ],
+        "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "FAIL",
+        "unknown": false,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "blocked": true,
+        "cleanup": [
+          {
+            "clock": 49762099622100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 33824,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2",
+            "thread_gone": true
+          },
+          {
+            "clock": 49764171333700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 7364,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2"
+          },
+          {
+            "clock": 49772077060100,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34628,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2",
+            "thread_gone": true
+          }
+        ],
+        "counts": {
+          "authority_read": 4,
+          "cold": 0,
+          "config_health": 1,
+          "config_http": 9,
+          "config_post": 2,
+          "explorer_calls": 2,
+          "host": 2,
+          "jvm": 1,
+          "metadata": 0,
+          "provider": 0,
+          "sdk": 2,
+          "session": 1,
+          "sqlite_refund": 1,
+          "sqlite_setup": 1,
+          "trial": 2
+        },
+        "elapsed_seconds": 39.15,
+        "error": {
+          "code": "SDK_PROCESS_REPORT",
+          "type": "ValueError"
+        },
+        "mode": "every-tool-mixed",
+        "pre_send": [
+          {
+            "clock": 49771296967100,
+            "cold": false,
+            "domain": "order-sqlite",
+            "kind": "PRE_SEND_REJECTED",
+            "receipt": {
+              "network_sent": false,
+              "provider_reserved": false,
+              "reason": "INPUT_BOUND",
+              "request": {
+                "canonical_bytes": 4276,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 2299,
+                "messages_sha256": "e63619bc0d11ca37c2ccb8a08e09e3a76e474fd8b0e08f53ff78225fa6a877c2",
+                "ordinal": 3,
+                "output_cap": 512,
+                "previous_prompt": 460,
+                "request_sha256": "cba892ae922d34bb3e830c6872d4f78073a158ef4d9f8ebf424efed5978c4425",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "72f4e476ed5f65a08394fd73575f1683aa68a1db7a68410bdc4798d93c4da5b4",
+                "slot_cap": 2600,
+                "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 35000,
+                  "ordinal": 3,
+                  "output_cap": 512,
+                  "reachable_tokens": 34100,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 2600,
+                  "version": "rpf68-slot-budget-v2"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 1327,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "result_sha256": "ad91c3b9a304ca6357efb130963359308f3ffbca5eb34f1c708bc96b4f02bb23"
+                  },
+                  {
+                    "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "result_sha256": "ab1e4e2ac5366b59b18e271a227f71c710fe9e406ed986631cb5363aef8f780f"
+                  }
+                ]
+              },
+              "scope": {
+                "cold": false,
+                "domain": "order-sqlite",
+                "role": "TARGET",
+                "round": 2
+              }
+            },
+            "receipt_id": "2-target-3-reject",
+            "receipt_sha256": "00694aec862e2afa484a7bb634264880b10888280b3c677c375e6568c6b6644a",
+            "role": "TARGET",
+            "round": 2,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2"
+          }
+        ],
+        "previous_usage": "SYNTHETIC_STRICTLY_PARSED_HINT_NOT_REAL_PROVIDER_MEASUREMENT",
+        "provider_key_read": false,
+        "requests": [
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 1516,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 0,
+              "input_upper": 1516,
+              "messages_sha256": "e038b6fa37301c18138709e8cac7502e206ccc11a4478055d64e697f873211d4",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "9c20cdc8e20257124c2268d3836f8a31d3c3e637c1da325fe0c3d180ef67b035",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "67b930880a87ceec931657799512a1d9a7081b7a06152ca327ee12f28a047464",
+              "slot_cap": 3000,
+              "slot_contract_sha256": "5b8830dc058270764607dab07b4db6738c27baf3f1e3efa5419c2028eabb62ab",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 3000,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 2548,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 1975,
+              "messages_sha256": "ba1f9d39d9053d728efd21bbce00f7cf0fe8ef454196135783f8f6947606715b",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 430,
+              "request_sha256": "ad7cda2a21b50b19e6173e12eac0a8dbb9b8a0422a4eddca01e79207d2b25555",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "05ca7d44273f12659264e1dcdaf8fa538560916607073d7605c3fa67ff626b93",
+              "slot_cap": 2400,
+              "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 2400,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 1033,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 3645,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 2070,
+              "messages_sha256": "6315e2dfca4cb7810e6512e3fdd5216d6dd7504839d54b3484d66c01309250f2",
+              "ordinal": 3,
+              "output_cap": 256,
+              "previous_prompt": 460,
+              "request_sha256": "d7861b4f084883e1dde1c3a3dec54d7168026b5bac2ac89d672b29b5b8e15f20",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "11321b7d8c56da360ca15d6fdd8710bf1782cd60167e60fe151e492f1907698c",
+              "slot_cap": 2400,
+              "slot_contract_sha256": "f6bb8a749e4539da5ad058c7c9064b3553ee25776f7ef6d28671b4ed5544273d",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 3,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 2400,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 1098,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                },
+                {
+                  "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 4836,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 2194,
+              "messages_sha256": "7593e41e3ca84c877a581190d73597c15b225d4118982aa9646855f69f96f2c2",
+              "ordinal": 4,
+              "output_cap": 512,
+              "previous_prompt": 490,
+              "request_sha256": "c95399e55cb89e5441f26be7e192239133eb833dd539336a52635bc9248ccb4d",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "27a7299ae252e991d18dceca99c4b1e8c3de2d7e546d4edb2dbef6425cc9b523",
+              "slot_cap": 4600,
+              "slot_contract_sha256": "092d0d0a8ef8c8f5b60d8fc2bf3f97e97edccb72c51be88548c17fd6a55d41fe",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 4,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 4600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1192,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                },
+                {
+                  "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                },
+                {
+                  "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 5906,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 2103,
+              "messages_sha256": "b67fe725cc203a4ef63a610e90284ba348ace5f0371a6dd6832ec4f7fdc048f4",
+              "ordinal": 5,
+              "output_cap": 512,
+              "previous_prompt": 520,
+              "request_sha256": "ca39ec98c296afa1dfea08f4c2f0fdc7638d2ab0b7bd0c310a185deabc91b916",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "836abf63f00bf4c2a4b8fd684c41ebc66b38e64f5a9e9f98ef4679b3666e1365",
+              "slot_cap": 4300,
+              "slot_contract_sha256": "cb2b2b81c3e5fd1567e6c9d7a292e4095000f6bbee75a4f201603b0b7de2b94b",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 5,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 4300,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1071,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                },
+                {
+                  "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                },
+                {
+                  "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+                },
+                {
+                  "call_id": "fixture-1-4-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+                }
+              ]
+            },
+            "round": 1
+          },
+          {
+            "domain": "order-sqlite",
+            "request": {
+              "canonical_bytes": 1806,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 0,
+              "input_upper": 1806,
+              "messages_sha256": "23e20cf67e089642486347b5ac53cfa78cc8df2f30b07d6f38f787609477217d",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "bf3f69e1a5013dc05492c94e87403a114a3c70be10864b409d40a1a016ffc098",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "d1880cdaa62f9e2b233896f121f4e7bba39bf8df80872476780396af17549802",
+              "slot_cap": 3000,
+              "slot_contract_sha256": "59e2c8862c4b4b500ba6f2292cb5516b56467f7a66e549ab69c2a1496509ba24",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 3000,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "round": 2
+          },
+          {
+            "domain": "order-sqlite",
+            "request": {
+              "canonical_bytes": 2950,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 2087,
+              "messages_sha256": "b24b3fc1642e52cb174a067e05773cb2371d085904a91d3fd14ecaebdd2123e3",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 430,
+              "request_sha256": "875085d0cde0910f062d3fbbe7710ece568739c25793d8fecd80d079817601f0",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "cc216222c97ce7a770caf3a655af9619380c0930343d1f5e727396784de996fd",
+              "slot_cap": 2600,
+              "slot_contract_sha256": "e1b17be99723197a9ba05430287eafc09f560c06e33d71e623e1f68537115fa8",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 2600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 1145,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "ad91c3b9a304ca6357efb130963359308f3ffbca5eb34f1c708bc96b4f02bb23"
+                }
+              ]
+            },
+            "round": 2
+          },
+          {
+            "domain": "order-sqlite",
+            "request": {
+              "canonical_bytes": 4276,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 2299,
+              "messages_sha256": "e63619bc0d11ca37c2ccb8a08e09e3a76e474fd8b0e08f53ff78225fa6a877c2",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_prompt": 460,
+              "request_sha256": "cba892ae922d34bb3e830c6872d4f78073a158ef4d9f8ebf424efed5978c4425",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "72f4e476ed5f65a08394fd73575f1683aa68a1db7a68410bdc4798d93c4da5b4",
+              "slot_cap": 2600,
+              "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 35000,
+                "ordinal": 3,
+                "output_cap": 512,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 2600,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 1327,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "ad91c3b9a304ca6357efb130963359308f3ffbca5eb34f1c708bc96b4f02bb23"
+                },
+                {
+                  "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "ab1e4e2ac5366b59b18e271a227f71c710fe9e406ed986631cb5363aef8f780f"
+                }
+              ]
+            },
+            "round": 2
+          }
+        ],
+        "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "FAIL",
+        "unknown": false,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "blocked": true,
+        "cleanup": [
+          {
+            "clock": 49802421693700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32740,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727",
+            "thread_gone": true
+          },
+          {
+            "clock": 49804356404600,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8264,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727"
+          }
+        ],
+        "counts": {
+          "authority_read": 2,
+          "cold": 0,
+          "config_health": 1,
+          "config_http": 6,
+          "config_post": 0,
+          "explorer_calls": 1,
+          "host": 1,
+          "jvm": 1,
+          "metadata": 0,
+          "provider": 0,
+          "sdk": 1,
+          "session": 1,
+          "sqlite_refund": 0,
+          "sqlite_setup": 0,
+          "trial": 1
+        },
+        "elapsed_seconds": 30.012,
+        "error": {
+          "code": "SDK_PROCESS_REPORT",
+          "type": "ValueError"
+        },
+        "mode": "trusted-upper-first",
+        "pre_send": [
+          {
+            "clock": 49801650911300,
+            "cold": false,
+            "domain": "config-java-http",
+            "kind": "PRE_SEND_REJECTED",
+            "receipt": {
+              "network_sent": false,
+              "provider_reserved": false,
+              "reason": "INPUT_BOUND",
+              "request": {
+                "canonical_bytes": 2548,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 3061,
+                "messages_sha256": "252ac95d7adabafa30a64c998099cda1ce20b0b8987727409980a7c8902a086c",
+                "ordinal": 2,
+                "output_cap": 256,
+                "previous_prompt": 1516,
+                "request_sha256": "f34752f0b0f1eeb716daea8f834f3e15d2cd40f3fb24ca0423882308becf1471",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "f25b54be709a397a1f8af3514a9fea2a23a861718cfc2a01f4c3ab5b5f9fb4fa",
+                "slot_cap": 2400,
+                "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 35000,
+                  "ordinal": 2,
+                  "output_cap": 256,
+                  "reachable_tokens": 34100,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 2400,
+                  "version": "rpf68-slot-budget-v2"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 1033,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  }
+                ]
+              },
+              "scope": {
+                "cold": false,
+                "domain": "config-java-http",
+                "role": "TARGET",
+                "round": 1
+              }
+            },
+            "receipt_id": "1-target-2-reject",
+            "receipt_sha256": "67a108cb3cc253e545ef2cb01570af4ec7304a8531597421c4d060567e9e6680",
+            "role": "TARGET",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727"
+          }
+        ],
+        "previous_usage": "SYNTHETIC_STRICTLY_PARSED_HINT_NOT_REAL_PROVIDER_MEASUREMENT",
+        "provider_key_read": false,
+        "requests": [
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 1516,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 0,
+              "input_upper": 1516,
+              "messages_sha256": "39b5a85f9607e014cbf234f20b18a20d8de7ff7a6c208bd7bbf344271e68e97b",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "51109a2b61ddaf388811b32c30253fa3eeae34bbff1d31886e0cbccf6a81a760",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "fbc8794203aa1d6b615445abd0a24856af2b3b79c82023c21f837ef275133093",
+              "slot_cap": 3000,
+              "slot_contract_sha256": "5b8830dc058270764607dab07b4db6738c27baf3f1e3efa5419c2028eabb62ab",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 3000,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "round": 1
+          },
+          {
+            "domain": "config-java-http",
+            "request": {
+              "canonical_bytes": 2548,
+              "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+              "framing_guard": 512,
+              "input_upper": 3061,
+              "messages_sha256": "252ac95d7adabafa30a64c998099cda1ce20b0b8987727409980a7c8902a086c",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 1516,
+              "request_sha256": "f34752f0b0f1eeb716daea8f834f3e15d2cd40f3fb24ca0423882308becf1471",
+              "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+              "sdk_request_sha256": "f25b54be709a397a1f8af3514a9fea2a23a861718cfc2a01f4c3ab5b5f9fb4fa",
+              "slot_cap": 2400,
+              "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+              "slot_scope": {
+                "domain": "config-java-http",
+                "global_tokens": 35000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 34100,
+                "role": "TARGET",
+                "round": 1,
+                "slot_cap": 2400,
+                "version": "rpf68-slot-budget-v2"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 1033,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                  "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                }
+              ]
+            },
+            "round": 1
+          }
+        ],
+        "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+        "source_kind": "SYNTHETIC_TEST_ONLY",
+        "status": "FAIL",
+        "unknown": false,
+        "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727"
+      }
+    ],
+    "coverage": "FINITE_ACTUAL_SDK_CASES_NOT_ABSOLUTE_WORST_CASE",
+    "old_counterexample": {
+      "calculation_only": true,
+      "new_config4": 4600,
+      "old_config4": 2400,
+      "required": 2706
+    },
+    "owner": "rpf-68-rev-2",
+    "provider": 0,
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "status": "FAIL"
+  },
+  "argument_envelope": {
+    "argument_bytes": 8192,
+    "argument_semantics": "UNMODIFIED_EXACT_ALLOWLIST_VALUE_WITH_VALID_JSON_WHITESPACE",
+    "blocked": true,
+    "cleanup": [
+      {
+        "clock": 50318372089200,
+        "cold": false,
+        "domain": "config-java-http",
+        "key_reference_released": true,
+        "kind": "PROCESS_CLEANUP",
+        "pid": 3152,
+        "port_closed": true,
+        "process_gone": true,
+        "resource": "sdk",
+        "round": 1,
+        "session_id": "rpf68r2-32f7250993fe6eb5",
+        "thread_gone": true
+      },
+      {
+        "clock": 50320425852700,
+        "domain": "config-java-http",
+        "key_reference_released": true,
+        "kind": "PROCESS_CLEANUP",
+        "pid": 34424,
+        "port_closed": true,
+        "process_gone": true,
+        "resource": "jvm",
+        "round": 1,
+        "session_id": "rpf68r2-32f7250993fe6eb5"
+      }
+    ],
+    "counts": {
+      "authority_read": 2,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 6,
+      "config_post": 0,
+      "explorer_calls": 1,
+      "host": 1,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 1,
+      "session": 1,
+      "sqlite_refund": 0,
+      "sqlite_setup": 0,
+      "trial": 1
+    },
+    "error": {
+      "code": "SDK_PROCESS_REPORT",
+      "type": "ValueError"
+    },
+    "pre_send": [
+      {
+        "clock": 50317622621900,
+        "cold": false,
+        "domain": "config-java-http",
+        "kind": "PRE_SEND_REJECTED",
+        "receipt": {
+          "network_sent": false,
+          "provider_reserved": false,
+          "reason": "INPUT_BOUND",
+          "request": {
+            "canonical_bytes": 9940,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 9367,
+            "messages_sha256": "62d24a2546b437095dde43fe868bf287335040d65a5c7574a111013f99d7d600",
+            "ordinal": 2,
+            "output_cap": 256,
+            "previous_prompt": 430,
+            "request_sha256": "f2a48b8f1b25c4e181d90031937fc47f8669afe6be5fb6c8e94d6cfa99ca4826",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "89d4281916dc99c569bf381ee2b69fd18cb1f0c61188678d6fc2bfa725077d42",
+            "slot_cap": 2400,
+            "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+            "slot_scope": {
+              "domain": "config-java-http",
+              "global_tokens": 35000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 34100,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 2400,
+              "version": "rpf68-slot-budget-v2"
+            },
+            "stage": "PRE_COMMIT",
+            "suffix_bytes": 8425,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-call-1",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              }
+            ]
+          },
+          "scope": {
+            "cold": false,
+            "domain": "config-java-http",
+            "role": "TARGET",
+            "round": 1
+          }
+        },
+        "receipt_id": "1-target-2-reject",
+        "receipt_sha256": "48a4ad8910d55fdb46027f116e5e592891e3a5c0688548e80ec2e4f40fd87c06",
+        "role": "TARGET",
+        "round": 1,
+        "session_id": "rpf68r2-32f7250993fe6eb5"
+      }
+    ],
+    "provider_key_read": false,
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "status": "FAIL",
+    "unknown": false,
+    "workspace": ".local/rpf-68-rev-2/tests/32f7250993fe6eb5"
+  },
+  "budget_component": {
+    "actual_provider_calls": 0,
+    "component_provider_ticket_count": 11,
+    "frames_sha256": "6f97078659f3c16f1b7d2bb407ff80077b5e66aaeb27b1ae7e54cacd14b7df2d",
+    "global_tokens": 35000,
+    "no_network": true,
+    "not_a_session_witness": true,
+    "old_30400_rejected": "BUDGET_CONTRACT",
+    "pid": 10088,
+    "reserved_tokens": 34100,
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "source_kind": "SYNTHETIC_BUDGET_COMPONENT_ONLY",
+    "spare_without_permission": 900,
+    "status": "PASS",
+    "workspace": ".local/rpf-68-rev-2/tests/6d69aaadc025d303"
+  },
+  "physical_receipt_component_controls": {
+    "authority_only_counter": 1,
+    "business_writes": 0,
+    "physical_evidence_retained": true,
+    "pid": 30724,
+    "provider_network": 0,
+    "rows": [
+      {
+        "case": "physical-duplicate-receipt",
+        "pass_expected": true,
+        "rejection": "FileExistsError"
+      },
+      {
+        "case": "copied-cross-session-physical-orphan",
+        "pass_expected": true,
+        "rejection": "TORN_RECEIPT"
+      },
+      {
+        "case": "reanchored-cross-session-receipt-frame",
+        "pass_expected": true,
+        "rejection": "WAL_SCOPE_TIME"
+      },
+      {
+        "case": "after-presend-provider",
+        "pass_expected": true,
+        "rejection": "STOP_WRITES_PROVIDER"
+      },
+      {
+        "case": "after-presend-sqlite_refund",
+        "pass_expected": true,
+        "rejection": "STOP_WRITES_PROVIDER"
+      },
+      {
+        "case": "after-presend-config_http",
+        "pass_expected": true,
+        "rejection": "STOP_WRITES_PROVIDER"
+      }
+    ],
+    "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+    "source_kind": "SYNTHETIC_COMPONENT_ONLY",
+    "status": "PASS"
+  },
+  "cleanup_second_readback": {
+    "failed_context_sdk_host_ports": "not persisted; original cleanup OS bind probe/thread/key release retained; no claim of an independent late connection probe for these ports",
+    "known_context_ports": [
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4722,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4723,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4724,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 6632,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 6633,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 6634,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 9972,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 9973,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 9974,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4863,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4864,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4865,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4455,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4456,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4457,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4459,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4460,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4461,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 3087,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 3088,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 3089,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 13852,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 13853,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 13854,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 12203,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 12204,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 12205,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 1293,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 1294,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 1295,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      }
+    ],
+    "mode": "READ_ONLY_NO_PROCESS_TERMINATION",
+    "observed_utc": "2026-10-23T17:29:08.349855+00:00",
+    "processes": [
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49804356404600,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8264,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727"
+          }
+        ],
+        "original_gone": true,
+        "pid": 8264,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49802421693700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32740,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 32740,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49723035589200,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 14824,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-80885cfe1f441a14"
+          }
+        ],
+        "original_gone": true,
+        "pid": 14824,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49720872287500,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 5068,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-80885cfe1f441a14",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 5068,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49731246968500,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 13928,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-80885cfe1f441a14",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 13928,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49764171333700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 7364,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2"
+          }
+        ],
+        "original_gone": true,
+        "pid": 7364,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49762099622100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 33824,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 33824,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49772077060100,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34628,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 34628,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49857298383400,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 3276,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-0b717e65cdae5ecd"
+          }
+        ],
+        "original_gone": true,
+        "pid": 3276,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49855327130700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 9832,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-0b717e65cdae5ecd",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 9832,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49865333759500,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 25936,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-0b717e65cdae5ecd",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 25936,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51135410167100,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32396,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-30b0fd2b4e9490aa"
+          }
+        ],
+        "original_gone": true,
+        "pid": 32396,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51133238498100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 19352,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-30b0fd2b4e9490aa",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 19352,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51145702497300,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 28856,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-30b0fd2b4e9490aa",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 28856,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50320425852700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34424,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-32f7250993fe6eb5"
+          }
+        ],
+        "original_gone": true,
+        "pid": 34424,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/32f7250993fe6eb5"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50318372089200,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 3152,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-32f7250993fe6eb5",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 3152,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/32f7250993fe6eb5"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49814777495600,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 23404,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-4c6d29f1229557fc"
+          }
+        ],
+        "original_gone": true,
+        "pid": 23404,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49812770367700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 6884,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-4c6d29f1229557fc",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 6884,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49824093809100,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 27508,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-4c6d29f1229557fc",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 27508,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49939914110900,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 12636,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-65eeaaf534bc7ec1"
+          }
+        ],
+        "original_gone": true,
+        "pid": 12636,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49937857265500,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8976,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-65eeaaf534bc7ec1",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 8976,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49948320715700,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 11016,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-65eeaaf534bc7ec1",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 11016,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49897401269800,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 19444,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-aff30ba1a74d8c13"
+          }
+        ],
+        "original_gone": true,
+        "pid": 19444,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49895401391100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 12920,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-aff30ba1a74d8c13",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 12920,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49906224608400,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 28008,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-aff30ba1a74d8c13",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 28008,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51092503193200,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32752,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-b7d89322bca4d130"
+          }
+        ],
+        "original_gone": true,
+        "pid": 32752,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51090257136200,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 21764,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-b7d89322bca4d130",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 21764,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51100989542900,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 6316,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-b7d89322bca4d130",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 6316,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51180515400700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34168,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-db08acd585de3161"
+          }
+        ],
+        "original_gone": true,
+        "pid": 34168,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51178347795400,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 11584,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-db08acd585de3161",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 11584,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51189443596800,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32444,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-db08acd585de3161",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 32444,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51049255707500,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 27740,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-ecbd73be81bfdb07"
+          }
+        ],
+        "original_gone": true,
+        "pid": 27740,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51047111774900,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 31548,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-ecbd73be81bfdb07",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 31548,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51059093009800,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34448,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-ecbd73be81bfdb07",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 34448,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50096574589800,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 9432,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-f3fd3b9123ea53d0"
+          }
+        ],
+        "original_gone": true,
+        "pid": 9432,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50094524931400,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 28476,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-f3fd3b9123ea53d0",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 28476,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50105935896600,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 14912,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-f3fd3b9123ea53d0",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 14912,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50105615247500,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8760,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-f4bdda7250d3bec6"
+          }
+        ],
+        "original_gone": true,
+        "pid": 8760,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50103505117300,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 12472,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-f4bdda7250d3bec6",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 12472,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50114864561400,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 23356,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-f4bdda7250d3bec6",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 23356,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      }
+    ],
+    "status": "PASS"
+  },
+  "historical_witness_count": 19,
+  "reviewed_public_checks": 2,
+  "additional_rpf67_original_witness": "PASS",
+  "windows_parent_312": "NOT_ESTABLISHED",
+  "hosted_ubuntu_312": "NOT_RUN",
+  "source_freeze": "NOT_RUN",
+  "delivery": {
+    "status": "NOT_RUN"
+  }
+}

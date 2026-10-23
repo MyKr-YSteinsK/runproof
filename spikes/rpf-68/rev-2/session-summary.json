@@ -1,0 +1,1427 @@
+{
+  "plan": "RPF-68",
+  "revision": "rev-2",
+  "status": "BLOCKED",
+  "base": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+  "branch": "codex/rpf-68-rev2-slot-budget-shared-session",
+  "owner": "rpf-68-rev-2",
+  "abi": "rpf68-shared-real-cross-domain-v2",
+  "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+  "formal_context": "NOT_CREATED",
+  "formal_wal": "NOT_CREATED",
+  "formal_metadata": "NOT_RUN",
+  "formal_cold": "NOT_RUN",
+  "formal_admission": "NOT_RUN",
+  "formal_session": "NOT_RUN",
+  "actual_provider_requests": 0,
+  "formal_reserved_tokens": 0,
+  "known_real_provider_tokens": 0,
+  "estimated_actual_provider_cost_micro_cny": 0,
+  "invoice": "NOT_QUERIED",
+  "provider_key_read": false,
+  "source_freeze": "NOT_RUN",
+  "real_witness": "ABSENT",
+  "real_witness_negatives": "NOT_RUN",
+  "synthetic_failure_cases": [
+    {
+      "mode": "legacy-commit-mixed",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "order-sqlite",
+      "round": 2,
+      "ordinal": 3,
+      "request": {
+        "canonical_bytes": 3766,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard": 512,
+        "input_upper": 2299,
+        "messages_sha256": "b3860bf3bf766e237912cf4c50317433c8a620df9939fd631f6a567a6a0a8727",
+        "ordinal": 3,
+        "output_cap": 512,
+        "previous_prompt": 460,
+        "request_sha256": "b26873437215399d16679fbcb14fea7d918137f2db682a0f10c04b08065b8fc2",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_request_sha256": "16d342c40f69f4abe77d35e8655fc851ea681ecd852f8c538ff828528baeae5f",
+        "slot_cap": 2600,
+        "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+        "slot_scope": {
+          "domain": "order-sqlite",
+          "global_tokens": 35000,
+          "ordinal": 3,
+          "output_cap": 512,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 2600,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "READ_ONLY",
+        "suffix_bytes": 1327,
+        "tool_returns": [
+          {
+            "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "04821cafc27274262e42402d9e03d45bfa8108c755a544a4178487f97878803c"
+          },
+          {
+            "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "6f65f53ae7e0e5badcd3818772312234145da0f9d363a75141e174034e667500"
+          }
+        ]
+      },
+      "receipt_sha256": "60ab10b5a094bf17bc93fcdf092f74ca629ff0dac882c01586d46aa7f216fafb",
+      "required": 2811,
+      "cap": 2600,
+      "excess": 211,
+      "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14",
+      "counts": {
+        "authority_read": 4,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 9,
+        "config_post": 2,
+        "explorer_calls": 2,
+        "host": 2,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 2,
+        "session": 1,
+        "sqlite_refund": 1,
+        "sqlite_setup": 1,
+        "trial": 2
+      },
+      "unknown": false,
+      "blocked": true
+    },
+    {
+      "mode": "every-tool-mixed",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "order-sqlite",
+      "round": 2,
+      "ordinal": 3,
+      "request": {
+        "canonical_bytes": 4276,
+        "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+        "framing_guard": 512,
+        "input_upper": 2299,
+        "messages_sha256": "e63619bc0d11ca37c2ccb8a08e09e3a76e474fd8b0e08f53ff78225fa6a877c2",
+        "ordinal": 3,
+        "output_cap": 512,
+        "previous_prompt": 460,
+        "request_sha256": "cba892ae922d34bb3e830c6872d4f78073a158ef4d9f8ebf424efed5978c4425",
+        "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+        "sdk_request_sha256": "72f4e476ed5f65a08394fd73575f1683aa68a1db7a68410bdc4798d93c4da5b4",
+        "slot_cap": 2600,
+        "slot_contract_sha256": "a2da81572b524d9e1d2788016975ece789ede48e6a3f5736946e3b89090af10a",
+        "slot_scope": {
+          "domain": "order-sqlite",
+          "global_tokens": 35000,
+          "ordinal": 3,
+          "output_cap": 512,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 2600,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "READ_ONLY",
+        "suffix_bytes": 1327,
+        "tool_returns": [
+          {
+            "call_id": "fixture-2-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "ad91c3b9a304ca6357efb130963359308f3ffbca5eb34f1c708bc96b4f02bb23"
+          },
+          {
+            "call_id": "fixture-2-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "ab1e4e2ac5366b59b18e271a227f71c710fe9e406ed986631cb5363aef8f780f"
+          }
+        ]
+      },
+      "receipt_sha256": "00694aec862e2afa484a7bb634264880b10888280b3c677c375e6568c6b6644a",
+      "required": 2811,
+      "cap": 2600,
+      "excess": 211,
+      "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2",
+      "counts": {
+        "authority_read": 4,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 9,
+        "config_post": 2,
+        "explorer_calls": 2,
+        "host": 2,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 2,
+        "session": 1,
+        "sqlite_refund": 1,
+        "sqlite_setup": 1,
+        "trial": 2
+      },
+      "unknown": false,
+      "blocked": true
+    },
+    {
+      "mode": "trusted-upper-first",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "config-java-http",
+      "round": 1,
+      "ordinal": 2,
+      "request": {
+        "canonical_bytes": 2548,
+        "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+        "framing_guard": 512,
+        "input_upper": 3061,
+        "messages_sha256": "252ac95d7adabafa30a64c998099cda1ce20b0b8987727409980a7c8902a086c",
+        "ordinal": 2,
+        "output_cap": 256,
+        "previous_prompt": 1516,
+        "request_sha256": "f34752f0b0f1eeb716daea8f834f3e15d2cd40f3fb24ca0423882308becf1471",
+        "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+        "sdk_request_sha256": "f25b54be709a397a1f8af3514a9fea2a23a861718cfc2a01f4c3ab5b5f9fb4fa",
+        "slot_cap": 2400,
+        "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+        "slot_scope": {
+          "domain": "config-java-http",
+          "global_tokens": 35000,
+          "ordinal": 2,
+          "output_cap": 256,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 2400,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "PRE_COMMIT",
+        "suffix_bytes": 1033,
+        "tool_returns": [
+          {
+            "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+          }
+        ]
+      },
+      "receipt_sha256": "67a108cb3cc253e545ef2cb01570af4ec7304a8531597421c4d060567e9e6680",
+      "required": 3317,
+      "cap": 2400,
+      "excess": 917,
+      "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727",
+      "counts": {
+        "authority_read": 2,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 6,
+        "config_post": 0,
+        "explorer_calls": 1,
+        "host": 1,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 1,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 1
+      },
+      "unknown": false,
+      "blocked": true
+    },
+    {
+      "mode": "8192-byte-valid-json-arguments",
+      "source_kind": "SYNTHETIC_TEST_ONLY",
+      "domain": "config-java-http",
+      "round": 1,
+      "ordinal": 2,
+      "request": {
+        "canonical_bytes": 9940,
+        "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+        "framing_guard": 512,
+        "input_upper": 9367,
+        "messages_sha256": "62d24a2546b437095dde43fe868bf287335040d65a5c7574a111013f99d7d600",
+        "ordinal": 2,
+        "output_cap": 256,
+        "previous_prompt": 430,
+        "request_sha256": "f2a48b8f1b25c4e181d90031937fc47f8669afe6be5fb6c8e94d6cfa99ca4826",
+        "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+        "sdk_request_sha256": "89d4281916dc99c569bf381ee2b69fd18cb1f0c61188678d6fc2bfa725077d42",
+        "slot_cap": 2400,
+        "slot_contract_sha256": "b1818a987e6a9d3660403b8862e0437e5aaa01ac0e32f14ed6fadd257cdb1462",
+        "slot_scope": {
+          "domain": "config-java-http",
+          "global_tokens": 35000,
+          "ordinal": 2,
+          "output_cap": 256,
+          "reachable_tokens": 34100,
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 2400,
+          "version": "rpf68-slot-budget-v2"
+        },
+        "stage": "PRE_COMMIT",
+        "suffix_bytes": 8425,
+        "tool_returns": [
+          {
+            "call_id": "fixture-1-call-1",
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+          }
+        ]
+      },
+      "receipt_sha256": "48a4ad8910d55fdb46027f116e5e592891e3a5c0688548e80ec2e4f40fd87c06",
+      "required": 9623,
+      "cap": 2400,
+      "excess": 7223,
+      "workspace": ".local/rpf-68-rev-2/tests/32f7250993fe6eb5",
+      "counts": {
+        "authority_read": 2,
+        "cold": 0,
+        "config_health": 1,
+        "config_http": 6,
+        "config_post": 0,
+        "explorer_calls": 1,
+        "host": 1,
+        "jvm": 1,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 1,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 1
+      },
+      "unknown": false,
+      "blocked": true
+    }
+  ],
+  "cleanup_second_readback": {
+    "failed_context_sdk_host_ports": "not persisted; original cleanup OS bind probe/thread/key release retained; no claim of an independent late connection probe for these ports",
+    "known_context_ports": [
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4722,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4723,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4724,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 6632,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 6633,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 6634,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 9972,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 9973,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 9974,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4863,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4864,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4865,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4455,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4456,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4457,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4459,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4460,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 4461,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 3087,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 3088,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 3089,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 13852,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 13853,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 13854,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 12203,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 12204,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 12205,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 1293,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 1294,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "late_loopback_connect": "CLOSED",
+        "original_process_gone": true,
+        "port": 1295,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      }
+    ],
+    "mode": "READ_ONLY_NO_PROCESS_TERMINATION",
+    "observed_utc": "2026-10-23T17:29:08.349855+00:00",
+    "processes": [
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49804356404600,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8264,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727"
+          }
+        ],
+        "original_gone": true,
+        "pid": 8264,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49802421693700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32740,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-7adbfc7dd5a96727",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 32740,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/7adbfc7dd5a96727"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49723035589200,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 14824,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-80885cfe1f441a14"
+          }
+        ],
+        "original_gone": true,
+        "pid": 14824,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49720872287500,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 5068,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-80885cfe1f441a14",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 5068,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49731246968500,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 13928,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-80885cfe1f441a14",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 13928,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/80885cfe1f441a14"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49764171333700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 7364,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2"
+          }
+        ],
+        "original_gone": true,
+        "pid": 7364,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49762099622100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 33824,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 33824,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49772077060100,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34628,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-a7facd9cc41a2cd2",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 34628,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/tests/a7facd9cc41a2cd2"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49857298383400,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 3276,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-0b717e65cdae5ecd"
+          }
+        ],
+        "original_gone": true,
+        "pid": 3276,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49855327130700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 9832,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-0b717e65cdae5ecd",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 9832,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49865333759500,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 25936,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-0b717e65cdae5ecd",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 25936,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/0b717e65cdae5ecd"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51135410167100,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32396,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-30b0fd2b4e9490aa"
+          }
+        ],
+        "original_gone": true,
+        "pid": 32396,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51133238498100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 19352,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-30b0fd2b4e9490aa",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 19352,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51145702497300,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 28856,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-30b0fd2b4e9490aa",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 28856,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/30b0fd2b4e9490aa"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50320425852700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34424,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-32f7250993fe6eb5"
+          }
+        ],
+        "original_gone": true,
+        "pid": 34424,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/32f7250993fe6eb5"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50318372089200,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 3152,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-32f7250993fe6eb5",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 3152,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/32f7250993fe6eb5"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49814777495600,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 23404,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-4c6d29f1229557fc"
+          }
+        ],
+        "original_gone": true,
+        "pid": 23404,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49812770367700,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 6884,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-4c6d29f1229557fc",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 6884,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49824093809100,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 27508,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-4c6d29f1229557fc",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 27508,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/4c6d29f1229557fc"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49939914110900,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 12636,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-65eeaaf534bc7ec1"
+          }
+        ],
+        "original_gone": true,
+        "pid": 12636,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49937857265500,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8976,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-65eeaaf534bc7ec1",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 8976,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49948320715700,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 11016,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-65eeaaf534bc7ec1",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 11016,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/65eeaaf534bc7ec1"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49897401269800,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 19444,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-aff30ba1a74d8c13"
+          }
+        ],
+        "original_gone": true,
+        "pid": 19444,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49895401391100,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 12920,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-aff30ba1a74d8c13",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 12920,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 49906224608400,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 28008,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-aff30ba1a74d8c13",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 28008,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/aff30ba1a74d8c13"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51092503193200,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32752,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-b7d89322bca4d130"
+          }
+        ],
+        "original_gone": true,
+        "pid": 32752,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51090257136200,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 21764,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-b7d89322bca4d130",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 21764,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51100989542900,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 6316,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-b7d89322bca4d130",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 6316,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/b7d89322bca4d130"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51180515400700,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34168,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-db08acd585de3161"
+          }
+        ],
+        "original_gone": true,
+        "pid": 34168,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51178347795400,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 11584,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-db08acd585de3161",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 11584,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51189443596800,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 32444,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-db08acd585de3161",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 32444,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/db08acd585de3161"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51049255707500,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 27740,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-ecbd73be81bfdb07"
+          }
+        ],
+        "original_gone": true,
+        "pid": 27740,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51047111774900,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 31548,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-ecbd73be81bfdb07",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 31548,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 51059093009800,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 34448,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-ecbd73be81bfdb07",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 34448,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/ecbd73be81bfdb07"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50096574589800,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 9432,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-f3fd3b9123ea53d0"
+          }
+        ],
+        "original_gone": true,
+        "pid": 9432,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50094524931400,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 28476,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-f3fd3b9123ea53d0",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 28476,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50105935896600,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 14912,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-f3fd3b9123ea53d0",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 14912,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f3fd3b9123ea53d0"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50105615247500,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 8760,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "jvm",
+            "round": 1,
+            "session_id": "rpf68r2-f4bdda7250d3bec6"
+          }
+        ],
+        "original_gone": true,
+        "pid": 8760,
+        "resource": "jvm",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50103505117300,
+            "cold": false,
+            "domain": "config-java-http",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 12472,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 1,
+            "session_id": "rpf68r2-f4bdda7250d3bec6",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 12472,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      },
+      {
+        "captured_cleanup": [
+          {
+            "clock": 50114864561400,
+            "cold": false,
+            "domain": "order-sqlite",
+            "key_reference_released": true,
+            "kind": "PROCESS_CLEANUP",
+            "pid": 23356,
+            "port_closed": true,
+            "process_gone": true,
+            "resource": "sdk",
+            "round": 2,
+            "session_id": "rpf68r2-f4bdda7250d3bec6",
+            "thread_gone": true
+          }
+        ],
+        "original_gone": true,
+        "pid": 23356,
+        "resource": "sdk",
+        "status": "NOT_PRESENT",
+        "winerror": 87,
+        "workspace": ".local/rpf-68-rev-2/snapshots/source-a9cf65b172/.local/rpf-68-rev-2/tests/f4bdda7250d3bec6"
+      }
+    ],
+    "status": "PASS"
+  },
+  "verdicts": {
+    "real_agent": "NOT_RUN",
+    "fixture_agent": "NOT_COMPLETED_IN_FAILING_CASES",
+    "platform": "PLATFORM_PRE_SEND_BUDGET",
+    "order_failure_oracle": "CONTRACT_SATISFIED_IN_RUN_WITHOUT_DOMAIN_VERIFIED",
+    "early_config_failure_oracle": "TARGET_V2_NOT_ESTABLISHED; 0POST; read-only observations retained",
+    "session_complete": "NOT_ESTABLISHED"
+  },
+  "tickets": "synthetic failed SDK/Host/Trial/Session tickets retained, not refunded or marked complete; no UNKNOWN Provider ticket because network not sent",
+  "L2": "NOT_ESTABLISHED"
+}

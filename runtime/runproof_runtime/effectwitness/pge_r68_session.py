@@ -44,11 +44,11 @@ class ColdPort(Port):
   if name=='inspect_order':return dict(order_id=args['order_id'],status='PAID',revision=0)
   return dict(status='COMMITTED',operation_id=args['operation_id'],receipt_id='receipt-'+'a'*24,committed_revision=1)
 def load():
- p=c.strict((c.ROOT/'.local/rpf-68/context.json').read_bytes());return c.Context(c.ROOT/p['workspace'],c.canonical(p))
+ p=c.strict((c.ROOT/'.local/rpf-68-rev-2/context.json').read_bytes());return c.Context(c.ROOT/p['workspace'],c.canonical(p))
 def freeze_check(ctx):
- f=c.strict((ctx.root/'source-freeze.json').read_bytes());g=c.strict((ctx.root/'free-gates.json').read_bytes());c.require(f['sources']==ctx.public()['sources']==c.sources() and g['source_digest']==ctx.public()['source_digest'] and g['status']=='PASS' and g['full']['exit']==0 and g['full']['errors']==g['full']['failures']==0 and g['synthetic_controls']>=90 and all(x['exit']==0 for x in g['anchors']) and len(g['anchors'])==21,'FREE_GATES');c.require(all(c.sha(ctx.scope(c.ROOT/name).read_bytes())==h for name,h in f['helpers'].items()),'FROZEN_HELPER_DRIFT');return f,g
+ f=c.strict((ctx.root/'source-freeze.json').read_bytes());g=c.strict((ctx.root/'free-gates.json').read_bytes());c.require(f['sources']==ctx.public()['sources']==c.sources() and g['source_digest']==ctx.public()['source_digest'] and g['status']=='PASS' and g['full']['exit']==0 and g['full']['errors']==g['full']['failures']==0 and g['synthetic_controls']>=130 and g['max_envelope']['status']=='PASS' and g['ordinary_candidates']==4 and g['reachable_tokens']==c.REACHABLE_TOKENS==34100 and all(x['exit']==0 for x in g['anchors']) and len(g['anchors'])==21,'FREE_GATES');c.require(all(c.sha(ctx.scope(c.ROOT/name).read_bytes())==h for name,h in f['helpers'].items()),'FROZEN_HELPER_DRIFT');return f,g
 def initialize():
- root=c.ROOT/'.local/rpf-68';c.require(not (root/'context.json').exists() and c.strict((root/'g0.json').read_bytes())['status']=='PASS','INIT_ONCE');ctx=c.make();freeze_check(ctx);ctx.once(root/'context.json',ctx.public());Ledger(ctx,create=True);copy_jar(ctx);return ctx
+ root=c.ROOT/'.local/rpf-68-rev-2';c.require(not (root/'context.json').exists() and c.strict((root/'g0.json').read_bytes())['status']=='PASS','INIT_ONCE');ctx=c.make();freeze_check(ctx);ctx.once(root/'context.json',ctx.public());Ledger(ctx,create=True);copy_jar(ctx);return ctx
 
 def metadata(ctx,l):
  from .pge_r67_context import metadata as fixed_sdk_metadata
@@ -67,3 +67,34 @@ def live(ctx,l):
  freeze_check(ctx);a=l.read();gate=c.strict((ctx.root/'paid-gate.json').read_bytes());c.require(gate['context_sha256']==c.digest(ctx.public()) and a['counts']['provider']==a['counts']['session']==0 and not a['unknown'] and not a['blocked'] and subprocess.check_output(['git','rev-parse','HEAD'],cwd=c.ROOT,text=True).strip()==c.BASE and subprocess.check_output(['git','branch','--show-current'],cwd=c.ROOT,text=True).strip()==c.BRANCH,'FRESH_LIVE');key=os.environ.get('DEEPSEEK_API_KEY');c.require(bool(key),'KEY_UNAVAILABLE')
  try:w=SharedSession(ctx,l).run(key=key);ctx.once(ctx.root/'accepted-witness.json',w);return w
  finally:key=None
+
+def max_envelope():
+ """Key-free actual SDK experiments. Any legal counterexample blocks admission."""
+ import copy,time
+ from unittest.mock import patch
+ from . import pge_r68_driver as d
+ rows=[];original=d.fixture_response;completion=d.Driver.completion
+ for mode in ('legacy-commit-mixed','every-tool-mixed','trusted-upper-first'):
+  ctx=c.make(synthetic=True);ctx.root.mkdir(parents=True);copy_jar(ctx);l=Ledger(ctx,create=True);active=[None];observations=[];started=time.monotonic();error=None
+  def observe(driver,body,port):
+   active[0]=driver
+   try:return completion(driver,body,port)
+   finally:
+    if hasattr(driver,'last_request'):observations.append(dict(domain=port.domain,round=driver.ct['experiment']['round'],request=copy.deepcopy(driver.last_request)))
+  def response(ct,n,call,**kw):
+   value=original(ct,n,call,**kw);index=ct['experiment']['round']
+   if call:
+    msg=value['choices'][0]['message'];msg['tool_calls'][0]['id']=(kw['prefix']+'-'+str(n)+'-').ljust(160,'x')
+    if mode!='legacy-commit-mixed' or n==(3 if index==1 else 2):msg['content']='x'*512
+   if mode=='trusted-upper-first' and n==1:
+    value['usage']['prompt_tokens']=active[0].last_request['input_upper'];value['usage']['total_tokens']=value['usage']['prompt_tokens']+value['usage']['completion_tokens']
+   return value
+  try:
+   with patch.object(d.Driver,'completion',observe),patch.object(d,'fixture_response',response):
+    witness=SharedSession(ctx,l).run(candidates=(c.CANDIDATES[0][1],c.CANDIDATES[1][1]));ctx.once(ctx.root/'synthetic-witness.json',witness)
+  except Exception as exc:error=dict(type=type(exc).__name__,code=str(exc) if type(exc) is ValueError else 'REDACTED')
+  state=l.read();row=dict(mode=mode,status='FAIL' if error else 'PASS',source_kind=c.SYNTHETIC,source_digest=ctx.public()['source_digest'],workspace=ctx.public()['workspace'],elapsed_seconds=round(time.monotonic()-started,3),error=error,requests=observations,pre_send=[e for e in state['events'] if e['kind']=='PRE_SEND_REJECTED'],counts=state['counts'],unknown=state['unknown'],blocked=state['blocked'],cleanup=[e for e in state['events'] if e['kind']=='PROCESS_CLEANUP'],previous_usage='SYNTHETIC_STRICTLY_PARSED_HINT_NOT_REAL_PROVIDER_MEASUREMENT',provider_key_read=False);ctx.once(ctx.root/'envelope-case.json',row);rows.append(row)
+ result=dict(owner=c.OWNER,status='PASS' if all(r['status']=='PASS' for r in rows) else 'FAIL',source_digest=rows[0]['source_digest'],cases=rows,old_counterexample=dict(required=2706,old_config4=2400,new_config4=4600,calculation_only=True),coverage='FINITE_ACTUAL_SDK_CASES_NOT_ABSOLUTE_WORST_CASE',provider=0)
+ root=c.ROOT/'.local/rpf-68-rev-2/tests';path=root/('max-envelope-'+secrets.token_hex(8)+'.json')
+ with path.open('xb') as f:f.write(c.canonical(result));f.flush();os.fsync(f.fileno())
+ return result

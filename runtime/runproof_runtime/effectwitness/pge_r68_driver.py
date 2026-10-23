@@ -44,7 +44,8 @@ def require_admission(ctx,l):
 def exchange(ctx,l,ct,role,ordinal,body,proof,*,fixture=None,key=None,cold=False):
  if fixture is None:require_admission(ctx,l);c.require(type(key) is str and bool(key),'KEY_UNAVAILABLE')
  domain=ct['experiment']['domain'];index=ct['experiment']['round'];scope=dict(domain=domain,round=index,role=role,cold=cold);receiptid=('cold-' if cold else '')+str(index)+'-'+role.lower()+'-'+str(ordinal)
- if proof['input_upper']+proof['output_cap']>proof['slot_cap']:
+ c.require(ordinal==proof['ordinal'] and proof['request_sha256']==c.digest(body),'REQUEST_IDENTITY');proof['slot_scope']=c.slot_scope(domain,index,role,ordinal);proof['slot_contract_sha256']=c.digest(proof['slot_scope'])
+ if not validate_request(ct,role,proof):
   l.receipt('PRE_SEND_REJECTED',receiptid+'-reject',dict(scope=scope,request=proof,reason='INPUT_BOUND',provider_reserved=False,network_sent=False),**scope);raise ValueError('PLATFORM_PRE_SEND_BUDGET')
  ticket=None
  if fixture is None:ticket=l.reserve('provider',**scope,request=proof)
@@ -60,6 +61,9 @@ def exchange(ctx,l,ct,role,ordinal,body,proof,*,fixture=None,key=None,cold=False
  except BaseException:
   if ticket and ticket not in l.read()['results']:l.settle(ticket,status='UNKNOWN')
   raise
+
+def validate_request(ct,role,proof):
+ return c.validate_slot(proof,ct['experiment']['domain'],ct['experiment']['round'],role)
 
 def fixture_response(ct,n,call,*,prefix='fixture'):
  tool=None
@@ -77,6 +81,7 @@ class Driver:
   for a,b,t in zip(calls,returns,port.trace):c.require(a['id']==b['tool_call_id']==t['call_id'] and a['function']['name']==t['name'] and c.strict(a['function']['arguments'])==t['arguments'] and b['content'].encode()==c.canonical(t['result']),'ORIGINAL_TOOL_RETURN')
   n=len(self.rows)+1;cap=512 if len(port.trace)>=len(port.expected()) else 256;cap=512 if domain==c.DOMAINS[1] and len(port.trace)>=2 else cap;slots=c.CAPS[domain];c.require(n<=len(slots),'NORMAL_PROTOCOL_EXHAUSTED');out=copy.deepcopy(body);out.pop('max_completion_tokens',None);out.update(max_tokens=cap,thinking=dict(type='disabled'));previous=self.rows[-1]['response']['usage']['prompt_tokens'] if self.rows else None;sb=len(c.canonical(suffix)) if self.rows else 0;upper=len(c.canonical(out)) if previous is None else previous+sb+512
   q=dict(ordinal=n,request_sha256=c.digest(out),sdk_request_sha256=c.digest(body),configuration_sha256=c.digest(config),messages_sha256=c.digest(messages),schema_sha256=c.digest(tools),canonical_bytes=len(c.canonical(out)),previous_prompt=previous,suffix_bytes=sb,framing_guard=512 if previous is not None else 0,input_upper=upper,output_cap=cap,slot_cap=slots[n-1],tool_returns=[dict(call_id=t['call_id'],result_sha256=t['result_sha256']) for t in port.trace],stage='POST_RECONCILE_TERMINAL' if domain==c.DOMAINS[1] and len(port.trace)==3 else 'READ_ONLY' if cap==512 else 'PRE_COMMIT')
+  self.last_request=q
   scripted=None
   if self.fixture:
    seq=port.expected()+([c.TOOLS[domain][0 if domain==c.DOMAINS[0] else 2]] if self.ct['experiment']['fault_enabled'] else []);scripted=fixture_response(self.ct,n,seq[n-1] if n<=len(seq) else None,prefix=('cold' if self.cold else 'fixture')+'-'+str(self.ct['experiment']['round']))

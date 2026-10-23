@@ -1,0 +1,31 @@
+{
+  "plan": "RPF-68",
+  "revision": "rev-2",
+  "status": "BLOCKED",
+  "base": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+  "branch": "codex/rpf-68-rev2-slot-budget-shared-session",
+  "owner": "rpf-68-rev-2",
+  "abi": "rpf68-shared-real-cross-domain-v2",
+  "source_digest": "f98569823a6608314d8c001e9d3e311091c283e721052605adf0eea6c7825593",
+  "CURRENT_STATE": {
+    "budget_v2": "IMPLEMENTED_AND_COMPONENT_VERIFIED",
+    "shared_context_wal": "SYNTHETIC_VERIFIED",
+    "ordinary_four_pairings": "REAL_FIXED_SDK_AND_CONTROLLED_BUSINESS_WITH_FIXTURE_MODEL",
+    "stage_local_maximum_ids_and_terminal_receipts": "PASS",
+    "all_legal_envelope": "FAIL",
+    "provider_shared_session": "NOT_RUN",
+    "explorer2_feedback": "FULL_ACTUAL_REQUEST_WITH_FIXTURE_MODEL_AND_160_BYTE_TOOL_ID_VERIFIED"
+  },
+  "TARGET_INTENT": "one actual Provider Explorer/ConfigTarget/feedback/Explorer/OrderTarget shared Session/Witness",
+  "agent_verdict": "REAL_AGENT_NOT_RUN",
+  "platform_verdict": "PRE_SEND_INPUT_BOUND",
+  "oracle_verdict": "CASE_SPECIFIC_READBACK; NOT_SESSION_SUCCESS",
+  "L2": "NOT_ESTABLISHED",
+  "causality": "NOT_PROVEN",
+  "external_third_domain": "NOT_PROVEN",
+  "production_web": "NOT_INTEGRATED",
+  "issuer": "NOT_ESTABLISHED",
+  "main_merge": "NOT_RUN",
+  "deploy_release": "NOT_RUN",
+  "review_authority": "ARCHITECT_REVIEW_REQUIRED"
+}

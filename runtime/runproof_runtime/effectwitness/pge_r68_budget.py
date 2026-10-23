@@ -3,6 +3,7 @@ import os,time,copy,re
 from . import pge_r68_context as c
 KINDS={'OWNER','RESERVE','RESULT','MODEL_REQUEST','SHAPE','PARSED','MODEL_RESPONSE','INTENT','TOOL_RETURN','FAULT','PROCESS_START','PROCESS_CLEANUP','CHOICE','PORT_ENTERED','DOMAIN_VERIFIED','FEEDBACK_FROZEN','ADMISSION','SESSION_COMPLETE','PRE_SEND_REJECTED'}
 def replay(frames,ctx):
+ c.require(ctx['budget_version']==c.BUDGET_VERSION and ctx['reachable_tokens']==c.REACHABLE_TOKENS==34100 and ctx['global_tokens']==c.GLOBAL_TOKENS==35000 and ctx['caps']=={k:list(v) for k,v in c.CAPS.items()},'BUDGET_CONTRACT')
  previous=None;events=[];counts=dict.fromkeys(c.LIMITS,0);tickets={};results={};unknown=False;blocked=False;reserved=cost=0;local={}
  for i,f in enumerate(frames):
   c.require(set(f)=={'seq','previous','event','sha256'} and f['seq']==i and f['previous']==previous and f['sha256']==c.digest({k:v for k,v in f.items() if k!='sha256'}),'WAL_CHAIN');e=f['event'];c.require(e['kind'] in KINDS and e['session_id']==ctx['session_id'] and type(e['clock']) is int and (not events or e['clock']>=events[-1]['clock']),'WAL_SCOPE_TIME')
@@ -11,7 +12,7 @@ def replay(frames,ctx):
   if kind=='RESERVE':
    r=e['resource'];c.require(r in counts and e['ticket']==r+'-'+str(counts[r]+1),'TICKET_SEQUENCE');safe_read=r=='authority_read' or r=='config_http' and e.get('method')=='GET';c.require(not (unknown or blocked) or safe_read,'STOP_WRITES_PROVIDER');c.require(not any(k not in results and t['resource'] in ('provider','sqlite_refund','config_post') for k,t in tickets.items()) or safe_read,'UNSETTLED_STOP');counts[r]+=1;c.require(counts[r]<=c.LIMITS[r],'RESOURCE_LIMIT')
    if r=='provider':
-    q=e['request'];role=e['role'];domain=e['domain'];scope=(role,domain,e['round']);n=local.get(scope,0);caps=c.CAPS['EXPLORER' if role=='EXPLORER' else domain];c.require(role in ('TARGET','EXPLORER') and domain in c.DOMAINS and e['round']==c.DOMAINS.index(domain)+1 and n<len(caps) and q['slot_cap']==caps[n] and q['ordinal']==n+1,'ROLE_DOMAIN_SLOT');c.require(all(type(q[k]) is int and q[k]>=0 for k in ('input_upper','output_cap','slot_cap')) and 0<q['input_upper'] and q['input_upper']+q['output_cap']<=q['slot_cap'],'INPUT_BOUND');local[scope]=n+1;reserved+=q['slot_cap'];cost+=q['input_upper']*4.5+q['output_cap']*18;c.require(reserved<=30400 and cost<=750000,'GLOBAL_POOL')
+    q=e['request'];role=e['role'];domain=e['domain'];c.require(c.validate_slot(q,domain,e['round'],role),'SLOT_INPUT_BOUND');scope=(role,domain,e['round']);n=local.get(scope,0);caps=c.CAPS['EXPLORER' if role=='EXPLORER' else domain];c.require(role in ('TARGET','EXPLORER') and domain in c.DOMAINS and e['round']==c.DOMAINS.index(domain)+1 and n<len(caps) and q['slot_cap']==caps[n] and q['ordinal']==n+1,'ROLE_DOMAIN_SLOT');c.require(all(type(q[k]) is int and q[k]>=0 for k in ('input_upper','output_cap','slot_cap')) and 0<q['input_upper'] and q['input_upper']+q['output_cap']<=q['slot_cap'],'INPUT_BOUND');local[scope]=n+1;reserved+=q['slot_cap'];cost+=q['input_upper']*4.5+q['output_cap']*18;c.require(reserved<=c.REACHABLE_TOKENS<=c.GLOBAL_TOKENS and cost<=750000,'GLOBAL_POOL')
     if e['round']==2:c.require(any(z['kind']=='FEEDBACK_FROZEN' and z['round']==1 for z in events),'NO_EARLY_SECOND_DOMAIN')
    tickets[e['ticket']]=e
   elif kind=='RESULT':
@@ -23,7 +24,7 @@ def replay(frames,ctx):
     pq=prior[-1]['request'];u=received[-1]['response']['usage'];c.require(q['previous_prompt']==u['prompt_tokens'] and q['framing_guard']==512 and q['suffix_bytes']==q['canonical_bytes']-pq['canonical_bytes']+1 and q['input_upper']==u['prompt_tokens']+q['suffix_bytes']+512 and q['configuration_sha256']==pq['configuration_sha256'] and q['schema_sha256']==pq['schema_sha256'],'PRE_SEND_INPUT_PROOF')
     returns=[z['row'] for z in events if z['kind']=='TOOL_RETURN' and z.get('domain')==scope['domain'] and z.get('round')==scope['round'] and z.get('cold',False)==scope['cold']];c.require(q['tool_returns']==[dict(call_id=z['call_id'],result_sha256=z['result_sha256']) for z in returns],'PRE_SEND_RETURN_BINDING');expectedcap=512 if len(returns)>= (3 if scope['domain']==c.DOMAINS[0] else 2) else 256;c.require(q['output_cap']==expectedcap,'PRE_SEND_OUTPUT_CAP')
    else:c.require(q['input_upper']==q['canonical_bytes'] and q['previous_prompt'] is None,'PRE_SEND_INITIAL')
-   blocked=True
+   c.require(not c.validate_slot(q,scope['domain'],scope['round'],scope['role']),'PRE_SEND_NOT_OVER_BOUND');blocked=True
   if any(t['resource']=='session' for t in tickets.values()):c.require(e['clock']-next(t['clock'] for t in tickets.values() if t['resource']=='session')<=2100*10**9,'SESSION_DEADLINE')
   events.append(e);previous=c.digest(f)
  return dict(events=events,counts=counts,tickets=tickets,results=results,unknown=unknown,blocked=blocked,reserved_tokens=reserved,reserved_cost_micro_cny=cost)
