@@ -552,5 +552,17 @@
     "orphan_policy": "TORN_PRE_SEND_RECEIPT_PERMANENT_NO_RESEND",
     "source": "runtime/tests/test_effectwitness_pge_r67.py"
   },
-  "prior_rev3_exact_suffix": "NOT_RECORDED_NOT_BACKFILLED"
+  "prior_rev3_exact_suffix": "NOT_RECORDED_NOT_BACKFILLED",
+  "current_request_old_slot_arithmetic": {
+    "scope": "CURRENT_REV4_REQUEST_ONLY_NOT_REV3_HISTORICAL_RECONSTRUCTION_OR_CAUSAL_EXPERIMENT",
+    "ordinal": 4,
+    "previous_trusted_prompt": 946,
+    "suffix_bytes": 720,
+    "framing_guard": 512,
+    "output_cap": 512,
+    "total": 2690,
+    "hypothetical_old_slot": 2600,
+    "would_exceed_old_slot": true,
+    "actual_frozen_slot": 4200
+  }
 }

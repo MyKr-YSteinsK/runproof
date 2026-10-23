@@ -1,6 +1,6 @@
 {
   "plan": "RPF-67/rev-4",
-  "status": "PARTIAL",
+  "status": "COMPLETE",
   "source_kind": "REAL_PROVIDER_TARGET_ORDER",
   "context": {
     "abi": "rpf67-order-real-target-v4",

@@ -1,6 +1,6 @@
 {
   "plan": "RPF-67/rev-4",
-  "status": "PARTIAL",
+  "status": "COMPLETE",
   "owner": "rpf-67-rev-4",
   "abi": "rpf67-order-real-target-v4",
   "comparison": {
@@ -30,7 +30,7 @@
     "maximum_cny_guard": 0.45
   },
   "authority": {
-    "TASK_COMPLETE": false,
+    "TASK_COMPLETE": true,
     "EVIDENCE_ACCEPTED": "ARCHITECT_REVIEW_REQUIRED",
     "STAGE_ADVANCED": "ARCHITECT_REVIEW_REQUIRED"
   },

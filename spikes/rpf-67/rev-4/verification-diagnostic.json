@@ -1,6 +1,6 @@
 {
   "plan": "RPF-67/rev-4",
-  "status": "PARTIAL",
+  "status": "COMPLETE",
   "gates": {
     "G0": "PASS",
     "R4-A01": "PASS",
@@ -12,7 +12,7 @@
     "R4-A07": "PASS",
     "R4-A08": "PASS",
     "R4-A09": "PASS",
-    "R4-A10": "NOT_RUN"
+    "R4-A10": "PASS"
   },
   "source": {
     "source_digest": "434d32a26a422ddc3ea6079ed43a492ae80b3728d6d38a887945d10ed1e7de75",
@@ -4097,7 +4097,34 @@
     ],
     "wal_retained": true
   },
-  "delivery": {},
+  "delivery": {
+    "deploy": false,
+    "force": false,
+    "hosted_ci": "NOT_RUN",
+    "hosted_run_count": 0,
+    "main_parent_unchanged": true,
+    "merge": false,
+    "observed_utc": "2026-10-23T12:25:33.565112+00:00",
+    "pull_request": false,
+    "refs": {
+      "codex/rpf-67-rev3-http-fixture-runtime-recovery": {
+        "git_ls_remote": "2d57f0461e76911d3b4f6b3feae7935e1413113a",
+        "github_api_sha": "2d57f0461e76911d3b4f6b3feae7935e1413113a"
+      },
+      "codex/rpf-67-rev4-terminal-input-budget-recovery": {
+        "git_ls_remote": "c484131d1e983a5ad95f4273dd237786d1434aea",
+        "github_api_sha": "c484131d1e983a5ad95f4273dd237786d1434aea"
+      },
+      "main": {
+        "git_ls_remote": "bda0cd49e50e3181f604324e94877a24b9885334",
+        "github_api_sha": "bda0cd49e50e3181f604324e94877a24b9885334"
+      }
+    },
+    "release": false,
+    "source_commit": "c484131d1e983a5ad95f4273dd237786d1434aea",
+    "source_push": "PASS",
+    "source_push_double_readback": true
+  },
   "windows312_parent": "NOT_ESTABLISHED",
   "ubuntu_hosted_ci": "NOT_RUN",
   "docker": "UNAVAILABLE_TWO_SKIPS",

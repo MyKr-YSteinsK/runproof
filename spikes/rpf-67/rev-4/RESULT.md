@@ -2,7 +2,7 @@
 
 Plan ID: RPF-67
 Revision: rev-4
-Status: PARTIAL
+Status: COMPLETE
 
 ## 结果
 
@@ -20,7 +20,7 @@ Status: PARTIAL
 | R4-A07 | PASS |
 | R4-A08 | PASS |
 | R4-A09 | PASS |
-| R4-A10 | NOT_RUN |
+| R4-A10 | PASS |
 
 ## 身份、预算与免费验收
 
@@ -45,14 +45,16 @@ Status: PARTIAL
 ## 交付与未证实能力
 
 - 仅5个既有文件及本Plan合格新文件提交；Session owner装配替代修改受保护Port，业务SQL/工具方法、Child、旧HTTP fixture、历史锚保持原字节。
-- Git交付实际观察: `{}`。最终receipt提交SHA由聊天回执补报，不为自引用改写提交。
+- Git交付实际观察: `{"deploy": false, "force": false, "hosted_ci": "NOT_RUN", "hosted_run_count": 0, "main_parent_unchanged": true, "merge": false, "observed_utc": "2026-10-23T12:25:33.565112+00:00", "pull_request": false, "refs": {"codex/rpf-67-rev3-http-fixture-runtime-recovery": {"git_ls_remote": "2d57f0461e76911d3b4f6b3feae7935e1413113a", "github_api_sha": "2d57f0461e76911d3b4f6b3feae7935e1413113a"}, "codex/rpf-67-rev4-terminal-input-budget-recovery": {"git_ls_remote": "c484131d1e983a5ad95f4273dd237786d1434aea", "github_api_sha": "c484131d1e983a5ad95f4273dd237786d1434aea"}, "main": {"git_ls_remote": "bda0cd49e50e3181f604324e94877a24b9885334", "github_api_sha": "bda0cd49e50e3181f604324e94877a24b9885334"}}, "release": false, "source_commit": "c484131d1e983a5ad95f4273dd237786d1434aea", "source_push": "PASS", "source_push_double_readback": true}`。最终receipt提交SHA由聊天回执补报，不为自引用改写提交。
 - docs/reviews/保持用户原顶层未跟踪标记，未进入/列举/读取/hash/diff/stage；docs/project、docs/history、AGENTS及旧证据未改。
 - main/parent未变；没有PR、merge、force、tag、release、dispatch、部署、赛事上传。普通分支push无自动Release Gate触发，Hosted CI须按实际GitHub观察。
-- TASK_COMPLETE=False；EVIDENCE_ACCEPTED=ARCHITECT_REVIEW_REQUIRED；STAGE_ADVANCED=ARCHITECT_REVIEW_REQUIRED。
+- TASK_COMPLETE=True；EVIDENCE_ACCEPTED=ARCHITECT_REVIEW_REQUIRED；STAGE_ADVANCED=ARCHITECT_REVIEW_REQUIRED。
 - 同一真实双域Session NOT_PROVEN；Explorer NOT_RUN；L2 NOT_TESTED；Web NOT_INTEGRATED；causality NOT_PROVEN；independent reproduction NOT_TESTED；issuer NOT_ESTABLISHED；production release NOT_AUTHORIZED。
+
+本轮真实第4请求：946（前次可信prompt）+720（suffix bytes）+512（guard）+512（output）=2690<=4200。对同一当前请求套用旧2600槽会算术超限90；这仅是当前请求的预算比较，不回填rev-3未知suffix，也不是因果对照实验。
+
+开发记录限制：少量早期临时命令的 PID／当时 raw source digest 未记录，已显式标 NOT_RECORDED；正式 Controller/SDK、两次完整 full、最终 focused 的 PID／源／退出码完整保留。
 
 ## 建议（不扩展本轮授权）
 
 后续可为新旧DomainPort构造器显式传入owner，减少Session装配重复；将预算证明字段作为版本化公共协议维护。下一阶段仍需独立验证同一真实双域Session，不能拼接两个订单/配置Witness宣称联合闭环。
-
-开发记录限制：少量早期临时命令的 PID／当时 raw source digest 未记录，已显式标 NOT_RECORDED；正式 Controller/SDK、两次完整 full、最终 focused 的 PID／源／退出码完整保留。
