@@ -2,7 +2,7 @@
 
 Status: BLOCKED
 
-Base `b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165`；branch `codex/rpf-68-rev2-slot-budget-shared-session`。源码commit/push待末次交付回执。`EVIDENCE_ACCEPTED/STAGE_ADVANCED=ARCHITECT_REVIEW_REQUIRED`。
+Base `b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165`；branch `codex/rpf-68-rev2-slot-budget-shared-session`。源码commit `dfc159ce2bb2981cb393bbf3c93060bbd540233c` 已普通push，Git与GitHub API双读一致。`EVIDENCE_ACCEPTED/STAGE_ADVANCED=ARCHITECT_REVIEW_REQUIRED`。
 
 ## 结果
 
@@ -46,7 +46,7 @@ Base `b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165`；branch `codex/rpf-68-rev2-slot
 | R2-A04 | PASS | 最终源12 focused/完整Runtime/140负控/历史锚 |
 | R2-A05—A08 | NOT_RUN | P1失败，不冻结、不付费、不生成真Witness |
 | R2-A09 | PASS | 安全停、无网络/Key、资源清理、历史/private保护；观测限制单列 |
-| R2-A10 | NOT_RUN | 报告/决策完成；Git交付待末次双读 |
+| R2-A10 | PASS | 报告/决策完成；源码push双读一致，最终回执SHA在对话交付 |
 
 ## A. VERIFIED_FINDINGS
 
@@ -87,3 +87,7 @@ Base `b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165`；branch `codex/rpf-68-rev2-slot
 - FUTURE_RESEARCH_QUESTION：外部不可信Agent/MCP、异步工具、独立Issuer与第三域Oracle能否保持同一身份和最小权限。
 
 标准化明细与支持/限制见architecture-decision。rev1旧反例通过≠rev2最大证明，合成usage≠真实计费，两个受控域≠外部通用能力。最终接受/阶段推进由Architect独立审查。
+
+## Git 交付回执
+
+源码提交 `dfc159ce2bb2981cb393bbf3c93060bbd540233c` 已普通push；Git ls-remote和已连接GitHub REST API均读回该SHA。父分支 `b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165` 与main `bda0cd49e50e3181f604324e94877a24b9885334` 未变。最后仅提交本rev2公开回执，最终receipt SHA由对话在push及双读后报告，不做自引用amend。剩余工作树仅允许原 `?? docs/reviews/` 顶层标记，未进入其内容。没有PR、merge、CI dispatch、deploy/release或赛事提交。

@@ -716,7 +716,7 @@
     "R2-A07": "NOT_RUN",
     "R2-A08": "NOT_RUN",
     "R2-A09": "PASS",
-    "R2-A10": "NOT_RUN"
+    "R2-A10": "PASS"
   },
   "gate_scope_notes": {
     "R2-A01": "P0/synthetic immutable Context + one physical WAL + typed ports verified; formal frozen Context NOT_CREATED",
@@ -5024,6 +5024,34 @@
   "hosted_ubuntu_312": "NOT_RUN",
   "source_freeze": "NOT_RUN",
   "delivery": {
-    "status": "NOT_RUN"
+    "source_commit": "dfc159ce2bb2981cb393bbf3c93060bbd540233c",
+    "source_push": "PASS",
+    "source_git_ls_remote": {
+      "codex/rpf-68-rev2-slot-budget-shared-session": "dfc159ce2bb2981cb393bbf3c93060bbd540233c",
+      "codex/rpf-68-shared-cross-domain-real-pge": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+      "main": "bda0cd49e50e3181f604324e94877a24b9885334"
+    },
+    "source_github_rest_api": {
+      "codex/rpf-68-rev2-slot-budget-shared-session": "dfc159ce2bb2981cb393bbf3c93060bbd540233c",
+      "codex/rpf-68-shared-cross-domain-real-pge": "b68c6a4452a8d98d78d2ac0e1d4433bcfa4d7165",
+      "main": "bda0cd49e50e3181f604324e94877a24b9885334"
+    },
+    "parent_main_unchanged": true,
+    "ordinary_push_only": true,
+    "receipt_commit": "REPORTED_IN_CHAT_AFTER_ITS_PUSH",
+    "hosted_ci": "NOT_RUN",
+    "pr_merge_deploy_release_competition": "NOT_RUN",
+    "observed_utc": "2026-10-23T17:31:03.967659+00:00"
+  },
+  "source_delivery_checks": {
+    "exact_modified_allowlist": 7,
+    "exact_new_public": 9,
+    "total_files": 16,
+    "conditional_witness": "ABSENT",
+    "source_raw_lf_matches_final_full_snapshot": true,
+    "staged_unstaged_diff_check": "PASS",
+    "privacy_literal_scan": "PASS",
+    "full_runtime_processes": 1,
+    "original_protected_status": "?? docs/reviews/"
   }
 }
