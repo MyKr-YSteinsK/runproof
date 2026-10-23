@@ -1,0 +1,164 @@
+{
+  "plan": "RPF-67/rev-1",
+  "status": "Partial",
+  "frozen": {
+    "owner": "rpf-67",
+    "abi": "rpf67-order-real-target-v1",
+    "single_physical_wal": true,
+    "trial_max": 1,
+    "Explorer_provider": 0,
+    "sqlite_full_refund_minor": 2500,
+    "currency": "CNY",
+    "caps": [
+      3000,
+      2600,
+      2600,
+      2600,
+      2200,
+      2000
+    ],
+    "max_reserved_tokens": 15000,
+    "cost_guard_cny": 0.45,
+    "old_sources_read_only": true
+  },
+  "recommended": {
+    "adopted": [
+      "OrderSandbox.initialize/refund/inspect unchanged",
+      "OrderAdapter.invoke unchanged before task-owned suppression",
+      "AuthorityReader.read/validate unchanged separate mode=ro connection",
+      "evaluate_order_effect shared pure oracle",
+      "DomainPort four methods",
+      "task-owned versioned Driver/Child instead of old fixed ledger"
+    ],
+    "deviations": [
+      "RPF66 parser/completion/config Host are read-only design references; new order Driver implements its own strict bridge",
+      "new Context imports no RPF66 owner/limits"
+    ]
+  },
+  "delegated": {
+    "context": "rpf67-order-real-target-v1",
+    "order_port": "scoped constructor subclasses; no old __init__/owned_path call",
+    "SDK": "fixed original install, direct CPython3.12.13; no venv copy",
+    "host": "single loopback HTTPServer, parent-only Provider key",
+    "fault": "response-lost-after-sqlite-commit; host-local delivery suppression",
+    "cleanup": "finally child/thread/socket close; DB retained, no reset/delete",
+    "execute_signature": "execute(context, contract, ledger, *, driver): versioned explicit dependency injection; session constructs gated driver; does not claim drop-in compatibility with old frozen ABI"
+  },
+  "comparison": {
+    "rpf48_49": {
+      "real_target": "HISTORICAL_ANCHOR",
+      "incompatible": [
+        "owner/path table binds old tasks",
+        "separate JSON ProviderLedger",
+        "old fixed default output cap and SDK launcher"
+      ]
+    },
+    "rpf64": {
+      "order_source": "DETERMINISTIC",
+      "provider": 0,
+      "incompatible": [
+        "frozen ABI limits source kinds to old scripted levels",
+        "old Context owner/storage paths"
+      ]
+    },
+    "rpf66_rev5": {
+      "domain": "config-java-http",
+      "roles": "real Explorer + real config Target",
+      "witness_raw_sha256": "68dad2804edd3668e1e4b4ed19d18034b79d5fa1892e9fea75aaeb9080c4f3c5",
+      "witness_bytes": 577721,
+      "provider": 11,
+      "L2": false,
+      "reuse": "pattern only, no prior runtime ledger or quotas"
+    }
+  },
+  "reuse_and_copy_debt": {
+    "imported_business_methods": [
+      "OrderSandbox.initialize",
+      "OrderSandbox.refund",
+      "OrderSandbox.inspect",
+      "OrderAdapter.invoke",
+      "AuthorityReader.read",
+      "AuthorityReader.validate",
+      "evaluate_order_effect"
+    ],
+    "child_common_lines_sequence_match": 233,
+    "new_child_lines": 284,
+    "retained_guards": "RPF66 v5 pinned SDK/read/network audit guards; names RPF53 retained for byte-level traceability",
+    "rewritten_areas": [
+      "owner/context/WAL",
+      "order tools and prompt",
+      "request budget and response parser",
+      "single-domain session",
+      "independent order witness verifier"
+    ],
+    "risk": "Task-specific Context/Host/child duplication remains; extraction requires a separate Plan and new multi-domain evidence"
+  },
+  "source_kind": "SYNTHETIC_TEST_ONLY",
+  "real_target": "TRIAL_ATTEMPTED_PROTOCOL_REJECTED_BEFORE_FIRST_TOOL",
+  "boundaries": {
+    "Explorer": "NOT_RUN",
+    "L2": "NOT_TESTED",
+    "web": "NOT_INTEGRATED",
+    "cross_domain_same_session": "NOT_PROVEN",
+    "causality": "NOT_PROVEN",
+    "issuer": "NOT_ESTABLISHED",
+    "external_reproduction": "NOT_TESTED",
+    "release": "NOT_AUTHORIZED"
+  },
+  "remaining_product_requirement": "R-07 shared multi-domain real session remains unfulfilled",
+  "source_digest": "499d1546add4cd76a8a24015a79fbab1806beaf28f61091a3407ee3c3a957012",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06": "FAIL",
+    "A07": "NOT_RUN",
+    "A08": "NOT_RUN",
+    "A09": "PASS",
+    "A10": "NOT_RUN"
+  },
+  "accepted_real_order_capability": "NOT_ESTABLISHED",
+  "real_source_kind": "REAL_PROVIDER_TARGET_ORDER",
+  "real_failure": {
+    "actual_arm": "NOT_ESTABLISHED",
+    "business_writes_added": 0,
+    "possible_guard_arms": [
+      "tool-call presence and finish_reason disagree",
+      "tool-call message has nonempty accompanying content"
+    ],
+    "provider_calls_added": 0,
+    "pure_source_reproducer": [
+      {
+        "case": "plain-call-positive",
+        "result": "ACCEPTED",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      },
+      {
+        "case": "mixed-content-and-tool",
+        "result": "FINISH_SHAPE",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      },
+      {
+        "case": "call-with-stop",
+        "result": "FINISH_SHAPE",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      },
+      {
+        "case": "no-call-with-tool-finish",
+        "result": "FINISH_SHAPE",
+        "source_kind": "SYNTHETIC_TEST_ONLY"
+      }
+    ],
+    "real_failure": "FINISH_SHAPE",
+    "real_raw_response_sha256": "NOT_RETAINED",
+    "real_response_id": "NOT_RETAINED",
+    "real_response_shape": "NOT_RETAINED",
+    "real_usage": "UNKNOWN",
+    "wal_unchanged": true
+  },
+  "free_order_effect": "VERIFIED_WITH_SIMULATED_MODEL_ONLY",
+  "next_diagnostic": "A new Plan should first retain an allowlisted response shape/ID/usage summary on validation failure; decide accompanying content policy before authorizing another independent Trial"
+}
