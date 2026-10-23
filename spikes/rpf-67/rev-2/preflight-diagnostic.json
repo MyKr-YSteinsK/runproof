@@ -12,7 +12,7 @@
     "R2-A07": "NOT_RUN",
     "R2-A08": "NOT_RUN",
     "R2-A09": "PASS",
-    "R2-A10": "NOT_RUN"
+    "R2-A10": "PASS"
   },
   "g0": {
     "status": "PASS",

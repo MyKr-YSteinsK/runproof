@@ -34,6 +34,7 @@
   "failure": null,
   "os_cleanup": {
     "candidate_sources_unchanged": true,
+    "evidence_logs_snapshots_preserved": true,
     "formal_context_wal_not_created": true,
     "formal_key_never_read": true,
     "formal_resources": {
@@ -581,7 +582,21 @@
     "protected_user_content_read": false,
     "source_digest": "ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b",
     "source_freeze": "NOT_RUN",
-    "status": "PASS"
+    "status": "PASS",
+    "unused_formal_helpers_removed": [
+      {
+        "path": ".local\\rpf-67-rev-2\\freeze.py",
+        "sha256": "b02e33c9c4ac658aa230a5c73e578c02b862d3c5e5e4089bbcccd976e6f448ee"
+      },
+      {
+        "path": ".local\\rpf-67-rev-2\\run_live.py",
+        "sha256": "1ba0163ce31a4fef780b6301452e84401899ddfb1194a880ece0621c5d5e4dff"
+      },
+      {
+        "path": ".local\\rpf-67-rev-2\\cleanup.py",
+        "sha256": "c841851915d648040049d2cbd0171f5cde738e9ca3cd4599e58048cea40dd24b"
+      }
+    ]
   },
   "boundaries": {
     "Explorer": "NOT_RUN",
@@ -593,7 +608,20 @@
     "independent_reproduction": "NOT_TESTED",
     "production_release": "NOT_AUTHORIZED"
   },
-  "delivery": null,
+  "delivery": {
+    "branch": "codex/rpf-67-rev2-provider-shape-order-recovery",
+    "deploy": "NOT_RUN",
+    "dispatch": "NOT_RUN",
+    "git_remote": "aa5732a2d91856107247a7433c182968e3dc3ea6",
+    "github_api": "aa5732a2d91856107247a7433c182968e3dc3ea6",
+    "head": "aa5732a2d91856107247a7433c182968e3dc3ea6",
+    "hosted_ci_runs": 0,
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "merge": "NOT_RUN",
+    "parent": "09411b48c432ce45d225552015e2c2039eb8375c",
+    "pr": "NOT_CREATED",
+    "source_commit": "aa5732a2d91856107247a7433c182968e3dc3ea6"
+  },
   "Witness": "NOT_RUN_PATH_ABSENT",
   "admission_stop": {
     "Provider": "NOT_RUN",

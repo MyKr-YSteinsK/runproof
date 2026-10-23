@@ -4,7 +4,7 @@ Status: Partial
 
 ## 结论
 
-- Gate：G0=PASS；R2-A01=PASS；R2-A02=PASS；R2-A03=PASS；R2-A04=FAIL；R2-A05=NOT_RUN；R2-A06=NOT_RUN；R2-A07=NOT_RUN；R2-A08=NOT_RUN；R2-A09=PASS；R2-A10=NOT_RUN。
+- Gate：G0=PASS；R2-A01=PASS；R2-A02=PASS；R2-A03=PASS；R2-A04=FAIL；R2-A05=NOT_RUN；R2-A06=NOT_RUN；R2-A07=NOT_RUN；R2-A08=NOT_RUN；R2-A09=PASS；R2-A10=PASS。
 - ABI：`rpf67-order-real-target-v2`；owner=`rpf-67-rev-2`；source digest=`ae67572a127bae4a67469487dba67e1b8917bf90c0ab7b7f279bc4380bdacc8b`。
 - Base=`09411b48c432ce45d225552015e2c2039eb8375c`；新分支=`codex/rpf-67-rev2-provider-shape-order-recovery`。Source Map raw/LF、Verifier、变更路径和全部命令/exit/快照见 [verification-diagnostic.json](verification-diagnostic.json)。
 - 第一版仅已知 FINISH_SHAPE 拒绝；原实际响应形状/ID/usage 不可靠留存，不能反推或回填。当前分支中的公开 Base Parser 最小复现：纯null+tool通过，mixed/stop+tool/空tool三类同报FINISH_SHAPE，全部为免费合成诊断。
@@ -46,7 +46,7 @@ Status: Partial
 
 ## Git 与研究边界
 
-- focused Commit/普通Push/远端双读尚未完成，A10=NOT_RUN。
+- Source commit `aa5732a2d91856107247a7433c182968e3dc3ea6` 已普通push，fresh Git/GitHub API同SHA；最终receipt commit自身未来SHA不回填，由聊天回执提供。
 - main=`bda0cd49e50e3181f604324e94877a24b9885334`与父branch不变；无PR/merge/rebase/force/tag/release/dispatch/deploy/赛事操作。
 - `Explorer=NOT_RUN`、`L2=NOT_TESTED`、`cross_domain_same_session=NOT_PROVEN`、`web=NOT_INTEGRATED`、`causality=NOT_PROVEN`、`independent_reproduction=NOT_TESTED`、`issuer=NOT_ESTABLISHED`、`production_release=NOT_AUTHORIZED`。
 - Witness是冻结机制、单WAL和独立只读观测约束下的工程证据，不是第三方签名/不可抵赖/外部生产事实；R-01～R-10仍保持。当前先需新Plan明确授权修复受保护config_target_bridge.py中旧HTTP fixture的Windows连接关闭问题，并重新完成免费门禁；本任务不扩白名单或重发Paid。未来共享Config+Order Session仍需独立编号授权，不能拼接历史证书。
