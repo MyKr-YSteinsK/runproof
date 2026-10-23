@@ -1,6 +1,6 @@
 {
   "plan": "RPF-66/rev-5",
-  "status": "Partial",
+  "status": "COMPLETE",
   "abi": "rpf66-config-pge-session-v5",
   "implementation": "task-owned complete versioned boundary; original parser, Host, child unchanged",
   "copy_debt": {
@@ -34,5 +34,20 @@
   "causality": "NOT_PROVEN",
   "independent_reproduction": "NOT_TESTED",
   "canonical_state_updated": false,
-  "next_step": "Architect review of versioned boundary and bounded evidence; public parameter extraction requires future contract"
+  "next_step": "Architect review of versioned boundary and bounded evidence; public parameter extraction requires future contract",
+  "delivery": {
+    "source_commit": "6caa2c10f13fcf2869d99e655de9d7a5e9f5923c",
+    "ordinary_push": "PASS",
+    "fresh_ls_remote": "6caa2c10f13fcf2869d99e655de9d7a5e9f5923c",
+    "github_api_ref": "6caa2c10f13fcf2869d99e655de9d7a5e9f5923c",
+    "remote_double_read": "PASS",
+    "hosted_runs": 0,
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "parent_rev4": "80c76013feb3335b4df72bc33f58e7d7f71c6611",
+    "final_receipt_sha": "REPORTED_IN_CHAT",
+    "privacy_scan": "PASS",
+    "all_source_raw_39_unchanged": true,
+    "staged_unstaged_format": "PASS",
+    "user_status": "?? docs/reviews/"
+  }
 }

@@ -850,5 +850,20 @@
       "sdk_core_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
       "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
     }
+  },
+  "delivery": {
+    "source_commit": "6caa2c10f13fcf2869d99e655de9d7a5e9f5923c",
+    "ordinary_push": "PASS",
+    "fresh_ls_remote": "6caa2c10f13fcf2869d99e655de9d7a5e9f5923c",
+    "github_api_ref": "6caa2c10f13fcf2869d99e655de9d7a5e9f5923c",
+    "remote_double_read": "PASS",
+    "hosted_runs": 0,
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "parent_rev4": "80c76013feb3335b4df72bc33f58e7d7f71c6611",
+    "final_receipt_sha": "REPORTED_IN_CHAT",
+    "privacy_scan": "PASS",
+    "all_source_raw_39_unchanged": true,
+    "staged_unstaged_format": "PASS",
+    "user_status": "?? docs/reviews/"
   }
 }

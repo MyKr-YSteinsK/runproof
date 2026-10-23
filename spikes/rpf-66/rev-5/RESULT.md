@@ -1,6 +1,6 @@
 # TASK_RESULT｜RPF-66/rev-5
 
-**Status: Partial**
+**Status: COMPLETE**
 
 ## 实际结果
 
@@ -30,7 +30,7 @@ FROZEN保留全部三合同、两个候选、三工具、UNKNOWN停写、原模�
 | R5-A07 | PASS |
 | R5-A08 | PASS |
 | R5-A09 | PASS |
-| R5-A10 | NOT_RUN |
+| R5-A10 | PASS |
 
 最终Source focused：28项、exit=0；独立完整Windows3.14 Runtime：454项、errors=0、failures=0、exit=0、skipped=2（原Docker unavailable，未宣称Docker可用）。Snapshot包含684项源输入、RPF60完整32项及新闭包39项。合成CLI0/2/3、66类语义重锚全部exit3、四种候选顺序、18历史原件/原Verifier与Reviewed/Public分别记录。
 
@@ -52,4 +52,6 @@ WAL=`{"frames": 259, "bytes": 445297, "raw_sha256": "08f83c32d3d97a7108d4b6b883b
 
 改动仅为六个允许旧文件中的四个、三个新版本化源及本rev5公开文件；explorer/session原源未修改。staged/unstaged diff --check通过。原用户状态只剩顶层 `?? docs/reviews/`；该目录未进入/列举/读取/hash/暂存。Project State、旧证书、共享原parser/Host/child、SDK/JAR源、CI/Web/Maven未改。没有main merge/PR/force/amend已推历史/tag/release/deploy/workflow_dispatch/比赛操作。
 
-仅本任务分支普通commit/push与双读；最终receipt SHA由聊天独立报告，本文不回填自身未来SHA。A10当前为交付前状态，普通push及Git/GitHub API读回后在本轮收据更新。Issuer非第三方签名；Oracle仍同服务GET；订单真实Target/跨域稳定公共ABI/Web Live/独立复现/因果优势均未证明；阶段接受由Architect后审。
+仅本任务分支普通commit/push与双读；最终receipt SHA由聊天独立报告，本文不回填自身未来SHA。A10已观察首提交普通push及Git/GitHub API双读一致，最终receipt的远端SHA另在聊天给出。Issuer非第三方签名；Oracle仍同服务GET；订单真实Target/跨域稳定公共ABI/Web Live/独立复现/因果优势均未证明；阶段接受由Architect后审。
+
+交付收据：source commit=`6caa2c10f13fcf2869d99e655de9d7a5e9f5923c` 已普通push；fresh ls-remote与独立GitHub API均读回相同SHA。main与rev-4父分支保持原值，Hosted Actions runs=0。公开16个路径已核对精确白名单、staged/working字节、JSON语法及凭据/私密路径；原冻结39项raw与三个冻结helper未漂移。独立probe verify exit0。此后仅提交本交付回执，不改源码、Witness或冻结文件。最终receipt SHA在聊天独立回传。
