@@ -1,0 +1,163 @@
+{
+  "actual_extended_stop_range": "rejected by protected original parser",
+  "actual_outbound_hash_statistics": {
+    "matched_broker_wal_transport": 0,
+    "parent_outbound": 0,
+    "requests": 0,
+    "sdk_inbound": 0
+  },
+  "arithmetic": "PASS",
+  "boundary_examples": [
+    {
+      "input_upper": 1888,
+      "output_cap": 512,
+      "stage": 4,
+      "total": 2400
+    },
+    {
+      "cap": 2800,
+      "input_upper": 2048,
+      "output_cap": 512,
+      "stage": 5,
+      "total": 2560
+    },
+    {
+      "cap": 2000,
+      "stage": 6
+    }
+  ],
+  "discovered_fourth_limit": {
+    "constant_file": "runtime/runproof_runtime/effectwitness/config_live_contracts.py",
+    "constant_line": 52,
+    "failure_code": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+    "file": "runtime/runproof_runtime/effectwitness/config_live_runtime.py",
+    "function": "_validate_provider_response",
+    "line": 628,
+    "max_output_tokens_per_request": 256,
+    "signature": "(data, *, fixture=False)"
+  },
+  "expected_extended_stop_range": "257..512 must be acceptable with valid usage and terminal state",
+  "explorer_per_round": 2500,
+  "original_parser_fixtures": [
+    {
+      "completion_tokens": 0,
+      "expected": "ACCEPTED",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "ACCEPTED",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 128,
+      "expected": "ACCEPTED",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "ACCEPTED",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 256,
+      "expected": "ACCEPTED",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "ACCEPTED",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 257,
+      "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 300,
+      "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 512,
+      "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 513,
+      "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "finish_reason": "stop",
+      "input_unchanged": true,
+      "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 128,
+      "expected": "PROVIDER_CHOICE",
+      "finish_reason": "length",
+      "input_unchanged": true,
+      "result": "PROVIDER_CHOICE",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 256,
+      "expected": "PROVIDER_CHOICE",
+      "finish_reason": "length",
+      "input_unchanged": true,
+      "result": "PROVIDER_CHOICE",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 512,
+      "expected": "PROVIDER_CHOICE",
+      "finish_reason": "length",
+      "input_unchanged": true,
+      "result": "PROVIDER_CHOICE",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 128,
+      "expected": "PROVIDER_CHOICE",
+      "finish_reason": "content_filter",
+      "input_unchanged": true,
+      "result": "PROVIDER_CHOICE",
+      "transport_calls": 0
+    },
+    {
+      "completion_tokens": 128,
+      "expected": "PROVIDER_CHOICE",
+      "finish_reason": "aborted",
+      "input_unchanged": true,
+      "result": "PROVIDER_CHOICE",
+      "transport_calls": 0
+    }
+  ],
+  "plan": "RPF-66/rev-4",
+  "price_guard_proposed_only": {
+    "cny_per_usd": 15,
+    "is_invoice": false,
+    "max_cny": 0.75
+  },
+  "price_live_check": "NOT_RUN_PAID_BLOCKED",
+  "production_bound_enforcement": "NOT_IMPLEMENTED",
+  "proposed_output": {
+    "nonterminal": 256,
+    "sdk_requested": 256,
+    "terminal": 512
+  },
+  "schedule": [
+    3000,
+    2400,
+    2400,
+    2400,
+    2800,
+    2000
+  ],
+  "semantic_witness_controls": "NOT_RUN",
+  "target_per_round": 15000,
+  "two_round_total": 35000
+}

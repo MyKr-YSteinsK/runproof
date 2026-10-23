@@ -1,0 +1,164 @@
+{
+  "commands": [
+    {
+      "exit": 0,
+      "mode": "init"
+    },
+    {
+      "exit": 0,
+      "mode": "verify"
+    },
+    {
+      "exit": 3,
+      "expected": "BLOCKED_NO_RESOURCES",
+      "mode": "admit"
+    }
+  ],
+  "diagnostic": {
+    "business_jvm_starts": 0,
+    "cases": [
+      {
+        "completion_tokens": 0,
+        "expected": "ACCEPTED",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "ACCEPTED",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 128,
+        "expected": "ACCEPTED",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "ACCEPTED",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 256,
+        "expected": "ACCEPTED",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "ACCEPTED",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 257,
+        "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 300,
+        "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 512,
+        "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 513,
+        "expected": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "finish_reason": "stop",
+        "input_unchanged": true,
+        "result": "PROVIDER_OUTPUT_TOKEN_LIMIT",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 128,
+        "expected": "PROVIDER_CHOICE",
+        "finish_reason": "length",
+        "input_unchanged": true,
+        "result": "PROVIDER_CHOICE",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 256,
+        "expected": "PROVIDER_CHOICE",
+        "finish_reason": "length",
+        "input_unchanged": true,
+        "result": "PROVIDER_CHOICE",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 512,
+        "expected": "PROVIDER_CHOICE",
+        "finish_reason": "length",
+        "input_unchanged": true,
+        "result": "PROVIDER_CHOICE",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 128,
+        "expected": "PROVIDER_CHOICE",
+        "finish_reason": "content_filter",
+        "input_unchanged": true,
+        "result": "PROVIDER_CHOICE",
+        "transport_calls": 0
+      },
+      {
+        "completion_tokens": 128,
+        "expected": "PROVIDER_CHOICE",
+        "finish_reason": "aborted",
+        "input_unchanged": true,
+        "result": "PROVIDER_CHOICE",
+        "transport_calls": 0
+      }
+    ],
+    "code": "PROTECTED_RESPONSE_OUTPUT_CEILING_256",
+    "cold_runs": 0,
+    "diagnostic_status": "PASS",
+    "full_runtime": "NOT_RUN",
+    "implementation_gate": "BLOCKED",
+    "key_accesses": 0,
+    "metadata_runs": 0,
+    "paid": "NOT_RUN",
+    "parser": "ORIGINAL_UNMODIFIED_DIRECT_CALL",
+    "patches": 0,
+    "provider_calls": 0,
+    "schema": "rpf66-rev4-terminal-boundary-diagnostic-v1",
+    "sdk_starts": 0,
+    "source_freeze": "NOT_RUN",
+    "source_unchanged": true,
+    "sources_raw_sha256": {
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "runtime/runproof_runtime/effectwitness/config_live_external.py": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": "41081ef409798b13b29321567fc90de44df1cb463f710808a13e6955814ccdf6",
+      "spikes/rpf-66/rev-4/probe.py": "0246484b755f4d59b13678437b2ba992ea4c2d662caaf77996318add6faf1a1d"
+    },
+    "witness": "NOT_CREATED"
+  },
+  "focused_24": "NOT_RUN",
+  "full_windows314": "NOT_RUN",
+  "gates": {
+    "G0": "PASS",
+    "R4-A01": "NOT_RUN",
+    "R4-A02": "FAIL",
+    "R4-A03": "NOT_RUN",
+    "R4-A04": "FAIL",
+    "R4-A05": "NOT_RUN",
+    "R4-A06": "NOT_RUN",
+    "R4-A07": "NOT_RUN",
+    "R4-A08": "NOT_RUN",
+    "R4-A09": "PASS",
+    "R4-A10": "NOT_RUN"
+  },
+  "historical_18": "NOT_RUN",
+  "hosted_ci": "NOT_RUN",
+  "plan": "RPF-66/rev-4",
+  "reanchored_60": "NOT_RUN",
+  "reason_not_run": "P1 protocol contract conflict established before implementation; no source freeze or paid admission",
+  "reviewed_public": "NOT_RUN",
+  "scope": "12 direct original-parser fixture cases; NOT focused/full/semantic Witness acceptance",
+  "windows312_parent": "NOT_ESTABLISHED"
+}

@@ -1,0 +1,91 @@
+{
+  "active_hooks": [],
+  "ancestors_reparse_free": true,
+  "base": "862e7ad4ee5597edc1b32d951aa57c48344393a9",
+  "base_remote_git_and_github_api_match": true,
+  "branch": "codex/rpf-66-rev4-terminal-output-budget-contract",
+  "child": {
+    "executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "expected_version": "3.12.13",
+    "metadata": "NOT_RUN",
+    "version_launch": "NOT_RUN"
+  },
+  "custom_hooks_path": null,
+  "disk_free_gb_observed": 123.46,
+  "feature_branch_workflow_trigger": false,
+  "implementation_sources_unchanged": {
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "raw_sha256": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_external.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "raw_sha256": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r66_context.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "b10fc8ec1019ea20f031f174abccbbe16c9a19fba6cf64d89d84473a2dfc95eb",
+      "raw_sha256": "388f695ad35d85b7a88cf3c2c047a05058c5e8b6d8a31e9cb2e4ebf15ba73c0e"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r66_explorer.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "d4140ced303e2a89e643accc4d81a52de4d78a455ead85f14f101ce12c536609",
+      "raw_sha256": "d4140ced303e2a89e643accc4d81a52de4d78a455ead85f14f101ce12c536609"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r66_session.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "f41d6f736be2d50713587c2d251e1ceb837c27866b35682382ae12c8f912ab64",
+      "raw_sha256": "f41d6f736be2d50713587c2d251e1ceb837c27866b35682382ae12c8f912ab64"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r66_target_config.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "41081ef409798b13b29321567fc90de44df1cb463f710808a13e6955814ccdf6",
+      "raw_sha256": "41081ef409798b13b29321567fc90de44df1cb463f710808a13e6955814ccdf6"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r66_verify.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "79973f913d3714bfe3346da9a4aee39101b470050de68f8a988225eb04839f74",
+      "raw_sha256": "79973f913d3714bfe3346da9a4aee39101b470050de68f8a988225eb04839f74"
+    },
+    "runtime/tests/test_effectwitness_pge_r66.py": {
+      "equals_base_lf": true,
+      "lf_sha256": "ce524799144abf004eddd2a655ca987ff5efb39c87e92d19487f462fbb515895",
+      "raw_sha256": "ce524799144abf004eddd2a655ca987ff5efb39c87e92d19487f462fbb515895"
+    }
+  },
+  "java": {
+    "executable_sha256": "9da06bd6c880c0c8d1a63e3716f8ef7996f146c41e6d339e4eafc93df28392f9",
+    "identity_source": "JDK_RELEASE_FILE_NO_PROCESS",
+    "version": "17.0.12"
+  },
+  "loopback_six_available": true,
+  "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+  "new_branch_absent_local_remote": true,
+  "new_root_absent_before_creation": true,
+  "nine_new_paths_absent_disk_index_base_and_github": true,
+  "origin": "https://github.com/MyKr-YSteinsK/runproof.git",
+  "original_jar": {
+    "bytes": 66981576,
+    "copied": false,
+    "sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
+  },
+  "parent": {
+    "sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+    "version": "3.14.6"
+  },
+  "plan": "RPF-66",
+  "protected_review_access": false,
+  "revision": "rev-4",
+  "root_ignored": true,
+  "six_existing_tracked": true,
+  "source_freeze": "NOT_RUN",
+  "status": "PASS",
+  "unrelated_top_level_status": "?? docs/reviews/"
+}

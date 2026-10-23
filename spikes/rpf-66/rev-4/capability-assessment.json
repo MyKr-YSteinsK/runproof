@@ -1,0 +1,20 @@
+{
+  "actual_outbound_512": "NOT_IMPLEMENTED_OR_TESTED",
+  "copied_completion_debt": "NOT_INTRODUCED",
+  "evidence_accepted": "ARCHITECT_REVIEW_REQUIRED",
+  "inference": "Changing only the authorized Host/Broker caps cannot make the required original parser accept the extended output range.",
+  "new_abi": "NOT_IMPLEMENTED",
+  "observed_fact": "Original parser rejects valid stop responses with completion_tokens 257/300/512 at protected hard limit 256.",
+  "plan": "RPF-66/rev-4",
+  "protected_files_modified": false,
+  "rejected_approaches": [
+    "global LIMITS mutation",
+    "response usage rewriting",
+    "swallowing PROVIDER_OUTPUT_TOKEN_LIMIT",
+    "replacing original parser without authorization",
+    "paid trial relying on completion <=256"
+  ],
+  "required_next_decision": "Explicitly authorize a request-scoped output bound in the strict validator, or a task-owned complete strict validator with revised original-parser requirement. Preserve length/usage/identity/tool rejection.",
+  "stage_advanced": false,
+  "status": "BLOCKED"
+}
