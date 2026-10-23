@@ -4,7 +4,7 @@ Status: Partial
 
 ## 结论
 
-- G0=PASS；R3-A01=PASS；R3-A02=PASS；R3-A03=PASS；R3-A04=PASS；R3-A05=PASS；R3-A06=FAIL；R3-A07=FAIL；R3-A08=NOT_RUN；R3-A09=PASS；R3-A10=NOT_RUN。
+- G0=PASS；R3-A01=PASS；R3-A02=PASS；R3-A03=PASS；R3-A04=PASS；R3-A05=PASS；R3-A06=FAIL；R3-A07=FAIL；R3-A08=NOT_RUN；R3-A09=PASS；R3-A10=PASS。
 - Base=`7858badb829265b738fc7ccf2de31711df51d9c8`；branch=`codex/rpf-67-rev3-http-fixture-runtime-recovery`；ABI=`rpf67-order-real-target-v3`。
 - Source digest=`02739974284fc41975a60b3160d41f938f080338a2e3e7517d2724c4a3fec001`；raw/LF Source Map 25项及冻结身份见 [preflight-diagnostic.json](preflight-diagnostic.json)。
 
@@ -49,7 +49,7 @@ Status: Partial
 
 - 修改existing 7项；新增9项；精确路径、G0、source/helper冻结及所有尝试见machine diagnostics。
 - task-owned PID/thread/loopback port/临时key引用按新WAL、SDK report和OS查询核对；新DB/WAL/receipt/source snapshots/失败和取消日志留ignored `.local/rpf-67-rev-3/`。旧runtime、SDK安装、用户保护目录不复制/清空；原固定SDK仅进行获准pin及只读执行。
-- source commit=`NOT_RUN`；Git交付尚未完成。
+- source commit=`3fdf4a2dc557a125a146a19db63c85fe631954b6`；已普通push并由Git/GitHub API双读确认。最终receipt SHA由聊天回执提供。
 - main与rev2父分支保持G0 SHA；无PR/merge/rebase/force/tag/release/deploy/CI dispatch/赛事提交。用户docs/reviews仅根级status marker，未进入/读取/列举/暂存。
 - Explorer NOT_RUN；L2 NOT_TESTED；cross_domain_same_session NOT_PROVEN；web NOT_INTEGRATED；causality NOT_PROVEN；independent_reproduction NOT_TESTED；issuer NOT_ESTABLISHED；production_release NOT_AUTHORIZED。不拼接旧Config/Order证明共享会话，不声称第三方签名或生产事实。
 - TASK_COMPLETE由Codex据Gate回传；EVIDENCE_ACCEPTED/STAGE_ADVANCED仍待Architect后审。

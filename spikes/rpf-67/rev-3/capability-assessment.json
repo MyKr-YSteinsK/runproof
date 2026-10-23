@@ -12,7 +12,7 @@
     "R3-A07": "FAIL",
     "R3-A08": "NOT_RUN",
     "R3-A09": "PASS",
-    "R3-A10": "NOT_RUN"
+    "R3-A10": "PASS"
   },
   "source": {
     "source_digest": "02739974284fc41975a60b3160d41f938f080338a2e3e7517d2724c4a3fec001",

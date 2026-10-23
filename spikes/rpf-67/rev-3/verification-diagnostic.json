@@ -12,7 +12,7 @@
     "R3-A07": "FAIL",
     "R3-A08": "NOT_RUN",
     "R3-A09": "PASS",
-    "R3-A10": "NOT_RUN"
+    "R3-A10": "PASS"
   },
   "source": {
     "source_digest": "02739974284fc41975a60b3160d41f938f080338a2e3e7517d2724c4a3fec001",
@@ -5861,7 +5861,20 @@
     "unknown": false,
     "wal_retained": true
   },
-  "delivery": null,
+  "delivery": {
+    "branch": "codex/rpf-67-rev3-http-fixture-runtime-recovery",
+    "deploy": "NOT_RUN",
+    "dispatch": "NOT_RUN",
+    "git_remote": "3fdf4a2dc557a125a146a19db63c85fe631954b6",
+    "github_api": "3fdf4a2dc557a125a146a19db63c85fe631954b6",
+    "head": "3fdf4a2dc557a125a146a19db63c85fe631954b6",
+    "hosted_ci_runs": 0,
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "merge": "NOT_RUN",
+    "parent": "7858badb829265b738fc7ccf2de31711df51d9c8",
+    "pr": "NOT_CREATED",
+    "source_commit": "3fdf4a2dc557a125a146a19db63c85fe631954b6"
+  },
   "hosted_ci": "NOT_RUN",
   "windows312_parent": "NOT_ESTABLISHED",
   "docker": "UNAVAILABLE (two original skips)",

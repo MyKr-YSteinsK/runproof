@@ -12,7 +12,7 @@
     "R3-A07": "FAIL",
     "R3-A08": "NOT_RUN",
     "R3-A09": "PASS",
-    "R3-A10": "NOT_RUN"
+    "R3-A10": "PASS"
   },
   "g0": {
     "status": "PASS",

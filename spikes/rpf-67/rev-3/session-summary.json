@@ -12,7 +12,7 @@
     "R3-A07": "FAIL",
     "R3-A08": "NOT_RUN",
     "R3-A09": "PASS",
-    "R3-A10": "NOT_RUN"
+    "R3-A10": "PASS"
   },
   "source_kind": "REAL_PROVIDER_TARGET_ORDER",
   "context": {
@@ -531,6 +531,10 @@
     "evidence_gaps": [],
     "receipt_hash": "b0afd56d644ae863bfdb442a76c355f2e4f94037c8509054c414d848a0db115f",
     "state_diff": {
+      "status": {
+        "before": "PAID",
+        "after": "REFUNDED"
+      },
       "refunded_minor": {
         "before": 0,
         "after": 2500
@@ -538,10 +542,6 @@
       "revision": {
         "before": 0,
         "after": 1
-      },
-      "status": {
-        "before": "PAID",
-        "after": "REFUNDED"
       }
     }
   },
@@ -1435,7 +1435,20 @@
     "independent_reproduction": "NOT_TESTED",
     "production_release": "NOT_AUTHORIZED"
   },
-  "delivery": null,
+  "delivery": {
+    "branch": "codex/rpf-67-rev3-http-fixture-runtime-recovery",
+    "deploy": "NOT_RUN",
+    "dispatch": "NOT_RUN",
+    "git_remote": "3fdf4a2dc557a125a146a19db63c85fe631954b6",
+    "github_api": "3fdf4a2dc557a125a146a19db63c85fe631954b6",
+    "head": "3fdf4a2dc557a125a146a19db63c85fe631954b6",
+    "hosted_ci_runs": 0,
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "merge": "NOT_RUN",
+    "parent": "7858badb829265b738fc7ccf2de31711df51d9c8",
+    "pr": "NOT_CREATED",
+    "source_commit": "3fdf4a2dc557a125a146a19db63c85fe631954b6"
+  },
   "Witness": "NOT_RUN_PATH_ABSENT",
   "Agent_failure": "NOT_PROVEN",
   "terminal_request_diagnostic": {
