@@ -271,7 +271,7 @@
     "A07": "NOT_RUN",
     "A08": "NOT_RUN",
     "A09": "PASS",
-    "A10": "NOT_RUN"
+    "A10": "PASS"
   },
   "formal_trial": "FAILED_AFTER_FIRST_PROVIDER_RESPONSE"
 }

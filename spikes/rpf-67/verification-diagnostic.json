@@ -12,7 +12,7 @@
     "A07": "NOT_RUN",
     "A08": "NOT_RUN",
     "A09": "PASS",
-    "A10": "NOT_RUN"
+    "A10": "PASS"
   },
   "source_digest": "499d1546add4cd76a8a24015a79fbab1806beaf28f61091a3407ee3c3a957012",
   "source_map": {
@@ -2588,7 +2588,23 @@
   "windows312_parent_full": "NOT_ESTABLISHED",
   "fixed_sdk_child": "CPython3.12.13 / PydanticAI2.57.0 / OpenAI3.35.1",
   "docker": "UNAVAILABLE (two original skipped tests)",
-  "delivery": null,
+  "delivery": {
+    "source_commit": "5f9fa63b376a2af82138e97576e80619e59d1ceb",
+    "branch": "codex/rpf-67-real-order-target-domain-port",
+    "ordinary_push": "PASS",
+    "git_ls_remote": "5f9fa63b376a2af82138e97576e80619e59d1ceb",
+    "github_api": "5f9fa63b376a2af82138e97576e80619e59d1ceb",
+    "parent_unchanged": "a8b1ca8bf895370c1d136c61301bb25f8e7a6c0d",
+    "main_unchanged": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "hosted_branch_workflow_runs": 0,
+    "hosted_ci": "NOT_RUN",
+    "pr": "NOT_CREATED",
+    "merge": "NOT_RUN",
+    "release": "NOT_RUN",
+    "deploy": "NOT_RUN",
+    "worktree_marker": "?? docs/reviews/",
+    "receipt_commit": "FUTURE_SHA_REPORTED_IN_CHAT"
+  },
   "blocked": null,
   "real_trial_diagnostic": {
     "actual_arm": "NOT_ESTABLISHED",

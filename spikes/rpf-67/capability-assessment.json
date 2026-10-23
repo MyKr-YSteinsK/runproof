@@ -118,7 +118,7 @@
     "A07": "NOT_RUN",
     "A08": "NOT_RUN",
     "A09": "PASS",
-    "A10": "NOT_RUN"
+    "A10": "PASS"
   },
   "accepted_real_order_capability": "NOT_ESTABLISHED",
   "real_source_kind": "REAL_PROVIDER_TARGET_ORDER",

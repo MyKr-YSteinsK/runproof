@@ -514,5 +514,21 @@
     "wal_unchanged": true
   },
   "physical_wal_sha256": "cc634d8c30c64be9f3c141f69469c1281ee78d98389681b91834c2cd9a1d3bd0",
-  "delivery": null
+  "delivery": {
+    "source_commit": "5f9fa63b376a2af82138e97576e80619e59d1ceb",
+    "branch": "codex/rpf-67-real-order-target-domain-port",
+    "ordinary_push": "PASS",
+    "git_ls_remote": "5f9fa63b376a2af82138e97576e80619e59d1ceb",
+    "github_api": "5f9fa63b376a2af82138e97576e80619e59d1ceb",
+    "parent_unchanged": "a8b1ca8bf895370c1d136c61301bb25f8e7a6c0d",
+    "main_unchanged": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "hosted_branch_workflow_runs": 0,
+    "hosted_ci": "NOT_RUN",
+    "pr": "NOT_CREATED",
+    "merge": "NOT_RUN",
+    "release": "NOT_RUN",
+    "deploy": "NOT_RUN",
+    "worktree_marker": "?? docs/reviews/",
+    "receipt_commit": "FUTURE_SHA_REPORTED_IN_CHAT"
+  }
 }

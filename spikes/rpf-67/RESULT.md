@@ -12,7 +12,7 @@ Status: Partial
 
 - repo：`MyKr-YSteinsK/runproof`；分支：`codex/rpf-67-real-order-target-domain-port`；Base：`a8b1ca8bf895370c1d136c61301bb25f8e7a6c0d`。
 - Source digest：`499d1546add4cd76a8a24015a79fbab1806beaf28f61091a3407ee3c3a957012`；Verifier：`rpf67-order-witness-verifier-v1` / LF SHA=`1b00bea769e93d51050353515ed0486b99a2547898fb6efa8bf14ee9632fd036`。
-- G0=PASS；A01=PASS；A02=PASS；A03=PASS；A04=PASS；A05=PASS；A06=FAIL；A07=NOT_RUN；A08=NOT_RUN；A09=PASS；A10=NOT_RUN。
+- G0=PASS；A01=PASS；A02=PASS；A03=PASS；A04=PASS；A05=PASS；A06=FAIL；A07=NOT_RUN；A08=NOT_RUN；A09=PASS；A10=PASS。
 - A03 只表示免费 SDK 协议/负控通过；真实 Provider 兼容性在 A06 失败。A09 表示安全停机、边界和未知账本保留；不表示 usage 已知或票据全部 settled。
 - Source Map raw/LF、依赖闭包、快照、精确命令、exit、所有失败记录见 [verification-diagnostic.json](verification-diagnostic.json)。
 
@@ -59,7 +59,7 @@ RPF66/rev5 原 Witness 577721 bytes / SHA=`68dad2804edd3668e1e4b4ed19d18034b79d5
 
 ## Git 与研究边界
 
-- A10 尚未完成；后续仅对这14项新路径 focused commit 和普通 push。
+- Source commit `5f9fa63b376a2af82138e97576e80619e59d1ceb` 普通 push 后，fresh Git/GitHub API 均同 SHA；收尾 receipt commit 的自身未来 SHA 不回填，最终 SHA 由聊天回执提供。
 - main=`bda0cd49e50e3181f604324e94877a24b9885334`、父分支=`a8b1ca8bf895370c1d136c61301bb25f8e7a6c0d` 不变；无PR/merge/tag/release/dispatch/deploy/赛事操作。feature 分支未触发自动 Release Gate，CI `NOT_RUN`。
 - `Explorer=NOT_RUN`、`L2=NOT_TESTED`、`web=NOT_INTEGRATED`、`cross_domain_same_session=NOT_PROVEN`、`causality=NOT_PROVEN`、`issuer=NOT_ESTABLISHED`、`external_reproduction=NOT_TESTED`、`release=NOT_AUTHORIZED`。
 - RPF66配置成功与本轮失败不能证明同一 Session 跨域真实能力，R-07仍未完成。先解决响应摘要/协议兼容，再以新授权验证同一 Session 的 Config+Order Real Target，并评估 Context/WAL/child 抽取；本轮不实施跨域真实 Explorer。
