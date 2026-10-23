@@ -1,0 +1,1951 @@
+{
+  "plan": "RPF-68",
+  "status": "BLOCKED",
+  "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "unittest",
+        "runtime.tests.test_effectwitness_pge_r68",
+        "-v"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-e2027662f0",
+      "elapsed_seconds": 79.077,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "f8ff9b8909325bfe29c069214c0815f6fcd0748733478920bbc8452957dee5b0",
+      "parent_pid": 15772,
+      "pid": 15672,
+      "skips": 0,
+      "source_digest": "80b0dd30299c6f64bbc9f5f79a824fdee3964960c555b5c0cdc2646f6c43fb8c",
+      "started_utc": "2026-10-23T13:18:09.958396+00:00",
+      "tests": 8
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "D:\\CS\\runproof\\.local\\rpf-68\\controls-final.py"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 84.749,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "9c3823c5862269504491beabb2fbc6f307d67e332116943480768282382a45d8",
+      "parent_pid": 26068,
+      "pid": 22248,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:35.809846+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r67_order_verify",
+        "spikes/rpf-67/rev-4/order-target-witness.json",
+        "--sha256",
+        "a2ab94b70a144e389b324cb4731aba6d48a28fc0e77646c54c20a490d2b72c26"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.624,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "2e2dc674ffdfe537f34a13a38b4e2cba6135a79af43ce8712990750bae6023c0",
+      "parent_pid": 17124,
+      "pid": 34312,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:36.769453+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.witness_verify",
+        "spikes/rpf-43/sample-witness.json",
+        "--expected-sha256",
+        "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.325,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "c1beb46b130ce465a8dbee5f1437e7936c7ef73f5218e0d2586adf7deefd484b",
+      "parent_pid": 17124,
+      "pid": 33384,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:25.630501+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.witness_verify",
+        "spikes/rpf-44/sample-ops-witness.json",
+        "--expected-sha256",
+        "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.335,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "a62ace157bf1d67d3be657e553984a2e70a12d9f69b2b295479249ae281c85ec",
+      "parent_pid": 17124,
+      "pid": 27388,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:25.968714+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.target_evidence",
+        "spikes/rpf-48/target-agent-summary.json",
+        "--expected-sha256",
+        "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.347,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "903723d3b325ae9a866b0ed1044c7c6355761b59da085bb945e2c606406ddc70",
+      "parent_pid": 17124,
+      "pid": 15512,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:26.318347+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.target_recovery",
+        "spikes/rpf-49/recovery-summary.json",
+        "--expected-sha256",
+        "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.368,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "f7a85b6f794b2c438569694ed22e6f3360da61703a9eefdc94fc19c7292c7596",
+      "parent_pid": 17124,
+      "pid": 3752,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:26.672530+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.violation_witness",
+        "spikes/rpf-50/violation-witness.json",
+        "--expected-sha256",
+        "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.345,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "0e2669d18cfbe3d08814e3b0cfad06e831c85bb52155cfa702ae717305e69a32",
+      "parent_pid": 17124,
+      "pid": 20648,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:27.053373+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_http_witness",
+        "spikes/rpf-51/rev-4/config-http-witness.json",
+        "--expected-sha256",
+        "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.34,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "d667a4412d5fd4b0841f6c5035fca8c137221244b247ad07b4e99fab5ca59267",
+      "parent_pid": 17124,
+      "pid": 14592,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:27.412063+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_target_verify",
+        "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+        "--expected-sha256",
+        "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.349,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "a74f0e57b674155be1485bf9431e1a536e5bc3f00541a80e47d7ac0be342c762",
+      "parent_pid": 17124,
+      "pid": 31060,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:27.764843+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_live_verify",
+        "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "--sha256",
+        "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.288,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parent_pid": 17124,
+      "pid": 28924,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:28.120175+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_experiment_verify",
+        "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+        "--sha256",
+        "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.421,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "8a346a50a1539873a63e83ec663c0b8d41065553cc8cfe8323a1c9d043043173",
+      "parent_pid": 17124,
+      "pid": 3692,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:28.413308+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_pge_verify",
+        "spikes/rpf-56/rev-4/config-pge-evidence.json",
+        "--sha256",
+        "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.451,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "e2e468363d6e4a0214ee45c92c7fc807edd601e551206c5ad6463829516da4cc",
+      "parent_pid": 17124,
+      "pid": 12124,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:28.847779+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_pge_coverage_verify",
+        "spikes/rpf-57/config-pge-coverage-evidence.json",
+        "--sha256",
+        "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.472,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "0fe2bb79a3f01ed78d31e165a0fae004c71ffd4f790fd007c71e37933f9411aa",
+      "parent_pid": 17124,
+      "pid": 30332,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:29.310937+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_shared_verify",
+        "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+        "--sha256",
+        "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.552,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "3e7e477e3de8385f542d35757c2305c2435221972fa95b5c0954a9bb1337719e",
+      "parent_pid": 17124,
+      "pid": 11780,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:29.796463+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_select_verify",
+        "spikes/rpf-59/cross-domain-selection-evidence.json",
+        "--sha256",
+        "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.637,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "5dda2d22c76aa503fd29b38f590fa70c1b8b61eb27df001280bba0666d53a454",
+      "parent_pid": 17124,
+      "pid": 13100,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:30.352268+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.lab_cross_domain_verify",
+        "spikes/rpf-60/cross-domain-live-evidence.json",
+        "--sha256",
+        "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.641,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "b5a5edd9fce0d5520e16e7a9b2bac6c3f47310e51c4506849a6b393ebdb239ac",
+      "parent_pid": 17124,
+      "pid": 15680,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:30.992419+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_target_capability_verify",
+        "spikes/rpf-62/real-target-witness.json",
+        "--sha256",
+        "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.437,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "8f8d5fdddf7ad8979715f4525aceabda6cd7e92ba519111a7f928a619f5de24c",
+      "parent_pid": 17124,
+      "pid": 16076,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:31.638333+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_dual_verify",
+        "spikes/rpf-63/dual-agent-evidence.json",
+        "--sha256",
+        "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.464,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "55ed3e6ba72ba36a72bb17f55dee9618bcac65750738365ed9806ba42e7ca665",
+      "parent_pid": 17124,
+      "pid": 28960,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:32.078998+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_portability_verify",
+        "spikes/rpf-64/portability-witness.json",
+        "--sha256",
+        "d5798bfa82ef9523039a1461c82842aa9f265703ada492cef3cf068208e5ff19"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.466,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "ced5d4f21b36c78878c27c6e4f52aae2d680a41ad864f7016a6bda7af0bc8683",
+      "parent_pid": 17124,
+      "pid": 18644,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:32.546005+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r65_verify",
+        "spikes/rpf-65/rev-2/target-witness.json",
+        "--sha256",
+        "2c8691137603cc69d9a1cf92f7800da65dd803bd8e49291187caecac6c5eea2d"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.938,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "7529b5d7ed11565c4ef32615722e0a683aa4dd19775aff6a92c055e2da015ffc",
+      "parent_pid": 17124,
+      "pid": 25840,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:33.015133+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r66_verify",
+        "spikes/rpf-66/rev-5/dual-agent-witness.json",
+        "--sha256",
+        "68dad2804edd3668e1e4b4ed19d18034b79d5fa1892e9fea75aaeb9080c4f3c5"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 1.582,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "19f9ef58c472ce7639ca662febd374892a2df85393d4b37333a923a9d86d02b8",
+      "parent_pid": 17124,
+      "pid": 28740,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:33.956693+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "runtime/verify-reviewed-artifacts.py"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.864,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "672ee889968f5f19453058932c6538cc17c5d05bd366f6e9bb7bec62d1781fcc",
+      "parent_pid": 17124,
+      "pid": 12016,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:35.543202+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "ci/verify-public-docs.py"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 0.353,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "e0647ec67a2b43dc8423f0b48665fbb250a033365b2d5f339d9761f7992f9cca",
+      "parent_pid": 17124,
+      "pid": 32532,
+      "skips": 0,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:36.410509+00:00",
+      "tests": null
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "runtime/tests",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+      "elapsed_seconds": 794.022,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "log_sha256": "bb70fbd6e6ab0103d3d95029fc3e1d81e8d2cd4ce288ab71c082cf1d339a7e59",
+      "parent_pid": 31960,
+      "pid": 5908,
+      "skips": 2,
+      "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+      "started_utc": "2026-10-23T13:24:10.304092+00:00",
+      "tests": 495
+    }
+  ],
+  "full_runtime_runs": 1,
+  "full_runtime_maximum": 2,
+  "final_source_full": {
+    "command": [
+      "python",
+      "-X",
+      "utf8",
+      "-B",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "runtime/tests",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "cwd": ".local/rpf-68/snapshots/final-9924f6fa13",
+    "elapsed_seconds": 794.022,
+    "errors": 0,
+    "exit": 0,
+    "failures": 0,
+    "log_sha256": "bb70fbd6e6ab0103d3d95029fc3e1d81e8d2cd4ce288ab71c082cf1d339a7e59",
+    "parent_pid": 31960,
+    "pid": 5908,
+    "skips": 2,
+    "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+    "started_utc": "2026-10-23T13:24:10.304092+00:00",
+    "tests": 495
+  },
+  "earlier_focused_source": "80b0dd30299c6f64bbc9f5f79a824fdee3964960c555b5c0cdc2646f6c43fb8c",
+  "new_test_count": 9,
+  "synthetic_controls": {
+    "controls": 118,
+    "rows": [
+      {
+        "code": "{\"L2\":\"NOT_ESTABLISHED\",\"boundaries\":{\"L2\":\"NOT_ESTABLISHED\",\"causality\":\"NOT_PROVEN\",\"external_third_domain\":\"NOT_PROVEN\",\"independent_reproduction\":\"NOT_TESTED\",\"issuer\":\"NOT_ESTABLISHED\",\"release\":\"NOT_AUTHORIZED\",\"web\":\"NOT_INTEGRATED\"},\"cross_domain_feedback\":true,\"known_tokens\":5170,\"provider\":0,\"reserved_tokens\":0,\"source_kind\":\"SYNTHETIC_TEST_ONLY\",\"status\":\"PASS\"}",
+        "exit": 0,
+        "expected": 0,
+        "label": "original",
+        "pid": 3200,
+        "raw_sha256": "198d0f7de42042f3c76e947856f742f18e41387d0f83847595bf9ebbfac334c2",
+        "stderr_empty": true
+      },
+      {
+        "code": "EXTERNAL_RAW_ANCHOR_REQUIRED",
+        "exit": 2,
+        "expected": 2,
+        "label": "missing",
+        "pid": 33716,
+        "raw_sha256": "198d0f7de42042f3c76e947856f742f18e41387d0f83847595bf9ebbfac334c2",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXTERNAL_RAW_SHA",
+        "exit": 3,
+        "expected": 3,
+        "label": "wrong",
+        "pid": 33500,
+        "raw_sha256": "198d0f7de42042f3c76e947856f742f18e41387d0f83847595bf9ebbfac334c2",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-owner",
+        "pid": 1868,
+        "raw_sha256": "a9c376b944766f577105567e76d36e5afcc0c783a0d1b01d85267c3e5e7aedf3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-abi",
+        "pid": 19852,
+        "raw_sha256": "60942fa4cad2f24f0834ab113d7b3475f67229ae8def4a67f545c547fce72960",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-base",
+        "pid": 15040,
+        "raw_sha256": "78675d58056a1902b3466d07fa8f4a673eba3c05e5bfd64f90c247c893eac623",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-branch",
+        "pid": 19668,
+        "raw_sha256": "1e6daaa2a25698bc1a285ae671a6e51570661049f65f60b3e02995c7ebc80667",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-source_kind",
+        "pid": 30072,
+        "raw_sha256": "8cfcc67a85e0f7e8b14d9ed4548bca08500742391cf60423308ec75f6c0de039",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-workspace",
+        "pid": 10904,
+        "raw_sha256": "b68dc7b2ecc3e3128d3e21be770be9b13121daa56da95438be30f520f9ff247c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-session_id",
+        "pid": 24872,
+        "raw_sha256": "1838145a2ac3fa85014fc9053f4fb8b1f0e8c2b7e0e1c92a02804f2fef182cd4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "context-source_digest",
+        "pid": 2068,
+        "raw_sha256": "dc606146e330db71137975bdc9beb450a182fefc230a5e65cd6dbc3849da6c57",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "source-current-raw",
+        "pid": 22348,
+        "raw_sha256": "968a51ee0b7374f1e10a2d7ee010aa7a13fd722ca0440fb2041172f6ea665a13",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "source-lf-history-relabel",
+        "pid": 27944,
+        "raw_sha256": "87ef2ac620b6d13b4281f5a1d32bc9d78e3a3167c272bc9dce71c8a540ad78d4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-provider",
+        "pid": 16272,
+        "raw_sha256": "1065bbd5757f5d099f90f27f0822f04553c0f6c7d532b60095db7ee0caa634da",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-sqlite_refund",
+        "pid": 16320,
+        "raw_sha256": "42c1a54a9bb84a29e1ad4ab1c8c1edf6431b3b330516551272dd4aa3ceb4430b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-config_post",
+        "pid": 22408,
+        "raw_sha256": "48cb29c9e97f370e9ecea4422126438a988f94ea741861abd5af052a8f092539",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-jvm",
+        "pid": 13104,
+        "raw_sha256": "8d58276ef0b7078ba6abab6182bc8bc670cd7e897dd89e3a8732568ca3187249",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-trial",
+        "pid": 8768,
+        "raw_sha256": "44e366e9e62c04fcb4bafe3e3803fd9c14419d686dca2ea255d7adda71aefc5e",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-sdk",
+        "pid": 14360,
+        "raw_sha256": "03f32924560c3ea68b6f4f4a154f60984070945515ec38241881672cd02e00e9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-cold",
+        "pid": 25188,
+        "raw_sha256": "a3e01f59da74b67151ef635d1f1964c7bfb8d1f6855e9c6e1e1883926f49c340",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "pool-authority_read",
+        "pid": 19784,
+        "raw_sha256": "52ad2debc61e4c78fdee4e2fc87e97b0f220d3f5dc1569680c4500d19eb23ba9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-causality",
+        "pid": 24204,
+        "raw_sha256": "852d44bccab40ad64f3b001d1d8d3a198351bd4a3bac543ff8d846d76bbafbd9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-issuer",
+        "pid": 33696,
+        "raw_sha256": "6e2df3dbaac05e79a0853000a7d9f771ce414b08d8b8b8fbd25e58969b976252",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-L2",
+        "pid": 33112,
+        "raw_sha256": "4269aeeaa3743479ca6ad05867604ff018e70416fb5ff65e08e09efd395f15d2",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONTEXT_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "boundary-release",
+        "pid": 30824,
+        "raw_sha256": "8a484348b496b9b49ed586b88663a9d47ddba33c148d8cd79d8e801dbed7d941",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TWO_DOMAINS",
+        "exit": 3,
+        "expected": 3,
+        "label": "swap-domains",
+        "pid": 19572,
+        "raw_sha256": "18a70b0d7739aa53ffe0e81c86f32aeef68ebea95f76bbb074c310958b352d90",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TWO_DOMAINS",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-tag-as-order",
+        "pid": 22304,
+        "raw_sha256": "d36afd5198d98655ed7342148a0e6a307fb006ee87203a4a938f38e1de6a2be3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "second-round-as-first",
+        "pid": 29184,
+        "raw_sha256": "28d8d6778040244c883b5d8750da221a775b0267ca2f32cde1189b03d2860390",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:KeyError",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-candidate-in-config",
+        "pid": 28928,
+        "raw_sha256": "1e9dc65206331b5a0b46f7cff5ff56e20d3a7f8c7f3c5727a112213e52cbb5f7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:KeyError",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-candidate-in-order",
+        "pid": 16668,
+        "raw_sha256": "14ae76278682d8703a74afcbea6eee9c7b106b2bf66b5e6c540c0402471f8cd7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-foreign-facts",
+        "pid": 27732,
+        "raw_sha256": "281fea118f5466df99d002f4bd6cdc5ff5a11aa7f1417bd881f2b1d949a57414",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-unverified-verdict",
+        "pid": 2876,
+        "raw_sha256": "d7ba8754078b6a81e63f3e349d187f121d12885eb18973bde660836135fc47fa",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-source-contract",
+        "pid": 26444,
+        "raw_sha256": "6085ddfa237d5dabcbb38a6638c6b6cfb17a9650ceeafdbc1ddcc27accf9a9d8",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-source-event",
+        "pid": 23316,
+        "raw_sha256": "264726168ad448be8ae27f74d91900f770e9c04361f11ab3777e73a325d98e55",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-choice-id",
+        "pid": 34800,
+        "raw_sha256": "6b7a84230658e34334296f0b74ef286f84c1dd96d1a6b2fcbc6c483ae0acff30",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:VERIFIED_FEEDBACK",
+        "exit": 3,
+        "expected": 3,
+        "label": "feedback-domain-upgrade",
+        "pid": 29328,
+        "raw_sha256": "e84ca4d8a924c82780401370bafb45448418889719f3734e145aacfa8250f50c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FEEDBACK_INPUT_LINEAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-feedback-sha",
+        "pid": 11096,
+        "raw_sha256": "0e92c8309734cbf4d1b37d9747f0a05d74fcea7ee4db1f9ff881172428f7532d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FEEDBACK_INPUT_LINEAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-tool-id",
+        "pid": 25324,
+        "raw_sha256": "0351b31abf730fe83a2e8650a9b9bf85138efae12a3a3951e6736077063ceebf",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-messages-hash",
+        "pid": 30856,
+        "raw_sha256": "9324e170c2723485af9c88f6de8b92c8a8c8683842a386bc29d51956c9010c67",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_INPUT",
+        "exit": 3,
+        "expected": 3,
+        "label": "explorer2-input-truncated",
+        "pid": 19112,
+        "raw_sha256": "96830e9baeb308d61aa74ce65b38ee591ab98b9c1d034ca5f75d0d017db9ee12",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:ORIGINAL_SELECTION",
+        "exit": 3,
+        "expected": 3,
+        "label": "original-selection-id",
+        "pid": 17208,
+        "raw_sha256": "7b1ea0f884d7b86b3622a6437cbd202e6d001eb000ae5a5db73f7bd2e0522378",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:EXPLORER_WAL_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "choice-response-role",
+        "pid": 23112,
+        "raw_sha256": "78269803b6ad8269c55d3b62f5688b0a6921094c499c34ffa2b1830d5cd172cb",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:HTTP_SEQUENCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-as-order-backend",
+        "pid": 32908,
+        "raw_sha256": "611b3e6efad798393744067e78a9b4fa4559bdeda3e9352004b353294fbc58c7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_ORACLE",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-as-config-backend",
+        "pid": 11124,
+        "raw_sha256": "7e1a81f97da099bbfac7aba39c18a26edd55da94513e9a62130c0bda3a05c5db",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-planned",
+        "pid": 19568,
+        "raw_sha256": "7371a214e4bb927d95028d0c4e3f0b85f6cdd6d75116a51614e6bfb2e0452c48",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-triggered",
+        "pid": 17604,
+        "raw_sha256": "efbb7a56932c3dae8d5dab4e8d5b4ea926190ae4c03ef85df534fc895be0e089",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-observed",
+        "pid": 16580,
+        "raw_sha256": "312a763bd8fdeeacc3132896545903cbc913131ae26714b760f2cc4b73a2a7c3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-0-agent_exposed",
+        "pid": 24260,
+        "raw_sha256": "0fbdc6bc15e9021695ff72d621c7dae2959d733360088302b7cac74a4098ccd7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-status",
+        "pid": 27388,
+        "raw_sha256": "0a4aab9c6074714368e33eea900b0508d573199cfab596129166871a36141f19",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-requests",
+        "pid": 15448,
+        "raw_sha256": "82b2fcdb80ee97d4f628978fa39312ba0cede294f31e3cc6c59fe9a7eee55404",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-tool_callbacks",
+        "pid": 6784,
+        "raw_sha256": "22f237c04fea564b6894eba0a58cac3fc99e694518241c38ab5f3fef0c1bddb3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-input_tokens",
+        "pid": 24368,
+        "raw_sha256": "d7b133a839b6f97b0c4baf7ffc46637dc99d14bc7de495fd340dab21106158d6",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-output_tokens",
+        "pid": 11768,
+        "raw_sha256": "dbbf18bc77dd8ca77390e4e32c852bbe225cf09997cba519e29507535d2ad36b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-provider_key_present",
+        "pid": 6416,
+        "raw_sha256": "ab284ea3911e5989e3526e96c015bc6be157d8cbe6a6e68a99647287a5737d5b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-business_key_present",
+        "pid": 25032,
+        "raw_sha256": "f0910a37f6ed290ed13808a11bb6c5cede0870374a18e44a0cc83d490c7e8bae",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-guard_denials",
+        "pid": 25648,
+        "raw_sha256": "9b336dcfcd2154f40ba15fe594e7fd53a4e8acdfd9c7cfaddf0364e27f3886ac",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-final_text_persisted",
+        "pid": 30332,
+        "raw_sha256": "53c96d3cc826bf207602d2c712b3aa39f20e821bafc23ae5a2bf68674141e6d7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-child-source",
+        "pid": 11780,
+        "raw_sha256": "54d0698435a1085d662dfc4d7336e8d9a12545e8fd03e6d6a18f5439ca61916c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-python-pin",
+        "pid": 29740,
+        "raw_sha256": "f8c25c5e5cdd73a99561b2060dd74bed3dc5747e8e58da414f661db453a7a3b3",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-openai-pin",
+        "pid": 33628,
+        "raw_sha256": "cdad2ce30ee00a35f736c711fb68bbf9f7b2e2a07ee0fde11239d509ba3d1a1b",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-process_gone",
+        "pid": 34304,
+        "raw_sha256": "664ae0d00e75854eaac69c743a3c54f43af4eb1982eaf0c39d8d4bcf0b53c43d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-thread_gone",
+        "pid": 31720,
+        "raw_sha256": "77b6f88d57e7e2fffd758ca91c733dc6f6f458056ab019680792a3d484df8a2e",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-port_closed",
+        "pid": 25876,
+        "raw_sha256": "9d1b30596b402bdd42cf24f639c57ed6b9c93e0ffa0e7ef02897ea457bbe005e",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-0-cleanup-key_reference_released",
+        "pid": 28780,
+        "raw_sha256": "c00ce83d2573980c044cbdf40b95d7d6c95cab5a2659e2bb7f9ec49cd40f5fb4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-planned",
+        "pid": 25544,
+        "raw_sha256": "6f5a3e6f4a449eafc5c78132aa6b5ab8730d1918cdc035c1bd7dd9d7af54651e",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-triggered",
+        "pid": 23616,
+        "raw_sha256": "6f5eb6adee47a9b1653f2bb04de04a7f008df4640b272d9ed36797c26fe10d03",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-observed",
+        "pid": 20028,
+        "raw_sha256": "7987926b6a58d22c18729c48a2b69c25caa5db7a1bd751c22e70b5b65c4a97e1",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:FAULT_FOUR_STATES",
+        "exit": 3,
+        "expected": 3,
+        "label": "fault-1-agent_exposed",
+        "pid": 31668,
+        "raw_sha256": "e803ccaa39fd243ae358434684da922bb7517bdfb47fc2327c70157d43f70012",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-status",
+        "pid": 30244,
+        "raw_sha256": "fba848f7b66d909864abfa37e4ce94e733cce92441fcbb5e93ecc0e5df28be79",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-requests",
+        "pid": 26532,
+        "raw_sha256": "1bca554fbc9e102bf1cac980a1778d0b2be07423450e3c0b8d98be8208433225",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_COUNTS",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-tool_callbacks",
+        "pid": 34660,
+        "raw_sha256": "607bd51400a517cfc73521187f30854e719d1fa0bbd27e96259e5d6fde78ecc0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-input_tokens",
+        "pid": 2756,
+        "raw_sha256": "f7321d2636d8df869a8a923ea02d51cc37880489eb8ba21fc2d4d295d8676fde",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_TOKEN_USAGE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-output_tokens",
+        "pid": 18644,
+        "raw_sha256": "8a8d3b3e6c38fe4cda63df18d949c84c80b65ebe04b0bdd4b618e622d6de88f4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-provider_key_present",
+        "pid": 25968,
+        "raw_sha256": "b0eab483ebcafa7f6f64c0a816edb8b068090677ab67c27e1796e6e7242ca639",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-business_key_present",
+        "pid": 14172,
+        "raw_sha256": "02ce4b5421877dad199c57c4414b35670f95ee84e031626cdd7e1a31f324e2cb",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-guard_denials",
+        "pid": 29392,
+        "raw_sha256": "4a121b01ce8a6bbe67600027c00448f4c23ebeba5c55ee42869cf147201c5935",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-final_text_persisted",
+        "pid": 24660,
+        "raw_sha256": "986014c4cf4c36d0b6a0ef069930805f58ae7531374ddb161da6b3fc8bff54a4",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_GUARD_SOURCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-child-source",
+        "pid": 4220,
+        "raw_sha256": "46898afe6c2e0cd0108687336836339bbb3acbf859138c817474733594f519ce",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-python-pin",
+        "pid": 8976,
+        "raw_sha256": "d17ea77a66d7786ae67873f81c16473935c4226517c7389f9f4d474d13fbf3be",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SDK_IDENTITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-openai-pin",
+        "pid": 30996,
+        "raw_sha256": "c0008a36db477b8d539361892fd507d21b7f45e11490d20c6ce3903028008700",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-process_gone",
+        "pid": 6244,
+        "raw_sha256": "b03bfb19a3f543558f9113f6e86a6a044c4be05ddc093ec81827701040cb5458",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-thread_gone",
+        "pid": 6608,
+        "raw_sha256": "9b5c2de97da2cc4c707879400bce0152e01665461c806e15adedd1999362e4c0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-port_closed",
+        "pid": 10484,
+        "raw_sha256": "58f397e3d6fa64134b249c53babaf882d8c33058a6e3136e00a566884762e5b7",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CLEANUP",
+        "exit": 3,
+        "expected": 3,
+        "label": "sdk-1-cleanup-key_reference_released",
+        "pid": 4496,
+        "raw_sha256": "ba8002ec825f97a6cec3346ef3f4638cc58e0a3ea4b3cd42215f4fbf524c5c9c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_REQUEST_CAP",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-input_upper",
+        "pid": 9928,
+        "raw_sha256": "0abc7dc3b5e6d94dd4deb365538ce4ae9111faa7381f3d056ae285f6b07e80c8",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-previous_prompt",
+        "pid": 13796,
+        "raw_sha256": "3365efa21975db085256da8baaa7ef69cb35b6022521c32c3a0aaa77e43978ce",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-suffix_bytes",
+        "pid": 30724,
+        "raw_sha256": "6241bc022d01872364773a6b3a9d841fc3b4abb1b8d0d53552de8009b173daa9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-framing_guard",
+        "pid": 27180,
+        "raw_sha256": "11a22313f57b1c593e7349f2c06dbfcb671e05458a73bfc86724e5e18a302c48",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_REQUEST_CAP",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-output_cap",
+        "pid": 29140,
+        "raw_sha256": "ac46970872afc00eabe2a201cf3273773a9735b08a481085f883f62a97f0e299",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_REQUEST_CAP",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-slot_cap",
+        "pid": 34040,
+        "raw_sha256": "dc9cad848890c92528a4968cebd368d5aa2d98942184653e30cb9a4a3535b7f0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_REQUEST_CAP",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-ordinal",
+        "pid": 30716,
+        "raw_sha256": "f9440157700a7fcf74c74043c4b49b8b6ff949a50fde037485bffe61af52131a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TOOL_REINJECTION",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-tool_returns",
+        "pid": 28032,
+        "raw_sha256": "6ff27d8c03c299cdc0ef753e1b2c9321df967fa944ed58fbf097da05f0015829",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SUFFIX_INPUT_PROOF",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-canonical_bytes",
+        "pid": 29896,
+        "raw_sha256": "0e25523605a5b89c1623648be7800ffdd2e78fbff76b3697477518e8c0d6c838",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:CONFIGURATION_DRIFT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-configuration_sha256",
+        "pid": 34424,
+        "raw_sha256": "9157a0b356083d2798bdb0f6dc4386845000aba17ccd4f3af2e9a68af001934d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SCHEMA_DRIFT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-terminal-schema_sha256",
+        "pid": 28628,
+        "raw_sha256": "f05a0d09155cc931991f7c69d02f0e694a30e3ffff1bff6867ebf424435b2f68",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SHAPE_RESPONSE_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-length",
+        "pid": 5080,
+        "raw_sha256": "e53a5e28b330af4a7f7841ec3a5a84f39ee8c1d476b2e8025871536a9a1cfc6c",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-unknown-usage",
+        "pid": 27556,
+        "raw_sha256": "a840b7c49545e60b09768c8fa27fa7f582784b4200cef3c2cf03f55742209338",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-usage-overflow",
+        "pid": 8696,
+        "raw_sha256": "31c9018f2decb49cbaf48a3dad52a0a7fd441444b2d33ffa9b755d210fae79e5",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-reused-id",
+        "pid": 3312,
+        "raw_sha256": "5f2bcb9a760455e439a01462e47f71f20855e02a48ef8eda11ebaf6f98476ff1",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-wrong-model",
+        "pid": 11344,
+        "raw_sha256": "d04b77990e730fbc1785fe062e887bb8e41de4367570b00724c0094188f62ae9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SHAPE_RESPONSE_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-response-extra-tool-at-stop",
+        "pid": 22444,
+        "raw_sha256": "b3cfc1541b10f869e861881fcb30fd2b4e3c1f12982a69b86a04ce12133bbafc",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-command_verified",
+        "pid": 5544,
+        "raw_sha256": "5625bf02ac09d4f659ff5a14b48c342c0a05edf89bf8ac9348cdfa19594e223d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-listener_owned",
+        "pid": 29452,
+        "raw_sha256": "28b44243f71bbc6fa915f750600c686248574c3b49c297d261fcdf478ba79e9d",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-jar_sha256",
+        "pid": 9088,
+        "raw_sha256": "e061b360a49a456ffc85c1c9371d86d43993fd68304c7e2bf9d08769ff1e6911",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:JAVA_IDENTITY_READINESS",
+        "exit": 3,
+        "expected": 3,
+        "label": "java-jar_bytes",
+        "pid": 33496,
+        "raw_sha256": "d52d6256a48d0f7c5824c23e7b8c5330abdc760e099c454a7b0f47ee23326f09",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:HTTP_REQUEST_BINDING",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-missing-history",
+        "pid": 34056,
+        "raw_sha256": "43c99573a9b6c63a694db7bc1fe67584d5a0b21bf5a93e73b293e45184e2099a",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "config-wrong-effect",
+        "pid": 31208,
+        "raw_sha256": "0245d8caa9f761dff538b0d77e0eb3de797bbaddbe819b3d5eeac3381ab24364",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_CONTRACT",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-wrong-amount",
+        "pid": 27164,
+        "raw_sha256": "38e6b8f2aff060fa78a1c3e0ae614a3e7a6ecd3ba4f18403639c30db74b3d517",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-wrong-operation",
+        "pid": 30896,
+        "raw_sha256": "b0c3ba387467b30652093827d4c6c345728e16de365d891e1d50e61db80b9d11",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:DOMAIN_TOOL_ORDER",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-double-refund",
+        "pid": 32840,
+        "raw_sha256": "49b53d5e4e2e5a8e95ccdce48ef43e05c9f0496c5e55e97a77933a38df2637e0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_ORACLE",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-missing-receipt",
+        "pid": 24656,
+        "raw_sha256": "1f2f811f1d488510f9802f5f2eeb95fcf2776d1230f0f56ea767521ada481f56",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_AUTHORITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-forged-reader",
+        "pid": 27716,
+        "raw_sha256": "948d0b5cad4f51fe91031d42d5683da11c68ae7c5e0ce834d8e409e44689f1b8",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_AUTHORITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-cross-owner",
+        "pid": 7924,
+        "raw_sha256": "9c4c965ed88f387bff7ac42cd534e3fbfafa6787fdc27fb6d972ec882098f2d5",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SQLITE_AUTHORITY",
+        "exit": 3,
+        "expected": 3,
+        "label": "order-foreign-authority",
+        "pid": 17192,
+        "raw_sha256": "9fcc9c15efc073b7110c12b39b7ca11340dc4d63a0068c6d34dccb9bbdb7a790",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:ORACLE_VERDICT",
+        "exit": 3,
+        "expected": 3,
+        "label": "oracle-model-authority",
+        "pid": 9716,
+        "raw_sha256": "acee7687a459af2d16516f77653dca973499dad1ffb76ea245ede9c53ccf8b24",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:WAL_SCOPE_TIME",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-session-foreign",
+        "pid": 33456,
+        "raw_sha256": "d762f08a33a6807ffc0063712c92c56bf18403fc96e91ccd18d72b05f4d92474",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:MODEL_SCOPE_ORDER",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-explorer-role-as-target",
+        "pid": 6816,
+        "raw_sha256": "8e60b5fc46850469cab50e9215b98c76e7352be4d4c8b40cfcba36d2ef74e2a0",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:MODEL_SCOPE_ORDER",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-first-domain-as-second",
+        "pid": 16676,
+        "raw_sha256": "18140421b6af340a8457dfdbfae37bb27e860e7743d9fb396bf3dd53f8cddebc",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:ROUND_EVENT_COUNT",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-delete-first-domain-verified",
+        "pid": 33848,
+        "raw_sha256": "02c2377b2291909a1e6e6e584881f28a80bfc5ea6596a5befc48ddfe0430a8eb",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:TICKET_SEQUENCE",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-double-resource",
+        "pid": 11244,
+        "raw_sha256": "e560b3bcf4e37e95a42e83538580e1fa140634e9bcd4b8428f3a54e6e8fb4ff9",
+        "stderr_empty": true
+      },
+      {
+        "code": "REJECTED:ValueError:SAFE_PARSE_CHAIN",
+        "exit": 3,
+        "expected": 3,
+        "label": "wal-parse-before-shape",
+        "pid": 14316,
+        "raw_sha256": "818b5df6d189ef7959ce3372315719759b4aa515d74cdd67fea1bfbc4cabaf76",
+        "stderr_empty": true
+      }
+    ],
+    "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+    "status": "PASS"
+  },
+  "historical_original_certificates": 19,
+  "reviewed_public_checks": 2,
+  "additional_historical_rpf67": "PASS",
+  "maximum_input": {
+    "blocked": true,
+    "cleanup": [
+      {
+        "clock": 43300779398200,
+        "cold": false,
+        "domain": "config-java-http",
+        "key_reference_released": true,
+        "kind": "PROCESS_CLEANUP",
+        "pid": 30484,
+        "port_closed": true,
+        "process_gone": true,
+        "resource": "sdk",
+        "round": 1,
+        "session_id": "rpf68-151dea22934de5ff",
+        "thread_gone": true
+      },
+      {
+        "clock": 43302044583500,
+        "domain": "config-java-http",
+        "key_reference_released": true,
+        "kind": "PROCESS_CLEANUP",
+        "pid": 20052,
+        "port_closed": true,
+        "process_gone": true,
+        "resource": "jvm",
+        "round": 1,
+        "session_id": "rpf68-151dea22934de5ff"
+      }
+    ],
+    "code": "SDK_PROCESS_REPORT",
+    "command": "python -X utf8 -B .local/rpf-68/maximum_sdk_probe.py",
+    "context_sha256": "cde6fa16e5e949c0a9e616df81aeac5173070a72a0fed2d60aa1107175f4425a",
+    "counts": {
+      "authority_read": 2,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 8,
+      "config_post": 2,
+      "explorer_calls": 1,
+      "host": 1,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 1,
+      "session": 1,
+      "sqlite_refund": 0,
+      "sqlite_setup": 0,
+      "trial": 1
+    },
+    "cwd": ".",
+    "elapsed_seconds": 19.309,
+    "error_type": "ValueError",
+    "frames": [
+      {
+        "file": "maximum_sdk_probe_final.py",
+        "function": "<module>",
+        "line": 18
+      },
+      {
+        "file": "pge_r68_session.py",
+        "function": "run",
+        "line": 30
+      },
+      {
+        "file": "pge_r68_session.py",
+        "function": "execute",
+        "line": 16
+      },
+      {
+        "file": "pge_r68_driver.py",
+        "function": "run",
+        "line": 102
+      },
+      {
+        "file": "pge_r68_contracts.py",
+        "function": "require",
+        "line": 15
+      }
+    ],
+    "identifier_bytes": 160,
+    "mixed_content_bytes": 512,
+    "pid": 12924,
+    "pre_send": [
+      {
+        "clock": 43300037759300,
+        "cold": false,
+        "domain": "config-java-http",
+        "kind": "PRE_SEND_REJECTED",
+        "receipt": {
+          "network_sent": false,
+          "provider_reserved": false,
+          "reason": "INPUT_BOUND",
+          "request": {
+            "canonical_bytes": 3816,
+            "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+            "framing_guard": 512,
+            "input_upper": 2194,
+            "messages_sha256": "6df9e92602bdc817c2d230380303259957639605aa39a83ab9bda2464c6469e0",
+            "ordinal": 4,
+            "output_cap": 512,
+            "previous_prompt": 490,
+            "request_sha256": "c11f74355b85afdfd77477bbd9bb88be9f6ef4b18fb3aec2351fb849afc3e735",
+            "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+            "sdk_request_sha256": "d8a2ffcaf359048934ea76b0d70bc94bdecacf50f6905db3e938143e2aab2810",
+            "slot_cap": 2400,
+            "stage": "READ_ONLY",
+            "suffix_bytes": 1192,
+            "tool_returns": [
+              {
+                "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+              },
+              {
+                "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+              },
+              {
+                "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+                "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+              }
+            ]
+          },
+          "scope": {
+            "cold": false,
+            "domain": "config-java-http",
+            "role": "TARGET",
+            "round": 1
+          }
+        },
+        "receipt_id": "1-target-4-reject",
+        "receipt_sha256": "80dcb78fe1381a0144b0cda07c5dd1cad5eb326b71fbb4855c0fd0d31291fec2",
+        "role": "TARGET",
+        "round": 1,
+        "session_id": "rpf68-151dea22934de5ff"
+      }
+    ],
+    "provider": 0,
+    "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "started_utc": "2026-10-23T13:24:47.235905+00:00",
+    "status": "FAIL",
+    "unknown": false,
+    "workspace": ".local/rpf-68/tests/151dea22934de5ff"
+  },
+  "development_attempts": [
+    {
+      "scenario": "noarg SDK schema required key",
+      "result": "FAIL",
+      "fix": "required defaults []",
+      "pid": "NOT_RECORDED",
+      "provider": 0
+    },
+    {
+      "scenario": "OrderAdapter missing fault contract",
+      "result": "FAIL",
+      "fix": "explicit new contract fault field",
+      "pid": "NOT_RECORDED",
+      "provider": 0
+    },
+    {
+      "scenario": "focused5tests foreign object AttributeError",
+      "result": "4PASS/1ERROR",
+      "fix": "strict Ledger isinstance before field read",
+      "provider": 0
+    },
+    {
+      "scenario": "maximum SDK earlier two sources",
+      "result": "INPUT_BOUND",
+      "evidence": [
+        ".local/rpf-68/maximum-sdk-result.json",
+        ".local/rpf-68/maximum-sdk-result-2.json"
+      ],
+      "provider": 0
+    }
+  ],
+  "gates": {
+    "G0": "PASS",
+    "R68-A01": "NOT_RUN",
+    "R68-A02": "FAIL",
+    "R68-A03": "PASS",
+    "R68-A04": "PASS",
+    "R68-A05": "NOT_RUN",
+    "R68-A06": "NOT_RUN",
+    "R68-A07": "NOT_RUN",
+    "R68-A08": "NOT_RUN",
+    "R68-A09": "PASS",
+    "R68-A10": "NOT_RUN"
+  },
+  "source_freeze": "NOT_RUN",
+  "windows_parent_312": "NOT_ESTABLISHED",
+  "hosted_ubuntu_312": "NOT_RUN",
+  "provider": 0,
+  "free_model_usage": "SYNTHETIC_TEST_ONLY",
+  "sensitive_raw_logs": "IGNORED_LOCAL_ONLY",
+  "delivery": {
+    "status": "NOT_RUN"
+  }
+}

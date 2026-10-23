@@ -1,0 +1,229 @@
+{
+  "plan": "RPF-68",
+  "status": "BLOCKED",
+  "source_digest": "71e4329651d6ea90df3e1917f6224af1cca91c96e72e3e9d53812eeaf3e0aeaf",
+  "sources": {
+    "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": {
+      "lf": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+      "raw": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43"
+    },
+    "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": {
+      "lf": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+      "raw": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631"
+    },
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": {
+      "lf": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+      "raw": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": {
+      "lf": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "raw": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": {
+      "lf": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "raw": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_verify.py": {
+      "lf": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+      "raw": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282"
+    },
+    "runtime/runproof_runtime/effectwitness/contracts.py": {
+      "lf": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+      "raw": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d"
+    },
+    "runtime/runproof_runtime/effectwitness/effect_oracle.py": {
+      "lf": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "raw": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+    },
+    "runtime/runproof_runtime/effectwitness/orders.py": {
+      "lf": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+      "raw": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r67_context.py": {
+      "lf": "27c726fc94c82d9e162bd757f62ee01783223c4d79212025dcceb58620befa42",
+      "raw": "27c726fc94c82d9e162bd757f62ee01783223c4d79212025dcceb58620befa42"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r67_order_driver.py": {
+      "lf": "c3f0e41cec234dbb8dcbb456d3b790daa6d2ae7bc4607a85f970fd9fc680d40e",
+      "raw": "c3f0e41cec234dbb8dcbb456d3b790daa6d2ae7bc4607a85f970fd9fc680d40e"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": {
+      "lf": "62178886d194011afbb05a8a4be96b519e4fc0d76c311d40f60b9e56b4f97d48",
+      "raw": "62178886d194011afbb05a8a4be96b519e4fc0d76c311d40f60b9e56b4f97d48"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py": {
+      "lf": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612",
+      "raw": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_context.py": {
+      "lf": "8c3294021ac45a758f3ad3738c368eddacb767223278470daac7d3a59a91fd5f",
+      "raw": "8c3294021ac45a758f3ad3738c368eddacb767223278470daac7d3a59a91fd5f"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+      "lf": "a533d7360c8a76ceb09c7e9d56c388a1c2eb270ff973df96c3bb80b6ab2b4d86",
+      "raw": "a533d7360c8a76ceb09c7e9d56c388a1c2eb270ff973df96c3bb80b6ab2b4d86"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+      "lf": "902fe48c270edecffebb0a3b6fb92715286d3a777afabe9137cccb0fc8cadd2d",
+      "raw": "902fe48c270edecffebb0a3b6fb92715286d3a777afabe9137cccb0fc8cadd2d"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py": {
+      "lf": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235",
+      "raw": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py": {
+      "lf": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb",
+      "raw": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+      "lf": "16f2024537a5f329bab5f11a3860ff2d6b5488fa5448ecc83539b5a75ba2251d",
+      "raw": "16f2024537a5f329bab5f11a3860ff2d6b5488fa5448ecc83539b5a75ba2251d"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_session.py": {
+      "lf": "a2616503c19352542e25a608cd53a0b6c8878c5993fafaa837b6680fa9c431f9",
+      "raw": "a2616503c19352542e25a608cd53a0b6c8878c5993fafaa837b6680fa9c431f9"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_verify.py": {
+      "lf": "f8ecfbececf80c8a68fa1ade31f365c56b7599b6de074a05e70456aea60794a7",
+      "raw": "f8ecfbececf80c8a68fa1ade31f365c56b7599b6de074a05e70456aea60794a7"
+    },
+    "runtime/runproof_runtime/models.py": {
+      "lf": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+      "raw": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3"
+    },
+    "runtime/tests/test_effectwitness_pge_r68.py": {
+      "lf": "fb083a1c01e8329e8807cfc3cd1fd2024f76a04d949b869f915e36e805ab2bf8",
+      "raw": "fb083a1c01e8329e8807cfc3cd1fd2024f76a04d949b869f915e36e805ab2bf8"
+    },
+    "spikes/rpf-53/probe.py": {
+      "lf": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+      "raw": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+    },
+    "spikes/rpf-53/rev-6/config-live-evidence.json": {
+      "lf": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "raw": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+    },
+    "spikes/rpf-55/probe.py": {
+      "lf": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+      "raw": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+    },
+    "spikes/rpf-68/probe.py": {
+      "lf": "b099518cbf1a64989029165b9bc0d30ef82acb5a4228dfe72b0616aa62b9e400",
+      "raw": "b099518cbf1a64989029165b9bc0d30ef82acb5a4228dfe72b0616aa62b9e400"
+    }
+  },
+  "caps": {
+    "EXPLORER": [
+      2500
+    ],
+    "config-java-http": [
+      3000,
+      2400,
+      2400,
+      2400,
+      2800
+    ],
+    "order-sqlite": [
+      3000,
+      2600,
+      2600,
+      4200
+    ]
+  },
+  "limits": {
+    "metadata": 1,
+    "cold": 2,
+    "session": 1,
+    "trial": 2,
+    "sdk": 2,
+    "jvm": 1,
+    "host": 2,
+    "sqlite_setup": 1,
+    "sqlite_refund": 1,
+    "config_post": 2,
+    "config_http": 12,
+    "config_health": 3,
+    "authority_read": 8,
+    "provider": 11,
+    "explorer_calls": 2
+  },
+  "reachable_reservations": 30400,
+  "global_pool": 35000,
+  "spare_pool_cannot_expand_roles": 4600,
+  "price_reference_not_refreshed": {
+    "date": "2026-10-23",
+    "url": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "input_micro_cny": 4.5,
+    "output_micro_cny": 18,
+    "cny_per_usd_guard": 15,
+    "maximum_micro_cny": 750000,
+    "invoice": "NOT_QUERIED"
+  },
+  "maximum_input_counterexample": {
+    "source_kind": "SYNTHETIC_TEST_ONLY",
+    "sdk": "REAL_PINNED_PROCESS",
+    "identifier_bytes": 160,
+    "mixed_content_bytes": 512,
+    "request": {
+      "canonical_bytes": 3816,
+      "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+      "framing_guard": 512,
+      "input_upper": 2194,
+      "messages_sha256": "6df9e92602bdc817c2d230380303259957639605aa39a83ab9bda2464c6469e0",
+      "ordinal": 4,
+      "output_cap": 512,
+      "previous_prompt": 490,
+      "request_sha256": "c11f74355b85afdfd77477bbd9bb88be9f6ef4b18fb3aec2351fb849afc3e735",
+      "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+      "sdk_request_sha256": "d8a2ffcaf359048934ea76b0d70bc94bdecacf50f6905db3e938143e2aab2810",
+      "slot_cap": 2400,
+      "stage": "READ_ONLY",
+      "suffix_bytes": 1192,
+      "tool_returns": [
+        {
+          "call_id": "fixture-1-1-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+        },
+        {
+          "call_id": "fixture-1-2-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+        },
+        {
+          "call_id": "fixture-1-3-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+          "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+        }
+      ]
+    },
+    "receipt_sha256": "80dcb78fe1381a0144b0cda07c5dd1cad5eb326b71fbb4855c0fd0d31291fec2",
+    "required": 2706,
+    "allowed": 2400,
+    "excess": 306,
+    "provider_reserved": false,
+    "network_sent": false,
+    "usage490": "SYNTHETIC_FIXTURE_HINT_NOT_REAL_PROVIDER_USAGE",
+    "failure_oracle_readback": "independent HTTP GET preserves actual version2; not DOMAIN_VERIFIED"
+  },
+  "source_freeze": "NOT_RUN",
+  "helper_pins": {
+    ".local/rpf-68/runner-final.py": "960fee86e2ab77001b730ad862bef323228d033ca8132ad901418ee5125e77c8",
+    ".local/rpf-68/controls-final.py": "cc1c680e5bccf9a306cfa5263eefe16f9faa5b1b45b33175760d5cd967c16f91",
+    ".local/rpf-68/maximum_sdk_probe_final.py": "b78b7ed576054a50c9926a49292181907f1b7c80e4dbcbe5b7920a931b573bdf"
+  },
+  "helper_identity": "VALIDATION_SNAPSHOT_NOT_SOURCE_FREEZE",
+  "refund_of_failed_tickets": false,
+  "sdk_guard_prefix": {
+    "guard_prefix_sha256": "1c490aafda366e950f457e5d256c4d15da122e4d4210fe04799ea3a8d9767819",
+    "guard_prefix_lines": 213,
+    "comparison": "pge_r67_order_child.py vs pge_r68_sdk_child.py def _is_link through before def main byte-identical"
+  },
+  "legacy_bridge": {
+    "path": "runtime/runproof_runtime/effectwitness/config_target_bridge.py",
+    "current_raw_sha256": "1224364c7b4db5585d3e24c1def79f09fb5c3f3ef96cc3d4ed35bd699c1820a0",
+    "historical_certificate_source_sha256": "6dd3fd4b49adb689b310557340e2bfc380cb10726e63db7519ecda6bd318e59d",
+    "historical_not_rewritten": true
+  },
+  "formal_provider": 0,
+  "formal_cold": "NOT_RUN",
+  "formal_price": "NOT_RUN",
+  "formal_admission": "NOT_RUN"
+}

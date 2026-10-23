@@ -1,0 +1,22 @@
+{
+  "plan": "RPF-68",
+  "status": "BLOCKED",
+  "CURRENT_STATE": {
+    "shared_kernel": "IMPLEMENTED_SYNTHETIC_VERIFIED",
+    "two_domain_business_effects": "REAL_CONTROLLED_JAVA_H2_AND_SQLITE",
+    "target_sdk": "REAL_PINNED_SDK_WITH_FIXTURE_RESPONSES",
+    "explorer": "FIXTURE_ONLY",
+    "actual_provider_cross_domain_session": "NOT_RUN",
+    "max_legal_input": "FAIL_SLOT_BOUND",
+    "verified_feedback": "SYNTHETIC_MODEL_WITH_REAL_CONTROLLED_ORACLES"
+  },
+  "TARGET_INTENT": "one real Explorer/ConfigTarget/feedback/Explorer/OrderTarget shared-session Witness",
+  "L1": "NOT_ESTABLISHED_FOR_REAL_SHARED_SESSION",
+  "L2": false,
+  "causal_advantage": "NOT_PROVEN",
+  "third_domain": "NOT_PROVEN",
+  "web": "NOT_INTEGRATED",
+  "main_merge": "NOT_RUN",
+  "release": "NOT_AUTHORIZED",
+  "stage_advanced": "ARCHITECT_REVIEW_REQUIRED"
+}
