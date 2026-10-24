@@ -101,6 +101,17 @@ def controls(original):
   add('v2-reanchored-scope-'+key,scope_attack)
  for key,value in [('slot_contract_sha256','0'*64),('output_cap',128),('stage','PRE_COMMIT'),('input_upper',True),('previous_prompt',99999),('request_sha256','not-a-sha'),('framing_guard',511),('tool_returns',[])]:add('v2-proof-'+key,lambda p,k=key,z=value:p['rounds'][0]['evidence']['sdk']['requests'][-1]['request'].update({k:z}))
  for key,value in [('reachable_tokens',30400),('global_tokens',35001),('budget_version','rpf68-slot-budget-v1')]:add('v2-context-'+key,context(key,value))
+ for key,value in [('reachable_tokens',600001),('global_tokens',600001),('max_slot',160001),('budget_version','rpf68-slot-budget-v2')]:add('v3-context-'+key,context(key,value))
+ for key,value in [('maximum_micro_cny',15000001),('input_micro_cny',0.1),('output_micro_cny',0.1)]:add('v3-price-'+key,lambda p,k=key,z=value:p['context']['price'].update({k:z}))
+ for key,value in [('version','rpf68-slot-budget-v2'),('role','EXPLORER'),('round',1),('max_slot',160001),('slot_cap',160001),('global_tokens',600001),('reachable_tokens',600001),('output_cap',8192)]:
+  def attack(p,k=key,z=value):
+   q=p['rounds'][1]['evidence']['sdk']['requests'][-1]['request'];q['slot_scope'][k]=z;q['slot_contract_sha256']=c.digest(q['slot_scope'])
+  add('v3-reanchored-slot-'+key,attack)
+ for key,value in [('argument_bytes',8193),('call_id_bytes',161),('content_bytes',513)]:add('v3-response-bound-'+key,lambda p,k=key,z=value:p['rounds'][1]['evidence']['sdk']['requests'][1]['response'].update({k:z}))
+ def fake_real(p):p['context']=c.public(p['context']['session_id'].removeprefix('rpf68r3-'),p['context']['ports'],False);p['admission']={'fake':True}
+ add('v3-full-context-synthetic-as-real-without-provider',fake_real)
+ add('v3-fabricated-admission-in-synthetic',lambda p:p.update(admission={'fake':True}))
+ add('v3-duplicate-wal-owner',lambda p:p['frames'].append(copy.deepcopy(p['frames'][0])),sync=False)
  return rows
 
 class R68Tests(unittest.TestCase):
@@ -111,12 +122,12 @@ class R68Tests(unittest.TestCase):
   for w in (self.lost,self.normal,*self.mixed):
    r=v.verify(w);self.assertEqual(r['provider'],0);self.assertTrue(r['cross_domain_feedback']);self.assertEqual(len(w['payload']['rounds']),2)
  def test_semantic_reanchored_controls(self):
-  rows=controls(self.lost);self.assertGreaterEqual(len(rows),138)
+  rows=controls(self.lost);self.assertGreaterEqual(len(rows),160)
   for label,obj in rows:
    with self.subTest(label=label):
     with self.assertRaises(Exception):v.verify(obj)
  def test_original_guards_preserved_and_negative(self):
-  path=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py';original=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r67_order_child.py';a=path.read_text();b=original.read_text();self.assertEqual(a[a.index('def _is_link'):a.index('def main():')],b[b.index('def _is_link'):b.index('def main():')]);spec=importlib.util.spec_from_file_location('r68_guard',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);root=c.ROOT/'.local/rpf-68-rev-2';deny=[];files=[];guard=m._guard_events(23456,root,root,[__import__('pathlib').Path(sys.base_prefix)],path,deny,files)
+  path=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py';original=c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r67_order_child.py';a=path.read_text();b=original.read_text();self.assertEqual(a[a.index('def _is_link'):a.index('def main():')],b[b.index('def _is_link'):b.index('def main():')]);spec=importlib.util.spec_from_file_location('r68_guard',path);m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m);root=c.ROOT/'.local/rpf-68-rev-3';deny=[];files=[];guard=m._guard_events(23456,root,root,[__import__('pathlib').Path(sys.base_prefix)],path,deny,files)
   for event,args in [('socket.connect',(None,('example.com',443))),('socket.getaddrinfo',('example.com',)),('subprocess.Popen',()),('open',(str(c.ROOT/'AGENTS.md'),'w',0))]:
    with self.assertRaises(PermissionError):guard(event,args)
  def test_foreign_path_and_context(self):
@@ -131,7 +142,7 @@ class R68Tests(unittest.TestCase):
    with self.assertRaises(Exception):parse(x,256,c.TOOLS[c.DOMAINS[1]])
 
  def refusal_context(self):
-  ctx=c.make(synthetic=True);ctx.root.mkdir(parents=True);l=Ledger(ctx,create=True);scope=dict(domain=c.DOMAINS[0],round=1,role='EXPLORER',cold=False);q=dict(ordinal=1,request_sha256='a'*64,input_upper=5000,canonical_bytes=5000,previous_prompt=None,output_cap=128,slot_cap=2500);q['slot_scope']=c.slot_scope(c.DOMAINS[0],1,'EXPLORER',1);q['slot_contract_sha256']=c.digest(q['slot_scope']);return ctx,l,scope,dict(scope=scope,request=q,reason='INPUT_BOUND',provider_reserved=False,network_sent=False)
+  ctx=c.make(synthetic=True);ctx.root.mkdir(parents=True);l=Ledger(ctx,create=True);scope=dict(domain=c.DOMAINS[0],round=1,role='EXPLORER',cold=False);q=dict(ordinal=1,request_sha256='a'*64,input_upper=50000,canonical_bytes=50000,previous_prompt=None,output_cap=128,slot_cap=c.CAPS['EXPLORER'][0]);q['slot_scope']=c.slot_scope(c.DOMAINS[0],1,'EXPLORER',1);q['slot_contract_sha256']=c.digest(q['slot_scope']);return ctx,l,scope,dict(scope=scope,request=q,reason='INPUT_BOUND',provider_reserved=False,network_sent=False)
  def test_presend_durable_refusal_reanchored(self):
   ctx,l,scope,r=self.refusal_context();l.receipt('PRE_SEND_REJECTED','initial-reject',r,**scope);a=l.read();self.assertTrue(a['blocked']);self.assertFalse(a['unknown']);self.assertEqual(a['counts']['provider'],0)
   with self.assertRaisesRegex(ValueError,'STOP_WRITES_PROVIDER'):l.reserve('sqlite_refund')
@@ -165,7 +176,7 @@ class R68Tests(unittest.TestCase):
   self.assertEqual(l.read()['counts']['provider'],0);self.assertFalse(l.read()['unknown']);self.assertFalse(any(f['event']['kind']=='PORT_ENTERED' for f in l.frames))
 
  def test_v2_reachable_table_and_identity(self):
-  self.assertEqual(c.REACHABLE_TOKENS,34100);self.assertEqual(c.GLOBAL_TOKENS,35000);self.assertEqual(c.OWNER,'rpf-68-rev-2');self.assertEqual(c.ABI,'rpf68-shared-real-cross-domain-v2');self.assertIn('spikes/rpf-68/rev-2/probe.py',c.NEW)
+  self.assertEqual(c.REACHABLE_TOKENS,474000);self.assertEqual(c.GLOBAL_TOKENS,600000);self.assertEqual(c.OWNER,'rpf-68-rev-3');self.assertEqual(c.ABI,'rpf68-shared-real-cross-domain-v3');self.assertIn('spikes/rpf-68/rev-3/probe.py',c.NEW);self.assertEqual(c.PRICE['maximum_micro_cny'],15000000)
  def test_v2_production_slot_boundaries(self):
   from runtime.runproof_runtime.effectwitness.pge_r68_driver import validate_request
   rows=[(i+1,row['evidence']['contract'],q['request']) for i,row in enumerate(self.lost['payload']['rounds']) for q in row['evidence']['sdk']['requests']]
@@ -176,6 +187,24 @@ class R68Tests(unittest.TestCase):
   for row in self.lost['payload']['rounds']:
    ct=row['evidence']['contract']
    for delta in (-1,0,1):
-    q=copy.deepcopy(row['choice']['request']);q['input_upper']=2500-128+delta;self.assertEqual(validate_request(ct,'EXPLORER',q),delta<=0)
+    q=copy.deepcopy(row['choice']['request']);q['input_upper']=c.CAPS['EXPLORER'][0]-128+delta;self.assertEqual(validate_request(ct,'EXPLORER',q),delta<=0)
  def test_v2_legacy_counterexample_arithmetic_is_not_worst_case(self):
-  self.assertEqual(490+1192+512+512,2706);self.assertGreater(2706,2400);self.assertLessEqual(2706,c.CAPS[c.DOMAINS[0]][3]);self.assertEqual(sum(c.CAPS[c.DOMAINS[0]]),16700)
+  self.assertEqual(490+1192+512+512,2706);self.assertGreater(2706,2400);self.assertLessEqual(2706,c.CAPS[c.DOMAINS[0]][3]);self.assertEqual(sum(c.CAPS[c.DOMAINS[0]]),250000)
+
+ def test_v3_unadmitted_direct_ports_and_business(self):
+  ctx=c.make();l=object()
+  from runtime.runproof_runtime.effectwitness.pge_r68_order_port import Sandbox
+  for index,port in ((1,s.ConfigPort()),(2,s.OrderPort())):
+   ct=ctx.contract(index,c.CANDIDATES[index-1][0])
+   with self.assertRaisesRegex(ValueError,'REAL_ADMISSION_REQUIRED'):port.prepare(ctx,ct,l)
+  with self.assertRaisesRegex(ValueError,'REAL_ADMISSION_REQUIRED'):Sandbox(ctx,ctx.contract(2,c.CANDIDATES[1][0]))
+ def test_v3_shape_argument_lengths_and_invalid_raw(self):
+  from runtime.runproof_runtime.effectwitness.pge_r68_driver import fixture_response
+  ct=self.lost['payload']['rounds'][0]['evidence']['contract'];obj=fixture_response(ct,1,'inspect_config');f=obj['choices'][0]['message']['tool_calls'][0]['function'];f['arguments']='{}'.ljust(8192,'\t');self.assertEqual(parse(obj,256,c.TOOLS[c.DOMAINS[0]])['argument_bytes'],8192);self.assertEqual(shape(obj)['argument_bytes'],8192)
+  f['arguments']+=' '
+  with self.assertRaisesRegex(ValueError,'DOMAIN_TOOL'):parse(obj,256,c.TOOLS[c.DOMAINS[0]])
+ def test_v3_official_price_floors(self):
+  price=dict(model='deepseek-flash',model_version='DeepSeek-V4.1-Flash-1017',url=c.PRICE['url'],queried_utc='2026-10-24T00:00:00+00:00',official_input_usd_per_million=.3,official_output_usd_per_million=1.2,fx_guard=15,input_micro_cny=4.5,output_micro_cny=18,raw_sha256='a'*64,invoice='NOT_QUERIED');self.assertEqual(c.validate_price(price),price)
+  for key,value in [('fx_guard',14),('input_micro_cny',4.4),('output_micro_cny',17),('official_output_usd_per_million',2)]:
+   q=copy.deepcopy(price);q[key]=value
+   with self.assertRaises(ValueError):c.validate_price(q)

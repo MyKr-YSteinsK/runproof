@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from .pge_r68_contracts import *
 ROOT=Path(__file__).resolve().parents[3]
 NAMES=('contracts','context','budget','explorer','config_port','order_port','driver','session','verify','sdk_child')
-NEW=tuple('runtime/runproof_runtime/effectwitness/pge_r68_'+n+'.py' for n in NAMES)+('runtime/tests/test_effectwitness_pge_r68.py','spikes/rpf-68/rev-2/probe.py')
+NEW=tuple('runtime/runproof_runtime/effectwitness/pge_r68_'+n+'.py' for n in NAMES)+('runtime/tests/test_effectwitness_pge_r68.py','spikes/rpf-68/rev-3/probe.py')
 def sources():
  pending=list(NEW)+['spikes/rpf-53/probe.py','spikes/rpf-55/probe.py','spikes/rpf-53/rev-6/config-live-evidence.json'];out={}
  while pending:
@@ -20,14 +20,14 @@ def sources():
     if (ROOT/f).is_file():pending.append(f)
  return dict(sorted(out.items()))
 def public(suffix,ports,synthetic):
- require(__import__('re').fullmatch('[a-f0-9]{16}',suffix) and len(set(ports))==3 and all(type(p) is int and 1024<=p<=65535 for p in ports),'CONTEXT_PARAMETERS');sm=sources();sid='rpf68r2-'+suffix;sd=digest({k:v['lf'] for k,v in sm.items()})
- return dict(owner=OWNER,abi=ABI,base=BASE,branch=BRANCH,session_id=sid,workspace='.local/rpf-68-rev-2'+('/tests/'+suffix if synthetic else ''),source_kind=SYNTHETIC if synthetic else REAL,sources=sm,source_digest=sd,ports=list(ports),rounds=[{candidate:contract(sid,i,candidate,sd,ports) for candidate in CANDIDATES[i-1]} for i in (1,2)],limits=LIMITS,caps={k:list(v) for k,v in CAPS.items()},price=PRICE,budget_version=BUDGET_VERSION,reachable_tokens=REACHABLE_TOKENS,global_tokens=GLOBAL_TOKENS,boundaries=BOUNDARIES)
+ require(__import__('re').fullmatch('[a-f0-9]{16}',suffix) and len(set(ports))==3 and all(type(p) is int and 1024<=p<=65535 for p in ports),'CONTEXT_PARAMETERS');sm=sources();sid='rpf68r3-'+suffix;sd=digest({k:v['lf'] for k,v in sm.items()})
+ return dict(owner=OWNER,abi=ABI,base=BASE,branch=BRANCH,session_id=sid,workspace='.local/rpf-68-rev-3'+('/tests/'+suffix if synthetic else ''),source_kind=SYNTHETIC if synthetic else REAL,sources=sm,source_digest=sd,ports=list(ports),rounds=[{candidate:contract(sid,i,candidate,sd,ports) for candidate in CANDIDATES[i-1]} for i in (1,2)],limits=LIMITS,caps={k:list(v) for k,v in CAPS.items()},price=PRICE,budget_version=BUDGET_VERSION,reachable_tokens=REACHABLE_TOKENS,global_tokens=GLOBAL_TOKENS,max_slot=MAX_SLOT,boundaries=BOUNDARIES)
 @dataclass(frozen=True)
 class Context:
  root:Path
  frozen:bytes
  def __post_init__(self):
-  p=self.public();require(p==public(p['session_id'].removeprefix('rpf68r2-'),p['ports'],p['source_kind']==SYNTHETIC) and self.root==ROOT/p['workspace'],'CONTEXT_IDENTITY');self.scope(self.root)
+  p=self.public();require(p==public(p['session_id'].removeprefix('rpf68r3-'),p['ports'],p['source_kind']==SYNTHETIC) and self.root==ROOT/p['workspace'],'CONTEXT_IDENTITY');self.scope(self.root)
  def public(self):return strict(self.frozen)
  def scope(self,path):
   p=Path(path);require(p.is_absolute() and p.resolve().is_relative_to(self.root.resolve()) and not any(x.is_symlink() or x.is_junction() for x in (p,*p.parents)),'TASK_PATH_SCOPE');return p
@@ -36,7 +36,13 @@ class Context:
   with p.open('xb') as f:f.write(canonical(value));f.flush();os.fsync(f.fileno())
  def check(self):require(self.public()['sources']==sources(),'SOURCE_DRIFT')
  def contract(self,i,candidate):return self.public()['rounds'][i-1][candidate]
- def validate(self,ct):require(ct in [v for row in self.public()['rounds'] for v in row.values()],'FROZEN_CONTRACT')
+ def validate(self,ct,*,allow_cold=False):
+  require(ct in [v for row in self.public()['rounds'] for v in row.values()],'FROZEN_CONTRACT')
+  if self.public()['source_kind']==REAL and not allow_cold:
+   require((self.root/'paid-gate.json').is_file() and (self.root/'wal.jsonl').is_file(),'REAL_ADMISSION_REQUIRED')
+   from .pge_r68_budget import Ledger
+   from .pge_r68_driver import require_admission
+   require_admission(self,Ledger(self))
  def folder(self,ct):self.validate(ct);return self.scope(self.root/'runs'/ct['experiment']['run_id'])
 def make(*,synthetic=False):
  ports=[]

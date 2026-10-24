@@ -230,7 +230,8 @@ def main():
         raw=sys.stdin.buffer.read(16385)
         if not raw or len(raw)>16384:raise ValueError('CONFIG_SIZE')
         cfg=json.loads(raw)
-        if set(cfg)!={'port','token','write_root','sdk_readonly_path','sdk_site_root_binding_sha256','python_runtime_mapping_sha256','instructions','task_prompt','domain'}:raise ValueError('CONFIG_FIELDS')
+        if set(cfg)!={'port','token','write_root','sdk_readonly_path','sdk_site_root_binding_sha256','python_runtime_mapping_sha256','instructions','task_prompt','domain','total_token_limit'}:raise ValueError('CONFIG_FIELDS')
+        if type(cfg['total_token_limit']) is not int or not 1<=cfg['total_token_limit']<=600000:raise ValueError('TOTAL_TOKEN_LIMIT')
         port=cfg['port']
         if type(port) is not int or not 1024<=port<=65535:raise ValueError('PORT')
         import asyncio
@@ -288,7 +289,7 @@ def main():
                 client=AsyncOpenAI(base_url=f'http://127.0.0.1:{port}/v1',api_key=cfg['token'],max_retries=0,http_client=http)
                 model=OpenAIChatModel('deepseek-flash',provider=OpenAIProvider(openai_client=client))
                 agent=Agent(model,name='rpf68-typed-target',retries=0,tools=registry,instructions=cfg['instructions'],model_settings={'max_tokens':512,'parallel_tool_calls':False})
-                result=await agent.run(cfg['task_prompt'],usage_limits=UsageLimits(request_limit=5 if cfg['domain']=='config-java-http' else 4,total_tokens_limit=35000,tool_calls_limit=4 if cfg['domain']=='config-java-http' else 3))
+                result=await agent.run(cfg['task_prompt'],usage_limits=UsageLimits(request_limit=5 if cfg['domain']=='config-java-http' else 4,total_tokens_limit=cfg['total_token_limit'],tool_calls_limit=4 if cfg['domain']=='config-java-http' else 3))
                 checked=_validated_run_usage(result.usage,RunUsage)
                 if result.usage.tool_calls!=callbacks:raise ValueError('TOOL_CALLBACK_COUNT')
                 return dict(identity,status='COMPLETED',requests=result.usage.requests,input_tokens=result.usage.input_tokens,output_tokens=result.usage.output_tokens,tool_calls=result.usage.tool_calls,tool_callbacks=callbacks,usage_type=checked['usage_type'],final_output_sha256=hashlib.sha256(str(result.output).encode()).hexdigest(),final_text_persisted=False,provider_key_present=bool(os.environ.get('DEEPSEEK_API_KEY')),business_key_present=bool(os.environ.get('CONFIG_CENTER_API_KEY')),guard_denials=sorted(set(denied)),denied_files=denied_files)

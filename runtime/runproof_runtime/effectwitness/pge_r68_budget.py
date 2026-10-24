@@ -3,8 +3,8 @@ import os,time,copy,re
 from . import pge_r68_context as c
 KINDS={'OWNER','RESERVE','RESULT','MODEL_REQUEST','SHAPE','PARSED','MODEL_RESPONSE','INTENT','TOOL_RETURN','FAULT','PROCESS_START','PROCESS_CLEANUP','CHOICE','PORT_ENTERED','DOMAIN_VERIFIED','FEEDBACK_FROZEN','ADMISSION','SESSION_COMPLETE','PRE_SEND_REJECTED'}
 def replay(frames,ctx):
- c.require(ctx['budget_version']==c.BUDGET_VERSION and ctx['reachable_tokens']==c.REACHABLE_TOKENS==34100 and ctx['global_tokens']==c.GLOBAL_TOKENS==35000 and ctx['caps']=={k:list(v) for k,v in c.CAPS.items()},'BUDGET_CONTRACT')
- previous=None;events=[];counts=dict.fromkeys(c.LIMITS,0);tickets={};results={};unknown=False;blocked=False;reserved=cost=0;local={}
+ c.require(ctx['budget_version']==c.BUDGET_VERSION and ctx['reachable_tokens']==c.REACHABLE_TOKENS==sum(2*list(c.CAPS['EXPLORER'])+list(c.CAPS[c.DOMAINS[0]])+list(c.CAPS[c.DOMAINS[1]])) and ctx['global_tokens']==c.GLOBAL_TOKENS==600000 and ctx['caps']=={k:list(v) for k,v in c.CAPS.items()},'BUDGET_CONTRACT')
+ previous=None;events=[];counts=dict.fromkeys(c.LIMITS,0);tickets={};results={};unknown=False;blocked=False;reserved=cost=0;local={};rates=c.PRICE
  for i,f in enumerate(frames):
   c.require(set(f)=={'seq','previous','event','sha256'} and f['seq']==i and f['previous']==previous and f['sha256']==c.digest({k:v for k,v in f.items() if k!='sha256'}),'WAL_CHAIN');e=f['event'];c.require(e['kind'] in KINDS and e['session_id']==ctx['session_id'] and type(e['clock']) is int and (not events or e['clock']>=events[-1]['clock']),'WAL_SCOPE_TIME')
   if i==0:c.require(e['kind']=='OWNER' and e['context_sha256']==c.digest(ctx),'WAL_OWNER')
@@ -12,9 +12,11 @@ def replay(frames,ctx):
   if kind=='RESERVE':
    r=e['resource'];c.require(r in counts and e['ticket']==r+'-'+str(counts[r]+1),'TICKET_SEQUENCE');safe_read=r=='authority_read' or r=='config_http' and e.get('method')=='GET';c.require(not (unknown or blocked) or safe_read,'STOP_WRITES_PROVIDER');c.require(not any(k not in results and t['resource'] in ('provider','sqlite_refund','config_post') for k,t in tickets.items()) or safe_read,'UNSETTLED_STOP');counts[r]+=1;c.require(counts[r]<=c.LIMITS[r],'RESOURCE_LIMIT')
    if r=='provider':
-    q=e['request'];role=e['role'];domain=e['domain'];c.require(c.validate_slot(q,domain,e['round'],role),'SLOT_INPUT_BOUND');scope=(role,domain,e['round']);n=local.get(scope,0);caps=c.CAPS['EXPLORER' if role=='EXPLORER' else domain];c.require(role in ('TARGET','EXPLORER') and domain in c.DOMAINS and e['round']==c.DOMAINS.index(domain)+1 and n<len(caps) and q['slot_cap']==caps[n] and q['ordinal']==n+1,'ROLE_DOMAIN_SLOT');c.require(all(type(q[k]) is int and q[k]>=0 for k in ('input_upper','output_cap','slot_cap')) and 0<q['input_upper'] and q['input_upper']+q['output_cap']<=q['slot_cap'],'INPUT_BOUND');local[scope]=n+1;reserved+=q['slot_cap'];cost+=q['input_upper']*4.5+q['output_cap']*18;c.require(reserved<=c.REACHABLE_TOKENS<=c.GLOBAL_TOKENS and cost<=750000,'GLOBAL_POOL')
+    q=e['request'];role=e['role'];domain=e['domain'];c.require(c.validate_slot(q,domain,e['round'],role),'SLOT_INPUT_BOUND');scope=(role,domain,e['round']);n=local.get(scope,0);caps=c.CAPS['EXPLORER' if role=='EXPLORER' else domain];c.require(role in ('TARGET','EXPLORER') and domain in c.DOMAINS and e['round']==c.DOMAINS.index(domain)+1 and n<len(caps) and q['slot_cap']==caps[n] and q['ordinal']==n+1,'ROLE_DOMAIN_SLOT');c.require(all(type(q[k]) is int and q[k]>=0 for k in ('input_upper','output_cap','slot_cap')) and 0<q['input_upper'] and q['input_upper']+q['output_cap']<=q['slot_cap'],'INPUT_BOUND');local[scope]=n+1;reserved+=q['slot_cap'];cost+=q['input_upper']*rates['input_micro_cny']+q['output_cap']*rates['output_micro_cny'];c.require(reserved<=c.REACHABLE_TOKENS<=c.GLOBAL_TOKENS and cost<=c.PRICE['maximum_micro_cny'],'GLOBAL_POOL')
     if e['round']==2:c.require(any(z['kind']=='FEEDBACK_FROZEN' and z['round']==1 for z in events),'NO_EARLY_SECOND_DOMAIN')
    tickets[e['ticket']]=e
+  elif kind=='ADMISSION':
+   c.require(ctx['source_kind']==c.REAL and not any(z['kind']=='ADMISSION' for z in events) and counts['metadata']==1 and counts['cold']==2 and counts['provider']==counts['session']==0 and set(tickets)==set(results) and not unknown and not blocked,'ADMISSION_ORDER');rates=c.validate_price(e['price'])
   elif kind=='RESULT':
    c.require(e['ticket'] in tickets and e['ticket'] not in results,'SETTLEMENT_REPLAY');results[e['ticket']]=e;unknown|=e.get('status')=='UNKNOWN'
   elif kind=='PRE_SEND_REJECTED':
@@ -25,7 +27,7 @@ def replay(frames,ctx):
     returns=[z['row'] for z in events if z['kind']=='TOOL_RETURN' and z.get('domain')==scope['domain'] and z.get('round')==scope['round'] and z.get('cold',False)==scope['cold']];c.require(q['tool_returns']==[dict(call_id=z['call_id'],result_sha256=z['result_sha256']) for z in returns],'PRE_SEND_RETURN_BINDING');expectedcap=512 if len(returns)>= (3 if scope['domain']==c.DOMAINS[0] else 2) else 256;c.require(q['output_cap']==expectedcap,'PRE_SEND_OUTPUT_CAP')
    else:c.require(q['input_upper']==q['canonical_bytes'] and q['previous_prompt'] is None,'PRE_SEND_INITIAL')
    c.require(not c.validate_slot(q,scope['domain'],scope['round'],scope['role']),'PRE_SEND_NOT_OVER_BOUND');blocked=True
-  if any(t['resource']=='session' for t in tickets.values()):c.require(e['clock']-next(t['clock'] for t in tickets.values() if t['resource']=='session')<=2100*10**9,'SESSION_DEADLINE')
+  if any(t['resource']=='session' for t in tickets.values()):c.require(e['clock']-next(t['clock'] for t in tickets.values() if t['resource']=='session')<=2700*10**9,'SESSION_DEADLINE')
   events.append(e);previous=c.digest(f)
  return dict(events=events,counts=counts,tickets=tickets,results=results,unknown=unknown,blocked=blocked,reserved_tokens=reserved,reserved_cost_micro_cny=cost)
 class Ledger:
@@ -49,7 +51,11 @@ class Ledger:
    self.frames=frames+[frame]
   finally:lock.unlink()
  def reserve(self,resource,**data):
-  self.ctx.check();a=self.read();ticket=resource+'-'+str(a['counts'][resource]+1);self.append('RESERVE',resource=resource,ticket=ticket,**data);return ticket
+  self.ctx.check()
+  if self.ctx.public()['source_kind']==c.REAL and (resource in ('provider','session','trial','jvm','sdk','host','sqlite_setup','sqlite_refund','config_post') or resource=='config_http' and data.get('method')=='POST'):
+   from .pge_r68_driver import require_admission
+   require_admission(self.ctx,self)
+  a=self.read();ticket=resource+'-'+str(a['counts'][resource]+1);self.append('RESERVE',resource=resource,ticket=ticket,**data);return ticket
  def settle(self,ticket,**data):self.append('RESULT',ticket=ticket,**data)
  def receipt(self,kind,key,value,**scope):
   self.read();c.require(self.pending is None and re.fullmatch('[a-zA-Z0-9_-]{1,100}',key),'RECEIPT_ID');self.pending=(key,c.digest(value))
