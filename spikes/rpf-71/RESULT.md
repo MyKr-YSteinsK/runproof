@@ -4,7 +4,7 @@
 
 **Revision:** rev-1
 
-**Status:** Partial
+**Status:** Complete
 
 仓库 `D:/CS/runproof`；分支 `codex/rpf-71-budget-policy-execution-seam`；Base `ef95f0965ad8f2325892f6800a4528112f1a6e52`。唯一实现范围是 21 项 create-only 白名单。旧 tracked 源、证书、AGENTS、Project State 和历史目录保持原字节，`docs/reviews/` 仅保留根 status 的未跟踪提示。
 
@@ -22,11 +22,11 @@
 | R71-A07 | PASS |
 | R71-A08 | PASS |
 | R71-A09 | PASS |
-| R71-A10 | NOT_RUN |
+| R71-A10 | PASS |
 
 最终 raw/LF Source closure digest：`6050a9729fa0e069a31d0a5b6becf1c2c564a485f089ea2b26b93b385dd8acbb`；47 项源中包含 11 项本轮新执行源，以及冻结的 native/R70 只读来源。完整 raw/LF、SDK/JAR pin、declared/observed 对照在 `source-identity-map.json`；当前 Source 未替换原 native 36-source 历史身份。
 
-源码/首轮实测提交：`PENDING`；交付 `NOT_RUN`。最终含回执 commit 的 SHA 在聊天提供，文件不为自引用 amend。Git/API 的远端独立读回见 diagnostic；main、父分支不改。
+源码/首轮实测提交：`ad81ae70f752abc4659a4303b5b2919dff13f223`；交付 `PASS`。最终含回执 commit 的 SHA 在聊天提供，文件不为自引用 amend。Git/API 的远端独立读回见 diagnostic；main、父分支不改。
 
 RPF69 Plan 中仍有抄录值；按照本 Plan CURRENT STATE 第2条“实时 SHA + 原 CLI”优先，实算并通过原 CLI 的值是 `15d714a39118746c5d7d8787ef314c8b0bb8d70e792705c606457e9b2e4d14be`。未改 Plan/历史原件。R70 原 manifest 仅在私有根，**UNAVAILABLE / NOT_RUN**；没有进入旧根取证，替代项仅为 Base 跟踪源、测试、诊断与原 raw/LF 的确定性回归。
 

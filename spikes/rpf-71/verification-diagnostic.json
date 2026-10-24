@@ -9931,7 +9931,37 @@
   },
   "correction_sessions_used": 0,
   "delivery": {
-    "status": "NOT_RUN"
+    "PR": false,
+    "actions_runs": 0,
+    "branch": "codex/rpf-71-budget-policy-execution-seam",
+    "deploy": false,
+    "git_remote_sha": "ad81ae70f752abc4659a4303b5b2919dff13f223",
+    "github_api": [
+      {
+        "ref": "branches/codex/rpf-71-budget-policy-execution-seam",
+        "sha": "ad81ae70f752abc4659a4303b5b2919dff13f223"
+      },
+      {
+        "ref": "branches/codex/rpf-70-owner-source-runtime-seam",
+        "sha": "ef95f0965ad8f2325892f6800a4528112f1a6e52"
+      },
+      {
+        "ref": "branches/main",
+        "sha": "bda0cd49e50e3181f604324e94877a24b9885334"
+      },
+      {
+        "ref": "actions/runs?branch=codex%2Frpf-71-budget-policy-execution-seam&per_page=5",
+        "total_count": 0
+      }
+    ],
+    "main_merge": false,
+    "main_unchanged": true,
+    "ordinary_push": true,
+    "parent_unchanged": true,
+    "release": false,
+    "source_commit": "ad81ae70f752abc4659a4303b5b2919dff13f223",
+    "status": "PASS",
+    "workflow_dispatch": false
   },
   "earlier": [
     {
@@ -11197,7 +11227,7 @@
     "R71-A07": "PASS",
     "R71-A08": "PASS",
     "R71-A09": "PASS",
-    "R71-A10": "NOT_RUN"
+    "R71-A10": "PASS"
   },
   "helpers": [
     {
@@ -11497,6 +11527,102 @@
     }
   },
   "key_lookup": 0,
+  "late_before_push": [
+    {
+      "late": {
+        "ports": [
+          {
+            "closed": true,
+            "port": 4139
+          },
+          {
+            "closed": true,
+            "port": 4140
+          },
+          {
+            "closed": true,
+            "port": 4141
+          }
+        ],
+        "processes": [
+          {
+            "observed_creation_unix": null,
+            "original_gone": true,
+            "pid": 11036,
+            "resource": "jvm",
+            "status": "NOT_PRESENT",
+            "wal_start_clock": 29616065534000
+          },
+          {
+            "observed_creation_unix": null,
+            "original_gone": true,
+            "pid": 16816,
+            "resource": "sdk",
+            "status": "NOT_PRESENT",
+            "wal_start_clock": 29657824172200
+          },
+          {
+            "observed_creation_unix": null,
+            "original_gone": true,
+            "pid": 24512,
+            "resource": "sdk",
+            "status": "NOT_PRESENT",
+            "wal_start_clock": 29791781949100
+          }
+        ],
+        "queried_utc": "2026-10-24T12:57:56.156663+00:00",
+        "status": "PASS"
+      },
+      "mode": "normal"
+    },
+    {
+      "late": {
+        "ports": [
+          {
+            "closed": true,
+            "port": 3668
+          },
+          {
+            "closed": true,
+            "port": 3669
+          },
+          {
+            "closed": true,
+            "port": 3670
+          }
+        ],
+        "processes": [
+          {
+            "observed_creation_unix": null,
+            "original_gone": true,
+            "pid": 4884,
+            "resource": "jvm",
+            "status": "NOT_PRESENT",
+            "wal_start_clock": 29950686981500
+          },
+          {
+            "observed_creation_unix": null,
+            "original_gone": true,
+            "pid": 15168,
+            "resource": "sdk",
+            "status": "NOT_PRESENT",
+            "wal_start_clock": 29996183223400
+          },
+          {
+            "observed_creation_unix": null,
+            "original_gone": true,
+            "pid": 24404,
+            "resource": "sdk",
+            "status": "NOT_PRESENT",
+            "wal_start_clock": 30134559749900
+          }
+        ],
+        "queried_utc": "2026-10-24T12:57:57.508121+00:00",
+        "status": "PASS"
+      },
+      "mode": "fault"
+    }
+  ],
   "os_observation_scope": "4/6 actual birth+SID; all6 native PROCESS_START and late OS; no unknown PID terminated",
   "os_observed": [
     {
@@ -12041,6 +12167,6 @@
       }
     }
   },
-  "status": "Partial",
+  "status": "Complete",
   "win312_full": "NOT_RUN"
 }
