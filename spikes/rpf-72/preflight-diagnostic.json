@@ -1,0 +1,589 @@
+{
+  "R70_PRIVATE_MANIFEST": "UNAVAILABLE_NOT_READ",
+  "R71_PRIVATE_MANIFEST": "UNAVAILABLE_NOT_READ",
+  "agents": [
+    {
+      "path": "D:\\CS\\runproof\\AGENTS.md",
+      "sha256": "849182b1d2fda586d674c29c7d85f0deddfb1eea9b362b21eb535c4a9346492e"
+    }
+  ],
+  "anchors": [
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-66/rev-5/dual-agent-witness.json",
+      "sha256": "68dad2804edd3668e1e4b4ed19d18034b79d5fa1892e9fea75aaeb9080c4f3c5"
+    },
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-67/rev-4/order-target-witness.json",
+      "sha256": "a2ab94b70a144e389b324cb4731aba6d48a28fc0e77646c54c20a490d2b72c26"
+    },
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-68/rev-3/cross-domain-witness.json",
+      "sha256": "5b97d3e0a4c9c3d2492b5aa49af00ebe1e553b24b0f9725087180510e55dd9e9"
+    },
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-69/compatibility-matrix.json",
+      "sha256": "15d714a39118746c5d7d8787ef314c8b0bb8d70e792705c606457e9b2e4d14be"
+    }
+  ],
+  "base": "ed346dea7fc46fc289853ea673bfe100f8d0d8b7",
+  "branch": "codex/rpf-72-parent-child-budget-contract",
+  "initial_status": "?? docs/reviews/",
+  "jar": {
+    "bytes": 66981576,
+    "sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
+  },
+  "java": {
+    "executable_sha256": "9da06bd6c880c0c8d1a63e3716f8ef7996f146c41e6d339e4eafc93df28392f9",
+    "identity_source": "JDK_RELEASE_FILE_NO_PROCESS",
+    "release_sha256": "00d3211a59bc9f2577f93962e9210de8578c49fd2625022cb38606817d3a71f9",
+    "version": "17.0.12"
+  },
+  "new_root_absent": true,
+  "no_reparse": true,
+  "parent_python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "paths": [
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_contracts.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_owner_source.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_capability.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_budget_policy.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_budget_ledger.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_sdk_contract.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_ports.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_session.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_verify.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_migration.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/tests/test_effectwitness_pge_r72.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/probe.py"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/README.md"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/RESULT.md"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/preflight-diagnostic.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/verification-diagnostic.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/parent-child-contract-matrix.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/budget-negative-controls.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/history-regression.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/source-identity-map.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/architecture-decision.json"
+    },
+    {
+      "base_exists": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/capability-assessment.json"
+    }
+  ],
+  "plan": "RPF-72/rev-1",
+  "r71_source": {
+    "base": "ef95f0965ad8f2325892f6800a4528112f1a6e52",
+    "branch": "codex/rpf-71-budget-policy-execution-seam",
+    "issuer": false,
+    "jar_bytes": 66981576,
+    "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+    "lf_digest": "6050a9729fa0e069a31d0a5b6becf1c2c564a485f089ea2b26b93b385dd8acbb",
+    "native_lf_digest": "68bbfe44ccde9e5c20f8acaa6ea6660285e2e7ecdc145a556fc6e856887a3a17",
+    "raw_digest": "6050a9729fa0e069a31d0a5b6becf1c2c564a485f089ea2b26b93b385dd8acbb",
+    "schema": "rpf71-owner-source-v1.1",
+    "sdk_pin": {
+      "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+      "openai_record_entries": 2000,
+      "openai_record_mismatches": 0,
+      "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+      "pydantic_record_entries": 444,
+      "pydantic_record_mismatches": 0,
+      "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+      "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+      "python_version": "3.12.13",
+      "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+    },
+    "source_map": {
+      "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": {
+        "lf": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43"
+      },
+      "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": {
+        "lf": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631"
+      },
+      "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": {
+        "lf": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": {
+        "lf": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": {
+        "lf": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_verify.py": {
+        "lf": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282"
+      },
+      "runtime/runproof_runtime/effectwitness/contracts.py": {
+        "lf": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d"
+      },
+      "runtime/runproof_runtime/effectwitness/effect_oracle.py": {
+        "lf": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+      },
+      "runtime/runproof_runtime/effectwitness/orders.py": {
+        "lf": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py": {
+        "lf": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r67_order_child.py": {
+        "lf": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": {
+        "lf": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py": {
+        "lf": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_context.py": {
+        "lf": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+        "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+        "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py": {
+        "lf": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py": {
+        "lf": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+        "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_session.py": {
+        "lf": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_verify.py": {
+        "lf": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_capability.py": {
+        "lf": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py": {
+        "lf": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_migration.py": {
+        "lf": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py": {
+        "lf": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_ports.py": {
+        "lf": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_session.py": {
+        "lf": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_verify.py": {
+        "lf": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_budget_ledger.py": {
+        "lf": "02c2eb2835b546073904d03e8db10fbdc7cf3f21d206b8c4fbc1c73ca68ac746",
+        "origin": "RPF71_CURRENT",
+        "raw": "02c2eb2835b546073904d03e8db10fbdc7cf3f21d206b8c4fbc1c73ca68ac746"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_budget_policy.py": {
+        "lf": "bf183b085f659e937494a36ab0c0ff2c42ce66c8d76d6914a64fe05f1e03a597",
+        "origin": "RPF71_CURRENT",
+        "raw": "bf183b085f659e937494a36ab0c0ff2c42ce66c8d76d6914a64fe05f1e03a597"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_capability.py": {
+        "lf": "d1fac0452e40f24a3d10445fa7b150d9c035f7977c66dd5df6c451c96ce0f19b",
+        "origin": "RPF71_CURRENT",
+        "raw": "d1fac0452e40f24a3d10445fa7b150d9c035f7977c66dd5df6c451c96ce0f19b"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_contracts.py": {
+        "lf": "43c40f8b63eb0cf6f8e9f478f87e0350a0fcbdb467256d7ee92815a5c9e60417",
+        "origin": "RPF71_CURRENT",
+        "raw": "43c40f8b63eb0cf6f8e9f478f87e0350a0fcbdb467256d7ee92815a5c9e60417"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_migration.py": {
+        "lf": "86da2a4a29c76d731f8e826d5832237e385720e6046b98d942e0242654ee2d7b",
+        "origin": "RPF71_CURRENT",
+        "raw": "86da2a4a29c76d731f8e826d5832237e385720e6046b98d942e0242654ee2d7b"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_owner_source.py": {
+        "lf": "1164324fb618f975d7fcbe3cd16a28ae08829aa7c9ce349972514b3f3c9cf930",
+        "origin": "RPF71_CURRENT",
+        "raw": "1164324fb618f975d7fcbe3cd16a28ae08829aa7c9ce349972514b3f3c9cf930"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_ports.py": {
+        "lf": "6158c301a050a6dbee14dcc1ba7d639f3b77a5e623b55d63f2311c27520a06c3",
+        "origin": "RPF71_CURRENT",
+        "raw": "6158c301a050a6dbee14dcc1ba7d639f3b77a5e623b55d63f2311c27520a06c3"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_session.py": {
+        "lf": "b233d43f08e832047d30e96502330f3d1ae902e36842f6bae49b46979df57810",
+        "origin": "RPF71_CURRENT",
+        "raw": "b233d43f08e832047d30e96502330f3d1ae902e36842f6bae49b46979df57810"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r71_verify.py": {
+        "lf": "eab8c3703142f6ed59c74c9cdb45b4108d24db33c6f4199aa7e2c7d987c45181",
+        "origin": "RPF71_CURRENT",
+        "raw": "eab8c3703142f6ed59c74c9cdb45b4108d24db33c6f4199aa7e2c7d987c45181"
+      },
+      "runtime/runproof_runtime/models.py": {
+        "lf": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3"
+      },
+      "runtime/tests/test_effectwitness_pge_r68.py": {
+        "lf": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449"
+      },
+      "runtime/tests/test_effectwitness_pge_r70.py": {
+        "lf": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919"
+      },
+      "runtime/tests/test_effectwitness_pge_r71.py": {
+        "lf": "d11733f56ea35d5db606a5ac2a9d39bbb648ac1ebd5b54cbff5fe84d53ae87d2",
+        "origin": "RPF71_CURRENT",
+        "raw": "d11733f56ea35d5db606a5ac2a9d39bbb648ac1ebd5b54cbff5fe84d53ae87d2"
+      },
+      "spikes/rpf-53/probe.py": {
+        "lf": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+      },
+      "spikes/rpf-53/rev-6/config-live-evidence.json": {
+        "lf": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+      },
+      "spikes/rpf-55/probe.py": {
+        "lf": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+      },
+      "spikes/rpf-68/rev-3/probe.py": {
+        "lf": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a"
+      },
+      "spikes/rpf-70/probe.py": {
+        "lf": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0",
+        "origin": "R70_REFERENCE_ONLY",
+        "raw": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0"
+      },
+      "spikes/rpf-71/probe.py": {
+        "lf": "fd3efaac12b75fd8bad3fc5f4538408cb1a93e4a0df121d312bd662bc14fb261",
+        "origin": "RPF71_CURRENT",
+        "raw": "fd3efaac12b75fd8bad3fc5f4538408cb1a93e4a0df121d312bd662bc14fb261"
+      }
+    }
+  },
+  "remote": [
+    {
+      "absent": false,
+      "ref": "branches/main",
+      "sha": "bda0cd49e50e3181f604324e94877a24b9885334"
+    },
+    {
+      "absent": false,
+      "ref": "branches/codex/rpf-71-budget-policy-execution-seam",
+      "sha": "ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "branches/codex/rpf-72-parent-child-budget-contract"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_contracts.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_owner_source.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_capability.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_budget_policy.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_budget_ledger.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_sdk_contract.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_ports.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_session.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_verify.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r72_migration.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/runtime/tests/test_effectwitness_pge_r72.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/probe.py?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/README.md?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/RESULT.md?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/preflight-diagnostic.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/verification-diagnostic.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/parent-child-contract-matrix.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/budget-negative-controls.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/history-regression.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/source-identity-map.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/architecture-decision.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    },
+    {
+      "absent": true,
+      "ref": "contents/spikes/rpf-72/capability-assessment.json?ref=ed346dea7fc46fc289853ea673bfe100f8d0d8b7"
+    }
+  ],
+  "root": "$REPO",
+  "runtime_credential_caveat": "G0 verified no parent credential read; later unchanged child sanitized absence probes prevent A08 literal PASS",
+  "sdk": {
+    "configured_executable_matches_sys": true,
+    "openai": {
+      "record_entries": 2000,
+      "record_hashed_entries": 1999,
+      "record_mismatches": 0,
+      "record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+      "version": "3.35.1"
+    },
+    "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+    "pydantic": {
+      "record_entries": 444,
+      "record_hashed_entries": 443,
+      "record_mismatches": 0,
+      "record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+      "version": "2.57.0"
+    },
+    "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+    "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+    "python_version": "3.12.13",
+    "sdk_core_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+  },
+  "sdk_metadata_elapsed": 3.5718402999991667,
+  "sdk_metadata_pid": 2416,
+  "sdk_usage_module_sha256": "25600cce6cd140fd073c618bb214ebaea00f9fea986813f236f3497556fab19e",
+  "source_remote": {
+    "api_sha": "8bfc09022e8e7d159a5de289040b22441713bd7a",
+    "api_url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/codex/rpf-72-parent-child-budget-contract",
+    "git_sha": "8bfc09022e8e7d159a5de289040b22441713bd7a",
+    "observed_main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "observed_parent": "ed346dea7fc46fc289853ea673bfe100f8d0d8b7",
+    "source_commit": "8bfc09022e8e7d159a5de289040b22441713bd7a",
+    "status": "SOURCE_DUAL_READ_PASS"
+  },
+  "status": "PASS",
+  "workflow": "feature push does not deploy; release gate main only"
+}

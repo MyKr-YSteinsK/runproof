@@ -1,0 +1,90 @@
+{
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "NO",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "L2": "NOT_ESTABLISHED",
+  "SDK_GUARD_MIGRATED": "NO",
+  "architect_evidence_accepted": "PENDING",
+  "cost": {
+    "api_fee_cny": 0,
+    "host_credential_reads": 0,
+    "literal_provider_env_absence_probes": 6,
+    "literal_provider_env_absence_probes_scope": "Six explicit completed-report checks established; all library getenv invocation counts NOT_INSTRUMENTED",
+    "provider_calls": 0,
+    "provider_component_474000": "PURE_FROZEN_ARITHMETIC_NOT_INVOICE",
+    "real_tokens": 0,
+    "synthetic_run_usage_only": true
+  },
+  "gates": {
+    "G0": {
+      "reason": "Exact Base; 22 paths absent locally/index/Base/API; fresh ignored non-reparse root; protected paths preserved",
+      "status": "PASS"
+    },
+    "R72-A01": {
+      "reason": "59-entry raw/LF closure; typed Owner/Source/Policy; source and policy drift focused negatives; committed raw bytes checked",
+      "status": "PASS"
+    },
+    "R72-A02": {
+      "reason": "Strict immutable domain contracts 250000/160000; 25 focused and 40 pure cfg negatives",
+      "status": "PASS"
+    },
+    "R72-A03": {
+      "reason": "Eight fixed SDK components pass, but actual native launch is rejected by Windows string argv versus frozen list comparator. No accepted native config/serialized-input/report binding",
+      "status": "FAIL"
+    },
+    "R72-A04": {
+      "reason": "Focused physical native WAL reserve/settle parity, direct bypass, orphan, torn receipt, UNKNOWN and SQLite fixture tests pass; no formal-session claim",
+      "status": "PASS"
+    },
+    "R72-A05": {
+      "reason": "N/F withheld after mandatory A03 runtime failure; no formal business scene or corrective attempt",
+      "status": "NOT_RUN"
+    },
+    "R72-A06": {
+      "reason": "24 historical entries plus R69 0/2/3 pass; pure cfg 40/30. Manifest semantic 0/140, child-budget manifest 0/65, deep coupled 0/4, new valid-manifest CLI absent",
+      "status": "NOT_RUN"
+    },
+    "R72-A07": {
+      "reason": "Source frozen and 25 focused pass; full Runtime NOT_RUN after mandatory execution gate failure; cannot claim >=546",
+      "status": "NOT_RUN"
+    },
+    "R72-A08": {
+      "reason": "Provider/host-credential reads/real tokens/API fees are zero; unchanged child executes six sanitized-environment Provider-key presence probes. Literal no Key environment lookup condition is not met",
+      "status": "FAIL"
+    },
+    "R72-A09": {
+      "reason": "Controller/SDK/no-attestation levels implemented, but formal SDK proof/manifest tampering coverage not executed",
+      "status": "NOT_RUN"
+    },
+    "R72-A10": {
+      "reason": "Source commit pushed and Git/API double-read; this report commit and final 22-path delivery double-read are reported in final chat after publication",
+      "status": "NOT_RUN"
+    }
+  },
+  "implemented": [
+    "Immutable ParentChildBudgetContract",
+    "Strict pure config gate",
+    "Scoped audit/profile Controller candidate",
+    "Task-owned verifier candidate"
+  ],
+  "issuer": false,
+  "plan": "RPF-72/rev-1",
+  "source_commit": "8bfc09022e8e7d159a5de289040b22441713bd7a",
+  "source_identity_sha256": "46295f001bf0b1e9c386186fc714107e0b62c1dc98b50bc8a71b7fd0ff65b569",
+  "stage_advanced": "PENDING",
+  "status": "Partial",
+  "unavailable": [
+    "Native accepted launch",
+    "Actual serialized native cfg observation",
+    "Formal N/F",
+    "140 manifest negatives",
+    "Full Runtime",
+    "Child independent attestation"
+  ],
+  "verified": [
+    "25 focused",
+    "8 fixed SDK components",
+    "40 pure cfg negatives",
+    "27 historical CLI commands",
+    "SDK late PID/port readback"
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    {
+      "cost": "Lowest",
+      "history": "Keeps frozen failed Source",
+      "path": "A readonly closeout",
+      "result": "Chosen for this revision; preserves trustworthy Partial",
+      "safety": "No further process/business effects"
+    },
+    {
+      "cost": "Low to medium; requires permission to replace this frozen R72 Source",
+      "history": "Native Driver/child unchanged",
+      "path": "B narrow parent Windows audit normalization",
+      "result": "Recommended next revision",
+      "safety": "Retain executable/cwd/env/child pin and exact serialized-input checking; add pre-freeze hook smoke test"
+    },
+    {
+      "cost": "Highest; new allowlist and authorization",
+      "history": "New explicit ABI; historical child unchanged",
+      "path": "C versioned child v2 echoes budget capsule/config digest",
+      "result": "Outside this Plan",
+      "safety": "Requires fresh guard/SDK authority audit"
+    }
+  ],
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "NO",
+  "CODEX_ENGINEERING_JUDGMENT": {
+    "cheapest_discriminating_test": "Before a new freeze: normalize observed Windows command line using a strict platform-aware expected command comparison, then component-test original Driver without JVM/DB; only after PASS resume N/F",
+    "confidence": "HIGH",
+    "counterevidence": "Pinned child direct component passes; therefore not a total-token-limit or SDK pin failure",
+    "root_cause": "Controller hook incorrectly assumes cross-platform audit argv list representation; SDK cumulative limit itself works",
+    "support": "Windows stdlib list2cmdline before sys.audit; actual native run raises NATIVE_CHILD_ARGV pre-CreateProcess"
+  },
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "L2": "NOT_ESTABLISHED",
+  "NEXT_DECISION_RECOMMENDATION": [
+    {
+      "authorization": "Explicit replacement of frozen source and fresh finite run accounting",
+      "decision": "A new RPF-72 revision may authorize the narrow Windows argv fix, test additions and a fresh Source freeze/root; do not edit this proved Source under rev-1",
+      "rank": 1
+    },
+    {
+      "authorization": "Allow sanitized absence checks explicitly, or separately authorize a new child path; never read a real credential",
+      "decision": "Resolve literal zero Key lookup versus original child sanitized absence probes before more SDK children",
+      "rank": 2
+    },
+    {
+      "authorization": "Fresh explicit execution budget; no RPF73 auto-creation, no Provider/merge/deploy",
+      "decision": "Then rerun final focused/full/140+65+30 negatives/N/F within the next revision limits",
+      "rank": 3
+    }
+  ],
+  "POTENTIAL_GENERALIZATION_DEBT": {
+    "hypothesized": [
+      "sys.setprofile may increase parent overhead; no formal throughput measurement",
+      "A future explicit Driver factory ABI could avoid stack/audit coupling"
+    ],
+    "non_claims": [
+      "No OS sandbox",
+      "No general Guard migration",
+      "No external Issuer",
+      "No real agent autonomy or causal L2"
+    ],
+    "verified": [
+      "Windows-only hook incompatibility",
+      "25 tests omitted original Driver launch integration",
+      "Controller proof cannot establish child-signed attestation",
+      "Native cfg still computes constants; new Policy equality would control admission only after hook works"
+    ]
+  },
+  "SDK_GUARD_MIGRATED": "NO",
+  "VERIFIED_FINDINGS": [
+    {
+      "boundary": "Actual original Driver/Controller subclass; synthetic Port; no child created",
+      "evidence": ".local/rpf-72/tests/rpf72-f08e69b696ebca32/launch-diagnostic.json",
+      "fact": "Windows subprocess audit argv is str after list2cmdline"
+    },
+    {
+      "boundary": "Synthetic OpenAI-compatible loopback usage, no external Provider",
+      "evidence": "parent-child-contract-matrix.json",
+      "fact": "Pinned SDK accepts legal-high cumulative 84600 / 54580, and exact totals250000/160000; limit+1 raises UsageLimitExceeded"
+    },
+    {
+      "boundary": "No execution source changed after freeze",
+      "evidence": "source-identity-map.json",
+      "fact": "Source is frozen and all 59 raw blobs match source commit or Base"
+    },
+    {
+      "boundary": "Full Runtime and N/F not run",
+      "evidence": "verification-diagnostic.json / history-regression.json",
+      "fact": "25 focused pass and 24 historical plus R69 CLI0/2/3 pass"
+    },
+    {
+      "boundary": "No host credential read; strict no-lookup wording not met",
+      "evidence": "pge_r68_sdk_child.py run() completed-report construction and six COMPLETED SDK reports",
+      "fact": "Six completed original child runs call getenv on sanitized child environment for absence checks"
+    }
+  ],
+  "architect_evidence_accepted": "PENDING",
+  "issuer": false,
+  "plan": "RPF-72/rev-1",
+  "source_commit": "8bfc09022e8e7d159a5de289040b22441713bd7a",
+  "source_identity_sha256": "46295f001bf0b1e9c386186fc714107e0b62c1dc98b50bc8a71b7fd0ff65b569",
+  "stage_advanced": "PENDING",
+  "status": "Partial"
+}
