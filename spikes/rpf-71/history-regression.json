@@ -1,0 +1,1195 @@
+{
+  "commands": [
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.witness_verify",
+        "spikes/rpf-43/sample-witness.json",
+        "--expected-sha256",
+        "ff4870c3f53251d5bcfc02716ed4e30269bb73ab982c3851485059f30b43391e"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 0.802958000000217,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-00",
+      "log": ".local/rpf-71/commands/history-frozen-00/output.log",
+      "log_sha256": "c1beb46b130ce465a8dbee5f1437e7936c7ef73f5218e0d2586adf7deefd484b",
+      "parent_pid": 25264,
+      "pid": 26304,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:21:50.446358+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.witness_verify",
+        "spikes/rpf-44/sample-ops-witness.json",
+        "--expected-sha256",
+        "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 0.8224274999993213,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-01",
+      "log": ".local/rpf-71/commands/history-frozen-01/output.log",
+      "log_sha256": "a62ace157bf1d67d3be657e553984a2e70a12d9f69b2b295479249ae281c85ec",
+      "parent_pid": 25264,
+      "pid": 23784,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:21:51.889221+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.target_evidence",
+        "spikes/rpf-48/target-agent-summary.json",
+        "--expected-sha256",
+        "c00eb35fec0710ff0acd43fc09d5a2b318ff795e27af40dff4b86a9f732af4a2"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.402016399999411,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-02",
+      "log": ".local/rpf-71/commands/history-frozen-02/output.log",
+      "log_sha256": "903723d3b325ae9a866b0ed1044c7c6355761b59da085bb945e2c606406ddc70",
+      "parent_pid": 25264,
+      "pid": 6104,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:21:53.499571+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.target_recovery",
+        "spikes/rpf-49/recovery-summary.json",
+        "--expected-sha256",
+        "04ac629bbfb54a4b85eddf902bbf765db7c57ea0c509e0b539280858c7d4bc9b"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.4503771000017878,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-03",
+      "log": ".local/rpf-71/commands/history-frozen-03/output.log",
+      "log_sha256": "f7a85b6f794b2c438569694ed22e6f3360da61703a9eefdc94fc19c7292c7596",
+      "parent_pid": 25264,
+      "pid": 11060,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:21:56.068923+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.violation_witness",
+        "spikes/rpf-50/violation-witness.json",
+        "--expected-sha256",
+        "b8f288db5dd76a142bbfb69a04d15ce9206d2cd9dbe28ef6effdb59382f5ef4a"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.3167643999986467,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-04",
+      "log": ".local/rpf-71/commands/history-frozen-04/output.log",
+      "log_sha256": "0e2669d18cfbe3d08814e3b0cfad06e831c85bb52155cfa702ae717305e69a32",
+      "parent_pid": 25264,
+      "pid": 12132,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:21:58.678127+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_http_witness",
+        "spikes/rpf-51/rev-4/config-http-witness.json",
+        "--expected-sha256",
+        "c569bd62a6691c84e8995359578fc4ff34f0ea417158a0c0893309c029df363d"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.2559505999997782,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-05",
+      "log": ".local/rpf-71/commands/history-frozen-05/output.log",
+      "log_sha256": "d667a4412d5fd4b0841f6c5035fca8c137221244b247ad07b4e99fab5ca59267",
+      "parent_pid": 25264,
+      "pid": 24552,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:01.077673+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_target_verify",
+        "spikes/rpf-52/rev-3/config-target-fixture-evidence.json",
+        "--expected-sha256",
+        "2bbc002e5a83dabc4aa9b9ddfea733532ef8b29f789181a19debb7ed9437eb27"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.2922538000020722,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-06",
+      "log": ".local/rpf-71/commands/history-frozen-06/output.log",
+      "log_sha256": "a74f0e57b674155be1485bf9431e1a536e5bc3f00541a80e47d7ac0be342c762",
+      "parent_pid": 25264,
+      "pid": 6116,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:03.405576+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_live_verify",
+        "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "--sha256",
+        "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.2417700000005425,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-07",
+      "log": ".local/rpf-71/commands/history-frozen-07/output.log",
+      "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "parent_pid": 25264,
+      "pid": 22396,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:05.753643+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_experiment_verify",
+        "spikes/rpf-55/rev-2/config-experiment-evidence.json",
+        "--sha256",
+        "e5caa1a4578262132a7e779efdf481c1e9c4649cd8bbd7adfbd4c747575ca2c8"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 2.283645199997409,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-08",
+      "log": ".local/rpf-71/commands/history-frozen-08/output.log",
+      "log_sha256": "8a346a50a1539873a63e83ec663c0b8d41065553cc8cfe8323a1c9d043043173",
+      "parent_pid": 25264,
+      "pid": 15240,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:08.577111+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_pge_verify",
+        "spikes/rpf-56/rev-4/config-pge-evidence.json",
+        "--sha256",
+        "4d565511cc1093d350700b4b360b276b519d6b5effa6be0e1cdfadfe2b32d26b"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.4937887000014598,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-09",
+      "log": ".local/rpf-71/commands/history-frozen-09/output.log",
+      "log_sha256": "e2e468363d6e4a0214ee45c92c7fc807edd601e551206c5ad6463829516da4cc",
+      "parent_pid": 25264,
+      "pid": 7032,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:12.348501+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.config_pge_coverage_verify",
+        "spikes/rpf-57/config-pge-coverage-evidence.json",
+        "--sha256",
+        "76dd7077d75e6dd8ad319bb6e17a01209faadee9fe94d276f3b85e73e88abbe7"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 2.082635799997661,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-10",
+      "log": ".local/rpf-71/commands/history-frozen-10/output.log",
+      "log_sha256": "0fe2bb79a3f01ed78d31e165a0fae004c71ffd4f790fd007c71e37933f9411aa",
+      "parent_pid": 25264,
+      "pid": 20612,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:15.108308+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_shared_verify",
+        "spikes/rpf-58/rev-2/cross-domain-portability-evidence.json",
+        "--sha256",
+        "03aa9ac84f725de982b537a8882b27b764aaf6da9868b9a65a2cdcfd6e4d208d"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 2.173992599997291,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-11",
+      "log": ".local/rpf-71/commands/history-frozen-11/output.log",
+      "log_sha256": "3e7e477e3de8385f542d35757c2305c2435221972fa95b5c0954a9bb1337719e",
+      "parent_pid": 25264,
+      "pid": 27348,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:19.416785+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_select_verify",
+        "spikes/rpf-59/cross-domain-selection-evidence.json",
+        "--sha256",
+        "0bb359ca78c7c0415afef30ff959d41112da3f5155e5ae18e68be28735f9996a"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.5375815000006696,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-12",
+      "log": ".local/rpf-71/commands/history-frozen-12/output.log",
+      "log_sha256": "5dda2d22c76aa503fd29b38f590fa70c1b8b61eb27df001280bba0666d53a454",
+      "parent_pid": 25264,
+      "pid": 25404,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:22.656606+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.lab_cross_domain_verify",
+        "spikes/rpf-60/cross-domain-live-evidence.json",
+        "--sha256",
+        "81422d26a6ea1406d66d73fecfe0a98a09310a81812faf84e95ed896679b8df9"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.6003247000007832,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-13",
+      "log": ".local/rpf-71/commands/history-frozen-13/output.log",
+      "log_sha256": "b5a5edd9fce0d5520e16e7a9b2bac6c3f47310e51c4506849a6b393ebdb239ac",
+      "parent_pid": 25264,
+      "pid": 27028,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:25.239030+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_target_capability_verify",
+        "spikes/rpf-62/real-target-witness.json",
+        "--sha256",
+        "898b3aef8e0a58b69de09ebbecb6973735af929555a7f1be80305264d40997c4"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.425583000000188,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-14",
+      "log": ".local/rpf-71/commands/history-frozen-14/output.log",
+      "log_sha256": "8f8d5fdddf7ad8979715f4525aceabda6cd7e92ba519111a7f928a619f5de24c",
+      "parent_pid": 25264,
+      "pid": 24392,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:27.874053+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_dual_verify",
+        "spikes/rpf-63/dual-agent-evidence.json",
+        "--sha256",
+        "f70c9260347e7b91829e032b1fec69b13d070f42998de0ba818f97f18ec4b299"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.5361628999999084,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-15",
+      "log": ".local/rpf-71/commands/history-frozen-15/output.log",
+      "log_sha256": "55ed3e6ba72ba36a72bb17f55dee9618bcac65750738365ed9806ba42e7ca665",
+      "parent_pid": 25264,
+      "pid": 12840,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:30.400554+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_portability_verify",
+        "spikes/rpf-64/portability-witness.json",
+        "--sha256",
+        "d5798bfa82ef9523039a1461c82842aa9f265703ada492cef3cf068208e5ff19"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.4323466000023473,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-16",
+      "log": ".local/rpf-71/commands/history-frozen-16/output.log",
+      "log_sha256": "ced5d4f21b36c78878c27c6e4f52aae2d680a41ad864f7016a6bda7af0bc8683",
+      "parent_pid": 25264,
+      "pid": 23056,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:33.032161+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r65_verify",
+        "spikes/rpf-65/rev-2/target-witness.json",
+        "--sha256",
+        "2c8691137603cc69d9a1cf92f7800da65dd803bd8e49291187caecac6c5eea2d"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 2.012237200000527,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-17",
+      "log": ".local/rpf-71/commands/history-frozen-17/output.log",
+      "log_sha256": "7529b5d7ed11565c4ef32615722e0a683aa4dd19775aff6a92c055e2da015ffc",
+      "parent_pid": 25264,
+      "pid": 18396,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:35.574936+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r66_verify",
+        "spikes/rpf-66/rev-5/dual-agent-witness.json",
+        "--sha256",
+        "68dad2804edd3668e1e4b4ed19d18034b79d5fa1892e9fea75aaeb9080c4f3c5"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 2.7331689999991795,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-18",
+      "log": ".local/rpf-71/commands/history-frozen-18/output.log",
+      "log_sha256": "19f9ef58c472ce7639ca662febd374892a2df85393d4b37333a923a9d86d02b8",
+      "parent_pid": 25264,
+      "pid": 3000,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:38.771181+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "runtime/verify-reviewed-artifacts.py"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.8805260000008275,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-19",
+      "log": ".local/rpf-71/commands/history-frozen-19/output.log",
+      "log_sha256": "672ee889968f5f19453058932c6538cc17c5d05bd366f6e9bb7bec62d1781fcc",
+      "parent_pid": 25264,
+      "pid": 6116,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:42.693744+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "ci/verify-public-docs.py"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.47188019999885,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-20",
+      "log": ".local/rpf-71/commands/history-frozen-20/output.log",
+      "log_sha256": "e0647ec67a2b43dc8423f0b48665fbb250a033365b2d5f339d9761f7992f9cca",
+      "parent_pid": 25264,
+      "pid": 11324,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:45.739388+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r66_verify",
+        "spikes/rpf-66/rev-5/dual-agent-witness.json",
+        "--sha256",
+        "68dad2804edd3668e1e4b4ed19d18034b79d5fa1892e9fea75aaeb9080c4f3c5"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 2.6624281000003975,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-21",
+      "log": ".local/rpf-71/commands/history-frozen-21/output.log",
+      "log_sha256": "19f9ef58c472ce7639ca662febd374892a2df85393d4b37333a923a9d86d02b8",
+      "parent_pid": 25264,
+      "pid": 4020,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:48.375297+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r67_order_verify",
+        "spikes/rpf-67/rev-4/order-target-witness.json",
+        "--sha256",
+        "a2ab94b70a144e389b324cb4731aba6d48a28fc0e77646c54c20a490d2b72c26"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.7402784999976575,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-22",
+      "log": ".local/rpf-71/commands/history-frozen-22/output.log",
+      "log_sha256": "2e2dc674ffdfe537f34a13a38b4e2cba6135a79af43ce8712990750bae6023c0",
+      "parent_pid": 25264,
+      "pid": 4928,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:52.175874+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "runtime.runproof_runtime.effectwitness.pge_r68_verify",
+        "spikes/rpf-68/rev-3/cross-domain-witness.json",
+        "--sha256",
+        "5b97d3e0a4c9c3d2492b5aa49af00ebe1e553b24b0f9725087180510e55dd9e9"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.714445200002956,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-23",
+      "log": ".local/rpf-71/commands/history-frozen-23/output.log",
+      "log_sha256": "16292f3bad4d7bedca1f8e5d93f0a8ca0fa429a598bd9a2a2dd83f25ca264ede",
+      "parent_pid": 25264,
+      "pid": 8248,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:55.128621+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "spikes/rpf-69/probe.py",
+        "verify",
+        "--path",
+        "spikes/rpf-69/compatibility-matrix.json",
+        "--sha256",
+        "15d714a39118746c5d7d8787ef314c8b0bb8d70e792705c606457e9b2e4d14be"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 6.394821300000331,
+      "errors": 0,
+      "exit": 0,
+      "failures": 0,
+      "label": "history-frozen-24",
+      "log": ".local/rpf-71/commands/history-frozen-24/output.log",
+      "log_sha256": "50ada7b8cabe884c3e57304321cac63d12d7ce27cf8837300b1cf83f729ef9ba",
+      "parent_pid": 25264,
+      "pid": 14900,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:22:58.008127+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "spikes/rpf-69/probe.py",
+        "verify",
+        "--path",
+        "spikes/rpf-69/compatibility-matrix.json"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.46640810000099,
+      "errors": 0,
+      "exit": 2,
+      "failures": 0,
+      "label": "history-frozen-25",
+      "log": ".local/rpf-71/commands/history-frozen-25/output.log",
+      "log_sha256": "a249679dd61a10ad9202b5476c040c7a546ad947ff97bf4f0d4d889e098f8abf",
+      "parent_pid": 25264,
+      "pid": 26788,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:23:05.572996+00:00",
+      "tests": null,
+      "timed_out": false
+    },
+    {
+      "command": [
+        "python",
+        "-X",
+        "utf8",
+        "-B",
+        "spikes/rpf-69/probe.py",
+        "verify",
+        "--path",
+        "spikes/rpf-69/compatibility-matrix.json",
+        "--sha256",
+        "0000000000000000000000000000000000000000000000000000000000000000"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": 1.3932138999989547,
+      "errors": 0,
+      "exit": 3,
+      "failures": 0,
+      "label": "history-frozen-26",
+      "log": ".local/rpf-71/commands/history-frozen-26/output.log",
+      "log_sha256": "57d9892e9c0ef21d7fb83ee1ab01098e154a10238d93ffd0beaa6e2aeff13dd3",
+      "parent_pid": 25264,
+      "pid": 6480,
+      "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+      "skips": [],
+      "start_utc": "2026-10-24T12:23:08.152421+00:00",
+      "tests": null,
+      "timed_out": false
+    }
+  ],
+  "r70_native_manifest": "UNAVAILABLE_PRIVATE_ROOT_NOT_READ",
+  "r70_reference_source": {
+    "base": "86b033b94556c0931aa590c79e69fda672a4915e",
+    "branch": "codex/rpf-70-owner-source-runtime-seam",
+    "issuer": false,
+    "jar_bytes": 66981576,
+    "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+    "lf_digest": "f569d6624e834c2560b96ba53f94f34ae945fba8df715b39f875d6b79480d1c2",
+    "native_lf_digest": "68bbfe44ccde9e5c20f8acaa6ea6660285e2e7ecdc145a556fc6e856887a3a17",
+    "raw_digest": "f569d6624e834c2560b96ba53f94f34ae945fba8df715b39f875d6b79480d1c2",
+    "schema": "rpf70-owner-source-v1",
+    "sdk_pin": {
+      "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+      "openai_record_entries": 2000,
+      "openai_record_mismatches": 0,
+      "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+      "pydantic_record_entries": 444,
+      "pydantic_record_mismatches": 0,
+      "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+      "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+      "python_version": "3.12.13",
+      "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+    },
+    "source_map": {
+      "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": {
+        "lf": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43"
+      },
+      "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": {
+        "lf": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631"
+      },
+      "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": {
+        "lf": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": {
+        "lf": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": {
+        "lf": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_verify.py": {
+        "lf": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282"
+      },
+      "runtime/runproof_runtime/effectwitness/contracts.py": {
+        "lf": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d"
+      },
+      "runtime/runproof_runtime/effectwitness/effect_oracle.py": {
+        "lf": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+      },
+      "runtime/runproof_runtime/effectwitness/orders.py": {
+        "lf": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py": {
+        "lf": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r67_order_child.py": {
+        "lf": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": {
+        "lf": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py": {
+        "lf": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_context.py": {
+        "lf": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+        "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+        "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py": {
+        "lf": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py": {
+        "lf": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+        "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_session.py": {
+        "lf": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_verify.py": {
+        "lf": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_capability.py": {
+        "lf": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5",
+        "origin": "RPF70_CURRENT",
+        "raw": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py": {
+        "lf": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061",
+        "origin": "RPF70_CURRENT",
+        "raw": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_migration.py": {
+        "lf": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d",
+        "origin": "RPF70_CURRENT",
+        "raw": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py": {
+        "lf": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846",
+        "origin": "RPF70_CURRENT",
+        "raw": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_ports.py": {
+        "lf": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d",
+        "origin": "RPF70_CURRENT",
+        "raw": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_session.py": {
+        "lf": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821",
+        "origin": "RPF70_CURRENT",
+        "raw": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r70_verify.py": {
+        "lf": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3",
+        "origin": "RPF70_CURRENT",
+        "raw": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3"
+      },
+      "runtime/runproof_runtime/models.py": {
+        "lf": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3"
+      },
+      "runtime/tests/test_effectwitness_pge_r68.py": {
+        "lf": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449"
+      },
+      "runtime/tests/test_effectwitness_pge_r70.py": {
+        "lf": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919",
+        "origin": "RPF70_CURRENT",
+        "raw": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919"
+      },
+      "spikes/rpf-53/probe.py": {
+        "lf": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+      },
+      "spikes/rpf-53/rev-6/config-live-evidence.json": {
+        "lf": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+      },
+      "spikes/rpf-55/probe.py": {
+        "lf": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+      },
+      "spikes/rpf-68/rev-3/probe.py": {
+        "lf": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a",
+        "origin": "NATIVE_READ_ONLY",
+        "raw": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a"
+      },
+      "spikes/rpf-70/probe.py": {
+        "lf": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0",
+        "origin": "RPF70_CURRENT",
+        "raw": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0"
+      }
+    }
+  },
+  "status": "PASS",
+  "unchanged": [
+    {
+      "base_identical": true,
+      "lf_sha256": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+      "path": "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py",
+      "raw_sha256": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+      "path": "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py",
+      "raw_sha256": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+      "path": "runtime/runproof_runtime/effectwitness/config_experiment_verify.py",
+      "raw_sha256": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "path": "runtime/runproof_runtime/effectwitness/config_live_contracts.py",
+      "raw_sha256": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "path": "runtime/runproof_runtime/effectwitness/config_live_runtime.py",
+      "raw_sha256": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+      "path": "runtime/runproof_runtime/effectwitness/config_live_verify.py",
+      "raw_sha256": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+      "path": "runtime/runproof_runtime/effectwitness/contracts.py",
+      "raw_sha256": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "path": "runtime/runproof_runtime/effectwitness/effect_oracle.py",
+      "raw_sha256": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+      "path": "runtime/runproof_runtime/effectwitness/orders.py",
+      "raw_sha256": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py",
+      "raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r67_order_child.py",
+      "raw_sha256": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_budget.py",
+      "raw_sha256": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py",
+      "raw_sha256": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_context.py",
+      "raw_sha256": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py",
+      "raw_sha256": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_driver.py",
+      "raw_sha256": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py",
+      "raw_sha256": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py",
+      "raw_sha256": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py",
+      "raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_session.py",
+      "raw_sha256": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_verify.py",
+      "raw_sha256": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_capability.py",
+      "raw_sha256": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py",
+      "raw_sha256": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_migration.py",
+      "raw_sha256": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py",
+      "raw_sha256": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_ports.py",
+      "raw_sha256": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_session.py",
+      "raw_sha256": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_verify.py",
+      "raw_sha256": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+      "path": "runtime/runproof_runtime/models.py",
+      "raw_sha256": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449",
+      "path": "runtime/tests/test_effectwitness_pge_r68.py",
+      "raw_sha256": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919",
+      "path": "runtime/tests/test_effectwitness_pge_r70.py",
+      "raw_sha256": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+      "path": "spikes/rpf-53/probe.py",
+      "raw_sha256": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+      "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+      "path": "spikes/rpf-55/probe.py",
+      "raw_sha256": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a",
+      "path": "spikes/rpf-68/rev-3/probe.py",
+      "raw_sha256": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a"
+    },
+    {
+      "base_identical": true,
+      "lf_sha256": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0",
+      "path": "spikes/rpf-70/probe.py",
+      "raw_sha256": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0"
+    },
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-70/RESULT.md",
+      "raw_sha256": "8ab0969b81fa8057de1c926974c0789b25fb064a3d1ba41cee4afba0ed2343b3"
+    },
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-70/verification-diagnostic.json",
+      "raw_sha256": "151f7daade4d32a81648192bbb8fe6aecb3cade0f717669464d7873602106983"
+    },
+    {
+      "base_identical": true,
+      "path": "spikes/rpf-70/source-identity-map.json",
+      "raw_sha256": "270e06a35d8ae5a402451a7ec67bfa6e8dd529062e8b1f50a29014166adc0112"
+    }
+  ]
+}
