@@ -1,0 +1,452 @@
+{
+  "approved_anchor_correction": {
+    "authorized": true,
+    "expected": "15d714a39118746c5d7d8787ef314c8b0bb8d70e792705c606457e9b2e4d14be"
+  },
+  "fixed_read_exceptions": [
+    "pinned .local/rpf-48/venv SDK distribution/runtime mapping",
+    "pinned .local/rpf-51-rev4 upstream config-center JAR"
+  ],
+  "guard_differential": {
+    "full_children_equal": false,
+    "prefix_equal": true,
+    "wiring_equivalence": "NOT_PROVEN"
+  },
+  "initial_tooling_failure": {
+    "business_started": false,
+    "kind": "SDK_METADATA_ARGV_OMITTED_CONFIGURED_EXECUTABLE",
+    "provider_calls": 0,
+    "resolved": "supplied both required script arguments; pinned metadata verified"
+  },
+  "metadata": {
+    "child": {
+      "argv": [
+        "PINNED_PYTHON_312",
+        "-I",
+        "-B",
+        "-X",
+        "utf8",
+        "-c",
+        "AST_EXTRACTED_R53_METADATA",
+        "PINNED_SDK_SITE",
+        "PINNED_PYTHON_312"
+      ],
+      "cwd": ".local/rpf-70",
+      "elapsed_seconds": 3.1784012999996776,
+      "exit": 0,
+      "pid": 14480,
+      "script_sha256": "1e1d1c8b726cb4ce0486f3c5ef5ea658a97e5c5720597027558d0630d67516d8",
+      "start_utc": "2026-10-24T11:07:50.635648+00:00",
+      "stdout_sha256": "d21feb1e7d4026fc238030c4f3b0f212590fed61273b2ec2035fbbd534416f43"
+    },
+    "guard": {
+      "child_budget": "PARENT_FROZEN_DOMAIN_SUM",
+      "guard_policy": {
+        "child_raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "file": "OWN_WRITE_ROOT_AND_PINNED_READS",
+        "guard_raw": "1c490aafda366e950f457e5d256c4d15da122e4d4210fe04799ea3a8d9767819",
+        "network": "LOOPBACK_HOST_ONLY",
+        "process": false,
+        "provider_key": false,
+        "sdk": {
+          "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_record_entries": 2000,
+          "openai_record_mismatches": 0,
+          "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+          "pydantic_record_entries": 444,
+          "pydantic_record_mismatches": 0,
+          "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "python_version": "3.12.13",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+        }
+      },
+      "r66": "intentional versioned divergence; separate native child, not replaced",
+      "r67_r68": "byte-identical",
+      "rows": [
+        {
+          "analysis": "STATIC_SOURCE_INSPECTED",
+          "dynamic_sandbox": "NOT_PROVEN",
+          "function_names": [
+            "_is_link",
+            "_canonical_directory",
+            "_root_has_link_component",
+            "_path_category",
+            "_runtime_archive_entry",
+            "_runtime_mapping",
+            "_runtime_read_roots",
+            "_guard_events",
+            "_guard",
+            "_safe_denied_basename",
+            "_post",
+            "_validated_run_usage",
+            "main"
+          ],
+          "guard_sha256": "1c490aafda366e950f457e5d256c4d15da122e4d4210fe04799ea3a8d9767819",
+          "lf": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+          "path": "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py",
+          "raw": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504"
+        },
+        {
+          "analysis": "STATIC_SOURCE_INSPECTED",
+          "dynamic_sandbox": "NOT_PROVEN",
+          "function_names": [
+            "_is_link",
+            "_canonical_directory",
+            "_root_has_link_component",
+            "_path_category",
+            "_runtime_archive_entry",
+            "_runtime_mapping",
+            "_runtime_read_roots",
+            "_guard_events",
+            "_guard",
+            "_safe_denied_basename",
+            "_post",
+            "_validated_run_usage",
+            "main"
+          ],
+          "guard_sha256": "1c490aafda366e950f457e5d256c4d15da122e4d4210fe04799ea3a8d9767819",
+          "lf": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c",
+          "path": "runtime/runproof_runtime/effectwitness/pge_r67_order_child.py",
+          "raw": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c"
+        },
+        {
+          "analysis": "STATIC_SOURCE_INSPECTED",
+          "dynamic_sandbox": "NOT_PROVEN",
+          "function_names": [
+            "_is_link",
+            "_canonical_directory",
+            "_root_has_link_component",
+            "_path_category",
+            "_runtime_archive_entry",
+            "_runtime_mapping",
+            "_runtime_read_roots",
+            "_guard_events",
+            "_guard",
+            "_safe_denied_basename",
+            "_post",
+            "_validated_run_usage",
+            "main"
+          ],
+          "guard_sha256": "1c490aafda366e950f457e5d256c4d15da122e4d4210fe04799ea3a8d9767819",
+          "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py",
+          "raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7"
+        }
+      ],
+      "status": "PASS",
+      "unverified": [
+        "General OS sandbox",
+        "R66 guard semantic equivalence beyond native certificate validation"
+      ],
+      "weakening_detected": false
+    },
+    "jar": {
+      "bytes": 66981576,
+      "sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70"
+    },
+    "java": {
+      "executable_sha256": "9da06bd6c880c0c8d1a63e3716f8ef7996f146c41e6d339e4eafc93df28392f9",
+      "identity_source": "JDK_RELEASE_FILE_NO_PROCESS",
+      "release_sha256": "00d3211a59bc9f2577f93962e9210de8578c49fd2625022cb38606817d3a71f9",
+      "version": "17.0.12"
+    },
+    "key_lookup": 0,
+    "pin": {
+      "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+      "openai_record_entries": 2000,
+      "openai_record_mismatches": 0,
+      "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+      "pydantic_record_entries": 444,
+      "pydantic_record_mismatches": 0,
+      "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+      "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+      "python_version": "3.12.13",
+      "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+    },
+    "provider_calls": 0,
+    "sdk": {
+      "configured_executable_matches_sys": true,
+      "openai": {
+        "record_entries": 2000,
+        "record_hashed_entries": 1999,
+        "record_mismatches": 0,
+        "record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+        "version": "3.35.1"
+      },
+      "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+      "pydantic": {
+        "record_entries": 444,
+        "record_hashed_entries": 443,
+        "record_mismatches": 0,
+        "record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+        "version": "2.57.0"
+      },
+      "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+      "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+      "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+      "python_version": "3.12.13",
+      "sdk_core_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+      "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+    },
+    "status": "PASS"
+  },
+  "observations": {
+    "base": "86b033b94556c0931aa590c79e69fda672a4915e",
+    "initial_status": "?? docs/reviews/",
+    "local": {
+      "agents": [
+        {
+          "path": "$REPO\\AGENTS.md",
+          "text": "# AGENTS.md\n\n> RunProof 仓库执行规则；稳定产品合同、决定与当前事实分别由下列 Project State 文件持有。\n\n## 1. Project identity and context\n\n- RunProof (`RPF`)；repository name：`runproof`；主分支：`main`。\n- GitHub identity：`MyKr-YSteinsK/runproof`，visibility：`Public`（用户明确确认）；实际 remote/upstream 接入状态见 `docs/project/CURRENT_STATE.md`。\n- 唯一 Project State 位置：`docs/project/PROJECT_BRIEF.md`（稳定产品/UX 合同）、`docs/project/DECISIONS.md`（canonical decisions）、`docs/project/CURRENT_STATE.md`（当前阶段、能力、限制与交付事实）。\n- 历史验证事实保存在 `docs/history/`；RPF-00 至 RPF-39 的执行入口和生命周期导航见 [`docs/history/RPF_EXECUTION_INDEX.md`](docs/history/RPF_EXECUTION_INDEX.md)。具体参数仍以对应 Spike/模块 README 与脚本为准。\n- 完整 Bootstrap 由 Architect 持有；后续 Plan 必须带入相关 MUST、Acceptance、UX invariant。当前实现或摘要遗漏不能自行废除目标需求；事实冲突核对环境/版本，产品取舍按明确决定处理。\n\n## 2. Protected / private / external boundaries\n\n- 保护无关用户文件和改动；不提交 secrets、私密数据、临时输出、构建/覆盖率产物或本地运行目录。\n- DeepSeek API Key、未来 Provider credentials、authorization token 不得进入 Git、前端源码、Scenario、默认持久化 Trace 或普通 Evidence export；敏感字段默认 redact/mask。本地 secret 防护见 `.gitignore`。\n- v1 Agent 有副作用 Tool 只操作 Controlled Production Simulation Environment，不连接真实生产 destructive credentials。产品的 Simulation 范围不自动授权执行器在任意任务中执行 destructive/live 操作。\n- 关键 Release Authority 不由被测 Agent 持有；Agent/runtime 不得绕过 Approval/Quality Policy。`ELIGIBLE` 不是已发布状态，也不是 deploy/release 授权。\n- 不因推荐技术栈搭建完整空壳或引入 Queue/容器编排；未知架构边界先按任务开展 Investigation/Spike。\n- 本轮及后续任务不得读取、修改、移动、暂存或提交用户-owned `docs/reviews/` 内容；该目录如未跟踪必须保持未跟踪。\n\n## 3. Current command routing\n\n### Fast path — ordinary maintenance and focused product changes\n\n普通 push/PR 的自动验证只有 `.github/workflows/release-gate.yml` 的 canonical Release Gate；它保留 `push(main)`、`pull_request(main)` 和 `workflow_dispatch`，并执行 repository contract checks、fresh PostgreSQL/Control Plane、durable evaluation、canonical Decision read-back、redacted artifact 与 Job Summary。它不执行 release/deploy。\n\n本地 fast path 按实际影响选择以下核心命令；不要把所有历史 Plan 的命令机械拼成 CI：\n\n```powershell\npython -m unittest discover -s runtime/tests -p 'test_*.py' -v\npython runtime/verify-reviewed-artifacts.py\npython ci/verify-public-docs.py\npython demo/verify-golden-demo.py --root . --json\nmvn -q test package -f control-plane/pom.xml\nnpm test\nnpm run typecheck\nnpm run build\n```\n\nCanonical decision/evidence changes additionally use the reviewed RPF-16/RPF-17/RPF-18 verifiers and the local equivalent of `python ci/run_release_gate.py`; hosted evidence 以 `CURRENT_STATE` 与 `docs/history/` 为准。\n\n### Risk-expanded path — manual formal boundaries\n\nRPF-28、RPF-30、RPF-32、RPF-34、RPF-35 跨多个共享层，workflow 保留 fresh-checkout、显式依赖、source identity、artifact/verifier 入口，但采用 `workflow_dispatch` only。需要修改其直接 contract 时，先读对应 README，再运行对应 `probe.py` 与 `verify-evidence.py`；不要把这些 heavyweight proof 作为普通文档或通用 Runtime 改动的自动 fan-out。\n\n```powershell\npython spikes/rpf-28/probe.py --run\npython spikes/rpf-28/verify-evidence.py .local/rpf-28/rpf28-formal-result.json\npython spikes/rpf-30/probe.py --run\npython spikes/rpf-30/verify-evidence.py .local/rpf-30/<run>/rpf30-result.json\npython spikes/rpf-32/probe.py --run --output-dir .local/rpf-32/<run>\npython spikes/rpf-32/verify-evidence.py --result <rpf32-result.json>\npython spikes/rpf-34/probe.py --run --output-dir .local/rpf-34/<run>\npython spikes/rpf-34/verify-evidence.py <rpf34-result.json>\npython spikes/rpf-35/probe.py --run --output-dir .local/rpf-35/<run>\npython spikes/rpf-35/verify-evidence.py <rpf35-result.json>\n```\n\n### Checkpoint and historical reproduction\n\n- RPF-33 capacity/Large-Trace proof is manual checkpoint only；保留 Small/Medium/Full 入口，不把它当作 Production SLA。\n- RPF-27、RPF-29、RPF-31、RPF-36 是保留原路径的 historical/manual workflows；它们可以从 GitHub `workflow_dispatch` 或 README 的本地入口复现。\n- RPF-37 audit：`python spikes/rpf-37/audit.py --root . --output .local/rpf-37/audit.json`。它只盘点 tracked tree/workflows/spikes/reference/hash/Git hygiene，不删除任何内容。\n- RPF-38 的触发矩阵、权限变化、审计前后对比和剩余候选以 `docs/history/RPF_EXECUTION_INDEX.md`、`docs/history/VERIFICATION_HISTORY.md` 与 `CURRENT_STATE.md` 为准。\n- RPF-39 的 GenAI semantic-convention 结论以 `spikes/rpf-39/RESULT.md` 和其 disposable probe/verifier 为准；它不改变 RPF-30 正式 boundary、canonical evidence 或 Release authority。\n\n### Evidence and runtime boundaries\n\n- reviewed artifact 是不可变历史证据；不得静默覆盖、rename、move、format、regenerate、normalize、merge 或 delete。源码改变时必须显式刷新、审查并记录新的 source identity。\n- `.local/`、`ci-results/`、构建/覆盖率输出和 provider 临时资源只属于 ignored local/CI runtime；不要提交。\n- RPF-01/RPF-02 的 disposable probes 不代表正式 Runtime；RPF-27/RPF-29/RPF-31 的 candidate probes 不代表正式 Environment/OTel/ArtifactStore；RPF-39 的 compatibility probe 不代表正式 GenAI schema mapping。RPF-28/RPF-30/RPF-32/RPF-34/RPF-35 的正式边界仍不自动推导 Production HA、managed cloud、broker、scheduler、GC、真实 destructive remediation 或 release/deploy authorization。\n- Runtime live/provider 命令只有在当前任务明确授权 API 调用、费用与副作用时运行；从 `DEEPSEEK_API_KEY` 读取 secret，绝不打印 key、Authorization、private reasoning 或自由模型文本。\n- `python -m runtime.runproof_runtime`、正式 worker、Control Plane client 及 Web read model 必须保持 secret/private-protocol redaction、UNKNOWN_OUTCOME reconcile、fail-closed artifact verification 和 Agent/Release authority 分离。\n- Python runtime 当前无独立 lint/build 命令；Web `npm run build` 已包含 TypeScript/build 检查。验证应按真实 failure mode 选择，不用重复命令制造“证据数量”。\n\n## 4. Git / delivery / release model\n\n- 默认政策：`push-only`（commit → push）；实际 upstream 与交付结果见 `docs/project/CURRENT_STATE.md`。新增可信 deployment workflow/endpoint 时通过后续 Plan 更新模型及授权。\n- 对已授权的实施任务，coherent change 在必要验证后默认 focused commit；实现、必要验证和适用 Project State 更新完成后，默认提交剩余改动，并普通 push 到已存在且身份明确的既定 upstream，不逐次请求确认。\n- 审查、解释、诊断类请求本身不授权 commit/push 或其他写操作；当前明确任务限制优先。\n- remote 尚未建立时，不猜测 owner/name/visibility。仅在身份、可用认证与创建/连接授权明确后操作；不擅自改变仓库身份或可见性。\n- 禁止 force push、擅自 rebase/history rewrite；不得 amend/rewrite 已 push history 掩盖 bootstrap 转换错误。\n- 已 commit 不等于已交付；push、CI、deployment 的成功、失败或未执行分别如实报告。部署授权不得从普通 push 授权推导。\n- deploy/release/publish 仅在仓库规则或当前明确授权下执行。未来 push 会触发部署时须先核对对应 workflow 与授权。\n- 产品版本、CHANGELOG、tag 与 release 验证按真实发布流程定义，不把 bootstrap commit 当产品版本。\n- 当前 workflow 默认只请求 `contents: read`；新增 `actions`、`id-token`、云 secret 或部署权限必须有独立授权和后续 Plan 证明。\n\n## 5. Product checks and skill routing\n\n- 关键 Reliability 不变量以 `docs/project/PROJECT_BRIEF.md` 为准，特别是状态有效性、证据身份/覆盖率、UNKNOWN_OUTCOME reconcile、Regression 质量门槛与不可静默改写历史。\n- Desktop Web 是 portfolio-critical Primary surface。相关 UI Plan 必须把 canonical UX 合同纳入正式验收，不延期为末期美化。\n- 普通工程执行：`frugal-dev-runner`；Web UI/浏览器体验：`ui-real-device-qa`。技能提供通用执行方法，不扩大当前任务权限。\n- 正式 Plan/Handoff 和唯一主结果 `TASK_RESULT` 默认中文；保留 Plan ID、`Status: Complete / Partial / Blocked`。Optional USER CHECK 仅为非阻塞建议，不替代正式 Acceptance。\n\n## 6. Stop conditions\n\n缺少必要产品决定、远端身份/访问条件、操作权限，或下一步需突破产品/任务安全边界时，完成可独立进行的本地工作后报告具体缺口；不得猜测授权或凭据。技术未知本身应先在当前任务范围内调查。\n"
+        }
+      ],
+      "no_reparse": true,
+      "paths": [
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_capability.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_ports.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_session.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_verify.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/runproof_runtime/effectwitness/pge_r70_migration.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "runtime/tests/test_effectwitness_pge_r70.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/probe.py"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/README.md"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/RESULT.md"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/preflight-diagnostic.json"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/verification-diagnostic.json"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/migration-matrix.json"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/capability-assessment.json"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/architecture-decision.json"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/source-identity-map.json"
+        },
+        {
+          "base_exists": false,
+          "exists": false,
+          "index": false,
+          "path": "spikes/rpf-70/ownership-negative-controls.json"
+        }
+      ],
+      "ports_available": true,
+      "task_root_absent": true
+    },
+    "provider_calls": 0,
+    "remote": [
+      {
+        "absent": false,
+        "ref": "branches/main",
+        "sha": "bda0cd49e50e3181f604324e94877a24b9885334"
+      },
+      {
+        "absent": false,
+        "ref": "branches/codex/rpf-69-versioned-common-abi-compatibility",
+        "sha": "86b033b94556c0931aa590c79e69fda672a4915e"
+      },
+      {
+        "absent": true,
+        "ref": "branches/codex/rpf-70-owner-source-runtime-seam",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_contracts.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_capability.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_ports.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_session.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_verify.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/runproof_runtime/effectwitness/pge_r70_migration.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/runtime/tests/test_effectwitness_pge_r70.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/probe.py?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/README.md?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/RESULT.md?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/preflight-diagnostic.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/verification-diagnostic.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/migration-matrix.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/capability-assessment.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/architecture-decision.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/source-identity-map.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      },
+      {
+        "absent": true,
+        "ref": "contents/spikes/rpf-70/ownership-negative-controls.json?ref=86b033b94556c0931aa590c79e69fda672a4915e",
+        "sha": null
+      }
+    ],
+    "status": "PASS",
+    "user_anchor_correction": {
+      "authorized": true,
+      "expected": "15d714a39118746c5d7d8787ef314c8b0bb8d70e792705c606457e9b2e4d14be"
+    },
+    "workflow_push": "main only; feature branch no deployment"
+  },
+  "physical_symlink": [
+    {
+      "kind": "junction",
+      "native_effects": 0,
+      "status": "REJECTED"
+    },
+    {
+      "kind": "symlink",
+      "status": "UNAVAILABLE",
+      "winerror": 1314
+    }
+  ],
+  "plan": "RPF-70",
+  "revision": "rev-1",
+  "status": "PASS"
+}

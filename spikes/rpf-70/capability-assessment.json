@@ -1,0 +1,38 @@
+{
+  "BUDGET_EXECUTION_MIGRATED": "NO",
+  "CORE_FULLY_MIGRATED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_DECISION_REQUIRED",
+  "FIXTURE_CROSS_DOMAIN_COMPATIBILITY": "PASS",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HISTORICAL_NATIVE_CERTIFICATES": "PASS",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "NATIVE_R68_SHARED_SESSION_RERUN": "NO",
+  "OWNER_SOURCE_RUNTIME_SEAM_MIGRATED": "YES",
+  "REAL_FAULT_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_EXECUTION_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_DECISION_REQUIRED",
+  "TASK_COMPLETE": "CODEX_SELF_REPORT_PARTIAL",
+  "THIRD_DOMAIN": "NOT_RUN",
+  "WEB": "NOT_RUN",
+  "key_lookup": 0,
+  "limits": [
+    "trusted controller Python composition only",
+    "two concrete domains, no arbitrary callable",
+    "physical symlink UNAVAILABLE; observation policy test only",
+    "no general OS sandbox or Issuer authenticity"
+  ],
+  "native_r68_sources_modified": false,
+  "operations": {
+    "PR": "NOT_AUTHORIZED",
+    "competition_submission": "NOT_AUTHORIZED",
+    "deploy": "NOT_AUTHORIZED",
+    "main_merge": "NOT_AUTHORIZED",
+    "release": "NOT_AUTHORIZED",
+    "workflow_dispatch": "NOT_AUTHORIZED"
+  },
+  "provider_calls": 0,
+  "real_provider_usage": 0,
+  "third_party_or_production_network": false
+}
