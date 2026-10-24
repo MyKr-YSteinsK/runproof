@@ -4,7 +4,7 @@
 
 **Revision:** rev-1
 
-**Status:** Partial
+**Status:** Complete
 
 分支 `codex/rpf-70-owner-source-runtime-seam`；root `D:/CS/runproof`；Base `86b033b94556c0931aa590c79e69fda672a4915e`。本报告的实现与实测仅对应当前新分支，main 的既有 Project State 保持原字节；阶段推进及证据接受仍由 Architect 决定。
 
@@ -22,7 +22,7 @@
 | R70-A07 | PASS |
 | R70-A08 | PASS |
 | R70-A09 | PASS |
-| R70-A10 | NOT_RUN |
+| R70-A10 | PASS |
 
 新执行 Source raw/LF digest：`f569d6624e834c2560b96ba53f94f34ae945fba8df715b39f875d6b79480d1c2`（本机 36 项源码均 LF，raw digest 同值）。其中 9 项为本轮新执行源，27 项为 Base 原字节只读复用。完整 map、SDK/JAR pin 及 declared/observed 一致性见 `source-identity-map.json`。
 
@@ -106,7 +106,7 @@ N：Java/H2 ABSENT→v1→v2，HTTP GET/history 独立确认；SQLite 2500 minor
 
 source-freeze 前仅对本轮 9 个新执行源运行 `git diff --no-index --check`；9 项无空白错误。使用命令级 `core.autocrlf=false` 消除 NUL 对照时的转换提示，未改仓库配置。最终 staged 白名单还会运行 `git diff --cached --check`。旧 tracked 文件零修改；`docs/reviews/` 只在根 git status 中自然显示未跟踪提示，未进入或暂存。
 
-交付状态：`NOT_RUN`。普通 push 仅到授权新分支；Git 与 GitHub API 双读结果见 diagnostic。未创建 PR、main merge、workflow dispatch、tag、release、deploy 或竞赛提交。最终含回执 commit 的完整 SHA 由聊天回执提供，避免自引用改写。
+交付状态：`PASS`。源码及首轮实测提交：`73cabcd9416214f36b3082d13d424112f97ac00e`。普通 push 仅到授权新分支；Git 与 GitHub API 双读结果见 diagnostic。未创建 PR、main merge、workflow dispatch、tag、release、deploy 或竞赛提交。最终含回执 commit 的完整 SHA 由聊天回执提供，避免自引用改写。
 
 ## 6. 能力事实
 
