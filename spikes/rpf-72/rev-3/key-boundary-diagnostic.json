@@ -1,0 +1,49 @@
+{
+  "ALL_KEY_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "YES",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "CHILD_KEY_PRESENT": false,
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "EXTERNAL_DISCLOSURE": 0,
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_BUSINESS_KEY_READ": 0,
+  "HOST_PROVIDER_KEY_READ": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "LEGACY_R72R2_PRIVATE_MANIFEST_VERIFIED": "UNAVAILABLE",
+  "MAIN_MERGED": "NO",
+  "REAL_EXPLORER_AUTONOMY_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "base": "65617de848101afa8f632604f6491659778ad357",
+  "branch": "codex/rpf-72-rev3-stable-launch-environment-replay",
+  "delivery_at_generation": "RECEIPT_PENDING_FINAL_PUSH_DUAL_READ",
+  "java_auth": "New simulation-only loopback token, not inherited by SDK child",
+  "known_business_absence_probes_at_least": 12,
+  "known_completed_current_pipeline_R68_child_executions": 12,
+  "known_provider_absence_probes_at_least": 12,
+  "known_static_sites": [
+    {
+      "getter": "os.environ.get(DEEPSEEK_API_KEY)",
+      "location": "completed report",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+    },
+    {
+      "getter": "os.environ.get(CONFIG_CENTER_API_KEY)",
+      "location": "completed report",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+    }
+  ],
+  "not_a_total_execution_count": true,
+  "plan": "RPF-72/rev-3",
+  "plan_id": "RPF-72",
+  "protocol": "SANITIZED_CHILD_ABSENCE_PROBE",
+  "raw_env_exported": false,
+  "revision": "rev-3",
+  "scope_limit": "Successful current pipeline child reports only. Library and legacy/full/focused fixture getter totals NOT_INSTRUMENTED.",
+  "source_commit": "6a014c4f3acb7a2b720f83710ca2f797c6580706",
+  "source_identity_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+  "status": "Complete"
+}

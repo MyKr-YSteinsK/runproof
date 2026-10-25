@@ -1,0 +1,1057 @@
+{
+  "agents_sha256": "849182b1d2fda586d674c29c7d85f0deddfb1eea9b362b21eb535c4a9346492e",
+  "audit_shape": [
+    {
+      "argv": "str",
+      "cwd": "str",
+      "env_keys": [
+        "HOME",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "OTEL_SDK_DISABLED",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "executable": "NoneType"
+    }
+  ],
+  "base": "65617de848101afa8f632604f6491659778ad357",
+  "branch": "codex/rpf-72-rev3-stable-launch-environment-replay",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "ece71fe5d51ab849d7dd54d33a1ac16dfefb48b7630ca62067e51cfdcb5f46a2"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--short",
+        "--untracked-files=normal"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4125235df4fd6d8ea8a59ac65504701fc9b83845567508d0ba0889a6d836aa63"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "aed0c1a56dbcde302daeb01101fcf4fc1f3935ddefa34253e3131b469e3ac0df",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "f48e5100327590b68b3b74e89381e8d01fb8c08d3af990caa5109dfbcf87839f",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "e8db7a94434f2275120928dcf9d2f07aa18b1e17bfbeb8f069bf628479a6f53e",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "5885668f800042ffa0ce472114e8de31c68602b8ad53a9fe8a2779f083ec1b6f",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_ledger.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_budget_ledger.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "f10badc169e4d153ae9f74b55bc0e1117d7d06abab7036a8db90a7e9d4451c02",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "6a9f85c9c926da8c8ef5703891d618c194e8268839261d31e41d91f3e4ff190d",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "7384ae6a751664204b84492eff33b3e1c26e736dd6505cd37f45279ca7104431",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_ports.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_ports.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "bb084230bec561ecc892f912f542190dd9da2f3411a58b3a7cda152119b7e321",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_session.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_session.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "822d6a36d399e0afed225f3c89eb2a1ea59953f51aeb280ee42aeb3a481d5b8a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_verify.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_verify.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "0fb09344caf6cce7c3ca1f96b30db4fd5386285a2f4654d0467bd4ae400dbd43",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_migration.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/runproof_runtime/effectwitness/pge_r72r3_migration.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "a98f6331d6d212d338549b553c1aade18ec35e56987fccc5ec50d257f8cb337b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/tests/test_effectwitness_pge_r72r3.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:runtime/tests/test_effectwitness_pge_r72r3.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "66a1712cb5936db2060b68e4f5cc00fb9a1d841d281f2588aa84e468ed969b25",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/probe.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/probe.py"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "890635a1e3c3d70b73145d2dd2c3eb333378e003f820224d41ce48129bd49d53",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/README.md"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/README.md"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "65ee86e161732a811984e753e48ed01112787aff51baf5c11b0849df84007a05",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/RESULT.md"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/RESULT.md"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "434f4146b9c4966af3c8518788941f213e887c0ede508127a29cc38a664d7b5b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/preflight-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/preflight-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "01e25e30ef3ee44a0e58f5f862abb395183dbdf550f0047350838e1683e08ee8",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/verification-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/verification-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "3f51868fe23e92e41e3481a020798c0eab07711ab9f506d0246aa48e715248e2",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/parent-child-contract-matrix.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/parent-child-contract-matrix.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "5ade4d41c49a58c74a3de835661d6171577f92947e9d5f68bb2771fd85659837",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/budget-negative-controls.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/budget-negative-controls.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "6724967d3b84817328cd4396ac0596cae37e595eb2745790a64b180a28202142",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/history-regression.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/history-regression.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "14ea4782534d0c649552d632feee2a1c1149b2e590002ffc16d0efc0692e9bba",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/source-identity-map.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/source-identity-map.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "1a868731388c398d3677c9aaebec1b6887146d9f8a43f5b6fb31f932a0e11e89",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/architecture-decision.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/architecture-decision.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "9b4274e567a5892776fc93dbc7227d68c2b45411de62172565146280e8173582",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/capability-assessment.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/capability-assessment.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "13fde9009a44e0de55a8e911d56f58bbef52026fc92621c4e0082ed650c224d4",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/launch-environment-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/launch-environment-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "bfe4648817b1a92e238dfd0bdaad48e7149a5f8d5104fcaac61815d98e840a2e",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/runtime-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/runtime-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "562d3c89c216a0314885b4fc8d7cde3fe0f3a2dd1cc25d703a6c6948e3539411",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/key-boundary-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/key-boundary-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "b224fb523ff1320c65c88e4a9f0ad18d771c89fd064cca0468b4cbe0df4663a3",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-72/rev-3/positive-replay-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "65617de848101afa8f632604f6491659778ad357:spikes/rpf-72/rev-3/positive-replay-diagnostic.json"
+      ],
+      "cwd": "$REPO",
+      "exit": 128,
+      "stderr_sha256": "56f46cf762ac20b6d2569faab4b9239a3c86fd001689aab201335dd54454cd41",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "check-ignore",
+        "-v",
+        "D:\\CS\\runproof\\.local\\rpf-72-rev-3\\probe"
+      ],
+      "cwd": "$REPO",
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b6c26d5819fb91fa7a5d19255215b0516c62ec22e0265d794a03cab440c84330"
+    },
+    {
+      "argv": [
+        "git",
+        "show-ref",
+        "--verify",
+        "--quiet",
+        "refs/heads/codex/rpf-72-rev3-stable-launch-environment-replay"
+      ],
+      "cwd": "$REPO",
+      "exit": 1,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "feature_push_deploy": false,
+  "host_key_reads": 0,
+  "ignore": ".gitignore:12:/.local/\t\"D:\\\\CS\\\\runproof\\\\.local\\\\rpf-72-rev-3\\\\probe\"",
+  "initial_diagnostic": "A non-mutating PATH absolute-only assertion found unexpanded JAVA_HOME entry; G0 completed with an explicitly controlled per-command PATH subset",
+  "initial_status": "?? docs/reviews/",
+  "jar_bytes": 66981576,
+  "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+  "java_release": [
+    "IMPLEMENTOR=\"Oracle Corporation\"",
+    "JAVA_RUNTIME_VERSION=\"17.0.12+8-LTS-286\"",
+    "JAVA_VERSION=\"17.0.12\""
+  ],
+  "loopback_free_port": 9801,
+  "no_reparse": true,
+  "owner_observation": {
+    "owner_matches_current": true,
+    "owner_sid_sha256": "a0d7abdc50dc51b64975fe96ee61ab78daae824bde5c3db510beff2ca2be7be6",
+    "reparse": false,
+    "write_probe": "EXCLUSIVE_CREATE_SUCCEEDED"
+  },
+  "paths": [
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_ledger.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_ports.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_session.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_verify.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_migration.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "runtime/tests/test_effectwitness_pge_r72r3.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/probe.py"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/README.md"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/RESULT.md"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/preflight-diagnostic.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/verification-diagnostic.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/parent-child-contract-matrix.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/budget-negative-controls.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/history-regression.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/source-identity-map.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/architecture-decision.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/capability-assessment.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/launch-environment-diagnostic.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/runtime-diagnostic.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/key-boundary-diagnostic.json"
+    },
+    {
+      "base": false,
+      "exists": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-3/positive-replay-diagnostic.json"
+    }
+  ],
+  "previous_source_identity": "79858188bd351a94cc4020d1c09d1e705d20777a290611a24bcacabd1e808938",
+  "remote": [
+    {
+      "q": "git/ref/heads/codex/rpf-72-rev2-win-argv-key-boundary-recovery",
+      "sha": "65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "q": "git/ref/heads/main",
+      "sha": "bda0cd49e50e3181f604324e94877a24b9885334"
+    },
+    {
+      "absent": true,
+      "q": "git/ref/heads/codex/rpf-72-rev3-stable-launch-environment-replay"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_budget_ledger.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_ports.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_session.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_verify.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r3_migration.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/tests/test_effectwitness_pge_r72r3.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/probe.py?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/README.md?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/RESULT.md?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/preflight-diagnostic.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/verification-diagnostic.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/parent-child-contract-matrix.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/budget-negative-controls.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/history-regression.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/source-identity-map.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/architecture-decision.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/capability-assessment.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/launch-environment-diagnostic.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/runtime-diagnostic.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/key-boundary-diagnostic.json?ref=65617de848101afa8f632604f6491659778ad357"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-3/positive-replay-diagnostic.json?ref=65617de848101afa8f632604f6491659778ad357"
+    }
+  ],
+  "root": "$REPO",
+  "runner_path_policy": {
+    "absolute_only": true,
+    "global_environment_modified": false,
+    "macro_expanded": false,
+    "removed_unexpanded_macro": 1
+  },
+  "sdk_pin": {
+    "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+    "openai_record_entries": 2000,
+    "openai_record_mismatches": 0,
+    "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+    "pydantic_record_entries": 444,
+    "pydantic_record_mismatches": 0,
+    "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+    "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+    "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+    "python_version": "3.12.13",
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+  },
+  "status": "PASS",
+  "versions": {
+    "openai": "3.35.1",
+    "pydantic": "2.57.0",
+    "python": "3.12.13"
+  },
+  "work_absent": true
+}

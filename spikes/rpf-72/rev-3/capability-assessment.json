@@ -1,0 +1,310 @@
+{
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "YES",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "LEGACY_R72R2_PRIVATE_MANIFEST_VERIFIED": "UNAVAILABLE",
+  "MAIN_MERGED": "NO",
+  "REAL_EXPLORER_AUTONOMY_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "base": "65617de848101afa8f632604f6491659778ad357",
+  "branch": "codex/rpf-72-rev3-stable-launch-environment-replay",
+  "delivery_at_generation": "RECEIPT_PENDING_FINAL_PUSH_DUAL_READ",
+  "gates": {
+    "G0": {
+      "evidence": "Exact Base/branch/remote; 27 paths absent via local/index/Base/API; ignored owned non-reparse root; feature push has no deploy",
+      "status": "PASS"
+    },
+    "R3-A01": {
+      "evidence": "Independent v3 Owner/Source/Policy; source84 raw/LF closure, pinned SDK/JAR, old tracked bytes unchanged",
+      "status": "PASS"
+    },
+    "R3-A02": {
+      "evidence": "Actual native Popen strict capture, canonical private environment, cfg/SDK/PID/WAL binding, reject before CreateProcess",
+      "status": "PASS"
+    },
+    "R3-A03": {
+      "evidence": "Same original smoke and N/F bytes/anchors exit0 in independent A/B processes; no ambient environment reconstruction",
+      "status": "PASS"
+    },
+    "R3-A04": {
+      "evidence": "Eight original fixed-SDK thresholds; actual UsageLimits and single native WAL projection; orphan/UNKNOWN preserved",
+      "status": "PASS"
+    },
+    "R3-A05": {
+      "evidence": "New HTTP/H2 and SQLite N/F effects, independent Reader, four fault states, readonly reconcile and cleanup",
+      "status": "PASS"
+    },
+    "R3-A06": {
+      "evidence": "Actual raw-anchored semantic CLI attacks, deduplicated env cases, cfg controls, coupled reanchors and CLI0/2/3",
+      "status": "PASS"
+    },
+    "R3-A07": {
+      "evidence": "35 focused; standard complete unittest; exact discovery/outcome reconciliation, only two Docker class skips; snapshot bytes unchanged",
+      "status": "PASS"
+    },
+    "R3-A08": {
+      "evidence": "24 original public/native verifiers plus R69 CLI0/2/3; old private evidence unavailable/not read",
+      "status": "PASS"
+    },
+    "R3-A09": {
+      "evidence": "WAL/process/authority cleanup and semantic replay; trusted Controller scope, no Issuer or child independent attestation",
+      "status": "PASS"
+    },
+    "R3-A10": {
+      "evidence": "At artifact generation: Source pushed and dual-read; final receipt commit/push and two Git/API HEAD/blob/diff readbacks supplied in final chat",
+      "status": "NOT_RUN"
+    }
+  },
+  "late": {
+    "no_unknown_process_killed": true,
+    "physical_junction": "ACTUALLY_CREATED_AND_REJECTED_IN_FOCUSED",
+    "physical_symlink": {
+      "status": "UNAVAILABLE",
+      "winerror": 1314
+    },
+    "rows": [
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-equal",
+        "original_gone": true,
+        "pid": 11784,
+        "port": 12352,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-legal",
+        "original_gone": true,
+        "pid": 19836,
+        "port": 4468,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-minus",
+        "original_gone": true,
+        "pid": 5820,
+        "port": 1334,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-over",
+        "original_gone": true,
+        "pid": 16744,
+        "port": 13528,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-equal",
+        "original_gone": true,
+        "pid": 25608,
+        "port": 12347,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-legal",
+        "original_gone": true,
+        "pid": 18880,
+        "port": 4465,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-minus",
+        "original_gone": true,
+        "pid": 12476,
+        "port": 1331,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-over",
+        "original_gone": true,
+        "pid": 23620,
+        "port": 13527,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "smoke-A",
+        "original_gone": true,
+        "pid": 24664,
+        "port": 5445,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "smoke-B",
+        "original_gone": true,
+        "pid": 25876,
+        "port": 9507,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "normal-config-java-http-jvm",
+        "original_gone": true,
+        "pid": 19916,
+        "port": 5156,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "normal-config-java-http-sdk",
+        "original_gone": true,
+        "pid": 8460,
+        "port": 5157,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "normal-order-sqlite-sdk",
+        "original_gone": true,
+        "pid": 1996,
+        "port": 5158,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "fault-config-java-http-jvm",
+        "original_gone": true,
+        "pid": 26460,
+        "port": 6963,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "fault-config-java-http-sdk",
+        "original_gone": true,
+        "pid": 24084,
+        "port": 6964,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "fault-order-sqlite-sdk",
+        "original_gone": true,
+        "pid": 8572,
+        "port": 6965,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      }
+    ],
+    "status": "PASS",
+    "utc": "2026-10-25T06:24:31.120049+00:00"
+  },
+  "plan": "RPF-72/rev-3",
+  "plan_id": "RPF-72",
+  "resources": {
+    "F": {
+      "authority_read": 5,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 9,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "N": {
+      "authority_read": 4,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 8,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "corrective": 0,
+    "formal_sessions": 2,
+    "sdk_matrix": 1,
+    "smokes": 3
+  },
+  "revision": "rev-3",
+  "runtime_fixture_scope": "Legacy fixture paths are physically inside the current source-identical snapshot, never actual old private directories",
+  "security": {
+    "ALL_KEY_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+    "CHILD_KEY_PRESENT": false,
+    "EXTERNAL_DISCLOSURE": 0,
+    "HOST_BUSINESS_KEY_READ": 0,
+    "HOST_PROVIDER_KEY_READ": 0,
+    "java_auth": "New simulation-only loopback token, not inherited by SDK child",
+    "known_business_absence_probes_at_least": 12,
+    "known_completed_current_pipeline_R68_child_executions": 12,
+    "known_provider_absence_probes_at_least": 12,
+    "known_static_sites": [
+      {
+        "getter": "os.environ.get(DEEPSEEK_API_KEY)",
+        "location": "completed report",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+      },
+      {
+        "getter": "os.environ.get(CONFIG_CENTER_API_KEY)",
+        "location": "completed report",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+      }
+    ],
+    "not_a_total_execution_count": true,
+    "protocol": "SANITIZED_CHILD_ABSENCE_PROBE",
+    "raw_env_exported": false,
+    "scope_limit": "Successful current pipeline child reports only. Library and legacy/full/focused fixture getter totals NOT_INSTRUMENTED."
+  },
+  "source_commit": "6a014c4f3acb7a2b720f83710ca2f797c6580706",
+  "source_identity_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+  "status": "Complete"
+}

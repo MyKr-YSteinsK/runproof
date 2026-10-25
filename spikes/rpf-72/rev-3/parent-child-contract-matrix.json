@@ -1,0 +1,4281 @@
+{
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "YES",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "F": {
+    "certificate_scope": "LOCAL_SCRIPTED_COMPATIBILITY",
+    "context_sha256": "ac8ab14389dbcc590a010e1cf40823e9e14edf721ed82126d317ca2b97fbf308",
+    "counts": {
+      "authority_read": 5,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 9,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "elapsed_seconds": 495.1912967999997,
+    "key_lookup_scope": "HOST_CREDENTIAL_READS_ONLY",
+    "late": {
+      "ports": [
+        {
+          "closed": true,
+          "port": 6963
+        },
+        {
+          "closed": true,
+          "port": 6964
+        },
+        {
+          "closed": true,
+          "port": 6965
+        }
+      ],
+      "processes": [
+        {
+          "observed_creation_unix": null,
+          "original_gone": true,
+          "pid": 26460,
+          "resource": "jvm",
+          "status": "NOT_PRESENT",
+          "wal_start_clock": 9096649033500
+        },
+        {
+          "observed_creation_unix": null,
+          "original_gone": true,
+          "pid": 24084,
+          "resource": "sdk",
+          "status": "NOT_PRESENT",
+          "wal_start_clock": 9178412719500
+        },
+        {
+          "observed_creation_unix": null,
+          "original_gone": true,
+          "pid": 8572,
+          "resource": "sdk",
+          "status": "NOT_PRESENT",
+          "wal_start_clock": 9436257773700
+        }
+      ],
+      "queried_utc": "2026-10-25T06:23:21.043095+00:00",
+      "status": "PASS"
+    },
+    "policy_sha256": "e9db755a8f04e186b3b5199c5f58e1e7b98ea4c5a81860714e66f866a8a20a74",
+    "private_path": ".local/rpf-72-rev-3/fault-manifest.json",
+    "raw_sha256": "f72ab22b1d768f8e747c96557371bdf66768a4b44c0f7c28bacb6bafc3308f9d",
+    "rounds": [
+      {
+        "after_sha256": "0093055162017832c04eb9321f1d5c18f5c969b4861afca6b9f5bdf3624241e5",
+        "backend": "REAL_JAVA_H2_HTTP",
+        "before_sha256": "b8e070b963171230a6484888859087a4ecba4c6a871764e95b6ae2b3744fc66c",
+        "cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true
+        },
+        "contract_sha256": "67a53d30918367cc1ce5374c9a1ff9e25e807070fbc0f0c56760c7a7d74ef44d",
+        "domain": "config-java-http",
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "feedback": {
+          "choice_tool_call_id": "fixture-explorer-call-1",
+          "domain": "config-java-http",
+          "facts": [
+            "version2",
+            "history2-1"
+          ],
+          "round": 1,
+          "source_contract_sha256": "67a53d30918367cc1ce5374c9a1ff9e25e807070fbc0f0c56760c7a7d74ef44d",
+          "source_event_seq": 262,
+          "source_evidence_sha256": "2bfcea146daf3c64eca855fa331d288de0654c26b882fcf4bb8208486e39d11d",
+          "verdict": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "sdk": {
+          "actual_config_sha256": "1c3fdcdf928bc094b2f277c793dc17b51385fd5227c0dd543834585de9d7bca7",
+          "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "cleanup": {
+            "key_reference_released": true,
+            "port_closed": true,
+            "process_gone": true,
+            "thread_gone": true
+          },
+          "config": {
+            "domain": "config-java-http",
+            "instructions_sha256": "6f0dbd0fd230110e4f0f44922accf851a97fea519faf70cd3d8447f2db1310cb",
+            "port": 6964,
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "task_prompt_sha256": "d4b8fdff281b61e6fc9af99406aa75e7e85409cd3083284f0a22fba1985d632c",
+            "total_token_limit": 250000,
+            "write_root": "runs/rpf72r3-b157f0018026bef8-1/sdk"
+          },
+          "launch_spec": {
+            "architecture": "x86_64",
+            "argv_type": "str",
+            "audit_tuple_types": [
+              "NoneType",
+              "str",
+              "str",
+              "dict"
+            ],
+            "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+            "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+            "contract_sha256": "67a53d30918367cc1ce5374c9a1ff9e25e807070fbc0f0c56760c7a7d74ef44d",
+            "cwd_relative": "runs/rpf72r3-b157f0018026bef8-1/sdk",
+            "domain": "config-java-http",
+            "env_keys": [
+              "HOME",
+              "LOGFIRE_SEND_TO_LOGFIRE",
+              "OTEL_SDK_DISABLED",
+              "PATH",
+              "PYTHONDONTWRITEBYTECODE",
+              "SYSTEMROOT",
+              "TEMP",
+              "TMP",
+              "USERPROFILE",
+              "WINDIR"
+            ],
+            "env_sha256": "c8564339ad1cc65b520f51564052c19a4b4b209b8464f203b77c1d78545943c2",
+            "env_value_sha256": {
+              "HOME": "376f7057ed0067de4bbf7dc31ebd2ae3255c41dfa4f6640d3bc63fb103a1ac18",
+              "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+              "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+              "PATH": "99ce3eb4a73d094894932a8418209de04be1911f2e9a00899702907a8d963f8b",
+              "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+              "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+              "TEMP": "376f7057ed0067de4bbf7dc31ebd2ae3255c41dfa4f6640d3bc63fb103a1ac18",
+              "TMP": "376f7057ed0067de4bbf7dc31ebd2ae3255c41dfa4f6640d3bc63fb103a1ac18",
+              "USERPROFILE": "376f7057ed0067de4bbf7dc31ebd2ae3255c41dfa4f6640d3bc63fb103a1ac18",
+              "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+            },
+            "executable_type": "NoneType",
+            "issuer": false,
+            "live_env_exact": true,
+            "observation": "CONTROLLER_OBSERVED",
+            "owner": {
+              "owner": "rpf-72-rev-3",
+              "reset_generation": 0,
+              "run_id": "rpf72r3-b157f0018026bef8",
+              "schema": "rpf72r3-owner-source-v3",
+              "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-b157f0018026bef8"
+            },
+            "parent_child_contract_sha256": "79b9ea4c103f571ecc155079072400fe7b89c63fbbe2dd729abac01a004612d7",
+            "platform": "WINDOWS",
+            "policy_sha256": "e9db755a8f04e186b3b5199c5f58e1e7b98ea4c5a81860714e66f866a8a20a74",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "role": "TARGET",
+            "round": 1,
+            "run_id": "rpf72r3-b157f0018026bef8-1",
+            "schema": "rpf72r3-launch-spec-v1",
+            "sdk_pin_sha256": "5e205c666929822ee654270a4d48c199e9a21930a675435ba9c5fd8e2c02440a",
+            "shell": false,
+            "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+            "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY"
+          },
+          "launch_spec_sha256": "35ef78a52cf9eef3ca56dfe2d83930e628f9eb23d999113f307b2382764986b3",
+          "levels": {
+            "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+            "config": "CONTROLLER_OBSERVED",
+            "execution": "SDK_EXECUTION_OBSERVED"
+          },
+          "parent_child_contract_sha256": "79b9ea4c103f571ecc155079072400fe7b89c63fbbe2dd729abac01a004612d7",
+          "pid": 24084,
+          "ready": {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 24084,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          },
+          "report": {
+            "business_key_present": false,
+            "denied_files": [],
+            "final_text_persisted": false,
+            "framework": "pydantic-ai-slim",
+            "guard_denials": [],
+            "input_tokens": 2450,
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "output_tokens": 100,
+            "pid": 24084,
+            "provider_key_present": false,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "requests": 5,
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "status": "COMPLETED",
+            "tool_callbacks": 4,
+            "tool_calls": 4,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "version": "2.57.0"
+          },
+          "requests": [
+            {
+              "request": {
+                "canonical_bytes": 1516,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 0,
+                "input_upper": 1516,
+                "messages_sha256": "013c1f056da2ab3e9c663c8ae4c5b5ae5af40888c670a75924decd10932a8899",
+                "ordinal": 1,
+                "output_cap": 256,
+                "previous_prompt": null,
+                "request_sha256": "9dd323a77b0babff90585b3a0236cb216b830be1400c0172bd947f9fe283239b",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "76ac943000e691f99d596d9e2d99c14f9efce3218a13cfe16a00b324dab82c96",
+                "slot_cap": 10000,
+                "slot_contract_sha256": "231b9b6d3499558d35787b60376b3947d1e4c545ce675a2dc4fcd4282d160898",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 1,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 10000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 0,
+                "tool_returns": []
+              },
+              "response_id": "fixture-1-response-1",
+              "response_sha256": "ad78052bc7d7a430bc0e363ba59209babfd23fc52f45cdd384eef4d31d1fd62d",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 430,
+                "total_tokens": 450
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 1750,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1177,
+                "messages_sha256": "c51940279d4d3408c0dd790a05cf3980daee27bd376f70df125eb3fe0847dae2",
+                "ordinal": 2,
+                "output_cap": 256,
+                "previous_prompt": 430,
+                "request_sha256": "ec3051587697df69a7723abbc4b0f47e003b63da4ed9337b6b3bd2c24d9be935",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "59c6f29f87f8910868fd05e089329991904e6a3320c663a42f8438e20fd83fb1",
+                "slot_cap": 30000,
+                "slot_contract_sha256": "533b820be2a34203acbc0f8c37aab55167e8638bf0b7891b5d08305a3544cb3d",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 2,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 30000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 235,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-2",
+              "response_sha256": "1aaf1317862b071da0302508556a611cc16933a9a501e236028ad85259d8c41c",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 460,
+                "total_tokens": 480
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2049,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1272,
+                "messages_sha256": "95daea9b85f0ea1eb53b760d2806f27bcf2cc063b60b6cda5ba07745270d8121",
+                "ordinal": 3,
+                "output_cap": 256,
+                "previous_prompt": 460,
+                "request_sha256": "97f44f49266ffe98504fdb77322fff2cd7ac9cf9a13637adfb0076a3378c822a",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "77ad40b0b8d2f81a364e741c1e66c3cab33095328d0adbfa2dc9058f74177e35",
+                "slot_cap": 50000,
+                "slot_contract_sha256": "e285f474169ac1c96b41793bcd5b4c1dbaf3e2aa727669c659f7cb4a0dba2204",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 3,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 50000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 300,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  },
+                  {
+                    "call_id": "fixture-1-call-2",
+                    "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-3",
+              "response_sha256": "d7bc1c65968c75aff4a2c2c2100863940804176fe25c8d1ec7ad200e92145dba",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 490,
+                "total_tokens": 510
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2442,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1396,
+                "messages_sha256": "bcd2ae8688797e8108cd800466c7621d7d5a16db0b7d95bda8b0b62625d0cc00",
+                "ordinal": 4,
+                "output_cap": 512,
+                "previous_prompt": 490,
+                "request_sha256": "f0f23a459b7c191254144e38521735d3c4e8a01e87b79cb2ef302cbbbb1d4c56",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "61ce5e5dd5c4821c94d5aea3034e59140bd3208bdf759c7a9db29a15ee94fff5",
+                "slot_cap": 70000,
+                "slot_contract_sha256": "a41ee27c0e4e1b9f968a5be1faac99cf79c80c2283028e43b40b9bae290701e0",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 4,
+                  "output_cap": 512,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 70000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 394,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  },
+                  {
+                    "call_id": "fixture-1-call-2",
+                    "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                  },
+                  {
+                    "call_id": "fixture-1-call-3",
+                    "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-4",
+              "response_sha256": "4c0c058b84a13941b7062053a1389d6913097ee0e9cf2d7f31596cc755e218a0",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 520,
+                "total_tokens": 540
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2714,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1305,
+                "messages_sha256": "b915639010b20bd31b908d203f6f262e812f13468e38c9b67d002a84887678aa",
+                "ordinal": 5,
+                "output_cap": 512,
+                "previous_prompt": 520,
+                "request_sha256": "482d3ec0a423b0958e44446d9b365e558cb1cfdf825906ff8a51734aeffc7a75",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "4a611f0aada8c76567139b01fbb79aa185a864f6b5d1df7cd9a179f5ba4a05fa",
+                "slot_cap": 90000,
+                "slot_contract_sha256": "40f0848d010cb6a45b33859c97cad9188357a393dbd72438a390de82e028cb26",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 5,
+                  "output_cap": 512,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 90000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 273,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  },
+                  {
+                    "call_id": "fixture-1-call-2",
+                    "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                  },
+                  {
+                    "call_id": "fixture-1-call-3",
+                    "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92"
+                  },
+                  {
+                    "call_id": "fixture-1-call-4",
+                    "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-5",
+              "response_sha256": "002d0d30928612e72c628d0255d1bd459a6e4a2b4dc2b2b7128c6aa43246a6d4",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 550,
+                "total_tokens": 570
+              }
+            }
+          ],
+          "serialized_input_sha256": "1c3fdcdf928bc094b2f277c793dc17b51385fd5227c0dd543834585de9d7bca7"
+        },
+        "tools": [
+          {
+            "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "call_id": "fixture-1-call-1",
+            "name": "inspect_config",
+            "response_id": "fixture-1-response-1",
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f",
+            "status": null
+          },
+          {
+            "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+            "call_id": "fixture-1-call-2",
+            "name": "create_config_v1",
+            "response_id": "fixture-1-response-2",
+            "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6",
+            "status": "COMMITTED"
+          },
+          {
+            "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+            "call_id": "fixture-1-call-3",
+            "name": "update_config_v2",
+            "response_id": "fixture-1-response-3",
+            "result_sha256": "0b857ef5e95c3d6d58e54c94e9a280c556252a2273c2ab72ddd33052133b8b92",
+            "status": "UNKNOWN_OUTCOME"
+          },
+          {
+            "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "call_id": "fixture-1-call-4",
+            "name": "inspect_config",
+            "response_id": "fixture-1-response-4",
+            "result_sha256": "c95ae3d7f0120c5ea81608832b4fdf881a5e57576250128946e013d0e7fdc422",
+            "status": null
+          }
+        ]
+      },
+      {
+        "after_sha256": "6a6db4c94a984102e3f4f3e7bc151b0e4fba4090ece6937e8fbc996c384d4786",
+        "backend": "REAL_LOCAL_SQLITE",
+        "before_sha256": "4409886747be69fdf971e0a3712ed5084bce7d949b562b7f773b58d4e1cf617d",
+        "cleanup": {
+          "connections_closed": true,
+          "database_retained": true,
+          "exclusive_lock_probe": true
+        },
+        "contract_sha256": "032e072fdbc605855ee2eb56604eab4d575cdea8800ba5b4870bab5e5aebe739",
+        "domain": "order-sqlite",
+        "fault": {
+          "agent_exposed": true,
+          "observed": true,
+          "planned": true,
+          "triggered": true
+        },
+        "feedback": {
+          "choice_tool_call_id": "fixture-explorer-call-2",
+          "domain": "order-sqlite",
+          "facts": [
+            "refunded2500",
+            "single-receipt"
+          ],
+          "round": 2,
+          "source_contract_sha256": "032e072fdbc605855ee2eb56604eab4d575cdea8800ba5b4870bab5e5aebe739",
+          "source_event_seq": 424,
+          "source_evidence_sha256": "083ef12206ffcdb154b1101b23b747f964e5905d153f0ac866f75709ace8cca2",
+          "verdict": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "evidence_gaps": [],
+          "receipt_hash": "8c6223e5ef0aada7d84bc63dabe06f1366be59d4bcad71fb681d2d1bf066fcd4",
+          "state_diff": {
+            "refunded_minor": {
+              "after": 2500,
+              "before": 0
+            },
+            "revision": {
+              "after": 1,
+              "before": 0
+            },
+            "status": {
+              "after": "REFUNDED",
+              "before": "PAID"
+            }
+          },
+          "verifier_id": "rpf41-order-effect-verifier",
+          "verifier_version": "1",
+          "violated_rules": []
+        },
+        "sdk": {
+          "actual_config_sha256": "3c3d4cb159492913130f1b56c589b6db39ca686fae135b3f88e1adf1fc22e168",
+          "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "cleanup": {
+            "key_reference_released": true,
+            "port_closed": true,
+            "process_gone": true,
+            "thread_gone": true
+          },
+          "config": {
+            "domain": "order-sqlite",
+            "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+            "port": 6965,
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "task_prompt_sha256": "e76956fd7785a5c092d1d51a65f53253a91758f06f77baf8cc8086ff6f3ae4c3",
+            "total_token_limit": 160000,
+            "write_root": "runs/rpf72r3-b157f0018026bef8-2/sdk"
+          },
+          "launch_spec": {
+            "architecture": "x86_64",
+            "argv_type": "str",
+            "audit_tuple_types": [
+              "NoneType",
+              "str",
+              "str",
+              "dict"
+            ],
+            "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+            "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+            "contract_sha256": "032e072fdbc605855ee2eb56604eab4d575cdea8800ba5b4870bab5e5aebe739",
+            "cwd_relative": "runs/rpf72r3-b157f0018026bef8-2/sdk",
+            "domain": "order-sqlite",
+            "env_keys": [
+              "HOME",
+              "LOGFIRE_SEND_TO_LOGFIRE",
+              "OTEL_SDK_DISABLED",
+              "PATH",
+              "PYTHONDONTWRITEBYTECODE",
+              "SYSTEMROOT",
+              "TEMP",
+              "TMP",
+              "USERPROFILE",
+              "WINDIR"
+            ],
+            "env_sha256": "60993e83097d84d5b0b5d0ab53ae21793142951a4f8944cce80389ece9bd2381",
+            "env_value_sha256": {
+              "HOME": "74504e506dca7edc51422d36d0211bf23126fe7a19cdf74def7f23304f8f569b",
+              "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+              "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+              "PATH": "99ce3eb4a73d094894932a8418209de04be1911f2e9a00899702907a8d963f8b",
+              "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+              "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+              "TEMP": "74504e506dca7edc51422d36d0211bf23126fe7a19cdf74def7f23304f8f569b",
+              "TMP": "74504e506dca7edc51422d36d0211bf23126fe7a19cdf74def7f23304f8f569b",
+              "USERPROFILE": "74504e506dca7edc51422d36d0211bf23126fe7a19cdf74def7f23304f8f569b",
+              "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+            },
+            "executable_type": "NoneType",
+            "issuer": false,
+            "live_env_exact": true,
+            "observation": "CONTROLLER_OBSERVED",
+            "owner": {
+              "owner": "rpf-72-rev-3",
+              "reset_generation": 0,
+              "run_id": "rpf72r3-b157f0018026bef8",
+              "schema": "rpf72r3-owner-source-v3",
+              "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-b157f0018026bef8"
+            },
+            "parent_child_contract_sha256": "cbbd3212ca3c6f437cdf658613c48aaf1492f263279145c5fdf2d7f1f96c7cec",
+            "platform": "WINDOWS",
+            "policy_sha256": "e9db755a8f04e186b3b5199c5f58e1e7b98ea4c5a81860714e66f866a8a20a74",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "role": "TARGET",
+            "round": 2,
+            "run_id": "rpf72r3-b157f0018026bef8-2",
+            "schema": "rpf72r3-launch-spec-v1",
+            "sdk_pin_sha256": "5e205c666929822ee654270a4d48c199e9a21930a675435ba9c5fd8e2c02440a",
+            "shell": false,
+            "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+            "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY"
+          },
+          "launch_spec_sha256": "90c6d21d76b8d45ff8891508adf56b0331a2a8edcbba6a9366c830f910761651",
+          "levels": {
+            "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+            "config": "CONTROLLER_OBSERVED",
+            "execution": "SDK_EXECUTION_OBSERVED"
+          },
+          "parent_child_contract_sha256": "cbbd3212ca3c6f437cdf658613c48aaf1492f263279145c5fdf2d7f1f96c7cec",
+          "pid": 8572,
+          "ready": {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 8572,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          },
+          "report": {
+            "business_key_present": false,
+            "denied_files": [],
+            "final_text_persisted": false,
+            "framework": "pydantic-ai-slim",
+            "guard_denials": [],
+            "input_tokens": 1900,
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "output_tokens": 80,
+            "pid": 8572,
+            "provider_key_present": false,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "requests": 4,
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "status": "COMPLETED",
+            "tool_callbacks": 3,
+            "tool_calls": 3,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "version": "2.57.0"
+          },
+          "requests": [
+            {
+              "request": {
+                "canonical_bytes": 1806,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 0,
+                "input_upper": 1806,
+                "messages_sha256": "cfc576d586ad7790baaa8cf2a9502ba21164a4380eb01965f68b4aefcdcf4f3f",
+                "ordinal": 1,
+                "output_cap": 256,
+                "previous_prompt": null,
+                "request_sha256": "ac7dc8a62a4a994dad434d2253d376f84ddb652337b36936465377ea6a41197a",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "4782ae3c20af3da95bdb531f4ee58f9ec669a408d4b6328e1af15e80e585be58",
+                "slot_cap": 10000,
+                "slot_contract_sha256": "c8aeeac4e0ddb3e790eae71bd53fec95644ae7935da1bee99bf028d27594f706",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 1,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 10000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 0,
+                "tool_returns": []
+              },
+              "response_id": "fixture-2-response-1",
+              "response_sha256": "a25e3d313053d257a255485a129811585ec7b6ea2dfaac4ef2556e055ea19126",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 430,
+                "total_tokens": 450
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2152,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 1289,
+                "messages_sha256": "95c106ec888b82914d63d7d8fdfb50ff9f9ccc693dd2c75346bd215ec2aa4171",
+                "ordinal": 2,
+                "output_cap": 256,
+                "previous_prompt": 430,
+                "request_sha256": "52a8a6c8b6e2e65235950481e9937a9461bb1ecf79d98f000488a7bb75d01801",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "e631ef41e40a3b83ef618a28e2238ea76fb41f808e99039b818fdd4888a98050",
+                "slot_cap": 30000,
+                "slot_contract_sha256": "b7fcdacdf8aefb0905dd52c9eefc31cfef13d7d6b4dc61874f9633b7b874b989",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 2,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 30000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 347,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-call-1",
+                    "result_sha256": "e96bb21d6c1f0b99e6de9300ded395528d587c94db71f3c248fe9b5ca61373d5"
+                  }
+                ]
+              },
+              "response_id": "fixture-2-response-2",
+              "response_sha256": "258c4815c54b3a42fc441c51021ff3dabf89d05305e1e5f3ee1b499d3f8d91f8",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 460,
+                "total_tokens": 480
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2680,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 1501,
+                "messages_sha256": "8b1e683d2d600feb7b04aa8a1d5bd644167b1d4e543f9a890f3f34d1ec1da4bd",
+                "ordinal": 3,
+                "output_cap": 512,
+                "previous_prompt": 460,
+                "request_sha256": "29c14c05448445907f69e7f639473a8123a97c84d9e4045bd1b605ed3307b401",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "68b8c6f8868c4e613dff59443ddfd6e7b91159e2abffdc6df8c3e6ddaa898ed8",
+                "slot_cap": 50000,
+                "slot_contract_sha256": "b54f79e77ead5771ac5fbfde6ea0b92d35b1e4e21ed296dfbbaf9f06e2dcde3a",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 3,
+                  "output_cap": 512,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 50000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 529,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-call-1",
+                    "result_sha256": "e96bb21d6c1f0b99e6de9300ded395528d587c94db71f3c248fe9b5ca61373d5"
+                  },
+                  {
+                    "call_id": "fixture-2-call-2",
+                    "result_sha256": "17d3197b552ba38a544ba553c965e063fab0c09fa407f14dc121cc08ba5314a4"
+                  }
+                ]
+              },
+              "response_id": "fixture-2-response-3",
+              "response_sha256": "3d754bbbc93d2df7c5dfd24515cd827b423d5b177c7ce8529da7d5dbd31f0fcd",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 490,
+                "total_tokens": 510
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 3255,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 1578,
+                "messages_sha256": "266aa64c6a78e89f3bb09927e3bca2727d92087c6728feae55ebd52ff556f1aa",
+                "ordinal": 4,
+                "output_cap": 512,
+                "previous_prompt": 490,
+                "request_sha256": "36f3b2b3b6bccf83cf879d88373b03ba236148929aa1745c8e715c894b775312",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "c55c01d6a167f6294df77a5bbf80a52fc418b28521a51b044ceaf3621a6fc94e",
+                "slot_cap": 70000,
+                "slot_contract_sha256": "337e29630f829fe4f610bae70a824a31033f8146aafbcec40703870096eff813",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 4,
+                  "output_cap": 512,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 70000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "POST_RECONCILE_TERMINAL",
+                "suffix_bytes": 576,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-call-1",
+                    "result_sha256": "e96bb21d6c1f0b99e6de9300ded395528d587c94db71f3c248fe9b5ca61373d5"
+                  },
+                  {
+                    "call_id": "fixture-2-call-2",
+                    "result_sha256": "17d3197b552ba38a544ba553c965e063fab0c09fa407f14dc121cc08ba5314a4"
+                  },
+                  {
+                    "call_id": "fixture-2-call-3",
+                    "result_sha256": "c9237499d9dc6a407bc59afb414c331a04fbe04554c73de86c7ced8113f3cefb"
+                  }
+                ]
+              },
+              "response_id": "fixture-2-response-4",
+              "response_sha256": "125441f9bdbde2ea1218330a3167a85e99b49ccd21ef3ad6279af7ac0bb97f3a",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 520,
+                "total_tokens": 540
+              }
+            }
+          ],
+          "serialized_input_sha256": "3c3d4cb159492913130f1b56c589b6db39ca686fae135b3f88e1adf1fc22e168"
+        },
+        "tools": [
+          {
+            "arguments_sha256": "bcf2d5b12a62ba27faf9c21b8eae86bcffef318fa57dec475cbadf51bd431e79",
+            "call_id": "fixture-2-call-1",
+            "name": "inspect_order",
+            "response_id": "fixture-2-response-1",
+            "result_sha256": "e96bb21d6c1f0b99e6de9300ded395528d587c94db71f3c248fe9b5ca61373d5",
+            "status": "PAID"
+          },
+          {
+            "arguments_sha256": "117eb3a74f9ac33f5a7d9e7e92daa16cf90af7b3835814483106ea7e040803cd",
+            "call_id": "fixture-2-call-2",
+            "name": "refund_order",
+            "response_id": "fixture-2-response-2",
+            "result_sha256": "17d3197b552ba38a544ba553c965e063fab0c09fa407f14dc121cc08ba5314a4",
+            "status": "UNKNOWN_OUTCOME"
+          },
+          {
+            "arguments_sha256": "cc4d4e703a5e5e415ee21b8069b05c0ba37da6c866e51b86c45d78210e4f5e1f",
+            "call_id": "fixture-2-call-3",
+            "name": "reconcile_order",
+            "response_id": "fixture-2-response-3",
+            "result_sha256": "c9237499d9dc6a407bc59afb414c331a04fbe04554c73de86c7ced8113f3cefb",
+            "status": "COMMITTED"
+          }
+        ]
+      }
+    ],
+    "run_id": "rpf72r3-b157f0018026bef8",
+    "source_identity_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+    "status": "LOCAL_COMPATIBILITY_PASS",
+    "wal_frames": 432,
+    "wal_raw_sha256": "2b0e069331d9ed979f65ee580c13ff3bff4c65832442900ef44b3ea894a1db08"
+  },
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "LEGACY_R72R2_PRIVATE_MANIFEST_VERIFIED": "UNAVAILABLE",
+  "MAIN_MERGED": "NO",
+  "N": {
+    "certificate_scope": "LOCAL_SCRIPTED_COMPATIBILITY",
+    "context_sha256": "01ffa6bc851d5895e3ea276ee08bc3338b6e4d2ba807caa7aca432d521911490",
+    "counts": {
+      "authority_read": 4,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 8,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "elapsed_seconds": 476.14508399999977,
+    "key_lookup_scope": "HOST_CREDENTIAL_READS_ONLY",
+    "late": {
+      "ports": [
+        {
+          "closed": true,
+          "port": 5156
+        },
+        {
+          "closed": true,
+          "port": 5157
+        },
+        {
+          "closed": true,
+          "port": 5158
+        }
+      ],
+      "processes": [
+        {
+          "observed_creation_unix": null,
+          "original_gone": true,
+          "pid": 19916,
+          "resource": "jvm",
+          "status": "NOT_PRESENT",
+          "wal_start_clock": 8574215932600
+        },
+        {
+          "observed_creation_unix": null,
+          "original_gone": true,
+          "pid": 8460,
+          "resource": "sdk",
+          "status": "NOT_PRESENT",
+          "wal_start_clock": 8661858398900
+        },
+        {
+          "observed_creation_unix": null,
+          "original_gone": true,
+          "pid": 1996,
+          "resource": "sdk",
+          "status": "NOT_PRESENT",
+          "wal_start_clock": 8922025023700
+        }
+      ],
+      "queried_utc": "2026-10-25T06:14:13.431637+00:00",
+      "status": "PASS"
+    },
+    "policy_sha256": "0bbf93176567eaea5ffcc2bda20eb2e5c35e37433069315521fd159bf0f95cc9",
+    "private_path": ".local/rpf-72-rev-3/normal-manifest.json",
+    "raw_sha256": "a3dd105db3d2a522d25d98bf1f18c2251d3b8104c62d2923093f82dc42950ff9",
+    "rounds": [
+      {
+        "after_sha256": "c76c84b0f0ee9ac535cd4a0ffb2f4b55887892f8cc4a89058d7edfc75ee452fa",
+        "backend": "REAL_JAVA_H2_HTTP",
+        "before_sha256": "08b4c51e6876ac016d3955f075eda995eb70e4875929dcd734d8d19cd81600e0",
+        "cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true
+        },
+        "contract_sha256": "94508c50ece6f9670ad3be367634372576e8ef5c3d2e54d5d8047524d468017e",
+        "domain": "config-java-http",
+        "fault": {
+          "agent_exposed": false,
+          "observed": false,
+          "planned": false,
+          "triggered": false
+        },
+        "feedback": {
+          "choice_tool_call_id": "fixture-explorer-call-1",
+          "domain": "config-java-http",
+          "facts": [
+            "version2",
+            "history2-1"
+          ],
+          "round": 1,
+          "source_contract_sha256": "94508c50ece6f9670ad3be367634372576e8ef5c3d2e54d5d8047524d468017e",
+          "source_event_seq": 237,
+          "source_evidence_sha256": "e2ac877aafe40ee6f00483ace2d989b122997709b56a23678650464a29a61557",
+          "verdict": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "sdk": {
+          "actual_config_sha256": "30372fcded77068a443a8aeadef9bcd53b6acb54d6616e982281600ff36c9b26",
+          "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "cleanup": {
+            "key_reference_released": true,
+            "port_closed": true,
+            "process_gone": true,
+            "thread_gone": true
+          },
+          "config": {
+            "domain": "config-java-http",
+            "instructions_sha256": "6f0dbd0fd230110e4f0f44922accf851a97fea519faf70cd3d8447f2db1310cb",
+            "port": 5157,
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "task_prompt_sha256": "51e1410031c9f0e95151faa064272a70b8090be14f6948af73876fb1c865eb55",
+            "total_token_limit": 250000,
+            "write_root": "runs/rpf72r3-8497e32744cf4bd2-1/sdk"
+          },
+          "launch_spec": {
+            "architecture": "x86_64",
+            "argv_type": "str",
+            "audit_tuple_types": [
+              "NoneType",
+              "str",
+              "str",
+              "dict"
+            ],
+            "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+            "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+            "contract_sha256": "94508c50ece6f9670ad3be367634372576e8ef5c3d2e54d5d8047524d468017e",
+            "cwd_relative": "runs/rpf72r3-8497e32744cf4bd2-1/sdk",
+            "domain": "config-java-http",
+            "env_keys": [
+              "HOME",
+              "LOGFIRE_SEND_TO_LOGFIRE",
+              "OTEL_SDK_DISABLED",
+              "PATH",
+              "PYTHONDONTWRITEBYTECODE",
+              "SYSTEMROOT",
+              "TEMP",
+              "TMP",
+              "USERPROFILE",
+              "WINDIR"
+            ],
+            "env_sha256": "9f58a8155717c41d55e7fc288e5726e275741b1c92f336e346b7fad6bd9db202",
+            "env_value_sha256": {
+              "HOME": "5efb0c2d6c10daa8dab9dbeaf959bb1f19903a5bf4b7f322eb8aef50ced53747",
+              "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+              "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+              "PATH": "99ce3eb4a73d094894932a8418209de04be1911f2e9a00899702907a8d963f8b",
+              "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+              "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+              "TEMP": "5efb0c2d6c10daa8dab9dbeaf959bb1f19903a5bf4b7f322eb8aef50ced53747",
+              "TMP": "5efb0c2d6c10daa8dab9dbeaf959bb1f19903a5bf4b7f322eb8aef50ced53747",
+              "USERPROFILE": "5efb0c2d6c10daa8dab9dbeaf959bb1f19903a5bf4b7f322eb8aef50ced53747",
+              "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+            },
+            "executable_type": "NoneType",
+            "issuer": false,
+            "live_env_exact": true,
+            "observation": "CONTROLLER_OBSERVED",
+            "owner": {
+              "owner": "rpf-72-rev-3",
+              "reset_generation": 0,
+              "run_id": "rpf72r3-8497e32744cf4bd2",
+              "schema": "rpf72r3-owner-source-v3",
+              "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-8497e32744cf4bd2"
+            },
+            "parent_child_contract_sha256": "4fc9ac8a6ab34d977de7ea355ef699a6e7159ccc6eb06c8f1f0013f97d62d748",
+            "platform": "WINDOWS",
+            "policy_sha256": "0bbf93176567eaea5ffcc2bda20eb2e5c35e37433069315521fd159bf0f95cc9",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "role": "TARGET",
+            "round": 1,
+            "run_id": "rpf72r3-8497e32744cf4bd2-1",
+            "schema": "rpf72r3-launch-spec-v1",
+            "sdk_pin_sha256": "5e205c666929822ee654270a4d48c199e9a21930a675435ba9c5fd8e2c02440a",
+            "shell": false,
+            "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+            "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY"
+          },
+          "launch_spec_sha256": "460ba4638c2e49bf2a3b256d9683b47d971863a4e05c3ae1ebec07674e8b0c75",
+          "levels": {
+            "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+            "config": "CONTROLLER_OBSERVED",
+            "execution": "SDK_EXECUTION_OBSERVED"
+          },
+          "parent_child_contract_sha256": "4fc9ac8a6ab34d977de7ea355ef699a6e7159ccc6eb06c8f1f0013f97d62d748",
+          "pid": 8460,
+          "ready": {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 8460,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          },
+          "report": {
+            "business_key_present": false,
+            "denied_files": [],
+            "final_text_persisted": false,
+            "framework": "pydantic-ai-slim",
+            "guard_denials": [],
+            "input_tokens": 1900,
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "output_tokens": 80,
+            "pid": 8460,
+            "provider_key_present": false,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "requests": 4,
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "status": "COMPLETED",
+            "tool_callbacks": 3,
+            "tool_calls": 3,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "version": "2.57.0"
+          },
+          "requests": [
+            {
+              "request": {
+                "canonical_bytes": 1516,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 0,
+                "input_upper": 1516,
+                "messages_sha256": "f13d4a5159053c4028587b237df816488415dc1b2697fce8fd3bd94c6b4c61b4",
+                "ordinal": 1,
+                "output_cap": 256,
+                "previous_prompt": null,
+                "request_sha256": "63e8ee2a530c316f4fd38bd19d011fdb919c1d9b06a6a53683546824b54ed9fe",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "bd91fe89c4cbfb2bfa19757e9c4ecff16278de93dc3570640b17f74c3a4fc932",
+                "slot_cap": 10000,
+                "slot_contract_sha256": "231b9b6d3499558d35787b60376b3947d1e4c545ce675a2dc4fcd4282d160898",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 1,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 10000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 0,
+                "tool_returns": []
+              },
+              "response_id": "fixture-1-response-1",
+              "response_sha256": "ad78052bc7d7a430bc0e363ba59209babfd23fc52f45cdd384eef4d31d1fd62d",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 430,
+                "total_tokens": 450
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 1750,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1177,
+                "messages_sha256": "af184a1c0c99067fc9befd086e93f7c836db972cd94220eb128c7e03c1193a07",
+                "ordinal": 2,
+                "output_cap": 256,
+                "previous_prompt": 430,
+                "request_sha256": "ca4b9949b0b412c9a0c788534f40d76a485cd2e7926f910960c3ab35ba7ad2f4",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "124f679ff21c618bc534e1899fbf1b22dd400ea7973d6ff52ece57c79c4fc000",
+                "slot_cap": 30000,
+                "slot_contract_sha256": "533b820be2a34203acbc0f8c37aab55167e8638bf0b7891b5d08305a3544cb3d",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 2,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 30000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 235,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-2",
+              "response_sha256": "1aaf1317862b071da0302508556a611cc16933a9a501e236028ad85259d8c41c",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 460,
+                "total_tokens": 480
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2049,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1272,
+                "messages_sha256": "18ad6d86292595433d0f35549e1e988a320be59c7105dffb250145d4aec05e6b",
+                "ordinal": 3,
+                "output_cap": 256,
+                "previous_prompt": 460,
+                "request_sha256": "b1ac0bf78535df3adc69a3009a92591b9cc5b0fe0394bd7ddd0bc961b39aec13",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "86d6a8263b485f0947b6f7591037103f0609f88f6782fdb955b4b85a30e53bbc",
+                "slot_cap": 50000,
+                "slot_contract_sha256": "e285f474169ac1c96b41793bcd5b4c1dbaf3e2aa727669c659f7cb4a0dba2204",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 3,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 50000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 300,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  },
+                  {
+                    "call_id": "fixture-1-call-2",
+                    "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-3",
+              "response_sha256": "d7bc1c65968c75aff4a2c2c2100863940804176fe25c8d1ec7ad200e92145dba",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 490,
+                "total_tokens": 510
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2371,
+                "configuration_sha256": "d93fac738c3b5802717b1383dcee186efff4ad631441ab1e2976f1db6c6958f4",
+                "framing_guard": 512,
+                "input_upper": 1325,
+                "messages_sha256": "c848827703efbec7fbcb8952484e9884ffb00f1b40f941097e2a7d49cc23990e",
+                "ordinal": 4,
+                "output_cap": 512,
+                "previous_prompt": 490,
+                "request_sha256": "6fa8932ea2c7d273b93d21b3ef284a7c1cdcb302beef069300b5560fc0cbf1e1",
+                "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+                "sdk_request_sha256": "d779377c9ef4dbd9a295b58f6841a2ca6e7445c6cee7e4a8f91db9eefcbade08",
+                "slot_cap": 70000,
+                "slot_contract_sha256": "a41ee27c0e4e1b9f968a5be1faac99cf79c80c2283028e43b40b9bae290701e0",
+                "slot_scope": {
+                  "domain": "config-java-http",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 4,
+                  "output_cap": 512,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 1,
+                  "slot_cap": 70000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 323,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-1-call-1",
+                    "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f"
+                  },
+                  {
+                    "call_id": "fixture-1-call-2",
+                    "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6"
+                  },
+                  {
+                    "call_id": "fixture-1-call-3",
+                    "result_sha256": "f87c4f9d1a5e64015c006f27562357bac249156a2cbdd42b9e40772db2a48bbf"
+                  }
+                ]
+              },
+              "response_id": "fixture-1-response-4",
+              "response_sha256": "da0e4b60dcf94c1f92f7c591504028a26544a557a23def77305684335840f30b",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 520,
+                "total_tokens": 540
+              }
+            }
+          ],
+          "serialized_input_sha256": "30372fcded77068a443a8aeadef9bcd53b6acb54d6616e982281600ff36c9b26"
+        },
+        "tools": [
+          {
+            "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+            "call_id": "fixture-1-call-1",
+            "name": "inspect_config",
+            "response_id": "fixture-1-response-1",
+            "result_sha256": "13e6ff7c920dcc801b12d0fafa8f90fdbc307bb4c9ba39a499d47bef3b29355f",
+            "status": null
+          },
+          {
+            "arguments_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+            "call_id": "fixture-1-call-2",
+            "name": "create_config_v1",
+            "response_id": "fixture-1-response-2",
+            "result_sha256": "6796694c8ae7730798c06e660fceed3b79cf7d0de4c265aba40f6da7d8d28fc6",
+            "status": "COMMITTED"
+          },
+          {
+            "arguments_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+            "call_id": "fixture-1-call-3",
+            "name": "update_config_v2",
+            "response_id": "fixture-1-response-3",
+            "result_sha256": "f87c4f9d1a5e64015c006f27562357bac249156a2cbdd42b9e40772db2a48bbf",
+            "status": "COMMITTED"
+          }
+        ]
+      },
+      {
+        "after_sha256": "38bdcefdea5b9eb237dce8bb5a3c93fde966a8c9f613f0134a4d1db1235ce8fb",
+        "backend": "REAL_LOCAL_SQLITE",
+        "before_sha256": "24cf9250f7689abe8def5af03d2f89b3d09b011997fff6e31f0cf3a3a892b970",
+        "cleanup": {
+          "connections_closed": true,
+          "database_retained": true,
+          "exclusive_lock_probe": true
+        },
+        "contract_sha256": "fb3ec56e9800834f1e1616c0f42f3b9a698def502f6cc828e5f56e6ee9a66d82",
+        "domain": "order-sqlite",
+        "fault": {
+          "agent_exposed": false,
+          "observed": false,
+          "planned": false,
+          "triggered": false
+        },
+        "feedback": {
+          "choice_tool_call_id": "fixture-explorer-call-2",
+          "domain": "order-sqlite",
+          "facts": [
+            "refunded2500",
+            "single-receipt"
+          ],
+          "round": 2,
+          "source_contract_sha256": "fb3ec56e9800834f1e1616c0f42f3b9a698def502f6cc828e5f56e6ee9a66d82",
+          "source_event_seq": 371,
+          "source_evidence_sha256": "2df941b287cb1a28080626d3839e9f9b9a230aeed9c546dd21eccf1c8e3edffb",
+          "verdict": "CONTRACT_SATISFIED_IN_RUN"
+        },
+        "oracle": {
+          "contract_outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "evidence_gaps": [],
+          "receipt_hash": "55e58bc4b1748f59ec0746e1a34ac82d77cf6f280b4a946a8460bc488c873367",
+          "state_diff": {
+            "refunded_minor": {
+              "after": 2500,
+              "before": 0
+            },
+            "revision": {
+              "after": 1,
+              "before": 0
+            },
+            "status": {
+              "after": "REFUNDED",
+              "before": "PAID"
+            }
+          },
+          "verifier_id": "rpf41-order-effect-verifier",
+          "verifier_version": "1",
+          "violated_rules": []
+        },
+        "sdk": {
+          "actual_config_sha256": "d114bc0e4f8ae5885dbbdaac4441e4fa5bf89f4bf2f3c7b7e004958e31732371",
+          "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "cleanup": {
+            "key_reference_released": true,
+            "port_closed": true,
+            "process_gone": true,
+            "thread_gone": true
+          },
+          "config": {
+            "domain": "order-sqlite",
+            "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+            "port": 5158,
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "task_prompt_sha256": "13741b29b69b0cffe8ba09399fb47ac8fb886e3a78bedcc4ad39dbe38deab8b6",
+            "total_token_limit": 160000,
+            "write_root": "runs/rpf72r3-8497e32744cf4bd2-2/sdk"
+          },
+          "launch_spec": {
+            "architecture": "x86_64",
+            "argv_type": "str",
+            "audit_tuple_types": [
+              "NoneType",
+              "str",
+              "str",
+              "dict"
+            ],
+            "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+            "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+            "contract_sha256": "fb3ec56e9800834f1e1616c0f42f3b9a698def502f6cc828e5f56e6ee9a66d82",
+            "cwd_relative": "runs/rpf72r3-8497e32744cf4bd2-2/sdk",
+            "domain": "order-sqlite",
+            "env_keys": [
+              "HOME",
+              "LOGFIRE_SEND_TO_LOGFIRE",
+              "OTEL_SDK_DISABLED",
+              "PATH",
+              "PYTHONDONTWRITEBYTECODE",
+              "SYSTEMROOT",
+              "TEMP",
+              "TMP",
+              "USERPROFILE",
+              "WINDIR"
+            ],
+            "env_sha256": "975bc772728d237e9ab37a192fcb21d570117d84f457c2a16a12938704c49ba8",
+            "env_value_sha256": {
+              "HOME": "b045d605c2aa4a0e2b7cf96943140bb0606ff8d787154d0b23e1ae6117ae542c",
+              "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+              "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+              "PATH": "99ce3eb4a73d094894932a8418209de04be1911f2e9a00899702907a8d963f8b",
+              "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+              "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+              "TEMP": "b045d605c2aa4a0e2b7cf96943140bb0606ff8d787154d0b23e1ae6117ae542c",
+              "TMP": "b045d605c2aa4a0e2b7cf96943140bb0606ff8d787154d0b23e1ae6117ae542c",
+              "USERPROFILE": "b045d605c2aa4a0e2b7cf96943140bb0606ff8d787154d0b23e1ae6117ae542c",
+              "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+            },
+            "executable_type": "NoneType",
+            "issuer": false,
+            "live_env_exact": true,
+            "observation": "CONTROLLER_OBSERVED",
+            "owner": {
+              "owner": "rpf-72-rev-3",
+              "reset_generation": 0,
+              "run_id": "rpf72r3-8497e32744cf4bd2",
+              "schema": "rpf72r3-owner-source-v3",
+              "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-8497e32744cf4bd2"
+            },
+            "parent_child_contract_sha256": "ee42e22b989cc034df459287ddf6dec79d4fc8575ab59ae5e76a1ea68615abf9",
+            "platform": "WINDOWS",
+            "policy_sha256": "0bbf93176567eaea5ffcc2bda20eb2e5c35e37433069315521fd159bf0f95cc9",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "role": "TARGET",
+            "round": 2,
+            "run_id": "rpf72r3-8497e32744cf4bd2-2",
+            "schema": "rpf72r3-launch-spec-v1",
+            "sdk_pin_sha256": "5e205c666929822ee654270a4d48c199e9a21930a675435ba9c5fd8e2c02440a",
+            "shell": false,
+            "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+            "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY"
+          },
+          "launch_spec_sha256": "f20c06cfd8cf5aaf6cbfb5c4df97c11731a7eebaf90f401e36202c24c9ee7f53",
+          "levels": {
+            "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+            "config": "CONTROLLER_OBSERVED",
+            "execution": "SDK_EXECUTION_OBSERVED"
+          },
+          "parent_child_contract_sha256": "ee42e22b989cc034df459287ddf6dec79d4fc8575ab59ae5e76a1ea68615abf9",
+          "pid": 1996,
+          "ready": {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 1996,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          },
+          "report": {
+            "business_key_present": false,
+            "denied_files": [],
+            "final_text_persisted": false,
+            "framework": "pydantic-ai-slim",
+            "guard_denials": [],
+            "input_tokens": 1380,
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "output_tokens": 60,
+            "pid": 1996,
+            "provider_key_present": false,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "requests": 3,
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "status": "COMPLETED",
+            "tool_callbacks": 2,
+            "tool_calls": 2,
+            "usage_type": "pydantic_ai.usage.RunUsage",
+            "version": "2.57.0"
+          },
+          "requests": [
+            {
+              "request": {
+                "canonical_bytes": 1806,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 0,
+                "input_upper": 1806,
+                "messages_sha256": "c2a813b9dc93fd93f47b949901fced6f01386376ef1d5522e30dd039fb70de2e",
+                "ordinal": 1,
+                "output_cap": 256,
+                "previous_prompt": null,
+                "request_sha256": "f93f3d3697a7603fc17e6451ded5875198cfb1b34ec92cea7e1947ec3cb0d169",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "53dc867da0d99570c6ab35842bde7da62d460f3e4ffa8efc102a7877f6373b42",
+                "slot_cap": 10000,
+                "slot_contract_sha256": "c8aeeac4e0ddb3e790eae71bd53fec95644ae7935da1bee99bf028d27594f706",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 1,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 10000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 0,
+                "tool_returns": []
+              },
+              "response_id": "fixture-2-response-1",
+              "response_sha256": "294430b80cbcb4f07209faa9edda5cb618064f54bd9268882546bd36fe2c856d",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 430,
+                "total_tokens": 450
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2152,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 1289,
+                "messages_sha256": "c8e0f8d355f6a072c0cc0343c09951c24a91afe6bcadfce67c8f563c84d6f661",
+                "ordinal": 2,
+                "output_cap": 256,
+                "previous_prompt": 430,
+                "request_sha256": "ef09e056d91e60873a56c9cc7ea3e9976154af88f323cdb384c9a259d42e39ef",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "52b9b3c6cd4c94154bb29b4104b67a1ef94baac67f7a8bd7bdc96ee0f2279f06",
+                "slot_cap": 30000,
+                "slot_contract_sha256": "b7fcdacdf8aefb0905dd52c9eefc31cfef13d7d6b4dc61874f9633b7b874b989",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 2,
+                  "output_cap": 256,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 30000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "PRE_COMMIT",
+                "suffix_bytes": 347,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-call-1",
+                    "result_sha256": "64cb255989a2d67c2226457eedb9fb7271fdb7d0c22599cc83d75f624ec6db81"
+                  }
+                ]
+              },
+              "response_id": "fixture-2-response-2",
+              "response_sha256": "7d0ac938d7404981d65611a4d02c01c9b8fbb2345a774a5db1ee38db7f8304cb",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 460,
+                "total_tokens": 480
+              }
+            },
+            {
+              "request": {
+                "canonical_bytes": 2646,
+                "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+                "framing_guard": 512,
+                "input_upper": 1467,
+                "messages_sha256": "d5553931b5ac4c13ab343016aa893c969c5a58dfb733942c096b6c9d1db94525",
+                "ordinal": 3,
+                "output_cap": 512,
+                "previous_prompt": 460,
+                "request_sha256": "766cf03f4e87cac72d8ecadc899a0dd408af959243c3297bb07aaafb782dfe16",
+                "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+                "sdk_request_sha256": "60ed6599316bb30c8e8ae8f4e42bad9d7d99bcdf774ea39dc5344e0cabd068f4",
+                "slot_cap": 50000,
+                "slot_contract_sha256": "b54f79e77ead5771ac5fbfde6ea0b92d35b1e4e21ed296dfbbaf9f06e2dcde3a",
+                "slot_scope": {
+                  "domain": "order-sqlite",
+                  "global_tokens": 600000,
+                  "max_slot": 160000,
+                  "ordinal": 3,
+                  "output_cap": 512,
+                  "reachable_tokens": 474000,
+                  "role": "TARGET",
+                  "round": 2,
+                  "slot_cap": 50000,
+                  "version": "rpf68-capacity-budget-v3"
+                },
+                "stage": "READ_ONLY",
+                "suffix_bytes": 495,
+                "tool_returns": [
+                  {
+                    "call_id": "fixture-2-call-1",
+                    "result_sha256": "64cb255989a2d67c2226457eedb9fb7271fdb7d0c22599cc83d75f624ec6db81"
+                  },
+                  {
+                    "call_id": "fixture-2-call-2",
+                    "result_sha256": "a218cb57592120e5e3e29bcb3285c9383f5124fa5923483c6ef8477db04e1fa8"
+                  }
+                ]
+              },
+              "response_id": "fixture-2-response-3",
+              "response_sha256": "d893943de0fec38805f92ee23a43df07f863382a0716216767ba405b64d996ed",
+              "usage": {
+                "completion_tokens": 20,
+                "prompt_tokens": 490,
+                "total_tokens": 510
+              }
+            }
+          ],
+          "serialized_input_sha256": "d114bc0e4f8ae5885dbbdaac4441e4fa5bf89f4bf2f3c7b7e004958e31732371"
+        },
+        "tools": [
+          {
+            "arguments_sha256": "c1a498bc3fffca7172e7a2b4cad6ea95ce4efb620ce03005bb6fdec272efa0a1",
+            "call_id": "fixture-2-call-1",
+            "name": "inspect_order",
+            "response_id": "fixture-2-response-1",
+            "result_sha256": "64cb255989a2d67c2226457eedb9fb7271fdb7d0c22599cc83d75f624ec6db81",
+            "status": "PAID"
+          },
+          {
+            "arguments_sha256": "7074850b06ef45d11cb62c4b4e73434d68e3357e1c5bad25e6b433de5b887103",
+            "call_id": "fixture-2-call-2",
+            "name": "refund_order",
+            "response_id": "fixture-2-response-2",
+            "result_sha256": "a218cb57592120e5e3e29bcb3285c9383f5124fa5923483c6ef8477db04e1fa8",
+            "status": "COMMITTED"
+          }
+        ]
+      }
+    ],
+    "run_id": "rpf72r3-8497e32744cf4bd2",
+    "source_identity_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+    "status": "LOCAL_COMPATIBILITY_PASS",
+    "wal_frames": 379,
+    "wal_raw_sha256": "059b4535c758276be6cb62bbd9f9f1e202e00ab1dcf6e587def3a0a86bf3d8eb"
+  },
+  "REAL_EXPLORER_AUTONOMY_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "actual_provider_calls": 0,
+  "base": "65617de848101afa8f632604f6491659778ad357",
+  "branch": "codex/rpf-72-rev3-stable-launch-environment-replay",
+  "delivery_at_generation": "RECEIPT_PENDING_FINAL_PUSH_DUAL_READ",
+  "plan": "RPF-72/rev-3",
+  "plan_id": "RPF-72",
+  "revision": "rev-3",
+  "sdk_components": [
+    {
+      "label": "sdk-config-equal",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-e8cd44030578024d/pressure-limit-equal/result.json",
+        "sha256": "c34fc213dac13123505aad6fcc9a576bd85aa0f5be2df86b3def1fa81e8906f7",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "1a6037a20656c9da7203d97277224a4f70d84e1ed7e3570ee77010fb28389bc3",
+        "business_effects": 0,
+        "case": "limit-equal",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "config-java-http",
+          "instructions_sha256": "6f0dbd0fd230110e4f0f44922accf851a97fea519faf70cd3d8447f2db1310cb",
+          "port": 12352,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "5814e571c127e7db267a60e323a19a7ed02e7fb6b6cd7a9b3b1bc35b06d25cfc",
+          "total_token_limit": 250000,
+          "write_root": "pressure-limit-equal"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 250000,
+          "contract_sha256": "24168b555242130e54ee3352b00068f17a7b121b46b67b2ae2e20b9f07a8b10f",
+          "domain": "config-java-http",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-e8cd44030578024d",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-e8cd44030578024d"
+          },
+          "policy_sha256": "4652f9800aa2dafe78036f3ffe9eb481cdb79d227ee52a83a89ba03dfd2e2960",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 1,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 5,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 90000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "8952dcc0709ad1e65d845ff2fd93de5778219c60c9554850c8d0690f0bb7144f",
+        "domain": "config-java-http",
+        "elapsed_seconds": 5.614054800000304,
+        "exit": 0,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 11784,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 11784,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 249900,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 100,
+          "pid": 11784,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 5,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 4,
+          "tool_calls": 4,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_config",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "create_config_v1",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "update_config_v2",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-4",
+            "name": "inspect_config",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1496,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "6fa4228233aba2307ebf0ae1767a57190e6f991f32aefc11058ba44c8aeba5a5",
+            "response_sha256": "4b8b9163649069b77b03f469916ea20845ab5b6877e230f82cb00010296e4bd4",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13285,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "4806a84d8bb3a7c2b75725ddd1770effdcdb24016992d2e4270b9439f1b50eaf",
+            "response_sha256": "f912452a1acee4f5e5792a2a2edb751a1d719259960a0171cdbd9dbeb02df40d",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20809,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "b7d083e68598b5346c62b7f0ba4f50e6b3dbc987bb4fd6adb5b54ca3304a83ca",
+            "response_sha256": "fedd3f996b402974a98619bb7955b50efa312e1dd066756dbd265a5584425737",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 24000,
+            "input_upper": 26832,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "d507b83cc8357a5a27ce01e2227e9696ad1372084eea471e7b4210c7e9c4538c",
+            "response_sha256": "af909824a4cd49c6305579e3f2397f2bbdf0d3fc1dd01d20dabaeef25b55d4c6",
+            "slot_cap": 70000
+          },
+          {
+            "input_tokens": 195400,
+            "input_upper": 32785,
+            "ordinal": 5,
+            "output_tokens": 20,
+            "request_sha256": "c8a01d97b6f0326b288949a84102d5df201d8d68b9e7a1a73a21537ccae051b7",
+            "response_sha256": "058ecb28a5208cd506e76fda7f4074c14f307af6acd9987759bf20a45b2c2c5f",
+            "slot_cap": 90000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "INTENTIONALLY_OVER_SLOT_FINAL_USAGE_HINT_SDK_CUMULATIVE_ONLY",
+        "scripted_total_hint": 250000,
+        "serialized_input_sha256": "1a6037a20656c9da7203d97277224a4f70d84e1ed7e3570ee77010fb28389bc3",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": true
+      }
+    },
+    {
+      "label": "sdk-config-legal",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-4da8b37df5fc86a6/pressure-legal-high/result.json",
+        "sha256": "7bcd943202e04800789f8768f965adf3feecc1462fe0465f4870b40a0b13d39c",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "5da6e4cef09eef334b9e199df01ddc074cbec45dd0cc07c2eca3e0167effb1ff",
+        "business_effects": 0,
+        "case": "legal-high",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "config-java-http",
+          "instructions_sha256": "6f0dbd0fd230110e4f0f44922accf851a97fea519faf70cd3d8447f2db1310cb",
+          "port": 4468,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "654b1b62a19ae65f047b3559bd2e5849c60188b55e1f31b0ed3f0c1aae83acfc",
+          "total_token_limit": 250000,
+          "write_root": "pressure-legal-high"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 250000,
+          "contract_sha256": "bb283954bf0b0a9cd6c366e91f160224fc368bc516ff92f51ba1ea48d45dffc6",
+          "domain": "config-java-http",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-4da8b37df5fc86a6",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-4da8b37df5fc86a6"
+          },
+          "policy_sha256": "64c57ecd720c29bb692a267553b9386f4e4cac1e3a1eae72cca365c500c165a4",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 1,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 5,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 90000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "fdf99f0816721ac73cf631a5fec2d32bb44c0d87bf11963326a8411e2911332f",
+        "domain": "config-java-http",
+        "elapsed_seconds": 5.117006700000275,
+        "exit": 0,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 19836,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 19836,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 84500,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 100,
+          "pid": 19836,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 5,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 4,
+          "tool_calls": 4,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_config",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "create_config_v1",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "update_config_v2",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-4",
+            "name": "inspect_config",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1496,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "101e34bf2bb246905d5f270dec229b3057ec54b1678e6477a5b7918db97cd7b2",
+            "response_sha256": "4b8b9163649069b77b03f469916ea20845ab5b6877e230f82cb00010296e4bd4",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13285,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "427dfd088d6b8b812080439c9668684912fbdaeaba8a47cad331e540f6a22ca9",
+            "response_sha256": "f912452a1acee4f5e5792a2a2edb751a1d719259960a0171cdbd9dbeb02df40d",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20809,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "365b8864dbd3af92b213edc794d4e60b2e8f0d83ceeaabbf5677d500bf74e93e",
+            "response_sha256": "fedd3f996b402974a98619bb7955b50efa312e1dd066756dbd265a5584425737",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 24000,
+            "input_upper": 26832,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "a451cdc84387a2277d1ffa5ff8f37468418d8516274d6bb42172661314ef96ad",
+            "response_sha256": "af909824a4cd49c6305579e3f2397f2bbdf0d3fc1dd01d20dabaeef25b55d4c6",
+            "slot_cap": 70000
+          },
+          {
+            "input_tokens": 30000,
+            "input_upper": 32785,
+            "ordinal": 5,
+            "output_tokens": 20,
+            "request_sha256": "3effef0f4a5fb3f598138a5700a6d784fbda440e048e9f2206b81c79c1fa5516",
+            "response_sha256": "bfcd186bc02d13e252331b7c5cf56c76b27104c7984686d35f3bef509a2f5b18",
+            "slot_cap": 90000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "LEGAL_SLOT_AND_CUMULATIVE",
+        "scripted_total_hint": 84600,
+        "serialized_input_sha256": "5da6e4cef09eef334b9e199df01ddc074cbec45dd0cc07c2eca3e0167effb1ff",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": true
+      }
+    },
+    {
+      "label": "sdk-config-minus",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-6ae7dc19644e95e4/pressure-limit-minus-one/result.json",
+        "sha256": "6a37a368b53cf17cea6e5b6357132cffeec45b708e891f6538df79d1c25b434b",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "5b76fff9b85a4cf8fdcd5f3823cb62a7d6ead8d78032ffc504734a4eab554b9f",
+        "business_effects": 0,
+        "case": "limit-minus-one",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "config-java-http",
+          "instructions_sha256": "6f0dbd0fd230110e4f0f44922accf851a97fea519faf70cd3d8447f2db1310cb",
+          "port": 1334,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "3a9a1aa3ca6b9c1f241157b60367d85c093e8119ccbeed5e963f513c63b30805",
+          "total_token_limit": 250000,
+          "write_root": "pressure-limit-minus-one"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 250000,
+          "contract_sha256": "f51f3350a5a79629774f5997a2ff550d41b96bae2afc14746ea53c9624465d3a",
+          "domain": "config-java-http",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-6ae7dc19644e95e4",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-6ae7dc19644e95e4"
+          },
+          "policy_sha256": "dcf21c6a599bbd468fc5e6e514f578dd1e2df69bdc007f817ecb4331937c899b",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 1,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 5,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 90000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "be865dc7c960a1730bc518095edceb90840ec1b4badc978e776508439ffaf8bd",
+        "domain": "config-java-http",
+        "elapsed_seconds": 5.365612900000997,
+        "exit": 0,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 5820,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 5820,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 249899,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 100,
+          "pid": 5820,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 5,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 4,
+          "tool_calls": 4,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_config",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "create_config_v1",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "update_config_v2",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-4",
+            "name": "inspect_config",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1496,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "45c775904399872032703e7a69607dd86d477981dfc014ff36d7a09552349747",
+            "response_sha256": "4b8b9163649069b77b03f469916ea20845ab5b6877e230f82cb00010296e4bd4",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13285,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "a7e320303af69a2c9b6e177d562c66d4c7c81861716a479d391d9c77494146ef",
+            "response_sha256": "f912452a1acee4f5e5792a2a2edb751a1d719259960a0171cdbd9dbeb02df40d",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20809,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "b2e012171d7c1b8a86106ae089e5a57c7a5bb66c174bd75dad4b08eb0abc5589",
+            "response_sha256": "fedd3f996b402974a98619bb7955b50efa312e1dd066756dbd265a5584425737",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 24000,
+            "input_upper": 26832,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "0135852c879cf7b14b740abb2e59a76e70e6034bbaa892df36d8738270d582ef",
+            "response_sha256": "af909824a4cd49c6305579e3f2397f2bbdf0d3fc1dd01d20dabaeef25b55d4c6",
+            "slot_cap": 70000
+          },
+          {
+            "input_tokens": 195399,
+            "input_upper": 32785,
+            "ordinal": 5,
+            "output_tokens": 20,
+            "request_sha256": "7a38cde19c64aa7ac56b51a777b903eaadab519b028dd232b6fb45700a9fbaa6",
+            "response_sha256": "daa27dbe521b14d1aa5e2d35ad932c2552596dbd112810712736aebac882899c",
+            "slot_cap": 90000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "INTENTIONALLY_OVER_SLOT_FINAL_USAGE_HINT_SDK_CUMULATIVE_ONLY",
+        "scripted_total_hint": 249999,
+        "serialized_input_sha256": "5b76fff9b85a4cf8fdcd5f3823cb62a7d6ead8d78032ffc504734a4eab554b9f",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": true
+      }
+    },
+    {
+      "label": "sdk-config-over",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-9aa29b085ebd554e/pressure-limit-plus-one/result.json",
+        "sha256": "477d45020096632e3281793b78b32ffef298bb9be6b5118d11336a89fe274bdb",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "b2e4d7153ba88539917a9141684cf0dda1ab353cd18f649793459a4d55ef551c",
+        "business_effects": 0,
+        "case": "limit-plus-one",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "config-java-http",
+          "instructions_sha256": "6f0dbd0fd230110e4f0f44922accf851a97fea519faf70cd3d8447f2db1310cb",
+          "port": 13528,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "4b9b5f6c54edccf038d48a32c686260fa6c22288f1e5b74dcf4c63615624bf7f",
+          "total_token_limit": 250000,
+          "write_root": "pressure-limit-plus-one"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 250000,
+          "contract_sha256": "7e20124582b73636549aa5443525cbdc86bda48cf4b3178f1bf320f1a104baf5",
+          "domain": "config-java-http",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-9aa29b085ebd554e",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-9aa29b085ebd554e"
+          },
+          "policy_sha256": "bf7605814b2ae85cdd0da0c3f32a82758769c0bcdada0963b6d0becf1779ba60",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 1,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "config-java-http",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 5,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 1,
+              "slot_cap": 90000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "ed030cb0abafa2152af5fa4dc49868741c59600c05a5a3046fbf0645959658f2",
+        "domain": "config-java-http",
+        "elapsed_seconds": 5.504616999998689,
+        "exit": 1,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 16744,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 16744,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "denied_files": [],
+          "error_type": "UsageLimitExceeded",
+          "guard_denials": [],
+          "stage": "SDK_RUN",
+          "status": "SDK_ERROR"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_config",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "create_config_v1",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "update_config_v2",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-4",
+            "name": "inspect_config",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1496,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "e6ec02e9db68584518a197e53090bf96d9917c733ac2f1837094665f6bd85de6",
+            "response_sha256": "4b8b9163649069b77b03f469916ea20845ab5b6877e230f82cb00010296e4bd4",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13285,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "5af483425dfd68d472d1902cd48548f046a25db90c257468da9e8e60335a54ff",
+            "response_sha256": "f912452a1acee4f5e5792a2a2edb751a1d719259960a0171cdbd9dbeb02df40d",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20809,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "a21bb0f0aff4567115759671e79abb8f59a46cce6c7838068ef23ebb3d8855b0",
+            "response_sha256": "fedd3f996b402974a98619bb7955b50efa312e1dd066756dbd265a5584425737",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 24000,
+            "input_upper": 26832,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "bd6aa850006397eabeee2fb51c294e5c516161edb4a901fb5e966a5de57849c8",
+            "response_sha256": "af909824a4cd49c6305579e3f2397f2bbdf0d3fc1dd01d20dabaeef25b55d4c6",
+            "slot_cap": 70000
+          },
+          {
+            "input_tokens": 195401,
+            "input_upper": 32785,
+            "ordinal": 5,
+            "output_tokens": 20,
+            "request_sha256": "a7c8af4d466b00c263f77c9d724fca7517f660321404458ff2c99883097cd55b",
+            "response_sha256": "7b23023f56f03b3c7510bff9de197df35cb5b282e319c7e835767612931a3993",
+            "slot_cap": 90000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "INTENTIONALLY_OVER_SLOT_FINAL_USAGE_HINT_SDK_CUMULATIVE_ONLY",
+        "scripted_total_hint": 250001,
+        "serialized_input_sha256": "b2e4d7153ba88539917a9141684cf0dda1ab353cd18f649793459a4d55ef551c",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": false
+      }
+    },
+    {
+      "label": "sdk-order-equal",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-83eb5b68a5baf2ff/pressure-limit-equal/result.json",
+        "sha256": "27e4841174da004d0f48419ab0cc74903a66039f2fce908c1b434afa16dd4c7d",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "bf1a2406bb984097ff8350215e7d8d0df30b3247adc8973ec17dc28787c874f9",
+        "business_effects": 0,
+        "case": "limit-equal",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "order-sqlite",
+          "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+          "port": 12347,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "cfb8499a90936a5c8da37fba5f0e2fc1b422fbdf36c8abc52c7b8170c9cbe5e1",
+          "total_token_limit": 160000,
+          "write_root": "pressure-limit-equal"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 160000,
+          "contract_sha256": "3218526c5d96a6d77ba395a38ad1f3c0841d1d16ec488acf57aeb99138f3877d",
+          "domain": "order-sqlite",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-83eb5b68a5baf2ff",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-83eb5b68a5baf2ff"
+          },
+          "policy_sha256": "f7bf4f11e9663e4c92768a351a8590db9a3ca0d32ae12323c179380e33d4b091",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 2,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "ff2f0f571dd1fadfa5b1db67a7d3702a3260190f88790f9040e3b519ab0c82b3",
+        "domain": "order-sqlite",
+        "elapsed_seconds": 5.454117799999949,
+        "exit": 0,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 25608,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 25608,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 159920,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 80,
+          "pid": 25608,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 4,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 3,
+          "tool_calls": 3,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_order",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "refund_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "reconcile_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1786,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "0e2be800cce966f3bf893dcf87b33e915e72c98d91cbf9b156ae2ef2190a5392",
+            "response_sha256": "4da6328dd540f908ce71f3d5de9abf7630b38383ca8c10961d896e87bda5b132",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13333,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "0f09f238d3f1140626ebea1609c597cd9f646bb2b7d2a4d253ea410402b8f0d2",
+            "response_sha256": "daa84977c10230e6537656556cb265c392d2f72b318f7eca869542ccf80c7e08",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20909,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "af7bd3ac09be50f48e5696d7298f680d4905a581f11e8e45d0ecd9f815e0a85a",
+            "response_sha256": "45f8dec89446b80a11bd5ae592f6433aeffee9447f0cab5cf7e74abe08cd1c59",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 129420,
+            "input_upper": 26840,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "c3e3cc18fb3eb80861cd75b1072317cdcb9304cf6a88b3795adf22ce198a10f5",
+            "response_sha256": "6cee1728b78f8d0861a6c3c50f456ed29d6bc9dc5394ed24459648c4649d8d20",
+            "slot_cap": 70000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "INTENTIONALLY_OVER_SLOT_FINAL_USAGE_HINT_SDK_CUMULATIVE_ONLY",
+        "scripted_total_hint": 160000,
+        "serialized_input_sha256": "bf1a2406bb984097ff8350215e7d8d0df30b3247adc8973ec17dc28787c874f9",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": true
+      }
+    },
+    {
+      "label": "sdk-order-legal",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-1bd6637ee3c74e22/pressure-legal-high/result.json",
+        "sha256": "5e813574a339837cb38443f73364dcc174a2c611c3decea26da81b6fa3586294",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "3c74eac42801215e708665bd3325ce1163dfaaed41f9a39ab1bf805884e63482",
+        "business_effects": 0,
+        "case": "legal-high",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "order-sqlite",
+          "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+          "port": 4465,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "68c60b162da9411e63f05eeddeb7482abd79ac9df608d85a5f320409d662237a",
+          "total_token_limit": 160000,
+          "write_root": "pressure-legal-high"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 160000,
+          "contract_sha256": "9ab9f6e215b16eec7d6c14ab15dbacbfc3700538b368cb2883476156659df883",
+          "domain": "order-sqlite",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-1bd6637ee3c74e22",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-1bd6637ee3c74e22"
+          },
+          "policy_sha256": "271faccb29faab1f5cf6f686632a81a03cdf983a4b0e3f1fa88e8ea23a187ea3",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 2,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "9a0408d7f94104121a833361509d23447cdb4375014df8467592b54290490961",
+        "domain": "order-sqlite",
+        "elapsed_seconds": 5.122991100000945,
+        "exit": 0,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 18880,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 18880,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 54500,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 80,
+          "pid": 18880,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 4,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 3,
+          "tool_calls": 3,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_order",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "refund_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "reconcile_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1786,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "2f951cf351f6e7c03bd415a9b5e4f9cd12e40b2d3f14d81f7fdc0d73995b7e43",
+            "response_sha256": "a70ef43b9281a90368748ce20d41cb8c4165f6f41d3dad41521348cbf58e3606",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13333,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "f11e3925e14ef6835d1f99e7e775e2df371690e47f1b615e81881ed252961c0e",
+            "response_sha256": "e773c63f23088b3816b19a19585a0cee43007cd1ed10fa965a7b50c5cd55acee",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20909,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "c8a7e4e4f9f41343bcabec772a4ae26f20c7a63a190e4c22f5f6d82e9879e437",
+            "response_sha256": "374af5a654494673656ae7ea97c9b9f4e66b289abd1c3f80dc8abfc730ec722a",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 24000,
+            "input_upper": 26840,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "f9b2bd711e8817e087475476c81276853ac75d9fb295047002dfc189816d9d32",
+            "response_sha256": "2c32a628767f648148ddd6318f9e62558dd648af1c5694c1a17b0c2dcf33ad88",
+            "slot_cap": 70000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "LEGAL_SLOT_AND_CUMULATIVE",
+        "scripted_total_hint": 54580,
+        "serialized_input_sha256": "3c74eac42801215e708665bd3325ce1163dfaaed41f9a39ab1bf805884e63482",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": true
+      }
+    },
+    {
+      "label": "sdk-order-minus",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-0a0c7a01595df5bb/pressure-limit-minus-one/result.json",
+        "sha256": "e3cda36443b613490ec946d729600f543a32754f077a8c56a4085fd47ce5cee7",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "ca905735fadfa6debe56411c863b3be949df21287cbfe2b4823c2b174f65f385",
+        "business_effects": 0,
+        "case": "limit-minus-one",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "order-sqlite",
+          "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+          "port": 1331,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "78825edb85848e66e3a9f7c9dfef006b009c9d7427e0b3cd3fa588141096520c",
+          "total_token_limit": 160000,
+          "write_root": "pressure-limit-minus-one"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 160000,
+          "contract_sha256": "33079d63ad0cdda5b4bf29da04928156269c0119703a3c0eb0691b18c3adabb6",
+          "domain": "order-sqlite",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-0a0c7a01595df5bb",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-0a0c7a01595df5bb"
+          },
+          "policy_sha256": "af12bfece4a64231ea55542640a665e26d877b05dcfe531330986cf7fa12fc01",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 2,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "ab601c8424db51eaa98290e7db6eba5779b7875627414206c613c57d3e745c0e",
+        "domain": "order-sqlite",
+        "elapsed_seconds": 5.343384400001014,
+        "exit": 0,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 12476,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 12476,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 159919,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 80,
+          "pid": 12476,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 4,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 3,
+          "tool_calls": 3,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_order",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "refund_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "reconcile_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1786,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "a64e9d345afb626dfca7640f2de1634a79af7e53edc794f6d479bee060dc09e4",
+            "response_sha256": "c9531578864e75e7d825c11419de18adbd6b5ab0ec6f4b0bc11c76ee70ac6d47",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13333,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "760e7d8451e8335163718ea32f95cef8eaae19718d2e7f2af89982529f779247",
+            "response_sha256": "68d1aac6340b9046ce1d19671456fa2711e1aafa302ab5868107016a8dbbb25e",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20909,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "db3923591b8f7ecdf24cd60d4846754864fa256818aeeffbe6fe1a018bd478ac",
+            "response_sha256": "e028bd7532b21649502b1102e8606c4c7befdcf2db3a18cdee58fd26e5b4a30c",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 129419,
+            "input_upper": 26840,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "71707555d1207c807ba536f19299a9f1e6185b5872c4cf0e37021b49d7a041b9",
+            "response_sha256": "c9d01ae36d3558d5744704beb4c39f2fd9a37df0cfa54997ec0e24c2d50fb5c1",
+            "slot_cap": 70000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "INTENTIONALLY_OVER_SLOT_FINAL_USAGE_HINT_SDK_CUMULATIVE_ONLY",
+        "scripted_total_hint": 159999,
+        "serialized_input_sha256": "ca905735fadfa6debe56411c863b3be949df21287cbfe2b4823c2b174f65f385",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": true
+      }
+    },
+    {
+      "label": "sdk-order-over",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-9d84adccfed4e09f/pressure-limit-plus-one/result.json",
+        "sha256": "cf87be228dc4085a0e33a52e0a48a2e04fb1badd011d7dbbe0c147c29fb15de8",
+        "status": "PASS"
+      },
+      "result": {
+        "actual_config_sha256": "2a70e33ac952309a48d80e9c4d174a1793b811b73c4e521b6d99ef5060aa5b0e",
+        "business_effects": 0,
+        "case": "limit-plus-one",
+        "child_sanitized_absence_probes": "ORIGINAL_CHILD_ENV_GET_PRESENT_CHECKS_RETAINED_NO_CREDENTIAL_INHERITED",
+        "cleanup": {
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "order-sqlite",
+          "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+          "port": 13527,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "8f2af4d26b7dcca3cdb927caadc96314588c7606f4bf1cba8606697c5a75882d",
+          "total_token_limit": 160000,
+          "write_root": "pressure-limit-plus-one"
+        },
+        "contract": {
+          "child_attestation": false,
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "child_target_cumulative": 160000,
+          "contract_sha256": "90409a88ece7b5fc9b98920eb869491c64bf762086bce118a1b8b2b4fd6fa355",
+          "domain": "order-sqlite",
+          "global_tokens": 600000,
+          "issuer": false,
+          "max_slot": 160000,
+          "maximum_output": 512,
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-9d84adccfed4e09f",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-9d84adccfed4e09f"
+          },
+          "policy_sha256": "6baa4bb657c009142517a49c4b9d182d29e829ac7cf7204b6068c1bf31266da1",
+          "provider_calls": 0,
+          "reachable_tokens": 474000,
+          "role": "TARGET",
+          "round": 2,
+          "schema": "rpf72r3-parent-child-budget-v3",
+          "sdk_pin": {
+            "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_record_entries": 2000,
+            "openai_record_mismatches": 0,
+            "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+            "pydantic_record_entries": 444,
+            "pydantic_record_mismatches": 0,
+            "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "python_version": "3.12.13",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+          },
+          "slots": [
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 1,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 10000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 2,
+              "output_cap": 256,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 30000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 3,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 50000,
+              "version": "rpf68-capacity-budget-v3"
+            },
+            {
+              "domain": "order-sqlite",
+              "global_tokens": 600000,
+              "max_slot": 160000,
+              "ordinal": 4,
+              "output_cap": 512,
+              "reachable_tokens": 474000,
+              "role": "TARGET",
+              "round": 2,
+              "slot_cap": 70000,
+              "version": "rpf68-capacity-budget-v3"
+            }
+          ],
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY",
+          "source_lf_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "source_raw_digest": "7827d92ba060d5bbe65701700d59935b4326c2e1f85c1be0a18c893882873f23",
+          "unknown": "STOP_WRITES_IN_DOMAIN_UNTIL_VERIFIED;UNSETTLED_NATIVE_UNKNOWN_GLOBAL_STOP"
+        },
+        "contract_sha256": "38c6f050064ab0664be1b9d1536d456aa807d668cc0e31d56e4dc718c4bc6282",
+        "domain": "order-sqlite",
+        "elapsed_seconds": 5.529280900000231,
+        "exit": 1,
+        "failures": [],
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "pid": 23620,
+        "provider_calls": 0,
+        "ready": [
+          {
+            "framework": "pydantic-ai-slim",
+            "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "openai_version": "3.35.1",
+            "pid": 23620,
+            "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+            "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+            "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+            "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        ],
+        "real_key_lookup": 0,
+        "report": {
+          "denied_files": [],
+          "error_type": "UsageLimitExceeded",
+          "guard_denials": [],
+          "stage": "SDK_RUN",
+          "status": "SDK_ERROR"
+        },
+        "returns": [
+          {
+            "call_id": "pressure-call-1",
+            "name": "inspect_order",
+            "result_sha256": "3e1e0a44322cbf9f7e123fcf32acb224c39160c3c67a4a7e18533d8aecc2fc56"
+          },
+          {
+            "call_id": "pressure-call-2",
+            "name": "refund_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          },
+          {
+            "call_id": "pressure-call-3",
+            "name": "reconcile_order",
+            "result_sha256": "64346d1ff94dfe195b0f47a2d942205e6507b7064521068148753d5b6bc58318"
+          }
+        ],
+        "rows": [
+          {
+            "input_tokens": 500,
+            "input_upper": 1786,
+            "ordinal": 1,
+            "output_tokens": 20,
+            "request_sha256": "ecf6a1e08e298e2f89b2c78d7ecafd82f0baf7f78129a97ccf739935ba18593e",
+            "response_sha256": "0ec25954b27f8c90e75457f92625e2c12dded8c325275cbc14efcd96000af0f7",
+            "slot_cap": 10000
+          },
+          {
+            "input_tokens": 12000,
+            "input_upper": 13333,
+            "ordinal": 2,
+            "output_tokens": 20,
+            "request_sha256": "8869f1246afc17850582dbdfbaffd534db732616b21cf233670a6b27e71b27a6",
+            "response_sha256": "e87bf29f01cc0add521ac1e8cbf7157648de3f591006a7f369b5de3a1ff6242f",
+            "slot_cap": 30000
+          },
+          {
+            "input_tokens": 18000,
+            "input_upper": 20909,
+            "ordinal": 3,
+            "output_tokens": 20,
+            "request_sha256": "050faa947f935198e6d760434485f2062f7f161d4a1ad06df3077fce94195def",
+            "response_sha256": "8beaa9d5139b7a31ddbab2b90de8194a90744ac85bf8fe88f92539e072ddd426",
+            "slot_cap": 50000
+          },
+          {
+            "input_tokens": 129421,
+            "input_upper": 26840,
+            "ordinal": 4,
+            "output_tokens": 20,
+            "request_sha256": "2d14b00ca89f8d1c7661c6731e923a33697f0788795c645466048d97b79abdf2",
+            "response_sha256": "e9998921b31524a277f2999aa0c88dbebb44078d05f6dad2389ef5ff17b5343f",
+            "slot_cap": 70000
+          }
+        ],
+        "schema": "rpf72r3-parent-child-budget-v3",
+        "scope": "INTENTIONALLY_OVER_SLOT_FINAL_USAGE_HINT_SDK_CUMULATIVE_ONLY",
+        "scripted_total_hint": 160001,
+        "serialized_input_sha256": "2a70e33ac952309a48d80e9c4d174a1793b811b73c4e521b6d99ef5060aa5b0e",
+        "source_kind": "REAL_FIXED_SDK_SYNTHETIC_USAGE_COMPONENT",
+        "status": "PASS",
+        "stderr_bytes": 0,
+        "synthetic_run_usage_established": false
+      }
+    }
+  ],
+  "smokes": [
+    {
+      "active_context_reset": true,
+      "business_effects": 0,
+      "case": "NATIVE_ACCEPT",
+      "counts": {
+        "authority_read": 0,
+        "cold": 0,
+        "config_health": 0,
+        "config_http": 0,
+        "config_post": 0,
+        "explorer_calls": 0,
+        "host": 1,
+        "jvm": 0,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 0,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 0
+      },
+      "error": null,
+      "label": "smoke-A",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-ce8ee0230c5a0f73/smoke-result.json",
+        "sha256": "d99dad38b54cc44a619f7d492f1aa4f866a7fb48c72394cab568362e41e1590c",
+        "status": "PASS"
+      },
+      "pid": 24664,
+      "port_closed": true,
+      "profile_restored": true,
+      "sdk": {
+        "actual_config_sha256": "acb175582fe2a1d749649757bad139b4df641ebbb854614622f6b4258ff4fb79",
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "order-sqlite",
+          "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+          "port": 5445,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "9df46b4190e02c27c9780fd86ba14cda0b0bb2d4cf0e33089d1d06d7291dddec",
+          "total_token_limit": 160000,
+          "write_root": "runs/rpf72r3-ce8ee0230c5a0f73-2/sdk"
+        },
+        "launch_spec": {
+          "architecture": "x86_64",
+          "argv_type": "str",
+          "audit_tuple_types": [
+            "NoneType",
+            "str",
+            "str",
+            "dict"
+          ],
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+          "contract_sha256": "f7b8a41d172cc4ed1d55175d2c761e137a24a14543a0744fc412e9bb446de998",
+          "cwd_relative": "runs/rpf72r3-ce8ee0230c5a0f73-2/sdk",
+          "domain": "order-sqlite",
+          "env_keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "env_sha256": "9853cae8bf715f580f7e99222cc16b1116df2b8e9c7c54d9f0cb350fa645b706",
+          "env_value_sha256": {
+            "HOME": "e5f1e680e19e29fca0748d060582edc071cb631a950d879242b159809f5ce25d",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "99ce3eb4a73d094894932a8418209de04be1911f2e9a00899702907a8d963f8b",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "e5f1e680e19e29fca0748d060582edc071cb631a950d879242b159809f5ce25d",
+            "TMP": "e5f1e680e19e29fca0748d060582edc071cb631a950d879242b159809f5ce25d",
+            "USERPROFILE": "e5f1e680e19e29fca0748d060582edc071cb631a950d879242b159809f5ce25d",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          },
+          "executable_type": "NoneType",
+          "issuer": false,
+          "live_env_exact": true,
+          "observation": "CONTROLLER_OBSERVED",
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-ce8ee0230c5a0f73",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-ce8ee0230c5a0f73"
+          },
+          "parent_child_contract_sha256": "9a8a91683927f47c5eb0ed794f6c98ab07b1055a7582726069a1679bb9156090",
+          "platform": "WINDOWS",
+          "policy_sha256": "af4d4e64113fd7b77cfe8e2cd829b513ddd4e4cf0d14875f7cb2c74c6b63f813",
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "role": "TARGET",
+          "round": 2,
+          "run_id": "rpf72r3-ce8ee0230c5a0f73-2",
+          "schema": "rpf72r3-launch-spec-v1",
+          "sdk_pin_sha256": "5e205c666929822ee654270a4d48c199e9a21930a675435ba9c5fd8e2c02440a",
+          "shell": false,
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY"
+        },
+        "launch_spec_sha256": "77c03338bfc59865035aa1f7e786976a1fd518f173d481c639bf52f88261109c",
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "parent_child_contract_sha256": "9a8a91683927f47c5eb0ed794f6c98ab07b1055a7582726069a1679bb9156090",
+        "pid": 24664,
+        "ready": {
+          "framework": "pydantic-ai-slim",
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "pid": 24664,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "version": "2.57.0"
+        },
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 1380,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 60,
+          "pid": 24664,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 3,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 2,
+          "tool_calls": 2,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "requests": [
+          {
+            "request": {
+              "canonical_bytes": 1806,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 0,
+              "input_upper": 1806,
+              "messages_sha256": "8b7116d1a57407c6fbffc226b470f11dfaa867f09265dd6fb5ca6a0c1fd90148",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "f69215228b83c0841be2512744d99b5a39037bbb164507491606d3350ac63575",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "d830a6a72e8281c1e798a9be5d656d284d58fee1aa43bd09ae2e3b23554ab779",
+              "slot_cap": 10000,
+              "slot_contract_sha256": "c8aeeac4e0ddb3e790eae71bd53fec95644ae7935da1bee99bf028d27594f706",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 600000,
+                "max_slot": 160000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 474000,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 10000,
+                "version": "rpf68-capacity-budget-v3"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "response_id": "fixture-2-response-1",
+            "response_sha256": "b08b8f3853d0462cbc04090606aafbc3be47536ff94faf96c51963e28001beb2",
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 430,
+              "total_tokens": 450
+            }
+          },
+          {
+            "request": {
+              "canonical_bytes": 2138,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 1275,
+              "messages_sha256": "05e4defe4da02f251f21d68a79e1968e70da2062095512b30a7d670fed39f1a1",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 430,
+              "request_sha256": "b6ea2dcf69b6d6fcdb893328695e3f98e480354e136ea961a8acb760564944ec",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "2f7f7129ebd2cecf5b181c7a1542c45abea1d14ce5a5697be72b22277716c7ef",
+              "slot_cap": 30000,
+              "slot_contract_sha256": "b7fcdacdf8aefb0905dd52c9eefc31cfef13d7d6b4dc61874f9633b7b874b989",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 600000,
+                "max_slot": 160000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 474000,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 30000,
+                "version": "rpf68-capacity-budget-v3"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 333,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-call-1",
+                  "result_sha256": "98be9d6479280d2f2b1ac2d7897508d3bab4c2c21e57adbe4834f70497423c26"
+                }
+              ]
+            },
+            "response_id": "fixture-2-response-2",
+            "response_sha256": "34525cfdc57dd37ba88048c91e390ae84332308f81ca2b9dd09833d7533d68b6",
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 460,
+              "total_tokens": 480
+            }
+          },
+          {
+            "request": {
+              "canonical_bytes": 2545,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 1380,
+              "messages_sha256": "7166246eee922c8b5d4d5f519df1f4967deef46cbf2eea7a9e1f32013af1b72d",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_prompt": 460,
+              "request_sha256": "596e774a7f4a7f7f93ee5dd92f221046e6c2ddad74f92151e4faf1aef93f539c",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "137e665e48cb64638c4cb2274e8bf493fecf39afd77503073bc1ad0a5ee1f791",
+              "slot_cap": 50000,
+              "slot_contract_sha256": "b54f79e77ead5771ac5fbfde6ea0b92d35b1e4e21ed296dfbbaf9f06e2dcde3a",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 600000,
+                "max_slot": 160000,
+                "ordinal": 3,
+                "output_cap": 512,
+                "reachable_tokens": 474000,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 50000,
+                "version": "rpf68-capacity-budget-v3"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 408,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-call-1",
+                  "result_sha256": "98be9d6479280d2f2b1ac2d7897508d3bab4c2c21e57adbe4834f70497423c26"
+                },
+                {
+                  "call_id": "fixture-2-call-2",
+                  "result_sha256": "b36bc37de12e1ed758910e991d3da2e3165b591f8bb214ec84f28916c0e69c3a"
+                }
+              ]
+            },
+            "response_id": "fixture-2-response-3",
+            "response_sha256": "d893943de0fec38805f92ee23a43df07f863382a0716216767ba405b64d996ed",
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 490,
+              "total_tokens": 510
+            }
+          }
+        ],
+        "serialized_input_sha256": "acb175582fe2a1d749649757bad139b4df641ebbb854614622f6b4258ff4fb79"
+      },
+      "status": "PASS",
+      "unsettled_tickets": [],
+      "wal_raw_sha256": "170598ac891698dce1ab101e0d0f2e9267732f6283ce549b6b2327dbdcc19236"
+    },
+    {
+      "active_context_reset": true,
+      "business_effects": 0,
+      "case": "NATIVE_ACCEPT",
+      "counts": {
+        "authority_read": 0,
+        "cold": 0,
+        "config_health": 0,
+        "config_http": 0,
+        "config_post": 0,
+        "explorer_calls": 0,
+        "host": 1,
+        "jvm": 0,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 0,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 0
+      },
+      "error": null,
+      "label": "smoke-B",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-5943c232ec97c835/smoke-result.json",
+        "sha256": "12053ebb42c54573d53eb211b21cd8be9008300274768b30bb97f3bee5ba2de4",
+        "status": "PASS"
+      },
+      "pid": 25876,
+      "port_closed": true,
+      "profile_restored": true,
+      "sdk": {
+        "actual_config_sha256": "df33b2df518be9b41097690caebce5d35b549844cbfca7f81e8fab20fcdae0bd",
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "cleanup": {
+          "key_reference_released": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "config": {
+          "domain": "order-sqlite",
+          "instructions_sha256": "efbd9d2e63507d86429d8753b60a8a6cfb700cc127470d8c3928d13ef91118e5",
+          "port": 9507,
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "task_prompt_sha256": "a2855337325f8c5a41da7196f1af50045e039c807cc5cb5c6c02f94d8141d3d7",
+          "total_token_limit": 160000,
+          "write_root": "runs/rpf72r3-5943c232ec97c835-2/sdk"
+        },
+        "launch_spec": {
+          "architecture": "x86_64",
+          "argv_type": "str",
+          "audit_tuple_types": [
+            "NoneType",
+            "str",
+            "str",
+            "dict"
+          ],
+          "child_raw_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+          "contract_sha256": "2766b17dc932e2b2ecd967ecb559d6fe5af3cf0858bd8e10725579f17001c133",
+          "cwd_relative": "runs/rpf72r3-5943c232ec97c835-2/sdk",
+          "domain": "order-sqlite",
+          "env_keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "env_sha256": "c9e83be52f3d1a1de710e9ececfbd33e9339fcbf56ea6fc7816a06ea4816bae6",
+          "env_value_sha256": {
+            "HOME": "173710b75e566efcf29dd52b79e65109c8586c89af28f9b5117cc783d1673c32",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "7fad5d5e7d4c7f09ae067416c1ca6d67a3899129b76f8d989b8804ba0d30a4fe",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "34dc78fbce2bd9adfe8035b5df5e2f3fb885765e2ed319dcba8dc6d1f48e3613",
+            "TEMP": "173710b75e566efcf29dd52b79e65109c8586c89af28f9b5117cc783d1673c32",
+            "TMP": "173710b75e566efcf29dd52b79e65109c8586c89af28f9b5117cc783d1673c32",
+            "USERPROFILE": "173710b75e566efcf29dd52b79e65109c8586c89af28f9b5117cc783d1673c32",
+            "WINDIR": "34dc78fbce2bd9adfe8035b5df5e2f3fb885765e2ed319dcba8dc6d1f48e3613"
+          },
+          "executable_type": "NoneType",
+          "issuer": false,
+          "live_env_exact": true,
+          "observation": "CONTROLLER_OBSERVED",
+          "owner": {
+            "owner": "rpf-72-rev-3",
+            "reset_generation": 0,
+            "run_id": "rpf72r3-5943c232ec97c835",
+            "schema": "rpf72r3-owner-source-v3",
+            "workspace": ".local/rpf-72-rev-3/tests/rpf72r3-5943c232ec97c835"
+          },
+          "parent_child_contract_sha256": "bf35c51a98f20256d0b38af99d5b82134432253329fb36ab61877bf841f4a401",
+          "platform": "WINDOWS",
+          "policy_sha256": "b0a04fe41389e04a559bb48d6ef9b47d545c50fe919f2ceed840dbeca3789535",
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "role": "TARGET",
+          "round": 2,
+          "run_id": "rpf72r3-5943c232ec97c835-2",
+          "schema": "rpf72r3-launch-spec-v1",
+          "sdk_pin_sha256": "5e205c666929822ee654270a4d48c199e9a21930a675435ba9c5fd8e2c02440a",
+          "shell": false,
+          "source_capsule_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+          "source_kind": "RPF72R3_PARENT_CHILD_COMPATIBILITY_ONLY"
+        },
+        "launch_spec_sha256": "984bf932528ba3d9e8c078521f04251ab40bcecd82e32c5131375edddf7a4616",
+        "levels": {
+          "child": "CHILD_ATTESTATION_NOT_ESTABLISHED",
+          "config": "CONTROLLER_OBSERVED",
+          "execution": "SDK_EXECUTION_OBSERVED"
+        },
+        "parent_child_contract_sha256": "bf35c51a98f20256d0b38af99d5b82134432253329fb36ab61877bf841f4a401",
+        "pid": 25876,
+        "ready": {
+          "framework": "pydantic-ai-slim",
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "pid": 25876,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "version": "2.57.0"
+        },
+        "report": {
+          "business_key_present": false,
+          "denied_files": [],
+          "final_text_persisted": false,
+          "framework": "pydantic-ai-slim",
+          "guard_denials": [],
+          "input_tokens": 1380,
+          "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+          "openai_version": "3.35.1",
+          "output_tokens": 60,
+          "pid": 25876,
+          "provider_key_present": false,
+          "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+          "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+          "requests": 3,
+          "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+          "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+          "status": "COMPLETED",
+          "tool_callbacks": 2,
+          "tool_calls": 2,
+          "usage_type": "pydantic_ai.usage.RunUsage",
+          "version": "2.57.0"
+        },
+        "requests": [
+          {
+            "request": {
+              "canonical_bytes": 1806,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 0,
+              "input_upper": 1806,
+              "messages_sha256": "5412d452fead8bdd17c907875f3093cf38672cf415488e87f8d2bb18f25e3ba3",
+              "ordinal": 1,
+              "output_cap": 256,
+              "previous_prompt": null,
+              "request_sha256": "cb524c0608a2adeb3d1e8408f9e1bb450442f8c28df15dbe109051eaae7699ac",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "30ce973aa40f46974c3b4bf13242890fd28b2b38ee2ecb94615fe0b76281bbcc",
+              "slot_cap": 10000,
+              "slot_contract_sha256": "c8aeeac4e0ddb3e790eae71bd53fec95644ae7935da1bee99bf028d27594f706",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 600000,
+                "max_slot": 160000,
+                "ordinal": 1,
+                "output_cap": 256,
+                "reachable_tokens": 474000,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 10000,
+                "version": "rpf68-capacity-budget-v3"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 0,
+              "tool_returns": []
+            },
+            "response_id": "fixture-2-response-1",
+            "response_sha256": "25effd618b76f729b7fc1b6ddbf855c3c9f1ae04f01dfa9e3be36cecbaa687cd",
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 430,
+              "total_tokens": 450
+            }
+          },
+          {
+            "request": {
+              "canonical_bytes": 2138,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 1275,
+              "messages_sha256": "c621c949c2be63b66cfbcfb62ccb3379c96ddecac42885d65d908c8c1cacf932",
+              "ordinal": 2,
+              "output_cap": 256,
+              "previous_prompt": 430,
+              "request_sha256": "19a27b04f96fca04678b97fefbba7ca7deeab64d133a19b4c566459179a06354",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "6ab10e3980de4f0604eeebef7fd0b25b3d7a5b80b277f93c29d19380e4956745",
+              "slot_cap": 30000,
+              "slot_contract_sha256": "b7fcdacdf8aefb0905dd52c9eefc31cfef13d7d6b4dc61874f9633b7b874b989",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 600000,
+                "max_slot": 160000,
+                "ordinal": 2,
+                "output_cap": 256,
+                "reachable_tokens": 474000,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 30000,
+                "version": "rpf68-capacity-budget-v3"
+              },
+              "stage": "PRE_COMMIT",
+              "suffix_bytes": 333,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-call-1",
+                  "result_sha256": "98be9d6479280d2f2b1ac2d7897508d3bab4c2c21e57adbe4834f70497423c26"
+                }
+              ]
+            },
+            "response_id": "fixture-2-response-2",
+            "response_sha256": "b0ec71b21d6575f2591086ebc859b567299c1bfedfe9e190b8af3bb8916ee796",
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 460,
+              "total_tokens": 480
+            }
+          },
+          {
+            "request": {
+              "canonical_bytes": 2545,
+              "configuration_sha256": "79cb48caef88cf9bb490a2419ebd34354e14ad0a2ace165bfe8628af855b0c42",
+              "framing_guard": 512,
+              "input_upper": 1380,
+              "messages_sha256": "9f2fd5b53b6fcdcbef0bc446fd0e9202668f6ff863d3a9a3fc687e93cb2a7439",
+              "ordinal": 3,
+              "output_cap": 512,
+              "previous_prompt": 460,
+              "request_sha256": "ee6fa0f63af4bb1ca182981c62514f2fbeb57176444a80487ec4e6e48d5949e0",
+              "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+              "sdk_request_sha256": "7a3f9c131de6e2825248a4b0c2bad31f820b4e939e702c764ff0f033464b6ebd",
+              "slot_cap": 50000,
+              "slot_contract_sha256": "b54f79e77ead5771ac5fbfde6ea0b92d35b1e4e21ed296dfbbaf9f06e2dcde3a",
+              "slot_scope": {
+                "domain": "order-sqlite",
+                "global_tokens": 600000,
+                "max_slot": 160000,
+                "ordinal": 3,
+                "output_cap": 512,
+                "reachable_tokens": 474000,
+                "role": "TARGET",
+                "round": 2,
+                "slot_cap": 50000,
+                "version": "rpf68-capacity-budget-v3"
+              },
+              "stage": "READ_ONLY",
+              "suffix_bytes": 408,
+              "tool_returns": [
+                {
+                  "call_id": "fixture-2-call-1",
+                  "result_sha256": "98be9d6479280d2f2b1ac2d7897508d3bab4c2c21e57adbe4834f70497423c26"
+                },
+                {
+                  "call_id": "fixture-2-call-2",
+                  "result_sha256": "b36bc37de12e1ed758910e991d3da2e3165b591f8bb214ec84f28916c0e69c3a"
+                }
+              ]
+            },
+            "response_id": "fixture-2-response-3",
+            "response_sha256": "d893943de0fec38805f92ee23a43df07f863382a0716216767ba405b64d996ed",
+            "usage": {
+              "completion_tokens": 20,
+              "prompt_tokens": 490,
+              "total_tokens": 510
+            }
+          }
+        ],
+        "serialized_input_sha256": "df33b2df518be9b41097690caebce5d35b549844cbfca7f81e8fab20fcdae0bd"
+      },
+      "status": "PASS",
+      "unsettled_tickets": [],
+      "wal_raw_sha256": "25d7fd9037e7e0fe65df13763f246298b762a3166a8294afbe96ddb4b1ea4187"
+    },
+    {
+      "active_context_reset": true,
+      "business_effects": 0,
+      "case": "NATIVE_REJECT_PRE_CREATEPROCESS",
+      "counts": {
+        "authority_read": 0,
+        "cold": 0,
+        "config_health": 0,
+        "config_http": 0,
+        "config_post": 0,
+        "explorer_calls": 0,
+        "host": 1,
+        "jvm": 0,
+        "metadata": 0,
+        "provider": 0,
+        "sdk": 1,
+        "session": 0,
+        "sqlite_refund": 0,
+        "sqlite_setup": 0,
+        "trial": 0
+      },
+      "error": "NATIVE_CHILD_ARGV",
+      "label": "smoke-reject",
+      "marker": {
+        "path": ".local/rpf-72-rev-3/tests/rpf72r3-83c8f98dccce15b1/smoke-result.json",
+        "sha256": "716fee09b0611e16be2e6901b23333ab7088f9e8c3698caa4191f6e2088d4faf",
+        "status": "PASS"
+      },
+      "pid": null,
+      "port_closed": true,
+      "profile_restored": true,
+      "sdk": null,
+      "status": "PASS",
+      "unsettled_tickets": [
+        "host-1",
+        "sdk-1"
+      ],
+      "wal_raw_sha256": "b0042053ca1e64bb0b7e9ead1b72db799018a9a013bf17bbcde62bfbe5959a79"
+    }
+  ],
+  "source_commit": "6a014c4f3acb7a2b720f83710ca2f797c6580706",
+  "source_identity_sha256": "cf9f468068d89d3ee02fa2d15b6d0388918e8739eb2054f24eec6166ad3ceaec",
+  "status": "Complete",
+  "threshold_scope": "legal-high respects conservative input/slot bounds; minus/equal/plus final hints deliberately test SDK cumulative semantics beyond slot bounds, not legal paid reservations"
+}
