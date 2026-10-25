@@ -1,0 +1,331 @@
+{
+  "agents_sha256": "849182b1d2fda586d674c29c7d85f0deddfb1eea9b362b21eb535c4a9346492e",
+  "audit_shape": [
+    {
+      "argv_type": "str",
+      "cwd_type": "str",
+      "env_keys": [
+        "HOME",
+        "LOGFIRE_SEND_TO_LOGFIRE",
+        "OTEL_SDK_DISABLED",
+        "PATH",
+        "PYTHONDONTWRITEBYTECODE",
+        "SYSTEMROOT",
+        "TEMP",
+        "TMP",
+        "USERPROFILE",
+        "WINDIR"
+      ],
+      "executable_is_none": true,
+      "executable_type": "NoneType"
+    }
+  ],
+  "base": "bae9c470f015732c0af34e2d4bacf43e4b6fcce8",
+  "branch": "codex/rpf-72-rev2-win-argv-key-boundary-recovery",
+  "host_credential_read": 0,
+  "ignore": ".gitignore:12:/.local/\t\"D:\\\\CS\\\\runproof\\\\.local\\\\rpf-72-rev-2\\\\probe\"",
+  "initial_status": "?? docs/reviews/",
+  "jar_bytes": 66981576,
+  "jar_sha256": "906e7d923f31454b046bf306f3eab844ae51cf9c6da85b3d43c32896980c9f70",
+  "java_release": [
+    "IMPLEMENTOR=\"Oracle Corporation\"",
+    "JAVA_RUNTIME_VERSION=\"17.0.12+8-LTS-286\"",
+    "JAVA_VERSION=\"17.0.12\""
+  ],
+  "loopback_bind": 1968,
+  "no_reparse": true,
+  "old_public_identity_sha256": "46295f001bf0b1e9c386186fc714107e0b62c1dc98b50bc8a71b7fd0ff65b569",
+  "owner_observation": {
+    "owner_matches_current": true,
+    "owner_sid_sha256": "a0d7abdc50dc51b64975fe96ee61ab78daae824bde5c3db510beff2ca2be7be6",
+    "reparse": false,
+    "write_probe": "EXCLUSIVE_CREATE_SUCCEEDED"
+  },
+  "paths": [
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_contracts.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_owner_source.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_capability.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_budget_policy.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_budget_ledger.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_sdk_contract.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_ports.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_session.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_verify.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_migration.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "runtime/tests/test_effectwitness_pge_r72r2.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/probe.py"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/README.md"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/RESULT.md"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/preflight-diagnostic.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/verification-diagnostic.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/parent-child-contract-matrix.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/budget-negative-controls.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/history-regression.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/source-identity-map.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/architecture-decision.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/capability-assessment.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/windows-argv-diagnostic.json"
+    },
+    {
+      "base": false,
+      "filesystem": false,
+      "index": false,
+      "path": "spikes/rpf-72/rev-2/key-boundary-diagnostic.json"
+    }
+  ],
+  "remote": [
+    {
+      "q": "git/ref/heads/codex/rpf-72-parent-child-budget-contract",
+      "sha": "bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "q": "git/ref/heads/main",
+      "sha": "bda0cd49e50e3181f604324e94877a24b9885334"
+    },
+    {
+      "absent": true,
+      "q": "git/ref/heads/codex/rpf-72-rev2-win-argv-key-boundary-recovery"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_contracts.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_owner_source.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_capability.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_budget_policy.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_budget_ledger.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_sdk_contract.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_ports.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_session.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_verify.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/runproof_runtime/effectwitness/pge_r72r2_migration.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/runtime/tests/test_effectwitness_pge_r72r2.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/probe.py?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/README.md?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/RESULT.md?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/preflight-diagnostic.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/verification-diagnostic.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/parent-child-contract-matrix.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/budget-negative-controls.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/history-regression.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/source-identity-map.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/architecture-decision.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/capability-assessment.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/windows-argv-diagnostic.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    },
+    {
+      "absent": true,
+      "q": "contents/spikes/rpf-72/rev-2/key-boundary-diagnostic.json?ref=bae9c470f015732c0af34e2d4bacf43e4b6fcce8"
+    }
+  ],
+  "root": "$REPO",
+  "sdk": {
+    "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+    "openai_record_entries": 2000,
+    "openai_record_mismatches": 0,
+    "openai_record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10",
+    "pydantic_record_entries": 444,
+    "pydantic_record_mismatches": 0,
+    "pydantic_record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453",
+    "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "python_launcher_sha256": "74e020321eb8f828f0c2cfe865082fcf94aa6e7cf488e8a744d89b9282eaeb83",
+    "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+    "python_version": "3.12.13",
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a"
+  },
+  "sdk_versions": {
+    "openai": "3.35.1",
+    "pydantic": "2.57.0",
+    "python": "3.12.13"
+  },
+  "source_remote": {
+    "api_sha": "a8c7fe29cd12c9df60b5f72ef805321d11e81893",
+    "branch": "codex/rpf-72-rev2-win-argv-key-boundary-recovery",
+    "git_sha": "a8c7fe29cd12c9df60b5f72ef805321d11e81893",
+    "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+    "parent": "bae9c470f015732c0af34e2d4bacf43e4b6fcce8",
+    "source_commit": "a8c7fe29cd12c9df60b5f72ef805321d11e81893",
+    "status": "SOURCE_DUAL_READ_PASS"
+  },
+  "status": "PASS",
+  "work_absent": true
+}

@@ -1,0 +1,298 @@
+{
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "NO",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "L2": "NOT_ESTABLISHED",
+  "REAL_EXPLORER_REAL_TARGET_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_FAULT_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "THIRD_DOMAIN": "NOT_RUN",
+  "WEB": "NOT_RUN",
+  "base": "bae9c470f015732c0af34e2d4bacf43e4b6fcce8",
+  "branch": "codex/rpf-72-rev2-win-argv-key-boundary-recovery",
+  "delivery_at_report_generation": "PENDING_RECEIPT_PUSH_DUAL_READ",
+  "formal_resources": {
+    "F": {
+      "authority_read": 5,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 9,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "N": {
+      "authority_read": 4,
+      "cold": 0,
+      "config_health": 1,
+      "config_http": 8,
+      "config_post": 2,
+      "explorer_calls": 2,
+      "host": 2,
+      "jvm": 1,
+      "metadata": 0,
+      "provider": 0,
+      "sdk": 2,
+      "session": 1,
+      "sqlite_refund": 1,
+      "sqlite_setup": 1,
+      "trial": 2
+    },
+    "corrective": 0
+  },
+  "gates": {
+    "G0": {
+      "evidence": "Exact Base and 24 paths absent in local/index/Base/API; owner SID matches; new ignored non-reparse task root; no deployment push",
+      "status": "PASS"
+    },
+    "R2-A01": {
+      "evidence": "71 raw/LF source closure; current R72R2, R72 frozen reference and native reference separated; all old bytes preserved",
+      "status": "PASS"
+    },
+    "R2-A02": {
+      "evidence": "Frozen Policy/ParentChild250000/160000 +474000/600000/11slots; 60 strict cfg negatives and pure component",
+      "status": "PASS"
+    },
+    "R2-A03": {
+      "evidence": "Original Driver native accept/reject smoke + exact Windows audit, actual serialization/PID/report/WAL; eight SDK boundary components",
+      "status": "PASS"
+    },
+    "R2-A04": {
+      "evidence": "One native WAL; physical reserve/settle coverage, crash/orphan/UNKNOWN/direct bypass/duplicate tests; formal replay/Policy parity",
+      "status": "PASS"
+    },
+    "R2-A05": {
+      "evidence": "New N and F local two-domain sessions independently verified, finite writes, four states, readonly reconcile, feedback and cleanup",
+      "status": "PASS"
+    },
+    "R2-A06": {
+      "evidence": "Pre-shutdown 150/93/deep4 and CLI0/2/3 valid; post-reboot original CLI unexpectedly exits3 LAUNCH_ENV_BINDING, so current positive CLI gate is not satisfied",
+      "status": "FAIL"
+    },
+    "R2-A07": {
+      "evidence": "Final full attempt did not meet Runtime acceptance; exact receipt retained",
+      "status": "FAIL"
+    },
+    "R2-A08": {
+      "evidence": "Host credential reads0; sanitized absence probes explicitly scoped; runtime loopback only, Provider0/realusage0/API0; owned resource late cleanup",
+      "status": "PASS"
+    },
+    "R2-A09": {
+      "evidence": "Offline verifier depends on current mutable host safe-env values instead of the original historical launch environment; unchanged valid N/F now reject",
+      "status": "FAIL"
+    },
+    "R2-A10": {
+      "evidence": "Source commit and this receipt generation complete; final commit/push/API+Git double-read is finalized in chat after report publication",
+      "status": "NOT_RUN"
+    }
+  },
+  "issuer": false,
+  "late": {
+    "no_unknown_pid_killed": true,
+    "physical_junction": "CREATED_AND_REJECTED_IN_FOCUSED",
+    "physical_symlink": {
+      "status": "UNAVAILABLE",
+      "winerror": 1314
+    },
+    "rows": [
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-equal",
+        "original_gone": true,
+        "pid": 15480,
+        "port": 12292,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-legal",
+        "original_gone": true,
+        "pid": 12452,
+        "port": 12184,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-minus",
+        "original_gone": true,
+        "pid": 24696,
+        "port": 12260,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-config-over",
+        "original_gone": true,
+        "pid": 13360,
+        "port": 12319,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-equal",
+        "original_gone": true,
+        "pid": 20724,
+        "port": 12291,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-legal",
+        "original_gone": true,
+        "pid": 19880,
+        "port": 12185,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-minus",
+        "original_gone": true,
+        "pid": 8020,
+        "port": 12261,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "sdk-order-over",
+        "original_gone": true,
+        "pid": 23296,
+        "port": 12320,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "smoke-accept",
+        "original_gone": true,
+        "pid": 13792,
+        "port": 5138,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "normal-jvm-config-java-http",
+        "original_gone": true,
+        "pid": 2500,
+        "port": 1655,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "normal-sdk-config-java-http",
+        "original_gone": true,
+        "pid": 24444,
+        "port": 1656,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "normal-sdk-order-sqlite",
+        "original_gone": true,
+        "pid": 15568,
+        "port": 1657,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "fault-jvm-config-java-http",
+        "original_gone": true,
+        "pid": 4212,
+        "port": 7123,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "fault-sdk-config-java-http",
+        "original_gone": true,
+        "pid": 11916,
+        "port": 7124,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED_BEFORE_EXIT",
+        "label": "fault-sdk-order-sqlite",
+        "original_gone": true,
+        "pid": 27052,
+        "port": 7125,
+        "port_closed": true,
+        "sid_hash": "UNAVAILABLE_NOT_CAPTURED",
+        "status": "NOT_PRESENT"
+      }
+    ],
+    "status": "PASS",
+    "utc": "2026-10-24T17:17:01.769524+00:00"
+  },
+  "legacy_Runtime_fixtures": "Separate disposable tests under task snapshot; excluded from formal N/F resource quota",
+  "plan": "RPF-72/rev-2",
+  "security": {
+    "ALL_KEY_VARIABLE_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+    "child_business_key_present": false,
+    "child_provider_key_present": false,
+    "external_credential_disclosure": 0,
+    "host_business_key_reads": 0,
+    "host_provider_key_reads": 0,
+    "known_business_absence_probes_at_least": 11,
+    "known_completed_R68_child_executions": 11,
+    "known_provider_absence_probes_at_least": 11,
+    "known_static_sites": [
+      {
+        "field": "provider_key_present",
+        "function": "main.run completed-report",
+        "getter": "os.environ.get(DEEPSEEK_API_KEY)",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+      },
+      {
+        "field": "business_key_present",
+        "function": "main.run completed-report",
+        "getter": "os.environ.get(CONFIG_CENTER_API_KEY)",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+      }
+    ],
+    "legacy_manifest_field": "key_lookup=0 is scoped only to host credential reads in the rev-2 protocol; it is not a claim about sanitized child getters",
+    "protocol": "SANITIZED_CHILD_ABSENCE_PROBE",
+    "rev1_A08": "FAIL_IMMUTABLE_NOT_RECLASSIFIED",
+    "sanitizer": "Original _sdk_env copies only SYSTEMROOT/WINDIR/PATH then task-owned HOME/USERPROFILE/TEMP/TMP and telemetry/pyc controls. Exact child env checked before Popen; no secret names or parent credential query.",
+    "scope_limit": "Static completion sites + actual COMPLETED child reports, not dynamic getter instrumentation. Other library/legacy Runtime fixture getters NOT_INSTRUMENTED.",
+    "synthetic_local_java_auth": "Generated task-local Config HTTP token differs from any real host credential; never inherited by SDK child"
+  },
+  "source_commit": "a8c7fe29cd12c9df60b5f72ef805321d11e81893",
+  "source_identity_sha256": "79858188bd351a94cc4020d1c09d1e705d20777a290611a24bcacabd1e808938",
+  "status": "Partial"
+}

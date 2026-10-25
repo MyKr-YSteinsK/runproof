@@ -1,0 +1,50 @@
+{
+  "ALL_KEY_VARIABLE_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "NO",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "L2": "NOT_ESTABLISHED",
+  "REAL_EXPLORER_REAL_TARGET_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_FAULT_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "THIRD_DOMAIN": "NOT_RUN",
+  "WEB": "NOT_RUN",
+  "base": "bae9c470f015732c0af34e2d4bacf43e4b6fcce8",
+  "branch": "codex/rpf-72-rev2-win-argv-key-boundary-recovery",
+  "child_business_key_present": false,
+  "child_provider_key_present": false,
+  "delivery_at_report_generation": "PENDING_RECEIPT_PUSH_DUAL_READ",
+  "external_credential_disclosure": 0,
+  "host_business_key_reads": 0,
+  "host_provider_key_reads": 0,
+  "issuer": false,
+  "known_business_absence_probes_at_least": 11,
+  "known_completed_R68_child_executions": 11,
+  "known_provider_absence_probes_at_least": 11,
+  "known_static_sites": [
+    {
+      "field": "provider_key_present",
+      "function": "main.run completed-report",
+      "getter": "os.environ.get(DEEPSEEK_API_KEY)",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+    },
+    {
+      "field": "business_key_present",
+      "function": "main.run completed-report",
+      "getter": "os.environ.get(CONFIG_CENTER_API_KEY)",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+    }
+  ],
+  "legacy_manifest_field": "key_lookup=0 is scoped only to host credential reads in the rev-2 protocol; it is not a claim about sanitized child getters",
+  "plan": "RPF-72/rev-2",
+  "protocol": "SANITIZED_CHILD_ABSENCE_PROBE",
+  "rev1_A08": "FAIL_IMMUTABLE_NOT_RECLASSIFIED",
+  "sanitizer": "Original _sdk_env copies only SYSTEMROOT/WINDIR/PATH then task-owned HOME/USERPROFILE/TEMP/TMP and telemetry/pyc controls. Exact child env checked before Popen; no secret names or parent credential query.",
+  "scope_limit": "Static completion sites + actual COMPLETED child reports, not dynamic getter instrumentation. Other library/legacy Runtime fixture getters NOT_INSTRUMENTED.",
+  "source_commit": "a8c7fe29cd12c9df60b5f72ef805321d11e81893",
+  "source_identity_sha256": "79858188bd351a94cc4020d1c09d1e705d20777a290611a24bcacabd1e808938",
+  "status": "Partial",
+  "synthetic_local_java_auth": "Generated task-local Config HTTP token differs from any real host credential; never inherited by SDK child"
+}

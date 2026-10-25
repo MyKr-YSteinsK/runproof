@@ -1,0 +1,110 @@
+{
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    {
+      "cost": "Low direct scope; stack/profile and Windows-specific coupling remain",
+      "history": "Old sources/raw immutable",
+      "path": "Thin parent hook (chosen)",
+      "safety": "Native child/guard unchanged, strict exact launch admission"
+    },
+    {
+      "cost": "Higher and requires new Plan",
+      "history": "Keep legacy child/routes",
+      "path": "Versioned child with capsule echo",
+      "safety": "Requires new guard/source/pin review; stronger receipt but not automatically independent signature"
+    },
+    {
+      "cost": "Repeated code and Source closure growth",
+      "history": "Preserves independent review boundaries",
+      "path": "Keep task-owned branches without promoting common ABI",
+      "safety": "Minimal shared blast radius"
+    }
+  ],
+  "BUDGET_PARENT_CHILD_CONTRACT_EXECUTED": "NO",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "CODEX_ENGINEERING_JUDGMENT": {
+    "cheapest_next_experiment": "A new authorized versioned offline historical-environment compatibility route should accept unchanged valid old evidence after harmless host-safe-variable drift, while retaining strict actual prelaunch env/key/binary checks. Do not relabel old runs as executions of new Source.",
+    "confidence": "HIGH_WITHIN_TRUSTED_CONTROLLER_WINDOWS_SCOPE",
+    "counterevidence": "Original child does not echo cfg digest/signature; no independent child attestation; non-Windows deliberately rejected",
+    "mechanism": "Native launch and budget gate work within the original environment. Offline verify_proof incorrectly reconstructs historical env from current SYSTEMROOT/WINDIR/PATH, coupling replay to ambient host values; guard remains legacy",
+    "support": "Native accept/reject + SDK threshold + formal N/F + coupled adversarial CLI"
+  },
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "L2": "NOT_ESTABLISHED",
+  "NEXT_DECISION_RECOMMENDATION": [
+    {
+      "authority": "New create-only verifier/compatibility paths, independent Source/root and explicit replay budget; Architect acceptance remains pending",
+      "priority": 1,
+      "recommendation": "A new RPF-72 revision should define stable historical LaunchEnvironment validation; preserve strict current prelaunch comparison but remove implicit current-host substitution during offline replay"
+    },
+    {
+      "authority": "New whitelist/common-core scope and regression budget required",
+      "priority": 2,
+      "recommendation": "Consider explicit LaunchSpec+factory seam only in a new Plan, keeping old source/guard immutable"
+    },
+    {
+      "authority": "New API/key/cost/rate and side-effect authorization; no RPF73 auto-creation",
+      "priority": 3,
+      "recommendation": "Real Provider/fault causality remains a separate decision"
+    }
+  ],
+  "POTENTIAL_GENERALIZATION_DEBT": {
+    "hypothesized": [
+      "Profile/source scanning overhead may matter; smoke/formal timings are not a controlled performance comparison",
+      "An explicit launch ABI might reduce duplicated adapters"
+    ],
+    "non_claims": [
+      "No OS sandbox",
+      "No signature/Issuer/L2",
+      "No general Guard migration",
+      "No real model autonomy"
+    ],
+    "verified": [
+      "Historical env hash is compared to current mutable host values; post-reboot false rejection reproduced",
+      "71-source closure and repeated task-owned wrappers",
+      "sys profile and exact frame code dependency",
+      "legacy manifest key_lookup needs explicit HOST-only scope annotation in public rev-2 protocol",
+      "migration descriptive VERSIONED_V1_2_R72 label remains inherited; actual owner/schema is new v2 and checked independently"
+    ]
+  },
+  "REAL_EXPLORER_REAL_TARGET_THIS_TASK": "NOT_RUN",
+  "REAL_PROVIDER_FAULT_THIS_TASK": "NOT_RUN",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "THIRD_DOMAIN": "NOT_RUN",
+  "VERIFIED_FINDINGS": [
+    {
+      "evidence": "recovery-env-diagnostic.json and recovery-normal/fault-verify receipts",
+      "fact": "Post-reboot unchanged N/F originals reject LAUNCH_ENV_BINDING; identical safe-env key sets, different aggregate values hash"
+    },
+    {
+      "evidence": "windows-argv-diagnostic.json",
+      "fact": "Windows audit None executable/string args reproduced; strict new comparison accepted actual native child"
+    },
+    {
+      "evidence": "parent-child-contract-matrix.json",
+      "fact": "Parent cfg raw digest equals actual communicate bytes; SDK PID/ready/report/native WAL ordered and verified"
+    },
+    {
+      "evidence": "Eight current SDK components",
+      "fact": "Threshold SDK behavior established on fixed original child; high legal cumulative exceeds35000"
+    },
+    {
+      "evidence": "N/F manifest raw SHA and offline CLI",
+      "fact": "N/F actual HTTP/H2 and SQLite effects independently read back; F UNKNOWN only readonly recovery"
+    },
+    {
+      "evidence": "key-boundary-diagnostic.json",
+      "fact": "Host credential zero and sanitized getter presence have separate meanings"
+    }
+  ],
+  "WEB": "NOT_RUN",
+  "base": "bae9c470f015732c0af34e2d4bacf43e4b6fcce8",
+  "branch": "codex/rpf-72-rev2-win-argv-key-boundary-recovery",
+  "delivery_at_report_generation": "PENDING_RECEIPT_PUSH_DUAL_READ",
+  "issuer": false,
+  "plan": "RPF-72/rev-2",
+  "source_commit": "a8c7fe29cd12c9df60b5f72ef805321d11e81893",
+  "source_identity_sha256": "79858188bd351a94cc4020d1c09d1e705d20777a290611a24bcacabd1e808938",
+  "status": "Partial"
+}
