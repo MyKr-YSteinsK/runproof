@@ -1,0 +1,825 @@
+{
+  "plan": "RPF-73/rev-1",
+  "status": "PASS",
+  "observed_utc": "2026-10-25T08:03:25Z",
+  "task_start_upper_bound_utc": "2026-10-25T08:01:00Z",
+  "base": "a055bfa1844f1df7de459daf35107de7a3ae2d2c",
+  "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+  "branch": "codex/rpf-73-versioned-launch-factory-cross-domain",
+  "origin": "https://github.com/MyKr-YSteinsK/runproof.git",
+  "paths": [
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_verify.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_compat.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r73.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/probe.py",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/README.md",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/RESULT.md",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/preflight-diagnostic.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/verification-diagnostic.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/launch-parity-matrix.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/architecture-decision.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/capability-assessment.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/source-identity-map.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/history-regression.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/launch-negative-controls.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    },
+    {
+      "path": "spikes/rpf-73/runtime-diagnostic.json",
+      "local_absent": true,
+      "index_exit": 1,
+      "base_exit": 128,
+      "api404": true,
+      "non_reparse": true,
+      "not_ignored": true
+    }
+  ],
+  "api": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_contracts.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_verify.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/runproof_runtime/effectwitness/pge_r73_compat.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:runtime/tests/test_effectwitness_pge_r73.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/probe.py",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/README.md",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/RESULT.md",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/preflight-diagnostic.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/verification-diagnostic.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/launch-parity-matrix.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/architecture-decision.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/capability-assessment.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/source-identity-map.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/history-regression.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/launch-negative-controls.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "path:spikes/rpf-73/runtime-diagnostic.json",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/repos/contents#get-repository-content\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/repos/contents#get-repository-content",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "ref:git/ref/heads/codex/rpf-72-rev3-stable-launch-environment-replay",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Action completed."
+            }
+          ],
+          "structuredContent": {
+            "content": "{\"ref\":\"refs/heads/codex/rpf-72-rev3-stable-launch-environment-replay\",\"node_id\":\"REF_kwDOUWDyTtoAPXJlZnMvaGVhZHMvY29kZXgvcnBmLTcyLXJldjMtc3RhYmxlLWxhdW5jaC1lbnZpcm9ubWVudC1yZXBsYXk\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/refs/heads/codex/rpf-72-rev3-stable-launch-environment-replay\",\"object\":{\"sha\":\"a055bfa1844f1df7de459daf35107de7a3ae2d2c\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/commits/a055bfa1844f1df7de459daf35107de7a3ae2d2c\"}}",
+            "title": "rpf-72-rev3-stable-launch-environment-replay",
+            "modified_date": null,
+            "url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/codex/rpf-72-rev3-stable-launch-environment-replay",
+            "display_url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/codex/rpf-72-rev3-stable-launch-environment-replay",
+            "display_title": "rpf-72-rev3-stable-launch-environment-replay",
+            "structuredContent": {
+              "title": "rpf-72-rev3-stable-launch-environment-replay",
+              "content": "{\"ref\":\"refs/heads/codex/rpf-72-rev3-stable-launch-environment-replay\",\"node_id\":\"REF_kwDOUWDyTtoAPXJlZnMvaGVhZHMvY29kZXgvcnBmLTcyLXJldjMtc3RhYmxlLWxhdW5jaC1lbnZpcm9ubWVudC1yZXBsYXk\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/refs/heads/codex/rpf-72-rev3-stable-launch-environment-replay\",\"object\":{\"sha\":\"a055bfa1844f1df7de459daf35107de7a3ae2d2c\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/commits/a055bfa1844f1df7de459daf35107de7a3ae2d2c\"}}",
+              "display_url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/codex/rpf-72-rev3-stable-launch-environment-replay"
+            }
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "ref:git/ref/heads/main",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "Action completed."
+            }
+          ],
+          "structuredContent": {
+            "content": "{\"ref\":\"refs/heads/main\",\"node_id\":\"REF_kwDOUWDyTq9yZWZzL2hlYWRzL21haW4\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/refs/heads/main\",\"object\":{\"sha\":\"bda0cd49e50e3181f604324e94877a24b9885334\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/commits/bda0cd49e50e3181f604324e94877a24b9885334\"}}",
+            "title": "main",
+            "modified_date": null,
+            "url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/main",
+            "display_url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/main",
+            "display_title": "main",
+            "structuredContent": {
+              "title": "main",
+              "content": "{\"ref\":\"refs/heads/main\",\"node_id\":\"REF_kwDOUWDyTq9yZWZzL2hlYWRzL21haW4\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/refs/heads/main\",\"object\":{\"sha\":\"bda0cd49e50e3181f604324e94877a24b9885334\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/MyKr-YSteinsK/runproof/git/commits/bda0cd49e50e3181f604324e94877a24b9885334\"}}",
+              "display_url": "https://api.github.com/repos/MyKr-YSteinsK/runproof/git/ref/heads/main"
+            }
+          },
+          "isError": false
+        }
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "key": "ref:git/ref/heads/codex/rpf-73-versioned-launch-factory-cross-domain",
+        "result": {
+          "content": [
+            {
+              "type": "text",
+              "text": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}"
+            }
+          ],
+          "structuredContent": {
+            "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}",
+            "error_code": "NOT_FOUND",
+            "error_data": {
+              "message": "Not Found",
+              "documentation_url": "https://docs.github.com/rest/git/refs#get-a-reference",
+              "status": "404"
+            }
+          },
+          "isError": true
+        }
+      }
+    }
+  ],
+  "owner_current_sid_match": true,
+  "authenticated_users_modify_acl": true,
+  "root_and_source_parent_writable": true,
+  "root_previously_absent": true,
+  "new_branch_previously_absent": true,
+  "root_ignore": ".gitignore:12:/.local/",
+  "sdk": {
+    "python_version": "3.12.13",
+    "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+    "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+    "sdk_core_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+    "openai_core_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+    "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+    "pydantic": {
+      "version": "2.57.0",
+      "record_entries": 444,
+      "record_hashed_entries": 443,
+      "record_mismatches": 0,
+      "record_sha256": "9afe682f866eb018d92989e282e2286e63aa7aee8be9168c17cb47c2ae1ea453"
+    },
+    "openai": {
+      "version": "3.35.1",
+      "record_entries": 2000,
+      "record_hashed_entries": 1999,
+      "record_mismatches": 0,
+      "record_sha256": "c59a36843c481ffaf7b5b0b0c4e35aed7fb49033f77739c8d448138e22ee4c10"
+    }
+  },
+  "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+  "sdk_metadata_only": true,
+  "agent_starts": 0,
+  "java": "NOT_USED",
+  "host_provider_business_key_reads": 0,
+  "provider": 0,
+  "reviews": "UNTRACKED_UNTOUCHED",
+  "old_private_roots": "NOT_READ",
+  "feasibility": "Direct child canonical stdin + independent loopback handler; original Driver/Port/WAL implementation not required",
+  "workflow": "Feature branch push no workflow trigger/deploy; main-only release gate, other workflows manual"
+}

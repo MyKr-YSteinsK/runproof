@@ -1,0 +1,1762 @@
+{
+  "AUTHORITY_READBACK": "NOT_RUN",
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "COMMON_CORE_FULLY_MIGRATED": "NO",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "EXTERNAL_PROVIDER_CALLS": 0,
+  "FACTORY_COMPONENT_EXECUTED": "YES",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_CREDENTIAL_READS": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "PGE_FEEDBACK": "NOT_RUN",
+  "PUBLIC_DIGEST_ONLY_ENV_SEMANTICS": "INCONCLUSIVE",
+  "REAL_EXPLORER_THIS_TASK": "NOT_RUN",
+  "REAL_FAULT_FOUR_STATES": "NOT_TESTED",
+  "REAL_MODEL_USAGE": 0,
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "TWO_FIXED_SDK_DOMAINS": "PASS",
+  "base": "a055bfa1844f1df7de459daf35107de7a3ae2d2c",
+  "branch": "codex/rpf-73-versioned-launch-factory-cross-domain",
+  "components": [
+    {
+      "actual_popen": {
+        "argv_flags": [
+          "-I",
+          "-B",
+          "-X",
+          "utf8"
+        ],
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+        "cwd_relative": "runs/rpf73-d9c17b6148d75f33/sdk",
+        "env_private_mapping": "RETAINED_ONLY_IN_CURRENT_PRIVATE_MANIFEST_AND_WAL",
+        "env_summary": {
+          "keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "sha256": "e2b01613b43a2d57fdce43060ddc3083bf8f081a003be3db98046e114124362a",
+          "value_sha256": {
+            "HOME": "17d712867b13de6d00748699b876dba9ea13e075a159c48096b4de2cab608e32",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "5797b95da5ab30579df474555463e523399901d2da630df25f7c776b58ea67fc",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "17d712867b13de6d00748699b876dba9ea13e075a159c48096b4de2cab608e32",
+            "TMP": "17d712867b13de6d00748699b876dba9ea13e075a159c48096b4de2cab608e32",
+            "USERPROFILE": "17d712867b13de6d00748699b876dba9ea13e075a159c48096b4de2cab608e32",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "observed_count": 1,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "shell": false,
+        "tuple_types": [
+          "NoneType",
+          "str",
+          "str",
+          "dict"
+        ]
+      },
+      "budget": {
+        "actual_provider_usage": 0,
+        "all_slots": 11,
+        "cumulative": 250000,
+        "domain": "config-java-http",
+        "global_cap": 600000,
+        "max_slot": 160000,
+        "provider_reserved": 0,
+        "reachable": 474000,
+        "slots": [
+          10000,
+          30000,
+          50000,
+          70000,
+          90000
+        ],
+        "version": "rpf73-readonly-budget-v1"
+      },
+      "business_target_real": false,
+      "callbacks": [
+        {
+          "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "business_effect": false,
+          "call_id": "rpf73-d9c17b6148d75f33-call-1",
+          "result_sha256": "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "inspect_config"
+        },
+        {
+          "argument_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "business_effect": false,
+          "call_id": "rpf73-d9c17b6148d75f33-call-2",
+          "result_sha256": "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "create_config_v1"
+        },
+        {
+          "argument_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "business_effect": false,
+          "call_id": "rpf73-d9c17b6148d75f33-call-3",
+          "result_sha256": "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "update_config_v2"
+        }
+      ],
+      "case": "development",
+      "cfg": {
+        "domain": "config-java-http",
+        "instructions_sha256": "9882c688ad61e6178c13e01713eaed53d376cc3c111869817276b250256cfc82",
+        "paths": "PRIVATE_ONLY",
+        "port": 3004,
+        "serialized_bytes": 6914,
+        "serialized_sha256": "a8733e9c8a6b73bc642c3ccbd1cf31cbeafa9c0616b1dacc282029919d96c6e5",
+        "task_prompt_sha256": "1f889768502bf1217091d0ada752306255ec0f756a28f28388f2387cef2c57bd",
+        "token": "NOT_EXPORTED",
+        "total_token_limit": 250000
+      },
+      "child_key_absence_report": "EXPLICIT_FALSE",
+      "cleanup": {
+        "active_context_reset": true,
+        "port_closed": true,
+        "process_gone": true,
+        "thread_gone": true
+      },
+      "domain": "config-java-http",
+      "elapsed_seconds": 4.833163399998739,
+      "exit": 0,
+      "factory_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+      "issuer": false,
+      "label": "development-smoke",
+      "marker": {
+        "path": ".local/rpf-73/runs/rpf73-d9c17b6148d75f33/manifest.json",
+        "pid": 11744,
+        "run_id": "rpf73-d9c17b6148d75f33",
+        "sha256": "471dcce01ac6717adb12ebff8d1e010ad66b5097ed548b4d0abf7532878cbe92",
+        "state": "COMPLETED"
+      },
+      "parent_pid": 7344,
+      "pid": 11744,
+      "ready": {
+        "framework": "pydantic-ai-slim",
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "pid": 11744,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "version": "2.57.0"
+      },
+      "receipt_sha256": "8dd9b7d35869d47bdc28f2561dc38b611f6b4c0430b3be84fa31e5bc820a8739",
+      "report": {
+        "business_key_present": false,
+        "denied_files": [],
+        "final_text_persisted": false,
+        "framework": "pydantic-ai-slim",
+        "guard_denials": [],
+        "input_tokens": 29969,
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "output_tokens": 80,
+        "pid": 11744,
+        "provider_key_present": false,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "requests": 4,
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "status": "COMPLETED",
+        "tool_callbacks": 3,
+        "tool_calls": 3,
+        "usage_type": "pydantic_ai.usage.RunUsage",
+        "version": "2.57.0"
+      },
+      "request_sha256": "cce362d6f19ed409dcf93adaeeb4260eca42912ff814884af7d468c04bbabdc3",
+      "requests": [
+        {
+          "body_sha256": "d0cc9f7e380a8fa489e229a361d96526c8c312f1f681095d194dec8de3fea17a",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 7328,
+            "ordinal": 1,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 10000
+          },
+          "request_raw_sha256": "c860130f74d090ad568cd66e7cbcdd50e507cf0aeebdc3fb6a6415e59d097294",
+          "response_id": "rpf73-d9c17b6148d75f33-response-1",
+          "response_sha256": "c928967497418fbe8aa0c6c3239785cea7325cbee1d64a5ab0b859a9715ee7e9",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 6816,
+            "total_tokens": 6836
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "76f5eb370d280ef5400892a35b9c8169ce228b16737791f8007e688245b319f9",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 7762,
+            "ordinal": 2,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 30000
+          },
+          "request_raw_sha256": "abeb414ef0afd49a2e667592c780a997009af8261cec18a15e649131cae296ff",
+          "response_id": "rpf73-d9c17b6148d75f33-response-2",
+          "response_sha256": "7f8fc3cf99d3b5c0e76be2c4a1c5297a7957286df2b1d723d7ed02e0272baf21",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 7250,
+            "total_tokens": 7270
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "fe84a978ddac544246f5c963cc13ac0c2ab78515df4d6e9ba37ede79404d488c",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 8222,
+            "ordinal": 3,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 50000
+          },
+          "request_raw_sha256": "117f6e845025d0fabad8254bdff549c8008ea7314cd0f862b7c035186b49dfb6",
+          "response_id": "rpf73-d9c17b6148d75f33-response-3",
+          "response_sha256": "5387a93f91a7adc789cbae359ceb21fa89ec0a00ad9dd63726e2ad533f6c821f",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 7710,
+            "total_tokens": 7730
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "6bad5fa362960cef1e221fe2ddb9f31fe9bc8fa7b134a340373431f5bac8843c",
+          "finish_reason": "stop",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 8705,
+            "ordinal": 4,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 70000
+          },
+          "request_raw_sha256": "88e7c5ab2ea23f042ad9c146236bbd405139de600e3ccb2ffe455c4847ada5de",
+          "response_id": "rpf73-d9c17b6148d75f33-response-4",
+          "response_sha256": "173ffa94d2e17c61c6b54367066d4c9712bf1d957bf02a514cff478520d0e27c",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+            "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8193,
+            "total_tokens": 8213
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        }
+      ],
+      "source_identity_sha256": "05a0622a223ce9cbd00dd7c142d7679ea1df921371970b0c9807da86bad38a49",
+      "started_unix_ns": 1792916366816441600,
+      "state": "COMPLETED",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_raw_sha256": "85fd0edbf2b0cb41b0bf77e50cae4ef684b7e55e9b1da19c51af06ab58feaaef",
+      "usage_type": "SYNTHETIC_VALIDATED_USAGE",
+      "wal_frames": 16,
+      "wal_raw_sha256": "4d36d0a199009af991d9ca9d65a8faab3930e871d5af70a15fb3326e49e18ae1"
+    },
+    {
+      "actual_popen": {
+        "argv_flags": [
+          "-I",
+          "-B",
+          "-X",
+          "utf8"
+        ],
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+        "cwd_relative": "runs/rpf73-91f2b9026f4d3ddc/sdk",
+        "env_private_mapping": "RETAINED_ONLY_IN_CURRENT_PRIVATE_MANIFEST_AND_WAL",
+        "env_summary": {
+          "keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "sha256": "6a1f73d8fd8c9556f49bd8110c6c1c2f0312d82035bb71857461a42ac1da6023",
+          "value_sha256": {
+            "HOME": "890f083738270735add7501d52a450a662323c9334c4c65957f97bf129be777f",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "5797b95da5ab30579df474555463e523399901d2da630df25f7c776b58ea67fc",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "890f083738270735add7501d52a450a662323c9334c4c65957f97bf129be777f",
+            "TMP": "890f083738270735add7501d52a450a662323c9334c4c65957f97bf129be777f",
+            "USERPROFILE": "890f083738270735add7501d52a450a662323c9334c4c65957f97bf129be777f",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "observed_count": 1,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "shell": false,
+        "tuple_types": [
+          "NoneType",
+          "str",
+          "str",
+          "dict"
+        ]
+      },
+      "budget": {
+        "actual_provider_usage": 0,
+        "all_slots": 11,
+        "cumulative": 250000,
+        "domain": "config-java-http",
+        "global_cap": 600000,
+        "max_slot": 160000,
+        "provider_reserved": 0,
+        "reachable": 474000,
+        "slots": [
+          10000,
+          30000,
+          50000,
+          70000,
+          90000
+        ],
+        "version": "rpf73-readonly-budget-v1"
+      },
+      "business_target_real": false,
+      "callbacks": [
+        {
+          "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "business_effect": false,
+          "call_id": "rpf73-91f2b9026f4d3ddc-call-1",
+          "result_sha256": "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "inspect_config"
+        },
+        {
+          "argument_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "business_effect": false,
+          "call_id": "rpf73-91f2b9026f4d3ddc-call-2",
+          "result_sha256": "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "create_config_v1"
+        },
+        {
+          "argument_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "business_effect": false,
+          "call_id": "rpf73-91f2b9026f4d3ddc-call-3",
+          "result_sha256": "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "update_config_v2"
+        }
+      ],
+      "case": "corrective-config",
+      "cfg": {
+        "domain": "config-java-http",
+        "instructions_sha256": "9882c688ad61e6178c13e01713eaed53d376cc3c111869817276b250256cfc82",
+        "paths": "PRIVATE_ONLY",
+        "port": 3610,
+        "serialized_bytes": 8414,
+        "serialized_sha256": "ac14621612a22e2c0832b6356a9f5c2a78858ce1af57bb356efd09f84d3636f3",
+        "task_prompt_sha256": "0ffd1ebea23da880e7328192d52ff765005f2a283f97450cb6f8e5ce9a76dd97",
+        "token": "NOT_EXPORTED",
+        "total_token_limit": 250000
+      },
+      "child_key_absence_report": "EXPLICIT_FALSE",
+      "cleanup": {
+        "active_context_reset": true,
+        "port_closed": true,
+        "process_gone": true,
+        "thread_gone": true
+      },
+      "domain": "config-java-http",
+      "elapsed_seconds": 4.825713700000051,
+      "exit": 0,
+      "factory_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+      "issuer": false,
+      "label": "corrective-config",
+      "marker": {
+        "path": ".local/rpf-73/runs/rpf73-91f2b9026f4d3ddc/manifest.json",
+        "pid": 11176,
+        "run_id": "rpf73-91f2b9026f4d3ddc",
+        "sha256": "bde4b6e4832d20128200bb10dadbd65c8c67fd8402fd36ec7974db446378ff0e",
+        "state": "COMPLETED"
+      },
+      "parent_pid": 20300,
+      "pid": 11176,
+      "ready": {
+        "framework": "pydantic-ai-slim",
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "pid": 11176,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "version": "2.57.0"
+      },
+      "receipt_sha256": "0b671b66ee7201259812efb889f327c97ca7f9fbcf7ab57cf648f0caf611b719",
+      "report": {
+        "business_key_present": false,
+        "denied_files": [],
+        "final_text_persisted": false,
+        "framework": "pydantic-ai-slim",
+        "guard_denials": [],
+        "input_tokens": 35969,
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "output_tokens": 80,
+        "pid": 11176,
+        "provider_key_present": false,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "requests": 4,
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "status": "COMPLETED",
+        "tool_callbacks": 3,
+        "tool_calls": 3,
+        "usage_type": "pydantic_ai.usage.RunUsage",
+        "version": "2.57.0"
+      },
+      "request_sha256": "0f6be7d9a455df19ba60280426e2a0336470154bbd0d84d2d769fffb6200ad0a",
+      "requests": [
+        {
+          "body_sha256": "ded39a32001d5bd205a7e648def5c52de50bbf2452e1efd01bfb80ce777f8054",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 8828,
+            "ordinal": 1,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 10000
+          },
+          "request_raw_sha256": "15cc5ba4966eafcc25a3d84445f6623f669ec7d9c04ca1d6ec6948a2c26fbbbf",
+          "response_id": "rpf73-91f2b9026f4d3ddc-response-1",
+          "response_sha256": "78ed99ba1691fb6b4888788c28b982eddcbebd79dfd1930b088e6fef6ef9a9d8",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8316,
+            "total_tokens": 8336
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "ff1fe54474e30c4e384e6ac03912bc17be74735d5438667a9e651dfe88bec094",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9262,
+            "ordinal": 2,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 30000
+          },
+          "request_raw_sha256": "3ddb2d48688b49234461461e618287c8e4ca9a3801f12bd5304e6bd66e19279d",
+          "response_id": "rpf73-91f2b9026f4d3ddc-response-2",
+          "response_sha256": "0005408e6ed5eafa468c97f631490b60547f938aea0f80919b523dcaea009f0d",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8750,
+            "total_tokens": 8770
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "267fe8c7ee72df013960232882f194ba8f2dc24f6e100e2afb8538a38090a7e0",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9722,
+            "ordinal": 3,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 50000
+          },
+          "request_raw_sha256": "6ec3ac1d1a37f4a56acd6c264321b892860ca3c5c959291acd1432473b83c7d6",
+          "response_id": "rpf73-91f2b9026f4d3ddc-response-3",
+          "response_sha256": "caefbe30b23185d81ce9afc089390b477adf89cb348551d058e12eaaaa36fcac",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9210,
+            "total_tokens": 9230
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "6d65d393d7a6f9cf277201679a39e1670b4ad1683b2ce0b190c4fbb6fac0b584",
+          "finish_reason": "stop",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10205,
+            "ordinal": 4,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 70000
+          },
+          "request_raw_sha256": "44ce4d68e4c451488c37c0debf3bdd9ce3626dccee879c24187e1f39fcd1a959",
+          "response_id": "rpf73-91f2b9026f4d3ddc-response-4",
+          "response_sha256": "2ca25aa9ce5f3c3e1bf36763106b5374176ef8f7b995308d16e12f611a72fc92",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+            "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9693,
+            "total_tokens": 9713
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        }
+      ],
+      "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+      "started_unix_ns": 1792916451010834900,
+      "state": "COMPLETED",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_raw_sha256": "468f70d26cf9a34821af24d1cbc5b701665299c65f33f54c1839791fb90d59d3",
+      "usage_type": "SYNTHETIC_VALIDATED_USAGE",
+      "wal_frames": 16,
+      "wal_raw_sha256": "d5c9074aef7c0fdf7e1f0c0668851d80de893074c18d47446edff0939da64ffe"
+    },
+    {
+      "actual_popen": {
+        "argv_flags": [
+          "-I",
+          "-B",
+          "-X",
+          "utf8"
+        ],
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+        "cwd_relative": "runs/rpf73-233aaddc80baf6a3/sdk",
+        "env_private_mapping": "RETAINED_ONLY_IN_CURRENT_PRIVATE_MANIFEST_AND_WAL",
+        "env_summary": {
+          "keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "sha256": "3a7016ca7d2afdd87a77ae3c15a9c021910f2a6f6a4769e04a587253e79725cf",
+          "value_sha256": {
+            "HOME": "d3539f0eb42754106766105dcc1f588b858682232a451e610a0774c38de89fca",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "5797b95da5ab30579df474555463e523399901d2da630df25f7c776b58ea67fc",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "d3539f0eb42754106766105dcc1f588b858682232a451e610a0774c38de89fca",
+            "TMP": "d3539f0eb42754106766105dcc1f588b858682232a451e610a0774c38de89fca",
+            "USERPROFILE": "d3539f0eb42754106766105dcc1f588b858682232a451e610a0774c38de89fca",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "observed_count": 1,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "shell": false,
+        "tuple_types": [
+          "NoneType",
+          "str",
+          "str",
+          "dict"
+        ]
+      },
+      "budget": {
+        "actual_provider_usage": 0,
+        "all_slots": 11,
+        "cumulative": 160000,
+        "domain": "order-sqlite",
+        "global_cap": 600000,
+        "max_slot": 160000,
+        "provider_reserved": 0,
+        "reachable": 474000,
+        "slots": [
+          10000,
+          30000,
+          50000,
+          70000
+        ],
+        "version": "rpf73-readonly-budget-v1"
+      },
+      "business_target_real": false,
+      "callbacks": [
+        {
+          "argument_sha256": "19d7009fa6ee262838c5bd73ee4667a70d0a70378ea534b76878e89a22d49006",
+          "business_effect": false,
+          "call_id": "rpf73-233aaddc80baf6a3-call-1",
+          "result_sha256": "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "inspect_order"
+        },
+        {
+          "argument_sha256": "63c791f8b6592ae560d9cd8763807ca6dea4d735cda97e064474a986143aa27b",
+          "business_effect": false,
+          "call_id": "rpf73-233aaddc80baf6a3-call-2",
+          "result_sha256": "6ebb2999bc52dae2e83cb032835f275b18a1dd31e70325f36f88145372c8e561",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "refund_order"
+        },
+        {
+          "argument_sha256": "6f7816707d259883f0f31d548b074a4a1ecb678fec520f13ba8277e6e9cd9fa6",
+          "business_effect": false,
+          "call_id": "rpf73-233aaddc80baf6a3-call-3",
+          "result_sha256": "3757a513d551d983fbca58767f55de63a6a00c6cdeabe4028619e07a3610f89f",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "reconcile_order"
+        }
+      ],
+      "case": "corrective-order",
+      "cfg": {
+        "domain": "order-sqlite",
+        "instructions_sha256": "9882c688ad61e6178c13e01713eaed53d376cc3c111869817276b250256cfc82",
+        "paths": "PRIVATE_ONLY",
+        "port": 3611,
+        "serialized_bytes": 8490,
+        "serialized_sha256": "d6606c0bfb9abe2dfca407899844587ea702c3a3f4134fed70fd61d7b275d9dd",
+        "task_prompt_sha256": "8c00ec28f8cf24ec049beb1b5fd2c5d113a36c0f3bf18297f40312c35cbbd5f9",
+        "token": "NOT_EXPORTED",
+        "total_token_limit": 160000
+      },
+      "child_key_absence_report": "EXPLICIT_FALSE",
+      "cleanup": {
+        "active_context_reset": true,
+        "port_closed": true,
+        "process_gone": true,
+        "thread_gone": true
+      },
+      "domain": "order-sqlite",
+      "elapsed_seconds": 4.790925699999207,
+      "exit": 0,
+      "factory_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+      "issuer": false,
+      "label": "corrective-order",
+      "marker": {
+        "path": ".local/rpf-73/runs/rpf73-233aaddc80baf6a3/manifest.json",
+        "pid": 19292,
+        "run_id": "rpf73-233aaddc80baf6a3",
+        "sha256": "054dba8c92389a9d8ca11e21d4ad7770ace9d1d07ea4f186c51f486c3efae39e",
+        "state": "COMPLETED"
+      },
+      "parent_pid": 9404,
+      "pid": 19292,
+      "ready": {
+        "framework": "pydantic-ai-slim",
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "pid": 19292,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "version": "2.57.0"
+      },
+      "receipt_sha256": "a41d015a54685dd8a6563bb34920562086cc0b96320303becf7b9bf927d04662",
+      "report": {
+        "business_key_present": false,
+        "denied_files": [],
+        "final_text_persisted": false,
+        "framework": "pydantic-ai-slim",
+        "guard_denials": [],
+        "input_tokens": 37285,
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "output_tokens": 80,
+        "pid": 19292,
+        "provider_key_present": false,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "requests": 4,
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "status": "COMPLETED",
+        "tool_callbacks": 3,
+        "tool_calls": 3,
+        "usage_type": "pydantic_ai.usage.RunUsage",
+        "version": "2.57.0"
+      },
+      "request_sha256": "48e997d1d316fb79b233f0451763c5cebde913b78d44a8217b292b864e0bf492",
+      "requests": [
+        {
+          "body_sha256": "44b787939bfb2c834238e7274c6f4ae348ca5ebbeda7014faff1ca15382b8cb1",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9109,
+            "ordinal": 1,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 10000
+          },
+          "request_raw_sha256": "f11a988671dbb4a24734b67cd652d8f2ca2df9089a6038e8f4b16e88630e4e18",
+          "response_id": "rpf73-233aaddc80baf6a3-response-1",
+          "response_sha256": "f257cc21bc8bcbd89ad2885d6024d081119b826dd3bb1c2fe6ebe7c760bc2717",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8597,
+            "total_tokens": 8617
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "baa1f1162f38203a58854f26fdc03b04f5ae730d5c6ee975169698d263f645f0",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9573,
+            "ordinal": 2,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 30000
+          },
+          "request_raw_sha256": "152ad82ce2680b9d23aaa8bd72d09a84bf91111313d05230b43d21fe1e6d04be",
+          "response_id": "rpf73-233aaddc80baf6a3-response-2",
+          "response_sha256": "6483e048f2a7355f51fe50c6617e24bb934adf97ab30120493e95856cd6707da",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [
+            "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9061,
+            "total_tokens": 9081
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "dba527d3db13f9093d22fa02e424d9152a87457683dbfd60c168211906da80f2",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10091,
+            "ordinal": 3,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 50000
+          },
+          "request_raw_sha256": "4ea9c373a597da794e3c1035ae2742e4e7a43cc754aabee265f54df31b3f69de",
+          "response_id": "rpf73-233aaddc80baf6a3-response-3",
+          "response_sha256": "6cade88448c85e3ef163f95473ba316b827968086a0ee869628d06d6e32bcbeb",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [
+            "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76",
+            "6ebb2999bc52dae2e83cb032835f275b18a1dd31e70325f36f88145372c8e561"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9579,
+            "total_tokens": 9599
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "127c27ec3da66be16eaf04fedf7a185dbb89a6a263d9be44dd4c827bc5d6f092",
+          "finish_reason": "stop",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10560,
+            "ordinal": 4,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 70000
+          },
+          "request_raw_sha256": "0b587274fb1ae47aec22caf12b19c99b1b06305b668ed9f91911deeed2edb9c4",
+          "response_id": "rpf73-233aaddc80baf6a3-response-4",
+          "response_sha256": "502f446fa2dfab03f15128ff7da1cdf0b856cf44db9b8739c44ed5ef4617250b",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [
+            "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76",
+            "6ebb2999bc52dae2e83cb032835f275b18a1dd31e70325f36f88145372c8e561",
+            "3757a513d551d983fbca58767f55de63a6a00c6cdeabe4028619e07a3610f89f"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 10048,
+            "total_tokens": 10068
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        }
+      ],
+      "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+      "started_unix_ns": 1792916451014204500,
+      "state": "COMPLETED",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_raw_sha256": "e56e0a87eca1d725bb7edbd7d08948be8616d490310b200623438bc4afc9a585",
+      "usage_type": "SYNTHETIC_VALIDATED_USAGE",
+      "wal_frames": 16,
+      "wal_raw_sha256": "1851fc091affa204883f38963e80367c33eaae012197e984039b6dd0e6b80ac3"
+    },
+    {
+      "actual_popen": {
+        "argv_flags": [
+          "-I",
+          "-B",
+          "-X",
+          "utf8"
+        ],
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+        "cwd_relative": "runs/rpf73-88d98069296e5bb2/sdk",
+        "env_private_mapping": "RETAINED_ONLY_IN_CURRENT_PRIVATE_MANIFEST_AND_WAL",
+        "env_summary": {
+          "keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "sha256": "0c2c04d26cbc54bc6f403fe53c3ded7f0beb5d8e9fad91b5d4d98c9692c68a58",
+          "value_sha256": {
+            "HOME": "95b509618fbeb7bdec17806b8637a929cbf90642fc1847cc2ff867a5ed575be3",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "5797b95da5ab30579df474555463e523399901d2da630df25f7c776b58ea67fc",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "95b509618fbeb7bdec17806b8637a929cbf90642fc1847cc2ff867a5ed575be3",
+            "TMP": "95b509618fbeb7bdec17806b8637a929cbf90642fc1847cc2ff867a5ed575be3",
+            "USERPROFILE": "95b509618fbeb7bdec17806b8637a929cbf90642fc1847cc2ff867a5ed575be3",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "observed_count": 1,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "shell": false,
+        "tuple_types": [
+          "NoneType",
+          "str",
+          "str",
+          "dict"
+        ]
+      },
+      "budget": {
+        "actual_provider_usage": 0,
+        "all_slots": 11,
+        "cumulative": 250000,
+        "domain": "config-java-http",
+        "global_cap": 600000,
+        "max_slot": 160000,
+        "provider_reserved": 0,
+        "reachable": 474000,
+        "slots": [
+          10000,
+          30000,
+          50000,
+          70000,
+          90000
+        ],
+        "version": "rpf73-readonly-budget-v1"
+      },
+      "business_target_real": false,
+      "callbacks": [
+        {
+          "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "business_effect": false,
+          "call_id": "rpf73-88d98069296e5bb2-call-1",
+          "result_sha256": "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "inspect_config"
+        },
+        {
+          "argument_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "business_effect": false,
+          "call_id": "rpf73-88d98069296e5bb2-call-2",
+          "result_sha256": "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "create_config_v1"
+        },
+        {
+          "argument_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "business_effect": false,
+          "call_id": "rpf73-88d98069296e5bb2-call-3",
+          "result_sha256": "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "update_config_v2"
+        }
+      ],
+      "case": "config",
+      "cfg": {
+        "domain": "config-java-http",
+        "instructions_sha256": "9882c688ad61e6178c13e01713eaed53d376cc3c111869817276b250256cfc82",
+        "paths": "PRIVATE_ONLY",
+        "port": 10357,
+        "serialized_bytes": 8415,
+        "serialized_sha256": "4721827386cab1279b376c07c37d03d9522893c24daf6decad2015eeed20a42f",
+        "task_prompt_sha256": "0ffd1ebea23da880e7328192d52ff765005f2a283f97450cb6f8e5ce9a76dd97",
+        "token": "NOT_EXPORTED",
+        "total_token_limit": 250000
+      },
+      "child_key_absence_report": "EXPLICIT_FALSE",
+      "cleanup": {
+        "active_context_reset": true,
+        "port_closed": true,
+        "process_gone": true,
+        "thread_gone": true
+      },
+      "domain": "config-java-http",
+      "elapsed_seconds": 4.7891587000012805,
+      "exit": 0,
+      "factory_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+      "issuer": false,
+      "label": "formal-config",
+      "marker": {
+        "path": ".local/rpf-73/runs/rpf73-88d98069296e5bb2/manifest.json",
+        "pid": 10600,
+        "run_id": "rpf73-88d98069296e5bb2",
+        "sha256": "36b421b7cb6cc1aa5476daa627423e50b3d7f1577bdfc6f178072a191a6c8754",
+        "state": "COMPLETED"
+      },
+      "parent_pid": 20300,
+      "pid": 10600,
+      "ready": {
+        "framework": "pydantic-ai-slim",
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "pid": 10600,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "version": "2.57.0"
+      },
+      "receipt_sha256": "a00995cf173696f843f54301122b24f4b94511f0ef58727a789fae25d0945557",
+      "report": {
+        "business_key_present": false,
+        "denied_files": [],
+        "final_text_persisted": false,
+        "framework": "pydantic-ai-slim",
+        "guard_denials": [],
+        "input_tokens": 35969,
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "output_tokens": 80,
+        "pid": 10600,
+        "provider_key_present": false,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "requests": 4,
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "status": "COMPLETED",
+        "tool_callbacks": 3,
+        "tool_calls": 3,
+        "usage_type": "pydantic_ai.usage.RunUsage",
+        "version": "2.57.0"
+      },
+      "request_sha256": "bb4b96d7fb05ea4273968f4bf2525c31e65aa77023f1a929ed9eab6e343f4e87",
+      "requests": [
+        {
+          "body_sha256": "ded39a32001d5bd205a7e648def5c52de50bbf2452e1efd01bfb80ce777f8054",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 8828,
+            "ordinal": 1,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 10000
+          },
+          "request_raw_sha256": "15cc5ba4966eafcc25a3d84445f6623f669ec7d9c04ca1d6ec6948a2c26fbbbf",
+          "response_id": "rpf73-88d98069296e5bb2-response-1",
+          "response_sha256": "226c0ec7d9cfcb4b4fcb26917609d01e7c0c639307a282c36450f42ce46b7b3e",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8316,
+            "total_tokens": 8336
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "c277481893f8efac4b35a27560cd6be24d565269b60bb195e5ba962140b1c63a",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9262,
+            "ordinal": 2,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 30000
+          },
+          "request_raw_sha256": "45fccb6b171f6f148319cda0284f00e77f875400767586e85ffd54c040bafaca",
+          "response_id": "rpf73-88d98069296e5bb2-response-2",
+          "response_sha256": "ba83d2cfbecd5cb16d78d0302e51c3f41e74862c910e8756e8a25df8d5d58105",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8750,
+            "total_tokens": 8770
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "2240963b728f52d5f6f9a02248e3d905bb78e2d5ce4dc4cb101f55c4a6945639",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9722,
+            "ordinal": 3,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 50000
+          },
+          "request_raw_sha256": "a67887868aafb40135a62cc45ea5db3aae4d8d5a7c880f9c7c62da0cdb03c255",
+          "response_id": "rpf73-88d98069296e5bb2-response-3",
+          "response_sha256": "dba830416be72a3001988f04fbb4d8cedbe740aa5658cad5121096b8ed25b6db",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9210,
+            "total_tokens": 9230
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "b9fda8348b9bd966410c88558603d55f33df0def12232de30e6e09527873a52f",
+          "finish_reason": "stop",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10205,
+            "ordinal": 4,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 70000
+          },
+          "request_raw_sha256": "31cd4399215bb203d0c35ce41635bcbc0b224028cc33cb86c5e16de68f91d938",
+          "response_id": "rpf73-88d98069296e5bb2-response-4",
+          "response_sha256": "f7a13cc7b405269fceae408c70483267d3d15d5d7d7a4e9fed00223551db2603",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+            "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9693,
+            "total_tokens": 9713
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        }
+      ],
+      "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+      "started_unix_ns": 1792916679924373600,
+      "state": "COMPLETED",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_raw_sha256": "c4ee1bf182dd9d0cd5b9db27abf5b13ae4030dc07619d119f25dd10c0d1df8c6",
+      "usage_type": "SYNTHETIC_VALIDATED_USAGE",
+      "wal_frames": 16,
+      "wal_raw_sha256": "eeaf1d3acd3f4d1bbcddb1b7a91c9de8f07c9d828e0644259c0066134edb02a6"
+    },
+    {
+      "actual_popen": {
+        "argv_flags": [
+          "-I",
+          "-B",
+          "-X",
+          "utf8"
+        ],
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+        "cwd_relative": "runs/rpf73-7607eb242ae81067/sdk",
+        "env_private_mapping": "RETAINED_ONLY_IN_CURRENT_PRIVATE_MANIFEST_AND_WAL",
+        "env_summary": {
+          "keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "sha256": "e22d51e6c477f0ec7a78b1e8817cd2d82b8d9e5f145249e686a51eb950a2fc34",
+          "value_sha256": {
+            "HOME": "4125254bf92fd4bf4745979e23f64be85921e5c7540897689b97a955d585ed67",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "5797b95da5ab30579df474555463e523399901d2da630df25f7c776b58ea67fc",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "4125254bf92fd4bf4745979e23f64be85921e5c7540897689b97a955d585ed67",
+            "TMP": "4125254bf92fd4bf4745979e23f64be85921e5c7540897689b97a955d585ed67",
+            "USERPROFILE": "4125254bf92fd4bf4745979e23f64be85921e5c7540897689b97a955d585ed67",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "observed_count": 1,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "shell": false,
+        "tuple_types": [
+          "NoneType",
+          "str",
+          "str",
+          "dict"
+        ]
+      },
+      "budget": {
+        "actual_provider_usage": 0,
+        "all_slots": 11,
+        "cumulative": 160000,
+        "domain": "order-sqlite",
+        "global_cap": 600000,
+        "max_slot": 160000,
+        "provider_reserved": 0,
+        "reachable": 474000,
+        "slots": [
+          10000,
+          30000,
+          50000,
+          70000
+        ],
+        "version": "rpf73-readonly-budget-v1"
+      },
+      "business_target_real": false,
+      "callbacks": [
+        {
+          "argument_sha256": "19d7009fa6ee262838c5bd73ee4667a70d0a70378ea534b76878e89a22d49006",
+          "business_effect": false,
+          "call_id": "rpf73-7607eb242ae81067-call-1",
+          "result_sha256": "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "inspect_order"
+        },
+        {
+          "argument_sha256": "63c791f8b6592ae560d9cd8763807ca6dea4d735cda97e064474a986143aa27b",
+          "business_effect": false,
+          "call_id": "rpf73-7607eb242ae81067-call-2",
+          "result_sha256": "6ebb2999bc52dae2e83cb032835f275b18a1dd31e70325f36f88145372c8e561",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "refund_order"
+        },
+        {
+          "argument_sha256": "6f7816707d259883f0f31d548b074a4a1ecb678fec520f13ba8277e6e9cd9fa6",
+          "business_effect": false,
+          "call_id": "rpf73-7607eb242ae81067-call-3",
+          "result_sha256": "3757a513d551d983fbca58767f55de63a6a00c6cdeabe4028619e07a3610f89f",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "reconcile_order"
+        }
+      ],
+      "case": "order",
+      "cfg": {
+        "domain": "order-sqlite",
+        "instructions_sha256": "9882c688ad61e6178c13e01713eaed53d376cc3c111869817276b250256cfc82",
+        "paths": "PRIVATE_ONLY",
+        "port": 10358,
+        "serialized_bytes": 8491,
+        "serialized_sha256": "b50a6d1a2312b445ad8018e288504cd72bb742da936b2dcedbe80d39b9441f46",
+        "task_prompt_sha256": "8c00ec28f8cf24ec049beb1b5fd2c5d113a36c0f3bf18297f40312c35cbbd5f9",
+        "token": "NOT_EXPORTED",
+        "total_token_limit": 160000
+      },
+      "child_key_absence_report": "EXPLICIT_FALSE",
+      "cleanup": {
+        "active_context_reset": true,
+        "port_closed": true,
+        "process_gone": true,
+        "thread_gone": true
+      },
+      "domain": "order-sqlite",
+      "elapsed_seconds": 4.763358399999561,
+      "exit": 0,
+      "factory_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+      "issuer": false,
+      "label": "formal-order",
+      "marker": {
+        "path": ".local/rpf-73/runs/rpf73-7607eb242ae81067/manifest.json",
+        "pid": 11340,
+        "run_id": "rpf73-7607eb242ae81067",
+        "sha256": "1a5646974445b20ae995616f94b962c89c808333478f15214bfcdb7aafb2602f",
+        "state": "COMPLETED"
+      },
+      "parent_pid": 10864,
+      "pid": 11340,
+      "ready": {
+        "framework": "pydantic-ai-slim",
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "pid": 11340,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "version": "2.57.0"
+      },
+      "receipt_sha256": "0e1095544e0f2285f1f750719934af487e7bcdb2684249923f86417ab4147f19",
+      "report": {
+        "business_key_present": false,
+        "denied_files": [],
+        "final_text_persisted": false,
+        "framework": "pydantic-ai-slim",
+        "guard_denials": [],
+        "input_tokens": 37285,
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "output_tokens": 80,
+        "pid": 11340,
+        "provider_key_present": false,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "requests": 4,
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "status": "COMPLETED",
+        "tool_callbacks": 3,
+        "tool_calls": 3,
+        "usage_type": "pydantic_ai.usage.RunUsage",
+        "version": "2.57.0"
+      },
+      "request_sha256": "e8d3c17fa8d3eb9b24b387f0458cf7b72b3ac63470347538db4bfe9c13c417d2",
+      "requests": [
+        {
+          "body_sha256": "44b787939bfb2c834238e7274c6f4ae348ca5ebbeda7014faff1ca15382b8cb1",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9109,
+            "ordinal": 1,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 10000
+          },
+          "request_raw_sha256": "f11a988671dbb4a24734b67cd652d8f2ca2df9089a6038e8f4b16e88630e4e18",
+          "response_id": "rpf73-7607eb242ae81067-response-1",
+          "response_sha256": "2e01dbfddc64b24663e510eaa4dcf8d5de05cdbdca28760f3de9915454fad22f",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8597,
+            "total_tokens": 8617
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "fe480b332d6f09596ab11c931d2f2f72fa8e19c6ae7f1a28689b6b16453a0322",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9573,
+            "ordinal": 2,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 30000
+          },
+          "request_raw_sha256": "989391ef2bb8e0d72c621b8dee9dfca1098e313c090d8866dea75515bdd5f4d6",
+          "response_id": "rpf73-7607eb242ae81067-response-2",
+          "response_sha256": "d860b4ad3e2b2985a9ca06e64a59f9685f4f9e4998a46183f0cfb7536b281b54",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [
+            "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9061,
+            "total_tokens": 9081
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "4cc8c5bce2361d8452c43f21ad614782a4e2ec08e9cb07d29f6236bdcb0c4540",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10091,
+            "ordinal": 3,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 50000
+          },
+          "request_raw_sha256": "946efa2bdcbc9d4b2c28e9a5496c471471c3de41ce9e1b736ee6600dd5f88b46",
+          "response_id": "rpf73-7607eb242ae81067-response-3",
+          "response_sha256": "e90bc64da191538a8bf4da13fb4fd11d19a4e3b1c0bd78af92712463e6248073",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [
+            "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76",
+            "6ebb2999bc52dae2e83cb032835f275b18a1dd31e70325f36f88145372c8e561"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9579,
+            "total_tokens": 9599
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        },
+        {
+          "body_sha256": "7ac020cb20bc0506d1c81199e1a176bc19d35048e707755175febbea67d2184c",
+          "finish_reason": "stop",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10560,
+            "ordinal": 4,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 70000
+          },
+          "request_raw_sha256": "13693095bb2619727d748d8cd527029121cdd4ef00f326900c62874ca695a012",
+          "response_id": "rpf73-7607eb242ae81067-response-4",
+          "response_sha256": "d01c166ba93d5a4ecacc29249f9c7d17163f2a782fd944265315af3e166011b0",
+          "schema_sha256": "ce88169fc65aaf45a7c27597cbaeff4a8975f15e46c1b1dbe8f3d646f9f05d3e",
+          "tool_return_sha256": [
+            "de67c5f48dab672e3b6bbebfd0bdcd8b07851dbcf9c9241aa1b1e8d0625f1b76",
+            "6ebb2999bc52dae2e83cb032835f275b18a1dd31e70325f36f88145372c8e561",
+            "3757a513d551d983fbca58767f55de63a6a00c6cdeabe4028619e07a3610f89f"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 10048,
+            "total_tokens": 10068
+          },
+          "usage_confidence": "SYNTHETIC_VALIDATED_USAGE"
+        }
+      ],
+      "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+      "started_unix_ns": 1792916679923019900,
+      "state": "COMPLETED",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_raw_sha256": "a58c231633de633bd5f396c6eae28c1d923ddf053aa5af8e09e4cc518eb96973",
+      "usage_type": "SYNTHETIC_VALIDATED_USAGE",
+      "wal_frames": 16,
+      "wal_raw_sha256": "e357010e6bf665d7d19c869be1ccba977e60b38e7f2a98075d17f5580d1556e9"
+    },
+    {
+      "actual_popen": {
+        "argv_flags": [
+          "-I",
+          "-B",
+          "-X",
+          "utf8"
+        ],
+        "child_sha256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "command_sha256": "fcbc9022c3dfab5cea74add072c69cb4d2e7645fa174763cf5703b60d47cdb09",
+        "cwd_relative": "runs/rpf73-89f7a6626077bc55/sdk",
+        "env_private_mapping": "RETAINED_ONLY_IN_CURRENT_PRIVATE_MANIFEST_AND_WAL",
+        "env_summary": {
+          "keys": [
+            "HOME",
+            "LOGFIRE_SEND_TO_LOGFIRE",
+            "OTEL_SDK_DISABLED",
+            "PATH",
+            "PYTHONDONTWRITEBYTECODE",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "sha256": "b4a18f5f6b3b65a8798c0d3a5b8beb0ca1d9abd8fc9170877d638636a9c79aa5",
+          "value_sha256": {
+            "HOME": "0091539f025e876f3219e7bc8c5e435b4d2720ea8e069ab78031a9e76c45d02a",
+            "LOGFIRE_SEND_TO_LOGFIRE": "fcbcf165908dd18a9e49f7ff27810176db8e9f63b4352213741664245224f8aa",
+            "OTEL_SDK_DISABLED": "b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b",
+            "PATH": "5797b95da5ab30579df474555463e523399901d2da630df25f7c776b58ea67fc",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "0091539f025e876f3219e7bc8c5e435b4d2720ea8e069ab78031a9e76c45d02a",
+            "TMP": "0091539f025e876f3219e7bc8c5e435b4d2720ea8e069ab78031a9e76c45d02a",
+            "USERPROFILE": "0091539f025e876f3219e7bc8c5e435b4d2720ea8e069ab78031a9e76c45d02a",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "observed_count": 1,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "shell": false,
+        "tuple_types": [
+          "NoneType",
+          "str",
+          "str",
+          "dict"
+        ]
+      },
+      "budget": {
+        "actual_provider_usage": 0,
+        "all_slots": 11,
+        "cumulative": 250000,
+        "domain": "config-java-http",
+        "global_cap": 600000,
+        "max_slot": 160000,
+        "provider_reserved": 0,
+        "reachable": 474000,
+        "slots": [
+          10000,
+          30000,
+          50000,
+          70000,
+          90000
+        ],
+        "version": "rpf73-readonly-budget-v1"
+      },
+      "business_target_real": false,
+      "callbacks": [
+        {
+          "argument_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+          "business_effect": false,
+          "call_id": "rpf73-89f7a6626077bc55-call-1",
+          "result_sha256": "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "inspect_config"
+        },
+        {
+          "argument_sha256": "7165a4baedd526c990480cda80c859a66c9790389058809fae52dcf05b4faad0",
+          "business_effect": false,
+          "call_id": "rpf73-89f7a6626077bc55-call-2",
+          "result_sha256": "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "create_config_v1"
+        },
+        {
+          "argument_sha256": "4631ef3c5171c04bf86f89055cd45141b37c0a4fafa094009770f25a3cd08591",
+          "business_effect": false,
+          "call_id": "rpf73-89f7a6626077bc55-call-3",
+          "result_sha256": "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a",
+          "result_status": "SIMULATED_ONLY",
+          "tool": "update_config_v2"
+        }
+      ],
+      "case": "limit",
+      "cfg": {
+        "domain": "config-java-http",
+        "instructions_sha256": "9882c688ad61e6178c13e01713eaed53d376cc3c111869817276b250256cfc82",
+        "paths": "PRIVATE_ONLY",
+        "port": 1979,
+        "serialized_bytes": 8414,
+        "serialized_sha256": "2d71a27bf0013e5b254bef0a7d6d77bef8b96ce60299c38bec34c7defadadfa1",
+        "task_prompt_sha256": "0ffd1ebea23da880e7328192d52ff765005f2a283f97450cb6f8e5ce9a76dd97",
+        "token": "NOT_EXPORTED",
+        "total_token_limit": 250000
+      },
+      "child_key_absence_report": "NOT_REPORTED_SDK_ERROR",
+      "cleanup": {
+        "active_context_reset": true,
+        "port_closed": true,
+        "process_gone": true,
+        "thread_gone": true
+      },
+      "domain": "config-java-http",
+      "elapsed_seconds": 4.874200900001597,
+      "exit": 1,
+      "factory_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+      "issuer": false,
+      "label": "limit-plus-one",
+      "marker": {
+        "path": ".local/rpf-73/runs/rpf73-89f7a6626077bc55/manifest.json",
+        "pid": 6572,
+        "run_id": "rpf73-89f7a6626077bc55",
+        "sha256": "794ee0865e3fe1f263947045207d41bf678e2a8d0061f9bbc4b679f52d54f03b",
+        "state": "EXPECTED_REJECTION"
+      },
+      "parent_pid": 8116,
+      "pid": 6572,
+      "ready": {
+        "framework": "pydantic-ai-slim",
+        "openai_source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+        "openai_version": "3.35.1",
+        "pid": 6572,
+        "python_executable_sha256": "e9f7e4baa0da1c21ffc3c2c2a644459b1a38dced56dfc7846e16f801645d520f",
+        "python_runtime_mapping_sha256": "80f7fdec59aa2c6d06cbf44c162512af97193f733b9ede9ebf1bc025e712efa5",
+        "sdk_site_root_binding_sha256": "d4c8fbc3564e7f3357af9ab8a08b1a1cfa04cc7d971895e76e2607c791f2428a",
+        "sdk_source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+        "version": "2.57.0"
+      },
+      "receipt_sha256": "631a20483e6834e4e10e05842563b7c6918230a78b1c2b11e9f01a3bf1fd5c23",
+      "report": {
+        "denied_files": [],
+        "error_type": "UsageLimitExceeded",
+        "guard_denials": [],
+        "stage": "SDK_RUN",
+        "status": "SDK_ERROR"
+      },
+      "request_sha256": "620d07bf3ef0717721bf6e007ea7794952b2b89c8ee4b82c1f25d4834d181e6e",
+      "requests": [
+        {
+          "body_sha256": "ded39a32001d5bd205a7e648def5c52de50bbf2452e1efd01bfb80ce777f8054",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 8828,
+            "ordinal": 1,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 10000
+          },
+          "request_raw_sha256": "15cc5ba4966eafcc25a3d84445f6623f669ec7d9c04ca1d6ec6948a2c26fbbbf",
+          "response_id": "rpf73-89f7a6626077bc55-response-1",
+          "response_sha256": "f62f0731fc96e73859ce8798a2117437d93309bac29229e34ea1281e64350cf2",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8316,
+            "total_tokens": 8336
+          },
+          "usage_confidence": "UNTRUSTED_HINT_NOT_FINAL_RUNUSAGE"
+        },
+        {
+          "body_sha256": "8441e8a609578517c61e53732679ba000e1279330b7319a6e0521f79e6d7f0d7",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9262,
+            "ordinal": 2,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 30000
+          },
+          "request_raw_sha256": "0d8566359ade3fef312cc0e6d4d8e0774c5a8d3c8155db11a4b6c30490ffb561",
+          "response_id": "rpf73-89f7a6626077bc55-response-2",
+          "response_sha256": "693798e35a1dc8d204a6d986f9eccba097dcbf7b092c5044a6b452c93749898d",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 8750,
+            "total_tokens": 8770
+          },
+          "usage_confidence": "UNTRUSTED_HINT_NOT_FINAL_RUNUSAGE"
+        },
+        {
+          "body_sha256": "77e0dcfcfd499badff47508ee25b2d744547a916d8ca95cc03ea6a1d381fd6f4",
+          "finish_reason": "tool_calls",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 9722,
+            "ordinal": 3,
+            "output_cap": 256,
+            "sdk_output_cap": 512,
+            "slot_cap": 50000
+          },
+          "request_raw_sha256": "bf24e1d028f0c21b604e4ab000d13f302d903c54852d098481c79f6d6e5c025e",
+          "response_id": "rpf73-89f7a6626077bc55-response-3",
+          "response_sha256": "6f68618d75b9760721302b66b07a4432933e60461251e281ca2bfe24cd04a311",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 9210,
+            "total_tokens": 9230
+          },
+          "usage_confidence": "UNTRUSTED_HINT_NOT_FINAL_RUNUSAGE"
+        },
+        {
+          "body_sha256": "c40cbd2289a98163ed12927207b6521f9df46bb0d97efa5174566f57ff8f50dd",
+          "finish_reason": "stop",
+          "proof": {
+            "conservative_output_guard": 512,
+            "input_upper": 10205,
+            "ordinal": 4,
+            "output_cap": 512,
+            "sdk_output_cap": 512,
+            "slot_cap": 70000
+          },
+          "request_raw_sha256": "f89d997c40db5723a32e007bb9f3bac5847a4c17a2b262e8acda29421bf1baa6",
+          "response_id": "rpf73-89f7a6626077bc55-response-4",
+          "response_sha256": "79d632ef4396bd65e337bde8a10d55d97a6000879296834c7345f5e49d7109d1",
+          "schema_sha256": "d1f1521c74abc3a15657d653c8c0a77928d9cb66c187874181ff2c7ffd99e6ab",
+          "tool_return_sha256": [
+            "3432498390368794f89834174908c12956258c6e5e35a5cee684b2dcb5df9d5f",
+            "21b49d81dc02843c2d9f106c9c4f48a93d2dba11f40836057f51936703dd0b85",
+            "9eafbaf9b902a56ef8811e71117093dbd99bfd9da54c7cd19f2815a06c60d01a"
+          ],
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 223645,
+            "total_tokens": 223665
+          },
+          "usage_confidence": "UNTRUSTED_HINT_NOT_FINAL_RUNUSAGE"
+        }
+      ],
+      "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+      "started_unix_ns": 1792916689197015600,
+      "state": "EXPECTED_REJECTION",
+      "stderr_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_raw_sha256": "d6d2e9ac282b309a89439241d0557fd83a2833e2b6ada214e6b0e398addc55e4",
+      "usage_type": "SYNTHETIC_VALIDATED_USAGE",
+      "wal_frames": 16,
+      "wal_raw_sha256": "5ec2694b47c9079bece2bd495c906a8f3a3d38aab3260d66f483af171e44bc62"
+    }
+  ],
+  "development_diagnostic": {
+    "actual_sdk_completed": true,
+    "actual_usage": 30049,
+    "cause": "Synthetic prompt fixture too small; process/protocol/guard/cleanup succeeded",
+    "correction": "Increase deterministic prompt padding from6000 to7500; upper remains enforced against first10000 slot using conservative512 guard. Verify both domains once using explicit per-domain corrective quota before freeze.",
+    "high_usage_assertion": "FAIL",
+    "high_usage_requirement": 35000,
+    "original_case": "development",
+    "original_not_rewritten": true,
+    "original_raw_sha256": "471dcce01ac6717adb12ebff8d1e010ad66b5097ed548b4d0abf7532878cbe92",
+    "original_run_id": "rpf73-d9c17b6148d75f33",
+    "permitted_corrective_children": 2,
+    "source_frozen": false,
+    "status": "DEVELOPMENT_DIAGNOSTIC_REPAIR",
+    "total_child_ceiling": 6
+  },
+  "fixture_authorization": {
+    "answer": "允许原有 fixture 独立计账，继续完整回归",
+    "authorized": true,
+    "factory_child_ceiling": 6,
+    "factory_extra_children_authorized": false,
+    "full_runtime_limits_unchanged": {
+      "no_filtering": true,
+      "no_old_private_roots": true,
+      "single_seconds": 7200,
+      "task_seconds": 12600
+    },
+    "legacy_runtime_fixture_sdk_processes": "INDEPENDENT_ACCOUNTING_INSIDE_CURRENT_SNAPSHOT",
+    "question": "Plan6 SDK child total6 versus A07 original complete Runtime fixtures",
+    "source": "DIRECT_HUMAN_REPLY",
+    "source_files_unchanged": true
+  },
+  "parity": {
+    "both_domains_actual": [
+      {
+        "domain": "config-java-http",
+        "entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+        "pid": 10600,
+        "run_id": "rpf73-88d98069296e5bb2",
+        "source": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1"
+      },
+      {
+        "domain": "order-sqlite",
+        "entrypoint": "pge_r73_launch_factory.LaunchFactory.launch",
+        "pid": 11340,
+        "run_id": "rpf73-7607eb242ae81067",
+        "source": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1"
+      }
+    ],
+    "intentional_differences": [
+      "Component lifecycle WAL only, not native provider/business Ledger",
+      "Fictional tool results; authority/fault/feedback not exercised",
+      "Direct explicit stdin bytes; no native canonical return interception"
+    ],
+    "new_factory_frame_profile_dependency": false,
+    "old_frame_profile_dependency": true,
+    "old_native_driver_modified": false,
+    "public_environment": "Digest-only public evidence is INCONCLUSIVE for independent env semantics. Full mapping and raw anchors verified locally, private manifest required for complete CLI replay.",
+    "same_semantics": [
+      "Owner/source/canonical cfg",
+      "Exact argv and safe env",
+      "SDK/child/binary pins",
+      "PID/ready/report",
+      "Cumulative limits",
+      "Unknown retains claims; cleanup",
+      "Frozen historical env"
+    ],
+    "shared_entrypoint": "pge_r73_launch_factory.LaunchFactory.launch"
+  },
+  "plan_id": "RPF-73",
+  "revision": "rev-1",
+  "security": {
+    "ALL_KEY_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+    "SDK_GUARD_SHA256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+    "child_completed_reports_explicitly_false": 5,
+    "child_env_key_count": 10,
+    "child_key_present": false,
+    "controller_env_reads": [
+      "SYSTEMROOT",
+      "WINDIR",
+      "PATH"
+    ],
+    "dynamic_all_library_or_legacy_fixture_getters": "NOT_INSTRUMENTED",
+    "host_business_key_reads": 0,
+    "host_provider_key_reads": 0,
+    "known_business_absence_getters_at_least": 5,
+    "known_provider_absence_getters_at_least": 5,
+    "pressure_error_absence_report": "NOT_REPORTED",
+    "probe": "SANITIZED_CHILD_ABSENCE_PROBE",
+    "raw_environment_exported": false,
+    "scope": "HOST_PROVIDER_BUSINESS_CREDENTIAL_READS_ONLY",
+    "token": "Generated local ephemeral loopback token, never exported"
+  },
+  "source_commit": "523f6bcaf5487016ac6d3429d294bb850c33ae6a",
+  "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "status": "Partial"
+}

@@ -1,0 +1,226 @@
+{
+  "AUTHORITY_READBACK": "NOT_RUN",
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "COMMON_CORE_FULLY_MIGRATED": "NO",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "EXTERNAL_PROVIDER_CALLS": 0,
+  "FACTORY_COMPONENT_EXECUTED": "YES",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_CREDENTIAL_READS": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "PGE_FEEDBACK": "NOT_RUN",
+  "PUBLIC_DIGEST_ONLY_ENV_SEMANTICS": "INCONCLUSIVE",
+  "REAL_EXPLORER_THIS_TASK": "NOT_RUN",
+  "REAL_FAULT_FOUR_STATES": "NOT_TESTED",
+  "REAL_MODEL_USAGE": 0,
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "TWO_FIXED_SDK_DOMAINS": "PASS",
+  "base": "a055bfa1844f1df7de459daf35107de7a3ae2d2c",
+  "branch": "codex/rpf-73-versioned-launch-factory-cross-domain",
+  "cancellation": "No extra real cancellation child; actual SDK UsageLimitExceeded exit/cleanup plus pure UNKNOWN/CLOSED callback refusal. Real business unknown/fault causality NOT_TESTED.",
+  "factories": {
+    "config": "pge_r73_launch_factory.LaunchFactory.launch",
+    "order": "pge_r73_launch_factory.LaunchFactory.launch"
+  },
+  "factory_children": 6,
+  "gates": {
+    "G0": {
+      "evidence": "Exact Base/repo/remote;21 absent local/index/Base/API; own ignored non-reparse root, SID/ACL, pinned SDK RECORD",
+      "status": "PASS"
+    },
+    "R73-A01": {
+      "evidence": "Canonical new owner/ABI/request/receipt; both domains use same Factory entrypoint; frozen current Source closure",
+      "status": "PASS"
+    },
+    "R73-A02": {
+      "evidence": "Actual direct native Popen audit/stdin/PID/READY/REPORT/exit/cleanup; no frame/profile dependency",
+      "status": "PASS"
+    },
+    "R73-A03": {
+      "evidence": "Config/Order real fixed SDK agent.run, distinct typed fictional tools, terminal stop, Provider0",
+      "status": "PASS"
+    },
+    "R73-A04": {
+      "evidence": "250000/160000 actual SDK limits; legal-high and real250001 SDK rejection; 11-slot arithmetic only, no provider wallet",
+      "status": "PASS"
+    },
+    "R73-A05": {
+      "evidence": "Same original A/B bytes+anchor CLI0/2/3;96 valid semantic controls,70 launch/env/owner/pin,4 coupled attacks; invalid fixture excluded",
+      "status": "PASS"
+    },
+    "R73-A06": {
+      "evidence": "Original Guard bytes; real loopback-only, explicit absent reports,5 completed getter reports,pressure error no getter report; exact PID/port/threads cleanup; dry UNKNOWN state tests",
+      "status": "PASS"
+    },
+    "R73-A07": {
+      "evidence": "30 focused PASS; full665 exit1,8 errors,0 failures,2 original Docker class skips. Exact670-ID accounting and snapshot/source bytes unchanged; required Full gate FAIL",
+      "status": "FAIL"
+    },
+    "R73-A08": {
+      "evidence": "24 original public/native verifiers +R69 CLI0/2/3; legacy private unavailable/not read; old Source/report bytes unchanged",
+      "status": "PASS"
+    },
+    "R73-A09": {
+      "evidence": "Static and actual two-domain parity; measured code/overlap, no speedup claim; alternatives/debt/actionable recommendations",
+      "status": "PASS"
+    },
+    "R73-A10": {
+      "evidence": "At generation: Source commit/push dual-read done; final receipt push and two Git/API HEAD/blob/diff readbacks supplied in final chat, no self-SHA rewrite",
+      "status": "NOT_RUN"
+    }
+  },
+  "late": {
+    "known_factory_children": 6,
+    "legacy_runtime_fixture_processes": "SEPARATELY_AUTHORIZED_ACCOUNTING",
+    "no_unknown_process_killed": true,
+    "rows": [
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED",
+        "label": "development-smoke",
+        "original_cleanup": {
+          "active_context_reset": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "pid": 11744,
+        "pid_absent": true,
+        "port": 3004,
+        "port_closed": true,
+        "sid": "UNAVAILABLE_NOT_CAPTURED",
+        "unknown_pid_killed": false
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED",
+        "label": "corrective-config",
+        "original_cleanup": {
+          "active_context_reset": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "pid": 11176,
+        "pid_absent": true,
+        "port": 3610,
+        "port_closed": true,
+        "sid": "UNAVAILABLE_NOT_CAPTURED",
+        "unknown_pid_killed": false
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED",
+        "label": "corrective-order",
+        "original_cleanup": {
+          "active_context_reset": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "pid": 19292,
+        "pid_absent": true,
+        "port": 3611,
+        "port_closed": true,
+        "sid": "UNAVAILABLE_NOT_CAPTURED",
+        "unknown_pid_killed": false
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED",
+        "label": "formal-config",
+        "original_cleanup": {
+          "active_context_reset": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "pid": 10600,
+        "pid_absent": true,
+        "port": 10357,
+        "port_closed": true,
+        "sid": "UNAVAILABLE_NOT_CAPTURED",
+        "unknown_pid_killed": false
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED",
+        "label": "formal-order",
+        "original_cleanup": {
+          "active_context_reset": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "pid": 11340,
+        "pid_absent": true,
+        "port": 10358,
+        "port_closed": true,
+        "sid": "UNAVAILABLE_NOT_CAPTURED",
+        "unknown_pid_killed": false
+      },
+      {
+        "creation_time": "UNAVAILABLE_NOT_CAPTURED",
+        "label": "limit-plus-one",
+        "original_cleanup": {
+          "active_context_reset": true,
+          "port_closed": true,
+          "process_gone": true,
+          "thread_gone": true
+        },
+        "pid": 6572,
+        "pid_absent": true,
+        "port": 1979,
+        "port_closed": true,
+        "sid": "UNAVAILABLE_NOT_CAPTURED",
+        "unknown_pid_killed": false
+      }
+    ],
+    "status": "PASS"
+  },
+  "legacy_fixture_accounting": {
+    "answer": "允许原有 fixture 独立计账，继续完整回归",
+    "authorized": true,
+    "factory_child_ceiling": 6,
+    "factory_extra_children_authorized": false,
+    "full_runtime_limits_unchanged": {
+      "no_filtering": true,
+      "no_old_private_roots": true,
+      "single_seconds": 7200,
+      "task_seconds": 12600
+    },
+    "legacy_runtime_fixture_sdk_processes": "INDEPENDENT_ACCOUNTING_INSIDE_CURRENT_SNAPSHOT",
+    "question": "Plan6 SDK child total6 versus A07 original complete Runtime fixtures",
+    "source": "DIRECT_HUMAN_REPLY",
+    "source_files_unchanged": true
+  },
+  "plan_id": "RPF-73",
+  "public_only_replay": "INCONCLUSIVE_WITHOUT_PRIVATE_ORIGINAL_ENV",
+  "revision": "rev-1",
+  "security": {
+    "ALL_KEY_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+    "SDK_GUARD_SHA256": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+    "child_completed_reports_explicitly_false": 5,
+    "child_env_key_count": 10,
+    "child_key_present": false,
+    "controller_env_reads": [
+      "SYSTEMROOT",
+      "WINDIR",
+      "PATH"
+    ],
+    "dynamic_all_library_or_legacy_fixture_getters": "NOT_INSTRUMENTED",
+    "host_business_key_reads": 0,
+    "host_provider_key_reads": 0,
+    "known_business_absence_getters_at_least": 5,
+    "known_provider_absence_getters_at_least": 5,
+    "pressure_error_absence_report": "NOT_REPORTED",
+    "probe": "SANITIZED_CHILD_ABSENCE_PROBE",
+    "raw_environment_exported": false,
+    "scope": "HOST_PROVIDER_BUSINESS_CREDENTIAL_READS_ONLY",
+    "token": "Generated local ephemeral loopback token, never exported"
+  },
+  "source_commit": "523f6bcaf5487016ac6d3429d294bb850c33ae6a",
+  "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "status": "Partial"
+}

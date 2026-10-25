@@ -1,0 +1,911 @@
+{
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    {
+      "attack_surface": "Frame/profile and trusted Controller",
+      "duplication": "Retains repeated versioned wrappers and Source closure",
+      "history_review": "Old routes preserved but new wrappers repeatedly audited",
+      "maintenance": "High coupling to native code frames",
+      "path": "Keep task-owned hook",
+      "performance": "No causal benchmark; interception/scanning overhead not isolated"
+    },
+    {
+      "attack_surface": "Explicit data/Popen boundary, local token handler and original guard; trusted Controller remains",
+      "duplication": "Measured387 runtime lines and518 total; small protocol/validator duplication remains, no whole Port/Core copy",
+      "history_review": "New owner/ABI/source and private component evidence; old certificates untouched",
+      "maintenance": "Clearer launch ownership, still separate Source/adapters/verifier",
+      "path": "Current explicit Factory",
+      "performance": "Component elapsed recorded only; not comparable with old business sessions"
+    },
+    {
+      "attack_surface": "New SDK/Guard/echo or Authority boundary needs independent review; echo is not a signature",
+      "duplication": "Could consolidate contracts, requires new child/guard/versioned API work",
+      "history_review": "Largest pin/history compatibility matrix; no old evidence rewrite",
+      "maintenance": "Potentially lower long-term duplication, highest near-term review cost",
+      "path": "New child capsule echo / stronger common core",
+      "performance": "Unknown; do not assume faster"
+    }
+  ],
+  "AUTHORITY_READBACK": "NOT_RUN",
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "CODEX_ENGINEERING_JUDGMENT": {
+    "confidence": "HIGH_WITHIN_TRUSTED_LOCAL_CONTROLLER_COMPONENT_SCOPE",
+    "counterevidence": "No true business backend, provider, fault feedback, Issuer or child independent ack. Existing native Core still uses old launch path. Arbitrary common re-signing of local self-reported data is not proved impossible.",
+    "mechanism": "Explicit immutable Request consumes current owner/source, trusted SDK pins and readonly BudgetView, then Factory owns actual syscall/stdin lifecycle. ContextVar narrows an additional audit check; it is not frame inference.",
+    "smallest_discriminating_experiment": "New separately authorized real Target+Fault integration preserving existing DomainPort/independent Reader and immutable old evidence; compare baseline with committed-result suppression under one explicit launch seam.",
+    "support": "Two domain real fixed SDK processes, same method, typed schema/callback/usage replay, actual Windows audit and malicious reanchors"
+  },
+  "COMMON_CORE_FULLY_MIGRATED": "NO",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "EXTERNAL_PROVIDER_CALLS": 0,
+  "FACTORY_COMPONENT_EXECUTED": "YES",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_CREDENTIAL_READS": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "NEXT_DECISION_RECOMMENDATION": {
+    "cost": "Explicit new runner/snapshot/time budget and any old-test change permission; later real Provider costs/fault/authority permissions separately authorized. No automatic RPF74.",
+    "fallback": "If the HTTP fixture fails independently, isolate its server/client close/body-read ordering in a new authorized fixture scope; do not weaken old launch policy.",
+    "not_automatic_RPF74": true,
+    "preferred": "First authorize a bounded follow-up to correct the task-owned runner PATH contract and diagnose the old loopback fixture, then obtain a genuinely passing complete Runtime with unchanged frozen Factory source.",
+    "switch_condition": "Only after A07 truly passes, decide on bounded real cross-domain Target+Fault integration preserving DomainPort and independent Witness readers. Component feasibility supports investigation, not current promotion."
+  },
+  "PGE_FEEDBACK": "NOT_RUN",
+  "POTENTIAL_GENERALIZATION_DEBT": {
+    "hypotheses": [
+      "Future Source scanning/profile cost savings and shared-maintenance gains are unmeasured",
+      "Real business UNKNOWN/cancellation/authority integration needs an independently authorized experiment"
+    ],
+    "product_goals": "Original product R01-R10/MUST/SHOULD remain unchanged; this component does not remove them.",
+    "verified": [
+      {
+        "finding": "Another versioned17-file Source closure; no external issuer",
+        "layer": "Owner/Source",
+        "source": "pge_r73_contracts.py:sources/source_identity"
+      },
+      {
+        "finding": "Windows-only, trusted Python Controller and global inactive-by-default audit hook; not an OS sandbox",
+        "layer": "Factory",
+        "source": "pge_r73_launch_factory.py:LaunchFactory.launch"
+      },
+      {
+        "finding": "Two hardcoded typed fixtures; all business authority/fault feedback absent",
+        "layer": "Adapter",
+        "source": "pge_r73_domain_adapters.py:DomainAdapter"
+      },
+      {
+        "finding": "Deterministic replay reuses shared protocol kernel; independent constraints exist but implementation diversity is limited",
+        "layer": "Verifier",
+        "source": "pge_r73_verify.py:verify_bytes"
+      },
+      {
+        "finding": "Original guard unchanged, no child Source/capsule echo or signature",
+        "layer": "Guard",
+        "source": "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py"
+      },
+      {
+        "finding": "Non-Windows launch explicitly fail-closed, no POSIX proof",
+        "layer": "Cross-platform",
+        "source": "pge_r73_contracts.py:windows"
+      }
+    ]
+  },
+  "PUBLIC_DIGEST_ONLY_ENV_SEMANTICS": "INCONCLUSIVE",
+  "REAL_EXPLORER_THIS_TASK": "NOT_RUN",
+  "REAL_FAULT_FOUR_STATES": "NOT_TESTED",
+  "REAL_MODEL_USAGE": 0,
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "TWO_FIXED_SDK_DOMAINS": "PASS",
+  "VERIFIED_FINDINGS": [
+    {
+      "FACT_ID": "F73-01",
+      "evidence": "formal-config/formal-order actual Popen audit, communicate bytes, ready/report/exit and original CLI A/B",
+      "limit": "Only R73 component path; old Driver and wrappers unchanged",
+      "result": "New Factory path removes old frame/profile interception",
+      "sha": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f",
+      "source": "pge_r73_launch_factory.py:LaunchFactory.launch:29/_audit:13",
+      "state": "CURRENT_STATE"
+    },
+    {
+      "FACT_ID": "F73-02",
+      "evidence": "96 raw-anchored CLI rejections,4 deep reanchors, pure70 admission cases and actual junction",
+      "limit": "Trusted Controller observations; no external signature or child capsule echo",
+      "result": "Typed explicit data and historical env semantics bound before CreateProcess and during replay",
+      "sha": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+      "source": "pge_r73_launch_contract.py:LaunchRequest.check:48/env_summary:17",
+      "state": "CURRENT_STATE"
+    },
+    {
+      "FACT_ID": "F73-03",
+      "evidence": "Two real SDK4-request/3-tool/stop runs, actual RunUsage; limit-plus-one SDK_ERROR",
+      "limit": "Synthetic model answers and fictional ToolReturns, not real Agent business authority",
+      "result": "Domain parameterization and fixed cumulative limits actually execute",
+      "sha": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+      "source": "pge_r73_sdk_harness.py:Harness.completion:28/callback:57; pge_r73_budget_view.py:BudgetView",
+      "state": "CURRENT_STATE"
+    },
+    {
+      "FACT_ID": "F73-04",
+      "evidence": "387 runtime lines/518 total, exact nontrivial line overlap report, frozen reference SHA",
+      "limit": "Code size is not performance, attack-proofing or proof of zero semantic duplication",
+      "result": "A versioned factory is feasible without whole business Core migration",
+      "sha": "a3ae778badffdefc04c6a6a01ead50f657caa34088b46e2c14d9a8d5ad38b963",
+      "source": "architecture-audit.json plus old pge_r72r3_sdk_contract._audit/_profile",
+      "state": "PLANNING_CONTEXT"
+    }
+  ],
+  "actionable_failure_or_alternative_improvements": [
+    {
+      "action": "Calibrate deterministic prompt against first-slot upper before freeze; retain failed diagnostic and use only approved corrective cases",
+      "current": "7500 padding produced36049/37365 within slot guards",
+      "trigger": "Development30049 below35000"
+    },
+    {
+      "action": "Check intended field remains invalid after coupled repair; retain original wire newline and distinguish invalid generator fixture from Verifier weakness",
+      "current": "Original sample preserved and excluded; corrected actual CLI rejects STDOUT_RAW_BYTES",
+      "trigger": "Negative generator restored target mutation"
+    },
+    {
+      "action": "New explicit Port/authority adapter contract and bounded real Target+Fault evidence before expanding UI/third domain/Issuer",
+      "current": "Not authorized/executed this task",
+      "trigger": "Need real business/fault adoption"
+    }
+  ],
+  "base": "a055bfa1844f1df7de459daf35107de7a3ae2d2c",
+  "branch": "codex/rpf-73-versioned-launch-factory-cross-domain",
+  "measurements": {
+    "exact_line_overlap": [
+      {
+        "exact_stripped_nontrivial_line_matches": [],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [
+          {
+            "line": 53,
+            "text_sha256": "fcabfaf09b8f7844179b6b74762ed727e2f1427f104e1ba49e6c732b776a4e56"
+          }
+        ],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [
+          {
+            "line": 66,
+            "text_sha256": "b8f6a237e6e2379fbfe396a3ecae300a6c1eb42f784da8e0b480a9345d84b928"
+          },
+          {
+            "line": 78,
+            "text_sha256": "dc94fd518c8154aa122003d509b96e1972f26ac09ea75451d9f356d74dc36eb0"
+          }
+        ],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_verify.py"
+      },
+      {
+        "exact_stripped_nontrivial_line_matches": [],
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_compat.py"
+      }
+    ],
+    "factory_frame_profile_dependency": false,
+    "historical_reference": [
+      {
+        "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "lines": 57,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py",
+        "raw": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "role": "HISTORICAL_REFERENCE_ONLY"
+      },
+      {
+        "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "lines": 124,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r68_driver.py",
+        "raw": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "role": "HISTORICAL_REFERENCE_ONLY"
+      },
+      {
+        "lf": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+        "lines": 115,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py",
+        "raw": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+        "role": "HISTORICAL_REFERENCE_ONLY"
+      },
+      {
+        "lf": "6054c49b6dc7d454a46d90939b6de69bf26bcd166c3c5eb2accf6e8db51d3a27",
+        "lines": 416,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py",
+        "raw": "6054c49b6dc7d454a46d90939b6de69bf26bcd166c3c5eb2accf6e8db51d3a27",
+        "role": "HISTORICAL_REFERENCE_ONLY"
+      }
+    ],
+    "measurement_not_future_scope_authorization": true,
+    "new_all_lines": 518,
+    "new_runtime_lines": 387,
+    "original_driver_lines": 124,
+    "overlap_limit": "Exact normalized lines >=30 characters only; not a semantic clone detector, no proof of zero duplication",
+    "performance": "NO_CAUSAL_PERFORMANCE_EXPERIMENT",
+    "source_files": [
+      {
+        "definitions": [
+          {
+            "end_line": 26,
+            "line": 25,
+            "name": "require",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 27,
+            "line": 27,
+            "name": "canonical",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 28,
+            "line": 28,
+            "name": "sha",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 29,
+            "line": 29,
+            "name": "digest",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 30,
+            "line": 30,
+            "name": "equal",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 36,
+            "line": 31,
+            "name": "strict",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 38,
+            "line": 37,
+            "name": "canonical_value",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 42,
+            "line": 39,
+            "name": "scope",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 45,
+            "line": 43,
+            "name": "once",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 53,
+            "line": 46,
+            "name": "sources",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 54,
+            "line": 54,
+            "name": "source_identity",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 65,
+            "line": 55,
+            "name": "fixed_paths",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 66,
+            "line": 66,
+            "name": "windows",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 35,
+            "line": 32,
+            "name": "pairs",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766",
+        "lines": 66,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py",
+        "raw": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 13,
+            "line": 13,
+            "name": "path_id",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 26,
+            "line": 17,
+            "name": "env_summary",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 33,
+            "line": 27,
+            "name": "live_environment",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 63,
+            "line": 35,
+            "name": "LaunchRequest",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 69,
+            "line": 65,
+            "name": "LaunchReceipt",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 74,
+            "line": 71,
+            "name": "lifecycle_action",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 37,
+            "line": 37,
+            "name": "public",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 39,
+            "line": 39,
+            "name": "raw_sha256",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 47,
+            "line": 41,
+            "name": "build",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 63,
+            "line": 48,
+            "name": "check",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 67,
+            "line": 67,
+            "name": "public",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 69,
+            "line": 69,
+            "name": "raw_sha256",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+        "lines": 74,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py",
+        "raw": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 20,
+            "line": 13,
+            "name": "_audit",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 61,
+            "line": 22,
+            "name": "LaunchFactory",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 28,
+            "line": 24,
+            "name": "admit",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 61,
+            "line": 29,
+            "name": "launch",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f",
+        "lines": 61,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py",
+        "raw": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 17,
+            "line": 6,
+            "name": "BudgetView",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 10,
+            "line": 8,
+            "name": "public",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 11,
+            "line": 11,
+            "name": "check",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 17,
+            "line": 12,
+            "name": "request",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455",
+        "lines": 17,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py",
+        "raw": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 19,
+            "line": 12,
+            "name": "Journal",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 22,
+            "line": 21,
+            "name": "ready_identity",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 88,
+            "line": 24,
+            "name": "Harness",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 13,
+            "line": 13,
+            "name": "__init__",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 18,
+            "line": 14,
+            "name": "append",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 19,
+            "line": 19,
+            "name": "raw_sha",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 27,
+            "line": 25,
+            "name": "__init__",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 56,
+            "line": 28,
+            "name": "completion",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 63,
+            "line": 57,
+            "name": "callback",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 83,
+            "line": 64,
+            "name": "start",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 88,
+            "line": 84,
+            "name": "close",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 81,
+            "line": 66,
+            "name": "Handler",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 67,
+            "line": 67,
+            "name": "log_message",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 81,
+            "line": 68,
+            "name": "do_POST",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+        "lines": 88,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py",
+        "raw": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 30,
+            "line": 7,
+            "name": "DomainAdapter",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 9,
+            "line": 9,
+            "name": "check",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 10,
+            "line": 10,
+            "name": "instructions",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 11,
+            "line": 11,
+            "name": "prompt",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 14,
+            "line": 12,
+            "name": "arguments",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 17,
+            "line": 15,
+            "name": "result",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 23,
+            "line": 18,
+            "name": "registry",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 30,
+            "line": 24,
+            "name": "response",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f",
+        "lines": 30,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py",
+        "raw": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 9,
+            "line": 7,
+            "name": "MemoryJournal",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 47,
+            "line": 10,
+            "name": "verify_bytes",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 8,
+            "line": 8,
+            "name": "__init__",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 9,
+            "line": 9,
+            "name": "append",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "116ddb8b4f271eeaa638cffc3fdce69312cec2e401700adfc64c9e7caf38b7d1",
+        "lines": 47,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_verify.py",
+        "raw": "116ddb8b4f271eeaa638cffc3fdce69312cec2e401700adfc64c9e7caf38b7d1"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 4,
+            "line": 3,
+            "name": "parity",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "25ac555762fb771dacda2fa00ac3965e4a79231efbb63abf4d724abdd42bbcd5",
+        "lines": 4,
+        "path": "runtime/runproof_runtime/effectwitness/pge_r73_compat.py",
+        "raw": "25ac555762fb771dacda2fa00ac3965e4a79231efbb63abf4d724abdd42bbcd5"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 99,
+            "line": 17,
+            "name": "FactoryContractTests",
+            "type": "ClassDef"
+          },
+          {
+            "end_line": 20,
+            "line": 18,
+            "name": "setUp",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 23,
+            "line": 21,
+            "name": "reject",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 25,
+            "line": 24,
+            "name": "test_canonical_owner_type_and_source_closure",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 28,
+            "line": 26,
+            "name": "test_request_and_receipt_immutable",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 31,
+            "line": 29,
+            "name": "test_duplicate_and_nonfinite_json",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 33,
+            "line": 32,
+            "name": "test_noncanonical_raw_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 35,
+            "line": 34,
+            "name": "test_boolean_and_float_counts_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 36,
+            "line": 36,
+            "name": "test_extra_contract_fields_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 37,
+            "line": 37,
+            "name": "test_owner_source_cannot_be_aliased",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 39,
+            "line": 38,
+            "name": "test_round_bool_and_wrong_role",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 40,
+            "line": 40,
+            "name": "test_nonwindows_contract_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 42,
+            "line": 41,
+            "name": "test_budget_constants_and_readonly_arithmetic",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 45,
+            "line": 43,
+            "name": "test_budget_over_slot_bool_and_output_cap",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 47,
+            "line": 46,
+            "name": "test_cumulative_limit_changed_and_bool_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 49,
+            "line": 48,
+            "name": "test_command_extra_flag_and_collision_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 51,
+            "line": 50,
+            "name": "test_fake_binary_and_child_pin_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 53,
+            "line": 52,
+            "name": "test_cross_owner_and_old_certificate_cwd_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 55,
+            "line": 54,
+            "name": "test_env_key_extra_and_type_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 57,
+            "line": 56,
+            "name": "test_env_relative_path_and_unknown_absolute_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 60,
+            "line": 58,
+            "name": "test_env_reanchored_foreign_home_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 62,
+            "line": 61,
+            "name": "test_frozen_env_summary_not_ambient",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 63,
+            "line": 63,
+            "name": "test_cfg_raw_cannot_drift_or_be_noncanonical",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 66,
+            "line": 64,
+            "name": "test_case_domain_and_cross_adapter_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 71,
+            "line": 67,
+            "name": "test_domain_tools_and_argument_types",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 74,
+            "line": 72,
+            "name": "test_missing_registry_or_cross_domain_tool_rejected",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 80,
+            "line": 75,
+            "name": "test_callback_requires_pending_and_cannot_repeat",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 84,
+            "line": 81,
+            "name": "test_unknown_closed_and_error_stop_callbacks",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 86,
+            "line": 85,
+            "name": "test_no_frame_or_profile_dependency_shared_method",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 88,
+            "line": 87,
+            "name": "test_anchor_rejection_precedes_sdk_and_any_execution",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 93,
+            "line": 89,
+            "name": "test_real_junction_and_owner_scope",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 96,
+            "line": 95,
+            "name": "test_fictitious_returns_never_claim_authority",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 99,
+            "line": 97,
+            "name": "test_budget_view_closed_shape",
+            "type": "FunctionDef"
+          },
+          {
+            "end_line": 59,
+            "line": 59,
+            "name": "attack",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2",
+        "lines": 101,
+        "path": "runtime/tests/test_effectwitness_pge_r73.py",
+        "raw": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2"
+      },
+      {
+        "definitions": [
+          {
+            "end_line": 29,
+            "line": 12,
+            "name": "main",
+            "type": "FunctionDef"
+          }
+        ],
+        "lf": "92492dc955ab2b2fa5b3c54ef744395e4873cc95e1951aee74516902704d6052",
+        "lines": 30,
+        "path": "spikes/rpf-73/probe.py",
+        "raw": "92492dc955ab2b2fa5b3c54ef744395e4873cc95e1951aee74516902704d6052"
+      }
+    ],
+    "status": "PASS"
+  },
+  "plan_id": "RPF-73",
+  "revision": "rev-1",
+  "source_commit": "523f6bcaf5487016ac6d3429d294bb850c33ae6a",
+  "source_identity_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "status": "Partial"
+}
