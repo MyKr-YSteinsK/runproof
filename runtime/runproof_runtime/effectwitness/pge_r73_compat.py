@@ -1,0 +1,4 @@
+"""Explicit semantic comparison, never migration or verification of old certificates."""
+from . import pge_r73_contracts as c
+def parity():
+ return dict(owner=c.OWNER,abi=c.ABI,new_entrypoint='LaunchFactory.launch(request, adapter)',old_entrypoint='NativeDriver.run + R72R3 scoped audit/profile',old_frame_profile=True,new_frame_profile=False,shared_factory_domains=list(c.DOMAINS),preserved=['Exact Windows argv/env/cwd','Pinned original child/SDK','Canonical actual stdin','PID/READY/REPORT','250000/160000','UNKNOWN stop','Historical env snapshot','Cleanup'],difference=['New component-only journal, no native business/provider WAL','Fictional DomainAdapter returns, no Authority/feedback','Explicit request/cfg owner, no old Context alias'],historical_private='UNAVAILABLE_NOT_READ',SDK_GUARD_MIGRATED='NO',NATIVE_R68_DRIVER_MIGRATED='NO',FULL_COMMON_CORE_MIGRATED='NO',performance='NO_CAUSAL_PERFORMANCE_EXPERIMENT')
