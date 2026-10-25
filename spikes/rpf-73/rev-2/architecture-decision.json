@@ -1,0 +1,144 @@
+{
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    {
+      "cost": "5 new source/test paths and exact environment receipts",
+      "evidence": "Actual seven tests +full",
+      "path": "A new runner only (chosen)",
+      "safety": "No old hash expansion, no host credentials, no new Factory budget",
+      "scope": "Runtime compatibility only"
+    },
+    {
+      "cost": "3 original targeted attempts and2 contrast modes, bounded local service",
+      "evidence": "Phase/non-reproduction, not a repair claim",
+      "path": "B isolate old HTTP fixture timing",
+      "safety": "Read-only metadata trace; no monkeypatch or old code change",
+      "scope": "Old source change needs new exact permission"
+    },
+    {
+      "cost": "New business/cost/authority/fault contract and independent Reader regression",
+      "evidence": "Required real effect/UNKNOWN evidence not supplied by suite PASS",
+      "path": "C future Factory to real DomainPort",
+      "safety": "Separate approval and controlled environment",
+      "scope": "Future decision only, not this task"
+    }
+  ],
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "CODEX_ENGINEERING_JUDGMENT": {
+    "cheapest_next_test": "If10053 recurs, separately authorize one isolated original fixture with client/server close/body-drain stage traces before any old-source change; do not expand production scope.",
+    "confidence": "HIGH_FOR_RUNNER_PATH_CAUSE_AND_BOUNDED_COMPATIBILITY; LOW_FOR_WIN10053_CAUSALITY",
+    "counterevidence": "HTTP source rejects before consuming request body, but current bounded traces/contrasts alone cannot establish why the earlier OS abort happened; no old host modification.",
+    "mechanism": "Use absolute pinned interpreter, preserve only legacy-trusted PATH entries, compare actual child env to canonical admission. Keep runtime-only OS metadata separate from SDK10-key environment.",
+    "support": "Actual old seven tests, malicious process cases and full source-identical run; old Factory e4ea source bytes unchanged."
+  },
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FACTORY_CHILD_STARTS_THIS_REVISION": 0,
+  "FACTORY_COMPONENT_EXECUTED_THIS_REVISION": "NOT_RUN",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "NEXT_DECISION_RECOMMENDATION": {
+    "cost": "Bounded compatibility and effect evidence, unchanged historical route and raw anchors.",
+    "fallback": "If Win10053 persists, authorize only runtime/tests/test_effectwitness_target_agent.py and/or runtime/runproof_runtime/effectwitness/target_driver.py after a narrow read-only close/body-drain diagnosis confirms the needed change.",
+    "preferred": "If A07 passes, Architect can review Runtime recovery and then consider a separately authorized real business controlled Factory seam; do not infer stage advancement from suite PASS.",
+    "switch_condition": "Explicit real Target/DomainPort/Authority/fault/Provider cost permissions, or exact historical fixture change whitelist. No automatic new Plan."
+  },
+  "POTENTIAL_GENERALIZATION_DEBT": {
+    "hypotheses": [
+      "HTTP unread-body/close ordering may contribute to10053, not established by current non-reproduction",
+      "Long-term maintenance or speed benefits of explicit Factory unmeasured"
+    ],
+    "product_goals": "Original R01-R10/MUST/SHOULD remain unchanged; runtime compatibility is not product completion.",
+    "verified": [
+      "Windows-only Launcher, Parent3.14 and child3.12 pin boundaries",
+      "Repeated Source/Owner closures; new runner identity does not replace old Factory identity",
+      "Credential sanitization and SDK absence getters are distinct",
+      "Global inactive Factory audit remains old immutable code",
+      "Factory component lacks actual business Port/Authority adoption",
+      "No child independent attestation, Issuer or L2"
+    ]
+  },
+  "REAL_EXPLORER_AUTONOMY": "NOT_RUN",
+  "REAL_MODEL_USAGE": 0,
+  "REAL_PROVIDER_THIS_TASK": 0,
+  "REV1_FACTORY_COMPONENT_EXECUTED": "YES_HISTORICAL",
+  "RPF73_RUNTIME_REGRESSION_RECOVERED": "YES",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "VERIFIED_FINDINGS": [
+    {
+      "FACT_ID": "R2-F01",
+      "after_path_sha256": "c283c0b7b93e9eb68baa0de6d1eca61e3387331f6a4e54513a9f25a0e5375c2b",
+      "before_path": "Rev1 appended untrusted interpreter directory; original failed Full preserved, old private log NOT_READ",
+      "counterevidence": "Environment filter cannot authorize arbitrary new tools; untrusted/malformed segments are dropped with SHA reason",
+      "evidence": "targeted-01 seven actual tests exit0; env-observe-02 and actual Full process env digest match;32 CLI controls",
+      "layer": "CURRENT_STATE",
+      "result": "RUNNER_ONLY PATH mismatch repaired without appending Python directory or changing35 legacy trust hashes",
+      "source": "environment_contract.py:filtered_path/SuiteEnvironmentContract; runner.py:run",
+      "source_lines": [
+        "spikes/rpf-73/rev-2/environment_contract.py:55",
+        "spikes/rpf-73/rev-2/environment_contract.py:63",
+        "spikes/rpf-73/rev-2/environment_contract.py:93",
+        "spikes/rpf-73/rev-2/runner.py:53"
+      ],
+      "targeted_test_ids": [
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_env_reanchored_relative_untrusted_and_key_rejected",
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_frozen_env_snapshot_independent_of_input_mutation",
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_historical_env_A_accepts_when_host_B_and_native_helper_disabled",
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_launch_command_owner_and_cross_domain_reanchor_rejected",
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_launch_missing_mapping_and_noncanonical_reject",
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_live_actual_env_mismatch_rejects_before_spawn",
+        "runtime.tests.test_effectwitness_pge_r72r3.BudgetTests.test_windows_native_serialized_argv_and_sanitized_env"
+      ]
+    },
+    {
+      "FACT_ID": "R2-F02",
+      "counterevidence": "No old Host change; read-only tracing can affect timing; contrast fixture is not the old Host",
+      "evidence": "Three original targeted attempts, request/getresponse/read/close and server400 phase trace; immediate/drain contrasts",
+      "layer": "CURRENT_STATE",
+      "result": "Win10053 not reproduced in these attempts; full result separately checked",
+      "source": "loopback_probe.py:original/control; original target_driver.py:Handler.do_POST and FakeProcess.communicate",
+      "source_lines": [
+        "spikes/rpf-73/rev-2/loopback_probe.py:8",
+        "spikes/rpf-73/rev-2/loopback_probe.py:32",
+        "runtime/runproof_runtime/effectwitness/target_driver.py:321",
+        "runtime/tests/test_effectwitness_target_agent.py:234"
+      ]
+    },
+    {
+      "FACT_ID": "R2-F03",
+      "counterevidence": "Neither old Factory cases nor business/Provider execution rerun; historical665 failed remains failed",
+      "evidence": "Full original log SHA, real terminal summary, exact discovery/outcome multiset, actual-env receipt and source snapshot verification",
+      "layer": "CURRENT_STATE",
+      "result": "Runtime regression recovered only if A07 passes",
+      "source": "runner.py:run; environment_contract.py:parse_summary/verify_receipt",
+      "source_lines": [
+        "spikes/rpf-73/rev-2/environment_contract.py:104",
+        "spikes/rpf-73/rev-2/environment_contract.py:107",
+        "spikes/rpf-73/rev-2/runner.py:43",
+        "spikes/rpf-73/rev-2/runner.py:53"
+      ]
+    },
+    {
+      "FACT_ID": "R2-F04",
+      "counterevidence": "No real DomainPort/Authority integration, no causal performance benchmark",
+      "evidence": "Rev1 accepted component evidence plus rev2 compatibility checks",
+      "layer": "PLANNING_CONTEXT",
+      "result": "Explicit launch ownership is maintainable independently of old frame/profile code",
+      "source": "Frozen pge_r73_launch_factory.py; new runner boundary"
+    }
+  ],
+  "abi": "rpf73r2-runtime-runner-replay-v1",
+  "base": "19c5d28baab0e10b34dbf821ce07cc187bdd9c8f",
+  "branch": "codex/rpf-73-rev2-runner-env-loopback-regression",
+  "owner": "rpf-73-rev-2",
+  "plan_id": "RPF-73",
+  "rev1_source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "revision": "rev-2",
+  "source_commit": "c03853c4a347f6f926135d4ccd060e6a8098ec0c",
+  "source_identity_sha256": "6fc5ec95b69953bb891f4e58d5fc1d62a89177cc099b2f0114b80203d53f9979",
+  "status": "Complete"
+}

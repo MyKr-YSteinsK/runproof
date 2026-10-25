@@ -1,0 +1,1707 @@
+{
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FACTORY_CHILD_STARTS_THIS_REVISION": 0,
+  "FACTORY_COMPONENT_EXECUTED_THIS_REVISION": "NOT_RUN",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "OLD_HOST_FIXED": "NOT_CLAIMED",
+  "REAL_EXPLORER_AUTONOMY": "NOT_RUN",
+  "REAL_MODEL_USAGE": 0,
+  "REAL_PROVIDER_THIS_TASK": 0,
+  "REV1_FACTORY_COMPONENT_EXECUTED": "YES_HISTORICAL",
+  "ROOT_CAUSE": "NOT_PROVEN",
+  "RPF73_RUNTIME_REGRESSION_RECOVERED": "YES",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "WIN10053": "WIN10053_NOT_REPRODUCED_IN_THIS_REVISION",
+  "abi": "rpf73r2-runtime-runner-replay-v1",
+  "base": "19c5d28baab0e10b34dbf821ce07cc187bdd9c8f",
+  "branch": "codex/rpf-73-rev2-runner-env-loopback-regression",
+  "contrast_modes": 2,
+  "independent_contrasts": [
+    {
+      "command": {
+        "abi": "rpf73r2-runtime-runner-replay-v1",
+        "command": [
+          "$PINNED_ABSOLUTE_PYTHON",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "spikes.rpf-73.rev-2.loopback_probe",
+          "control",
+          "--mode",
+          "immediate"
+        ],
+        "cwd": ".local/rpf-73-rev-2/loopback-01",
+        "elapsed_seconds": 0.5807225000025937,
+        "env": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "dropped_path": [
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "10b56ad9972aa777fc9d1249c35e52ece371f4a575410751b1f7b1b70727eaba"
+            },
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "env_sha256": "c1091eed7c5e4eaf13d24cd2805b91332832bac3621beeebb2dae96942f331e5",
+          "keys": [
+            "COMSPEC",
+            "HOME",
+            "PATH",
+            "PATHEXT",
+            "PYTHONDONTWRITEBYTECODE",
+            "PYTHONUTF8",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT",
+            "RPF73R2_ENV_RECEIPT",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "TMPDIR",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "owner": "rpf-73-rev-2",
+          "path_directory_sha256": [
+            "831c97b449e9e781772d3e1939a82f680d9e064962f73ac85aca39f0683abe41",
+            "225d60148d76b58a2a53ec77c227bfe213d14b9e7dd4aecc126ebc761157607c",
+            "30ad97306e840ecae36cbc6200cb570285372375acd17de2cd618c53b189a4db",
+            "d2d9b2c24fd30ad0af1b4d1e54b5870af582338c1a11ec527adac976f9264751",
+            "4b0b8707b7ff3b423fb3d4e3d298c4822658eff5075182f91708acfcf225cc49",
+            "cf4af2a70e98ffe1d5d97b6e8d3707851525db8f44ff2f1f9ba59a22beb24915",
+            "add36437b4e77e4fd4c12975780fcc475759d88d39945e695f1a46bfc6ddd725",
+            "780a6590b675021c90192abf679b86722a542bb3ab84bccf484c391c5003d132",
+            "014aa9d237a0e18e1b69e27ca4096b17d3c486e3742d112c138e8e6426972e60",
+            "c53a4215accb368fae59e2e70468c7b6108bae9806e8aaa189eed9dc698b11cc",
+            "857f38bb17b98d5fa9b4f41a4bcffe9bd43d2307eabd3f0e322f58997ff83e08",
+            "d48108d0a57808196bd48a9a27bc3e0104f48592cd67426935cc27dcc7d97b9b",
+            "bd4fea5b11684e7e768c5918cf9c5b5162164b655a033d5996ea4808e52d7421",
+            "f33ffb0681cf1341c4f2f461b047acdb678f85badac87dea5e08a853b88d2268",
+            "ba801032df8634c03d97bae0c3ce6f6d243312e6eb4e510dfcd9b3e422aafcb1",
+            "dc9ca79eef0c352cf1c13e9c6faac1affaa448c2182999cdc7d91408f54e9ce0",
+            "d6e1816a76c996d66f108e5a10777a93ae95a1428e1cf9bd4f92e09f29358eec",
+            "ed014bb5bf8c509dec56f446cb47b8f34d50271918242af6b0f53e7b68de96a7",
+            "c6af5cc308e7f18396e3bf889242137c8c1ad9709032afd0d5db8101efd274e7",
+            "c4917286e548de28a2e9adbe973a12831373f29603fe3c97999a5aebf548e332",
+            "619a48646d47c89662372eefbae914fd08386308ead63acde0dc5bcdb03b09eb",
+            "57f0d824073cbbe42f4fc521197c78296684f031361fd78e42a9434700d20363",
+            "00f8b8cbb9af9e364927848a028a8701a4fb507bbbbe243b2518af80465e9e86",
+            "7f9a8f39b04351dde6fe0a9a43c289118e203e452f262c9ac473cc72a7b98eee",
+            "be237fc70c9fe65a8765a61858617c24d0d77cd0578601f55fa774b9e7296094",
+            "b1cdeacf435591ed965e574fa652d8cb6e87523425eb9593f4b3ef64f1a82b72",
+            "8bb05e2304727e6becdc954492cd4e9eb6f03697916bcb2f277a551e0ef5b3f3",
+            "a79e62e75ce3e8f96917afeb3ba210760382550ad622665155693fdb594e8180",
+            "49bc09e070e6e523e9c7f5bf6692889cc152dadb1177030a2a337b5c1a9cebc1",
+            "437e794a62a8702e7d37a6259dce154871cc39691889136fb313ac54fa15b804",
+            "726f3091397f5ecbd73759b5d4114b1f21e81eb5ad4442b19b47d881d73f02f3",
+            "cc18e488534b701c700d244fd8b825764668528a12be5d445ae7223625ea724c",
+            "51f32b16736a8a096eb62d91d77715222cac8b0b9e9b0573d6d9d1526c19454c",
+            "4ef46d6cbaf800c51baa2ee04d6d41a6bd9426c18b8ab414acd45153c69a6dd0",
+            "44064d11f679cc0b6267765e9a7bb1a4b72d41ffbde39eca66d2bf77d4174328"
+          ],
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "runner_appended_paths": [],
+          "value_sha256": {
+            "COMSPEC": "b828142450c45c9b3964c100e1b8ff5ab0b001227ade3ac73009dfa0e0e2a474",
+            "HOME": "bcc99e324791b24d984409f5aa396d4c35ce85c77ba99b8dc99d64f18ed4fa06",
+            "PATH": "c283c0b7b93e9eb68baa0de6d1eca61e3387331f6a4e54513a9f25a0e5375c2b",
+            "PATHEXT": "a6e17897274808450499132f0802335799834f33795cbeca1c073278b006b650",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "PYTHONUTF8": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF73R2_ENV_RECEIPT": "62b92f5fd74e312284a3aec4bf06c5859728a72a2a295b22cd4101c4fd619405",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "bcc99e324791b24d984409f5aa396d4c35ce85c77ba99b8dc99d64f18ed4fa06",
+            "TMP": "bcc99e324791b24d984409f5aa396d4c35ce85c77ba99b8dc99d64f18ed4fa06",
+            "TMPDIR": "bcc99e324791b24d984409f5aa396d4c35ce85c77ba99b8dc99d64f18ed4fa06",
+            "USERPROFILE": "bcc99e324791b24d984409f5aa396d4c35ce85c77ba99b8dc99d64f18ed4fa06",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "exit": 0,
+        "factory_child_starts": 0,
+        "fixture_scope": "CURRENT_SNAPSHOT_ONLY",
+        "label": "contrast-immediate",
+        "log": ".local/rpf-73-rev-2/commands/contrast-immediate/output.log",
+        "log_sha256": "be57e95ad223d19f4ef76ce960e9e20438396be983666d0351fcc8b8d5dea9f6",
+        "mode": "immediate",
+        "os": "win32",
+        "owner": "rpf-73-rev-2",
+        "parent_pid": 27732,
+        "pid": 26564,
+        "provider": 0,
+        "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+        "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+        "source_after_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_before_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_unchanged": true,
+        "start_utc": "2026-10-25T14:06:23.819503+00:00",
+        "status": "PASS",
+        "summary": {
+          "class_skips": [],
+          "errors": [],
+          "failures": [],
+          "pass_summary": false,
+          "terminal": null,
+          "tests": null,
+          "unittest_final_summary_present": false
+        },
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "diagnostic": {
+        "actual_environment": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "actual_key_count": 16,
+          "credential_values_read": false,
+          "env_sha256": "c1091eed7c5e4eaf13d24cd2805b91332832bac3621beeebb2dae96942f331e5",
+          "owner": "rpf-73-rev-2",
+          "parent_pid": 27732,
+          "pid": 26564,
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "source_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+          "status": "PASS"
+        },
+        "cause": "NOT_PROVEN",
+        "client_status": 400,
+        "events": [
+          {
+            "elapsed": 0.008589700002630707,
+            "stage": "CLIENT_REQUEST"
+          },
+          {
+            "elapsed": 0.009219700004905462,
+            "port": 14533,
+            "stage": "SERVER_REQUEST"
+          },
+          {
+            "elapsed": 0.009284700005082414,
+            "stage": "CLIENT_GETRESPONSE"
+          },
+          {
+            "elapsed": 0.009398900001542643,
+            "stage": "CLIENT_READ",
+            "status": 400
+          },
+          {
+            "elapsed": 0.00941870000679046,
+            "stage": "SERVER_HEADERS_SENT",
+            "status": 400
+          },
+          {
+            "bytes": 33,
+            "elapsed": 0.009453800004848745,
+            "stage": "SERVER_BODY_SENT"
+          },
+          {
+            "elapsed": 0.009468000003835186,
+            "stage": "SERVER_FINISH"
+          },
+          {
+            "bytes": 33,
+            "elapsed": 0.00956900000164751,
+            "stage": "CLIENT_BODY_READ"
+          },
+          {
+            "elapsed": 0.009572500006470364,
+            "stage": "CLIENT_CLOSE"
+          }
+        ],
+        "exception": null,
+        "factory_child_starts": 0,
+        "mode": "immediate",
+        "port": 14533,
+        "port_closed": true,
+        "scope": "INDEPENDENT_CONTRAST_NOT_OLD_HOST_PROOF",
+        "status": "DIAGNOSTIC_COMPLETE",
+        "thread_gone": true
+      }
+    },
+    {
+      "command": {
+        "abi": "rpf73r2-runtime-runner-replay-v1",
+        "command": [
+          "$PINNED_ABSOLUTE_PYTHON",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "spikes.rpf-73.rev-2.loopback_probe",
+          "control",
+          "--mode",
+          "drain"
+        ],
+        "cwd": ".local/rpf-73-rev-2/loopback-01",
+        "elapsed_seconds": 0.47793909999745665,
+        "env": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "dropped_path": [
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "10b56ad9972aa777fc9d1249c35e52ece371f4a575410751b1f7b1b70727eaba"
+            },
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "env_sha256": "d3faeb4aa2d9e06b4ce0399281bb5f6f93f2ef3b547b56f7b87b37e244c1698e",
+          "keys": [
+            "COMSPEC",
+            "HOME",
+            "PATH",
+            "PATHEXT",
+            "PYTHONDONTWRITEBYTECODE",
+            "PYTHONUTF8",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT",
+            "RPF73R2_ENV_RECEIPT",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "TMPDIR",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "owner": "rpf-73-rev-2",
+          "path_directory_sha256": [
+            "831c97b449e9e781772d3e1939a82f680d9e064962f73ac85aca39f0683abe41",
+            "225d60148d76b58a2a53ec77c227bfe213d14b9e7dd4aecc126ebc761157607c",
+            "30ad97306e840ecae36cbc6200cb570285372375acd17de2cd618c53b189a4db",
+            "d2d9b2c24fd30ad0af1b4d1e54b5870af582338c1a11ec527adac976f9264751",
+            "4b0b8707b7ff3b423fb3d4e3d298c4822658eff5075182f91708acfcf225cc49",
+            "cf4af2a70e98ffe1d5d97b6e8d3707851525db8f44ff2f1f9ba59a22beb24915",
+            "add36437b4e77e4fd4c12975780fcc475759d88d39945e695f1a46bfc6ddd725",
+            "780a6590b675021c90192abf679b86722a542bb3ab84bccf484c391c5003d132",
+            "014aa9d237a0e18e1b69e27ca4096b17d3c486e3742d112c138e8e6426972e60",
+            "c53a4215accb368fae59e2e70468c7b6108bae9806e8aaa189eed9dc698b11cc",
+            "857f38bb17b98d5fa9b4f41a4bcffe9bd43d2307eabd3f0e322f58997ff83e08",
+            "d48108d0a57808196bd48a9a27bc3e0104f48592cd67426935cc27dcc7d97b9b",
+            "bd4fea5b11684e7e768c5918cf9c5b5162164b655a033d5996ea4808e52d7421",
+            "f33ffb0681cf1341c4f2f461b047acdb678f85badac87dea5e08a853b88d2268",
+            "ba801032df8634c03d97bae0c3ce6f6d243312e6eb4e510dfcd9b3e422aafcb1",
+            "dc9ca79eef0c352cf1c13e9c6faac1affaa448c2182999cdc7d91408f54e9ce0",
+            "d6e1816a76c996d66f108e5a10777a93ae95a1428e1cf9bd4f92e09f29358eec",
+            "ed014bb5bf8c509dec56f446cb47b8f34d50271918242af6b0f53e7b68de96a7",
+            "c6af5cc308e7f18396e3bf889242137c8c1ad9709032afd0d5db8101efd274e7",
+            "c4917286e548de28a2e9adbe973a12831373f29603fe3c97999a5aebf548e332",
+            "619a48646d47c89662372eefbae914fd08386308ead63acde0dc5bcdb03b09eb",
+            "57f0d824073cbbe42f4fc521197c78296684f031361fd78e42a9434700d20363",
+            "00f8b8cbb9af9e364927848a028a8701a4fb507bbbbe243b2518af80465e9e86",
+            "7f9a8f39b04351dde6fe0a9a43c289118e203e452f262c9ac473cc72a7b98eee",
+            "be237fc70c9fe65a8765a61858617c24d0d77cd0578601f55fa774b9e7296094",
+            "b1cdeacf435591ed965e574fa652d8cb6e87523425eb9593f4b3ef64f1a82b72",
+            "8bb05e2304727e6becdc954492cd4e9eb6f03697916bcb2f277a551e0ef5b3f3",
+            "a79e62e75ce3e8f96917afeb3ba210760382550ad622665155693fdb594e8180",
+            "49bc09e070e6e523e9c7f5bf6692889cc152dadb1177030a2a337b5c1a9cebc1",
+            "437e794a62a8702e7d37a6259dce154871cc39691889136fb313ac54fa15b804",
+            "726f3091397f5ecbd73759b5d4114b1f21e81eb5ad4442b19b47d881d73f02f3",
+            "cc18e488534b701c700d244fd8b825764668528a12be5d445ae7223625ea724c",
+            "51f32b16736a8a096eb62d91d77715222cac8b0b9e9b0573d6d9d1526c19454c",
+            "4ef46d6cbaf800c51baa2ee04d6d41a6bd9426c18b8ab414acd45153c69a6dd0",
+            "44064d11f679cc0b6267765e9a7bb1a4b72d41ffbde39eca66d2bf77d4174328"
+          ],
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "runner_appended_paths": [],
+          "value_sha256": {
+            "COMSPEC": "b828142450c45c9b3964c100e1b8ff5ab0b001227ade3ac73009dfa0e0e2a474",
+            "HOME": "9e66e19ad61a5486acfc7665228b15bf79c43124823bb87e71564c41dba65a32",
+            "PATH": "c283c0b7b93e9eb68baa0de6d1eca61e3387331f6a4e54513a9f25a0e5375c2b",
+            "PATHEXT": "a6e17897274808450499132f0802335799834f33795cbeca1c073278b006b650",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "PYTHONUTF8": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF73R2_ENV_RECEIPT": "1fd3aaae00a6e3028703633fce41c4cd3334bd5d60badbd0b2b6ed9ca713d7a4",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "9e66e19ad61a5486acfc7665228b15bf79c43124823bb87e71564c41dba65a32",
+            "TMP": "9e66e19ad61a5486acfc7665228b15bf79c43124823bb87e71564c41dba65a32",
+            "TMPDIR": "9e66e19ad61a5486acfc7665228b15bf79c43124823bb87e71564c41dba65a32",
+            "USERPROFILE": "9e66e19ad61a5486acfc7665228b15bf79c43124823bb87e71564c41dba65a32",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "exit": 0,
+        "factory_child_starts": 0,
+        "fixture_scope": "CURRENT_SNAPSHOT_ONLY",
+        "label": "contrast-drain",
+        "log": ".local/rpf-73-rev-2/commands/contrast-drain/output.log",
+        "log_sha256": "dd5b5a8626cb597541d06b3cc5bbc1358a1c465608d1b220c40bea4eda8e22d8",
+        "mode": "drain",
+        "os": "win32",
+        "owner": "rpf-73-rev-2",
+        "parent_pid": 27132,
+        "pid": 16232,
+        "provider": 0,
+        "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+        "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+        "source_after_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_before_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_unchanged": true,
+        "start_utc": "2026-10-25T14:06:24.828522+00:00",
+        "status": "PASS",
+        "summary": {
+          "class_skips": [],
+          "errors": [],
+          "failures": [],
+          "pass_summary": false,
+          "terminal": null,
+          "tests": null,
+          "unittest_final_summary_present": false
+        },
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "diagnostic": {
+        "actual_environment": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "actual_key_count": 16,
+          "credential_values_read": false,
+          "env_sha256": "d3faeb4aa2d9e06b4ce0399281bb5f6f93f2ef3b547b56f7b87b37e244c1698e",
+          "owner": "rpf-73-rev-2",
+          "parent_pid": 27132,
+          "pid": 16232,
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "source_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+          "status": "PASS"
+        },
+        "cause": "NOT_PROVEN",
+        "client_status": 400,
+        "events": [
+          {
+            "elapsed": 0.00916750000033062,
+            "stage": "CLIENT_REQUEST"
+          },
+          {
+            "elapsed": 0.009884899998723995,
+            "port": 4239,
+            "stage": "SERVER_REQUEST"
+          },
+          {
+            "elapsed": 0.009922500001266599,
+            "stage": "CLIENT_GETRESPONSE"
+          },
+          {
+            "bytes": 2,
+            "elapsed": 0.009966300000087358,
+            "stage": "SERVER_BODY_DRAINED"
+          },
+          {
+            "elapsed": 0.010122400002728682,
+            "stage": "CLIENT_READ",
+            "status": 400
+          },
+          {
+            "elapsed": 0.01016380000510253,
+            "stage": "SERVER_HEADERS_SENT",
+            "status": 400
+          },
+          {
+            "bytes": 33,
+            "elapsed": 0.010239700000965968,
+            "stage": "CLIENT_BODY_READ"
+          },
+          {
+            "elapsed": 0.01024370000232011,
+            "stage": "CLIENT_CLOSE"
+          },
+          {
+            "bytes": 33,
+            "elapsed": 0.010270300001138821,
+            "stage": "SERVER_BODY_SENT"
+          },
+          {
+            "elapsed": 0.010281900002155453,
+            "stage": "SERVER_FINISH"
+          }
+        ],
+        "exception": null,
+        "factory_child_starts": 0,
+        "mode": "drain",
+        "port": 4239,
+        "port_closed": true,
+        "scope": "INDEPENDENT_CONTRAST_NOT_OLD_HOST_PROOF",
+        "status": "DIAGNOSTIC_COMPLETE",
+        "thread_gone": true
+      }
+    }
+  ],
+  "instrumentation": "Read-only sys/threading trace of named Python call/return/exception stages; no old/source/socket/http monkeypatch. Timing observer effect remains possible.",
+  "limits": "Three observed successes and full success are bounded non-reproduction, not proof of a historical fix or zero future race probability.",
+  "original_test_attempts": 3,
+  "original_tests": [
+    {
+      "command": {
+        "abi": "rpf73r2-runtime-runner-replay-v1",
+        "command": [
+          "$PINNED_ABSOLUTE_PYTHON",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "spikes.rpf-73.rev-2.loopback_probe",
+          "original"
+        ],
+        "cwd": ".local/rpf-73-rev-2/loopback-01",
+        "elapsed_seconds": 1.2493352999954368,
+        "env": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "dropped_path": [
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "10b56ad9972aa777fc9d1249c35e52ece371f4a575410751b1f7b1b70727eaba"
+            },
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "env_sha256": "4a31036142fd3525bdc7b5cdf1bd36969e64ecd12d52abd416b1c3f37887fc0e",
+          "keys": [
+            "COMSPEC",
+            "HOME",
+            "PATH",
+            "PATHEXT",
+            "PYTHONDONTWRITEBYTECODE",
+            "PYTHONUTF8",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT",
+            "RPF73R2_ENV_RECEIPT",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "TMPDIR",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "owner": "rpf-73-rev-2",
+          "path_directory_sha256": [
+            "831c97b449e9e781772d3e1939a82f680d9e064962f73ac85aca39f0683abe41",
+            "225d60148d76b58a2a53ec77c227bfe213d14b9e7dd4aecc126ebc761157607c",
+            "30ad97306e840ecae36cbc6200cb570285372375acd17de2cd618c53b189a4db",
+            "d2d9b2c24fd30ad0af1b4d1e54b5870af582338c1a11ec527adac976f9264751",
+            "4b0b8707b7ff3b423fb3d4e3d298c4822658eff5075182f91708acfcf225cc49",
+            "cf4af2a70e98ffe1d5d97b6e8d3707851525db8f44ff2f1f9ba59a22beb24915",
+            "add36437b4e77e4fd4c12975780fcc475759d88d39945e695f1a46bfc6ddd725",
+            "780a6590b675021c90192abf679b86722a542bb3ab84bccf484c391c5003d132",
+            "014aa9d237a0e18e1b69e27ca4096b17d3c486e3742d112c138e8e6426972e60",
+            "c53a4215accb368fae59e2e70468c7b6108bae9806e8aaa189eed9dc698b11cc",
+            "857f38bb17b98d5fa9b4f41a4bcffe9bd43d2307eabd3f0e322f58997ff83e08",
+            "d48108d0a57808196bd48a9a27bc3e0104f48592cd67426935cc27dcc7d97b9b",
+            "bd4fea5b11684e7e768c5918cf9c5b5162164b655a033d5996ea4808e52d7421",
+            "f33ffb0681cf1341c4f2f461b047acdb678f85badac87dea5e08a853b88d2268",
+            "ba801032df8634c03d97bae0c3ce6f6d243312e6eb4e510dfcd9b3e422aafcb1",
+            "dc9ca79eef0c352cf1c13e9c6faac1affaa448c2182999cdc7d91408f54e9ce0",
+            "d6e1816a76c996d66f108e5a10777a93ae95a1428e1cf9bd4f92e09f29358eec",
+            "ed014bb5bf8c509dec56f446cb47b8f34d50271918242af6b0f53e7b68de96a7",
+            "c6af5cc308e7f18396e3bf889242137c8c1ad9709032afd0d5db8101efd274e7",
+            "c4917286e548de28a2e9adbe973a12831373f29603fe3c97999a5aebf548e332",
+            "619a48646d47c89662372eefbae914fd08386308ead63acde0dc5bcdb03b09eb",
+            "57f0d824073cbbe42f4fc521197c78296684f031361fd78e42a9434700d20363",
+            "00f8b8cbb9af9e364927848a028a8701a4fb507bbbbe243b2518af80465e9e86",
+            "7f9a8f39b04351dde6fe0a9a43c289118e203e452f262c9ac473cc72a7b98eee",
+            "be237fc70c9fe65a8765a61858617c24d0d77cd0578601f55fa774b9e7296094",
+            "b1cdeacf435591ed965e574fa652d8cb6e87523425eb9593f4b3ef64f1a82b72",
+            "8bb05e2304727e6becdc954492cd4e9eb6f03697916bcb2f277a551e0ef5b3f3",
+            "a79e62e75ce3e8f96917afeb3ba210760382550ad622665155693fdb594e8180",
+            "49bc09e070e6e523e9c7f5bf6692889cc152dadb1177030a2a337b5c1a9cebc1",
+            "437e794a62a8702e7d37a6259dce154871cc39691889136fb313ac54fa15b804",
+            "726f3091397f5ecbd73759b5d4114b1f21e81eb5ad4442b19b47d881d73f02f3",
+            "cc18e488534b701c700d244fd8b825764668528a12be5d445ae7223625ea724c",
+            "51f32b16736a8a096eb62d91d77715222cac8b0b9e9b0573d6d9d1526c19454c",
+            "4ef46d6cbaf800c51baa2ee04d6d41a6bd9426c18b8ab414acd45153c69a6dd0",
+            "44064d11f679cc0b6267765e9a7bb1a4b72d41ffbde39eca66d2bf77d4174328"
+          ],
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "runner_appended_paths": [],
+          "value_sha256": {
+            "COMSPEC": "b828142450c45c9b3964c100e1b8ff5ab0b001227ade3ac73009dfa0e0e2a474",
+            "HOME": "201419779c9146e2e36d527ddaeba143011e29edffcf364f97cd5473afc1dd87",
+            "PATH": "c283c0b7b93e9eb68baa0de6d1eca61e3387331f6a4e54513a9f25a0e5375c2b",
+            "PATHEXT": "a6e17897274808450499132f0802335799834f33795cbeca1c073278b006b650",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "PYTHONUTF8": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF73R2_ENV_RECEIPT": "63805950a06aa7a14158e7e1b1d01887d4d33afe5406c3b15bfdf3ee96fe7f7a",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "201419779c9146e2e36d527ddaeba143011e29edffcf364f97cd5473afc1dd87",
+            "TMP": "201419779c9146e2e36d527ddaeba143011e29edffcf364f97cd5473afc1dd87",
+            "TMPDIR": "201419779c9146e2e36d527ddaeba143011e29edffcf364f97cd5473afc1dd87",
+            "USERPROFILE": "201419779c9146e2e36d527ddaeba143011e29edffcf364f97cd5473afc1dd87",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "exit": 0,
+        "factory_child_starts": 0,
+        "fixture_scope": "CURRENT_SNAPSHOT_ONLY",
+        "label": "loopback-01",
+        "log": ".local/rpf-73-rev-2/commands/loopback-01/output.log",
+        "log_sha256": "991c3d807375f2b68e4d90b10b34cbbaa588a14ac42c7a92c813cd6c27cea450",
+        "mode": "loopback",
+        "os": "win32",
+        "owner": "rpf-73-rev-2",
+        "parent_pid": 15784,
+        "pid": 30172,
+        "provider": 0,
+        "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+        "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+        "source_after_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_before_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_unchanged": true,
+        "start_utc": "2026-10-25T14:03:48.181271+00:00",
+        "status": "PASS",
+        "summary": {
+          "class_skips": [],
+          "errors": [],
+          "failures": [],
+          "pass_summary": true,
+          "terminal": "OK",
+          "tests": 1,
+          "unittest_final_summary_present": true
+        },
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "diagnostic": {
+        "actual_environment": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "actual_key_count": 16,
+          "credential_values_read": false,
+          "env_sha256": "4a31036142fd3525bdc7b5cdf1bd36969e64ecd12d52abd416b1c3f37887fc0e",
+          "owner": "rpf-73-rev-2",
+          "parent_pid": 15784,
+          "pid": 30172,
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "source_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+          "status": "PASS"
+        },
+        "cause": "NOT_PROVEN",
+        "error_count": 0,
+        "events": [
+          {
+            "elapsed": 0.19650990000081947,
+            "event": "call",
+            "function": "run",
+            "line": 309,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21335060000274098,
+            "event": "call",
+            "function": "request",
+            "host_is_loopback": true,
+            "line": 1364,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.2133687000023201,
+            "event": "call",
+            "function": "_send_request",
+            "line": 1369,
+            "module": "http.client",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21412030000647064,
+            "event": "call",
+            "function": "handle_one_request",
+            "line": 455,
+            "module": "http.server",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.2146701000019675,
+            "event": "call",
+            "function": "do_POST",
+            "line": 321,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.21469310000247788,
+            "errno": null,
+            "error_type": "RuntimeFailure",
+            "event": "exception",
+            "function": "do_POST",
+            "line": 324,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 14858,
+            "thread_id": 9976,
+            "winerror": null
+          },
+          {
+            "elapsed": 0.21473130000231322,
+            "event": "call",
+            "function": "send_response",
+            "line": 553,
+            "module": "http.server",
+            "port": 14858,
+            "status": 400,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.21481280000443803,
+            "event": "return",
+            "function": "send_response",
+            "line": 564,
+            "module": "http.server",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.21482330000435468,
+            "event": "call",
+            "function": "end_headers",
+            "line": 594,
+            "module": "http.server",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.2148495000001276,
+            "event": "return",
+            "function": "_send_request",
+            "line": 1413,
+            "module": "http.client",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21485510000638897,
+            "event": "return",
+            "function": "request",
+            "host_is_loopback": true,
+            "line": 1367,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21487080000224523,
+            "event": "call",
+            "function": "getresponse",
+            "host_is_loopback": true,
+            "line": 1415,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21494370000436902,
+            "event": "call",
+            "function": "_read_status",
+            "line": 296,
+            "module": "http.client",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.2149647000042023,
+            "event": "return",
+            "function": "_read_status",
+            "line": 327,
+            "module": "http.client",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21517630000016652,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1044,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.215183899999829,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1054,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21518530000321334,
+            "event": "return",
+            "function": "getresponse",
+            "host_is_loopback": true,
+            "line": 1473,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21519940000143833,
+            "event": "call",
+            "function": "read",
+            "line": 468,
+            "module": "http.client",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21523260000685696,
+            "event": "return",
+            "function": "end_headers",
+            "line": 598,
+            "module": "http.server",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.21528370000305586,
+            "event": "return",
+            "function": "do_POST",
+            "line": 358,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.21528760000364855,
+            "event": "return",
+            "function": "handle_one_request",
+            "line": 485,
+            "module": "http.server",
+            "port": 14858,
+            "thread_id": 9976
+          },
+          {
+            "elapsed": 0.21532830000069225,
+            "event": "return",
+            "function": "read",
+            "line": 506,
+            "module": "http.client",
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.2153312000009464,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1044,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21533440000348492,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1054,
+            "module": "http.client",
+            "port": 14858,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.21534059999976307,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": false,
+            "line": 435,
+            "module": "http.client",
+            "port": null,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.2153485000017099,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": false,
+            "line": 439,
+            "module": "http.client",
+            "port": null,
+            "thread_id": 29324
+          },
+          {
+            "elapsed": 0.7301256000064313,
+            "event": "return",
+            "failure_code": "HOST_AUTH_REJECTED",
+            "function": "run",
+            "line": 407,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "thread_id": 29324
+          }
+        ],
+        "factory_child_starts": 0,
+        "failure_count": 0,
+        "ports": [
+          {
+            "port": 14858,
+            "port_closed": true
+          }
+        ],
+        "source_unchanged_instrumentation": "sys/threading.settrace reads metadata only; no patched socket/http/test/Host, observer timing effect remains possible",
+        "status": "PASS",
+        "test_id": "runtime.tests.test_effectwitness_target_agent.TargetAgentTests.test_real_loopback_host_rejects_unauthenticated_tool_without_effect",
+        "tests_run": 1,
+        "win10053": "NOT_REPRODUCED_IN_THIS_ATTEMPT"
+      }
+    },
+    {
+      "command": {
+        "abi": "rpf73r2-runtime-runner-replay-v1",
+        "command": [
+          "$PINNED_ABSOLUTE_PYTHON",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "spikes.rpf-73.rev-2.loopback_probe",
+          "original"
+        ],
+        "cwd": ".local/rpf-73-rev-2/loopback-02",
+        "elapsed_seconds": 1.3060088999991422,
+        "env": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "dropped_path": [
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "10b56ad9972aa777fc9d1249c35e52ece371f4a575410751b1f7b1b70727eaba"
+            },
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "env_sha256": "7e7705dd2a720c397322e643db799d719059a9003aa94be13cdf17cb17497ae1",
+          "keys": [
+            "COMSPEC",
+            "HOME",
+            "PATH",
+            "PATHEXT",
+            "PYTHONDONTWRITEBYTECODE",
+            "PYTHONUTF8",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT",
+            "RPF73R2_ENV_RECEIPT",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "TMPDIR",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "owner": "rpf-73-rev-2",
+          "path_directory_sha256": [
+            "831c97b449e9e781772d3e1939a82f680d9e064962f73ac85aca39f0683abe41",
+            "225d60148d76b58a2a53ec77c227bfe213d14b9e7dd4aecc126ebc761157607c",
+            "30ad97306e840ecae36cbc6200cb570285372375acd17de2cd618c53b189a4db",
+            "d2d9b2c24fd30ad0af1b4d1e54b5870af582338c1a11ec527adac976f9264751",
+            "4b0b8707b7ff3b423fb3d4e3d298c4822658eff5075182f91708acfcf225cc49",
+            "cf4af2a70e98ffe1d5d97b6e8d3707851525db8f44ff2f1f9ba59a22beb24915",
+            "add36437b4e77e4fd4c12975780fcc475759d88d39945e695f1a46bfc6ddd725",
+            "780a6590b675021c90192abf679b86722a542bb3ab84bccf484c391c5003d132",
+            "014aa9d237a0e18e1b69e27ca4096b17d3c486e3742d112c138e8e6426972e60",
+            "c53a4215accb368fae59e2e70468c7b6108bae9806e8aaa189eed9dc698b11cc",
+            "857f38bb17b98d5fa9b4f41a4bcffe9bd43d2307eabd3f0e322f58997ff83e08",
+            "d48108d0a57808196bd48a9a27bc3e0104f48592cd67426935cc27dcc7d97b9b",
+            "bd4fea5b11684e7e768c5918cf9c5b5162164b655a033d5996ea4808e52d7421",
+            "f33ffb0681cf1341c4f2f461b047acdb678f85badac87dea5e08a853b88d2268",
+            "ba801032df8634c03d97bae0c3ce6f6d243312e6eb4e510dfcd9b3e422aafcb1",
+            "dc9ca79eef0c352cf1c13e9c6faac1affaa448c2182999cdc7d91408f54e9ce0",
+            "d6e1816a76c996d66f108e5a10777a93ae95a1428e1cf9bd4f92e09f29358eec",
+            "ed014bb5bf8c509dec56f446cb47b8f34d50271918242af6b0f53e7b68de96a7",
+            "c6af5cc308e7f18396e3bf889242137c8c1ad9709032afd0d5db8101efd274e7",
+            "c4917286e548de28a2e9adbe973a12831373f29603fe3c97999a5aebf548e332",
+            "619a48646d47c89662372eefbae914fd08386308ead63acde0dc5bcdb03b09eb",
+            "57f0d824073cbbe42f4fc521197c78296684f031361fd78e42a9434700d20363",
+            "00f8b8cbb9af9e364927848a028a8701a4fb507bbbbe243b2518af80465e9e86",
+            "7f9a8f39b04351dde6fe0a9a43c289118e203e452f262c9ac473cc72a7b98eee",
+            "be237fc70c9fe65a8765a61858617c24d0d77cd0578601f55fa774b9e7296094",
+            "b1cdeacf435591ed965e574fa652d8cb6e87523425eb9593f4b3ef64f1a82b72",
+            "8bb05e2304727e6becdc954492cd4e9eb6f03697916bcb2f277a551e0ef5b3f3",
+            "a79e62e75ce3e8f96917afeb3ba210760382550ad622665155693fdb594e8180",
+            "49bc09e070e6e523e9c7f5bf6692889cc152dadb1177030a2a337b5c1a9cebc1",
+            "437e794a62a8702e7d37a6259dce154871cc39691889136fb313ac54fa15b804",
+            "726f3091397f5ecbd73759b5d4114b1f21e81eb5ad4442b19b47d881d73f02f3",
+            "cc18e488534b701c700d244fd8b825764668528a12be5d445ae7223625ea724c",
+            "51f32b16736a8a096eb62d91d77715222cac8b0b9e9b0573d6d9d1526c19454c",
+            "4ef46d6cbaf800c51baa2ee04d6d41a6bd9426c18b8ab414acd45153c69a6dd0",
+            "44064d11f679cc0b6267765e9a7bb1a4b72d41ffbde39eca66d2bf77d4174328"
+          ],
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "runner_appended_paths": [],
+          "value_sha256": {
+            "COMSPEC": "b828142450c45c9b3964c100e1b8ff5ab0b001227ade3ac73009dfa0e0e2a474",
+            "HOME": "ac03e2fca691f901e69a39a42a365bff997d10192bdf50b5fde96da79ac46ef5",
+            "PATH": "c283c0b7b93e9eb68baa0de6d1eca61e3387331f6a4e54513a9f25a0e5375c2b",
+            "PATHEXT": "a6e17897274808450499132f0802335799834f33795cbeca1c073278b006b650",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "PYTHONUTF8": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF73R2_ENV_RECEIPT": "ad107155e493bfc5ccc99ddc58b9a287cb0d63afbfb7dcac4c5012cf05c13450",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "ac03e2fca691f901e69a39a42a365bff997d10192bdf50b5fde96da79ac46ef5",
+            "TMP": "ac03e2fca691f901e69a39a42a365bff997d10192bdf50b5fde96da79ac46ef5",
+            "TMPDIR": "ac03e2fca691f901e69a39a42a365bff997d10192bdf50b5fde96da79ac46ef5",
+            "USERPROFILE": "ac03e2fca691f901e69a39a42a365bff997d10192bdf50b5fde96da79ac46ef5",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "exit": 0,
+        "factory_child_starts": 0,
+        "fixture_scope": "CURRENT_SNAPSHOT_ONLY",
+        "label": "loopback-02",
+        "log": ".local/rpf-73-rev-2/commands/loopback-02/output.log",
+        "log_sha256": "7b3277f8fbf8c4738e96ecc634ef1efdb813ef3e5753db81363e938fbf19a198",
+        "mode": "loopback",
+        "os": "win32",
+        "owner": "rpf-73-rev-2",
+        "parent_pid": 5856,
+        "pid": 20456,
+        "provider": 0,
+        "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+        "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+        "source_after_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_before_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_unchanged": true,
+        "start_utc": "2026-10-25T14:05:51.074387+00:00",
+        "status": "PASS",
+        "summary": {
+          "class_skips": [],
+          "errors": [],
+          "failures": [],
+          "pass_summary": true,
+          "terminal": "OK",
+          "tests": 1,
+          "unittest_final_summary_present": true
+        },
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "diagnostic": {
+        "actual_environment": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "actual_key_count": 16,
+          "credential_values_read": false,
+          "env_sha256": "7e7705dd2a720c397322e643db799d719059a9003aa94be13cdf17cb17497ae1",
+          "owner": "rpf-73-rev-2",
+          "parent_pid": 5856,
+          "pid": 20456,
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "source_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+          "status": "PASS"
+        },
+        "cause": "NOT_PROVEN",
+        "error_count": 0,
+        "events": [
+          {
+            "elapsed": 0.20240360000025248,
+            "event": "call",
+            "function": "run",
+            "line": 309,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.2231658000018797,
+            "event": "call",
+            "function": "request",
+            "host_is_loopback": true,
+            "line": 1364,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22318600000289734,
+            "event": "call",
+            "function": "_send_request",
+            "line": 1369,
+            "module": "http.client",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22379840000212425,
+            "event": "return",
+            "function": "_send_request",
+            "line": 1413,
+            "module": "http.client",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22380390000034822,
+            "event": "return",
+            "function": "request",
+            "host_is_loopback": true,
+            "line": 1367,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22382069999730447,
+            "event": "call",
+            "function": "getresponse",
+            "host_is_loopback": true,
+            "line": 1415,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22393049999664072,
+            "event": "call",
+            "function": "_read_status",
+            "line": 296,
+            "module": "http.client",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.2240629000007175,
+            "event": "call",
+            "function": "handle_one_request",
+            "line": 455,
+            "module": "http.server",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.22461399999883724,
+            "event": "call",
+            "function": "do_POST",
+            "line": 321,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.22463900000002468,
+            "errno": null,
+            "error_type": "RuntimeFailure",
+            "event": "exception",
+            "function": "do_POST",
+            "line": 324,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 11878,
+            "thread_id": 19368,
+            "winerror": null
+          },
+          {
+            "elapsed": 0.22467979999782983,
+            "event": "call",
+            "function": "send_response",
+            "line": 553,
+            "module": "http.server",
+            "port": 11878,
+            "status": 400,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.2247681000008015,
+            "event": "return",
+            "function": "send_response",
+            "line": 564,
+            "module": "http.server",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.22477939999953378,
+            "event": "call",
+            "function": "end_headers",
+            "line": 594,
+            "module": "http.server",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.22482940000190865,
+            "event": "return",
+            "function": "end_headers",
+            "line": 598,
+            "module": "http.server",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.2248422999982722,
+            "event": "return",
+            "function": "do_POST",
+            "line": 358,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.22484540000004927,
+            "event": "return",
+            "function": "handle_one_request",
+            "line": 485,
+            "module": "http.server",
+            "port": 11878,
+            "thread_id": 19368
+          },
+          {
+            "elapsed": 0.22489869999844814,
+            "event": "return",
+            "function": "_read_status",
+            "line": 327,
+            "module": "http.client",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22513679999974556,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1044,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22514550000050804,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1054,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.2251470999981393,
+            "event": "return",
+            "function": "getresponse",
+            "host_is_loopback": true,
+            "line": 1473,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22516270000051009,
+            "event": "call",
+            "function": "read",
+            "line": 468,
+            "module": "http.client",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22536009999748785,
+            "event": "return",
+            "function": "read",
+            "line": 506,
+            "module": "http.client",
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.2253636000023107,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1044,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22536769999715034,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1054,
+            "module": "http.client",
+            "port": 11878,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.22537559999909718,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": false,
+            "line": 435,
+            "module": "http.client",
+            "port": null,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.2253850999986753,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": false,
+            "line": 439,
+            "module": "http.client",
+            "port": null,
+            "thread_id": 9136
+          },
+          {
+            "elapsed": 0.7286701999983052,
+            "event": "return",
+            "failure_code": "HOST_AUTH_REJECTED",
+            "function": "run",
+            "line": 407,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "thread_id": 9136
+          }
+        ],
+        "factory_child_starts": 0,
+        "failure_count": 0,
+        "ports": [
+          {
+            "port": 11878,
+            "port_closed": true
+          }
+        ],
+        "source_unchanged_instrumentation": "sys/threading.settrace reads metadata only; no patched socket/http/test/Host, observer timing effect remains possible",
+        "status": "PASS",
+        "test_id": "runtime.tests.test_effectwitness_target_agent.TargetAgentTests.test_real_loopback_host_rejects_unauthenticated_tool_without_effect",
+        "tests_run": 1,
+        "win10053": "NOT_REPRODUCED_IN_THIS_ATTEMPT"
+      }
+    },
+    {
+      "command": {
+        "abi": "rpf73r2-runtime-runner-replay-v1",
+        "command": [
+          "$PINNED_ABSOLUTE_PYTHON",
+          "-X",
+          "utf8",
+          "-B",
+          "-m",
+          "spikes.rpf-73.rev-2.loopback_probe",
+          "original"
+        ],
+        "cwd": ".local/rpf-73-rev-2/loopback-03",
+        "elapsed_seconds": 1.30362199999945,
+        "env": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "dropped_path": [
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "10b56ad9972aa777fc9d1249c35e52ece371f4a575410751b1f7b1b70727eaba"
+            },
+            {
+              "reason": "MALFORMED_OR_NOT_FROZEN_TRUSTED",
+              "value_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            }
+          ],
+          "env_sha256": "6e61b756cf940f406d34c43a0c7de7224c07538b246d1d0c5af787ecdbbee840",
+          "keys": [
+            "COMSPEC",
+            "HOME",
+            "PATH",
+            "PATHEXT",
+            "PYTHONDONTWRITEBYTECODE",
+            "PYTHONUTF8",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT",
+            "RPF73R2_ENV_RECEIPT",
+            "SYSTEMROOT",
+            "TEMP",
+            "TMP",
+            "TMPDIR",
+            "USERPROFILE",
+            "WINDIR"
+          ],
+          "owner": "rpf-73-rev-2",
+          "path_directory_sha256": [
+            "831c97b449e9e781772d3e1939a82f680d9e064962f73ac85aca39f0683abe41",
+            "225d60148d76b58a2a53ec77c227bfe213d14b9e7dd4aecc126ebc761157607c",
+            "30ad97306e840ecae36cbc6200cb570285372375acd17de2cd618c53b189a4db",
+            "d2d9b2c24fd30ad0af1b4d1e54b5870af582338c1a11ec527adac976f9264751",
+            "4b0b8707b7ff3b423fb3d4e3d298c4822658eff5075182f91708acfcf225cc49",
+            "cf4af2a70e98ffe1d5d97b6e8d3707851525db8f44ff2f1f9ba59a22beb24915",
+            "add36437b4e77e4fd4c12975780fcc475759d88d39945e695f1a46bfc6ddd725",
+            "780a6590b675021c90192abf679b86722a542bb3ab84bccf484c391c5003d132",
+            "014aa9d237a0e18e1b69e27ca4096b17d3c486e3742d112c138e8e6426972e60",
+            "c53a4215accb368fae59e2e70468c7b6108bae9806e8aaa189eed9dc698b11cc",
+            "857f38bb17b98d5fa9b4f41a4bcffe9bd43d2307eabd3f0e322f58997ff83e08",
+            "d48108d0a57808196bd48a9a27bc3e0104f48592cd67426935cc27dcc7d97b9b",
+            "bd4fea5b11684e7e768c5918cf9c5b5162164b655a033d5996ea4808e52d7421",
+            "f33ffb0681cf1341c4f2f461b047acdb678f85badac87dea5e08a853b88d2268",
+            "ba801032df8634c03d97bae0c3ce6f6d243312e6eb4e510dfcd9b3e422aafcb1",
+            "dc9ca79eef0c352cf1c13e9c6faac1affaa448c2182999cdc7d91408f54e9ce0",
+            "d6e1816a76c996d66f108e5a10777a93ae95a1428e1cf9bd4f92e09f29358eec",
+            "ed014bb5bf8c509dec56f446cb47b8f34d50271918242af6b0f53e7b68de96a7",
+            "c6af5cc308e7f18396e3bf889242137c8c1ad9709032afd0d5db8101efd274e7",
+            "c4917286e548de28a2e9adbe973a12831373f29603fe3c97999a5aebf548e332",
+            "619a48646d47c89662372eefbae914fd08386308ead63acde0dc5bcdb03b09eb",
+            "57f0d824073cbbe42f4fc521197c78296684f031361fd78e42a9434700d20363",
+            "00f8b8cbb9af9e364927848a028a8701a4fb507bbbbe243b2518af80465e9e86",
+            "7f9a8f39b04351dde6fe0a9a43c289118e203e452f262c9ac473cc72a7b98eee",
+            "be237fc70c9fe65a8765a61858617c24d0d77cd0578601f55fa774b9e7296094",
+            "b1cdeacf435591ed965e574fa652d8cb6e87523425eb9593f4b3ef64f1a82b72",
+            "8bb05e2304727e6becdc954492cd4e9eb6f03697916bcb2f277a551e0ef5b3f3",
+            "a79e62e75ce3e8f96917afeb3ba210760382550ad622665155693fdb594e8180",
+            "49bc09e070e6e523e9c7f5bf6692889cc152dadb1177030a2a337b5c1a9cebc1",
+            "437e794a62a8702e7d37a6259dce154871cc39691889136fb313ac54fa15b804",
+            "726f3091397f5ecbd73759b5d4114b1f21e81eb5ad4442b19b47d881d73f02f3",
+            "cc18e488534b701c700d244fd8b825764668528a12be5d445ae7223625ea724c",
+            "51f32b16736a8a096eb62d91d77715222cac8b0b9e9b0573d6d9d1526c19454c",
+            "4ef46d6cbaf800c51baa2ee04d6d41a6bd9426c18b8ab414acd45153c69a6dd0",
+            "44064d11f679cc0b6267765e9a7bb1a4b72d41ffbde39eca66d2bf77d4174328"
+          ],
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "runner_appended_paths": [],
+          "value_sha256": {
+            "COMSPEC": "b828142450c45c9b3964c100e1b8ff5ab0b001227ade3ac73009dfa0e0e2a474",
+            "HOME": "62fcf1ebd633a2e11a1963bcbb42ee9072ac3dd56207b60a3eab5b06f559ecb2",
+            "PATH": "c283c0b7b93e9eb68baa0de6d1eca61e3387331f6a4e54513a9f25a0e5375c2b",
+            "PATHEXT": "a6e17897274808450499132f0802335799834f33795cbeca1c073278b006b650",
+            "PYTHONDONTWRITEBYTECODE": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "PYTHONUTF8": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b",
+            "RPF66_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF67_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF68_FIXED_SDK_PUBLIC_ROOT": "f4f1c02f85259471d14e6dd4e7ba7e1329b769ed4781248454c742df7af8f796",
+            "RPF73R2_ENV_RECEIPT": "fb9e1c56db8a532e0bb7eb30b69f531bde291df0f6467ba55f4a01cd5b5e6ea8",
+            "SYSTEMROOT": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c",
+            "TEMP": "62fcf1ebd633a2e11a1963bcbb42ee9072ac3dd56207b60a3eab5b06f559ecb2",
+            "TMP": "62fcf1ebd633a2e11a1963bcbb42ee9072ac3dd56207b60a3eab5b06f559ecb2",
+            "TMPDIR": "62fcf1ebd633a2e11a1963bcbb42ee9072ac3dd56207b60a3eab5b06f559ecb2",
+            "USERPROFILE": "62fcf1ebd633a2e11a1963bcbb42ee9072ac3dd56207b60a3eab5b06f559ecb2",
+            "WINDIR": "4c754b6dc9cd24a7e1a0801560911fbf9a832bf0f5b3bcba0f3844a71356489c"
+          }
+        },
+        "exit": 0,
+        "factory_child_starts": 0,
+        "fixture_scope": "CURRENT_SNAPSHOT_ONLY",
+        "label": "loopback-03",
+        "log": ".local/rpf-73-rev-2/commands/loopback-03/output.log",
+        "log_sha256": "c50b4395d55bd412be52109409abcd71fa80d882ba0d1499d92414bb45ceba56",
+        "mode": "loopback",
+        "os": "win32",
+        "owner": "rpf-73-rev-2",
+        "parent_pid": 28856,
+        "pid": 30876,
+        "provider": 0,
+        "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+        "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+        "source_after_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_before_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+        "source_unchanged": true,
+        "start_utc": "2026-10-25T14:05:51.078645+00:00",
+        "status": "PASS",
+        "summary": {
+          "class_skips": [],
+          "errors": [],
+          "failures": [],
+          "pass_summary": true,
+          "terminal": "OK",
+          "tests": 1,
+          "unittest_final_summary_present": true
+        },
+        "timed_out": false,
+        "timeout_seconds": 180
+      },
+      "diagnostic": {
+        "actual_environment": {
+          "abi": "rpf73r2-runtime-runner-replay-v1",
+          "actual_key_count": 16,
+          "credential_values_read": false,
+          "env_sha256": "6e61b756cf940f406d34c43a0c7de7224c07538b246d1d0c5af787ecdbbee840",
+          "owner": "rpf-73-rev-2",
+          "parent_pid": 28856,
+          "pid": 30876,
+          "python_sha256": "03168c01b7b7491423350e82c26fee71f35b43694d1319d3c668bda6903a0c38",
+          "source_sha256": "f43818008f246cd03d85da2da0849a57ce121c2f0d0be936d2ce4a49f95c4a05",
+          "status": "PASS"
+        },
+        "cause": "NOT_PROVEN",
+        "error_count": 0,
+        "events": [
+          {
+            "elapsed": 0.20271489999868209,
+            "event": "call",
+            "function": "run",
+            "line": 309,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.21849130000191508,
+            "event": "call",
+            "function": "request",
+            "host_is_loopback": true,
+            "line": 1364,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.21851109999988694,
+            "event": "call",
+            "function": "_send_request",
+            "line": 1369,
+            "module": "http.client",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.2191238000013982,
+            "event": "return",
+            "function": "_send_request",
+            "line": 1413,
+            "module": "http.client",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.21912950000114506,
+            "event": "return",
+            "function": "request",
+            "host_is_loopback": true,
+            "line": 1367,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.21914709999691695,
+            "event": "call",
+            "function": "getresponse",
+            "host_is_loopback": true,
+            "line": 1415,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.2192611999998917,
+            "event": "call",
+            "function": "_read_status",
+            "line": 296,
+            "module": "http.client",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.2194378999993205,
+            "event": "call",
+            "function": "handle_one_request",
+            "line": 455,
+            "module": "http.server",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.2199839000022621,
+            "event": "call",
+            "function": "do_POST",
+            "line": 321,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.22000899999693502,
+            "errno": null,
+            "error_type": "RuntimeFailure",
+            "event": "exception",
+            "function": "do_POST",
+            "line": 324,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 11879,
+            "thread_id": 26192,
+            "winerror": null
+          },
+          {
+            "elapsed": 0.22004949999973178,
+            "event": "call",
+            "function": "send_response",
+            "line": 553,
+            "module": "http.server",
+            "port": 11879,
+            "status": 400,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.2201379000034649,
+            "event": "return",
+            "function": "send_response",
+            "line": 564,
+            "module": "http.server",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.22014959999796702,
+            "event": "call",
+            "function": "end_headers",
+            "line": 594,
+            "module": "http.server",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.22020750000228873,
+            "event": "return",
+            "function": "end_headers",
+            "line": 598,
+            "module": "http.server",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.22022109999670647,
+            "event": "return",
+            "function": "do_POST",
+            "line": 358,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.22022419999848353,
+            "event": "return",
+            "function": "handle_one_request",
+            "line": 485,
+            "module": "http.server",
+            "port": 11879,
+            "thread_id": 26192
+          },
+          {
+            "elapsed": 0.22027779999916675,
+            "event": "return",
+            "function": "_read_status",
+            "line": 327,
+            "module": "http.client",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22051289999944856,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1044,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22052180000173394,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1054,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22052350000012666,
+            "event": "return",
+            "function": "getresponse",
+            "host_is_loopback": true,
+            "line": 1473,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22053949999826727,
+            "event": "call",
+            "function": "read",
+            "line": 468,
+            "module": "http.client",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22066959999938263,
+            "event": "return",
+            "function": "read",
+            "line": 506,
+            "module": "http.client",
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22067349999997532,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1044,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22067770000285236,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": true,
+            "line": 1054,
+            "module": "http.client",
+            "port": 11879,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.2206850000002305,
+            "event": "call",
+            "function": "close",
+            "host_is_loopback": false,
+            "line": 435,
+            "module": "http.client",
+            "port": null,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.22069400000327732,
+            "event": "return",
+            "function": "close",
+            "host_is_loopback": false,
+            "line": 439,
+            "module": "http.client",
+            "port": null,
+            "thread_id": 31096
+          },
+          {
+            "elapsed": 0.7240384999968228,
+            "event": "return",
+            "failure_code": "HOST_AUTH_REJECTED",
+            "function": "run",
+            "line": 407,
+            "module": "runtime.runproof_runtime.effectwitness.target_driver",
+            "thread_id": 31096
+          }
+        ],
+        "factory_child_starts": 0,
+        "failure_count": 0,
+        "ports": [
+          {
+            "port": 11879,
+            "port_closed": true
+          }
+        ],
+        "source_unchanged_instrumentation": "sys/threading.settrace reads metadata only; no patched socket/http/test/Host, observer timing effect remains possible",
+        "status": "PASS",
+        "test_id": "runtime.tests.test_effectwitness_target_agent.TargetAgentTests.test_real_loopback_host_rejects_unauthenticated_tool_without_effect",
+        "tests_run": 1,
+        "win10053": "NOT_REPRODUCED_IN_THIS_ATTEMPT"
+      }
+    }
+  ],
+  "owner": "rpf-73-rev-2",
+  "plan_id": "RPF-73",
+  "rev1_source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "revision": "rev-2",
+  "source_commit": "c03853c4a347f6f926135d4ccd060e6a8098ec0c",
+  "source_identity_sha256": "6fc5ec95b69953bb891f4e58d5fc1d62a89177cc099b2f0114b80203d53f9979",
+  "status": "Complete"
+}

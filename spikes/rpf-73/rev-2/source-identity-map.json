@@ -1,0 +1,369 @@
+{
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FACTORY_CHILD_STARTS_THIS_REVISION": 0,
+  "FACTORY_COMPONENT_EXECUTED_THIS_REVISION": "NOT_RUN",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "REAL_EXPLORER_AUTONOMY": "NOT_RUN",
+  "REAL_MODEL_USAGE": 0,
+  "REAL_PROVIDER_THIS_TASK": 0,
+  "REV1_FACTORY_COMPONENT_EXECUTED": "YES_HISTORICAL",
+  "RPF73_RUNTIME_REGRESSION_RECOVERED": "YES",
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "abi": "rpf73r2-runtime-runner-replay-v1",
+  "base": "19c5d28baab0e10b34dbf821ce07cc187bdd9c8f",
+  "branch": "codex/rpf-73-rev2-runner-env-loopback-regression",
+  "early_targeted_environment_contract_raw_sha256": "168e10611b697e519cd928eaa98dba42c9a00f2033369914f3549dbb5fbbcd5f",
+  "early_targeted_source_sha256": "8945581d886bf192cb8130aaf4cb55f8a13476fb1ab5e931bc2c0adceab562a6",
+  "freeze": {
+    "abi": "rpf73r2-runtime-runner-replay-v1",
+    "checks": [
+      {
+        "exit": 1,
+        "path": "spikes/rpf-73/rev-2/environment_contract.py"
+      },
+      {
+        "exit": 1,
+        "path": "spikes/rpf-73/rev-2/runner.py"
+      },
+      {
+        "exit": 1,
+        "path": "spikes/rpf-73/rev-2/loopback_probe.py"
+      },
+      {
+        "exit": 1,
+        "path": "spikes/rpf-73/rev-2/probe.py"
+      },
+      {
+        "exit": 1,
+        "path": "runtime/tests/test_effectwitness_pge_r73r2.py"
+      }
+    ],
+    "identity": {
+      "abi": "rpf73r2-runtime-runner-replay-v1",
+      "base": "19c5d28baab0e10b34dbf821ce07cc187bdd9c8f",
+      "files": {
+        "runtime/__init__.py": {
+          "lf": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778",
+          "raw": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/__init__.py": {
+          "lf": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757",
+          "raw": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/__init__.py": {
+          "lf": "eed7d971a9b3fc80994c5458e21599dcc6df6b0b4734c67fcb6455561613b90b",
+          "raw": "eed7d971a9b3fc80994c5458e21599dcc6df6b0b4734c67fcb6455561613b90b",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+          "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+          "raw": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+          "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+          "raw": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+          "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py": {
+          "lf": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+          "raw": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py": {
+          "lf": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455",
+          "raw": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_compat.py": {
+          "lf": "25ac555762fb771dacda2fa00ac3965e4a79231efbb63abf4d724abdd42bbcd5",
+          "raw": "25ac555762fb771dacda2fa00ac3965e4a79231efbb63abf4d724abdd42bbcd5",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py": {
+          "lf": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766",
+          "raw": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py": {
+          "lf": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f",
+          "raw": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py": {
+          "lf": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+          "raw": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py": {
+          "lf": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f",
+          "raw": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py": {
+          "lf": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+          "raw": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_r73_verify.py": {
+          "lf": "116ddb8b4f271eeaa638cffc3fdce69312cec2e401700adfc64c9e7caf38b7d1",
+          "raw": "116ddb8b4f271eeaa638cffc3fdce69312cec2e401700adfc64c9e7caf38b7d1",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/runproof_runtime/effectwitness/target_driver.py": {
+          "lf": "69bb886615a846644d01a2d4dc4043d00e9661738b9a490339cfe8ec1c5f3fac",
+          "raw": "69bb886615a846644d01a2d4dc4043d00e9661738b9a490339cfe8ec1c5f3fac",
+          "role": "FROZEN_TARGET_READ_ONLY"
+        },
+        "runtime/tests/test_effectwitness_pge_r72r3.py": {
+          "lf": "546e23f5552e85f402033ac5b9f33965166e209cbc7d36e023f0559def140c2f",
+          "raw": "546e23f5552e85f402033ac5b9f33965166e209cbc7d36e023f0559def140c2f",
+          "role": "FROZEN_TARGET_READ_ONLY"
+        },
+        "runtime/tests/test_effectwitness_pge_r73.py": {
+          "lf": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2",
+          "raw": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "runtime/tests/test_effectwitness_pge_r73r2.py": {
+          "lf": "89a077b47ba7cc2fb436892a6b20f8958efa24150d0390b46d5026b283085b87",
+          "raw": "89a077b47ba7cc2fb436892a6b20f8958efa24150d0390b46d5026b283085b87",
+          "role": "R73R2_CURRENT"
+        },
+        "runtime/tests/test_effectwitness_target_agent.py": {
+          "lf": "acbfd2f5990eb3dfa254d630908e8e0cbfba4656f7af07c1625b859f9dabc04b",
+          "raw": "acbfd2f5990eb3dfa254d630908e8e0cbfba4656f7af07c1625b859f9dabc04b",
+          "role": "FROZEN_TARGET_READ_ONLY"
+        },
+        "spikes/rpf-73/probe.py": {
+          "lf": "92492dc955ab2b2fa5b3c54ef744395e4873cc95e1951aee74516902704d6052",
+          "raw": "92492dc955ab2b2fa5b3c54ef744395e4873cc95e1951aee74516902704d6052",
+          "role": "FROZEN_REV1_READ_ONLY"
+        },
+        "spikes/rpf-73/rev-2/environment_contract.py": {
+          "lf": "168e10611b697e519cd928eaa98dba42c9a00f2033369914f3549dbb5fbbcd5f",
+          "raw": "168e10611b697e519cd928eaa98dba42c9a00f2033369914f3549dbb5fbbcd5f",
+          "role": "R73R2_CURRENT"
+        },
+        "spikes/rpf-73/rev-2/loopback_probe.py": {
+          "lf": "317e8a83bc11ec60dba63e18fc6337fd1bc1882068859fbbd9d8e6f2d8fbdb89",
+          "raw": "317e8a83bc11ec60dba63e18fc6337fd1bc1882068859fbbd9d8e6f2d8fbdb89",
+          "role": "R73R2_CURRENT"
+        },
+        "spikes/rpf-73/rev-2/probe.py": {
+          "lf": "58a8b2443dd54b20770216fd3d942fb7e2e75a31820265616cd911f2dc85fe37",
+          "raw": "58a8b2443dd54b20770216fd3d942fb7e2e75a31820265616cd911f2dc85fe37",
+          "role": "R73R2_CURRENT"
+        },
+        "spikes/rpf-73/rev-2/runner.py": {
+          "lf": "fee3ff5f66966da2f3fcb2ee533e354f74dab58ac66634342c81a72ba2d33f1d",
+          "raw": "fee3ff5f66966da2f3fcb2ee533e354f74dab58ac66634342c81a72ba2d33f1d",
+          "role": "R73R2_CURRENT"
+        }
+      },
+      "old_factory_source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+      "owner": "rpf-73-rev-2"
+    },
+    "owner": "rpf-73-rev-2",
+    "utc": "2026-10-25T14:06:42.053881+00:00"
+  },
+  "git_blobs_at_source_commit": {
+    "runtime/__init__.py": "d7a89e7df9ec62d95e768e89ad674e1ce77aca39",
+    "runtime/runproof_runtime/__init__.py": "817d8f1c56cdebddf47d8c879ecba58a1adc1894",
+    "runtime/runproof_runtime/effectwitness/__init__.py": "61d072f601e62afad21a5cfd4282d66c8db4228f",
+    "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": "8c59dd7b12a5fc0e7d7f80e6f72810085282ebe3",
+    "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": "3896c73991957b0d0e70f83e77cece8318b21c3b",
+    "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": "632224882fef588bbc26ce78a6bb5daaf9873f53",
+    "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py": "64427a22e300d7bcf2c8ada41410566d151ae81a",
+    "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py": "a0bd75929070a681b9338550407539a48e2b04d1",
+    "runtime/runproof_runtime/effectwitness/pge_r73_compat.py": "8b7afe1fc30a378e232f6561abd06a15278cdba3",
+    "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py": "c41fa36fd71c56c93ffe3bf9403be889c30316d7",
+    "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py": "de4c4882237e695a45e16dee1fb623fcdc27acb5",
+    "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py": "720085749b0967e2a20989db99184492cc8d3ae6",
+    "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py": "681b3019908f3d7e1bc65106199c31850e31e9a2",
+    "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py": "b29e2ee82c9d0060e684ae76113b2ed118ac7218",
+    "runtime/runproof_runtime/effectwitness/pge_r73_verify.py": "e769a01a4319d0c1af6e106100117009e6beae40",
+    "runtime/runproof_runtime/effectwitness/target_driver.py": "c696717c78e213a835eee15f251dfe886919441d",
+    "runtime/tests/test_effectwitness_pge_r72r3.py": "3258a3fb9eead6a047f6e9e9bea0947be567f382",
+    "runtime/tests/test_effectwitness_pge_r73.py": "88e631e74356e923647e6370e0854d27d7398e05",
+    "runtime/tests/test_effectwitness_pge_r73r2.py": "920689aee81e7eedb9b3c9e166102a0a983007c9",
+    "runtime/tests/test_effectwitness_target_agent.py": "afec65151ab625ab5b19d1ec3915438cb9ea4f4d",
+    "spikes/rpf-73/probe.py": "92b04f5737f0124889f1fd0bebd8196cdf2f998c",
+    "spikes/rpf-73/rev-2/environment_contract.py": "0254873b3dafe846374ac4222a6321a8c6a194ab",
+    "spikes/rpf-73/rev-2/loopback_probe.py": "11d776e7feb262a412e64507eb5640def64bfb4a",
+    "spikes/rpf-73/rev-2/probe.py": "265cb5bd2aa9fd9dcd4b0c82bd2f5c04912a595e",
+    "spikes/rpf-73/rev-2/runner.py": "22fea473b1013f7a7d871c2b3a2048b1bd229c92"
+  },
+  "helpers": {
+    "accounting.py": "d0bf5251c5c635956b164e5a396937c4509cef8af77cc67817031e57f499030b",
+    "audit_reports.py": "4c57e8ea3037358110dac19f8f60596dc8a6a014f43625b5dc037b3dfe47edf2",
+    "checks.py": "380f6f9122e9070c6148662281e9daa88b47660c7d6f88ba163905aad8d6b0aa",
+    "delivery.py": "5a1421d0d25f0a5865b1b0d3e002d0b7958e9d6951c8e24ba99cf3c0fae8ad2b",
+    "report.py": "97a04ed4ac3111dcefe38454170e2e936f99def27cda9c16df1e0a40b744f62b"
+  },
+  "identity": {
+    "abi": "rpf73r2-runtime-runner-replay-v1",
+    "base": "19c5d28baab0e10b34dbf821ce07cc187bdd9c8f",
+    "files": {
+      "runtime/__init__.py": {
+        "lf": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778",
+        "raw": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/__init__.py": {
+        "lf": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757",
+        "raw": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/__init__.py": {
+        "lf": "eed7d971a9b3fc80994c5458e21599dcc6df6b0b4734c67fcb6455561613b90b",
+        "raw": "eed7d971a9b3fc80994c5458e21599dcc6df6b0b4734c67fcb6455561613b90b",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+        "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "raw": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+        "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "raw": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+        "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py": {
+        "lf": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+        "raw": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py": {
+        "lf": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455",
+        "raw": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_compat.py": {
+        "lf": "25ac555762fb771dacda2fa00ac3965e4a79231efbb63abf4d724abdd42bbcd5",
+        "raw": "25ac555762fb771dacda2fa00ac3965e4a79231efbb63abf4d724abdd42bbcd5",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py": {
+        "lf": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766",
+        "raw": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py": {
+        "lf": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f",
+        "raw": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py": {
+        "lf": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+        "raw": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py": {
+        "lf": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f",
+        "raw": "a434b1654ad696feaaa2c41d8da6247f92ecff6b322c52c5e966838388fae74f",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py": {
+        "lf": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+        "raw": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_verify.py": {
+        "lf": "116ddb8b4f271eeaa638cffc3fdce69312cec2e401700adfc64c9e7caf38b7d1",
+        "raw": "116ddb8b4f271eeaa638cffc3fdce69312cec2e401700adfc64c9e7caf38b7d1",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/runproof_runtime/effectwitness/target_driver.py": {
+        "lf": "69bb886615a846644d01a2d4dc4043d00e9661738b9a490339cfe8ec1c5f3fac",
+        "raw": "69bb886615a846644d01a2d4dc4043d00e9661738b9a490339cfe8ec1c5f3fac",
+        "role": "FROZEN_TARGET_READ_ONLY"
+      },
+      "runtime/tests/test_effectwitness_pge_r72r3.py": {
+        "lf": "546e23f5552e85f402033ac5b9f33965166e209cbc7d36e023f0559def140c2f",
+        "raw": "546e23f5552e85f402033ac5b9f33965166e209cbc7d36e023f0559def140c2f",
+        "role": "FROZEN_TARGET_READ_ONLY"
+      },
+      "runtime/tests/test_effectwitness_pge_r73.py": {
+        "lf": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2",
+        "raw": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "runtime/tests/test_effectwitness_pge_r73r2.py": {
+        "lf": "89a077b47ba7cc2fb436892a6b20f8958efa24150d0390b46d5026b283085b87",
+        "raw": "89a077b47ba7cc2fb436892a6b20f8958efa24150d0390b46d5026b283085b87",
+        "role": "R73R2_CURRENT"
+      },
+      "runtime/tests/test_effectwitness_target_agent.py": {
+        "lf": "acbfd2f5990eb3dfa254d630908e8e0cbfba4656f7af07c1625b859f9dabc04b",
+        "raw": "acbfd2f5990eb3dfa254d630908e8e0cbfba4656f7af07c1625b859f9dabc04b",
+        "role": "FROZEN_TARGET_READ_ONLY"
+      },
+      "spikes/rpf-73/probe.py": {
+        "lf": "92492dc955ab2b2fa5b3c54ef744395e4873cc95e1951aee74516902704d6052",
+        "raw": "92492dc955ab2b2fa5b3c54ef744395e4873cc95e1951aee74516902704d6052",
+        "role": "FROZEN_REV1_READ_ONLY"
+      },
+      "spikes/rpf-73/rev-2/environment_contract.py": {
+        "lf": "168e10611b697e519cd928eaa98dba42c9a00f2033369914f3549dbb5fbbcd5f",
+        "raw": "168e10611b697e519cd928eaa98dba42c9a00f2033369914f3549dbb5fbbcd5f",
+        "role": "R73R2_CURRENT"
+      },
+      "spikes/rpf-73/rev-2/loopback_probe.py": {
+        "lf": "317e8a83bc11ec60dba63e18fc6337fd1bc1882068859fbbd9d8e6f2d8fbdb89",
+        "raw": "317e8a83bc11ec60dba63e18fc6337fd1bc1882068859fbbd9d8e6f2d8fbdb89",
+        "role": "R73R2_CURRENT"
+      },
+      "spikes/rpf-73/rev-2/probe.py": {
+        "lf": "58a8b2443dd54b20770216fd3d942fb7e2e75a31820265616cd911f2dc85fe37",
+        "raw": "58a8b2443dd54b20770216fd3d942fb7e2e75a31820265616cd911f2dc85fe37",
+        "role": "R73R2_CURRENT"
+      },
+      "spikes/rpf-73/rev-2/runner.py": {
+        "lf": "fee3ff5f66966da2f3fcb2ee533e354f74dab58ac66634342c81a72ba2d33f1d",
+        "raw": "fee3ff5f66966da2f3fcb2ee533e354f74dab58ac66634342c81a72ba2d33f1d",
+        "role": "R73R2_CURRENT"
+      }
+    },
+    "old_factory_source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+    "owner": "rpf-73-rev-2"
+  },
+  "new_execution_source": [
+    "spikes/rpf-73/rev-2/environment_contract.py",
+    "spikes/rpf-73/rev-2/runner.py",
+    "spikes/rpf-73/rev-2/loopback_probe.py",
+    "spikes/rpf-73/rev-2/probe.py",
+    "runtime/tests/test_effectwitness_pge_r73r2.py"
+  ],
+  "owner": "rpf-73-rev-2",
+  "plan_id": "RPF-73",
+  "rev1_source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "revision": "rev-2",
+  "snapshot_index_sha256": "1f1d555b0a05913802671578ceee532ce2f4cef855364c53305b476e1e504d25",
+  "source_commit": "c03853c4a347f6f926135d4ccd060e6a8098ec0c",
+  "source_edited_after_freeze": false,
+  "source_identity_sha256": "6fc5ec95b69953bb891f4e58d5fc1d62a89177cc099b2f0114b80203d53f9979",
+  "source_scope": "Five new execution/test files; read-only old sources and old Factory identity. Post-processing helpers only inspect evidence. Public historical CLI input hashes remain their original verifiers.",
+  "status": "Complete"
+}

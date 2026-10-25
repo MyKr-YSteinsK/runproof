@@ -1,0 +1,83 @@
+{
+  "ALL_KEY_LOOKUPS_ZERO": "FALSE_NOT_PROVEN",
+  "BUSINESS_TARGET_REAL_THIS_TASK": "NOT_RUN",
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FACTORY_CHILD_STARTS_THIS_REVISION": 0,
+  "FACTORY_COMPONENT_EXECUTED_THIS_REVISION": "NOT_RUN",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_R68_DRIVER_MIGRATED": "NO",
+  "REAL_EXPLORER_AUTONOMY": "NOT_RUN",
+  "REAL_MODEL_USAGE": 0,
+  "REAL_PROVIDER_THIS_TASK": 0,
+  "REV1_FACTORY_COMPONENT_EXECUTED": "YES_HISTORICAL",
+  "RPF73_RUNTIME_REGRESSION_RECOVERED": "YES",
+  "SDK_FACTORY_QUOTA_REUSED": false,
+  "SDK_GUARD_MIGRATED": "NO",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "WIN10053": "WIN10053_NOT_REPRODUCED_IN_THIS_REVISION",
+  "WIN10053_FIXED": "NOT_PROVEN",
+  "abi": "rpf73r2-runtime-runner-replay-v1",
+  "base": "19c5d28baab0e10b34dbf821ce07cc187bdd9c8f",
+  "branch": "codex/rpf-73-rev2-runner-env-loopback-regression",
+  "gates": {
+    "G0": {
+      "evidence": "Exact Base/remote/main/17 absent paths, ignored owned non-reparse root, pinned SDK/JAR/Python and immutable rev1 Source",
+      "status": "PASS"
+    },
+    "R2-A01": {
+      "evidence": "New runner owner/ABI/source raw/LF/Git blobs; rev1 e4ea identity preserved, separate snapshot/root",
+      "status": "PASS"
+    },
+    "R2-A02": {
+      "evidence": "32 actual process negative refusals, no appended PATH, actual sanitized child/full digest matches admission, finite OS variables",
+      "status": "PASS"
+    },
+    "R2-A03": {
+      "evidence": "Seven actual unchanged R72R3 tests PASS; targeted env kernel raw bytes match frozen kernel; prefreeze routing-only changes versioned",
+      "status": "PASS"
+    },
+    "R2-A04": {
+      "evidence": "Three original loopback targeted tests and two separate contrast situations, call stages/status/port closure; root cause NOT_PROVEN",
+      "status": "PASS"
+    },
+    "R2-A05": {
+      "evidence": "26 new runner + original rev1 30 focused, pins/source audit, no Factory run/case",
+      "status": "PASS"
+    },
+    "R2-A06": {
+      "evidence": "24 original public/native verifiers and R69 CLI0/2/3; old private manifests unavailable/not read",
+      "status": "PASS"
+    },
+    "R2-A07": {
+      "evidence": "One standard full discover exit0, actual final summary, zero errors/failures, exact ID/2 Docker class skip accounting and byte-identical snapshot",
+      "status": "PASS"
+    },
+    "R2-A08": {
+      "evidence": "Seven rev1 PATH fixture errors recover in runner only; original HTTP case no A07 ERROR; 10053 NOT_REPRODUCED, not FIXED",
+      "status": "PASS"
+    },
+    "R2-A09": {
+      "evidence": "Evidence layers separated, current scoped processes/ports cleaned, old user/WAL/source preserved; no real model/business/Issuer",
+      "status": "PASS"
+    },
+    "R2-A10": {
+      "evidence": "Artifact generation state: Source pushed and dual-read; final receipt push and two Git/API HEAD/blob/diff readbacks are supplied in final chat, not self-amended",
+      "status": "NOT_RUN"
+    }
+  },
+  "host_key_lookups": 0,
+  "old_factory_private": "UNAVAILABLE_NOT_READ",
+  "owner": "rpf-73-rev-2",
+  "plan_id": "RPF-73",
+  "raw_environment_not_exported": true,
+  "rev1_source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "revision": "rev-2",
+  "source_commit": "c03853c4a347f6f926135d4ccd060e6a8098ec0c",
+  "source_identity_sha256": "6fc5ec95b69953bb891f4e58d5fc1d62a89177cc099b2f0114b80203d53f9979",
+  "status": "Complete"
+}
