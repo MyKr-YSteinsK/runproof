@@ -1,0 +1,16 @@
+{
+  "deadline_utc": "2026-10-27T22:42:07Z",
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "first_full_attempt": "STOPPED_BY_OPERATOR_BEFORE_BUDGET_EXCEEDED",
+  "g0_started_utc": "2026-10-27T10:42:07Z",
+  "generated_utc": "2026-10-27T13:57:54.771098+00:00",
+  "maximum_window_hours": 12,
+  "prior_rev2_observed_elapsed_seconds": 384,
+  "rev3_elapsed_seconds": 11747.771098,
+  "revision": "rev-3",
+  "second_full_attempt": "PASS_WITH_USER_ADDITIONAL_BUDGET",
+  "source_commit": "1863044d8927ca71a443a63f32199f950a29f509",
+  "source_freeze_utc": "2026-10-27T10:56:52.451097+00:00",
+  "source_push_observed_utc": "2026-10-27T13:57:29Z",
+  "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7"
+}

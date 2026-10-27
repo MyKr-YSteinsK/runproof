@@ -1,0 +1,30 @@
+{
+  "F_cli_exits": [
+    0,
+    2,
+    3
+  ],
+  "N_cli_exits": [
+    0,
+    2,
+    3
+  ],
+  "business_unknown_followed_by_provider_reserve": "FAIL",
+  "business_unknown_reserve_sequences": {
+    "config-java-http": [
+      205,
+      233
+    ],
+    "order-sqlite": [
+      433,
+      461
+    ]
+  },
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "explorer_response_id": "FAIL_MISSING_FOR_ALL_FOUR_EXPLORER_CHOICES",
+  "finding": "The frozen source does not prevent new native provider reservations after a domain tool returns UNKNOWN_OUTCOME.",
+  "negative": "PASS",
+  "physical_sdk_receipt_binding": "FAIL_NOT_INDEPENDENTLY_READ_OR_BOUND",
+  "plus_one": "PASS",
+  "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7"
+}

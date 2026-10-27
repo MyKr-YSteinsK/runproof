@@ -1,0 +1,20 @@
+{
+  "alternatives": {
+    "new_sdk_guard": "greater guard surface and regression impact",
+    "task_owned_v2": "isolated but duplicates code",
+    "thin_shared_factory_domain_port": "lower duplication, requires new compatibility proof"
+  },
+  "closure_files": 49,
+  "common_mode": "Offline and online share pinned slot definitions; independent wire usage arithmetic exists, local fixture is self-reported.",
+  "decision": "TASK_OWNED_VERSIONED_FACTORY_AND_NATIVE_PROVIDER_RESOURCE_TICKETS",
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "does_not_prove_real_external_provider_budget": true,
+  "module_abi": "rpf74r2",
+  "native_early_slot_output_cap": 256,
+  "native_provider_resource": "SYNTHETIC_FIXTURE_ONLY",
+  "observed_fixture_completion_tokens": 20,
+  "plan_revision": "rev-3",
+  "source_files": 15,
+  "source_lines": 2164,
+  "wire_request_output_max": 512
+}

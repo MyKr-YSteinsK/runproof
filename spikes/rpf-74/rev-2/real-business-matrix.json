@@ -1,0 +1,103 @@
+{
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "external_provider_http": 0,
+  "issuer": "NOT_ESTABLISHED",
+  "policy_conformance": "FAIL_NEW_PROVIDER_RESERVATIONS_AFTER_BUSINESS_UNKNOWN",
+  "policy_failure_scope": "same affected domain after UNKNOWN_OUTCOME; business writes were not repeated",
+  "sessions": {
+    "F": {
+      "domains": [
+        {
+          "backend": "REAL_JAVA_H2_HTTP",
+          "business_writes": 2,
+          "cleanup": {
+            "key_reference_released": true,
+            "port_closed": true,
+            "process_gone": true
+          },
+          "domain": "config-java-http",
+          "fault": {
+            "agent_exposed": true,
+            "observed": true,
+            "planned": true,
+            "transport_error": "RemoteDisconnected",
+            "triggered": true
+          },
+          "oracle": "CONTRACT_SATISFIED_IN_RUN",
+          "sdk_pid": 7616,
+          "sdk_requests": 5
+        },
+        {
+          "backend": "REAL_LOCAL_SQLITE",
+          "business_writes": 1,
+          "cleanup": {
+            "connections_closed": true,
+            "database_retained": true,
+            "exclusive_lock_probe": true
+          },
+          "domain": "order-sqlite",
+          "fault": {
+            "agent_exposed": true,
+            "observed": true,
+            "planned": true,
+            "transport_error": "RemoteDisconnected",
+            "triggered": true
+          },
+          "oracle": "CONTRACT_SATISFIED_IN_RUN",
+          "sdk_pid": 23512,
+          "sdk_requests": 4
+        }
+      ],
+      "manifest_sha256": "f832074f0b3dc2a51cd6cc2f7dad451b446dadfa8a17603dd16d0ca2ae31b650",
+      "session_id": "rpf74r2-9ffcfcc2ca4fc0c1",
+      "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7"
+    },
+    "N": {
+      "domains": [
+        {
+          "backend": "REAL_JAVA_H2_HTTP",
+          "business_writes": 2,
+          "cleanup": {
+            "key_reference_released": true,
+            "port_closed": true,
+            "process_gone": true
+          },
+          "domain": "config-java-http",
+          "fault": {
+            "agent_exposed": false,
+            "observed": false,
+            "planned": false,
+            "transport_error": null,
+            "triggered": false
+          },
+          "oracle": "CONTRACT_SATISFIED_IN_RUN",
+          "sdk_pid": 3744,
+          "sdk_requests": 4
+        },
+        {
+          "backend": "REAL_LOCAL_SQLITE",
+          "business_writes": 1,
+          "cleanup": {
+            "connections_closed": true,
+            "database_retained": true,
+            "exclusive_lock_probe": true
+          },
+          "domain": "order-sqlite",
+          "fault": {
+            "agent_exposed": false,
+            "observed": false,
+            "planned": false,
+            "transport_error": null,
+            "triggered": false
+          },
+          "oracle": "CONTRACT_SATISFIED_IN_RUN",
+          "sdk_pid": 18924,
+          "sdk_requests": 3
+        }
+      ],
+      "manifest_sha256": "f2aba6e9296367a8ed0e8e30852a50474e864d9a44f33f296bdfc563ffc9b49e",
+      "session_id": "rpf74r2-df23cbdbacc34413",
+      "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7"
+    }
+  }
+}

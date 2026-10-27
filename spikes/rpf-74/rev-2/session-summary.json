@@ -1,0 +1,22 @@
+{
+  "api_cost_cny": 0,
+  "business_unknown_new_reservation": "FAIL",
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "development_sdk_children": 4,
+  "external_provider_http": 0,
+  "formal_sdk_children": 4,
+  "formal_sessions": 2,
+  "historical_full_accounting": "DESCENDANT_POLLING; MAY_MISS_SHORT_LIVED_PROCESSES",
+  "historical_full_jvm_observed": 4,
+  "historical_full_sdk_direct_observed": 13,
+  "historical_full_wal_recorded_jvm": 4,
+  "historical_full_wal_recorded_sdk": 11,
+  "host_provider_key_reads": 0,
+  "physical_symlink": "UNAVAILABLE_WINERROR_1314",
+  "plan_revision": "rev-3",
+  "previous_component_provider_tickets": 1,
+  "real_junction": "PASS_FULL_SUITE",
+  "real_provider_tokens": 0,
+  "sanitized_child_absence_probe": "PERFORMED",
+  "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7"
+}

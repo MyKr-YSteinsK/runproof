@@ -1,0 +1,423 @@
+{
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "explanation": "All four scripted Explorer MODEL_RESPONSE objects omit a response id; targets have synthetic response ids.",
+  "explorer_response_id_gate": "FAIL",
+  "sessions": {
+    "F": {
+      "external_provider_http_calls": 0,
+      "native_provider_resource_tickets": 11,
+      "reserved_tokens": 474000,
+      "tickets": [
+        {
+          "domain": "config-java-http",
+          "input_upper": 173,
+          "ordinal": 1,
+          "output_cap": 128,
+          "request_sha256": "2d7e4972163d94553019ef75e6fcbeb5bb229408fd36203a04ac45583ed8d1cd",
+          "response_id": null,
+          "role": "EXPLORER",
+          "round": 1,
+          "slot_cap": 32000,
+          "stage": "SELECT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-1",
+          "usage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 173,
+            "total_tokens": 173
+          },
+          "wal_seq": 19
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 1496,
+          "ordinal": 1,
+          "output_cap": 256,
+          "request_sha256": "25b294e60b4207fd0d1cba6e6563d9e65822370e911b235f75c73e9dab8b4edc",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-1-response-1",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 10000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-2",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 984,
+            "total_tokens": 1004
+          },
+          "wal_seq": 103
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 1765,
+          "ordinal": 2,
+          "output_cap": 256,
+          "request_sha256": "64503a444f0a0248650b9b9a2412c3efebffee02566987cdc404522cd17878f6",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-1-response-2",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 30000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-3",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1253,
+            "total_tokens": 1273
+          },
+          "wal_seq": 131
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 2099,
+          "ordinal": 3,
+          "output_cap": 256,
+          "request_sha256": "342d859c02bd2afeadea7858d3ab854a99bb01700a8777b0e771ec1cf991ea01",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-1-response-3",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 50000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-4",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1587,
+            "total_tokens": 1607
+          },
+          "wal_seq": 167
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 2536,
+          "ordinal": 4,
+          "output_cap": 512,
+          "request_sha256": "c3b2870328d95ebb9b3b639452929a8e2575b64ed741ce38f054d255fc3655da",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-1-response-4",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 70000,
+          "stage": "READ_ONLY",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-5",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 2024,
+            "total_tokens": 2044
+          },
+          "wal_seq": 205
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 2843,
+          "ordinal": 5,
+          "output_cap": 512,
+          "request_sha256": "efec1600b57bb6566630013562ee0d54a92ab1d41a6e4fc8545dd96547e2fd24",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-1-response-5",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 90000,
+          "stage": "READ_ONLY",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-6",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 2331,
+            "total_tokens": 2351
+          },
+          "wal_seq": 233
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 568,
+          "ordinal": 1,
+          "output_cap": 128,
+          "request_sha256": "29e3610836c8d305919a911cce34b86cc555df81f2d4e5bb1dc35533d1ffac32",
+          "response_id": null,
+          "role": "EXPLORER",
+          "round": 2,
+          "slot_cap": 32000,
+          "stage": "SELECT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-7",
+          "usage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 568,
+            "total_tokens": 568
+          },
+          "wal_seq": 320
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 1786,
+          "ordinal": 1,
+          "output_cap": 256,
+          "request_sha256": "09604ce441db2f737cc0b967024aa49dcc89b501f4af4125809d7bc558cf091b",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-2-response-1",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 10000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-8",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1274,
+            "total_tokens": 1294
+          },
+          "wal_seq": 383
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 2167,
+          "ordinal": 2,
+          "output_cap": 256,
+          "request_sha256": "d142c3d8bd86608c9f4b0e06127122024934a80e20f2aeb838a38ad658e8aabe",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-2-response-2",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 30000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-9",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1655,
+            "total_tokens": 1675
+          },
+          "wal_seq": 403
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 2681,
+          "ordinal": 3,
+          "output_cap": 512,
+          "request_sha256": "6a9c8466863a30a4081eed9371a1355e731e9946f04c674fefd2740e4effb487",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-2-response-3",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 50000,
+          "stage": "READ_ONLY",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-10",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 2169,
+            "total_tokens": 2189
+          },
+          "wal_seq": 433
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 3291,
+          "ordinal": 4,
+          "output_cap": 512,
+          "request_sha256": "3a20f7f2e52b6de64fea7cc1691a0738d3d86edd03ae5ef5bc43987bc8d0294f",
+          "response_id": "rpf74r2-9ffcfcc2ca4fc0c1-2-response-4",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 70000,
+          "stage": "POST_RECONCILE_TERMINAL",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-11",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 2779,
+            "total_tokens": 2799
+          },
+          "wal_seq": 461
+        }
+      ]
+    },
+    "N": {
+      "external_provider_http_calls": 0,
+      "native_provider_resource_tickets": 9,
+      "reserved_tokens": 314000,
+      "tickets": [
+        {
+          "domain": "config-java-http",
+          "input_upper": 173,
+          "ordinal": 1,
+          "output_cap": 128,
+          "request_sha256": "2d7e4972163d94553019ef75e6fcbeb5bb229408fd36203a04ac45583ed8d1cd",
+          "response_id": null,
+          "role": "EXPLORER",
+          "round": 1,
+          "slot_cap": 32000,
+          "stage": "SELECT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-1",
+          "usage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 173,
+            "total_tokens": 173
+          },
+          "wal_seq": 19
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 1496,
+          "ordinal": 1,
+          "output_cap": 256,
+          "request_sha256": "5d6c0a66b66f565b6730d8f9127473a9f874b3302aa0228a01e4f8a1ea14af5a",
+          "response_id": "rpf74r2-df23cbdbacc34413-1-response-1",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 10000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-2",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 984,
+            "total_tokens": 1004
+          },
+          "wal_seq": 103
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 1765,
+          "ordinal": 2,
+          "output_cap": 256,
+          "request_sha256": "daf1c002612bc1a9617110ac5066bcf8624eb0e4543bf8b31f9efad7e5e53355",
+          "response_id": "rpf74r2-df23cbdbacc34413-1-response-2",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 30000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-3",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1253,
+            "total_tokens": 1273
+          },
+          "wal_seq": 131
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 2099,
+          "ordinal": 3,
+          "output_cap": 256,
+          "request_sha256": "6de9522380673f442bce36fa2b621e3406adef9cc04ab30909dc027673da2b63",
+          "response_id": "rpf74r2-df23cbdbacc34413-1-response-3",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 50000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-4",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1587,
+            "total_tokens": 1607
+          },
+          "wal_seq": 167
+        },
+        {
+          "domain": "config-java-http",
+          "input_upper": 2456,
+          "ordinal": 4,
+          "output_cap": 512,
+          "request_sha256": "a026fee6d2a12245af62a34228681b701570c370321f46caf9dc2457c1f72355",
+          "response_id": "rpf74r2-df23cbdbacc34413-1-response-4",
+          "role": "TARGET",
+          "round": 1,
+          "slot_cap": 70000,
+          "stage": "READ_ONLY",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-5",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1944,
+            "total_tokens": 1964
+          },
+          "wal_seq": 203
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 535,
+          "ordinal": 1,
+          "output_cap": 128,
+          "request_sha256": "24bf1b04bf45298746f01ec255f6c772da7dde813a12fbb7585759bf5e3cdd57",
+          "response_id": null,
+          "role": "EXPLORER",
+          "round": 2,
+          "slot_cap": 32000,
+          "stage": "SELECT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-6",
+          "usage": {
+            "completion_tokens": 0,
+            "prompt_tokens": 535,
+            "total_tokens": 535
+          },
+          "wal_seq": 290
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 1786,
+          "ordinal": 1,
+          "output_cap": 256,
+          "request_sha256": "57de89c93ae8e49911b96f4aa0c9507e740cf4e6e3157600afe4077b09f899f1",
+          "response_id": "rpf74r2-df23cbdbacc34413-2-response-1",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 10000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-7",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1274,
+            "total_tokens": 1294
+          },
+          "wal_seq": 353
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 2167,
+          "ordinal": 2,
+          "output_cap": 256,
+          "request_sha256": "21a70e920b1247865280e80260c75500a17db3dbc5a539d73f5ca6242f785a54",
+          "response_id": "rpf74r2-df23cbdbacc34413-2-response-2",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 30000,
+          "stage": "PRE_COMMIT",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-8",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 1655,
+            "total_tokens": 1675
+          },
+          "wal_seq": 373
+        },
+        {
+          "domain": "order-sqlite",
+          "input_upper": 2696,
+          "ordinal": 3,
+          "output_cap": 512,
+          "request_sha256": "9d251cfd76ec6fa19d885c88441f4208c424bace75ba0b2a9a5554e6987145af",
+          "response_id": "rpf74r2-df23cbdbacc34413-2-response-3",
+          "role": "TARGET",
+          "round": 2,
+          "slot_cap": 50000,
+          "stage": "READ_ONLY",
+          "status": "RECEIVED_SYNTHETIC",
+          "ticket": "provider-9",
+          "usage": {
+            "completion_tokens": 20,
+            "prompt_tokens": 2184,
+            "total_tokens": 2204
+          },
+          "wal_seq": 401
+        }
+      ]
+    }
+  },
+  "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7",
+  "usage_type": "SYNTHETIC_VALIDATED_USAGE"
+}

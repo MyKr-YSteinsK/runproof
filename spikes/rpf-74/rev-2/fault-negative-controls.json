@@ -1,0 +1,991 @@
+{
+  "attempts": 121,
+  "business_unknown_new_reservation_control": "FAIL",
+  "business_unknown_reserve_sequences": {
+    "config-java-http": [
+      205,
+      233
+    ],
+    "order-sqlite": [
+      433,
+      461
+    ]
+  },
+  "cases": [
+    {
+      "anchor": "35ab8a394ff751851fdaa3d3d5fc2e5e22d9f02714b3bb3f2e5e1403e7533e67",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_00",
+      "reason": "SLOT_ORDINAL",
+      "status": "PASS"
+    },
+    {
+      "anchor": "d17962166ba0e1aa8927657fbc98c9e76d010f141a4de7e69ad5ac131539a924",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_01",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "2db7ddb77c7beb50a7d3e02ed573c22eeee8f6216c4cc616653858515ed71d0f",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_02",
+      "reason": "SLOT_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7a520d4afe06664b2b55d9fba1c55fff4ede1a7ac7d33a52feb1440b7843988e",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_03",
+      "reason": "SLOT_STAGE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "38e42c68e0a2340d53a01891b666c8ea83f4bbe5988e8174f14e5d8a7f28a2ab",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_04",
+      "reason": "SLOT_STAGE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "3975fb9b2bb69023e834a16da1fe44422727e1a7650be56b67e0e81f37476857",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_05",
+      "reason": "SLOT_STAGE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7e77e8f083cfbda2cb8e537658acc72da566114d2d146748344c991147bc428e",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_06",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "2d0257c99634513822a68485a97529e84b60bcf33b383da2e1814876565b47b1",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_07",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "5e8e641568f60ac5b1840064e26a9d915f17d0d867c577ee9b0978dcd7b6d6ac",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_08",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f62336ebd463675bfc7de1ed8ae8deae90116eb44311e2206dd50e8be0071989",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_09",
+      "reason": "SLOT_INPUT_BOUND",
+      "status": "PASS"
+    },
+    {
+      "anchor": "b1715538e1b9da57c0684dc0a7b3e0bedb68d37d9c3b692cb148131dd896797d",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_10",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f77c078b856e7d1a9eaae8962112bb48f6a2c1f06b47ba9902c63fa2132b9a8f",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_11",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "0440b82250719538462ce075556c11af142c259a01a9be19af60610c2de21894",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_12",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "a32a7e731f6d44afd382b5b5ee96ad661feff1fc1a6720a01c0886c3c2f09dd7",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_13",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "960b382fd4401c2c06e01bfeb3a077eca08785fbc9d3eb5ed06858671f204446",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_14",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "93a8a018a437090e57fdd4612c8e06e76c37df52db8f1d03d05c52c40034db29",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_15",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "fb12109fd7c00e7c482b0febcf15f0e628cac22d581abfa0ae866b753d981574",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_16",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "ed64556a2bfc9e69f93c328761d71681fa614e8d3b33d55767c5adc114c45bb4",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_17",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7808a03fbc346cd636e5ec0b784b7ad8142ce293f6c699b08f1e82075cfce2bb",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_18",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "781fbbb859fab05e5bdeec33a0d4a23db3fa035aa2e66c419cae726c084c27b8",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_19",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "194177f4082d0bb63241915f466a11629bedb88c10c36d4d72ad9b8f36d0958d",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_20",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "73eaa14904ce7f32c809334f135f227d9561da6320a7bb8690d0872e9c7e2bfa",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_21",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "ceda5e991c1bb69064c4f7b8f788f934717cefd380f5fd21abe23530a1836ee2",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_22",
+      "reason": "SLOT_INPUT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "5e4aa3e1326e9dcedb19d255233a42c1d7a017fc12ca7082ca9e0921bea77f3f",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_23",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "9f36736c5fd004e53dcef12e6be2e052bea18b2a3f2bd65511a02ba8130c5b67",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_24",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "46ec1a63f98a1abf2bd0a93b42cc91a3c5c2b4df8c3b0f5c0e630b66b8dfb600",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_25",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "75a444b66d867f434898a52812406704912dd54e2e3c8119409fc49b18caff5d",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_26",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "4801e281c44ee86406d845f04581b534bea1f55caf08949f66066fadf26dafd2",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_27",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "ff8882bb1cb79447576f09d7f34b2f13d030c810d63beb72cf759245bcfc2410",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_28",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c5d1a4ae581760f589058f0b8099793191f32eeaf7bd18af726b7df48cda12f7",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_29",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "5bf5eafcd6fda87015a564daa7e523441f1128e1281bb7fca212d5d4edea97df",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_30",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "72988d91dc12a723aee566ef0b42762b813faff8d37ad4f8988231d773d58a34",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_31",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f1a3b28665b50f59e59ccc142074c458f86dc0d1b3815fc1587377d19864cec2",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_32",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c6f16d70d5d379585dbb0582de153b29c41b2b39af1b34e090843839fada944c",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_33",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "06d63a5d3092c5769788a103822124fc6f3795f88a0cc4089bcdfa09a2e33a6d",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_34",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "dbf810d1c290da5b3a358f2f12291e18f639e69ebbea7a884fac4ab44b20c7d4",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_35",
+      "reason": "SLOT_PROOF",
+      "status": "PASS"
+    },
+    {
+      "anchor": "a438525bc467656816e5d6ace8aef270015e7b81ee03239b55a9d188c61614b1",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_36",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "4cc84e720e1b4184f67176f76e8f106aacbe77143cd8f9aa5cd238643cfdb7bb",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_37",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "4b0de9388d5890540ac1152de0fafa01658814b17fb23c4af77a4927c7f30b90",
+      "category": "SLOT",
+      "exit": 3,
+      "label": "SLOT_38",
+      "reason": "SLOT_CONTRACT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f19f4d0f911faa79fe1942175e2e8878fb91ab2f1b93b49e25488983742ca56c",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_00",
+      "reason": "SYNTHETIC_PROMPT_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "anchor": "93ee82c712fb9087f5c119a96f0f206631c063dc6103ae487d7fcbaa6a3071fd",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_01",
+      "reason": "SYNTHETIC_PROMPT_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "anchor": "e6a1f4cb21a22c5c644de6225abce4b1bfad077641f84545f1a12acd23c25f2c",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_02",
+      "reason": "SYNTHETIC_COMPLETION_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "anchor": "bf8325c7bc7322c2eafac287f2f98706226c15277a4903c0f8d7d8e0a519db87",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_03",
+      "reason": "SYNTHETIC_COMPLETION_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "anchor": "baba77ac9bf9c64b139125a7d8be291c3685e17c61c34ca2e5587ae706c6892d",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_04",
+      "reason": "SYNTHETIC_COMPLETION_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "anchor": "1cedc2b0356c22fa77056c81083f035cf797987d009d215390e90ab59a0ebfbc",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_05",
+      "reason": "SYNTHETIC_COMPLETION_MISMATCH",
+      "status": "PASS"
+    },
+    {
+      "anchor": "52b3605badbb2884864e35b6175f942a4b1dc39f6cbbb0d1abf9f617903c7ce6",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_06",
+      "reason": "SDK_USAGE_SLOT_BOUND",
+      "status": "PASS"
+    },
+    {
+      "anchor": "9b4884115e4cc20f3371fdd8931cd4359d410ad11f9cd98b818832891875888b",
+      "category": "COUPLED",
+      "exit": 3,
+      "label": "COUPLED_07",
+      "reason": "SDK_USAGE_SLOT_BOUND",
+      "status": "PASS"
+    },
+    {
+      "anchor": "525e30e5e48add83b3df6851a10e500dbd26b5cf0c47fa33d70ee42e85ebf8e1",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_00",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "6269d9f1980a5c8d0bc523ddf26b6428c4cef2e2d165ceae9fa795d72e644bf6",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_01",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "eb76aac425703a8c17e622a42fb2eea5ac630ece63cb4d861f94f874edc68a8f",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_02",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "753e072728691bd61fa209061233a90bd5ba85b411d49820e488c1f706989d47",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_03",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "b875e0ea8fae17ac96c0c2064f38b19d056472c91c77c2493e8a9647596601b4",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_04",
+      "reason": "CONTEXT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7d8c0ccc4af6774844f6a49c7434167edf3ef551dd15a696145e40f0d43c075c",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_05",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "e2c6d3906f087b9d9dfda59d859d8e963f5ab0fa83dbff9279faebb1ead932b7",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_06",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "b87b6c24276802cbeb047680ff77a88cb1b56670c4e9463150607a61fddd4af1",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_07",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c30d9f997045d776c9bb096048d522de050fc8e4598873c6e28732e851d6069b",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_08",
+      "reason": "MANIFEST_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "782db973abbd10d8b0d0a475c56506b9b5ef0cbe606e91ea0e8ccc4ad3ba52a5",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_09",
+      "reason": "CONTEXT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "d7d67e9f7997e87f4c280c6208570ad30f9294c665039acb349a5e8b4c1066ee",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_10",
+      "reason": "CONTEXT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "cd1c2d56545bc53e529ec8da58b2e685c5328e8afffeb60e7e394d0312cb8094",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_11",
+      "reason": "CONTEXT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "261162ed6b0e7f461aeaa22522433e1ad39984624c78eeea9528835f73088284",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_12",
+      "reason": "CONTEXT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "84357c46c55c311120ea3774ecb4478e2d78d9e43db9773b55cb6e6d52cb7795",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_13",
+      "reason": "RUN_ID",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f6f8fa352f3ed27bbea7e25c5b917896c24ca5d7839b8d9c559d94e5c893586e",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_14",
+      "reason": "CONTEXT_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "56f9f634dcf485699c146001a394a1d4f7bec1b7d41735b094478eab58404f67",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_15",
+      "reason": "POLICY_OR_SESSION",
+      "status": "PASS"
+    },
+    {
+      "anchor": "d1b85e2c3e76b994b923a552a5e10b5442b11e9a282412a80103f1d6797db3f6",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_16",
+      "reason": "POLICY_OR_SESSION",
+      "status": "PASS"
+    },
+    {
+      "anchor": "4dd58450bdda4a7981ffc715c7688efb9bf1a30dd8a41d92bb1705778aebe771",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_17",
+      "reason": "POLICY_OR_SESSION",
+      "status": "PASS"
+    },
+    {
+      "anchor": "255ed7dcaddc0b60654c5fe24c446a51fbe62509aff7e22557896dab97a18f86",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_18",
+      "reason": "POLICY_OR_SESSION",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7a7dd1a9099273aaa2c47da39d2e47e187b18ca975f69d7ac3280b93fd414708",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_19",
+      "reason": "CHOICE_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "ef38d1150fcfa569365e93b7bc92917e131cd5e9713c315d9786713734a0dc1b",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_20",
+      "reason": "CHOICE_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "4c8584de7dbab9065c33cacaf478079350a5128eb7fd70dec27cfff5403fe135",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_21",
+      "reason": "CHOICE_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "2aa44c7cb3001a066090cae9c54ea46d27df85917b93b37f5798efbb1e858149",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_22",
+      "reason": "CHOICE_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "fd12118a079d4c5cb2e92244c7b1d817778cbf61d2d60f621cb9d1c99b7eaa42",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_23",
+      "reason": "CHOICE_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "587f4ae670165a88d90fb09d3c833fd89d1809a004520c5abb402b8d14bbf72c",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_24",
+      "reason": "CHOICE_SCOPE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c309e507cd4ece6af31c1fdbc4e9760301cfd7452702032e6d37ddf03160034a",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_25",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "49f8ca08354bc4a38d45e9c34c6f863e1988558787da61698ea6518a33c40806",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_26",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "acffff8f4c8bea59e1bff3b159067c6c3dc0b64ce6a87d412a77e4961c3930a0",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_27",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "86d951e42c389fdb48386c4faf7e64318f489e70c4d3cfb257d25e5ddef6673c",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_28",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c901bf800fa881bef646ce4ce43620596dec22ef094d014205d4772ffad6a078",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_29",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "2a4101068e2f15f2434b661ab9d3dc3b3001b993ffb440bbb2ec4c5ba1a613ae",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_30",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f283ed6da8997ad22486452784c6987c8738a2d167e7748c1a9199f05a392166",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_31",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c84152bbb991d37a94fba69bcb42c5d51dcc934a058e970b40cb9cc60a6279f2",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_32",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "83f2a8a21ac331e9c5eb821e08d1b936cae85df10e62f2b931650bffc7807716",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_33",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "54fcbfe6abafb5bb4274a190fa2c1f8fdf82835ed3b74f0e615eba4a850b5cb2",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_34",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "3b2dffb317be2f72f2b2a1f49cf229dc628934871b441319f9caab0649405e10",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_35",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "96183cd2504b89ee32c01ea420533f5bf8ce36dd6da72c8094d572175af4b58b",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_36",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "88d61d6c95f1f6d7f142246a2e01e20c9161348da548e6bdc105696996fb8c85",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_37",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "09b9008e753f9248a5f2650fe9385259ac3008d6891f713111b7aaf0788a83e3",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_38",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "654e18df0dae1e1cb79c51e48ac5c324c17534eae593891d67aaa3c466a680f8",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_39",
+      "reason": "FAULT_FOUR_STATES",
+      "status": "PASS"
+    },
+    {
+      "anchor": "c0e1cb6b788e56e71d0fa2d7fd7a93535d1b88975a57b4fdf33140a4a22e8947",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_40",
+      "reason": "FAULT_TRANSPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "dc75715bf11f4fac7a5c7155a2266837339b5ad5d567fdb18a82137cf061a952",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_41",
+      "reason": "CONFIG_AFTER",
+      "status": "PASS"
+    },
+    {
+      "anchor": "32fa2774cc34e3410543ae6d43cdc9e78881f44ab1d75d5c6d3f2d910cd5e987",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_42",
+      "reason": "ORDER_DATABASE_AUTHORITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "5ef0873b54e1d39dfe0aeb34e2076793e82b82980d3fcaccf85fd94b66c95363",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_43",
+      "reason": "DOMAIN_EVIDENCE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "fec972fac397f020ec0de4604f0332272c97b34d395005a9cbb3fe9ea9d96177",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_44",
+      "reason": "DOMAIN_EVIDENCE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "9031985760cd4754eb83653c546e1fd189e5c8f343ceb04bda16c9ed0d7e1f4e",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_45",
+      "reason": "CALL_SEQUENCE",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7cce223f96ad140ea3a3a02a48069c7262f7694236b6a19cc0f7d9bcaaab1570",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_46",
+      "reason": "SDK_TOOL_RESPONSE_BINDING",
+      "status": "PASS"
+    },
+    {
+      "anchor": "df72188abc462ba835ed60eef4557e161ce5383120c25bf22e31a9212195418a",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_47",
+      "reason": "CALLBACK_CONTENT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "606d2ec953c1eca31f507714eb8fdd1c97f59a7055b8348037d930f4c70ec3d3",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_48",
+      "reason": "ORDER_AUTHORITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "1c9c6e749a68d4ffb9227a3c888fd58bc4c5675e3ca6cda52bcd31bb6080bc73",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_49",
+      "reason": "ORDER_AUTHORITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f54b5800983a01913c2813d72c1818be6973a8959fe21975504a10d611753f66",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_50",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "a0d1b30068eb0aa247c155ce9bb7c6ebc3ccbed90e73a3580ef930956e596f89",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_51",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "4307657c639846eafd49a501be5dd5765ee705b0fb7a7d084cbbe6fe519fc6b0",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_52",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "98576eb74f733e096daa715a13da063e4e3139c16ac601365a19bcab5455c0aa",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_53",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "143e390cb394e2b82a8673b8f021afad30ddb9b0589b756fe2238381bebcb30b",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_54",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "1df05260bee1d3c1695e35ec3da14ba123653e541925f1bc7f0ebcaba9316a76",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_55",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "90a7863e70b38b1737bb24b217f84d4f6cb718cc6cefe9de6ba1f1b5225fc457",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_56",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "cf7f7953edcee069c7936d216aa0420cc183f44e7e5fbd664d861a42918638a7",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_57",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "656b135fa0da1f66777b595b678a14c6886a4af5da8e6047a0e859a204c0913d",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_58",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "ba6248c63ad273973a296be8fd2757a67136ea88ed3a9cf7f2caf994567c85fc",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_59",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7e2d88679b8304cca2ba4bf789aea12ceaaffdf2e4800922f93f691320d27396",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_60",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "649949659de0c61427d9db6f6898d300a7e0fcebf2fa84e02e42b69891eeaa35",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_61",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "e55157532ef3ef383d2a4ca309a23048d9d4e1dc4ce27652c60fc8fc8526d0d0",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_62",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "046f5b3eae4bea4bee04ec9f0e28b63cbd784a6b3810d8592d1bf88a684728a2",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_63",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "d784739b3e21c468e999bf1b565b9d6b4f22b14f5a11260b674252384925354a",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_64",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "3e19cca7a2398b3fbe1ba9a313db5c1b0a9f76f41dc467f25ace0d993dfa1f10",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_65",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "e35a13808151cf5980ad9d25bd0c0af304e00298aae5553707eb81c5778babe4",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_66",
+      "reason": "SDK_RAW_PROCESS_REPORT",
+      "status": "PASS"
+    },
+    {
+      "anchor": "7ae3e6312d31eb10b040a37778b49e78ca4fdfa606b6772950f87eb384a8e750",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_67",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f2d16b3164cfd3ba6fb66c58ca7a85f8593e4d2a40bebe2f5b25db24f9f0108e",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_68",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "f6d5036985a6275e46be0a590bf21d6df3c3a33f43afa3c468324fd9837b8ad4",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_69",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "d9e11980e0a3005343017913e6c05780990a29b90687401ffd50dde19bafbf3d",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_70",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "73650d846667812cded19ec9c4f13344c439ba5776e65bea004b9b5ac5b48807",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_71",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "8021fa1a09af76a5b52b84f210058c3290880c7d2189a1f976d23f34e9ab06f2",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_72",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "anchor": "e17ced73526d1a87f36ebbb3b4b6711b0eb99b24b5ad3d988f32ce70964771a8",
+      "category": "MANIFEST",
+      "exit": 3,
+      "label": "MANIFEST_73",
+      "reason": "SDK_IDENTITY",
+      "status": "PASS"
+    }
+  ],
+  "coupled_passed": 8,
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "note": "121 generated cases did not cover actual business UNKNOWN_OUTCOME followed by new model reservations.",
+  "passed": 121,
+  "slot_passed": 47,
+  "status": "PASS",
+  "test_invalid": 0
+}

@@ -1,0 +1,23 @@
+{
+  "baseline_exit": 0,
+  "baseline_sha256": "cda6a6530ffc4a747191f4da913af3ead1f4789331109d7119b9b8cb5735ecec",
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "independent_usage_recompute": "PASS",
+  "limitation": "The manifest embedded SDK receipt is reanchored, but verifier does not read and bind the separately persisted launch-receipt.json.",
+  "mutant_exit": 3,
+  "mutant_sha256": "235bd7d8d4be3d6fe5065e676e4e7131da7b955c976d065f50750b5017533b95",
+  "physical_launch_receipt_file": "NOT_COPIED_OR_CHECKED_BY_VERIFIER",
+  "reanchored": [
+    "stdout",
+    "embedded_sdk_receipt",
+    "policy",
+    "owner",
+    "wal",
+    "manifest",
+    "raw_anchor"
+  ],
+  "reason": "SDK_USAGE_SUM_MISMATCH",
+  "source_sha256": "aff9b4b1c87c0562ae96fbd70f100b4bcab84357188ea60c1c5429e0b6d813f7",
+  "status": "PASS",
+  "third_party_signature": "NOT_ESTABLISHED"
+}

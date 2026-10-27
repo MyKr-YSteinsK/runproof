@@ -1,0 +1,14 @@
+{
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "explorer_response_id": "FAIL_MISSING",
+  "fixed_sdk": "PASS_LOCAL_SCRIPTED",
+  "l2_causal_advantage": "NOT_ESTABLISHED",
+  "local_config_and_order": "BUSINESS_ORACLES_PASS_POLICY_GATE_FAIL",
+  "native_model_slot_tickets": "PASS_ACCOUNTING_BUT_UNKNOWN_GUARD_FAIL",
+  "offline_plus_one": "PASS",
+  "public_default_launcher": "NOT_ESTABLISHED",
+  "real_explorer": "NOT_RUN",
+  "real_provider": "NOT_RUN",
+  "third_party_issuer": "NOT_ESTABLISHED",
+  "unknown_followed_by_new_model_slot": "FAIL"
+}

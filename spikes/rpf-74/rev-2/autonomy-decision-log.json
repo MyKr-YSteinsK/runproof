@@ -1,0 +1,45 @@
+{
+  "decisions": [
+    {
+      "authorization": "section 2.1",
+      "decision": "retain existing working branch and private artifacts"
+    },
+    {
+      "authorization": "section 2.3",
+      "decision": "read fixed sdk and jar provenance only"
+    },
+    {
+      "authorization": "section 4",
+      "count": 4,
+      "decision": "four fixed-sdk local dummy-port smoke children"
+    },
+    {
+      "authorization": "section 2.4",
+      "decision": "unique task-owned snapshot child under old runner ancestor for frozen environment binding"
+    },
+    {
+      "authorization": "sections 2.1 and 3",
+      "decision": "preserve historical first component WAL and reconstruct missing context outside the original"
+    },
+    {
+      "decision": "terminate first full runtime before historical fixtures exceed budget",
+      "reason": "rev-3 shared SDK/JVM caps do not separately exempt historical fixtures",
+      "result": "181 test IDs observed, no final summary"
+    },
+    {
+      "additional_jvm_limit": 4,
+      "additional_sdk_child_limit": 25,
+      "authorization": "explicit user approval after first run stop",
+      "decision": "one second complete runtime with separately authorized historical fixture allocation",
+      "sandbox": "same task-owned isolated snapshot"
+    },
+    {
+      "decision": "retain frozen source and report policy violation",
+      "reason": "F contains same-domain native provider reservations after business UNKNOWN_OUTCOME"
+    }
+  ],
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "host_key_reads": 0,
+  "plan_revision": "rev-3",
+  "real_provider_http": 0
+}

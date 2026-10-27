@@ -1,0 +1,36 @@
+{
+  "actual_environment_match": true,
+  "actual_ids": 731,
+  "delivery": "PENDING_FINAL_RECEIPT",
+  "discovered": 736,
+  "errors": [],
+  "exact_multiset": true,
+  "exit": 0,
+  "failures": [],
+  "first_attempt": "STOPPED_BEFORE_BUDGET_OVERRUN",
+  "method_skips": [],
+  "observed_jvm": 4,
+  "observed_sdk_direct_python": 13,
+  "pending": null,
+  "process_accounting": "PSUTIL_DESCENDANT_POLLING; SHORT_PROCESSES_MAY_BE_MISSED",
+  "seconds": 1624.226,
+  "skipped_classes": [
+    {
+      "class_id": "test_docker_integration.DockerIntegrationTests",
+      "reason": "'Docker provider unavailable: RuntimeFailure'"
+    },
+    {
+      "class_id": "test_rpf05_runtime.Rpf05RuntimeTests",
+      "reason": "'Docker provider unavailable: RuntimeFailure'"
+    }
+  ],
+  "skipped_methods_covered": 5,
+  "snapshot_and_source_drift_count": 0,
+  "snapshot_files": 979,
+  "status": "PASS",
+  "stderr_sha256": "2ae75f1211546e594030577db58a245518439928863a8c61fa2d01aa829533e6",
+  "terminal": [
+    "OK (skipped=2)"
+  ],
+  "tests_run": 731
+}
