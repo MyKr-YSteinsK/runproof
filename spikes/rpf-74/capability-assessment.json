@@ -1,0 +1,76 @@
+{
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_PROVIDER_BUSINESS_KEY_QUERIES": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_DRIVER_MIGRATED": "NO",
+  "REAL_LOCAL_CONFIG_AND_ORDER_EFFECTS": "YES_IN_N_AND_F",
+  "REAL_MODEL_TOKENS": 0,
+  "REAL_PROVIDER": "NO",
+  "SCRIPTED_EXPLORER": "YES",
+  "SDK_ABSENCE_PROBE": "SANITIZED_CHILD_ONLY",
+  "SDK_CHILD_REAL": "YES",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "abi": "rpf74-controlled-factory-v1",
+  "actual_usage_forgery": "ACCEPTED_UNEXPECTEDLY",
+  "base": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+  "full_summary_available": true,
+  "gates": {
+    "G0": {
+      "evidence": "25 paths absent at G0; pinned SDK/JDK/JAR verified; user authorized isolated full-snapshot exception",
+      "status": "PASS"
+    },
+    "R74-A01": {
+      "evidence": "New owner/source/contract and one versioned v2 factory; old exact-type Factory unchanged",
+      "status": "PASS"
+    },
+    "R74-A02": {
+      "evidence": "Four formal real fixed-SDK child PIDs; ready/report/callback/raw output and sanitized Popen evidence",
+      "status": "PASS"
+    },
+    "R74-A03": {
+      "evidence": "Business resources have native reserve/result; synthetic model slots lack native reserve/result and native reserved_tokens is zero",
+      "status": "FAIL"
+    },
+    "R74-A04": {
+      "evidence": "N all false; F both domains commit then internal HTTP RemoteDisconnected, SDK UNKNOWN reinjection and read-only reconcile",
+      "status": "PASS"
+    },
+    "R74-A05": {
+      "evidence": "Config DOMAIN_VERIFIED then FEEDBACK_FROZEN before scripted Order choice; no real Explorer claim",
+      "status": "PASS"
+    },
+    "R74-A06": {
+      "evidence": "Reanchored order SDK report input_tokens+1 was accepted by offline verifier with exit 0; usage mismatch not independently rejected",
+      "status": "FAIL"
+    },
+    "R74-A07": {
+      "evidence": "Focused and unfiltered Full with Docker accounting; see runtime-diagnostic",
+      "status": "PASS"
+    },
+    "R74-A08": {
+      "evidence": "24 public verifier entries plus R69 CLI 0/2/3; old private roots not read",
+      "status": "PASS"
+    },
+    "R74-A09": {
+      "evidence": "Honest capability, 101 rejections, the additional accepted usage forgery, limitations and alternatives",
+      "status": "PASS"
+    },
+    "R74-A10": {
+      "evidence": "Report creation state; final commit/push and two remote readbacks supplied in chat",
+      "status": "NOT_RUN"
+    }
+  },
+  "historical_win10053": "NOT_PROVEN_FIXED",
+  "owner": "rpf-74",
+  "plan_id": "RPF-74",
+  "revision": "rev-1",
+  "source_commit": "a852d77a0e61322540b2ce8e606ec14abc5dd62a",
+  "source_kind": "RPF74_FIXED_SDK_REAL_LOCAL_BUSINESS_SCRIPTED_EXPLORER",
+  "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+  "status": "Partial"
+}

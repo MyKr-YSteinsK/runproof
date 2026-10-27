@@ -1,0 +1,99 @@
+{
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    {
+      "business_risk": "Same-host local effects; current verifier and slot gaps",
+      "closure": "Task-specific source identity",
+      "dependencies": "Pinned SDK, old business adapters, native WAL and new gated controller",
+      "fees": "This run Provider 0; future live costs separately authorized",
+      "history": "Old source/evidence unchanged",
+      "lines": "1951 new lines in 12 files including tests and probe",
+      "path": "Task-specific v2",
+      "platforms": "Windows only demonstrated"
+    },
+    {
+      "business_risk": "Must preserve per-domain ownership and response-loss controls",
+      "closure": "One explicit shared closure plus versioned consumers",
+      "dependencies": "Versioned lifecycle, typed operation/port, policy and verifier APIs",
+      "fees": "No provider required for interface tests",
+      "history": "Adapters retain old versioned entry points and original evidence",
+      "lines": "Unmeasured; extraction work required",
+      "path": "Shared thin Factory and DomainPort contract",
+      "platforms": "Windows first; other platforms require testing"
+    },
+    {
+      "business_risk": "Largest permission, protocol and regression surface",
+      "closure": "New versioned core and independent compatibility evidence",
+      "dependencies": "Native session, Port, SDK contract, verifier and child protocol",
+      "fees": "Local tests may be free; real Provider requires separate authorization",
+      "history": "Old child/Guard/evidence remain immutable; new identity required",
+      "lines": "At least four referenced R72R3 files total 949 existing lines; new work unestimated",
+      "path": "Migrate NativeCore and SDK child",
+      "platforms": "Windows pinned child; cross-platform unknown"
+    }
+  ],
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "CODEX_ENGINEERING_JUDGMENT": "Do not make v2 the public default yet: synthetic model slots lack native reserve/result, and standalone offline usage consistency demonstrably fails. Explicit lifecycle removes old frame/profile delegation for this local integration, but no causal maintenance or performance benefit was measured.",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_PROVIDER_BUSINESS_KEY_QUERIES": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_DRIVER_MIGRATED": "NO",
+  "NEXT_DECISION_RECOMMENDATION": "Authorize a new source identity and repair the native model-slot reservation/settlement boundary and offline RunUsage mismatch rejection, then independently re-establish appropriate evidence; do not edit frozen source or re-sign this run.",
+  "POTENTIAL_GENERALIZATION_DEBT": [
+    "Windows-only launcher and pinned paths",
+    "Owner/source closure repetition",
+    "same-process controller is not a security sandbox",
+    "no third-party issuer or independent child attestation",
+    "Factory→full NativeCore migration not established",
+    "synthetic slots are WAL grants, not native Provider reservations"
+  ],
+  "REAL_LOCAL_CONFIG_AND_ORDER_EFFECTS": "YES_IN_N_AND_F",
+  "REAL_MODEL_TOKENS": 0,
+  "REAL_PROVIDER": "NO",
+  "SCRIPTED_EXPLORER": "YES",
+  "SDK_ABSENCE_PROBE": "SANITIZED_CHILD_ONLY",
+  "SDK_CHILD_REAL": "YES",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "VERIFIED_FINDINGS": [
+    {
+      "confidence": "HIGH",
+      "counterevidence": "Windows local controlled fixture; not a real Provider or independent child attestation",
+      "evidence": "Four formal fixed-SDK PID/ready/report/callbacks; two separate task WALs",
+      "id": "R74-F01",
+      "source": "pge_r74_launch_factory.py:30; pge_r74_sdk_harness.py:23"
+    },
+    {
+      "confidence": "HIGH",
+      "counterevidence": "Controller-selected same-host fault; not production transport failure",
+      "evidence": "Java/H2 and SQLite actual before/after; F postcommit internal HTTP disconnect and read-only reconciliation",
+      "id": "R74-F02",
+      "source": "pge_r74_domain_ports.py:31; pge_r74_fault.py:12"
+    },
+    {
+      "confidence": "HIGH",
+      "counterevidence": "Does not invalidate the actual F raw process output; it invalidates independent rejection of this alteration",
+      "evidence": "Factory compares report usage to rows during live run; independently reanchored F input_tokens+1 returned CLI exit0",
+      "id": "R74-F03",
+      "source": "pge_r74_launch_factory.py:69; pge_r74_verify.py:24"
+    },
+    {
+      "confidence": "HIGH",
+      "counterevidence": "Do not describe synthetic MODEL_REQUEST slots as native Provider reservations",
+      "evidence": "Synthetic slot grants recorded in same WAL; native reserved_tokens remains zero because Provider tickets are not used",
+      "id": "R74-F04",
+      "source": "pge_r74_budget_gate.py:112; pge_r68_budget.py:11"
+    }
+  ],
+  "abi": "rpf74-controlled-factory-v1",
+  "base": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+  "owner": "rpf-74",
+  "plan_id": "RPF-74",
+  "revision": "rev-1",
+  "source_commit": "a852d77a0e61322540b2ce8e606ec14abc5dd62a",
+  "source_kind": "RPF74_FIXED_SDK_REAL_LOCAL_BUSINESS_SCRIPTED_EXPLORER",
+  "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+  "status": "Partial"
+}

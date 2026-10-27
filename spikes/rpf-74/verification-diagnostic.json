@@ -1,0 +1,283 @@
+{
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_PROVIDER_BUSINESS_KEY_QUERIES": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_DRIVER_MIGRATED": "NO",
+  "REAL_LOCAL_CONFIG_AND_ORDER_EFFECTS": "YES_IN_N_AND_F",
+  "REAL_MODEL_TOKENS": 0,
+  "REAL_PROVIDER": "NO",
+  "SCRIPTED_EXPLORER": "YES",
+  "SDK_ABSENCE_PROBE": "SANITIZED_CHILD_ONLY",
+  "SDK_CHILD_REAL": "YES",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "abi": "rpf74-controlled-factory-v1",
+  "accepted_adversarial_usage_anchor": "8621579e14d0f0876843e33682daba22c6c931eb40816c16d12dea93c7906e3c",
+  "base": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+  "complete_delivery_readback": "PENDING_FINAL_CHAT",
+  "controllers": [
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "smoke",
+        "order"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "smoke-order",
+      "parent_pid": 15328,
+      "pid": 14752,
+      "source_sha256": "f161caf1a18833607f81f657b30bd3fb6b8b222ed2cbc982122aad3779398f89",
+      "started_unix_ns": 1793071117571477600,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "39baf536038c60bf8df8dba60e3c2ae6dc5cc5f548828e7ba8e59adfddf3e41f",
+      "timeout_seconds": 1800
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "smoke",
+        "config"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "smoke-config",
+      "parent_pid": 21272,
+      "pid": 21440,
+      "source_sha256": "c602b331bad9de82a84e457794156bc9cd26c6c12bbd1d634925cd9d671ebc10",
+      "started_unix_ns": 1793071174384792700,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "c7f4085f06a8b01fcee65254b2f222b8dea21853b272ba72053513d3d2f3156c",
+      "timeout_seconds": 1800
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "run",
+        "N"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "formal-N",
+      "parent_pid": 27392,
+      "pid": 27804,
+      "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+      "started_unix_ns": 1793072419081432600,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "f3cad2b14326414dbc6cf26f967a2698999b7856c6cf5f940a27051aa4448293",
+      "timeout_seconds": 2700
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "run",
+        "F"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "formal-F",
+      "parent_pid": 29924,
+      "pid": 21144,
+      "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+      "started_unix_ns": 1793072543554582600,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "c0c78ebe0f7741cb73171cb8a06e2243d92d9db6efabfb54b4e02695b5b12d08",
+      "timeout_seconds": 2700
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "negative"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "negative",
+      "parent_pid": 31224,
+      "pid": 23324,
+      "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+      "started_unix_ns": 1793072678902295800,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "5a2a5ac9d80dbaa99fa5081193b564fbd8a4e473a207f8783e627a083bcc28a5",
+      "timeout_seconds": 3600
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "unittest",
+        "runtime.tests.test_effectwitness_pge_r74",
+        "-v"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "focused",
+      "parent_pid": 14244,
+      "pid": 15652,
+      "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+      "started_unix_ns": 1793072761342932100,
+      "stderr_sha256": "e43660e34cb933cb620532493d96eeef5b0fb20c9b43c558bb3279d5fe91074b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "timeout_seconds": 1800
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "history"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "history-controller",
+      "parent_pid": 9596,
+      "pid": 14872,
+      "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+      "started_unix_ns": 1793072761346309600,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d979981513a0791e712b6b9876f07793119a9a6a29971c7b434f3a0103a09da5",
+      "timeout_seconds": 1800
+    },
+    {
+      "argv": [
+        "$PINNED_PARENT_PYTHON",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "spikes.rpf-74.probe",
+        "full"
+      ],
+      "cwd": "$REPO",
+      "elapsed_seconds": "NOT_CAPTURED_IN_WRAPPER",
+      "exit": 0,
+      "exit_observation": "CODEX_PROCESS_RETURN",
+      "label": "full-controller",
+      "parent_pid": 14288,
+      "pid": 25340,
+      "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+      "started_unix_ns": 1793072809890649800,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "37da6aaffd29f04aa8bd2b7a5b3c2cebbe0c4acf6cb4788f9874b14a9be09811",
+      "timeout_seconds": 8000
+    }
+  ],
+  "focused": {
+    "seconds": 29.67,
+    "status": "PASS",
+    "stderr_sha256": "e43660e34cb933cb620532493d96eeef5b0fb20c9b43c558bb3279d5fe91074b",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests": 32
+  },
+  "full_status": "PASS",
+  "g0_readonly_command_pid_details": "UNAVAILABLE_NOT_CAPTURED",
+  "gates": {
+    "G0": {
+      "evidence": "25 paths absent at G0; pinned SDK/JDK/JAR verified; user authorized isolated full-snapshot exception",
+      "status": "PASS"
+    },
+    "R74-A01": {
+      "evidence": "New owner/source/contract and one versioned v2 factory; old exact-type Factory unchanged",
+      "status": "PASS"
+    },
+    "R74-A02": {
+      "evidence": "Four formal real fixed-SDK child PIDs; ready/report/callback/raw output and sanitized Popen evidence",
+      "status": "PASS"
+    },
+    "R74-A03": {
+      "evidence": "Business resources have native reserve/result; synthetic model slots lack native reserve/result and native reserved_tokens is zero",
+      "status": "FAIL"
+    },
+    "R74-A04": {
+      "evidence": "N all false; F both domains commit then internal HTTP RemoteDisconnected, SDK UNKNOWN reinjection and read-only reconcile",
+      "status": "PASS"
+    },
+    "R74-A05": {
+      "evidence": "Config DOMAIN_VERIFIED then FEEDBACK_FROZEN before scripted Order choice; no real Explorer claim",
+      "status": "PASS"
+    },
+    "R74-A06": {
+      "evidence": "Reanchored order SDK report input_tokens+1 was accepted by offline verifier with exit 0; usage mismatch not independently rejected",
+      "status": "FAIL"
+    },
+    "R74-A07": {
+      "evidence": "Focused and unfiltered Full with Docker accounting; see runtime-diagnostic",
+      "status": "PASS"
+    },
+    "R74-A08": {
+      "evidence": "24 public verifier entries plus R69 CLI 0/2/3; old private roots not read",
+      "status": "PASS"
+    },
+    "R74-A09": {
+      "evidence": "Honest capability, 101 rejections, the additional accepted usage forgery, limitations and alternatives",
+      "status": "PASS"
+    },
+    "R74-A10": {
+      "evidence": "Report creation state; final commit/push and two remote readbacks supplied in chat",
+      "status": "NOT_RUN"
+    }
+  },
+  "historical_private_roots": "UNAVAILABLE_NOT_READ",
+  "history": "PASS",
+  "negative_counts": {
+    "CROSS_DOMAIN_BUSINESS_FAULT_FEEDBACK": 52,
+    "DEEP_REANCHOR": 6,
+    "PRE_SIDE_EFFECT_ADMISSION": 43
+  },
+  "owner": "rpf-74",
+  "plan_id": "RPF-74",
+  "revision": "rev-1",
+  "source_commit": "a852d77a0e61322540b2ce8e606ec14abc5dd62a",
+  "source_kind": "RPF74_FIXED_SDK_REAL_LOCAL_BUSINESS_SCRIPTED_EXPLORER",
+  "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+  "source_unchanged": true,
+  "status": "Partial"
+}

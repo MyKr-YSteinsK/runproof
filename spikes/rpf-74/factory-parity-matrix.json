@@ -1,0 +1,75 @@
+{
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_PROVIDER_BUSINESS_KEY_QUERIES": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_DRIVER_MIGRATED": "NO",
+  "REAL_LOCAL_CONFIG_AND_ORDER_EFFECTS": "YES_IN_N_AND_F",
+  "REAL_MODEL_TOKENS": 0,
+  "REAL_PROVIDER": "NO",
+  "SCRIPTED_EXPLORER": "YES",
+  "SDK_ABSENCE_PROBE": "SANITIZED_CHILD_ONLY",
+  "SDK_CHILD_REAL": "YES",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "abi": "rpf74-controlled-factory-v1",
+  "base": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+  "development": [
+    {
+      "backend": "REAL_JAVA_H2_HTTP",
+      "cleanup": {
+        "key_reference_released": true,
+        "port_closed": true,
+        "process_gone": true
+      },
+      "domain": "config",
+      "pid": 27108,
+      "requests": 4,
+      "scope": "DEVELOPMENT_ONLY_NOT_FORMAL",
+      "source_sha256": "c602b331bad9de82a84e457794156bc9cd26c6c12bbd1d634925cd9d671ebc10",
+      "tool_calls": 3
+    },
+    {
+      "backend": "REAL_LOCAL_SQLITE",
+      "cleanup": {
+        "connections_closed": true,
+        "database_retained": true,
+        "exclusive_lock_probe": true
+      },
+      "domain": "order",
+      "pid": 2776,
+      "requests": 3,
+      "scope": "DEVELOPMENT_ONLY_NOT_FORMAL",
+      "source_sha256": "f161caf1a18833607f81f657b30bd3fb6b8b222ed2cbc982122aad3779398f89",
+      "tool_calls": 2
+    }
+  ],
+  "new_v2": {
+    "factory": "pge_r74_launch_factory.LaunchFactory.launch",
+    "formal_pids": [
+      16504,
+      3852,
+      20940,
+      26720
+    ],
+    "full_core_migrated": false,
+    "old_factory_invoked": false,
+    "task_owned_business": true
+  },
+  "old_v1": {
+    "adapter": "SIMULATED_ONLY",
+    "admission": "pge_r73_launch_factory.py:25 exact DomainAdapter",
+    "business_effect": false,
+    "source_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1"
+  },
+  "owner": "rpf-74",
+  "plan_id": "RPF-74",
+  "revision": "rev-1",
+  "source_commit": "a852d77a0e61322540b2ce8e606ec14abc5dd62a",
+  "source_kind": "RPF74_FIXED_SDK_REAL_LOCAL_BUSINESS_SCRIPTED_EXPLORER",
+  "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+  "status": "Partial"
+}

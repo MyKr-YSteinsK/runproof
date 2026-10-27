@@ -1,0 +1,264 @@
+{
+  "CHILD_INDEPENDENT_ATTESTATION": "NOT_ESTABLISHED",
+  "DEPLOYED": "NO",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_PENDING",
+  "FULL_COMMON_CORE_MIGRATED": "NO",
+  "HOST_PROVIDER_BUSINESS_KEY_QUERIES": 0,
+  "ISSUER": "NOT_ESTABLISHED",
+  "L2": "NOT_ESTABLISHED",
+  "MAIN_MERGED": "NO",
+  "NATIVE_DRIVER_MIGRATED": "NO",
+  "REAL_LOCAL_CONFIG_AND_ORDER_EFFECTS": "YES_IN_N_AND_F",
+  "REAL_MODEL_TOKENS": 0,
+  "REAL_PROVIDER": "NO",
+  "SCRIPTED_EXPLORER": "YES",
+  "SDK_ABSENCE_PROBE": "SANITIZED_CHILD_ONLY",
+  "SDK_CHILD_REAL": "YES",
+  "STAGE_ADVANCED": "ARCHITECT_PENDING",
+  "abi": "rpf74-controlled-factory-v1",
+  "base": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+  "git_blobs": {
+    "runtime/runproof_runtime/effectwitness/pge_r74_budget_gate.py": "385caa508f0c3637e385b606cb2a1c97678e2e51",
+    "runtime/runproof_runtime/effectwitness/pge_r74_contracts.py": "2506b81f6bc3642c9e8ad7bf57be0a11e6264b85",
+    "runtime/runproof_runtime/effectwitness/pge_r74_domain_ports.py": "4773f226f15dd3de8915f8ceeee1354acc19afb8",
+    "runtime/runproof_runtime/effectwitness/pge_r74_fault.py": "efc92b2745c9c0aa139fe510ac7292cf8244c438",
+    "runtime/runproof_runtime/effectwitness/pge_r74_launch_contract.py": "482c0ed378567c7184da7b71c01b2e7a77f5626c",
+    "runtime/runproof_runtime/effectwitness/pge_r74_launch_factory.py": "83c6ca49c545957bd512835d9c65332087362d76",
+    "runtime/runproof_runtime/effectwitness/pge_r74_owner_source.py": "64c378d64b3ddb1df73203e9b547177a6eae682b",
+    "runtime/runproof_runtime/effectwitness/pge_r74_sdk_harness.py": "528e3a079f8971bbee6afc54da0a52376a8f3f11",
+    "runtime/runproof_runtime/effectwitness/pge_r74_session.py": "934b71d54505f612b770baff5ba5e9d2b44adbfd",
+    "runtime/runproof_runtime/effectwitness/pge_r74_verify.py": "a888eb95c88836f0b1c5b26720fe95172e05cd13",
+    "runtime/tests/test_effectwitness_pge_r74.py": "b45b066a10c23abe9f00a95485abd02b66010465",
+    "spikes/rpf-74/probe.py": "0816006c05747d7ffda44346e762af5fb122e3bc"
+  },
+  "identity": {
+    "abi": "rpf74-controlled-factory-v1",
+    "files": {
+      "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": {
+        "lf": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+        "raw": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631"
+      },
+      "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": {
+        "lf": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+        "raw": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_contracts.py": {
+        "lf": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+        "raw": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_runtime.py": {
+        "lf": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+        "raw": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9"
+      },
+      "runtime/runproof_runtime/effectwitness/config_live_verify.py": {
+        "lf": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+        "raw": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282"
+      },
+      "runtime/runproof_runtime/effectwitness/contracts.py": {
+        "lf": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+        "raw": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d"
+      },
+      "runtime/runproof_runtime/effectwitness/effect_oracle.py": {
+        "lf": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+        "raw": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+      },
+      "runtime/runproof_runtime/effectwitness/orders.py": {
+        "lf": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+        "raw": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": {
+        "lf": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc",
+        "raw": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py": {
+        "lf": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612",
+        "raw": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_context.py": {
+        "lf": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9",
+        "raw": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+        "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+        "raw": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+        "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+        "raw": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py": {
+        "lf": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235",
+        "raw": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py": {
+        "lf": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb",
+        "raw": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+        "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+        "raw": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_session.py": {
+        "lf": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af",
+        "raw": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r68_verify.py": {
+        "lf": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78",
+        "raw": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py": {
+        "lf": "36fa0512b23cc70cc80ffcad8e3e12d719a2102e649c664fe38af53ba648b213",
+        "raw": "36fa0512b23cc70cc80ffcad8e3e12d719a2102e649c664fe38af53ba648b213"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py": {
+        "lf": "217f1ba38bc03cf1f3c46b3f876a0c7e8b611e2e761d4c8733ab83da0fed6a32",
+        "raw": "217f1ba38bc03cf1f3c46b3f876a0c7e8b611e2e761d4c8733ab83da0fed6a32"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py": {
+        "lf": "da6c0a8b20617f4795f1f5da6910cbfc757e9cd499b6097aadfb4c91c709cd47",
+        "raw": "da6c0a8b20617f4795f1f5da6910cbfc757e9cd499b6097aadfb4c91c709cd47"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py": {
+        "lf": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031",
+        "raw": "a91347ed34d23ee881e67261778155b5a255f0bf3f801d38f7c0fde8a8bf8031"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py": {
+        "lf": "7188fe875489d66d00e582aa7b947ed858a86adfb4cfe33600ecb0e44fdede90",
+        "raw": "7188fe875489d66d00e582aa7b947ed858a86adfb4cfe33600ecb0e44fdede90"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py": {
+        "lf": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455",
+        "raw": "f3eeb5f209e5ae5618570e042e692d8e99681bf1fccbfec2e3d8de08b148c455"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py": {
+        "lf": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766",
+        "raw": "86d9dddab3d9ab99eb918501928ba79a2c93604771786607c6586a29d811c766"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py": {
+        "lf": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f",
+        "raw": "b50b45fb7f471746123068dfa5c3cfbaca31e0902555dcef60ab9594c1e5585f"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py": {
+        "lf": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1",
+        "raw": "b2a55cce88898ac65660562b8b548dbba729b6d4337395cf329476b1eebd87e1"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py": {
+        "lf": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b",
+        "raw": "b4869a27e335f29d1c572704d78359bbe82eedc7382f2aece0066375c527361b"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_budget_gate.py": {
+        "lf": "c93223def27158ea5ba002f871d9606e753b485adec2d576cf18b576f7b448f4",
+        "raw": "c93223def27158ea5ba002f871d9606e753b485adec2d576cf18b576f7b448f4"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_contracts.py": {
+        "lf": "e16d266eb2477785ea33908fa1636193b352b96d4f2320bfd8893fee7e78370e",
+        "raw": "e16d266eb2477785ea33908fa1636193b352b96d4f2320bfd8893fee7e78370e"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_domain_ports.py": {
+        "lf": "734fa1e529392f30c9397127f083e788320459ed51d2cd503e4681c3a2449a2e",
+        "raw": "734fa1e529392f30c9397127f083e788320459ed51d2cd503e4681c3a2449a2e"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_fault.py": {
+        "lf": "6b6a30cc73aabdc8501f0b3bb8163b8940a1482446de30af3504306a945cd4ca",
+        "raw": "6b6a30cc73aabdc8501f0b3bb8163b8940a1482446de30af3504306a945cd4ca"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_launch_contract.py": {
+        "lf": "4eefedea8cb71fad0e00d525f07699c33a49eb9951dbf6b9d655d5a85b648198",
+        "raw": "4eefedea8cb71fad0e00d525f07699c33a49eb9951dbf6b9d655d5a85b648198"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_launch_factory.py": {
+        "lf": "d9eaf3bacabd90bb66ff347d84bda0629f7b480687b6dfeaeacf80dddaaa2152",
+        "raw": "d9eaf3bacabd90bb66ff347d84bda0629f7b480687b6dfeaeacf80dddaaa2152"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_owner_source.py": {
+        "lf": "3dc85ff0165b3101a9f58fb1d630604841dfadf16fbd1dff31ddc6851fa2b6d1",
+        "raw": "3dc85ff0165b3101a9f58fb1d630604841dfadf16fbd1dff31ddc6851fa2b6d1"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_sdk_harness.py": {
+        "lf": "ed5dd7303873de2fb7f2d958c458c0fdf0b5e0d68dcad3bbb0eebe0f84534265",
+        "raw": "ed5dd7303873de2fb7f2d958c458c0fdf0b5e0d68dcad3bbb0eebe0f84534265"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_session.py": {
+        "lf": "a7de5bb0f9a591c7b72f6a7230128f6b09e790c47ef2ace2a736cf73d11658f7",
+        "raw": "a7de5bb0f9a591c7b72f6a7230128f6b09e790c47ef2ace2a736cf73d11658f7"
+      },
+      "runtime/runproof_runtime/effectwitness/pge_r74_verify.py": {
+        "lf": "069e8351a5bbe9f847f168d6a070aa1b4fdf40183beea43730cfc3bcac30d266",
+        "raw": "069e8351a5bbe9f847f168d6a070aa1b4fdf40183beea43730cfc3bcac30d266"
+      },
+      "runtime/runproof_runtime/models.py": {
+        "lf": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+        "raw": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3"
+      },
+      "runtime/tests/test_effectwitness_pge_r74.py": {
+        "lf": "594013696e29c39b1b798d0b4620dfb164385642abe9a35f4729c561e153d707",
+        "raw": "594013696e29c39b1b798d0b4620dfb164385642abe9a35f4729c561e153d707"
+      },
+      "spikes/rpf-53/probe.py": {
+        "lf": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+        "raw": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+      },
+      "spikes/rpf-53/rev-6/config-live-evidence.json": {
+        "lf": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "raw": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+      },
+      "spikes/rpf-55/probe.py": {
+        "lf": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+        "raw": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+      },
+      "spikes/rpf-73/history-regression.json": {
+        "lf": "14b5aa9083e29dd25e2edb57b3607fe7828159f88ccdcba83b9d53ab7ccd88ee",
+        "raw": "14b5aa9083e29dd25e2edb57b3607fe7828159f88ccdcba83b9d53ab7ccd88ee"
+      },
+      "spikes/rpf-74/probe.py": {
+        "lf": "e299d3bb4af9d195c1792a127c01f6149afa31b082fcbf3f88d6345e0791c95a",
+        "raw": "e299d3bb4af9d195c1792a127c01f6149afa31b082fcbf3f88d6345e0791c95a"
+      }
+    },
+    "owner": "rpf-74",
+    "source_kind": "RPF74_FIXED_SDK_REAL_LOCAL_BUSINESS_SCRIPTED_EXPLORER"
+  },
+  "old_factory_sha256": "e4ea3cc40987e1c90aa683ec324aa33a2d9d97e1e2d713fb84fb75bc039a3db1",
+  "old_runner_sha256": "6fc5ec95b69953bb891f4e58d5fc1d62a89177cc099b2f0114b80203d53f9979",
+  "owner": "rpf-74",
+  "plan_id": "RPF-74",
+  "pre_freeze_diffcheck": {
+    "exit": 0,
+    "paths": [
+      "runtime/runproof_runtime/effectwitness/pge_r74_contracts.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_owner_source.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_budget_gate.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_launch_contract.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_launch_factory.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_sdk_harness.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_domain_ports.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_session.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_verify.py",
+      "runtime/runproof_runtime/effectwitness/pge_r74_fault.py",
+      "runtime/tests/test_effectwitness_pge_r74.py",
+      "spikes/rpf-74/probe.py"
+    ],
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "revision": "rev-1",
+  "source_commit": "a852d77a0e61322540b2ce8e606ec14abc5dd62a",
+  "source_files": [
+    "runtime/runproof_runtime/effectwitness/pge_r74_contracts.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_owner_source.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_budget_gate.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_launch_contract.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_launch_factory.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_sdk_harness.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_domain_ports.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_session.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_verify.py",
+    "runtime/runproof_runtime/effectwitness/pge_r74_fault.py",
+    "runtime/tests/test_effectwitness_pge_r74.py",
+    "spikes/rpf-74/probe.py"
+  ],
+  "source_frozen": true,
+  "source_kind": "RPF74_FIXED_SDK_REAL_LOCAL_BUSINESS_SCRIPTED_EXPLORER",
+  "source_sha256": "16389b0d53de4f213959217a0d630dcec5b5ba01903cb7b9189d6cf36c06811f",
+  "status": "Partial"
+}
