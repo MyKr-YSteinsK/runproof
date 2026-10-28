@@ -1,0 +1,260 @@
+{
+  "delivery": {
+    "commit": "6af54dd28a5e6ba890e6f84542306f2c8c8f2b46",
+    "git_readback": [
+      {
+        "git_blob": "f8f8ac77838bbf3c198ea7e3d337683aa5413754",
+        "lf_sha256": "7b77c150ad1bfd481eae297e91149c21782af8bae55dfdc9671d5555321e0cd0",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_contracts.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "310fb025279117a519e6c44b776f9f71f683a7fd",
+        "lf_sha256": "c89a50e8c95e2c99f03543715ebf01447f353663bda1e24e2a4f82f3e43758d8",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_provenance.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "0a99fadc11384e8d11f9ad210628a03efa299492",
+        "lf_sha256": "a1adf9ec1b741cb57e6c69481cc6226cc58b34da6ca999bb565494ce3d6dea33",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_policy.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "a4212e33ff9a6a1713cb16952af2eb8b2b796351",
+        "lf_sha256": "0a71c0d47a885e183dae513fdf42973daf2501cdf9f919e022437c0ddf185936",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_oracle.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "8a5bd4e963fcd5eb66fd5a3b543e68e095faea30",
+        "lf_sha256": "5eabdd20535fd1f9c059e7d1eceb699d0f6d5a399802ed3245b477e6665c3ac0",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_replay.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "d8874aa7c32b19363b29d744ff1f76657d47ac52",
+        "lf_sha256": "29b3638905573ac4588dfa533aeb9a420dfd0c6933979199292e65925d8a5aff",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_metrics.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "d6bc1ce1bfbeb32c54d47ad1b82dacfb610354a1",
+        "lf_sha256": "9c9df2dc6e65b86c79e64c8f8cf126716100ecbd0e18b199c33dc195b9952f90",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_verify.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "cf5a889301c52a4ead9fe7de12089f24286b44c3",
+        "lf_sha256": "78f7b73ca40d8cd1375bac53f9647f67d24b2a07427c5568cc5e4a1540ded11c",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_fixtures.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "7008aa7cf013374ad985bc6f8699d9fd125c866f",
+        "lf_sha256": "6c3b39e40a49e471b03ca6d441a6abe36a5d1918958a5dac9a573e5cc5bb93fa",
+        "path": "runtime/tests/test_effectwitness_pge_r76.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "2f642b672a4ec987098714c3f7ded4a2cd1850e1",
+        "lf_sha256": "8ffbd0a540823343d9a6d50361d36801054491036df2bde46cbb5f3da0923837",
+        "path": "spikes/rpf-76/probe.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "d5acf9054656bec992721a52844fe07c2676d693",
+        "lf_sha256": "8a7ecf764bd16a17832eebf099486613300d8af2a877497309af1fe8f2d6d36b",
+        "path": "spikes/rpf-76/fixture-catalog.json",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "8f30ac9101605c2fc30d8b2f0ff3da76d0089e81",
+        "lf_sha256": "80313d60ec288fa54c7547012e0dde6f2489fdabd2f6002a68a604b38b8cf577",
+        "path": "spikes/rpf-76/holdout-catalog.json",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "8bf45cc4485e81e61b32770f833a77b8ccd70d62",
+        "lf_sha256": "94b29b8e4d9da4fbc450efe76011fb966906f78950bf39fc9eb5deed2a8acfe3",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_contracts.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "832df682724d836a3358be01560e97c13202e63d",
+        "lf_sha256": "a064e60e48063828c954fdc11ce34b5da6d3d1e12e0268759ec79e05ed0c3f35",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_policy.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "2d9756cd81da1bafd93689ede2b5813ae7c041b4",
+        "lf_sha256": "aa9aa1c6267e9cb7f7cb376a4b0da942580a17a56578367002d53f84fb033158",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_feedback.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "77cd013a32c1eee93a1977227638cfe24ffdc731",
+        "lf_sha256": "ae54c3b1aa2b14f2f786a2a3ee9d5f6737d5b719057531506e36c696b52d0cd1",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_replay.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "7bc1c12b49be20e237d64b8738c09e0165bb588c",
+        "lf_sha256": "54ce0a65b0470a46dea2e66bd80bfc0eedecd06880bdba8a873c407247252e1f",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_verify.py",
+        "status": "PASS"
+      },
+      {
+        "git_blob": "9ae3de5284d18be23ce320bf74df1207d7da77ff",
+        "lf_sha256": "849182b1d2fda586d674c29c7d85f0deddfb1eea9b362b21eb535c4a9346492e",
+        "path": "AGENTS.md",
+        "status": "PASS"
+      }
+    ],
+    "github_api": {
+      "lf_sha256": "7b77c150ad1bfd481eae297e91149c21782af8bae55dfdc9671d5555321e0cd0",
+      "sha": "f8f8ac77838bbf3c198ea7e3d337683aa5413754",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/6af54dd28a5e6ba890e6f84542306f2c8c8f2b46/runtime/runproof_runtime/effectwitness/pge_r76_contracts.py"
+    },
+    "source_sha256": "7f1d22ed4a269aec4af210c5e5bf50803622b9f7784582f6a30061bf25007d37",
+    "status": "PASS",
+    "utc": "2026-10-28T12:52:59.961713+00:00"
+  },
+  "raw_layout": "Exact current raw layout required. Git LF blobs separately checked; no arbitrary clean-checkout portability claim.",
+  "rpf75": "Read-only LF blobs equal Base; original RPF75 private root not accessed or re-signed. New worktree checkout may have Git CRLF conversion.",
+  "source": {
+    "files": [
+      {
+        "bytes": 8304,
+        "git_blob": "f8f8ac77838bbf3c198ea7e3d337683aa5413754",
+        "lf_sha256": "7b77c150ad1bfd481eae297e91149c21782af8bae55dfdc9671d5555321e0cd0",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_contracts.py",
+        "raw_sha256": "7b77c150ad1bfd481eae297e91149c21782af8bae55dfdc9671d5555321e0cd0"
+      },
+      {
+        "bytes": 2155,
+        "git_blob": "310fb025279117a519e6c44b776f9f71f683a7fd",
+        "lf_sha256": "c89a50e8c95e2c99f03543715ebf01447f353663bda1e24e2a4f82f3e43758d8",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_provenance.py",
+        "raw_sha256": "c89a50e8c95e2c99f03543715ebf01447f353663bda1e24e2a4f82f3e43758d8"
+      },
+      {
+        "bytes": 3026,
+        "git_blob": "0a99fadc11384e8d11f9ad210628a03efa299492",
+        "lf_sha256": "a1adf9ec1b741cb57e6c69481cc6226cc58b34da6ca999bb565494ce3d6dea33",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_policy.py",
+        "raw_sha256": "a1adf9ec1b741cb57e6c69481cc6226cc58b34da6ca999bb565494ce3d6dea33"
+      },
+      {
+        "bytes": 1472,
+        "git_blob": "a4212e33ff9a6a1713cb16952af2eb8b2b796351",
+        "lf_sha256": "0a71c0d47a885e183dae513fdf42973daf2501cdf9f919e022437c0ddf185936",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_oracle.py",
+        "raw_sha256": "0a71c0d47a885e183dae513fdf42973daf2501cdf9f919e022437c0ddf185936"
+      },
+      {
+        "bytes": 2768,
+        "git_blob": "8a5bd4e963fcd5eb66fd5a3b543e68e095faea30",
+        "lf_sha256": "5eabdd20535fd1f9c059e7d1eceb699d0f6d5a399802ed3245b477e6665c3ac0",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_replay.py",
+        "raw_sha256": "5eabdd20535fd1f9c059e7d1eceb699d0f6d5a399802ed3245b477e6665c3ac0"
+      },
+      {
+        "bytes": 3623,
+        "git_blob": "d8874aa7c32b19363b29d744ff1f76657d47ac52",
+        "lf_sha256": "29b3638905573ac4588dfa533aeb9a420dfd0c6933979199292e65925d8a5aff",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_metrics.py",
+        "raw_sha256": "29b3638905573ac4588dfa533aeb9a420dfd0c6933979199292e65925d8a5aff"
+      },
+      {
+        "bytes": 13548,
+        "git_blob": "d6bc1ce1bfbeb32c54d47ad1b82dacfb610354a1",
+        "lf_sha256": "9c9df2dc6e65b86c79e64c8f8cf126716100ecbd0e18b199c33dc195b9952f90",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_verify.py",
+        "raw_sha256": "9c9df2dc6e65b86c79e64c8f8cf126716100ecbd0e18b199c33dc195b9952f90"
+      },
+      {
+        "bytes": 5927,
+        "git_blob": "cf5a889301c52a4ead9fe7de12089f24286b44c3",
+        "lf_sha256": "78f7b73ca40d8cd1375bac53f9647f67d24b2a07427c5568cc5e4a1540ded11c",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r76_fixtures.py",
+        "raw_sha256": "78f7b73ca40d8cd1375bac53f9647f67d24b2a07427c5568cc5e4a1540ded11c"
+      },
+      {
+        "bytes": 12182,
+        "git_blob": "7008aa7cf013374ad985bc6f8699d9fd125c866f",
+        "lf_sha256": "6c3b39e40a49e471b03ca6d441a6abe36a5d1918958a5dac9a573e5cc5bb93fa",
+        "path": "runtime/tests/test_effectwitness_pge_r76.py",
+        "raw_sha256": "6c3b39e40a49e471b03ca6d441a6abe36a5d1918958a5dac9a573e5cc5bb93fa"
+      },
+      {
+        "bytes": 10330,
+        "git_blob": "2f642b672a4ec987098714c3f7ded4a2cd1850e1",
+        "lf_sha256": "8ffbd0a540823343d9a6d50361d36801054491036df2bde46cbb5f3da0923837",
+        "path": "spikes/rpf-76/probe.py",
+        "raw_sha256": "8ffbd0a540823343d9a6d50361d36801054491036df2bde46cbb5f3da0923837"
+      },
+      {
+        "bytes": 93484,
+        "git_blob": "d5acf9054656bec992721a52844fe07c2676d693",
+        "lf_sha256": "8a7ecf764bd16a17832eebf099486613300d8af2a877497309af1fe8f2d6d36b",
+        "path": "spikes/rpf-76/fixture-catalog.json",
+        "raw_sha256": "8a7ecf764bd16a17832eebf099486613300d8af2a877497309af1fe8f2d6d36b"
+      },
+      {
+        "bytes": 62215,
+        "git_blob": "8f30ac9101605c2fc30d8b2f0ff3da76d0089e81",
+        "lf_sha256": "80313d60ec288fa54c7547012e0dde6f2489fdabd2f6002a68a604b38b8cf577",
+        "path": "spikes/rpf-76/holdout-catalog.json",
+        "raw_sha256": "80313d60ec288fa54c7547012e0dde6f2489fdabd2f6002a68a604b38b8cf577"
+      },
+      {
+        "bytes": 9265,
+        "git_blob": "8bf45cc4485e81e61b32770f833a77b8ccd70d62",
+        "lf_sha256": "94b29b8e4d9da4fbc450efe76011fb966906f78950bf39fc9eb5deed2a8acfe3",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_contracts.py",
+        "raw_sha256": "c501ee580205e83a2ea9bbe7a62ff47532d8128770486730ebf352c54aa25c94"
+      },
+      {
+        "bytes": 3473,
+        "git_blob": "832df682724d836a3358be01560e97c13202e63d",
+        "lf_sha256": "a064e60e48063828c954fdc11ce34b5da6d3d1e12e0268759ec79e05ed0c3f35",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_policy.py",
+        "raw_sha256": "6862c821807fc4be05e4044ce5473c70b3971fd2a5aacdcde5e240b04e6d9438"
+      },
+      {
+        "bytes": 2328,
+        "git_blob": "2d9756cd81da1bafd93689ede2b5813ae7c041b4",
+        "lf_sha256": "aa9aa1c6267e9cb7f7cb376a4b0da942580a17a56578367002d53f84fb033158",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_feedback.py",
+        "raw_sha256": "517bc6b1b408bbd4b9c0be413f385f0f1703fdb88ecb6e65fa533852c63829eb"
+      },
+      {
+        "bytes": 5928,
+        "git_blob": "77cd013a32c1eee93a1977227638cfe24ffdc731",
+        "lf_sha256": "ae54c3b1aa2b14f2f786a2a3ee9d5f6737d5b719057531506e36c696b52d0cd1",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_replay.py",
+        "raw_sha256": "e0d3be43d6941becbe360191e178e9572a9fe87a21b2f6dd4040ca1ddd6bbfbd"
+      },
+      {
+        "bytes": 11303,
+        "git_blob": "7bc1c12b49be20e237d64b8738c09e0165bb588c",
+        "lf_sha256": "54ce0a65b0470a46dea2e66bd80bfc0eedecd06880bdba8a873c407247252e1f",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r75_verify.py",
+        "raw_sha256": "07faa705cf98e6819cdc0c961802b0c84c15e7592d0b42ff92d4b6656e70316f"
+      },
+      {
+        "bytes": 9519,
+        "git_blob": "9ae3de5284d18be23ce320bf74df1207d7da77ff",
+        "lf_sha256": "849182b1d2fda586d674c29c7d85f0deddfb1eea9b362b21eb535c4a9346492e",
+        "path": "AGENTS.md",
+        "raw_sha256": "7d1a91d73e213dfc4f60c1de9b7446db2d418ecd6aca06167ec6917be4ef50ca"
+      }
+    ],
+    "owner": "rpf-76-rev-1",
+    "schema": "rpf76-offline-generalization-v1"
+  },
+  "source_commit": "6af54dd28a5e6ba890e6f84542306f2c8c8f2b46",
+  "source_sha256": "7f1d22ed4a269aec4af210c5e5bf50803622b9f7784582f6a30061bf25007d37",
+  "status": "PASS"
+}

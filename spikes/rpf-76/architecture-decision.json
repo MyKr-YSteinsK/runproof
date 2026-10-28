@@ -1,0 +1,60 @@
+{
+  "abi": "rpf76-offline-generalization-v1",
+  "design": [
+    "Abstract lab domain, candidate ID and fact-key schema; candidate pool visible at snapshot clock 0",
+    "Immutable full roster stored with frozen catalogs, never minted from incoming visible records by replay",
+    "Policy sees no outcome/utility labels; Stop Oracle sees no Decision",
+    "Verifier imports contracts and read-only fixture loader only; independently recomputes execution and metrics",
+    "B0/B1 share eligibility and visible safety information; B1 only ablates scoring feedback"
+  ],
+  "integration_requirements": [
+    "Independent authenticated feedback issuer/sequence source",
+    "Genuine candidate snapshot and domain authority boundary",
+    "Portable canonical source identity",
+    "Separately approved UNKNOWN controller/runtime integration"
+  ],
+  "loc": {
+    "runtime/runproof_runtime/effectwitness/pge_r76_contracts.py": 183,
+    "runtime/runproof_runtime/effectwitness/pge_r76_fixtures.py": 91,
+    "runtime/runproof_runtime/effectwitness/pge_r76_metrics.py": 60,
+    "runtime/runproof_runtime/effectwitness/pge_r76_oracle.py": 22,
+    "runtime/runproof_runtime/effectwitness/pge_r76_policy.py": 50,
+    "runtime/runproof_runtime/effectwitness/pge_r76_provenance.py": 35,
+    "runtime/runproof_runtime/effectwitness/pge_r76_replay.py": 47,
+    "runtime/runproof_runtime/effectwitness/pge_r76_verify.py": 211,
+    "runtime/tests/test_effectwitness_pge_r76.py": 278,
+    "spikes/rpf-76/probe.py": 201
+  },
+  "owner": "rpf-76-rev-1",
+  "rules": {
+    "must_stop": "domain UNKNOWN, time/step cap, empty pool, or no eligible candidate",
+    "opportunity": "fresh eligible candidate in frozen worthwhile_ids",
+    "uncertainty": "conflict, no trustworthy records, or no prescribed fresh utility",
+    "unknown_scope": "DOMAIN_ONLY",
+    "version": "stop-utility-v1",
+    "weak_trust": "CLOSED_WORLD_SYNTHETIC_ROSTER_NOT_ATTESTATION"
+  },
+  "source_commit": "6af54dd28a5e6ba890e6f84542306f2c8c8f2b46",
+  "status": "PASS",
+  "tested": [
+    "128 development-focused methods twice after freeze",
+    "24 development plus 12 exposed holdout cases, 108 policy runs",
+    "78 real CLI negative executions including 12 compound variants",
+    "candidate/evidence iteration permutation yields byte-identical replay",
+    "Git readback of 18 source/reference blobs and GitHub contracts API readback"
+  ],
+  "total_python_lines": 1178,
+  "tradeoffs": [
+    "Fewer generic facts and bounded pools make exhaustive local inspection cheap",
+    "Shared schema/provenance concepts may still cause common-mode errors despite separate arithmetic",
+    "Fresh worthwhile labels are a chosen normative objective, not empirical optimal stopping",
+    "Exogenous feedback enables fair visibility but cannot establish action-caused information gain"
+  ],
+  "unverified": [
+    "Real LLM Explorer/Target/Authority",
+    "Third-party provenance or signature",
+    "L2/L3 information gain",
+    "Cross-platform clean checkout",
+    "Historical 700+ Runtime suite"
+  ]
+}

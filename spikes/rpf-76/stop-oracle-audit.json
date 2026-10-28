@@ -1,0 +1,2148 @@
+{
+  "counterexamples": [
+    {
+      "action": "STOP",
+      "case_id": "dev-01",
+      "correct_stop": false,
+      "missed_opportunity": true,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "opportunities": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "reason": "FROZEN_FRESH_UTILITY",
+        "verdict": "SHOULD_SELECT"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-13",
+      "correct_stop": false,
+      "missed_opportunity": true,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "opportunities": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "reason": "FROZEN_FRESH_UTILITY",
+        "verdict": "SHOULD_SELECT"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-01",
+      "correct_stop": false,
+      "missed_opportunity": true,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [
+          "lab-nova-c0",
+          "lab-nova-c1",
+          "lab-nova-c2",
+          "lab-nova-c3",
+          "lab-nova-c4",
+          "lab-nova-c5"
+        ],
+        "opportunities": [
+          "lab-nova-c0",
+          "lab-nova-c1",
+          "lab-nova-c2",
+          "lab-nova-c3",
+          "lab-nova-c4",
+          "lab-nova-c5"
+        ],
+        "reason": "FROZEN_FRESH_UTILITY",
+        "verdict": "SHOULD_SELECT"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 1,
+      "split": "holdout"
+    }
+  ],
+  "independence": "Oracle receives frozen case, current records and pre-decision state only; verifier reconstructs without importing oracle/policy/replay/metrics",
+  "legacy_definition_comparison": {
+    "comment": "Demonstrates why RPF75 formal terminal count was not independent stop accuracy; original RPF75 artifacts unchanged",
+    "counterexample_case": "dev-01",
+    "legacy_all_terminal_correct": "1/1",
+    "new_correct_stop": 0,
+    "new_missed_opportunity": 1,
+    "new_total_stop": 1
+  },
+  "metrics": {
+    "development": {
+      "B0-fixed-v2": {
+        "appropriate_inconclusive": 8,
+        "correct_stop": 16,
+        "decisions": 42,
+        "inconclusive": 8,
+        "inconclusive_appropriateness": {
+          "denominator": 8,
+          "numerator": 8
+        },
+        "legal_selection_rate": {
+          "denominator": 18,
+          "numerator": 18
+        },
+        "legal_selects": 18,
+        "missed_opportunity": 0,
+        "redundant": 6,
+        "rejected": 18,
+        "repeated": 4,
+        "selects": 18,
+        "simulated_cost": 42,
+        "stop_correctness": {
+          "denominator": 16,
+          "numerator": 16
+        },
+        "stop_not_determinable": 0,
+        "total_stop": 16,
+        "unsafe_select": 0,
+        "verified_facts": 20
+      },
+      "B1-score-ablation-v2": {
+        "appropriate_inconclusive": 8,
+        "correct_stop": 16,
+        "decisions": 42,
+        "inconclusive": 8,
+        "inconclusive_appropriateness": {
+          "denominator": 8,
+          "numerator": 8
+        },
+        "legal_selection_rate": {
+          "denominator": 18,
+          "numerator": 18
+        },
+        "legal_selects": 18,
+        "missed_opportunity": 0,
+        "redundant": 6,
+        "rejected": 18,
+        "repeated": 4,
+        "selects": 18,
+        "simulated_cost": 42,
+        "stop_correctness": {
+          "denominator": 16,
+          "numerator": 16
+        },
+        "stop_not_determinable": 0,
+        "total_stop": 16,
+        "unsafe_select": 0,
+        "verified_facts": 20
+      },
+      "PGE-v2": {
+        "appropriate_inconclusive": 6,
+        "correct_stop": 14,
+        "decisions": 36,
+        "inconclusive": 6,
+        "inconclusive_appropriateness": {
+          "denominator": 6,
+          "numerator": 6
+        },
+        "legal_selection_rate": {
+          "denominator": 12,
+          "numerator": 12
+        },
+        "legal_selects": 12,
+        "missed_opportunity": 2,
+        "redundant": 2,
+        "rejected": 18,
+        "repeated": 0,
+        "selects": 12,
+        "simulated_cost": 30,
+        "stop_correctness": {
+          "denominator": 16,
+          "numerator": 14
+        },
+        "stop_not_determinable": 2,
+        "total_stop": 18,
+        "unsafe_select": 0,
+        "verified_facts": 16
+      }
+    },
+    "holdout": {
+      "B0-fixed-v2": {
+        "appropriate_inconclusive": 4,
+        "correct_stop": 8,
+        "decisions": 21,
+        "inconclusive": 4,
+        "inconclusive_appropriateness": {
+          "denominator": 4,
+          "numerator": 4
+        },
+        "legal_selection_rate": {
+          "denominator": 9,
+          "numerator": 9
+        },
+        "legal_selects": 9,
+        "missed_opportunity": 0,
+        "redundant": 3,
+        "rejected": 19,
+        "repeated": 2,
+        "selects": 9,
+        "simulated_cost": 21,
+        "stop_correctness": {
+          "denominator": 8,
+          "numerator": 8
+        },
+        "stop_not_determinable": 0,
+        "total_stop": 8,
+        "unsafe_select": 0,
+        "verified_facts": 10
+      },
+      "B1-score-ablation-v2": {
+        "appropriate_inconclusive": 4,
+        "correct_stop": 8,
+        "decisions": 21,
+        "inconclusive": 4,
+        "inconclusive_appropriateness": {
+          "denominator": 4,
+          "numerator": 4
+        },
+        "legal_selection_rate": {
+          "denominator": 9,
+          "numerator": 9
+        },
+        "legal_selects": 9,
+        "missed_opportunity": 0,
+        "redundant": 3,
+        "rejected": 19,
+        "repeated": 2,
+        "selects": 9,
+        "simulated_cost": 21,
+        "stop_correctness": {
+          "denominator": 8,
+          "numerator": 8
+        },
+        "stop_not_determinable": 0,
+        "total_stop": 8,
+        "unsafe_select": 0,
+        "verified_facts": 10
+      },
+      "PGE-v2": {
+        "appropriate_inconclusive": 3,
+        "correct_stop": 8,
+        "decisions": 20,
+        "inconclusive": 3,
+        "inconclusive_appropriateness": {
+          "denominator": 3,
+          "numerator": 3
+        },
+        "legal_selection_rate": {
+          "denominator": 8,
+          "numerator": 8
+        },
+        "legal_selects": 8,
+        "missed_opportunity": 1,
+        "redundant": 2,
+        "rejected": 19,
+        "repeated": 1,
+        "selects": 8,
+        "simulated_cost": 21,
+        "stop_correctness": {
+          "denominator": 9,
+          "numerator": 8
+        },
+        "stop_not_determinable": 0,
+        "total_stop": 9,
+        "unsafe_select": 0,
+        "verified_facts": 9
+      }
+    }
+  },
+  "rules": {
+    "must_stop": "domain UNKNOWN, time/step cap, empty pool, or no eligible candidate",
+    "opportunity": "fresh eligible candidate in frozen worthwhile_ids",
+    "uncertainty": "conflict, no trustworthy records, or no prescribed fresh utility",
+    "unknown_scope": "DOMAIN_ONLY",
+    "version": "stop-utility-v1",
+    "weak_trust": "CLOSED_WORLD_SYNTHETIC_ROSTER_NOT_ATTESTATION"
+  },
+  "status": "PASS",
+  "terminal_audit": [
+    {
+      "action": "STOP",
+      "case_id": "dev-00",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": true,
+      "oracle": {
+        "eligible": [
+          "lab-amber-c0"
+        ],
+        "opportunities": [],
+        "reason": "UTILITY_UNDETERMINED",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-00",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-00",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-01",
+      "correct_stop": false,
+      "missed_opportunity": true,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "opportunities": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "reason": "FROZEN_FRESH_UTILITY",
+        "verdict": "SHOULD_SELECT"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-01",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "CONFLICT",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-01",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "CONFLICT",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-02",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-02",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-02",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-03",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-03",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-03",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-04",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-04",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-04",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-05",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-05",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-05",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-06",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-06",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-06",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-07",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-07",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-07",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-08",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-08",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-08",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-09",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-09",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-09",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-10",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-10",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-10",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-11",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-11",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-11",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-12",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": true,
+      "oracle": {
+        "eligible": [
+          "lab-amber-c0"
+        ],
+        "opportunities": [],
+        "reason": "UTILITY_UNDETERMINED",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-12",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-12",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-13",
+      "correct_stop": false,
+      "missed_opportunity": true,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "opportunities": [
+          "lab-bronze-c0",
+          "lab-bronze-c1"
+        ],
+        "reason": "FROZEN_FRESH_UTILITY",
+        "verdict": "SHOULD_SELECT"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-13",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "CONFLICT",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-13",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "CONFLICT",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-14",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-14",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-14",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-15",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-15",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-15",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-16",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-16",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-16",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-17",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-17",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-17",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-18",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-18",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-18",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-19",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-19",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-19",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-20",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-20",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-20",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-21",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-21",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-21",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-22",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-22",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "dev-22",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-23",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-23",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "dev-23",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "development"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-00",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-00",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-00",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-01",
+      "correct_stop": false,
+      "missed_opportunity": true,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [
+          "lab-nova-c0",
+          "lab-nova-c1",
+          "lab-nova-c2",
+          "lab-nova-c3",
+          "lab-nova-c4",
+          "lab-nova-c5"
+        ],
+        "opportunities": [
+          "lab-nova-c0",
+          "lab-nova-c1",
+          "lab-nova-c2",
+          "lab-nova-c3",
+          "lab-nova-c4",
+          "lab-nova-c5"
+        ],
+        "reason": "FROZEN_FRESH_UTILITY",
+        "verdict": "SHOULD_SELECT"
+      },
+      "policy": "PGE-v2",
+      "reason": "ESTIMATED_ZERO_GAIN",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-01",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "CONFLICT",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-01",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "CONFLICT",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-02",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-02",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-02",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-03",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-03",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-03",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "STEP_STOP",
+      "seq": 4,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-04",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-04",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-04",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-05",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-05",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-05",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-06",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-06",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-06",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "NO_ELIGIBLE",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_ELIGIBLE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-07",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-07",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-07",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-08",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-08",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-08",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "CONFLICT",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-09",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-09",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-09",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "TIME_STOP",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-10",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "PGE-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-10",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "INCONCLUSIVE",
+      "case_id": "hold-10",
+      "correct_stop": false,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "EVIDENCE_UNCERTAIN",
+        "verdict": "INCONCLUSIVE_ALLOWED"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "NO_TRUSTED_EVIDENCE",
+      "seq": 1,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-11",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "PGE-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-11",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B0-fixed-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "holdout"
+    },
+    {
+      "action": "STOP",
+      "case_id": "hold-11",
+      "correct_stop": true,
+      "missed_opportunity": false,
+      "not_determinable": false,
+      "oracle": {
+        "eligible": [],
+        "opportunities": [],
+        "reason": "SAFETY_LIMIT",
+        "verdict": "MUST_STOP"
+      },
+      "policy": "B1-score-ablation-v2",
+      "reason": "UNKNOWN_STOP",
+      "seq": 2,
+      "split": "holdout"
+    }
+  ],
+  "utility_trust": "Prespecified human synthetic normative worthwhile labels; not real Authority truth or statistical optimum"
+}

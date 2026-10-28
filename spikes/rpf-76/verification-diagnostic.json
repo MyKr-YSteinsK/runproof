@@ -1,0 +1,29 @@
+{
+  "cli_exits": {
+    "anchor-correct": 0,
+    "anchor-missing": 2,
+    "anchor-wrong": 3,
+    "public-trace-verify": 0
+  },
+  "decisions": 182,
+  "holdout": "HOLDOUT_EXPOSED_NOT_BLIND",
+  "independent_recompute": [
+    "raw source/input identity",
+    "fixed candidate and normative utility labels",
+    "full source-frozen roster and actual visible records",
+    "own provenance/eligibility/ranking/transition logic",
+    "own Stop Oracle and stop numerator/denominator",
+    "own outcome fact/cost/redundancy and Pareto counts"
+  ],
+  "negative_rejection_rate": {
+    "denominator": 78,
+    "numerator": 78
+  },
+  "production": "NOT_ESTABLISHED",
+  "real_target": "NOT_RUN",
+  "runs": 108,
+  "source_sha256": "7f1d22ed4a269aec4af210c5e5bf50803622b9f7784582f6a30061bf25007d37",
+  "status": "PASS",
+  "trace_raw_sha256": "4c05d2ea0b67b6fdef1e104f73c4952607c5bfe8336d6d170871fb9b0ac55e1a",
+  "weak_trust": "CLOSED_WORLD_SYNTHETIC_ROSTER_NOT_ATTESTATION"
+}
