@@ -1,0 +1,22 @@
+{
+  "cases": 16,
+  "cli": {
+    "command": "python -X utf8 -B spikes/rpf-75/probe.py verify --file spikes/rpf-75/decision-traces.json --sha <raw-sha>",
+    "correct": 0,
+    "missing_anchor": 2,
+    "sha256": "58d905f6325587ee384f4e9f27e428d7f02092b57a4073ce517dd082c668ec67",
+    "wrong_anchor": 3
+  },
+  "decisions": 130,
+  "independent": "Verifier imports contracts only; independently computes evidence acceptance, ranking, state transitions, outcome/metric replay. Shared ABI constants are not an independent trust authority.",
+  "invariant": "UNKNOWN stops immediately in offline state; no model or business operation is implemented",
+  "limits": "Frozen fixture roster is a synthetic trust root, not a signature, real Authority, independent reproduction or proof of genuine outcome accuracy. Raw-byte identity is checkout-layout-specific.",
+  "negative_rejection_rate": {
+    "denominator": 44,
+    "numerator": 44
+  },
+  "real_unknown_business_safety": "NOT_ESTABLISHED",
+  "runs": 48,
+  "source_sha256": "0238a0bee663d8e99da532236125a58d06dcfffe0e7c815395cf67243a3feccc",
+  "status": "PASS"
+}

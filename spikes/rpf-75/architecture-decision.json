@@ -1,0 +1,53 @@
+{
+  "abi": "rpf75-offline-policy-v1",
+  "design": [
+    "Independent ContractView projection uses the two historical domain/candidate ID pairs, without importing their adapters",
+    "VisibleEvidence receives current records plus only their frozen digests; future oracle is replay-only",
+    "One deterministic integer score; shared baseline safety guards; independent verifier arithmetic",
+    "B0 fixed order; B1 removes feedback only from ranking; both retain visible safety checks"
+  ],
+  "generic_bottlenecks": [
+    "Only two historical domains/candidate pairs",
+    "Small four-key fact vocabulary",
+    "Exogenous feedback, fixed step time and deterministic outcome oracle",
+    "No authenticated real feedback channel or calibrated acquisition model"
+  ],
+  "integration_required": [
+    "Verified feedback adapter with independent provenance and sequence authority",
+    "Versioned candidate snapshot and genuine cost/risk bounds",
+    "Domain-scoped UNKNOWN controller boundary in separately authorized runtime",
+    "Portable canonical source identity design and adversarial cross-session provenance"
+  ],
+  "loc": {
+    "runtime/runproof_runtime/effectwitness/pge_r75_baselines.py": 11,
+    "runtime/runproof_runtime/effectwitness/pge_r75_contracts.py": 184,
+    "runtime/runproof_runtime/effectwitness/pge_r75_feedback.py": 36,
+    "runtime/runproof_runtime/effectwitness/pge_r75_policy.py": 66,
+    "runtime/runproof_runtime/effectwitness/pge_r75_replay.py": 95,
+    "runtime/runproof_runtime/effectwitness/pge_r75_verify.py": 166,
+    "runtime/tests/test_effectwitness_pge_r75.py": 267,
+    "spikes/rpf-75/probe.py": 172
+  },
+  "owner": "rpf-75-rev-1",
+  "source_commit": "cf59098f96aff03a543545c777131e5214513d94",
+  "status": "PASS",
+  "total_python_lines": 997,
+  "tradeoffs": [
+    "Small projection has no arbitrary URL/path or callable adapter, reducing integration scope",
+    "Verifier duplicates arithmetic deliberately; ABI constants shared, conceptual common-mode risks remain",
+    "Facts count keys/values, not information gain or actual safety value",
+    "Raw checkout layout binds identity; generic clean-checkout portability deferred"
+  ],
+  "unverified_scope": [
+    "real LLM Explorer",
+    "real Target/Authority",
+    "network/SDK launch",
+    "historical Runtime regression",
+    "L2/L3 causal benefit"
+  ],
+  "verified_scope": [
+    "16 synthetic cases, 3 policies, 130 decisions",
+    "88 tests twice, 44 fully reanchored artifact controls",
+    "raw anchor CLI 0/2/3 and Git blob alignment"
+  ]
+}

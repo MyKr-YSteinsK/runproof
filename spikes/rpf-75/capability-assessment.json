@@ -1,0 +1,25 @@
+{
+  "L2": "NOT_ESTABLISHED",
+  "L3": "NOT_ESTABLISHED",
+  "authority": "NOT_RUN",
+  "current_state": [
+    "Pure offline explainable policy",
+    "Verified fixture feedback visibility and budget/risk guards",
+    "Independent offline trace replay and descriptive paired comparison"
+  ],
+  "evidence_accepted": "ARCHITECT_ONLY",
+  "fee_cny": 0,
+  "level": "OFFLINE_POLICY_SIMULATION_ONLY",
+  "paired_counts": {
+    "FAVORABLE": 1,
+    "TIE": 13,
+    "TRADEOFF": 1,
+    "UNFAVORABLE": 1
+  },
+  "provider_tokens": 0,
+  "real_explorer": "NOT_RUN",
+  "real_target": "NOT_RUN",
+  "rpf74": "PAUSED_NOT_ACCEPTED_NOT_REPAIRED",
+  "stage_advanced": false,
+  "target_intent": "Real Explorer selects within frozen Execution/Effect/Experiment contracts, real Target executes, independent Authority verifies effects; unchanged"
+}

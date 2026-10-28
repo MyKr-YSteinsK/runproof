@@ -1,0 +1,479 @@
+{
+  "controls": [
+    {
+      "actual_exit": 3,
+      "control": "unknown-schema",
+      "expected_exit": 3,
+      "raw_sha256": "bff3cd99e18da21d555062548256b0d61fffe8883ba669589372694ecb0fd379",
+      "reanchored": true,
+      "reason": "TRACE_ID",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "wrong-owner",
+      "expected_exit": 3,
+      "raw_sha256": "c11ed43f997aab978f236efc8f69ba0fb3d568b9f5446fef15a3227fc60eb190",
+      "reanchored": true,
+      "reason": "TRACE_ID",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "evidence-level-upgrade",
+      "expected_exit": 3,
+      "raw_sha256": "dee924c9ccbbc8895064b67cdea54af8a7bb690a3cb0b66294eedb83243d07a5",
+      "reanchored": true,
+      "reason": "TRACE_ID",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "wrong-source",
+      "expected_exit": 3,
+      "raw_sha256": "bfca9ad745c971c85f3780da87037f6299c11510352a35993c729eb42294372f",
+      "reanchored": true,
+      "reason": "SOURCE_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "wrong-fixture-anchor",
+      "expected_exit": 3,
+      "raw_sha256": "f684afa7230e880dc2b7e2175a09fb6e2ddd73532c61c102359245667593b003",
+      "reanchored": true,
+      "reason": "FIXTURE_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "seed-change",
+      "expected_exit": 3,
+      "raw_sha256": "ec711d800e4049d4e79aaafd82380b4e272a97c8691b3470ebe3065cb94f2bc5",
+      "reanchored": true,
+      "reason": "FIXTURE_IDENTITY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "policy-set-change",
+      "expected_exit": 3,
+      "raw_sha256": "aa0f9ac550a45040af78814aeaad7df40c77a395e566687ba91f53794a82b6f5",
+      "reanchored": true,
+      "reason": "POLICY_SET",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "claim-escalation",
+      "expected_exit": 3,
+      "raw_sha256": "45b416b2e6038bcaf397564c61aa7083b094e4bfc6e590f6f55ed0294f37fec5",
+      "reanchored": true,
+      "reason": "CLAIM_BOUNDARY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "duplicate-trace-seq",
+      "expected_exit": 3,
+      "raw_sha256": "0d94217e618f5550b9634006cdddd9a029a3f69b4ec01d293fc729352cdf913c",
+      "reanchored": true,
+      "reason": "ROW_SCOPE_SEQ",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "wrong-case-scope",
+      "expected_exit": 3,
+      "raw_sha256": "78c2e8a1f8bfdfb72e4dea64c83bf9c35658f030798faae165bbcfede9941e83",
+      "reanchored": true,
+      "reason": "ROW_SCOPE_SEQ",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "wrong-policy-id",
+      "expected_exit": 3,
+      "raw_sha256": "df9418e6f63d4b2394ac6b53d342ccca0ac27ca4927edc97b3d82cf999f9a240",
+      "reanchored": true,
+      "reason": "ROW_SCOPE_SEQ",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "step-skip",
+      "expected_exit": 3,
+      "raw_sha256": "619f0e9c6e5786b55fab5ba4f29d28e0fb9a59e32cc0cda4932c19372a79613f",
+      "reanchored": true,
+      "reason": "ROW_SCOPE_SEQ",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "budget-negative",
+      "expected_exit": 3,
+      "raw_sha256": "d96a57ab475071500a8b5f6c1c1a6bfebf38b8177acc251badc43f3ac66063fd",
+      "reanchored": true,
+      "reason": "STATE_BUDGET",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "budget-overflow",
+      "expected_exit": 3,
+      "raw_sha256": "f3e2c0850cae41c03e17786515c50a6aa5f8c0a750bc1fa3725f6db468fb2cba",
+      "reanchored": true,
+      "reason": "STATE_BUDGET",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "elapsed-time-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "d1dc403f3ad2fcb7e5a162aff6614eff484531ce6539372675d4d26f69cfd466",
+      "reanchored": true,
+      "reason": "STATE_CHAIN",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "unknown-state-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "531de29e17c59a52721bec2a6224d750001744a5bfd7bb04a590e4573c37495d",
+      "reanchored": true,
+      "reason": "STATE_CHAIN",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "repeated-attempt-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "262d729bb70564b598912b6e55e93d7c0af7566f8451ed14bd12326370167cf2",
+      "reanchored": true,
+      "reason": "STATE_ATTEMPTED",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "wrong-contract-anchor",
+      "expected_exit": 3,
+      "raw_sha256": "55d68bf028d47a91528a6029d9d5bf4ab84deb1afe00e60e728ccb0f69218840",
+      "reanchored": true,
+      "reason": "CONTRACT_ANCHOR",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "future-feedback-id",
+      "expected_exit": 3,
+      "raw_sha256": "6a4137aec994fd8c95abbb157b2939faf22a932e28acff4c440b1b7a345c182d",
+      "reanchored": true,
+      "reason": "VISIBLE_SET",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "missing-visible-anchor",
+      "expected_exit": 3,
+      "raw_sha256": "d40f319e3673944abeca29ac175c1c20fdc08d989d11dae534c6be812c214222",
+      "reanchored": true,
+      "reason": "VISIBLE_SET",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "out-of-pool-candidate",
+      "expected_exit": 3,
+      "raw_sha256": "08e5af8e3d91f0b598c17d30d466fe3baf58a6bd0979cb9127d7d3880ec3cee2",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "cross-domain-candidate",
+      "expected_exit": 3,
+      "raw_sha256": "145b9b864db0dec8b5b27ebb2456cdb295460f51e84f83752f7f4bc6ab263b22",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "candidate-cost-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "6c10e5b6d2782d5b9135ead815add737b796e5349c044ec01956c1362e1128c0",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "candidate-risk-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "563d5104e7097ca8a2bb12fe69e11fdf854b0909989123d7b6a83d6949aab984",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "unverified-promoted-fact",
+      "expected_exit": 3,
+      "raw_sha256": "ee4858a825953dfe6e2c900d2e033b4d4b98d0af2ebb4ff4bd0b59e457632305",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "missing-evidence-provenance",
+      "expected_exit": 3,
+      "raw_sha256": "2780d6ee776304ed4f834befe0f5f83c0942d161bdf1fcf3c83e9a28bd4a78b8",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "ranking-score-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "3b25e61ca1663182aa0bf183a6c1b3a3dc6ec412063a864016e7dd0be34074c7",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "ranking-feature-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "4af4ca6eb5ef26703c97df60d194b2c32470de02742642fc1e0ab01eab471c92",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "ranking-cost-term-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "6f513770276d80ce6a09c193a163d755f0a2a2c7c4e22167c5d6af0eecfcdc96",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "missing-reason",
+      "expected_exit": 3,
+      "raw_sha256": "f4eda36b35b24d1236e2746af20eb1ef553a952d3602c7351a807da86e4b9cd7",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "outcome-future-label",
+      "expected_exit": 3,
+      "raw_sha256": "0a6a548bf67590af7594039f3cdbd3c24ab4f84ac08e904cb70563a97cb34cd8",
+      "reanchored": true,
+      "reason": "OUTCOME_ORACLE",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "unknown-continues",
+      "expected_exit": 3,
+      "raw_sha256": "92f1e5269c0052ad900489a13a696e5b35810c981eecfa693e2bcf3ba6f87355",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "timeout-continues",
+      "expected_exit": 3,
+      "raw_sha256": "7f9c6905ef46bc712c03e95540de3220bd07003a8465eb2dcd7f1e9d45d2f70f",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "empty-pool-selects",
+      "expected_exit": 3,
+      "raw_sha256": "f45925aeb53a91950ea1625b12f6fddf7150e5b7223d0df774edc3705b36c566",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "baseline-future-ranking",
+      "expected_exit": 3,
+      "raw_sha256": "562d62237cd1e3c8c0cd6be3014236a590d86ae78bee3defc40106c8b158c0d8",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "metric-fact-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "07cbcf3992e58453279555de5b30ec64f761813ed34e2934284b40858d03e69a",
+      "reanchored": true,
+      "reason": "METRIC_REPLAY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "metric-denominator-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "9d2bd7af2581e31ca7aa466f2665323a8d0a03c4803fbd86e9a5d2467b108d9c",
+      "reanchored": true,
+      "reason": "METRIC_DENOMINATOR",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "paired-advantage-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "13c2a0f1dc8520d0c06e53c3ce71a7395bf943b3b3baf82cdf4fe90af1dcc81d",
+      "reanchored": true,
+      "reason": "PAIRED_REPLAY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "run-source-substitution",
+      "expected_exit": 3,
+      "raw_sha256": "2f6be8c19f4bb1503ad64a35ec58ebc38e001884aadbf28c181e065855254f5a",
+      "reanchored": true,
+      "reason": "RUN_SOURCE",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "boolean-zero-step",
+      "expected_exit": 3,
+      "raw_sha256": "da7a701ef74751a5fd2eb7f4267a2227bf9ccb213b77c88f65f628a3a3df28ae",
+      "reanchored": true,
+      "reason": "ROW_SCOPE_SEQ",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "boolean-zero-state-step",
+      "expected_exit": 3,
+      "raw_sha256": "2b2647b3d248daf43f05a4958c64392bcfdec7952487ec152e5e2e67252c479b",
+      "reanchored": true,
+      "reason": "STATE_STEP",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "boolean-zero-metric",
+      "expected_exit": 3,
+      "raw_sha256": "4d40701ec384ed0debee22106f9c30b5a60d574ce3b0e8493830c626653678eb",
+      "reanchored": true,
+      "reason": "METRIC_REPLAY",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "metric-definition-forgery",
+      "expected_exit": 3,
+      "raw_sha256": "612281ead5dbeeca9f96c811c49f6e1d9a97ccfe4d2c2e3962cf9db70bd6ecfe",
+      "reanchored": true,
+      "reason": "METRIC_DEFINITIONS",
+      "status": "PASS"
+    },
+    {
+      "actual_exit": 3,
+      "control": "compound-unknown-outcome-metrics",
+      "expected_exit": 3,
+      "raw_sha256": "b2e79f85b1c1c4de0b7421f730dbc231db064ae5e83669748aaeffdb4c337f68",
+      "reanchored": true,
+      "reason": "DECISION_SEMANTICS",
+      "status": "PASS"
+    }
+  ],
+  "deep_reanchor": "Every mutant recomputes each row and result hash. The compound case also forges UNKNOWN continuation, outcome and comparison table.",
+  "invalid_controls": 0,
+  "invocation": "probe.py negative invokes the same verify_file boundary 44 times in one offline process; no subprocess per mutant",
+  "original_raw_sha256": "58d905f6325587ee384f4e9f27e428d7f02092b57a4073ce517dd082c668ec67",
+  "policy_admission_controls": [
+    {
+      "reason": "BUDGET_RANGE",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_17_negative_budget_invalid"
+    },
+    {
+      "reason": "BUDGET_RANGE",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_18_budget_overflow_invalid"
+    },
+    {
+      "reason": "BUDGET_RANGE",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_19_boolean_budget_invalid"
+    },
+    {
+      "reason": "DUPLICATE_CANDIDATE",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_20_duplicate_candidate_invalid"
+    },
+    {
+      "reason": "CANDIDATE_DOMAIN",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_21_cross_domain_candidate_invalid"
+    },
+    {
+      "reason": "VIEW_SCHEMA",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_22_arbitrary_path_schema_invalid"
+    },
+    {
+      "reason": "FUTURE_EVIDENCE",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_23_future_feedback_rejected"
+    },
+    {
+      "reason": "EVIDENCE_NOT_FROZEN",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_24_forged_verified_record_rejected"
+    },
+    {
+      "reason": "DUPLICATE_EVIDENCE",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_25_duplicate_evidence_rejected"
+    },
+    {
+      "reason": "POLICY_ID",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_26_policy_id_rejected"
+    },
+    {
+      "reason": "STATE_BUDGET",
+      "source": "final focused tests, twice; asserted machine reason",
+      "status": "PASS",
+      "test": "test_27_state_budget_rejected"
+    }
+  ],
+  "rejected": 44,
+  "rejection_rate": {
+    "denominator": 44,
+    "numerator": 44
+  },
+  "status": "PASS",
+  "valid_controls": 44
+}

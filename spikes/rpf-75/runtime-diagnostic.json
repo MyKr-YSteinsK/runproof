@@ -1,0 +1,83 @@
+{
+  "administrative_diagnostic": {
+    "issue": "Report inspection used Windows default GBK and raised UnicodeDecodeError",
+    "resolution": "Explicit UTF-8 read; no source change or experimental rerun",
+    "status": "RESOLVED"
+  },
+  "cleanup": "All task-owned failed/final logs, variants and freeze retained; no old roots inspected or cleaned",
+  "deadline_utc": "2026-10-28T19:57:00Z",
+  "development": [
+    {
+      "run": 1,
+      "status": "PASS",
+      "tests": 79
+    },
+    {
+      "classification": "negative-generator no-op comparator used Python False == 0; source not frozen yet",
+      "errors": 3,
+      "resolution": "Canonical JSON comparison in mutator and semantic verifier",
+      "run": 2,
+      "status": "FAIL",
+      "tests": 83
+    },
+    {
+      "run": 3,
+      "status": "PASS",
+      "tests": 83
+    },
+    {
+      "run": 4,
+      "status": "PASS",
+      "tests": 88
+    }
+  ],
+  "evidence_bytes": 7981641,
+  "fee_cny": 0,
+  "focused": [
+    {
+      "errors": 0,
+      "failures": 0,
+      "receipt": {
+        "command": "python -X utf8 -B -m unittest discover -s runtime/tests -p test_effectwitness_pge_r75.py -v",
+        "duration_seconds": 1.2952727,
+        "end_utc": "2026-10-28T12:10:05.3789034Z",
+        "exit": 0,
+        "start_utc": "2026-10-28T12:10:04.0861232Z"
+      },
+      "run": 1,
+      "skips": 0,
+      "stderr_sha256": "f257ffb91c546d97de8ef452c1dbdc66b134b01bd16f4fa5588bdc107923296c",
+      "tests": 88
+    },
+    {
+      "errors": 0,
+      "failures": 0,
+      "receipt": {
+        "command": "python -X utf8 -B -m unittest discover -s runtime/tests -p test_effectwitness_pge_r75.py -v",
+        "duration_seconds": 1.3278479,
+        "end_utc": "2026-10-28T12:10:05.4114032Z",
+        "exit": 0,
+        "start_utc": "2026-10-28T12:10:04.0861196Z"
+      },
+      "run": 2,
+      "skips": 0,
+      "stderr_sha256": "3329f982f24228d34f70c8655965776e46fab0040a08aac3ca91e04439aa0efb",
+      "tests": 88
+    }
+  ],
+  "full_old_runtime": "NOT_RUN_BY_PLAN",
+  "jvm_started": 0,
+  "maximum_concurrent_task_python": 2,
+  "provider": 0,
+  "real_tokens": 0,
+  "repeat": {
+    "byte_equal": true,
+    "decisions_each": 130,
+    "original_raw_sha256": "58d905f6325587ee384f4e9f27e428d7f02092b57a4073ce517dd082c668ec67",
+    "reverse_raw_sha256": "58d905f6325587ee384f4e9f27e428d7f02092b57a4073ce517dd082c668ec67"
+  },
+  "report_utc": "2026-10-28T12:13:26.768126+00:00",
+  "sdk_children_started": 0,
+  "services_started": 0,
+  "status": "PASS"
+}
