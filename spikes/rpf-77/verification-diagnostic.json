@@ -1,0 +1,40 @@
+{
+  "cli_exits": {
+    "anchor-correct": 0,
+    "anchor-missing": 2,
+    "anchor-wrong": 3,
+    "public-trace-verify": 0
+  },
+  "decisions": 272,
+  "diagnostic_cases_separate": 3,
+  "independent_recompute": [
+    "Provenance and time/snapshot roster binding",
+    "Hard eligibility and observable utility decomposition",
+    "v2 reference mathematics and B0 ordering",
+    "Normative opportunity/over-exploration Oracle",
+    "Transitions and independent counters, ratios, denominators, paired differences"
+  ],
+  "limits": [
+    "SYNTHETIC_OFFLINE",
+    "NORMATIVE_LABEL_NOT_AUTHORITY",
+    "No real Provider/Target/Issuer",
+    "No causal/statistical advantage",
+    "Raw checkout identity not arbitrary cross-platform portability"
+  ],
+  "main_new_cases": 48,
+  "negative": {
+    "compound": 12,
+    "executed": 78,
+    "false_pass": 0,
+    "invalid": 0,
+    "rejected": 78
+  },
+  "replays": 153,
+  "source_sha256": "9c6ea8d9b520587274ca092ce544f49834651db64e839d31b36868ef225b4fa3",
+  "status": "PASS",
+  "trace_raw_sha256": "d96874f815f7486ba392fac0868373211b0a13f38f06fdef2a6c4244e30db8a1",
+  "verifier_imports": [
+    "contracts",
+    "fixtures"
+  ]
+}

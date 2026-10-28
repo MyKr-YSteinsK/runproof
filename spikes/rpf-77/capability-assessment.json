@@ -1,0 +1,26 @@
+{
+  "L2_L3": "NOT_ESTABLISHED",
+  "current_state": "Finite offline utility-aware ranking/stopping and counterexample evaluation",
+  "exposure": "CHALLENGE_AUTHOR_EXPOSED_NOT_EXTERNAL_BLIND",
+  "fee_cny": 0,
+  "historical_sources": "UNCHANGED",
+  "issuer": "NOT_ESTABLISHED",
+  "level": "OFFLINE_UTILITY_POLICY_EVALUATION_ONLY",
+  "negative_findings": {
+    "challenge_v3_missed": 1,
+    "challenge_v3_over": 1,
+    "development_v3_missed": 2,
+    "development_v3_over": 2,
+    "diagnostic76_appropriate_inconclusive": "0/3 under prespecified normative opportunity labels",
+    "diagnostic76_v3_missed": 3
+  },
+  "provider": 0,
+  "real_authority": "NOT_RUN",
+  "real_explorer": "NOT_RUN",
+  "real_target": "NOT_RUN",
+  "rpf74": "PAUSED_UNTOUCHED",
+  "statistical_advantage": "NOT_ESTABLISHED",
+  "target_intent": "Real Explorer, controlled Target, independent Authority and Witness remain required; unchanged",
+  "token": 0,
+  "universal_policy_improvement": "NOT_ESTABLISHED"
+}

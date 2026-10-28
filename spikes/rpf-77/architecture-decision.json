@@ -1,0 +1,52 @@
+{
+  "abi": "rpf77-offline-utility-v1",
+  "integration_gaps": [
+    "Authenticated field provenance/freshness from real sources",
+    "Value updates and completed obligations beyond attempted-ID proxy",
+    "Portable source identity",
+    "New externally authored evaluation unknown to policy developer",
+    "Separately authorized real Agent integration"
+  ],
+  "interfaces": {
+    "oracle": "evaluate(frozen_case, current_records, pre_decision_state)",
+    "policy": "decide(view, visible_records, state, full_frozen_roster, roster_anchor, policy_id)",
+    "utility": "features(candidate, visible_facts, attempted_ids)",
+    "verifier": "adjudicate plus independent measurements/compare; imports no policy/replay/utility/baseline/oracle"
+  },
+  "known_semantics": "KNOWN means a published pre-decision estimate with bound provenance, not an accurate/calibrated estimate.",
+  "loc": {
+    "runtime/runproof_runtime/effectwitness/pge_r77_baselines.py": 13,
+    "runtime/runproof_runtime/effectwitness/pge_r77_contracts.py": 172,
+    "runtime/runproof_runtime/effectwitness/pge_r77_fixtures.py": 129,
+    "runtime/runproof_runtime/effectwitness/pge_r77_oracle.py": 23,
+    "runtime/runproof_runtime/effectwitness/pge_r77_policy.py": 44,
+    "runtime/runproof_runtime/effectwitness/pge_r77_projection.py": 44,
+    "runtime/runproof_runtime/effectwitness/pge_r77_replay.py": 99,
+    "runtime/runproof_runtime/effectwitness/pge_r77_utility.py": 15,
+    "runtime/runproof_runtime/effectwitness/pge_r77_verify.py": 177,
+    "runtime/tests/test_effectwitness_pge_r77.py": 133,
+    "spikes/rpf-77/probe.py": 148
+  },
+  "owner": "rpf-77-rev-1",
+  "status": "PASS",
+  "total_python_lines": 997,
+  "tradeoffs": [
+    "Finite snapshot with all candidate features visible at clock0; dynamic feature revision deferred",
+    "A deterministic published estimate is reviewable but not calibrated",
+    "Normative over-exploration labels are a prespecified objective, not true information gain",
+    "Verifier separate arithmetic shares schema/constants; conceptual common-mode risk remains"
+  ],
+  "utility_formula": "2*novelty+4*verification+3*freshness+3*value-cost-2*risk; value=2 UPDATE,1 REVALIDATE,0 NONE; non-novel obligations zero after attempt",
+  "v2_audit": {
+    "differences": [
+      "new owner/ABI/projection",
+      "new initial_elapsed permits expired input",
+      "no B1 requested",
+      "diagnostic projection labels explicitly exposed; unavailable utility fields UNKNOWN"
+    ],
+    "equation": "10*key_gain+2*priority-cost-risk",
+    "mapping": "effect_keys maps effects; added snapshot/source/utility fields common to all policies; no historical driver imported",
+    "reference": "RPF76 public source read-only",
+    "stop": "all key gain zero"
+  }
+}
