@@ -1,0 +1,1436 @@
+{
+  "version": "MIGRATION-2026-10-29-RPF79-rev1",
+  "observed_utc": "2026-10-29T10:15:51.248003+00:00",
+  "base": "240dbae75cc70f142c7c37a2a3994085063d7ccc",
+  "main": "bda0cd49e50e3181f604324e94877a24b9885334",
+  "documentation_source_commit": "ce57a1009447927ad5fe0f319973f2491b5ed0c5",
+  "evidence": [
+    {
+      "rpf": 40,
+      "sha": "1556ab535d48661faa2c596c5bfea136c2404c68",
+      "branch": "codex/rpf-40-effectwitness-spike",
+      "path": "spikes/rpf-40/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1556ab535d48661faa2c596c5bfea136c2404c68/spikes/rpf-40/RESULT.md",
+      "bytes": 13420,
+      "sha256": "31eae121176c852d15667f38f18af529bb6a6dfbcf9399696723662fda9703a6",
+      "git_blob": "af9b90a738db63cfef0d587642d9dde4c55204c4",
+      "reported_status_excerpt": [
+        "- Status: COMPLETE；A-01 至 A-09 已完成，A-10 在本分支聚焦提交、普通 Push 与远端 SHA 读回后完成。"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 41,
+      "sha": "ec490719176fe0e5504902671d62e1e06361d510",
+      "branch": "codex/rpf-41-effect-contract-order-pilot",
+      "path": "spikes/rpf-41/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/ec490719176fe0e5504902671d62e1e06361d510/spikes/rpf-41/RESULT.md",
+      "bytes": 11704,
+      "sha256": "2c83a729303ac457e589b14b72929d220a3358a4d893891e59c0fbab839be000",
+      "git_blob": "ec8907ae8d5df9a3aa377f3f483aceb087215b24",
+      "reported_status_excerpt": [
+        "**Status: COMPLETE**（本 Plan 交付候选；工程/live 验收及必要 Git 交付已完成）。2026-10-17 完成 Runtime 订单退款竖切片及本轮一次真实业务 live。Main 的 Evidence 接受、阶段推进、main 合并均未由执行器宣布。最终报告提交的 SHA 在同次聊天回执补录，不循环改写报告以填写自身 SHA。"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 42,
+      "sha": "6370775dda3be24ac45bb2a7cd00c9f401028247",
+      "branch": "codex/rpf-42-pge-feedback-exploration",
+      "path": "spikes/rpf-42/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/6370775dda3be24ac45bb2a7cd00c9f401028247/spikes/rpf-42/RESULT.md",
+      "bytes": 16171,
+      "sha256": "1c20893315a66041b1f9bf7091d548acf320febe724d99621f95264c659a32b9",
+      "git_blob": "abc82d1097985e9a6c67c0aad13704158cf266ac",
+      "reported_status_excerpt": [
+        "- **Status: COMPLETE**：必要两轮真实 Exploration、独立业务反馈、L2案例机制和预注册B0已完成；实现提交已普通push并独立核验。唯一报告的最终commit SHA在同次聊天回执补录，避免循环填写自身SHA。此状态是Plan交付候选，不代表Main接受、阶段推进、合并或发布。"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 43,
+      "sha": "238037a0b7499800325a91f3beeacf9161fc4d01",
+      "branch": "codex/rpf-43-witness-offline-verifier",
+      "path": "spikes/rpf-43/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/238037a0b7499800325a91f3beeacf9161fc4d01/spikes/rpf-43/RESULT.md",
+      "bytes": 7330,
+      "sha256": "bad39bc1b181cc2981b78f16c447e230f9862661630fb08f2237c598388a9880",
+      "git_blob": "c1047c9f88044c836088a24b74eed27e59273d22",
+      "reported_status_excerpt": [
+        "- **Status: COMPLETE** — required Witness, anchored offline verification, attack coverage, compatibility checks, cleanup, focused commit and ordinary branch push completed."
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 44,
+      "sha": "1d2095bc26177b165f299e9ac1ec5edfab860983",
+      "branch": "codex/rpf-44-cross-domain-witness-core",
+      "path": "spikes/rpf-44/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1d2095bc26177b165f299e9ac1ec5edfab860983/spikes/rpf-44/RESULT.md",
+      "bytes": 12191,
+      "sha256": "20f9daffa09a1b2a224d9abf697a276aede9309dec62c83e5f87483ff2448923",
+      "git_blob": "ac32659940559bd829ddf4456cce54c7b905b756",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 45,
+      "sha": "4bebed83abde36feb129a737335fb1d37cf13b1a",
+      "branch": "codex/rpf-45-api-backed-effectwitness-lab",
+      "path": "spikes/rpf-45/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/4bebed83abde36feb129a737335fb1d37cf13b1a/spikes/rpf-45/RESULT.md",
+      "bytes": 14244,
+      "sha256": "6d31f32be5bc66a4f3e4a1290a839fb733f3da6e2ecf76854fbb3cb0f553806c",
+      "git_blob": "137f88aef377e42772b3b646a41574fa31d39813",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 46,
+      "sha": "69dfe3079f5778cf6e569e82cf8382e4e3ec04a8",
+      "branch": "codex/rpf-46-live-pge-lab",
+      "path": "spikes/rpf-46/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/69dfe3079f5778cf6e569e82cf8382e4e3ec04a8/spikes/rpf-46/RESULT.md",
+      "bytes": 17129,
+      "sha256": "62965cfd1b84cb400a393c04c93eb6a43397f348743fc1d63b29fa2da0baf980",
+      "git_blob": "4d7961b688e6d23f2282ba785ff4edd5cb124b15",
+      "reported_status_excerpt": [
+        "Status: Complete (`COMPLETE`)"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 47,
+      "sha": "ec325ee9dd80e6663beb74d32d129a34fb4df40f",
+      "branch": "codex/rpf-47-competition-evidence-demo",
+      "path": "spikes/rpf-47/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/ec325ee9dd80e6663beb74d32d129a34fb4df40f/spikes/rpf-47/RESULT.md",
+      "bytes": 10736,
+      "sha256": "515b9b60fabe64455a08aa08f29e094648411deeebccb3eb61032d30d880eb6e",
+      "git_blob": "93586b7a3860b43cbf66f32d120111d9fdc2622b",
+      "reported_status_excerpt": [
+        "**Status: PARTIAL**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 48,
+      "sha": "8241ebb1a96be54ec56ce384b63b4789efc4dac9",
+      "branch": "codex/rpf-48-target-agent-integration",
+      "path": "spikes/rpf-48/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/8241ebb1a96be54ec56ce384b63b4789efc4dac9/spikes/rpf-48/RESULT.md",
+      "bytes": 14380,
+      "sha256": "03746ef160d973c6498d7877b71e1c64dec3b40e1672fc1eb6b49b61115f2486",
+      "git_blob": "c30b0745b3efa76bdf1f49403fd737eb954d8e01",
+      "reported_status_excerpt": [
+        "**Status: COMPLETE**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 49,
+      "sha": "166707838969ba907baacff501d4459497bec8e4",
+      "branch": "codex/rpf-49-target-agent-recovery",
+      "path": "spikes/rpf-49/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/166707838969ba907baacff501d4459497bec8e4/spikes/rpf-49/RESULT.md",
+      "bytes": 12787,
+      "sha256": "dd9e2ca98dce4b65674c669be8a34da6d588f812e451f5d4b2be5631a4c3bc00",
+      "git_blob": "7d1376f5cdbbe38ec7503086daae072fff32e727",
+      "reported_status_excerpt": [
+        "**Status:** `COMPLETE`"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 50,
+      "sha": "b3271eaaf408dffa1ecd6f26f1b47fab5cede289",
+      "branch": "codex/rpf-50-controlled-violation-witness",
+      "path": "spikes/rpf-50/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/b3271eaaf408dffa1ecd6f26f1b47fab5cede289/spikes/rpf-50/RESULT.md",
+      "bytes": 12003,
+      "sha256": "03032b4709477b2a74884b855824f44cb5c578b3e79569e4505027e4bdc04d6d",
+      "git_blob": "ddc03649456631bca764742ecc8056d164cc6bda",
+      "reported_status_excerpt": [
+        "- **Status:** `COMPLETE`"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 51,
+      "sha": "151922a9b891ce9aa6f2d62639109e435f98c8ab",
+      "branch": "codex/rpf-51-rev4-real-jdk-http-effect",
+      "path": "spikes/rpf-51/rev-4/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/151922a9b891ce9aa6f2d62639109e435f98c8ab/spikes/rpf-51/rev-4/RESULT.md",
+      "bytes": 8556,
+      "sha256": "e9fcb64f6e6f85bb64cce202d06194fd29e369e122754ac147ffedb7293e2352",
+      "git_blob": "4f557938cc9335c6f1310392adedb7e779184d65",
+      "reported_status_excerpt": [
+        "**Status**：Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 52,
+      "sha": "3dfafb7fc286759f212166004e8558e02e0aba48",
+      "branch": "codex/rpf-52-rev3-sdk-diagnostics-and-fixture-recovery",
+      "path": "spikes/rpf-52/rev-3/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/3dfafb7fc286759f212166004e8558e02e0aba48/spikes/rpf-52/rev-3/RESULT.md",
+      "bytes": 9185,
+      "sha256": "231c360c7431cc9a0c24b4d323656bb1fede56d583026f803c8b7551bbf766e1",
+      "git_blob": "36f499b3f52b30e64c5f7554a90ad5af617eeb19",
+      "reported_status_excerpt": [
+        "- **Status: Complete**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 53,
+      "sha": "05b8c324fab376a23926b97a73e0fde6523ae373",
+      "branch": "codex/rpf-53-rev6-live-witness-recovery",
+      "path": "spikes/rpf-53/rev-6/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/05b8c324fab376a23926b97a73e0fde6523ae373/spikes/rpf-53/rev-6/RESULT.md",
+      "bytes": 13624,
+      "sha256": "e6423247ffc17117dce93ef31c4d952df2aeb7587e98575caa6f041ad618154b",
+      "git_blob": "bf2dcac8443a45d314dc94753a7269da3a301de3",
+      "reported_status_excerpt": [
+        "**Status: Complete**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 54,
+      "sha": "77cef321ab95383583b4a983d667d5e2c03722d0",
+      "branch": "codex/rpf-54-pge-stage-closeout-extension-spike",
+      "path": "spikes/rpf-54/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/77cef321ab95383583b4a983d667d5e2c03722d0/spikes/rpf-54/RESULT.md",
+      "bytes": 13264,
+      "sha256": "e1500d2abf46e89eaa48f3127f1b8f3e104624a9a95ac6ab1da92b222261d139",
+      "git_blob": "fa52f5cef792d33e3d5cea05163b54ed69e5dd6d",
+      "reported_status_excerpt": [
+        "**Plan ID: RPF-54 / Revision: rev-1 / Status: Complete**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 55,
+      "sha": "227ffb020472633ce9b538ea33d5ad30a5e17bd7",
+      "branch": "codex/rpf-55-rev2-config-experiment-cold-start-closeout",
+      "path": "spikes/rpf-55/rev-2/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/227ffb020472633ce9b538ea33d5ad30a5e17bd7/spikes/rpf-55/rev-2/RESULT.md",
+      "bytes": 13379,
+      "sha256": "a1234f46a20006609330cfe731ad19192ce56d7d3193bfce516bf37c993d96ed",
+      "git_blob": "fc61a62838ef35c70cb0088ff2b5ee76be7b2c14",
+      "reported_status_excerpt": [
+        "**Plan ID: RPF-55 / Revision: rev-2 / Status: Complete**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 56,
+      "sha": "403ac5bf01c796602ef244cb3985043014de62eb",
+      "branch": "codex/rpf-56-rev4-explorer-tool-protocol-closeout",
+      "path": "spikes/rpf-56/rev-4/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/403ac5bf01c796602ef244cb3985043014de62eb/spikes/rpf-56/rev-4/RESULT.md",
+      "bytes": 14091,
+      "sha256": "a94e652cabec7d3014b3c5902618c45876b3cc18b170c2cb78ea73438948f7ca",
+      "git_blob": "ef42ddba7b45c41141501e8e9800e01ec49ffc39",
+      "reported_status_excerpt": [
+        "**Status: Complete**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 57,
+      "sha": "e05aa7a5d9e902f2d64928ff61d3280c1cefdbd0",
+      "branch": "codex/rpf-57-verified-feedback-coverage-exploration",
+      "path": "spikes/rpf-57/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/e05aa7a5d9e902f2d64928ff61d3280c1cefdbd0/spikes/rpf-57/RESULT.md",
+      "bytes": 16016,
+      "sha256": "0074fcad65f0bacca576c2c4fe291374645f5c4c911aafe75372239cb33b2d7a",
+      "git_blob": "fbc8cc6f18dd691e489dd9a2fac33f272aefc62e",
+      "reported_status_excerpt": [
+        "**Status: Complete**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 58,
+      "sha": "03d13513ad958cf01455a39bede4f873ed474e21",
+      "branch": "codex/rpf-58-rev2-cross-domain-controlled-closeout",
+      "path": "spikes/rpf-58/rev-2/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/03d13513ad958cf01455a39bede4f873ed474e21/spikes/rpf-58/rev-2/RESULT.md",
+      "bytes": 11388,
+      "sha256": "c19cfad128b529ce3f93cf3b215c64ac263071b7a81155efe7f0fafe59315a0a",
+      "git_blob": "5fcc9aaf2c06c1a37e29157976201ff456600f55",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 59,
+      "sha": "c07236b72aea6690ba96d193178fc105f685ea50",
+      "branch": "codex/rpf-59-cross-domain-real-explorer-selection",
+      "path": "spikes/rpf-59/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/c07236b72aea6690ba96d193178fc105f685ea50/spikes/rpf-59/RESULT.md",
+      "bytes": 15666,
+      "sha256": "5ab2ec925a18f845791d4527ee60b4e0f8e075a87eeb486df9f9eea6d83c150d",
+      "git_blob": "731a20632f26d8406d76e291d4aeb4b6172da760",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 60,
+      "sha": "1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8",
+      "branch": "codex/rpf-60-cross-domain-live-lab-gateway-ui",
+      "path": "spikes/rpf-60/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/1125e4e6ddc0ec3a0e5820ce6095b663354a4ec8/spikes/rpf-60/RESULT.md",
+      "bytes": 12020,
+      "sha256": "f2030bc692a1c384306cfc033b4a0ff7cdb3cfb63927660dfc8d07aee28e32f3",
+      "git_blob": "ad36c6c76dfdc8c3f5ac721123521e8a720ddcd7",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 61,
+      "sha": "c5ebfb887336ca67b61270df9965f6b1ebbf2b9a",
+      "branch": "codex/rpf-61-proposal-submission-evidence-package",
+      "path": "spikes/rpf-61/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/c5ebfb887336ca67b61270df9965f6b1ebbf2b9a/spikes/rpf-61/RESULT.md",
+      "bytes": 9553,
+      "sha256": "cf7b9c9a8454d9cf49892cac185802ca4330a78f262b0d5b455332aa6b4dd543",
+      "git_blob": "dc65ecba02b0c9bd0aaac38facb00023e7d35b34",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 62,
+      "sha": "68572c05a52ff2258f50fb7c4488bff8e69ea61c",
+      "branch": "codex/rpf-62-real-target-capability-spike",
+      "path": "spikes/rpf-62/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/68572c05a52ff2258f50fb7c4488bff8e69ea61c/spikes/rpf-62/RESULT.md",
+      "bytes": 13270,
+      "sha256": "1a7e271faf3be561d95772f32fa69362b09bca1b45c578477d22066b963a1751",
+      "git_blob": "8ca40839fefc95673e18d315b04e3109dfb141ba",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 63,
+      "sha": "7896e9789015da946b5a057c620b2faa90b57318",
+      "branch": "codex/rpf-63-real-explorer-target-shared-config-pge",
+      "path": "spikes/rpf-63/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/7896e9789015da946b5a057c620b2faa90b57318/spikes/rpf-63/RESULT.md",
+      "bytes": 16011,
+      "sha256": "ab7efb351d91129b010d4ef5cd8e57fd4b4ae4169220802dd518d2487c2612df",
+      "git_blob": "3899c33d1320862f70cbec3aad14efc3a34bdd91",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 64,
+      "sha": "a4d956c0b69f7dacd34e842676d10c1898353cdf",
+      "branch": "codex/rpf-64-stable-target-context-port-contract",
+      "path": "spikes/rpf-64/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/a4d956c0b69f7dacd34e842676d10c1898353cdf/spikes/rpf-64/RESULT.md",
+      "bytes": 16645,
+      "sha256": "da4672916a916ee107319aa879b649967fc03f2c3a99275be72ac7873bc1180c",
+      "git_blob": "13c2bbd73f94d58d92d6d7b79dfa1b0d86764ccf",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 65,
+      "sha": "4081b7b94484bac3c726e0bef22be273b7470839",
+      "branch": "codex/rpf-65-rev2-real-config-target-factory-repair",
+      "path": "spikes/rpf-65/rev-2/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/4081b7b94484bac3c726e0bef22be273b7470839/spikes/rpf-65/rev-2/RESULT.md",
+      "bytes": 11157,
+      "sha256": "91b603eeecf8134164bc15562b2f3bfcd2c6d2bfc6c89c839a05f6897a5a2629",
+      "git_blob": "729f9417cb6ac56c62bb911b61c85951904c0027",
+      "reported_status_excerpt": [
+        "**Status: COMPLETE**。本修订完成真实 ConfigPort 工厂修复、唯一受控真实 Target Trial、独立 Witness 验证及 source commit 的普通 push/远端双读。`STAGE_ADVANCED` 与证据接受由 Architect 决定。"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 66,
+      "sha": "a8b1ca8bf895370c1d136c61301bb25f8e7a6c0d",
+      "branch": "codex/rpf-66-rev5-versioned-response-contract",
+      "path": "spikes/rpf-66/rev-5/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/a8b1ca8bf895370c1d136c61301bb25f8e7a6c0d/spikes/rpf-66/rev-5/RESULT.md",
+      "bytes": 7213,
+      "sha256": "001a3788a8d4cef41b236158e853258ced35dc251f193b053e37b8fbef1edcee",
+      "git_blob": "1d914e4130fec57b53774d6556889c3d83489310",
+      "reported_status_excerpt": [
+        "**Status: COMPLETE**"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 67,
+      "sha": "87980e9c887a64fbb6bba486493655d0ec59cd94",
+      "branch": "codex/rpf-67-rev4-terminal-input-budget-recovery",
+      "path": "spikes/rpf-67/rev-4/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/87980e9c887a64fbb6bba486493655d0ec59cd94/spikes/rpf-67/rev-4/RESULT.md",
+      "bytes": 5738,
+      "sha256": "4d80a46b8eef3696a62774b6ef676401a07987e3a089f4ce00dcd685107c9c70",
+      "git_blob": "c81a2572048cb4957a4ffa86a99a174e719c1ffe",
+      "reported_status_excerpt": [
+        "Status: COMPLETE"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 68,
+      "sha": "044588a575610ed68e86aa15f30da09e03f1eba5",
+      "branch": "codex/rpf-68-rev3-capacity-budget-live-cross-domain",
+      "path": "spikes/rpf-68/rev-3/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/044588a575610ed68e86aa15f30da09e03f1eba5/spikes/rpf-68/rev-3/RESULT.md",
+      "bytes": 14103,
+      "sha256": "b8c6bbd22832ca63de6cf674e6ea858eedf37f2e942bf198d621c8b64e68d023",
+      "git_blob": "eb9d8326c74b94d632b1668eada5e51d73762669",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 69,
+      "sha": "86b033b94556c0931aa590c79e69fda672a4915e",
+      "branch": "codex/rpf-69-versioned-common-abi-compatibility",
+      "path": "spikes/rpf-69/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/86b033b94556c0931aa590c79e69fda672a4915e/spikes/rpf-69/RESULT.md",
+      "bytes": 15522,
+      "sha256": "a38282b4364ddfebd4c602ed7ebe36bcabf795778e6b41b4fc0eecfc4806893c",
+      "git_blob": "7e249841c03a7393aab2814bbe09c1d97e102df3",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 70,
+      "sha": "ef95f0965ad8f2325892f6800a4528112f1a6e52",
+      "branch": "codex/rpf-70-owner-source-runtime-seam",
+      "path": "spikes/rpf-70/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/ef95f0965ad8f2325892f6800a4528112f1a6e52/spikes/rpf-70/RESULT.md",
+      "bytes": 17974,
+      "sha256": "8ab0969b81fa8057de1c926974c0789b25fb064a3d1ba41cee4afba0ed2343b3",
+      "git_blob": "1c0c3f9e2b8a8b7c86f75c731fcd78f21194a531",
+      "reported_status_excerpt": [
+        "**Status:** Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 71,
+      "sha": "ed346dea7fc46fc289853ea673bfe100f8d0d8b7",
+      "branch": "codex/rpf-71-budget-policy-execution-seam",
+      "path": "spikes/rpf-71/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/ed346dea7fc46fc289853ea673bfe100f8d0d8b7/spikes/rpf-71/RESULT.md",
+      "bytes": 23266,
+      "sha256": "375cb6d6bb966fbbc6ef38bc80b77978e85b386f9425885c695247208b1fc2a6",
+      "git_blob": "4faa8a6be8e515f3d0d1a87751d7243691a33455",
+      "reported_status_excerpt": [
+        "**Status:** Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 72,
+      "sha": "a055bfa1844f1df7de459daf35107de7a3ae2d2c",
+      "branch": "codex/rpf-72-rev3-stable-launch-environment-replay",
+      "path": "spikes/rpf-72/rev-3/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/a055bfa1844f1df7de459daf35107de7a3ae2d2c/spikes/rpf-72/rev-3/RESULT.md",
+      "bytes": 14630,
+      "sha256": "fd546d797a2cbd1c4742af7d12be0f71dbf1998ac4c43e0152dd590fca18242e",
+      "git_blob": "e58ab34f39c1a2f64bc07eedb48dfbac9f2fdd16",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 73,
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "branch": "codex/rpf-73-rev2-runner-env-loopback-regression",
+      "path": "spikes/rpf-73/rev-2/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/spikes/rpf-73/rev-2/RESULT.md",
+      "bytes": 13802,
+      "sha256": "a18f294e55a82d5c4f228daf231c0d04bb1d46164fc75e22efa0c827ffb4dc45",
+      "git_blob": "bccd80aca17e95763bc0391f9f6d9b2280da4f25",
+      "reported_status_excerpt": [
+        "Status: Complete"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 74,
+      "sha": "d5605c08af33c932f97529ae5b33228b56d8a113",
+      "branch": "codex/rpf-74-rev2-native-slot-tickets-usage-replay",
+      "path": "spikes/rpf-74/rev-2/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/d5605c08af33c932f97529ae5b33228b56d8a113/spikes/rpf-74/rev-2/RESULT.md",
+      "bytes": 6296,
+      "sha256": "0ee11c3c43b5d76b2f29043dc4a74e387c65a77f7f1b51b149c3346ab8f6852d",
+      "git_blob": "3bf4656b7e2191951ebfee06869af58e59b51f16",
+      "reported_status_excerpt": [
+        "Status: PARTIAL"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "HISTORICAL_REPORT_NOT_NEW_ACCEPTANCE",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 75,
+      "sha": "163cdff3fdd96d6de87fa0fc31d19295994dc86a",
+      "branch": "codex/rpf-75-offline-pge-explorer-policy",
+      "path": "spikes/rpf-75/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/163cdff3fdd96d6de87fa0fc31d19295994dc86a/spikes/rpf-75/RESULT.md",
+      "bytes": 9250,
+      "sha256": "735a78170a3dbb23c33b6146b53e9959eba5fb30c8235f64d775a2f0e79da0eb",
+      "git_blob": "cf75103f13c8d181bf00ce158d3a082e369fe148",
+      "reported_status_excerpt": [
+        "Status: Partial（报告封存时点：离线实现、验收和源码推送完成，A10 的最终 evidence commit/push/readback 尚待执行。完成后的最终状态及 SHA 由本次对话交付回执给出；本报告不为回填自身 SHA 重签。）"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "ACCEPTED_LIMITED_OFFLINE_PER_RPF79_PLAN",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 76,
+      "sha": "92a740504700b3ca1609f273039248ccecaffb84",
+      "branch": "codex/rpf-76-offline-pge-generalization-evaluation",
+      "path": "spikes/rpf-76/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/92a740504700b3ca1609f273039248ccecaffb84/spikes/rpf-76/RESULT.md",
+      "bytes": 13210,
+      "sha256": "d638436a8f53d1592e0051a7b1f685c9c32fc0b842aa185693918e3fcabafa8e",
+      "git_blob": "4d012df810a7c6c36f74f0e6254125897f6b398a",
+      "reported_status_excerpt": [
+        "Status: Partial（本报告封存时：实现、离线评价、源码提交/推送/双读已完成；最终 evidence commit/push/readback 尚待执行。Plan §8.5 允许最终交付回执补齐 A10，不为回填自身 SHA 再次修改报告。）"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "ACCEPTED_LIMITED_OFFLINE_PER_RPF79_PLAN",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 77,
+      "sha": "240dbae75cc70f142c7c37a2a3994085063d7ccc",
+      "branch": "codex/rpf-77-offline-utility-policy-evaluation",
+      "path": "spikes/rpf-77/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/240dbae75cc70f142c7c37a2a3994085063d7ccc/spikes/rpf-77/RESULT.md",
+      "bytes": 12698,
+      "sha256": "ae04a68c4714fdb0f06ffc00631f5fc6e74706cdda10c028a0743534d9627c91",
+      "git_blob": "08d6e4f06436e7c76f9c1c1c59ea307635ef3ecf",
+      "reported_status_excerpt": [
+        "Status: Partial — REPORT_SNAPSHOT。实现、正式离线验收与 source push/readback 已完成；最终 evidence commit/push/readback 尚待执行，A10=NOT_RUN（最终 evidence/聊天部分）。依 Plan §7～8，最终 SHA、远端状态及 A10 由封存后的 CHAT_FINAL_RECEIPT 补齐，不 amend 本报告。"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "ACCEPTED_LIMITED_OFFLINE_PER_RPF79_PLAN",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    },
+    {
+      "rpf": 78,
+      "sha": "d86528e9927ea2cd7a401da4865829c5a14bfcd2",
+      "branch": "codex/rpf-78-offline-forecast-calibration-abstention",
+      "path": "spikes/rpf-78/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/d86528e9927ea2cd7a401da4865829c5a14bfcd2/spikes/rpf-78/RESULT.md",
+      "bytes": 10913,
+      "sha256": "ad47f4f221d48a39019cc5245ad6e18c583137d7638069a3e70703e0bd08d491",
+      "git_blob": "7571aa2ff8bc3117152dcb987857eda8cd98aa33",
+      "reported_status_excerpt": [
+        "Status: Partial（协议状态 PARTIAL）。R78-A08 FAIL：两次冻结后106方法测试均 exit1、0 failures、1 error、0 skips；`test_negative_39` 中 `oracle-stop` 把已为 MUST_STOP 的值改成 MUST_STOP，触发 TEST_INVALID_NO_OP。不得把105个成功方法说成全套通过；没有修改冻结源码或替换失败原件。负结果不来自模型输给基线，而来自测试门禁未通过。"
+      ],
+      "kind": "PINNED_REMOTE_REPORT_READ_NOT_REEXECUTED",
+      "review": "PENDING_ARCHITECT_REVIEW",
+      "observation_utc": "2026-10-29T10:03:36.913783+00:00",
+      "interpretation": "报告读取与身份核对，不是本轮业务复跑；报告封存/最终Git交付/Architect接受分层"
+    }
+  ],
+  "code_interfaces": [
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_domain_port.py",
+      "interfaces": [
+        "DomainPort",
+        "select",
+        "classify",
+        "projection"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_domain_port.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_port_context.py",
+      "interfaces": [
+        "sources",
+        "contract",
+        "validate_contract",
+        "TaskContext",
+        "make_context",
+        "replay",
+        "Ledger",
+        "ProcessSupervisor",
+        "helpers",
+        "metadata"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_port_context.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_portability_session.py",
+      "interfaces": [
+        "dispatch_identity",
+        "feedback",
+        "SharedSession"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_portability_session.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r69_abi.py",
+      "interfaces": [
+        "Domain",
+        "Role",
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "typed",
+        "tools",
+        "permissions",
+        "CapabilityCapsule"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r69_abi.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r69_budget.py",
+      "interfaces": [
+        "policy",
+        "decide",
+        "ledger_policy",
+        "write_policy"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r69_budget.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r69_capsule.py",
+      "interfaces": [
+        "source_map",
+        "identity",
+        "OwnerScope",
+        "create",
+        "validate"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r69_capsule.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r69_compat.py",
+      "interfaces": [
+        "historical_identity",
+        "Context",
+        "Sandbox",
+        "OwnedOrderPort",
+        "adapter",
+        "verify_domain",
+        "late",
+        "run_session",
+        "manifest",
+        "verify",
+        "cli"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r69_compat.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r69_guard_audit.py",
+      "interfaces": [
+        "segment",
+        "guard_identity",
+        "audit"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r69_guard_audit.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_capability.py",
+      "interfaces": [
+        "AuthorizedOperation",
+        "Gate"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_capability.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py",
+      "interfaces": [
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "strict",
+        "equal"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_contracts.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_migration.py",
+      "interfaces": [
+        "matrix"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_migration.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py",
+      "interfaces": [
+        "source_map",
+        "identity",
+        "OwnerScope",
+        "SourceCapsule",
+        "Context"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_ports.py",
+      "interfaces": [
+        "Sandbox",
+        "Guarded",
+        "ConfigPort",
+        "OwnedOrder",
+        "OrderPort",
+        "adapter"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_ports.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_session.py",
+      "interfaces": [
+        "late",
+        "run_session",
+        "manifest"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_session.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r70_verify.py",
+      "interfaces": [
+        "verify_domain",
+        "_NoIO",
+        "verify_processes",
+        "verify_audit",
+        "verify",
+        "cli"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r70_verify.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_budget_ledger.py",
+      "interfaces": [
+        "BudgetLedger"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_budget_ledger.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_budget_policy.py",
+      "interfaces": [
+        "specification",
+        "BudgetPolicy",
+        "state_projection",
+        "authorization",
+        "decide",
+        "_decide",
+        "audit",
+        "provider_component",
+        "verify_component"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_budget_policy.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_capability.py",
+      "interfaces": [
+        "AuthorizedOperation",
+        "Gate"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_capability.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_contracts.py",
+      "interfaces": [
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "strict",
+        "equal"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_contracts.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_migration.py",
+      "interfaces": [
+        "matrix"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_migration.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_owner_source.py",
+      "interfaces": [
+        "source_map",
+        "identity",
+        "OwnerScope",
+        "SourceCapsule",
+        "Context"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_owner_source.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_ports.py",
+      "interfaces": [
+        "Sandbox",
+        "Guarded",
+        "ConfigPort",
+        "OwnedOrder",
+        "OrderPort",
+        "adapter"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_ports.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_session.py",
+      "interfaces": [
+        "late",
+        "run_session",
+        "manifest"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_session.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r71_verify.py",
+      "interfaces": [
+        "verify_domain",
+        "_NoIO",
+        "verify_processes",
+        "verify_business_settlements",
+        "verify_audit",
+        "verify",
+        "cli"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r71_verify.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_budget_ledger.py",
+      "interfaces": [
+        "BudgetLedger"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_budget_ledger.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_budget_policy.py",
+      "interfaces": [
+        "specification",
+        "BudgetPolicy",
+        "state_projection",
+        "authorization",
+        "decide",
+        "_decide",
+        "audit",
+        "provider_component",
+        "verify_component"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_budget_policy.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_capability.py",
+      "interfaces": [
+        "AuthorizedOperation",
+        "Gate"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_capability.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_contracts.py",
+      "interfaces": [
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "strict",
+        "equal"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_contracts.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_migration.py",
+      "interfaces": [
+        "matrix"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_migration.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_owner_source.py",
+      "interfaces": [
+        "source_map",
+        "identity",
+        "OwnerScope",
+        "SourceCapsule",
+        "Context"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_owner_source.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_ports.py",
+      "interfaces": [
+        "Sandbox",
+        "Guarded",
+        "ConfigPort",
+        "OwnedOrder",
+        "OrderPort",
+        "adapter"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_ports.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_sdk_contract.py",
+      "interfaces": [
+        "specification",
+        "ParentChildBudgetContract",
+        "validate_config",
+        "_audit",
+        "_profile",
+        "ContractDriver",
+        "verify_proof",
+        "pressure"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_sdk_contract.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_session.py",
+      "interfaces": [
+        "late",
+        "run_session",
+        "manifest"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_session.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72_verify.py",
+      "interfaces": [
+        "verify_domain",
+        "_NoIO",
+        "verify_processes",
+        "verify_business_settlements",
+        "verify_audit",
+        "verify",
+        "cli"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72_verify.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_budget_ledger.py",
+      "interfaces": [
+        "BudgetLedger"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_budget_ledger.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_budget_policy.py",
+      "interfaces": [
+        "specification",
+        "BudgetPolicy",
+        "state_projection",
+        "authorization",
+        "decide",
+        "_decide",
+        "audit",
+        "provider_component",
+        "verify_component"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_budget_policy.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_capability.py",
+      "interfaces": [
+        "AuthorizedOperation",
+        "Gate"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_capability.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_contracts.py",
+      "interfaces": [
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "strict",
+        "equal"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_contracts.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_migration.py",
+      "interfaces": [
+        "matrix"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_migration.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_owner_source.py",
+      "interfaces": [
+        "source_map",
+        "identity",
+        "OwnerScope",
+        "SourceCapsule",
+        "Context"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_owner_source.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_ports.py",
+      "interfaces": [
+        "Sandbox",
+        "Guarded",
+        "ConfigPort",
+        "OwnedOrder",
+        "OrderPort",
+        "adapter"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_ports.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_sdk_contract.py",
+      "interfaces": [
+        "validate_launch",
+        "validate_raw_config",
+        "specification",
+        "ParentChildBudgetContract",
+        "validate_config",
+        "_audit",
+        "_profile",
+        "ContractDriver",
+        "verify_proof",
+        "smoke",
+        "pressure"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_sdk_contract.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_session.py",
+      "interfaces": [
+        "late",
+        "run_session",
+        "manifest"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_session.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r2_verify.py",
+      "interfaces": [
+        "verify_domain",
+        "_NoIO",
+        "verify_processes",
+        "verify_business_settlements",
+        "verify_audit",
+        "verify",
+        "cli"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r2_verify.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_ledger.py",
+      "interfaces": [
+        "BudgetLedger"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_budget_ledger.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py",
+      "interfaces": [
+        "specification",
+        "BudgetPolicy",
+        "state_projection",
+        "authorization",
+        "decide",
+        "_decide",
+        "audit",
+        "provider_component",
+        "verify_component"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_budget_policy.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py",
+      "interfaces": [
+        "AuthorizedOperation",
+        "Gate"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_capability.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py",
+      "interfaces": [
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "strict",
+        "equal"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_contracts.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py",
+      "interfaces": [
+        "path_identity",
+        "environment",
+        "binding",
+        "LaunchSpec"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_launch_spec.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_migration.py",
+      "interfaces": [
+        "matrix"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_migration.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py",
+      "interfaces": [
+        "source_map",
+        "identity",
+        "OwnerScope",
+        "SourceCapsule",
+        "Context"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_owner_source.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_ports.py",
+      "interfaces": [
+        "Sandbox",
+        "Guarded",
+        "ConfigPort",
+        "OwnedOrder",
+        "OrderPort",
+        "adapter"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_ports.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py",
+      "interfaces": [
+        "validate_launch",
+        "validate_raw_config",
+        "specification",
+        "ParentChildBudgetContract",
+        "validate_config",
+        "_audit",
+        "_profile",
+        "ContractDriver",
+        "verify_proof",
+        "smoke",
+        "pressure"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_sdk_contract.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_session.py",
+      "interfaces": [
+        "late",
+        "run_session",
+        "manifest"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_session.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r72r3_verify.py",
+      "interfaces": [
+        "verify_domain",
+        "_NoIO",
+        "verify_processes",
+        "verify_business_settlements",
+        "verify_audit",
+        "verify",
+        "cli"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r72r3_verify.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py",
+      "interfaces": [
+        "BudgetView"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_budget_view.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_compat.py",
+      "interfaces": [
+        "parity"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_compat.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_contracts.py",
+      "interfaces": [
+        "require",
+        "canonical",
+        "sha",
+        "digest",
+        "equal",
+        "strict",
+        "canonical_value",
+        "scope",
+        "once",
+        "sources",
+        "source_identity",
+        "fixed_paths",
+        "windows"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_contracts.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py",
+      "interfaces": [
+        "DomainAdapter"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_domain_adapters.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py",
+      "interfaces": [
+        "path_id",
+        "env_summary",
+        "live_environment",
+        "LaunchRequest",
+        "LaunchReceipt",
+        "lifecycle_action"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_launch_contract.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py",
+      "interfaces": [
+        "_audit",
+        "LaunchFactory"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_launch_factory.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py",
+      "interfaces": [
+        "Journal",
+        "ready_identity",
+        "Harness"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_sdk_harness.py"
+    },
+    {
+      "sha": "22276cb6aa44eeaef46bcc576170eb317b73e7cf",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r73_verify.py",
+      "interfaces": [
+        "MemoryJournal",
+        "verify_bytes"
+      ],
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/22276cb6aa44eeaef46bcc576170eb317b73e7cf/runtime/runproof_runtime/effectwitness/pge_r73_verify.py"
+    }
+  ],
+  "additional_evidence": [
+    {
+      "sha": "15f82aeb33bd828cf40fe0accba07dc6fb9ecbc1",
+      "path": "spikes/rpf-74/RESULT.md",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/15f82aeb33bd828cf40fe0accba07dc6fb9ecbc1/spikes/rpf-74/RESULT.md",
+      "reported_status": "Partial",
+      "failed_gates": [
+        "R74-A03",
+        "R74-A06"
+      ],
+      "read": true
+    }
+  ],
+  "acceptance_source": "RPF79正式Plan带入上一Architect对75/76/77限定离线接受；本轮不新裁定",
+  "rpf78": "PARTIAL / PENDING_ARCHITECT_REVIEW",
+  "rpf74_rev4": "PAUSED per Plan and original top-level status; private draft/run not read",
+  "competition": "11/10 and500MB are historical RPF61 portal record, not refreshed; logged-in receipt UNVERIFIED",
+  "private_access": "docs/reviews NOT_ACCESSED; old.local runs NOT_ACCESSED",
+  "business_reproduction": "NOT_RUN_BY_PLAN"
+}
