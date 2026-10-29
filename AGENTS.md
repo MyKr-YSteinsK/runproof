@@ -96,3 +96,11 @@ python spikes/rpf-35/verify-evidence.py <rpf35-result.json>
 ## 6. Stop conditions
 
 缺少必要产品决定、远端身份/访问条件、操作权限，或下一步需突破产品/任务安全边界时，完成可独立进行的本地工作后报告具体缺口；不得猜测授权或凭据。技术未知本身应先在当前任务范围内调查。
+
+
+## 7. EffectWitness migration / branch evidence workflow
+
+- 非 canonical 的 Project sources 与对话交接导航见 [迁移入口](docs/effectwitness-migration/2026-10-29-rpf79/00-START_HERE.md)；该目录不替代第 1 节唯一 Project State，也不授权静默同步 main 的 docs/project 或 docs/history。
+- 功能链事实按指定 branch、完整 SHA、RESULT 与实际源码读取；带日期的当前状态及未审查/暂停边界见迁移目录 10/14，不将迁移快照当永久实时状态或阶段批准。
+- 完整 RESULT/diagnostic 随获授权安全分支的 Evidence Commit 普通 Push；最终聊天简报 Status、branch、40 位 SHA、报告和关键异常，Architect 直接读取 GitHub 审查。报告封存与最终 Git 收据分开，不为回填自身 SHA 循环 amend。
+- 已授权范围内常规调查、局部调试、重复聚焦验证自主完成；本段不放宽任何既有 secret、docs/reviews、WAL/UNKNOWN、用户文件、历史证据、Release Authority 或合并/部署保护。
