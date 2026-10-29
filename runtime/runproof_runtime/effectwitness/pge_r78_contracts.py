@@ -14,7 +14,7 @@ Z=1.96
 METHOD='laplace-point-wilson-description-v1'
 SHIFTS=('COST_UP','LABEL_FLIP','UNSEEN_BUCKET','EXPIRED_SOURCE','DELAY_FEEDBACK','REVERSE_CANDIDATES','MISSING_DOMAIN')
 ROOT=Path(__file__).resolve().parents[3]
-WORK=ROOT/'.local/rpf-78'
+WORK=ROOT/'.local/rpf-78-rev-2'
 INPUTS=('spikes/rpf-78/development-catalog.json','spikes/rpf-78/challenge-catalog.json')
 SOURCES=tuple('runtime/runproof_runtime/effectwitness/pge_r78_'+n+'.py' for n in (
     'contracts','provenance','forecast','calibration','policy','oracle','baselines','replay','metrics','verify'))+(
@@ -149,7 +149,7 @@ def state_valid(v,s):
 
 
 def allowed_file(value):
-    p=Path(value).absolute();require(p.suffix=='.json' and (p==ROOT/'spikes/rpf-78/decision-traces.json' or p.is_relative_to(WORK)),'FILE_SCOPE')
+    p=Path(value).absolute();require(p.suffix=='.json' and (p==ROOT/'spikes/rpf-78/rev-2/decision-traces.json' or p.is_relative_to(WORK)),'FILE_SCOPE')
     for q in (p,)+tuple(p.parents):
         require(not q.is_symlink() and not (hasattr(q,'is_junction') and q.is_junction()),'FILE_LINK')
         if q==ROOT:break

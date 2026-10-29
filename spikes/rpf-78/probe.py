@@ -93,7 +93,7 @@ def specs():
         ('unknown-select',('runs',36,'rows',0,'decision','action'),'SELECT'),
         ('interval-net-forgery',d+('ranking',0,'lower_net'),999),('point-net-forgery',d+('ranking',0,'point_net'),999),
         ('forecast-count',d+('ranking',0,'n'),999),('forecast-source',d+('evidence','accepted'),[]),
-        ('out-of-pool',d+('candidate_id',),'lab-amber-invented'),('oracle-stop',r+('oracle','verdict'),'MUST_STOP'),
+        ('out-of-pool',d+('candidate_id',),'lab-amber-invented'),('oracle-stop',r+('oracle','verdict'),'SHOULD_SELECT'),
         ('oracle-net',r+('oracle','net_units','lab-amber-development-validation-00-c0'),999),
         ('outcome-useful',r+('outcome','useful_effect'),1),('prediction-label',('predictions',0,'observed_useful'),1),
         ('hidden-missed',('comparison','table',8,'missed_opportunity'),0),
