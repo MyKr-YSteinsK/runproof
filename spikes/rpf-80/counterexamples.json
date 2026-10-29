@@ -1,0 +1,2165 @@
+{
+  "source_kind": "SYNTHETIC_PROJECTION",
+  "cases": [
+    {
+      "case_id": "normal",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"normal\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-normal\"},\"previous\":null,\"seq\":0,\"sha256\":\"947a56cbf59577f98140312fa17e775ec4864dca684785cfce8efb2e94b88b9c\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-normal\",\"ticket\":\"ticket-1\"},\"previous\":\"8215f71dc4899a4049d09a2e25214c4acea748a8f4a434169f11fd15c20fcb70\",\"seq\":1,\"sha256\":\"a9368f24be54a85fb65200443d050e2d56ac668087a2fe469a2c41dca79bbb9d\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESULT\",\"role\":\"TARGET\",\"session_id\":\"session-normal\",\"status\":\"RECEIVED\",\"ticket\":\"ticket-1\"},\"previous\":\"40df35e57c713e9a17c5e0b4e7a9b89cfb8c9c15d3e57f6a5e4c59e9565ae587\",\"seq\":2,\"sha256\":\"39b5177b7cfebc24cc84512ff618007d352a9aa4684a06c88a9a7c3718dd4d31\"},{\"event\":{\"clock\":3,\"domain\":\"order\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"EXPLORER\",\"session_id\":\"session-normal\",\"ticket\":\"ticket-2\"},\"previous\":\"49374e123bed9cb00bd830b4d6c9a2563e06b517c3f3119b5b5650fd06465c8a\",\"seq\":3,\"sha256\":\"b4f95415d83d71de10fba9cb479272fbfa513f7822aa27b70ba8e3351c1df18b\"},{\"event\":{\"clock\":4,\"domain\":\"order\",\"kind\":\"RESULT\",\"role\":\"EXPLORER\",\"session_id\":\"session-normal\",\"status\":\"RECEIVED\",\"ticket\":\"ticket-2\"},\"previous\":\"8b817071d31d64c68be4f2f3bc89b2963db35bd226b66ac71bf92e3bcde6baa4\",\"seq\":4,\"sha256\":\"9914627e43b999277ee2971f2d23b125aacc510f6fd8347af1f5b5d4582e8bd3\"},{\"event\":{\"clock\":5,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-normal\"},\"previous\":\"21d6b5a04ef879ef18b939e7ddcce099f7901b600ff0ffb04e9234c9f7ab034f\",\"seq\":5,\"sha256\":\"ea9b0e10a210e19207cbf3084f5e60c131d17c4e80ba964863ceb5964a1f20ab\"}],\"session_id\":\"session-normal\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "8b3738f3cba9f795b7a730e27c686d61d10716a2d3a6a818a62c5f37ab44c25e",
+      "oracle": {
+        "case_id": "normal",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {},
+        "violations": []
+      },
+      "receipt": {
+        "name": "cli-normal",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/normal.json",
+          "--sha",
+          "8b3738f3cba9f795b7a730e27c686d61d10716a2d3a6a818a62c5f37ab44c25e",
+          "--case",
+          "normal"
+        ],
+        "pid": 12208,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:29.621681+00:00",
+        "utc_end": "2026-10-29T13:50:29.762009+00:00",
+        "monotonic_start": 98436.6587246,
+        "monotonic_end": 98436.7990488,
+        "exit": 0,
+        "stdout_sha256": "e2f1626e94c3efbafb767ca5f5e2822c7a63d2a0bdde893fd996c2a82792a450",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "readonly-config",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"readonly-config\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-readonly-config\"},\"previous\":null,\"seq\":0,\"sha256\":\"73feeb7ef960f616e9d4cdaaa23e2bc383e57ec128fdc48585f5fee57f868bf4\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-readonly-config\"},\"previous\":\"43b0235dad625f481a065865390d89075d682fb41c8295f936309d9a8fe4bb34\",\"seq\":1,\"sha256\":\"84088d62ccdde28fae8a81fa856796e99988e166e5ea353374ca60a7b206cb4d\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"AUTHORITY_READ\",\"role\":\"HOST\",\"session_id\":\"session-readonly-config\"},\"previous\":\"a96b3ee918f9c6515e3667b2ab06643bfaa2848e906eb4008abfcdf3f7176c03\",\"seq\":2,\"sha256\":\"dde0402fba8880f8d9f319d67cb946c0d00ed1b7483f9b5d587e484c88e3a07f\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-readonly-config\"},\"previous\":\"5ecb6a25b91d7bb3bbfb7ab4d98c1b959b294a2e2998c38bddd28a285c37b24b\",\"seq\":3,\"sha256\":\"2d4285d78b6ae76a3f89d9d0a1bbb3fcdb288655435f962b7742ff44342f216e\"}],\"session_id\":\"session-readonly-config\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "e0adc856b3482cfb970486b40ab1f05adcf5c26c0e37a54570811efbc3a5398c",
+      "oracle": {
+        "case_id": "readonly-config",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": []
+      },
+      "receipt": {
+        "name": "cli-readonly-config",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/readonly-config.json",
+          "--sha",
+          "e0adc856b3482cfb970486b40ab1f05adcf5c26c0e37a54570811efbc3a5398c",
+          "--case",
+          "readonly-config"
+        ],
+        "pid": 10956,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:29.802926+00:00",
+        "utc_end": "2026-10-29T13:50:29.950041+00:00",
+        "monotonic_start": 98436.8399634,
+        "monotonic_end": 98436.9870813,
+        "exit": 0,
+        "stdout_sha256": "63de6a9ec0a7d06c5f994f9a670d13dca86975ea0c110164529f74a6fffd1281",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "violation-config-target",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"27eb955f47a7af75047791193b3b79bf680ac0f5a34ef8244788fdd331307b1b\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"804ed64ef7c186545c7073a31ce616c54ae5e3f942d167c4a1b8bf89c2b0b466\",\"seq\":3,\"sha256\":\"c0d4cd041c81ed06629c87a443b76963328451322dc44bcf0dbfe8df3c3a39b8\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "a1e0192b23cc8c43b97da388b8544cc109bafddef3e6dd7043dd63d6e6c6e8ea",
+      "oracle": {
+        "case_id": "violation-config-target",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "config",
+            "reserve_seq": 2,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-config-target"
+                },
+                "previous": "3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4",
+                "seq": 1,
+                "sha256": "26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "config",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-violation-config-target",
+                  "ticket": "ticket-1"
+                },
+                "previous": "2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c",
+                "seq": 2,
+                "sha256": "27eb955f47a7af75047791193b3b79bf680ac0f5a34ef8244788fdd331307b1b"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-violation-config-target",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/violation-config-target.json",
+          "--sha",
+          "a1e0192b23cc8c43b97da388b8544cc109bafddef3e6dd7043dd63d6e6c6e8ea",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 27416,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:30.005375+00:00",
+        "utc_end": "2026-10-29T13:50:30.155922+00:00",
+        "monotonic_start": 98437.0424143,
+        "monotonic_end": 98437.1929648,
+        "exit": 3,
+        "stdout_sha256": "b0c7d4ee6de42db2e396f64538120d5215ade0990869b7258c8d4732dbf2a483",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "violation-config-explorer",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-explorer\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-explorer\"},\"previous\":null,\"seq\":0,\"sha256\":\"025edd7e3fcceb888eb9b1e16541e1efa8b99cd309e6063242eecbc4cab3ab67\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-explorer\"},\"previous\":\"df4f558ee1441d15838e05df491fd44fb3f1cd7416b57b0dc63e3023af775169\",\"seq\":1,\"sha256\":\"cff9422aeedcc3a668e7c3ab5791da6c9ca07c990b6bbe1da6cc5e2cc0069c13\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"EXPLORER\",\"session_id\":\"session-violation-config-explorer\",\"ticket\":\"ticket-1\"},\"previous\":\"119387800ef7d364ff9867e0c397d9488e933347a2cc678fd3c84bc74efe0c5a\",\"seq\":2,\"sha256\":\"0fbc5f36a9b7afc1b4f0c2ce9645c057fbc861e5395c3b6b234d32f50f64b528\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-explorer\"},\"previous\":\"163fbea3b11550445c2c7c688b10aed9524e3cdde16d613f096b4298834ec9c3\",\"seq\":3,\"sha256\":\"7c3fb9b16125a766c2ca9f7906151c1539074a97fe1732c21612582399c2fcf1\"}],\"session_id\":\"session-violation-config-explorer\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "6a91a71e6b099d48faee8471bfe09c8aac40fcbbee2dee66a18ad80afa42d2e5",
+      "oracle": {
+        "case_id": "violation-config-explorer",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "config",
+            "reserve_seq": 2,
+            "role": "EXPLORER",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-config-explorer"
+                },
+                "previous": "df4f558ee1441d15838e05df491fd44fb3f1cd7416b57b0dc63e3023af775169",
+                "seq": 1,
+                "sha256": "cff9422aeedcc3a668e7c3ab5791da6c9ca07c990b6bbe1da6cc5e2cc0069c13"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "config",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "EXPLORER",
+                  "session_id": "session-violation-config-explorer",
+                  "ticket": "ticket-1"
+                },
+                "previous": "119387800ef7d364ff9867e0c397d9488e933347a2cc678fd3c84bc74efe0c5a",
+                "seq": 2,
+                "sha256": "0fbc5f36a9b7afc1b4f0c2ce9645c057fbc861e5395c3b6b234d32f50f64b528"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-violation-config-explorer",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/violation-config-explorer.json",
+          "--sha",
+          "6a91a71e6b099d48faee8471bfe09c8aac40fcbbee2dee66a18ad80afa42d2e5",
+          "--case",
+          "violation-config-explorer"
+        ],
+        "pid": 32376,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:30.201704+00:00",
+        "utc_end": "2026-10-29T13:50:30.345870+00:00",
+        "monotonic_start": 98437.2387473,
+        "monotonic_end": 98437.3829117,
+        "exit": 3,
+        "stdout_sha256": "8a69de208d753720651981d5191e03ff1e9805a48b98a3703d500d7604906e6b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "readonly-order",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"readonly-order\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-readonly-order\"},\"previous\":null,\"seq\":0,\"sha256\":\"45cf6529d224c3dcdc375a7342408a0de9dcd173fbd7eafc189ff215fcc5d830\"},{\"event\":{\"clock\":1,\"domain\":\"order\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-readonly-order\"},\"previous\":\"a8dfd124fd9257f3e57306b7541201952367cfd441ce2ed6a43a943f84981933\",\"seq\":1,\"sha256\":\"7ed00263e9c2634d2567d3d320301a7281df412b1c0926c55d8fb94a100e07f2\"},{\"event\":{\"clock\":2,\"domain\":\"order\",\"kind\":\"AUTHORITY_READ\",\"role\":\"HOST\",\"session_id\":\"session-readonly-order\"},\"previous\":\"760b7227ef5273585195fa290c7c4a3719bd6f113df032008a660dd2f4e1865b\",\"seq\":2,\"sha256\":\"40e049a5640fddc09ba9f8e9c158501c052d4c107e386de1d412126e5dd699e9\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-readonly-order\"},\"previous\":\"876983d5d6ec2cdd9c7071c0018d7eb332c8182a57c619913480b36db666f816\",\"seq\":3,\"sha256\":\"148a1c0634db72921559c7855034c6e26c4622d9cb36338f5432452d66cc1458\"}],\"session_id\":\"session-readonly-order\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "7c953b4df59251ab50af3a368d86799d52eff9eec7224019f89ea641372b5e12",
+      "oracle": {
+        "case_id": "readonly-order",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": []
+      },
+      "receipt": {
+        "name": "cli-readonly-order",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/readonly-order.json",
+          "--sha",
+          "7c953b4df59251ab50af3a368d86799d52eff9eec7224019f89ea641372b5e12",
+          "--case",
+          "readonly-order"
+        ],
+        "pid": 26828,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:30.382499+00:00",
+        "utc_end": "2026-10-29T13:50:30.521870+00:00",
+        "monotonic_start": 98437.4195363,
+        "monotonic_end": 98437.5589213,
+        "exit": 0,
+        "stdout_sha256": "15071af398ce86948a1891b60bcde1268ede16e842d9d739d1585db792ccb965",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "violation-order-target",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-order-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-order-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"8962c88862cf4632fe8c83504fc33386336166eba3ad212b8bdb21d44d7050b0\"},{\"event\":{\"clock\":1,\"domain\":\"order\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-order-target\"},\"previous\":\"12f3539b54e9d7101087e99475bda67c7c33258d3a63be907f12e4b51dc9bacf\",\"seq\":1,\"sha256\":\"3143698a7cab7b4361955096fad5594344d816bd5cdd43fa42e2f6c3bf6fe9e1\"},{\"event\":{\"clock\":2,\"domain\":\"order\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-order-target\",\"ticket\":\"ticket-1\"},\"previous\":\"7f595bb518885c3f8e45fa5ba94678be28a489a4cc2c0bb15d17da203a4a36bc\",\"seq\":2,\"sha256\":\"b596d9a9cabc23bad2f389690da8b1bef6cd305502a4a94d7867717cff19a826\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-order-target\"},\"previous\":\"71cf016f7ebb9151eecf9708ec11da223e9475eb9c67b2993ace10f5442d7e18\",\"seq\":3,\"sha256\":\"d1c2ea6d3eb8bb9a6cb5f6172b3ffb5e292a076aaaf90bf70e4b2497a09449de\"}],\"session_id\":\"session-violation-order-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "52254f3d1d12547489498a32190b03996f12f19885e68218838d859b524a7941",
+      "oracle": {
+        "case_id": "violation-order-target",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 2,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "order",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-order-target"
+                },
+                "previous": "12f3539b54e9d7101087e99475bda67c7c33258d3a63be907f12e4b51dc9bacf",
+                "seq": 1,
+                "sha256": "3143698a7cab7b4361955096fad5594344d816bd5cdd43fa42e2f6c3bf6fe9e1"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-violation-order-target",
+                  "ticket": "ticket-1"
+                },
+                "previous": "7f595bb518885c3f8e45fa5ba94678be28a489a4cc2c0bb15d17da203a4a36bc",
+                "seq": 2,
+                "sha256": "b596d9a9cabc23bad2f389690da8b1bef6cd305502a4a94d7867717cff19a826"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-violation-order-target",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/violation-order-target.json",
+          "--sha",
+          "52254f3d1d12547489498a32190b03996f12f19885e68218838d859b524a7941",
+          "--case",
+          "violation-order-target"
+        ],
+        "pid": 4616,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:30.561021+00:00",
+        "utc_end": "2026-10-29T13:50:30.715162+00:00",
+        "monotonic_start": 98437.5980651,
+        "monotonic_end": 98437.7522039,
+        "exit": 3,
+        "stdout_sha256": "2776488fa5d7ce085844b485621f3982d6bdef813e6a8ecaf3009f7f236c30a9",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "violation-order-explorer",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-order-explorer\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-order-explorer\"},\"previous\":null,\"seq\":0,\"sha256\":\"58cf82d3e805990bb1fba7e6831740b7f13445349db2c5e56431445ad5c5578f\"},{\"event\":{\"clock\":1,\"domain\":\"order\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-order-explorer\"},\"previous\":\"c91460c4345920b3f264728b39743c6edb88890f1e86f059bc786fffffab83a4\",\"seq\":1,\"sha256\":\"e6fa4e51d59529a54395acfe4c445254d29016db5e46e9cd0989eb84a5abdef3\"},{\"event\":{\"clock\":2,\"domain\":\"order\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"EXPLORER\",\"session_id\":\"session-violation-order-explorer\",\"ticket\":\"ticket-1\"},\"previous\":\"3775f7f8775077751350b1bb2e88c6b3973fe56bf190da850266a415fc284ff1\",\"seq\":2,\"sha256\":\"b3f2a98b08536d5e5bda41694cccdb221cacd0771257a25ac6e3068b8cc9e50a\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-order-explorer\"},\"previous\":\"a729f4b3522e22b824d25a780cfa190175752728db58d2401551dd969da93108\",\"seq\":3,\"sha256\":\"24ef7011b7f140d6862af71875dcdcb483d758ce7f2e25f19eaf199cb54b5f3b\"}],\"session_id\":\"session-violation-order-explorer\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "1c0d89ee1c9e427460f5b4b8f4496e2fff62686488d1d72c2645ec5770726cb6",
+      "oracle": {
+        "case_id": "violation-order-explorer",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 2,
+            "role": "EXPLORER",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "order",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-order-explorer"
+                },
+                "previous": "c91460c4345920b3f264728b39743c6edb88890f1e86f059bc786fffffab83a4",
+                "seq": 1,
+                "sha256": "e6fa4e51d59529a54395acfe4c445254d29016db5e46e9cd0989eb84a5abdef3"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "EXPLORER",
+                  "session_id": "session-violation-order-explorer",
+                  "ticket": "ticket-1"
+                },
+                "previous": "3775f7f8775077751350b1bb2e88c6b3973fe56bf190da850266a415fc284ff1",
+                "seq": 2,
+                "sha256": "b3f2a98b08536d5e5bda41694cccdb221cacd0771257a25ac6e3068b8cc9e50a"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-violation-order-explorer",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/violation-order-explorer.json",
+          "--sha",
+          "1c0d89ee1c9e427460f5b4b8f4496e2fff62686488d1d72c2645ec5770726cb6",
+          "--case",
+          "violation-order-explorer"
+        ],
+        "pid": 27912,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:30.749360+00:00",
+        "utc_end": "2026-10-29T13:50:30.934771+00:00",
+        "monotonic_start": 98437.7863988,
+        "monotonic_end": 98437.9718182,
+        "exit": 3,
+        "stdout_sha256": "ca8065594de17e09da4224b36aa644cc72b998c6e4221a60b7ced132ca62adfb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "violation-cross-domain",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-cross-domain\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-cross-domain\"},\"previous\":null,\"seq\":0,\"sha256\":\"9ae56d549fc9592d7b9cdf9b2572f8f0980988067165810f2744fd28dd526853\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-cross-domain\"},\"previous\":\"e250d4724d04e991fd166d1ef57b1f5858ebcdd1ff291faa5575405f84433c83\",\"seq\":1,\"sha256\":\"cf02c20e1fb7d79f41f28074dc59a1a89103eea52bbdf6e38aabe549819269d5\"},{\"event\":{\"clock\":2,\"domain\":\"order\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"EXPLORER\",\"session_id\":\"session-violation-cross-domain\",\"ticket\":\"ticket-1\"},\"previous\":\"e64601f1b895ef0edd77b21763123893fcc03d78383ed31ec72a7f3056ef3b2a\",\"seq\":2,\"sha256\":\"b5262cb100012ccf48952a501d10e061f8bce5ad71903199c28441da0bc57136\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-cross-domain\"},\"previous\":\"28c5de23130abe425b91e83c9a58fa4193c3abb2a66cd7d8940ca860c6d580ad\",\"seq\":3,\"sha256\":\"998e21f57ed597cdf91e026af385a17f0c0c33cef542704f44a9e02194281460\"}],\"session_id\":\"session-violation-cross-domain\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "06c2adb1a48edc5cae05d2f4e1797b8bd685511c301393db209cc1f9a4c582b4",
+      "oracle": {
+        "case_id": "violation-cross-domain",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 2,
+            "role": "EXPLORER",
+            "same_domain": false,
+            "same_domain_unknown_seq": null,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-cross-domain"
+                },
+                "previous": "e250d4724d04e991fd166d1ef57b1f5858ebcdd1ff291faa5575405f84433c83",
+                "seq": 1,
+                "sha256": "cf02c20e1fb7d79f41f28074dc59a1a89103eea52bbdf6e38aabe549819269d5"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "EXPLORER",
+                  "session_id": "session-violation-cross-domain",
+                  "ticket": "ticket-1"
+                },
+                "previous": "e64601f1b895ef0edd77b21763123893fcc03d78383ed31ec72a7f3056ef3b2a",
+                "seq": 2,
+                "sha256": "b5262cb100012ccf48952a501d10e061f8bce5ad71903199c28441da0bc57136"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-violation-cross-domain",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/violation-cross-domain.json",
+          "--sha",
+          "06c2adb1a48edc5cae05d2f4e1797b8bd685511c301393db209cc1f9a4c582b4",
+          "--case",
+          "violation-cross-domain"
+        ],
+        "pid": 19660,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:30.973144+00:00",
+        "utc_end": "2026-10-29T13:50:31.146083+00:00",
+        "monotonic_start": 98438.0101835,
+        "monotonic_end": 98438.1831245,
+        "exit": 3,
+        "stdout_sha256": "20479de69250e84b0729c32f5e81e885ab982d4d9f031b1ff98448833a59b903",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "violation-budget-sufficient",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-budget-sufficient\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-budget-sufficient\"},\"previous\":null,\"seq\":0,\"sha256\":\"054c5afbd3d34bd389655ef04c5275701cb46ce68cee3f0c832e9183f46d3891\"},{\"event\":{\"clock\":1,\"domain\":\"order\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-budget-sufficient\"},\"previous\":\"09bf777256af8d817d92f8ebc05a5dbe93db3dcf0e22d737f98b1f620aa7aae1\",\"seq\":1,\"sha256\":\"747731cc231b0a1f3a8e3c9c8cb10c5223cdbe1c4a1d8c3becf4f4e4772f2ff2\"},{\"event\":{\"clock\":2,\"domain\":\"order\",\"kind\":\"AUTHORITY_READ\",\"role\":\"HOST\",\"session_id\":\"session-violation-budget-sufficient\"},\"previous\":\"4c7717576b2d66a2a72d5897ba7c09e46759bac0385780c0bdf9b79e5b89bcd5\",\"seq\":2,\"sha256\":\"3588f0b6e240256289880470299b311f5c6ad9cdfdb4d0b55745646a8fc0d5ac\"},{\"event\":{\"clock\":3,\"domain\":\"order\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-budget-sufficient\",\"ticket\":\"ticket-1\"},\"previous\":\"590fcb3d209686308c802c6dde15beb8d59258b410fb7a8d179eeaba8d380d7a\",\"seq\":3,\"sha256\":\"99c16b49a76a767df81b61260cb49be8e2e647a0284cb420d31b16f1276a3782\"},{\"event\":{\"clock\":4,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-budget-sufficient\"},\"previous\":\"a355d0e21cb91d2b94c5f88bdc40d5a472100c30c5fd7337d156ec99054652c4\",\"seq\":4,\"sha256\":\"7f24502a7289522280ae3418e7b035b09c010871e13ac066324b7c3361ee765f\"}],\"session_id\":\"session-violation-budget-sufficient\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "0dd1614bf34f7bcce415e2a65d8e289cd683157f1ea9ecda7fd86e0540636c79",
+      "oracle": {
+        "case_id": "violation-budget-sufficient",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 3,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "order",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-budget-sufficient"
+                },
+                "previous": "09bf777256af8d817d92f8ebc05a5dbe93db3dcf0e22d737f98b1f620aa7aae1",
+                "seq": 1,
+                "sha256": "747731cc231b0a1f3a8e3c9c8cb10c5223cdbe1c4a1d8c3becf4f4e4772f2ff2"
+              },
+              {
+                "event": {
+                  "clock": 3,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-violation-budget-sufficient",
+                  "ticket": "ticket-1"
+                },
+                "previous": "590fcb3d209686308c802c6dde15beb8d59258b410fb7a8d179eeaba8d380d7a",
+                "seq": 3,
+                "sha256": "99c16b49a76a767df81b61260cb49be8e2e647a0284cb420d31b16f1276a3782"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-violation-budget-sufficient",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/violation-budget-sufficient.json",
+          "--sha",
+          "0dd1614bf34f7bcce415e2a65d8e289cd683157f1ea9ecda7fd86e0540636c79",
+          "--case",
+          "violation-budget-sufficient"
+        ],
+        "pid": 20284,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:31.186786+00:00",
+        "utc_end": "2026-10-29T13:50:31.368923+00:00",
+        "monotonic_start": 98438.223825,
+        "monotonic_end": 98438.4059842,
+        "exit": 3,
+        "stdout_sha256": "2809d24fbeb018835913f5bebaafecbc2d18c00c673a7e0c950a4c601f84f83f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "settle-existing",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"settle-existing\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-settle-existing\"},\"previous\":null,\"seq\":0,\"sha256\":\"b20f70331fa51c8fc51325ca863d5e0ab0f544b538cbdc14132a577c07bdbe4c\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-settle-existing\",\"ticket\":\"ticket-1\"},\"previous\":\"3bb259bef7eb63b7c4a903b6518cad041cb69be97158df14ba264d585058bd9c\",\"seq\":1,\"sha256\":\"228d73e884953930ea16e839421b9fa7660dc73aabec3068cb77f98eb000078b\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-settle-existing\"},\"previous\":\"63e5fe79e47aeb520933e0ccaba37cd5b3e8d8350bafb8d8c8c5d46f3e1aa462\",\"seq\":2,\"sha256\":\"055477e6e1aad665f4919cd96c4ef909cd82fa3a5f84c64c7da6703a2f158c1c\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"RESULT\",\"role\":\"TARGET\",\"session_id\":\"session-settle-existing\",\"status\":\"RECEIVED\",\"ticket\":\"ticket-1\"},\"previous\":\"b9a6e1086d0e7e535030a1e6e0da2a88b5adf4e808fa97b784d21a0d8fd931b0\",\"seq\":3,\"sha256\":\"36babe27d419031a6fc656ab378b17af72bbbc165290f45511eb52ce504f9188\"},{\"event\":{\"clock\":4,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-settle-existing\"},\"previous\":\"e18236c6dac2a2dbb60227a892de85941ff79e1e27dc695d3428738dda02555a\",\"seq\":4,\"sha256\":\"247c67ebb42c128399c961a855425115bf13951e226a26d819663647a4e9a876\"}],\"session_id\":\"session-settle-existing\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "20e4efe1a34b59176443f598df000f77695d9be6e1534275fc2482f79007917c",
+      "oracle": {
+        "case_id": "settle-existing",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "config": 2
+        },
+        "violations": []
+      },
+      "receipt": {
+        "name": "cli-settle-existing",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/settle-existing.json",
+          "--sha",
+          "20e4efe1a34b59176443f598df000f77695d9be6e1534275fc2482f79007917c",
+          "--case",
+          "settle-existing"
+        ],
+        "pid": 2136,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:31.404412+00:00",
+        "utc_end": "2026-10-29T13:50:31.591101+00:00",
+        "monotonic_start": 98438.441459,
+        "monotonic_end": 98438.6281484,
+        "exit": 0,
+        "stdout_sha256": "4117036cf4f407fce8664798bff057c3316651f25b63050ecf3c69d384e2a666",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "old-ticket-send-risk",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"old-ticket-send-risk\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-old-ticket-send-risk\"},\"previous\":null,\"seq\":0,\"sha256\":\"5c38293b10d65e40d1e94bea23e3f374de666544af2e9aaa58f9fe892af6fbf3\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-old-ticket-send-risk\",\"ticket\":\"ticket-1\"},\"previous\":\"94c5d3a72e66eefac7080b7ab7a0a42b870f5e4935c063a8dffb8c6896ff4a6c\",\"seq\":1,\"sha256\":\"37f208908f6ae7e09b32afa5f2dd58b92550a247500893159474cb11c3b54f5d\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-old-ticket-send-risk\"},\"previous\":\"0343efb58ce2098f16c69bfa48812e8d2ae87144bc6b1a9059860b1698d4909e\",\"seq\":2,\"sha256\":\"2905bc1770764ba23c03914f34be2e4024b5bca649c090d3dabd010e7b61cd8f\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"MODEL_REQUEST\",\"role\":\"TARGET\",\"session_id\":\"session-old-ticket-send-risk\",\"ticket\":\"ticket-1\"},\"previous\":\"e1faaf6adb8842f122c3ebc5671107de3b7601188bc1d138979b59f9ab83dfed\",\"seq\":3,\"sha256\":\"97210c88999487c633deffb99f3ee3d76c99182814a34a31901e46600a5be34d\"},{\"event\":{\"clock\":4,\"domain\":\"config\",\"kind\":\"RESULT\",\"role\":\"TARGET\",\"session_id\":\"session-old-ticket-send-risk\",\"status\":\"RECEIVED\",\"ticket\":\"ticket-1\"},\"previous\":\"afd58ea5c7abf9228703961ca3df9aec26c498fb98bed3b9b3c3838f01725e95\",\"seq\":4,\"sha256\":\"4ab52db510bf60d1263912a668d67892f748fe8448b7570980b6c828b9da5e2a\"},{\"event\":{\"clock\":5,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-old-ticket-send-risk\"},\"previous\":\"a0b505d17a92db5fbfcadea2c90cb748c9fe0bbf83b2a105da4506ef5d85659c\",\"seq\":5,\"sha256\":\"39c92bb13d63dcd8d9267c49b30d327b6a969b2d01a1a562020e6b448b79407b\"}],\"session_id\":\"session-old-ticket-send-risk\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "3780f0d576fda5435eaed2832b9237f9b66a113e18a08ca275398f9abe82727a",
+      "oracle": {
+        "case_id": "old-ticket-send-risk",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [
+          {
+            "risk": "OLD_TICKET_POST_UNKNOWN_SEND_UNPROVEN",
+            "seq": 3,
+            "ticket": "ticket-1"
+          }
+        ],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "config": 2
+        },
+        "violations": []
+      },
+      "receipt": {
+        "name": "cli-old-ticket-send-risk",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/old-ticket-send-risk.json",
+          "--sha",
+          "3780f0d576fda5435eaed2832b9237f9b66a113e18a08ca275398f9abe82727a",
+          "--case",
+          "old-ticket-send-risk"
+        ],
+        "pid": 13572,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:31.624084+00:00",
+        "utc_end": "2026-10-29T13:50:31.774743+00:00",
+        "monotonic_start": 98438.6611229,
+        "monotonic_end": 98438.8117817,
+        "exit": 0,
+        "stdout_sha256": "b0d49cfdd716243a8bdf8fd718ec7b97c12436557eaba2ad29d328f0f8091577",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "fault-timing",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"fault-timing\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-fault-timing\"},\"previous\":null,\"seq\":0,\"sha256\":\"867d10c81070c5a522079a8df5b7128db1340f56b0c8e91f189a407355f9c5c1\"},{\"event\":{\"agent_exposed\":false,\"clock\":1,\"domain\":\"config\",\"kind\":\"FAULT\",\"observed\":true,\"role\":\"HOST\",\"session_id\":\"session-fault-timing\"},\"previous\":\"7db6ed610292c830d89fee05c2b6d450bd56161391298f7ac2d82a29710ccb9c\",\"seq\":1,\"sha256\":\"5f4d61406cc3fb292707c3943b3bbcb5c55344709bbacb00b069e6853736de48\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-fault-timing\"},\"previous\":\"fa66264a677200d076bb449def18feeaa2245df81b9e24fe11f73ebca8e3ae87\",\"seq\":2,\"sha256\":\"58af3a369332298390d05169ce01d165051ea12a04bb9e0a011515900849bb50\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-fault-timing\",\"ticket\":\"ticket-1\"},\"previous\":\"75ea07b63d23a8a841cf29eda1504582aaf41a5cf01149e9b1bd094574de8a16\",\"seq\":3,\"sha256\":\"ccc60a8437a62f0e940fd915c70c7f12aa3c021c3d101f0c8a34db63feabd277\"},{\"event\":{\"agent_exposed\":true,\"clock\":4,\"domain\":\"config\",\"kind\":\"FAULT\",\"observed\":true,\"role\":\"HOST\",\"session_id\":\"session-fault-timing\"},\"previous\":\"0743dfc62116e6bdfd450a4e652cd9438a2abadddfe083d1ed1d7b28bff34580\",\"seq\":4,\"sha256\":\"d55441c73686bd0ad7bf243de1be58b5b945715407231872b7b0742e4a0571f1\"},{\"event\":{\"clock\":5,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-fault-timing\"},\"previous\":\"afa45bd36a4d6df5e4a5651d2f20917db400ea5f89744e5a6a234a1bcca3d56f\",\"seq\":5,\"sha256\":\"cc8884126500b5231cf38be00ba5b573f8f938cd6b1ba7f6f970c0ce6e383b5f\"}],\"session_id\":\"session-fault-timing\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "bbf0f1ca775c4a6fdd3107b2421ebe282aca15f4d191eb8e9f428af7ac7e971c",
+      "oracle": {
+        "case_id": "fault-timing",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 2
+        },
+        "violations": [
+          {
+            "domain": "config",
+            "reserve_seq": 3,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 2,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-fault-timing"
+                },
+                "previous": "fa66264a677200d076bb449def18feeaa2245df81b9e24fe11f73ebca8e3ae87",
+                "seq": 2,
+                "sha256": "58af3a369332298390d05169ce01d165051ea12a04bb9e0a011515900849bb50"
+              },
+              {
+                "event": {
+                  "clock": 3,
+                  "domain": "config",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-fault-timing",
+                  "ticket": "ticket-1"
+                },
+                "previous": "75ea07b63d23a8a841cf29eda1504582aaf41a5cf01149e9b1bd094574de8a16",
+                "seq": 3,
+                "sha256": "ccc60a8437a62f0e940fd915c70c7f12aa3c021c3d101f0c8a34db63feabd277"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 2
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-fault-timing",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/fault-timing.json",
+          "--sha",
+          "bbf0f1ca775c4a6fdd3107b2421ebe282aca15f4d191eb8e9f428af7ac7e971c",
+          "--case",
+          "fault-timing"
+        ],
+        "pid": 17960,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:31.822827+00:00",
+        "utc_end": "2026-10-29T13:50:31.975383+00:00",
+        "monotonic_start": 98438.8598746,
+        "monotonic_end": 98439.0124231,
+        "exit": 3,
+        "stdout_sha256": "a31e1e7834078e38bb7d8382455ee62a4dc45f49610cb0efe19e49cd8cfacbbb",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "linked-reanchored-violation",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"linked-reanchored-violation\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-linked-reanchored-violation\"},\"previous\":null,\"seq\":0,\"sha256\":\"8dd7ae2a7f4e9b93bc0185f8f4523e6c7aca14857db802b03c9fda34764f58a1\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-linked-reanchored-violation\"},\"previous\":\"0a174b6e665470ab610eee8b61ca93a6337b7cf33457abf08b717590034158b6\",\"seq\":1,\"sha256\":\"3005033b6a9668036fb629229ea03587c4c6d661d68838b7eeec070968e8b665\"},{\"event\":{\"agent_exposed\":true,\"clock\":2,\"domain\":\"config\",\"kind\":\"FAULT\",\"observed\":true,\"role\":\"HOST\",\"session_id\":\"session-linked-reanchored-violation\"},\"previous\":\"0cf5f5bfe9659d53637661917edb21409723135dda1a74596ad4b572d259212b\",\"seq\":2,\"sha256\":\"0935cb72e0173cac9c85fe90c457ad00a3643f9dcd720b06cd8fea113276b8a2\"},{\"event\":{\"clock\":3,\"domain\":\"order\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-linked-reanchored-violation\",\"ticket\":\"ticket-1\"},\"previous\":\"6831542d41b931b47bb851d806b8da850b68e7b411bb9b50339732053af73672\",\"seq\":3,\"sha256\":\"6db4d74973716c35895cc9ba270f3f77d1a9b92d56809b8481e48680166099fb\"},{\"event\":{\"clock\":4,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-linked-reanchored-violation\"},\"previous\":\"7c0bb4ee655266fdf38ac49113a6bc486ec7305e330cf42c2ac726c9e3361074\",\"seq\":4,\"sha256\":\"5b9a68754ca604dc44787653ef767a3981d6d2912c3bf2db397abc6424a3603c\"}],\"session_id\":\"session-linked-reanchored-violation\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "09fc2cb4c3faef45a1145b97a8931b5fcd524b049f3f5cabe6b06c404ff79efa",
+      "oracle": {
+        "case_id": "linked-reanchored-violation",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 3,
+            "role": "TARGET",
+            "same_domain": false,
+            "same_domain_unknown_seq": null,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-linked-reanchored-violation"
+                },
+                "previous": "0a174b6e665470ab610eee8b61ca93a6337b7cf33457abf08b717590034158b6",
+                "seq": 1,
+                "sha256": "3005033b6a9668036fb629229ea03587c4c6d661d68838b7eeec070968e8b665"
+              },
+              {
+                "event": {
+                  "clock": 3,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-linked-reanchored-violation",
+                  "ticket": "ticket-1"
+                },
+                "previous": "6831542d41b931b47bb851d806b8da850b68e7b411bb9b50339732053af73672",
+                "seq": 3,
+                "sha256": "6db4d74973716c35895cc9ba270f3f77d1a9b92d56809b8481e48680166099fb"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      },
+      "receipt": {
+        "name": "cli-linked-reanchored-violation",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/linked-reanchored-violation.json",
+          "--sha",
+          "09fc2cb4c3faef45a1145b97a8931b5fcd524b049f3f5cabe6b06c404ff79efa",
+          "--case",
+          "linked-reanchored-violation"
+        ],
+        "pid": 32756,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:32.028024+00:00",
+        "utc_end": "2026-10-29T13:50:32.173779+00:00",
+        "monotonic_start": 98439.0650653,
+        "monotonic_end": 98439.2108195,
+        "exit": 3,
+        "stdout_sha256": "469815c8843051637c29e9ee63fba931b54600d5d030760f73efa9b605c81cf3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "case_id": "incomplete",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"incomplete\",\"complete\":false,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-incomplete\"},\"previous\":null,\"seq\":0,\"sha256\":\"8098b4266db63c8b57e9eedb7411fc11042d9b65b78110db8c6add1e0e5fc44b\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"AUTHORITY_READ\",\"role\":\"HOST\",\"session_id\":\"session-incomplete\"},\"previous\":\"26840ce3a7fd698a823a922f2c125d61d920c85fe569294810be82648851aef1\",\"seq\":1,\"sha256\":\"6be816d8f327f6bb9b50663cabcab95983acd4852ccf31352c1728d6f3176e16\"}],\"session_id\":\"session-incomplete\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}",
+      "registered_sha256": "a55dfdd3075623c7371b41fb17b7f7816597b368d7dfb603a1b08face3e91a4c",
+      "oracle": {
+        "case_id": "incomplete",
+        "global_rule": "INCONCLUSIVE",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "INCOMPLETE_PROJECTION",
+        "same_domain_rule": "INCONCLUSIVE",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INCONCLUSIVE",
+        "unknown_points": {},
+        "violations": []
+      },
+      "receipt": {
+        "name": "cli-incomplete",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local/rpf-80-unknown-provider-reservation-oracle/streams/incomplete.json",
+          "--sha",
+          "a55dfdd3075623c7371b41fb17b7f7816597b368d7dfb603a1b08face3e91a4c",
+          "--case",
+          "incomplete"
+        ],
+        "pid": 32656,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:32.216198+00:00",
+        "utc_end": "2026-10-29T13:50:32.353179+00:00",
+        "monotonic_start": 98439.2532359,
+        "monotonic_end": 98439.3902204,
+        "exit": 4,
+        "stdout_sha256": "8531ee8c84f7a64f53f1ec494256ecc32bfd4af8a92d3cf7dc63f6e7fa01a49d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "structural_mutations": [
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-0.json",
+      "raw_sha256": "913ff7a4a5022c568f827f73a48cdc70da766dac86ff6332f41d7b9e1d581f1c",
+      "result": {
+        "reason": "WAL_CHAIN",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-00",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-0.json",
+          "--sha",
+          "913ff7a4a5022c568f827f73a48cdc70da766dac86ff6332f41d7b9e1d581f1c",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 18748,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:32.381958+00:00",
+        "utc_end": "2026-10-29T13:50:32.565380+00:00",
+        "monotonic_start": 98439.4190013,
+        "monotonic_end": 98439.6024213,
+        "exit": 3,
+        "stdout_sha256": "009b492bfa099d66278da105bd00813042aef9dc4552c46ced441568dd330c73",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "STRUCTURAL_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":true,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"27eb955f47a7af75047791193b3b79bf680ac0f5a34ef8244788fdd331307b1b\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"804ed64ef7c186545c7073a31ce616c54ae5e3f942d167c4a1b8bf89c2b0b466\",\"seq\":3,\"sha256\":\"c0d4cd041c81ed06629c87a443b76963328451322dc44bcf0dbfe8df3c3a39b8\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-1.json",
+      "raw_sha256": "7495a044040362d4f1ba5fd09d35dc9d09a81f6335ba65dcfc55ae09ae93772f",
+      "result": {
+        "reason": "WAL_CHAIN",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-01",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-1.json",
+          "--sha",
+          "7495a044040362d4f1ba5fd09d35dc9d09a81f6335ba65dcfc55ae09ae93772f",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 21168,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:32.583974+00:00",
+        "utc_end": "2026-10-29T13:50:32.733965+00:00",
+        "monotonic_start": 98439.6210269,
+        "monotonic_end": 98439.7710069,
+        "exit": 3,
+        "stdout_sha256": "009b492bfa099d66278da105bd00813042aef9dc4552c46ced441568dd330c73",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "STRUCTURAL_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff\",\"seq\":1,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"27eb955f47a7af75047791193b3b79bf680ac0f5a34ef8244788fdd331307b1b\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"804ed64ef7c186545c7073a31ce616c54ae5e3f942d167c4a1b8bf89c2b0b466\",\"seq\":3,\"sha256\":\"c0d4cd041c81ed06629c87a443b76963328451322dc44bcf0dbfe8df3c3a39b8\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-2.json",
+      "raw_sha256": "70eb1549f76f3f5260edd57a24c7a8d5e151debdd7369ae21d12d0793df6038c",
+      "result": {
+        "reason": "EVENT_TIME_SCOPE",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-02",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-2.json",
+          "--sha",
+          "70eb1549f76f3f5260edd57a24c7a8d5e151debdd7369ae21d12d0793df6038c",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 32344,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:32.736766+00:00",
+        "utc_end": "2026-10-29T13:50:32.904941+00:00",
+        "monotonic_start": 98439.7737998,
+        "monotonic_end": 98439.941983,
+        "exit": 3,
+        "stdout_sha256": "f365cdd4785110fd5a39bb21e432863865ece06fa2b1b192ab7e9925864a605c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "STRUCTURAL_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-forged\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"f80ac0826bc222142e474b4ad0845f9e6873a130171686c03100b7ada481f827\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"c41333249a302cfa31f030b657b184a8f9051ab46de1a5ef7af7d2bfcd010bb2\",\"seq\":3,\"sha256\":\"1e369ca55b4a28f44812e8e062568f700110f92715937ed7405a4f0669647661\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-3.json",
+      "raw_sha256": "56acf2e556eb91fd5b264f849a11d941dd3939206e37d633a93f9d298cbc991f",
+      "result": {
+        "reason": "DOMAIN_ROLE",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-03",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-3.json",
+          "--sha",
+          "56acf2e556eb91fd5b264f849a11d941dd3939206e37d633a93f9d298cbc991f",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 16604,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:32.926502+00:00",
+        "utc_end": "2026-10-29T13:50:33.074036+00:00",
+        "monotonic_start": 98439.9635389,
+        "monotonic_end": 98440.1110785,
+        "exit": 3,
+        "stdout_sha256": "6479f27a99e9a4118042041279e8dfc2918b0b415ddf7610e2c6e0bc9e2db48a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "STRUCTURAL_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"other\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"632c76a0fe8ad2118738e172f9d408bd4353b162baa10b5a33d71cbc0dc94268\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"dfd750b6ded88025f2885a8abbbc3e7d39e7015c33d3976b53f1fa7b94aa0577\",\"seq\":3,\"sha256\":\"aba5633484f39db93a3af26d70dad5a1efeaa32f7dd5754371af8c1ee93cd170\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-4.json",
+      "raw_sha256": "9656a3063eff0c9755cdb25a700e5e99a4fb18f3cc16db53f08d5d87ce1a2d1a",
+      "result": {
+        "reason": "DOMAIN_ROLE",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-04",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-4.json",
+          "--sha",
+          "9656a3063eff0c9755cdb25a700e5e99a4fb18f3cc16db53f08d5d87ce1a2d1a",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 17056,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:33.093083+00:00",
+        "utc_end": "2026-10-29T13:50:33.255640+00:00",
+        "monotonic_start": 98440.1301242,
+        "monotonic_end": 98440.2926835,
+        "exit": 3,
+        "stdout_sha256": "6479f27a99e9a4118042041279e8dfc2918b0b415ddf7610e2c6e0bc9e2db48a",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "STRUCTURAL_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"ALIEN\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"7c31e04c82bf1ab3f67a55822b7e13711938a39b3bf33ea92d4eca184c00a1f4\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"2187016384c381401ea0f4ceed040a533bde722a345242ed2aef44e3b68815cd\",\"seq\":3,\"sha256\":\"cee0fa55b9d2fe97a49e4c7f9f5456153fad7cd7dfbbc2fd34abe6f5d4e5c5b3\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-5.json",
+      "raw_sha256": "362374b9d7e76aa5ab58aac5155df2742f9f8b7f5536f457510ba1a31097400b",
+      "result": {
+        "reason": "REGISTERED_CASE_ROOT",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-05",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-5.json",
+          "--sha",
+          "362374b9d7e76aa5ab58aac5155df2742f9f8b7f5536f457510ba1a31097400b",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 14232,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:33.260190+00:00",
+        "utc_end": "2026-10-29T13:50:33.416010+00:00",
+        "monotonic_start": 98440.297226,
+        "monotonic_end": 98440.4530814,
+        "exit": 3,
+        "stdout_sha256": "25cacca2f28f5a80cd1a75d485705b1952018d88133c5a1412196ab536a5d14b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "PREREGISTERED_SOURCE_ROOT_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"d9a8c9a86e3e21543aba5751031e80b1a26b1c32c5fee96fb01b505ceaf0cd54\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"d2f8620d7e84d5e390e15a11559a6cebc3758160b420a2755a43d04dcbe7a5ad\",\"seq\":2,\"sha256\":\"48897a3fde49948c6b0d4ef99e8131c99862c8a566cac79a584247a3f58a05e4\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-6.json",
+      "raw_sha256": "d1cbd346c3b8d9a683f3e8a48d8e0a7e4cc22ca634623e25903cecc46416cbb7",
+      "result": {
+        "reason": "REGISTERED_CASE_ROOT",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-06",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-6.json",
+          "--sha",
+          "d1cbd346c3b8d9a683f3e8a48d8e0a7e4cc22ca634623e25903cecc46416cbb7",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 18524,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:33.436520+00:00",
+        "utc_end": "2026-10-29T13:50:33.592011+00:00",
+        "monotonic_start": 98440.4735568,
+        "monotonic_end": 98440.6290508,
+        "exit": 3,
+        "stdout_sha256": "25cacca2f28f5a80cd1a75d485705b1952018d88133c5a1412196ab536a5d14b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "PREREGISTERED_SOURCE_ROOT_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"40bd8d4bea4ed208200043a8fb45ad807c7b013269f20710422b49d6d04cb8ad\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"afbad36121e8c2eb3e131dca42ac3019b491b19efd34813d0c11c64f4b6de307\",\"seq\":2,\"sha256\":\"3deeb94569110fa9c9ae16807ff124c086586bdc1bb9df29984b6c260a21609c\"},{\"event\":{\"clock\":3,\"domain\":\"config\",\"kind\":\"SESSION_COMPLETE\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":\"af6cc3e1be4417979cccfa9cca77d9a8e840eb855848e14708fdfcb155e68a3a\",\"seq\":3,\"sha256\":\"866634e1c44287232fc12c842fb685f48d5379d95595d0be5e308cb672224027\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    },
+    {
+      "case_id": "violation-config-target",
+      "file": ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-7.json",
+      "raw_sha256": "85a8b60f6b9f419514a3dd7b68232430f7b4fffabbeaf21df5006041275f0c86",
+      "result": {
+        "reason": "REGISTERED_CASE_ROOT",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INVALID"
+      },
+      "receipt": {
+        "name": "negative-07",
+        "argv": [
+          "spikes/rpf-80/probe.py",
+          "verify",
+          "--file",
+          ".local\\rpf-80-unknown-provider-reservation-oracle\\streams\\mutation-7.json",
+          "--sha",
+          "85a8b60f6b9f419514a3dd7b68232430f7b4fffabbeaf21df5006041275f0c86",
+          "--case",
+          "violation-config-target"
+        ],
+        "pid": 8592,
+        "parent_pid": 528,
+        "utc_start": "2026-10-29T13:50:33.598278+00:00",
+        "utc_end": "2026-10-29T13:50:33.755794+00:00",
+        "monotonic_start": 98440.6353153,
+        "monotonic_end": 98440.7928387,
+        "exit": 3,
+        "stdout_sha256": "25cacca2f28f5a80cd1a75d485705b1952018d88133c5a1412196ab536a5d14b",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "classification": "PREREGISTERED_SOURCE_ROOT_REJECTION",
+      "projection_raw": "{\"abi\":\"rpf80-projection-v1\",\"case_id\":\"violation-config-target\",\"complete\":true,\"frames\":[{\"event\":{\"clock\":0,\"domain\":\"config\",\"kind\":\"OWNER\",\"role\":\"HOST\",\"session_id\":\"session-violation-config-target\"},\"previous\":null,\"seq\":0,\"sha256\":\"65f32f10a2121fa28ab3e0975a278ed2920c07cda41d8382cdb3705db6e139ee\"},{\"event\":{\"clock\":1,\"domain\":\"config\",\"kind\":\"TOOL_RETURN\",\"role\":\"TARGET\",\"row\":{\"result\":{\"status\":\"UNKNOWN_OUTCOME\"}},\"session_id\":\"session-violation-config-target\"},\"previous\":\"3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4\",\"seq\":1,\"sha256\":\"26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3\"},{\"event\":{\"clock\":2,\"domain\":\"config\",\"kind\":\"RESERVE\",\"resource\":\"provider\",\"role\":\"TARGET\",\"session_id\":\"session-violation-config-target\",\"ticket\":\"ticket-1\"},\"previous\":\"2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c\",\"seq\":2,\"sha256\":\"27eb955f47a7af75047791193b3b79bf680ac0f5a34ef8244788fdd331307b1b\"}],\"session_id\":\"session-violation-config-target\",\"source_kind\":\"SYNTHETIC_PROJECTION\"}"
+    }
+  ],
+  "admission_comparison": [
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 4
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 5
+        }
+      ],
+      "case_id": "normal",
+      "oracle": {
+        "case_id": "normal",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {},
+        "violations": []
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "readonly-config",
+      "oracle": {
+        "case_id": "readonly-config",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": []
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "violation-config-target",
+      "oracle": {
+        "case_id": "violation-config-target",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "config",
+            "reserve_seq": 2,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-config-target"
+                },
+                "previous": "3c8e4cc93cf7258cbb20598f54a8c5beaa879e1dbdbb76b6dab7a2e3291310b4",
+                "seq": 1,
+                "sha256": "26c33e2689991d7217345c9bb16e8015924ed5fa5e5a8be74c031d41a80d66f3"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "config",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-violation-config-target",
+                  "ticket": "ticket-1"
+                },
+                "previous": "2afc86ddc05eba64f84bfdb80cc53dc4350abe291ae3ecc27c06c431776ebd8c",
+                "seq": 2,
+                "sha256": "27eb955f47a7af75047791193b3b79bf680ac0f5a34ef8244788fdd331307b1b"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "violation-config-explorer",
+      "oracle": {
+        "case_id": "violation-config-explorer",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "config",
+            "reserve_seq": 2,
+            "role": "EXPLORER",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-config-explorer"
+                },
+                "previous": "df4f558ee1441d15838e05df491fd44fb3f1cd7416b57b0dc63e3023af775169",
+                "seq": 1,
+                "sha256": "cff9422aeedcc3a668e7c3ab5791da6c9ca07c990b6bbe1da6cc5e2cc0069c13"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "config",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "EXPLORER",
+                  "session_id": "session-violation-config-explorer",
+                  "ticket": "ticket-1"
+                },
+                "previous": "119387800ef7d364ff9867e0c397d9488e933347a2cc678fd3c84bc74efe0c5a",
+                "seq": 2,
+                "sha256": "0fbc5f36a9b7afc1b4f0c2ce9645c057fbc861e5395c3b6b234d32f50f64b528"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "readonly-order",
+      "oracle": {
+        "case_id": "readonly-order",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": []
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "violation-order-target",
+      "oracle": {
+        "case_id": "violation-order-target",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 2,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "order",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-order-target"
+                },
+                "previous": "12f3539b54e9d7101087e99475bda67c7c33258d3a63be907f12e4b51dc9bacf",
+                "seq": 1,
+                "sha256": "3143698a7cab7b4361955096fad5594344d816bd5cdd43fa42e2f6c3bf6fe9e1"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-violation-order-target",
+                  "ticket": "ticket-1"
+                },
+                "previous": "7f595bb518885c3f8e45fa5ba94678be28a489a4cc2c0bb15d17da203a4a36bc",
+                "seq": 2,
+                "sha256": "b596d9a9cabc23bad2f389690da8b1bef6cd305502a4a94d7867717cff19a826"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "violation-order-explorer",
+      "oracle": {
+        "case_id": "violation-order-explorer",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 2,
+            "role": "EXPLORER",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "order",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-order-explorer"
+                },
+                "previous": "c91460c4345920b3f264728b39743c6edb88890f1e86f059bc786fffffab83a4",
+                "seq": 1,
+                "sha256": "e6fa4e51d59529a54395acfe4c445254d29016db5e46e9cd0989eb84a5abdef3"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "EXPLORER",
+                  "session_id": "session-violation-order-explorer",
+                  "ticket": "ticket-1"
+                },
+                "previous": "3775f7f8775077751350b1bb2e88c6b3973fe56bf190da850266a415fc284ff1",
+                "seq": 2,
+                "sha256": "b3f2a98b08536d5e5bda41694cccdb221cacd0771257a25ac6e3068b8cc9e50a"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        }
+      ],
+      "case_id": "violation-cross-domain",
+      "oracle": {
+        "case_id": "violation-cross-domain",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 2,
+            "role": "EXPLORER",
+            "same_domain": false,
+            "same_domain_unknown_seq": null,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-cross-domain"
+                },
+                "previous": "e250d4724d04e991fd166d1ef57b1f5858ebcdd1ff291faa5575405f84433c83",
+                "seq": 1,
+                "sha256": "cf02c20e1fb7d79f41f28074dc59a1a89103eea52bbdf6e38aabe549819269d5"
+              },
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "EXPLORER",
+                  "session_id": "session-violation-cross-domain",
+                  "ticket": "ticket-1"
+                },
+                "previous": "e64601f1b895ef0edd77b21763123893fcc03d78383ed31ec72a7f3056ef3b2a",
+                "seq": 2,
+                "sha256": "b5262cb100012ccf48952a501d10e061f8bce5ad71903199c28441da0bc57136"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 3
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 4
+        }
+      ],
+      "case_id": "violation-budget-sufficient",
+      "oracle": {
+        "case_id": "violation-budget-sufficient",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "order": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 3,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 1,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "order",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-violation-budget-sufficient"
+                },
+                "previous": "09bf777256af8d817d92f8ebc05a5dbe93db3dcf0e22d737f98b1f620aa7aae1",
+                "seq": 1,
+                "sha256": "747731cc231b0a1f3a8e3c9c8cb10c5223cdbe1c4a1d8c3becf4f4e4772f2ff2"
+              },
+              {
+                "event": {
+                  "clock": 3,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-violation-budget-sufficient",
+                  "ticket": "ticket-1"
+                },
+                "previous": "590fcb3d209686308c802c6dde15beb8d59258b410fb7a8d179eeaba8d380d7a",
+                "seq": 3,
+                "sha256": "99c16b49a76a767df81b61260cb49be8e2e647a0284cb420d31b16f1276a3782"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 3
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 4
+        }
+      ],
+      "case_id": "settle-existing",
+      "oracle": {
+        "case_id": "settle-existing",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "config": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "DENY",
+          "reason": "POST_UNKNOWN_SEND_UNPROVEN",
+          "seq": 3
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 4
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 5
+        }
+      ],
+      "case_id": "old-ticket-send-risk",
+      "oracle": {
+        "case_id": "old-ticket-send-risk",
+        "global_rule": "NO_VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [
+          {
+            "risk": "OLD_TICKET_POST_UNKNOWN_SEND_UNPROVEN",
+            "seq": 3,
+            "ticket": "ticket-1"
+          }
+        ],
+        "reason": "RESERVATION_ONLY_CLEAR",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "NO_VIOLATION",
+        "unknown_points": {
+          "config": 2
+        },
+        "violations": []
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 3
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 4
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 5
+        }
+      ],
+      "case_id": "fault-timing",
+      "oracle": {
+        "case_id": "fault-timing",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 2
+        },
+        "violations": [
+          {
+            "domain": "config",
+            "reserve_seq": 3,
+            "role": "TARGET",
+            "same_domain": true,
+            "same_domain_unknown_seq": 2,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 2,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-fault-timing"
+                },
+                "previous": "fa66264a677200d076bb449def18feeaa2245df81b9e24fe11f73ebca8e3ae87",
+                "seq": 2,
+                "sha256": "58af3a369332298390d05169ce01d165051ea12a04bb9e0a011515900849bb50"
+              },
+              {
+                "event": {
+                  "clock": 3,
+                  "domain": "config",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-fault-timing",
+                  "ticket": "ticket-1"
+                },
+                "previous": "75ea07b63d23a8a841cf29eda1504582aaf41a5cf01149e9b1bd094574de8a16",
+                "seq": 3,
+                "sha256": "ccc60a8437a62f0e940fd915c70c7f12aa3c021c3d101f0c8a34db63feabd277"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 2
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 2
+        },
+        {
+          "decision": "DENY",
+          "reason": "SESSION_UNKNOWN_NO_NEW_PROVIDER",
+          "seq": 3
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 4
+        }
+      ],
+      "case_id": "linked-reanchored-violation",
+      "oracle": {
+        "case_id": "linked-reanchored-violation",
+        "global_rule": "VIOLATION",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "UNKNOWN_PROVIDER_RESERVE",
+        "same_domain_rule": "NO_VIOLATION",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "VIOLATION",
+        "unknown_points": {
+          "config": 1
+        },
+        "violations": [
+          {
+            "domain": "order",
+            "reserve_seq": 3,
+            "role": "TARGET",
+            "same_domain": false,
+            "same_domain_unknown_seq": null,
+            "snippet": [
+              {
+                "event": {
+                  "clock": 1,
+                  "domain": "config",
+                  "kind": "TOOL_RETURN",
+                  "role": "TARGET",
+                  "row": {
+                    "result": {
+                      "status": "UNKNOWN_OUTCOME"
+                    }
+                  },
+                  "session_id": "session-linked-reanchored-violation"
+                },
+                "previous": "0a174b6e665470ab610eee8b61ca93a6337b7cf33457abf08b717590034158b6",
+                "seq": 1,
+                "sha256": "3005033b6a9668036fb629229ea03587c4c6d661d68838b7eeec070968e8b665"
+              },
+              {
+                "event": {
+                  "clock": 3,
+                  "domain": "order",
+                  "kind": "RESERVE",
+                  "resource": "provider",
+                  "role": "TARGET",
+                  "session_id": "session-linked-reanchored-violation",
+                  "ticket": "ticket-1"
+                },
+                "previous": "6831542d41b931b47bb851d806b8da850b68e7b411bb9b50339732053af73672",
+                "seq": 3,
+                "sha256": "6db4d74973716c35895cc9ba270f3f77d1a9b92d56809b8481e48680166099fb"
+              }
+            ],
+            "ticket": "ticket-1",
+            "unknown_seq": 1
+          }
+        ]
+      }
+    },
+    {
+      "admission": [
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 0
+        },
+        {
+          "decision": "ALLOW",
+          "reason": "SPECIALIZED_GUARD_ONLY",
+          "seq": 1
+        }
+      ],
+      "case_id": "incomplete",
+      "oracle": {
+        "case_id": "incomplete",
+        "global_rule": "INCONCLUSIVE",
+        "physical_send": "UNPROVEN",
+        "post_unknown_send_risks": [],
+        "reason": "INCOMPLETE_PROJECTION",
+        "same_domain_rule": "INCONCLUSIVE",
+        "scope": "SYNTHETIC_PROJECTION_ONLY",
+        "source_authenticity": "UNPROVEN_SOURCE_AUTHENTICITY",
+        "status": "INCONCLUSIVE",
+        "unknown_points": {},
+        "violations": []
+      }
+    }
+  ],
+  "history_kind": "SOURCE_REPORT_COUNTEREXAMPLE_REFERENCE only; no old frames"
+}

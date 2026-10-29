@@ -1,0 +1,158 @@
+{
+  "scope": "PROPOSED_STRICT_BARRIER",
+  "findings": [
+    {
+      "base": "069108635a77b0a4a9a1f16fa23c205074c0f7f2",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r68_budget.py",
+      "git_blob": "ef34deac1efb3b828e779359f8c65e511b014939",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/069108635a77b0a4a9a1f16fa23c205074c0f7f2/runtime/runproof_runtime/effectwitness/pge_r68_budget.py",
+      "matches": [
+        {
+          "line": 4,
+          "text": "KINDS={'OWNER','RESERVE','RESULT','MODEL_REQUEST','SHAPE','PARSED','MODEL_RESPONSE','INTENT','TOOL_RETURN','FAULT','PROCESS_START','PROCESS_CLEANUP','CHOICE','PORT_ENTERED','DOMAIN_VERIFIED','FEEDBACK_FROZEN','ADMISSION','SESSION_COMPLETE','PRE_SEND_REJECTED'}"
+        },
+        {
+          "line": 5,
+          "text": "def replay(frames,ctx):"
+        },
+        {
+          "line": 27,
+          "text": "    returns=[z['row'] for z in events if z['kind']=='TOOL_RETURN' and z.get('domain')==scope['domain'] and z.get('round')==scope['round'] and z.get('cold',False)==scope['cold']];c.require(q['tool_returns']==[dict(call_id=z['call_id'],result_sha256=z['result_sha256']) for z in returns],'PRE_SEND_RETURN_BINDING');expectedcap=512 if len(returns)>= (3 if scope['domain']==c.DOMAINS[0] else 2) else 256;c.require(q['output_cap']==expectedcap,'PRE_SEND_OUTPUT_CAP')"
+        }
+      ]
+    },
+    {
+      "base": "069108635a77b0a4a9a1f16fa23c205074c0f7f2",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r74r2_budget_gate.py",
+      "git_blob": "01657a7e77f292dda2d0b85c28d37bd8e57babd1",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/069108635a77b0a4a9a1f16fa23c205074c0f7f2/runtime/runproof_runtime/effectwitness/pge_r74r2_budget_gate.py",
+      "matches": [
+        {
+          "line": 117,
+          "text": "    def claim_slot(self, ct, role, request, input_upper, output_cap):"
+        },
+        {
+          "line": 138,
+          "text": "            ticket = self.reserve('provider', domain=domain, round=round_number, role=role, request=proof)"
+        }
+      ]
+    },
+    {
+      "base": "069108635a77b0a4a9a1f16fa23c205074c0f7f2",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r74r2_sdk_harness.py",
+      "git_blob": "ca73f18651d932453e5fe6bd6c2983a537cefce0",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/069108635a77b0a4a9a1f16fa23c205074c0f7f2/runtime/runproof_runtime/effectwitness/pge_r74r2_sdk_harness.py",
+      "matches": [
+        {
+          "line": 26,
+          "text": "    def completion(self, body, raw):"
+        },
+        {
+          "line": 57,
+          "text": "        c.require(len(calls) == len(returns) == len(self.callbacks), 'TOOL_RETURN_COUNT')"
+        },
+        {
+          "line": 63,
+          "text": "                      'TOOL_RETURN_REINJECTION')"
+        },
+        {
+          "line": 64,
+          "text": "            if row['result'].get('status') == 'UNKNOWN_OUTCOME' and not self.fault.agent_exposed:"
+        },
+        {
+          "line": 110,
+          "text": "            self.port.mark_unknown()"
+        },
+        {
+          "line": 120,
+          "text": "        self.ledger.append('TOOL_RETURN', domain=self.port.domain, round=self.ct['experiment']['round'],"
+        }
+      ]
+    },
+    {
+      "base": "069108635a77b0a4a9a1f16fa23c205074c0f7f2",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r74r2_domain_ports.py",
+      "git_blob": "fe7829e966cce3ddbc4c58073fce3c30fcd7b787",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/069108635a77b0a4a9a1f16fa23c205074c0f7f2/runtime/runproof_runtime/effectwitness/pge_r74r2_domain_ports.py",
+      "matches": [
+        {
+          "line": 52,
+          "text": "    def mark_unknown(self):"
+        }
+      ]
+    },
+    {
+      "base": "069108635a77b0a4a9a1f16fa23c205074c0f7f2",
+      "path": "runtime/runproof_runtime/effectwitness/pge_r74r2_verify.py",
+      "git_blob": "ab275d9d7cf3ae436c2c3af2e5962a6e42af3e83",
+      "url": "https://github.com/MyKr-YSteinsK/runproof/blob/069108635a77b0a4a9a1f16fa23c205074c0f7f2/runtime/runproof_runtime/effectwitness/pge_r74r2_verify.py",
+      "matches": [
+        {
+          "line": 150,
+          "text": "        unknown = [i for i,e in enumerate(events) if e['kind'] == 'TOOL_RETURN' and e.get('domain') == domain and"
+        },
+        {
+          "line": 158,
+          "text": "                      for e in events[unknown[0]+1:]), 'WRITE_AFTER_UNKNOWN')"
+        },
+        {
+          "line": 162,
+          "text": "                      any(e['fault']['observed'] and e['fault']['agent_exposed'] for e in after), 'FAULT_TIMELINE')"
+        },
+        {
+          "line": 215,
+          "text": "        flags = [fault[k] for k in ('planned','triggered','observed','agent_exposed')]"
+        }
+      ]
+    }
+  ],
+  "chain": "seq starts0; sha256=digest(frame excluding sha256); previous=digest(entire previous frame), canonical JSON sorted ASCII compact/no NaN. Exact native r68 budget/context/contracts audited without importing runtime.",
+  "unknown": "mark_unknown() precedes TOOL_RETURN.row.result.status UNKNOWN_OUTCOME; FAULT.agent_exposed may appear later in completion; do not wait for exposure.",
+  "gap": "check_tool uses unknown_domains for writes; claim_slot does not. Native replay latches resource RESULT UNKNOWN, not TOOL_RETURN business UNKNOWN; old verify forbids writes but misses new provider reserves.",
+  "history_reference": {
+    "kind": "SOURCE_REPORT_COUNTEREXAMPLE_REFERENCE",
+    "sha": "d5605c08af33c932f97529ae5b33228b56d8a113",
+    "path": "spikes/rpf-74/rev-2/RESULT.md",
+    "config": [
+      199,
+      205,
+      233
+    ],
+    "order": [
+      427,
+      433,
+      461
+    ],
+    "old_private_wal_read": false
+  },
+  "projection": "Finite subset, not complete native WAL replay. AUTHORITY_READ is an abstract host read operation; does not assert actual native authority reservation/HTTP execution. Budget-sufficient is a scenario assumption; no native budget amounts or balance proof are inferred.",
+  "candidates": [
+    {
+      "candidate": "claim_slot session latch before reserve(provider)",
+      "benefit": "earliest admission fix",
+      "unproven": "crash recovery/atomicity; in-memory latch alone can be lost",
+      "old_change": "BudgetLedger/claim_slot and host state ABI",
+      "cost": "targeted cases, no cost measured"
+    },
+    {
+      "candidate": "single native WAL replayable UNKNOWN gate",
+      "benefit": "restart restores global barrier",
+      "unproven": "new event ABI, writer atomicity/concurrent read-modify-write races",
+      "old_change": "native replay + gate + versioned verifier",
+      "cost": "broader compatibility/recovery tests"
+    },
+    {
+      "candidate": "deterministic host authority-only reconcile then terminate",
+      "benefit": "no extra TARGET/EXPLORER model ticket",
+      "unproven": "physical send/receipt/real authority I/O",
+      "old_change": "session/controller cancellation boundary",
+      "cost": "terminates cross-domain opportunity; INCONCLUSIVE may be necessary"
+    }
+  ],
+  "limits": [
+    "No RPF74 runtime repair",
+    "Existing-ticket RESULT is permitted; later MODEL_REQUEST remains independently UNPROVEN physical-send risk",
+    "Source+root collusion cannot be proved by self hashes; always UNPROVEN_SOURCE_AUTHENTICITY",
+    "Reservation-only NO_VIOLATION is not physical safety, token/cost proof, causality, issuer, production eligibility"
+  ]
+}

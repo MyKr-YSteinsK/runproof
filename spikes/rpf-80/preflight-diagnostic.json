@@ -1,0 +1,694 @@
+{
+  "status": "PASS",
+  "prewrite_utc": "2026-10-29T13:39:26.538674+00:00",
+  "prewrite_monotonic": 97773.5757164,
+  "first_create_utc": "2026-10-29T13:39:26.667029+00:00",
+  "first_create_monotonic": 97773.7040693,
+  "persisted_utc": "2026-10-29T13:39:27.673268+00:00",
+  "private_prewrite_raw_sha256": "63dfb12453573e8463b0c83b28508516473bb6cd7f0baeb922f87dddc5218bb3",
+  "os": "Windows-11-10.0.26200-SP0",
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "disk_free_bytes": 115602886656,
+  "ownership_checked": true,
+  "root": "<ORIGINAL_REPO_ROOT>",
+  "new_paths": [
+    "runtime/runproof_runtime/effectwitness/pge_r80_unknown_barrier.py",
+    "runtime/runproof_runtime/effectwitness/pge_r80_oracle.py",
+    "runtime/tests/test_effectwitness_pge_r80.py",
+    "spikes/rpf-80/probe.py",
+    "spikes/rpf-80/fixtures.json",
+    "spikes/rpf-80/README.md",
+    "spikes/rpf-80/RESULT.md",
+    "spikes/rpf-80/source-identity-map.json",
+    "spikes/rpf-80/contract-analysis.json",
+    "spikes/rpf-80/counterexamples.json",
+    "spikes/rpf-80/verification-diagnostic.json",
+    "spikes/rpf-80/preflight-diagnostic.json",
+    "spikes/rpf-80/runtime-diagnostic.json"
+  ],
+  "old_blobs": {
+    "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": "ef34deac1efb3b828e779359f8c65e511b014939",
+    "runtime/runproof_runtime/effectwitness/pge_r68_context.py": "cb69d8bb696f03224fdffde55999a8f44274802c",
+    "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": "8c59dd7b12a5fc0e7d7f80e6f72810085282ebe3",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_contracts.py": "2826202aca46dc765d3b42695bf811c99a4b5d77",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_budget_gate.py": "01657a7e77f292dda2d0b85c28d37bd8e57babd1",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_domain_ports.py": "fe7829e966cce3ddbc4c58073fce3c30fcd7b787",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_sdk_harness.py": "ca73f18651d932453e5fe6bd6c2983a537cefce0",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_session.py": "bdcdb6172267858ce10761209b037675dc81b5e2",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_verify.py": "ab275d9d7cf3ae436c2c3af2e5962a6e42af3e83",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_fault.py": "524738e89a1037d2221f81d1c27ef21a1f22a7aa",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_slot_contract.py": "d07b463e34a335f4a211c05b3db6daf9fae1e826",
+    "runtime/runproof_runtime/effectwitness/pge_r74r2_owner_source.py": "9480126a38cc41854bc2a49d8b69ff84dc08bd3a",
+    "runtime/tests/test_effectwitness_pge_r74r2.py": "ace3600c20a3354911651ffab43e267900be0697",
+    "runtime/tests/test_effectwitness_pge_r74r2_components.py": "6df5e9426aa9aab795a08d565ef827a148b5e9a6",
+    "spikes/rpf-74/rev-2/RESULT.md": "3bf4656b7e2191951ebfee06869af58e59b51f16",
+    "spikes/rpf-74/rev-2/verification-diagnostic.json": "ed5612b16fa2fbfc293be9a38d94b085bb7c7b78",
+    "spikes/rpf-78/rev-2/RESULT.md": "1968c31e34ae3ac6322ad76eca745dc84022a71b",
+    "spikes/rpf-78/rev-2/verification-diagnostic.json": "72d3e29f524ba15391d73f9f8bd3b4840f13c8c0",
+    "spikes/rpf-78/rev-2/preflight-diagnostic.json": "477407e8e2fe14a73943eb1ae9909999e92cce66"
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "--show-toplevel"
+      ],
+      "exit": 0,
+      "stdout_sha256": "bbf7458fa1736d98c88be45df36a72c12e4da73a5222ed33e48b612587afb44e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e63430cf9f5e7d4ac70472844d7d149d543a7c4ff8b7b735f3060f437f7cfe77",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit": 0,
+      "stdout_sha256": "edc1a7f1933d04a0789eb833ce740d471d2b52af33b9ba448c10be86b167b00b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=no"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "remote",
+        "-v"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ff187a7746fa1391e090f1e68fd0404f5b638d72cc6ef78aef5f5b12002f27c4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "remote",
+        "get-url",
+        "origin"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e5453c2ffebbaf0d3666fe3edcf5b5bbea722e0dfbb098fd3d5472e20684b15c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "--abbrev-ref",
+        "--symbolic-full-name",
+        "@{upstream}"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "5e3651dc267bce80595bc80842e673b85322e145c17a2b205d72400f3ba837c7"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-t",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2"
+      ],
+      "exit": 0,
+      "stdout_sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "-s",
+        "--format=%H",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2"
+      ],
+      "exit": 0,
+      "stdout_sha256": "83661148153a0ebcac786928671ddce4b63dc43fd000d786aef8542448508527",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main",
+        "refs/heads/codex/rpf-78-rev-2-negative-gate-closure",
+        "refs/heads/codex/rpf-80-unknown-provider-reservation-oracle"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e7236257f44935890bd8ad13b27203075ed5ef248e0a6aeedbe5973cc1d9aace",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "show-ref",
+        "--verify",
+        "--quiet",
+        "refs/heads/codex/rpf-80-unknown-provider-reservation-oracle"
+      ],
+      "exit": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "check-ignore",
+        "-q",
+        "<ORIGINAL_REPO_ROOT>\\.local\\worktrees\\rpf-80-unknown-provider-reservation-oracle"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "check-ignore",
+        "-q",
+        "<ORIGINAL_REPO_ROOT>\\.local\\worktrees\\rpf-80-unknown-provider-reservation-oracle\\.local\\rpf-80-unknown-provider-reservation-oracle"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ece5226406c5bb534715f0283e4b527f3276c8da156e14e2527fa607c1d776f9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness"
+      ],
+      "exit": 0,
+      "stdout_sha256": "b3263c2262b8a2af5a3092275a6a02854a72b1ba8faed18d9737f3183695b379",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ece5226406c5bb534715f0283e4b527f3276c8da156e14e2527fa607c1d776f9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/runproof_runtime/effectwitness"
+      ],
+      "exit": 0,
+      "stdout_sha256": "b3263c2262b8a2af5a3092275a6a02854a72b1ba8faed18d9737f3183695b379",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/tests"
+      ],
+      "exit": 0,
+      "stdout_sha256": "faffd2c8ceed592acfc66d7b3abe9a0a8ab80728e13d4d71ee8afb07c2ce1c2c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "runtime/tests"
+      ],
+      "exit": 0,
+      "stdout_sha256": "3769e3ce2ba2aa689fdd169e6222836ecc1de0f8e890f316635e13cdb60b1201",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-80"
+      ],
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3713c389bc2f4d09a5ebfc937fc4819a23692bf679389e23385a56d3dd8c837a"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--",
+        "spikes/rpf-80"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r68_budget.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c104989720e890d82e0f8339bb1f0133575652fefba01050e25be37d714cba65",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r68_context.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "aaebdfe5a48ed28437cf06b855ee7d4c114cc35c04494065b18928680db550b6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r68_contracts.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "3018cc43483056dfb49b1b714e73a921b4dcc59b36277f8dcd3451ee7fb6fc90",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_contracts.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "a5cc5af31d1c3d051b5f32e0016f5f07a6bb3117addc4aed7d3c23f9ecd4e26e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_budget_gate.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "216241cf0e7754b914d49a19bc6ee24ecdcd8077e61f295d72dec1417cba8015",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_domain_ports.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8986f17863d5d4b0f3b14a3e92482aa6bc5fae75c237f14cf1f28e8ee03991bf",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_sdk_harness.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "18cf7e35bc3eeb31ecc733bb8af137fcc951a8ff9ab2726e2cdb262d2b9d8c46",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_session.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "b81787f77f6dfceeb61e57929597f1e5505142c28e5f9fd0a76314cc237e8de6",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_verify.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "288db91dff8bdfa0b21c014c5df10388849c078674704a1d7879baf221c64438",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_fault.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "58e3ce08479dde22e71d4ec808b28bd186508d63363e07701c3dabe46eabd40c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_slot_contract.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7118a7ab2fc04b110652d29f6ae4adf7f88a2f7309c49896c3790b4517d6ff40",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/runproof_runtime/effectwitness/pge_r74r2_owner_source.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "43e6696231f68e7cd92b27d0a715dce9a7ee91f5a4454724d2d9f0cab4edb564",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/tests/test_effectwitness_pge_r74r2.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "bc7427d4478c1271197bebe7e5c77338278bb7fd67caf0575e724b45a89ec113",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:runtime/tests/test_effectwitness_pge_r74r2_components.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "46ab7ef3cb5b11340b1752120ecc22190effcc408a3cdd7a6f26514ad062e387",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-74/rev-2/RESULT.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "6ecd951071da49491746e263255442ce69cd28d8f2d14fb5163b66d76553223b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-74/rev-2/verification-diagnostic.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c352f424b66bae22ce9bcd72c1fd562325356bc3aa526bf87587d706495435b9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-78/rev-2/RESULT.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ce474cbef31df6cf21d3366fc3a40046560124633900183470e5a9c60c287026",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-78/rev-2/verification-diagnostic.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7002ed61e030bcde2b982f3616d7b2ac55ad661ac5a64bdcd8e3e28c83bd6e8f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "069108635a77b0a4a9a1f16fa23c205074c0f7f2:spikes/rpf-78/rev-2/preflight-diagnostic.json"
+      ],
+      "exit": 0,
+      "stdout_sha256": "07fa9f7e65a6cff7c7588e66dd8ff7e82f5d41948f9dd3e3c0896bc12ef4ffbe",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "stdout_sha256": "a0bef3335cdbc9a4a7733503ecdb281e91319f5a15e22026bfbef750ce76aaba",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "initial_attempt": "Read-only powershell5 module unavailable; no writes occurred. Restarted G0 with confirmed runtime pwsh7.",
+  "format": "5 files UTF8/LF/compile/strictJSON/staged diff check before freeze",
+  "mutation_roots": [
+    "913ff7a4a5022c568f827f73a48cdc70da766dac86ff6332f41d7b9e1d581f1c",
+    "7495a044040362d4f1ba5fd09d35dc9d09a81f6335ba65dcfc55ae09ae93772f",
+    "70eb1549f76f3f5260edd57a24c7a8d5e151debdd7369ae21d12d0793df6038c",
+    "56acf2e556eb91fd5b264f849a11d941dd3939206e37d633a93f9d298cbc991f",
+    "9656a3063eff0c9755cdb25a700e5e99a4fb18f3cc16db53f08d5d87ce1a2d1a",
+    "362374b9d7e76aa5ab58aac5155df2742f9f8b7f5536f457510ba1a31097400b",
+    "d1cbd346c3b8d9a683f3e8a48d8e0a7e4cc22ca634623e25903cecc46416cbb7",
+    "85a8b60f6b9f419514a3dd7b68232430f7b4fffabbeaf21df5006041275f0c86"
+  ],
+  "missing_field_check": "DOCUMENT_SCHEMA"
+}
