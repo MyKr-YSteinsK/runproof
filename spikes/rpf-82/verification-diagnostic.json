@@ -1,0 +1,554 @@
+{
+  "applicable_local": "PASS_WITH_EXPLICIT_INHERITED_WHITESPACE_EXCEPTION",
+  "as_of": "2026-10-30",
+  "branch": "main",
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "fetch",
+        "--no-prune",
+        "origin"
+      ],
+      "end": {
+        "mono": 110154.5425282,
+        "utc": "2026-10-29T17:05:47.489292+00:00"
+      },
+      "exit": 0,
+      "name": "fetch",
+      "pid": 24892,
+      "start": {
+        "mono": 110152.5955154,
+        "utc": "2026-10-29T17:05:45.542279+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "merge",
+        "--ff-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05"
+      ],
+      "end": {
+        "mono": 110512.8957669,
+        "utc": "2026-10-29T17:11:45.841955+00:00"
+      },
+      "exit": 0,
+      "name": "ff-research",
+      "pid": 23968,
+      "start": {
+        "mono": 110511.9501074,
+        "utc": "2026-10-29T17:11:44.896302+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "11dfc3b8316aff4d4d1808c9d3ca3619b1cb9692963729d012d6d5457c05acd3"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-ext-diff",
+        "--no-renames",
+        "--binary",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "end": {
+        "mono": 110345.4571217,
+        "utc": "2026-10-29T17:08:58.403576+00:00"
+      },
+      "exit": 0,
+      "name": "full-patch-migration",
+      "pid": 27192,
+      "start": {
+        "mono": 110345.1556178,
+        "utc": "2026-10-29T17:08:58.102067+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1c87638aa3f7648ec0f480c550a98cf6f270e49795148e18487fd9a411bd5179"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--no-ext-diff",
+        "--no-renames",
+        "--binary",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "end": {
+        "mono": 110156.8225672,
+        "utc": "2026-10-29T17:05:49.769322+00:00"
+      },
+      "exit": 0,
+      "name": "full-patch-research",
+      "pid": 16272,
+      "start": {
+        "mono": 110156.4225191,
+        "utc": "2026-10-29T17:05:49.369276+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "87e4d33522b2d26f731b7c563166702d25716d6a57a455ef155d2e231a434233"
+    },
+    {
+      "argv": [
+        "<USER_HOME>\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "demo/verify-golden-demo.py",
+        "--root",
+        ".",
+        "--json"
+      ],
+      "end": {
+        "mono": 110753.1433731,
+        "utc": "2026-10-29T17:15:46.089179+00:00"
+      },
+      "exit": 0,
+      "name": "golden-demo",
+      "pid": 14024,
+      "start": {
+        "mono": 110752.7653127,
+        "utc": "2026-10-29T17:15:45.711122+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "acba576ccaa0021d020ca9d6d0382d5c6669ded8e1d751c621154cf1034cfd16",
+      "stdout_tail": "{\n  \"status\": \"PASS\",\n  \"schema_version\": \"rpf-golden-demo-profile-v1\",\n  \"demo_id\": \"runproof-golden-demo\",\n  \"demo_version\": \"1.0.0\",\n  \"source_commit\": \"6f057357047c45c63ad87629e6121e723b3cd355\",\n  \"reviewed_artifact_count\": 15,\n  \"agent_ids\": [\n    \"production-change-agent\",\n    \"incident-remediation-agent\"\n  ],\n  \"selected_ref_count\": 14,\n  \"no_provider_required\": true,\n  \"no_cloud_required\": true,\n  \"no_release_or_deploy\": true\n}\n"
+    },
+    {
+      "argv": [
+        "git",
+        "merge",
+        "--no-ff",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "-m",
+        "Merge RPF-79 project migration into mainline"
+      ],
+      "end": {
+        "mono": 110524.4993693,
+        "utc": "2026-10-29T17:11:57.445541+00:00"
+      },
+      "exit": 0,
+      "name": "merge-migration",
+      "pid": 14092,
+      "start": {
+        "mono": 110512.986502,
+        "utc": "2026-10-29T17:11:45.932693+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "2527491426d647743397c28255519c84e0d01e156157885a5248818ce97382e2"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main",
+        "refs/heads/codex/rpf-81-durable-unknown-presend-loopback",
+        "refs/heads/codex/rpf-79-project-source-migration"
+      ],
+      "end": {
+        "mono": 110156.0848328,
+        "utc": "2026-10-29T17:05:49.031566+00:00"
+      },
+      "exit": 0,
+      "name": "postfetch-refs",
+      "pid": 10620,
+      "start": {
+        "mono": 110154.5438014,
+        "utc": "2026-10-29T17:05:47.490571+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "8edf18f9d5bb955dfc068d7736fd9c592cbad7046847d96d70a60d7f1279e99f"
+    },
+    {
+      "argv": [
+        "<USER_HOME>\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "ci/verify-public-docs.py"
+      ],
+      "end": {
+        "mono": 110750.9369272,
+        "utc": "2026-10-29T17:15:43.882738+00:00"
+      },
+      "exit": 0,
+      "name": "public-docs",
+      "pid": 20960,
+      "start": {
+        "mono": 110750.4875301,
+        "utc": "2026-10-29T17:15:43.433345+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "e0647ec67a2b43dc8423f0b48665fbb250a033365b2d5f339d9761f7992f9cca",
+      "stdout_tail": "PUBLIC_DOCS_PASS files=18 pairs=7\n"
+    },
+    {
+      "argv": [
+        "<USER_HOME>\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "runtime/tests",
+        "-p",
+        "test_effectwitness_pge_r80.py",
+        "-v"
+      ],
+      "end": {
+        "mono": 110750.4657887,
+        "utc": "2026-10-29T17:15:43.411599+00:00"
+      },
+      "exit": 0,
+      "name": "r80-focus",
+      "pid": 10408,
+      "start": {
+        "mono": 110750.2517133,
+        "utc": "2026-10-29T17:15:43.197525+00:00"
+      },
+      "stderr_sha256": "34aaa1c4e1c1d7a8811a7d93f752d771eaa3c1b29b7490729190fd40ac28f983",
+      "stderr_tail": "tion_03 (test_effectwitness_pge_r80.SafetyTests.test_mutation_03) ... ok\ntest_mutation_04 (test_effectwitness_pge_r80.SafetyTests.test_mutation_04) ... ok\ntest_mutation_05 (test_effectwitness_pge_r80.SafetyTests.test_mutation_05) ... ok\ntest_mutation_06 (test_effectwitness_pge_r80.SafetyTests.test_mutation_06) ... ok\ntest_mutation_07 (test_effectwitness_pge_r80.SafetyTests.test_mutation_07) ... ok\ntest_mutation_index_rejected (test_effectwitness_pge_r80.SafetyTests.test_mutation_index_rejected) ... ok\ntest_no_shared_decision_import (test_effectwitness_pge_r80.SafetyTests.test_no_shared_decision_import) ... ok\ntest_old_ticket_send_distinct_from_new_reserve (test_effectwitness_pge_r80.SafetyTests.test_old_ticket_send_distinct_from_new_reserve) ... ok\ntest_roster_digests_unique (test_effectwitness_pge_r80.SafetyTests.test_roster_digests_unique) ... ok\ntest_scope_rejects_legacy_private (test_effectwitness_pge_r80.SafetyTests.test_scope_rejects_legacy_private) ... ok\ntest_unknown_global_all_roles_domains (test_effectwitness_pge_r80.SafetyTests.test_unknown_global_all_roles_domains) ... ok\n\n----------------------------------------------------------------------\nRan 34 tests in 0.013s\n\nOK\n",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_tail": ""
+    },
+    {
+      "argv": [
+        "<USER_HOME>\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "runtime/verify-reviewed-artifacts.py"
+      ],
+      "end": {
+        "mono": 110752.7455754,
+        "utc": "2026-10-29T17:15:45.691382+00:00"
+      },
+      "exit": 0,
+      "name": "reviewed-artifacts",
+      "pid": 13544,
+      "start": {
+        "mono": 110750.9532234,
+        "utc": "2026-10-29T17:15:43.899038+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "672ee889968f5f19453058932c6538cc17c5d05bd366f6e9bb7bec62d1781fcc",
+      "stdout_tail": "PASS: 2 historical v1 + 2 RPF-04 v2 + 3 RPF-05 runs + 3 RPF-06 runs + 6 RPF-07 runs + Suite/Evaluations/Comparison + 1 Policy/2 Gates/2 Decisions + 3 RPF-28 runs; source=cd31a021550f680a3ca512d210b9533a262fb734a769d4f8d3f6bee11adacaf7\n"
+    },
+    {
+      "argv": [
+        "git",
+        "switch",
+        "main"
+      ],
+      "end": {
+        "mono": 110511.6797521,
+        "utc": "2026-10-29T17:11:44.625945+00:00"
+      },
+      "exit": 0,
+      "name": "switch-main",
+      "pid": 26516,
+      "start": {
+        "mono": 110511.2663154,
+        "utc": "2026-10-29T17:11:44.212503+00:00"
+      },
+      "stderr_sha256": "6300963e525f04410f9d2df59c376a7490543a6db6823dd3351451dad11cfcb0",
+      "stdout_sha256": "e51f1dd7542d908a17fa18066b637016c51c0ab97a7ca6ec8890df5b16dc1c46"
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/vite/bin/vite.js",
+        "build",
+        "--config",
+        ".local/rpf-82-mainline-convergence/build.config.ts"
+      ],
+      "end": {
+        "mono": 110769.8541463,
+        "utc": "2026-10-29T17:16:02.799924+00:00"
+      },
+      "exit": 0,
+      "name": "web-build",
+      "pid": 2256,
+      "start": {
+        "mono": 110766.2195167,
+        "utc": "2026-10-29T17:15:59.165305+00:00"
+      },
+      "stderr_sha256": "ccb6bf354a0674eeb1e49df9a880a000b75240079fdb849282bb899d81eeb58c",
+      "stderr_tail": "\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n",
+      "stdout_sha256": "5a6c2944dd5bf3552ac590f4ae8641f1c7dc98438c67ce51bfafac7fae36506a",
+      "stdout_tail": "vite v7.3.6 building client environment for production...\ntransforming...\n✓ 159 modules transformed.\nrendering chunks...\ncomputing gzip size...\n.local/rpf-82-mainline-convergence/web-dist/index.html                     0.47 kB │ gzip:   0.30 kB\n.local/rpf-82-mainline-convergence/web-dist/assets/index-CKeg4LEA.css    111.45 kB │ gzip:  17.48 kB\n.local/rpf-82-mainline-convergence/web-dist/assets/index-CwpvYtvs.js   1,387.59 kB │ gzip: 216.32 kB\n✓ built in 2.79s\n"
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/vitest/vitest.mjs",
+        "run",
+        "--config",
+        ".local/rpf-82-mainline-convergence/test.config.ts"
+      ],
+      "end": {
+        "mono": 110759.3367006,
+        "utc": "2026-10-29T17:15:52.282495+00:00"
+      },
+      "exit": 0,
+      "name": "web-tests",
+      "pid": 13328,
+      "start": {
+        "mono": 110753.1650548,
+        "utc": "2026-10-29T17:15:46.110862+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "e22a0fc9ec1a4a8c1e7b1a38214330e3e3b879c5bcbc2dd94b5263d38aa53816",
+      "stdout_tail": "\n RUN  v5.0.0 <REPO_ROOT>\n\n\n Test Files  16 passed (16)\n      Tests  64 passed (64)\n   Start at  01:15:50\n   Duration  2.13s (transform 64%, import 24%, tests 7%, worker 6%)\n\n  Transform  transforming modules took 7.60s · 64% of tracked time, re-done on every run\n             persist transforms across runs with fsModuleCache: true\n             learn more: https://vitest.dev/guide/improving-performance#caching-between-reruns\n\n"
+    },
+    {
+      "argv": [
+        "node",
+        "node_modules/typescript/bin/tsc",
+        "--noEmit"
+      ],
+      "end": {
+        "mono": 110766.2182797,
+        "utc": "2026-10-29T17:15:59.164065+00:00"
+      },
+      "exit": 0,
+      "name": "web-typecheck",
+      "pid": 32484,
+      "start": {
+        "mono": 110759.3555981,
+        "utc": "2026-10-29T17:15:52.301399+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_tail": "",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_tail": ""
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "HEAD"
+      ],
+      "end": {
+        "mono": 111003.9063283,
+        "utc": "2026-10-29T17:19:56.851732+00:00"
+      },
+      "exit": 2,
+      "name": "full-history-diff-check",
+      "pid": 15840,
+      "start": {
+        "mono": 111003.6592983,
+        "utc": "2026-10-29T17:19:56.604705+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7594f6ecf65055e9a95fcfe3cb0bc3f45375892521d6ef497a76703b4b4a7cd7"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "end": {
+        "mono": 111077.6438645,
+        "utc": "2026-10-29T17:21:10.589152+00:00"
+      },
+      "exit": 0,
+      "name": "native-diff-check",
+      "pid": 28552,
+      "start": {
+        "mono": 111077.5691597,
+        "utc": "2026-10-29T17:21:10.514424+00:00"
+      },
+      "stderr_sha256": "119822c5dd077e5fd8af278781a74d003d2c893e01f1abbcac41f81cb46bb239",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "C:\\Users\\Yukis\\AppData\\Local\\Python\\pythoncore-3.14-64\\python.exe",
+        "-X",
+        "utf8",
+        "-B",
+        "ci/verify-public-docs.py"
+      ],
+      "end": {
+        "mono": 111077.8517367,
+        "utc": "2026-10-29T17:21:10.797023+00:00"
+      },
+      "exit": 0,
+      "name": "public-docs-final",
+      "pid": 12636,
+      "start": {
+        "mono": 111077.6689506,
+        "utc": "2026-10-29T17:21:10.614241+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e0647ec67a2b43dc8423f0b48665fbb250a033365b2d5f339d9761f7992f9cca"
+    }
+  ],
+  "core_fail": false,
+  "final_push": "PENDING_FINAL_RECEIPT",
+  "full_history_whitespace_gate": {
+    "actual_diagnostic": "runtime/runproof_runtime/effectwitness/config_pge_coverage_session.py:200: new blank line at EOF.\nruntime/runproof_runtime/effectwitness/pge_dual_config_port.py:76: trailing whitespace.\n+        \nruntime/tests/test_effectwitness_lab_cross_domain.py:237: new blank line at EOF.\n",
+    "authorization": {
+      "recorded": {
+        "mono": 111207.517964,
+        "utc": "2026-10-29T17:23:20.463062+00:00"
+      },
+      "scope": "Only the three recorded inherited whitespace findings; no historical source edits; preserve FAIL diagnostic; all other gates and native diff checks remain required",
+      "source": "Direct human reply to bounded exception question",
+      "verbatim": "仅豁免这3处历史空白，继续"
+    },
+    "full_history_check": {
+      "argv": [
+        "git",
+        "diff",
+        "--check",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "HEAD"
+      ],
+      "end": {
+        "mono": 111003.9063283,
+        "utc": "2026-10-29T17:19:56.851732+00:00"
+      },
+      "exit": 2,
+      "name": "full-history-diff-check",
+      "pid": 15840,
+      "start": {
+        "mono": 111003.6592983,
+        "utc": "2026-10-29T17:19:56.604705+00:00"
+      },
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7594f6ecf65055e9a95fcfe3cb0bc3f45375892521d6ef497a76703b4b4a7cd7"
+    },
+    "native_diff_check": "PASS",
+    "proposed_exception": "Keep these three historical blobs unchanged; retain exit2 diagnostic; waive only inherited whitespace for full-range check, require native/staged diff --check and all other gates. No force or source edits.",
+    "protected_files": [
+      {
+        "local_merge_blob": "d93c39ddc977e1ea7e81abc059f8510066f68c5f",
+        "path": "runtime/runproof_runtime/effectwitness/config_pge_coverage_session.py",
+        "source_blob": "d93c39ddc977e1ea7e81abc059f8510066f68c5f",
+        "unchanged": true
+      },
+      {
+        "local_merge_blob": "79c210fa5579235447157858f2c62ddd61983a91",
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py",
+        "source_blob": "79c210fa5579235447157858f2c62ddd61983a91",
+        "unchanged": true
+      },
+      {
+        "local_merge_blob": "100fea2cbd79b0cb2a09cf67d3d11e950ea52768",
+        "path": "runtime/tests/test_effectwitness_lab_cross_domain.py",
+        "source_blob": "100fea2cbd79b0cb2a09cf67d3d11e950ea52768",
+        "unchanged": true
+      }
+    ],
+    "public_docs_final": "PASS",
+    "status": "APPROVED_SPECIFIC_EXCEPTION_ORIGINAL_EXIT2_RETAINED"
+  },
+  "governance_prefix_checks": {
+    "D001_D027_canonical_git_bytes": "UNCHANGED_PREFIX",
+    "D028_unique": true,
+    "R79_AGENTS_canonical_git_bytes": "UNCHANGED_PREFIX"
+  },
+  "hosted_ci": "PENDING_FINAL_RECEIPT",
+  "hosted_ci_gate": "PENDING_FINAL_RECEIPT",
+  "local_check_summary": {
+    "commands": [
+      "r80-focus",
+      "public-docs",
+      "reviewed-artifacts",
+      "golden-demo",
+      "web-tests",
+      "web-typecheck",
+      "web-build"
+    ],
+    "environment": "Web wrappers only relocate dotenv/cache/outDir; original test inclusion and product build configuration retained, existing dependencies; no server started",
+    "key_probes": "NOT_RUN",
+    "network_experiment_sendall": 0,
+    "not_run": {
+      "full-release-gate": "Docker/PostgreSQL/Java integration delegated to existing authorized main CI",
+      "full-runtime-suite": "Includes legacy SDK/JVM/HTTP fixture and private-root references; current task prohibits local execution of those boundaries",
+      "maven": "Java/service/fixture dependency activity left to authorized hosted CI; no local Java started",
+      "r81-focus": "Source writes legacy WORK outside authorized RPF82 root; old source kept immutable; no redirection or old root access"
+    },
+    "provider_calls": 0,
+    "status": "PASS_APPLICABLE_LOCAL_CHECKS"
+  },
+  "local_merge_sha": "68f8fe88b18ab7aae939f446139131e936470a33",
+  "main_base": "bda0cd49e50e3181f604324e94877a24b9885334",
+  "migration_head": "f123ae13f67b3825c094e3bb7764c348a393b19d",
+  "negative_controls": [
+    {
+      "forbidden_paths_not_accessed": true,
+      "name": "Exact stage allowlist",
+      "rejected_only_as_strings": [
+        ".local/forbidden.json",
+        "docs/reviews/forbidden.md",
+        "runtime/runproof_runtime/effectwitness/pge_r81_barrier.py"
+      ],
+      "result": "PASS"
+    },
+    {
+      "method": "In-memory guard rejected second append, no duplicate written",
+      "name": "Duplicate D028",
+      "result": "PASS"
+    },
+    {
+      "method": "Actual fixed ref/blob equality guards before merge",
+      "name": "Source HEAD/blob mismatch",
+      "result": "PASS"
+    },
+    {
+      "method": "Ordinary git push only; no forced or deliberately invalid push; Git rejection remains mandatory if concurrent update",
+      "name": "Non-fast-forward push",
+      "result": "NOT_RUN_BY_DESIGN"
+    }
+  ],
+  "r80_errors": 0,
+  "r80_failures": 0,
+  "r80_methods": 34,
+  "r80_skips": 0,
+  "research_head": "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+  "task": "RPF-82/rev-1",
+  "unavailable": {
+    "actions_compute_cost": "UNAVAILABLE",
+    "cpu_ram_disk_io_peak": "UNAVAILABLE_NOT_SAMPLED"
+  },
+  "web_summary": " Test Files  16 passed (16)\n      Tests  64 passed (64)\n   Duration  2.13s (transform 64%, import 24%, tests 7%, worker 6%)",
+  "zero_actions": {
+    "business_writes": 0,
+    "deploy": 0,
+    "experiment_tcp_send": 0,
+    "key_probes": 0,
+    "new_branch": 0,
+    "new_worktree": 0,
+    "pr": 0,
+    "provider_calls": 0,
+    "provider_tokens": 0,
+    "release": 0,
+    "sdk_calls": 0
+  }
+}

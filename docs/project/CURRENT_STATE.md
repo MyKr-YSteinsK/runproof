@@ -1,63 +1,50 @@
 # CURRENT_STATE
 
-> 当前真实快照；稳定产品意图见 `PROJECT_BRIEF`，长期决定见 `DECISIONS`，执行规则见根目录 `AGENTS.md`，历史验证见 `docs/history/`。本文不追加过程日志。
+> 2026-10-30 可核验快照。稳定产品合同见 PROJECT_BRIEF，长期决定见 DECISIONS，执行规则见 AGENTS，历史事实见 docs/history 与各固定 SHA 的 RESULT。本文不授予旧实验恢复权限。
 
-## Current snapshot
+## 当前阶段与工作模式
 
-- Lifecycle: `Stabilization / Portfolio Maintenance`。
-- Plan status: `RPF-00` through `RPF-39` are `Complete`。RPF-38 只完成 workflow/governance/history/spike lifecycle 的低风险收束；RPF-39 完成 GenAI semantic-convention 互操作调查，结论为未来可采用受限 opt-in bounded dual emit，但不改变 RPF-30 正式 boundary、产品行为、Release authority 或 Production topology。
-- Branch/repository: `main` / public `MyKr-YSteinsK/runproof`。默认交付模型为 commit → push；当前 HEAD 与 upstream 关系以 Git 状态和本次 `TASK_RESULT` 为准。
-- Product/published version: none。`0.1.0-rc.1` remains a historical production-like probe recommendation, not a tag or release。
-- Production Cloud: `Deferred`。AWS `ap-southeast-1` 只是 RPF-36 的 candidate topology；未创建 cloud account、paid resource 或执行 Production deploy/release。
-- Project-State source of truth: `PROJECT_BRIEF.md` 持有稳定产品/UX 合同；`DECISIONS.md` 持有 canonical decisions；本文持有当前快照；`docs/history/` 持有重要历史证据；`AGENTS.md` 只持有当前执行规则。
+- RunProof 持续研发；本轮 RPF-82 是 repository integration / governance maintenance，不是项目结束或生产发布。
+- 用户已接受 main-first、现有单工作树的常规协作方式（D-028）。G0、用户文件保护、必要验证及 CI 仍然有效；高风险/真实费用/并发/污染实验须另行提出隔离。
+- 仓库为 public `MyKr-YSteinsK/runproof`，默认分支 main。旧 main 基线为 `bda0cd49e50e3181f604324e94877a24b9885334`；本地先快进研发链 `8c22556f56b088ecae641c96cb9ab8bba6af1c05`，再显式合并 RPF-79 `f123ae13f67b3825c094e3bb7764c348a393b19d`。治理提交的最终 main push/API/CI 回执在 RPF82 最终聊天提供；本文封存时不预填未来 SHA。
+- 原有分支和 worktree 保留，未清理旧本地根。RPF-81/rev-2 BLOCKED 工作树及 G0 失败现场没有并入或恢复；仅其 Base 历史可达。
+- 无 product tag/release；Production Cloud 仍 Deferred，AWS candidate topology 未变为部署或真实资源授权。
 
-## Current capabilities
+## 能力与证据层级
 
-- Desktop Web Control Plane 是 API-backed、read-only 的双语调查面；locale 只改变 presentation，route/entity/status/identifier/hash/schema/evidence bytes 不随语言改变。API/artifact 不可用或未 verified 时 fail closed。
-- Java/Spring formal Control Plane 持有 PostgreSQL canonical metadata、显式 local/S3 ArtifactStore、durable Job/Attempt/Operation/Event、verified artifact resolution 和 append-only/superseding Decision history。
-- Python Runtime、独立 durable Worker 与两个显式 Agent contract 支持 controlled stateful evaluation、response-loss reconcile、Failure Case/Regression、Failure Intelligence、statistical trial semantics 与 HTTP/JSON Control Plane access。
-- Golden Demo 提供本机 API-backed、read-only、interview-grade 路径，包含 reviewed corpus seed/read-back 与 Windows process/container lifecycle boundary。
-- RPF-28 formal multi-service Environment 保留单容器路径，同时提供 fresh Docker internal network、target/dependency/Toxiproxy/Agent-shaped client、fault provenance、receipt/effect-count reconcile 与 no-blind-retry 证据。
-- RPF-30 提供 optional OpenTelemetry diagnostic boundary，传播 W3C `traceparent` 与 allowlisted Baggage；OTel 不是 canonical identity、Release authority 或启动依赖。RPF-39 已证明 selected GenAI Agent/model/tool signals 可 additive 互操作，但当前不启用 standard mapping，prompt/messages/tool payload 默认禁止。
-- RPF-32 提供 provider-neutral S3-compatible ArtifactStore；`LocalFileArtifactStore` 仍为默认，历史 reviewed bytes 未迁移。RPF-34/35 提供 bounded Execution/Canonical read models 与 opaque keyset cursors，Overview 使用固定 Golden Demo refs，不爬取完整 corpus。
-- RPF-36 只保留 dated provider/topology comparison 与 managed-operations candidate evidence。RPF-27/29/31 等 historical candidate source、workflow、README、reviewed corpus 与原路径均保留；`ARCHIVE != DELETE`。
+| 层级 | 当前事实 | 证据及限制 |
+|---|---|---|
+| RPF-00～39 正式受控产品切片 | 历史已完成；Desktop Web 双语 API-backed read-only 调查、Java/PostgreSQL canonical metadata、Python durable Worker、质量门和 Golden Demo | 沿用 docs/history；本轮不重造 reviewed artifacts，不把历史通过记为本轮实跑 |
+| RPF-28/30/32/34/35 边界 | 多服务受控环境、optional OTel、显式 additive S3-compatible ArtifactStore、bounded read models | 原风险扩展/manual 边界仍有效；非 Production HA/云/发布证明 |
+| RPF-40～73 研发链 | EffectWitness、订单/退款与运维配置、受限 Gateway、Witness/Verifier、PGE 与版本化接缝的源码及公开报告已纳入授权历史 | 各 RESULT 持有具体环境/版本/失败与接受限制；历史真实 Provider/SDK/HTTP 记载未在本轮重跑，不能概称全部能力已接受或默认启用 |
+| RPF-75～77 离线策略研究 | 先前 Architect 的限定离线接受，RPF-79 迁移快照明确记录 | OFFLINE_POLICY_SIMULATION_ONLY；不证明真实策略优越性、真实校准或新业务安全 |
+| RPF-78/rev-1 | PARTIAL；A08 FAIL 永久保留 | 原报告不回填。rev-2 负控门禁修订的公开证据已交付，封存报告仍 PENDING_FINAL_DELIVERY，不在本轮补授新的阶段接受 |
+| RPF-79 迁移资料 | 独立历史的21份文档/manifest/index已与研发链合并 | docs/effectwitness-migration/2026-10-29-rpf79 为带日期的非 canonical 快照，不替代三份 Project State |
+| RPF-80 | 限定合成投影/独立离线 Oracle 证据已被 Architect 接受（RPF82 Plan 带入） | 只证明投影规则，物理发送/真实 Provider 未证；原封存报告的 pending 状态不改写 |
+| RPF-81/rev-1 | PARTIAL；localhost 正常字节、阻断、固定交错与负控有局部实证 | A05 恢复因果不足：无 UNKNOWN 的重启也被无条件拒绝；历史累计7次sendall/320接收字节，不是本轮运行 |
 
-## Public and execution documentation
+## 暂停与未修安全事实
 
-- Public docs: `README.md` / `README.zh-CN.md`，`docs/ARCHITECTURE*`、`RELIABILITY_MODEL*`、`DEMO*`、`GLOSSARY*`；`python ci/verify-public-docs.py` 是配对、语义、本地链接、命令与 secret-path contract check。
-- Historical docs: `docs/history/VERIFICATION_HISTORY.md`、`.zh-CN.md`；RPF-00 至 RPF-39 的执行导航为 [`RPF_EXECUTION_INDEX.md`](../history/RPF_EXECUTION_INDEX.md)。具体命令仍以各 Spike/模块 README 与脚本为准。
-- Fast path: ordinary push/PR 只触发 `.github/workflows/release-gate.yml`，覆盖 repository checks、fresh PostgreSQL/Control Plane、durable evaluation、canonical Decision read-back、redacted artifact 与 Job Summary。
-- Manual path: RPF-27/29/31/36 historical candidates 与 RPF-28/30/32/33/34/35 formal/heavyweight proofs 保留 `workflow_dispatch`；它们不再对普通 push/PR 自动扇出，仍可 fresh-checkout 复现。
-- Workflow permissions: 当前 workflow 只声明 `contents: read`；没有新增 `actions`、`id-token`、云 secret、release 或 deploy 权限。
+- RPF-74/rev-4：PAUSED/DEFERRED。公开 rev-2 路径中的 rev-3 报告仍 PARTIAL：Config UNKNOWN seq199 后有 provider RESERVE205/233；Order UNKNOWN427 后有433/461。原私有 WAL/marker/receipt 未读取，未修复、未重放。
+- RPF-81/rev-2：BLOCKED。G0 原始收据持久化缺口；Source 修改/实验/commit/push 为0（本 Plan 带入的上轮事实）。恢复和反复补证路线按当前用户决定延后，不能以 main-first 绕过。
+- UNKNOWN_OUTCOME 后禁止业务盲重试写，只允许按合同确定性只读对账。main 包含历史不安全研究候选，不能当作批准执行；已有安全缺口没有被本轮集成清零。
 
-## Latest verification and delivery facts
+## 验证与交付事实
 
-- RPF-38 local core matrix passed: Runtime unit tests, reviewed-artifact verifier, public-doc verifier, Golden Demo verifier, Control Plane Maven test/package, Web tests, Web typecheck and Web build。Build retains the known shared-bundle warning；real-device verification was not executed。
-- RPF-38 post-cleanup audit is the current maintenance evidence；its tracked-tree counts, before/after bytes, workflow fan-out and exact Git hygiene comparison are reported in the final `TASK_RESULT` and verification history, with no source/evidence deletion used。
-- Reviewed evidence manifest before/after has identical paths, bytes and SHA-256 values；no reviewed JSON was renamed, moved, formatted, regenerated, normalized, merged or deleted。
-- Selected manual workflow verification passed for one historical workflow and one formal heavyweight workflow after the trigger change; exact run IDs, artifact/verifier result and commit are recorded in `docs/history/VERIFICATION_HISTORY.md` after delivery。
-- The final hosted canonical Release Gate is the required final delivery check for the resulting `main` HEAD；its run and artifact are reported in the final `TASK_RESULT`。It produces evidence only; no release/deploy/cloud operation is authorized or executed。
-- RPF-37 audit baseline before RPF-38 was `379` tracked files / `5,273,659` bytes / `20` spikes / `11` workflows / zero generated files / zero duplicate hash groups. RPF-38 reduced automatic push/PR fan-out to one workflow and intentionally did not delete historical source or evidence。
-- RPF-39 local disposable proof passed with source identity `88caa57a3cb17360b973104cc0bb0a4a9451fc2414d3ae1304d5e8ea03b72dbb`：pinned GenAI upstream `c88d504ab3d9879f8e50d3cc87e69775e11db234` remained `Development`; healthy Collector accepted 8 spans / 3 standard Agent-model-tool spans and `gen_ai.client.token.usage`; disabled/unavailable modes preserved the same canonical projection。无 live Provider、API key、RPF-30 evidence mutation、release/deploy/cloud operation。
+- RPF82 G0 在现有 tracked-clean 主工作树完成；prewrite stdout 原始收据先落盘，再 fetch。main 不被其他 worktree 占用，工作流锚与三来源一致。
+- main→RPF81 为126个提交的快进；RPF79相对RPF81为 ahead2/behind8，显式 merge 后迁移21文件和 AGENTS 追加保留。完整本地 Git diff 审查覆盖831个研发变更路径，未以 API 前300项代替；72个 RPF40～81远端分支 HEAD 都在两条固定历史中可达，细项见 integration ledger。
+- 本地检查的实际 exit、日志hash、NOT_RUN/UNAVAILABLE 见 spikes/rpf-82/verification-diagnostic.json；未执行项不记 PASS。RPF81测试/旧完整Runtime若触碰旧私有根则不运行。
+- canonical `.github/workflows/release-gate.yml` 在旧main/两来源 blob 均为 `99aee95819cf1e2ea41b0bcfe68b3444730c6ba9`，无工作流变更、无新增权限。main push 自动触发依赖安装、Docker/PostgreSQL/Runtime/Maven/Web CI，已获本次授权；不执行 deploy/release，实际计算费用 UNAVAILABLE。
+- 推送前完整历史diff检查发现3处继承的whitespace问题（两个EOF空行、一个trailing whitespace），历史blob原样，用户已明确仅豁免这3处继承空白，原exit2诊断保留；新增差异检查通过。封存时本次治理提交尚待最终 push 和 hosted CI；A06/A07 为 PENDING_FINAL_RECEIPT。CI 实际状态由最终聊天独立补证，不 amend 旧报告。本次外部模型 API/Provider/token/费用/SDK/业务写/实验TCP均0（Git/GitHub只作交付/读回）。
 
-## Known limits and risks
+## 产品目标与剩余限制
 
-- No Production HA or managed cloud resource is deployed; multi-host supervision, human Approval configuration, OAuth/OIDC/SSO, tenant/RBAC, broker, scheduler, autoscaling, real destructive Production remediation and release/deploy endpoint remain unimplemented or unauthorized。`ELIGIBLE` remains decision-only。
-- `LocalFileArtifactStore` remains the default local backend；S3 evidence is single-node compatibility proof, not a managed Production durability/HA/replication/lifecycle/restore-SLA/capacity conclusion. Orphan cleanup and retention remain future boundaries。
-- Statistical and Agent corpora are deterministic/controlled and small；they do not establish live Provider probability, Production-scale significance or long-term cost/latency distribution。
-- Desktop/in-app browser evidence is representative where recorded；real-device/iOS/mobile/PWA verification was not executed。The Web build may report a shared chunk-size warning。
-- RPF-33 remains directional capacity evidence, not a Production QPS/SLA claim。RPF-35 cross-type EXPLAIN still has a sequential scan；formal index migration, artifact streaming, Web virtualization and GC remain deferred until a repeatable benefit and separate Plan exist。
-- RPF-28/30/32/34/35 formal proofs remain manual risk boundaries, not automatic Production readiness. RPF-30 OTel is diagnostic-only；trace/span identity never becomes canonical Run/Job/Attempt/evidence identity or Release authority。GenAI semantic conventions remain upstream `Development` and do not supply RunProof reconcile/verifier/release semantics。
-- Hosted action annotations still include existing Node.js 20 action-runtime, setup-java v4 and `ubuntu-latest` migration warnings；RPF-38 records them but does not perform a broad toolchain upgrade。
+- 长期仍需真实 constrained Explorer→受控真实 Target effect→独立 Authority/Oracle→Verified Feedback→有界离线 Witness Certificate；订单/退款与运维配置为两个首发 Domain，Desktop Web 为主要人类界面。本次不修改稳定产品合同，不将资料迁移或离线 L0 升格为 live。
+- 未实现或未授权边界仍包括独立 Issuer/真实业务 Authority、完整反馈因果优势、通用并发/硬件断电保证、Production HA、多主机监督、OAuth/OIDC/SSO、tenant/RBAC、broker/scheduler/autoscaling、真实 destructive remediation 及发布端点。ELIGIBLE 仍是 decision-only。
+- reviewed bytes、canonical identity 与 Release Authority 不由 OTel、Hash、Agent 文本、Mock 或同证书重审替代；LocalFileArtifactStore 默认和 S3 单节点兼容性限制不变。
+- 旧 README 的 feature-branch 描述与迁移资料持有当时快照；当前已集成路径以本文/RPF82 ledger 为准。旧正文按本轮保护规则保留，后续可在独立文档范围内更新导航。
+- 本轮无真实设备/UI验收、无新的性能或生产概率结论。Web 仍可能有已知共享 chunk 警告；未据此升级依赖。
 
-## Active work
+## 下一工作边界
 
-RPF-38 cleanup、Project-State layering、lifecycle index、local regression、selected manual workflow proof 与 RPF-39 GenAI 互操作调查均已完成。No unrelated product feature implementation is active；the repository is ready for maintenance-only work or a new focused Plan。
-
-## Next likely boundary
-
-Stop at the portfolio-maintenance boundary unless a new focused product or toolchain Plan is authorized。未来如需实现 RPF-39 的 bounded dual emit，应以独立授权的 compatibility Plan 固定 SDK/schema drift、Python/Java symmetry、privacy/cardinality 与 hosted evidence；Production Cloud remains Deferred and AWS `ap-southeast-1` remains candidate-only。
-
-## Update rule
-
-Only material current facts, lifecycle, capability, limitation, verification or delivery changes belong here. Do not append task transcripts, full command output or `TASK_RESULT` dumps. Move no-longer-current but still useful facts to `docs/history/` instead of duplicating them here.
+常规研发继续在 main 的单工作树按有界授权推进；以未完成产品目标与当前证据差距选取小任务。旧 UNKNOWN 恢复路线延后为单独研究，不自动创建新 RPF/分支/worktree或恢复暂停现场。生产、真实费用、部署及高风险隔离始终需要相应明确授权。

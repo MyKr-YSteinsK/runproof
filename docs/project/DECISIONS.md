@@ -478,3 +478,20 @@ RPF-31 的 SeaweedFS `4.47` 选择证据证明了标准 S3-compatible conditiona
 ### Supersedes
 
 - none（承接 D-014、D-020、D-026；把 RPF-31 的 additive follow-up 收敛为正式 backend，不替代 local backend、canonical PostgreSQL、durable reconcile 或 decision-only release authority）
+
+## D-028｜Main-first 开发与证据分层集成
+
+- Status: `Accepted`
+- Date: 2026-10-30
+### Decision
+按用户明确决定，将已交付研发链与独立迁移资料收敛到 main；常规研发在有界 G0 核验后的单个现有 main 工作树直接开发、验证和普通 push，不按 RPF 任务默认创建分支/worktree。仅在生产授权、真实费用/副作用、并发冲突、污染风险或确需隔离的实验中重新提出隔离方案。
+
+保留所有历史分支、报告与失败事实。main 可达只表示代码和历史已集成，不授予研究切片新的证据接受、live/production、Release 或部署状态。RPF-74/rev-4 持续 PAUSED/DEFERRED；RPF-81/rev-1 为 PARTIAL，rev-2 为 BLOCKED，其恢复与反复补证延后到独立研究。UNKNOWN_OUTCOME 后禁止业务盲重试，Agent、Verifier 与 Release Authority 分离继续有效。
+### Why
+当前用户明确要求统一 main、单工作树协作，减少按任务分散的交付和上下文切换，同时保留可核验的源码/证据与暂停边界。RPF-79 迁移链与 RPF-81 研发链分叉，必须显式合并两者，不能以单条快进代替全部收敛。
+### Consequences
+新任务仍须核对权限、工作树、差异、验证和 CI；普通 main push 的既有 Canonical Release Gate 不执行 release/deploy。研发链中存在已记录的不安全候选和未接受结论，不自动成为默认生产执行路径。Project State、历史报告和带日期的迁移资料保持各自职责，旧报告不改写。
+### Reconsider when
+出现独立生产/费用授权、多方并发、污染隔离需要，或新的执行边界使 main 上直接实施风险不可控时，以明确范围重新评估分支/worktree；不从本决定推导任何真实 Provider、旧任务恢复或部署许可。
+### Supersedes
+- 仅替代常规研发按任务默认隔离分支/worktree的工作模式；D-001～D-027 的原文和安全/产品语义保持不变。

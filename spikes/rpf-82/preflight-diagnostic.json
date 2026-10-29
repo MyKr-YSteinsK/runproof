@@ -1,0 +1,1427 @@
+{
+  "G0": "PASS",
+  "as_of": "2026-10-30",
+  "audit_correction": "Initial overly strict audit rejected binary PNG screenshot; recognized tracked public assets, preserved bytes for visual check; no history/source changes.",
+  "binary_asset_review": "4 unique PNG public Lab captures inspected; no credential/host identity observed; historical captions not current online state",
+  "branch": "main",
+  "create_only_paths": [
+    "spikes/rpf-82/README.md",
+    "spikes/rpf-82/RESULT.md",
+    "spikes/rpf-82/integration-ledger.json",
+    "spikes/rpf-82/preflight-diagnostic.json",
+    "spikes/rpf-82/verification-diagnostic.json"
+  ],
+  "default": "ref: refs/heads/main\tHEAD\nbda0cd49e50e3181f604324e94877a24b9885334\tHEAD\n",
+  "final_push": "PENDING_FINAL_RECEIPT",
+  "first_write": {
+    "mono": 110095.4476562,
+    "utc": "2026-10-29T17:04:48.394527+00:00"
+  },
+  "free_bytes": 115452346368,
+  "git": "git version 2.54.0.windows.1",
+  "hosted_ci": "PENDING_FINAL_RECEIPT",
+  "ignored": true,
+  "initial_branch": "codex/rpf-74-rev4-unknown-stop-receipt-binding",
+  "initial_head": "d5605c08af33c932f97529ae5b33228b56d8a113",
+  "local_merge_sha": "68f8fe88b18ab7aae939f446139131e936470a33",
+  "main_base": "bda0cd49e50e3181f604324e94877a24b9885334",
+  "migration_head": "f123ae13f67b3825c094e3bb7764c348a393b19d",
+  "order_verified": true,
+  "os": "Windows-11-10.0.26200-SP0",
+  "owner_acl": "Read before first write; details private; hash 7774d546027b91813ebd13d055a31be9c64380daf3ced50cda433be142e2641a",
+  "persisted": {
+    "mono": 110095.4604209,
+    "utc": "2026-10-29T17:04:48.407305+00:00"
+  },
+  "postfetch_receipt": {
+    "argv": [
+      "git",
+      "fetch",
+      "--no-prune",
+      "origin"
+    ],
+    "end": {
+      "mono": 110154.5425282,
+      "utc": "2026-10-29T17:05:47.489292+00:00"
+    },
+    "exit": 0,
+    "name": "fetch",
+    "pid": 24892,
+    "start": {
+      "mono": 110152.5955154,
+      "utc": "2026-10-29T17:05:45.542279+00:00"
+    },
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "prewrite_commands": [
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e63430cf9f5e7d4ac70472844d7d149d543a7c4ff8b7b735f3060f437f7cfe77"
+    },
+    {
+      "argv": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "edc1a7f1933d04a0789eb833ce740d471d2b52af33b9ba448c10be86b167b00b"
+    },
+    {
+      "argv": [
+        "git",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=no"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "--show-toplevel"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "bbf7458fa1736d98c88be45df36a72c12e4da73a5222ed33e48b612587afb44e"
+    },
+    {
+      "argv": [
+        "git",
+        "worktree",
+        "list",
+        "--porcelain"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "3a3e7168aa536e55b00f38e315f0f2fdc79b10ed8716ac4b93ebe199830be366"
+    },
+    {
+      "argv": [
+        "git",
+        "remote",
+        "get-url",
+        "origin"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e5453c2ffebbaf0d3666fe3edcf5b5bbea722e0dfbb098fd3d5472e20684b15c"
+    },
+    {
+      "argv": [
+        "git",
+        "remote",
+        "-v"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "ff187a7746fa1391e090f1e68fd0404f5b638d72cc6ef78aef5f5b12002f27c4"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "--symref",
+        "origin",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "3d20b471b94118ca04a73834ffc4b71ea02bfcd83172985e1e6b6b11c0322968"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-remote",
+        "origin",
+        "refs/heads/main",
+        "refs/heads/codex/rpf-81-durable-unknown-presend-loopback",
+        "refs/heads/codex/rpf-79-project-source-migration"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "8edf18f9d5bb955dfc068d7736fd9c592cbad7046847d96d70a60d7f1279e99f"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "main"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6689536cbca10fa371ec68a6e8fe28cfad8ee219bb497ade99f2a62bd043697f"
+    },
+    {
+      "argv": [
+        "git",
+        "for-each-ref",
+        "--format=%(upstream:short)",
+        "refs/heads/main"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "047f220328b7a2219f45225722c482dd31cf8c6ce01fdad1e8eccab7d01fcd01"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-t",
+        "bda0cd49e50e3181f604324e94877a24b9885334"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/release-gate.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "29704db27e1ce0620fcaf34d1b2cff068c323874054c0e641fd63baf94dd153f"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-t",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/release-gate.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "29704db27e1ce0620fcaf34d1b2cff068c323874054c0e641fd63baf94dd153f"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-t",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "50836eee574ecff79dea3b4fd40673d7d000f7a5f177d8a6a3000b59c78383b8"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-parse",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/release-gate.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "29704db27e1ce0620fcaf34d1b2cff068c323874054c0e641fd63baf94dd153f"
+    },
+    {
+      "argv": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-list",
+        "--left-right",
+        "--count",
+        "bda0cd49e50e3181f604324e94877a24b9885334...8c22556f56b088ecae641c96cb9ab8bba6af1c05"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "8a0a1d215db012611f185e7c60b9151f97e417b91c74830e07b61eda806f30b0"
+    },
+    {
+      "argv": [
+        "git",
+        "rev-list",
+        "--left-right",
+        "--count",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05...f123ae13f67b3825c094e3bb7764c348a393b19d"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "5a577c048b670615c315c671d47bbe955d1d3c7c7e3c591542ce92ccfb34184b"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:docs/project/DECISIONS.md"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d5e548696af4e3ba789ffdcdcc3b03d354843f9079fc5fe5e88eddd801fc0d8d"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes/rpf-82/README.md"
+      ],
+      "exit": 128,
+      "stderr_sha256": "b7faa6318e52a1eb8335dbe015e43b3aa74b200d6f4898e74ac7a058127ec136",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1af02162d2b473ca4ac6bac9b199c3fece9d3dd7b4ea773e9245673b442405c2"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes/rpf-82/README.md"
+      ],
+      "exit": 128,
+      "stderr_sha256": "1e4fe22c23ab80f49a74d192738f08b49f94753be8cd7cf49fbd121213f4a4ca",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "61e160940ea9a96fcfcfc3058405649eaf5f4304998b3ede3493ccf0a5418084"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes/rpf-82/README.md"
+      ],
+      "exit": 128,
+      "stderr_sha256": "e6f4d6e14428de3ab9ebdf902db8b6962ba27a790c4f9aac4fd8a9b623617e3a",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17906ea3962ac7392f622e85dfaeb1382ca0190f8afa4d7545e2e1859571983d"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--error-unmatch",
+        "--",
+        "spikes/rpf-82/README.md"
+      ],
+      "exit": 1,
+      "stderr_sha256": "2bde9b28292b0ce665c29ad9bb54ab07b7258a4d57497021646466f5b44b24b2",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes/rpf-82/RESULT.md"
+      ],
+      "exit": 128,
+      "stderr_sha256": "c8b592f3b627ff77da731df0617663ca4aeb0c5c017c74bd44f55643e1be78d9",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1af02162d2b473ca4ac6bac9b199c3fece9d3dd7b4ea773e9245673b442405c2"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes/rpf-82/RESULT.md"
+      ],
+      "exit": 128,
+      "stderr_sha256": "d34a33a33ffcd135ac03fe9aa814c336d01e66e72ac5fb66aa429af6e1fe6212",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "61e160940ea9a96fcfcfc3058405649eaf5f4304998b3ede3493ccf0a5418084"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes/rpf-82/RESULT.md"
+      ],
+      "exit": 128,
+      "stderr_sha256": "9497ee67fd43d0413d213e112d3a40a3a4237366c02c287db4305fc36d77d456",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17906ea3962ac7392f622e85dfaeb1382ca0190f8afa4d7545e2e1859571983d"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--error-unmatch",
+        "--",
+        "spikes/rpf-82/RESULT.md"
+      ],
+      "exit": 1,
+      "stderr_sha256": "0865f761c8127cce6d1d34dc62403938296f50f9febf4b07955ac533f20f7c8b",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes/rpf-82/integration-ledger.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "9dcf2024990a6d94ce969f1add3128404e84bb6fb5efc5da10bb5120c468ab60",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1af02162d2b473ca4ac6bac9b199c3fece9d3dd7b4ea773e9245673b442405c2"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes/rpf-82/integration-ledger.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "03cbe0bf87b4a0b64853a9ff54c9dee7b17ecdd754d16baff95273e984da29fc",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "61e160940ea9a96fcfcfc3058405649eaf5f4304998b3ede3493ccf0a5418084"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes/rpf-82/integration-ledger.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "a2b65c11be259b6f677aac6f2331843426c0fea5dadc7ed33362fed4eefbbd82",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17906ea3962ac7392f622e85dfaeb1382ca0190f8afa4d7545e2e1859571983d"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--error-unmatch",
+        "--",
+        "spikes/rpf-82/integration-ledger.json"
+      ],
+      "exit": 1,
+      "stderr_sha256": "17957ef666bb92fcc1b50f020495e7d9429eb672c2000a375755dbdf70ebec99",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes/rpf-82/preflight-diagnostic.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "8a55efdaf972da169cc94a5799d0857f08816e7d8926b2bf8ac77accf55ce4df",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1af02162d2b473ca4ac6bac9b199c3fece9d3dd7b4ea773e9245673b442405c2"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes/rpf-82/preflight-diagnostic.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "8b35be94950aa99ff0b5b6795330f4a24a6365bced9723094b4cabc5e65a76e6",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "61e160940ea9a96fcfcfc3058405649eaf5f4304998b3ede3493ccf0a5418084"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes/rpf-82/preflight-diagnostic.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "d505fb48b701edeca8ff45ae983dc101f0f0c83639c6c5a4819728c879b23c15",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17906ea3962ac7392f622e85dfaeb1382ca0190f8afa4d7545e2e1859571983d"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--error-unmatch",
+        "--",
+        "spikes/rpf-82/preflight-diagnostic.json"
+      ],
+      "exit": 1,
+      "stderr_sha256": "fbd33e23e2fae690a136f1f6bf27bb30dcbaf8eb313b7bbcfbe538e640acc187",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes/rpf-82/verification-diagnostic.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "5468fcdda5f5674880ab12c2e8c6407c6cbc68fc719c2775e7a1f82ce6bb8414",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1af02162d2b473ca4ac6bac9b199c3fece9d3dd7b4ea773e9245673b442405c2"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes/rpf-82/verification-diagnostic.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "98a006006cb36732d9ab3c5504fd8f94384db4a30d5fd990b223d8444e445d82",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "61e160940ea9a96fcfcfc3058405649eaf5f4304998b3ede3493ccf0a5418084"
+    },
+    {
+      "argv": [
+        "git",
+        "cat-file",
+        "-e",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes/rpf-82/verification-diagnostic.json"
+      ],
+      "exit": 128,
+      "stderr_sha256": "85c05c259ddabfd62d68225c499278390afcebfd4ce7b1587cac70e3f44d2961",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:spikes"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "17906ea3962ac7392f622e85dfaeb1382ca0190f8afa4d7545e2e1859571983d"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--error-unmatch",
+        "--",
+        "spikes/rpf-82/verification-diagnostic.json"
+      ],
+      "exit": 1,
+      "stderr_sha256": "6676588bca8709c0ebe1de25de010e78918ff4f49f9836655a78ab19a5133223",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "check-ignore",
+        "--no-index",
+        "<RPF82_PRIVATE_ROOT>"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "d5eb2eb8e3f0193454abb86a5b6f8883f466d51c31d833216397617ee716a63d"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--raw",
+        "--no-renames",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0519a628bc9662b7fed96fdf969838bfb2a7829dd7d976cca70fd59acde40efe"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "fc2e603f75589091fc8e85346a5415ffab18035b1f0762b09cc66b58d6f12fa3"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--stage",
+        "--",
+        "runtime",
+        "spikes",
+        "ci",
+        "demo",
+        "control-plane",
+        "web",
+        ".github",
+        "AGENTS.md",
+        "docs/project"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "952d8214cee49ba169e2f970c1b0dc3b541dfddcf17ac319237172e641dfec08"
+    },
+    {
+      "argv": [
+        "git",
+        "diff-tree",
+        "--root",
+        "-r",
+        "--raw",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "528cfa92c3807120db94718e5f1ed26014436ea1d4f01f2bdc00ef376537fad0"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--raw",
+        "--no-renames",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0485ca452dcef877c2b14bdc1204a513de536c2743f7f74294dc865e95c75680"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "a8bc37ee79912862580f2bcacc35e244daf48066387c0ddf9a0aab4414feb826"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-files",
+        "--stage",
+        "--",
+        "runtime",
+        "spikes",
+        "ci",
+        "demo",
+        "control-plane",
+        "web",
+        ".github",
+        "AGENTS.md",
+        "docs/project"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "952d8214cee49ba169e2f970c1b0dc3b541dfddcf17ac319237172e641dfec08"
+    },
+    {
+      "argv": [
+        "git",
+        "diff-tree",
+        "--root",
+        "-r",
+        "--raw",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "5a6153af40f05441397d4a9adf0bfe9a24fca5a2b899200b65ae304e510c7f95"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "d5605c08af33c932f97529ae5b33228b56d8a113",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "a563043f3cf2e7eb4b9da831ef4ae37fdd2fcd2bbb8671975157442422a4843d"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "d5605c08af33c932f97529ae5b33228b56d8a113",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6fc2fe22a1b95dae3fd5c0528e35232f3a568826121b910b82185175feb2b1c7"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-status",
+        "--no-renames",
+        "d5605c08af33c932f97529ae5b33228b56d8a113",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "--",
+        ".",
+        ":(exclude)docs/reviews",
+        ":(exclude)docs/reviews/**"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4841a0b0459e586dfcfc706458b1348e4a97f003bd313a8af74fa1941697ff81"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "399af215199119539795c24a03c59347e69b3a93dc96df3ab98951dce27233dd"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/release-gate.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-27-network-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "9de143754c861af7fed1e9e80059d61fb704ccb2a6ed0677bbb9d01bb3d90e44"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-28-multi-service.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b0d44d57729b3ee429356c32af6b6088b00e0c89f0542efc9e4af8e58e9aa657"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-29-otel-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4ab95d642e819ccad03887f15771fbf593a47ca64f3c5420a02a089e07c9ae54"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-30-otel.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6b7bb0f4488b788a3e42a55b6461cc06cee2ce2975f88dc3e42add19a6f6faa3"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-31-s3-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "60a88ad9f80c5e088480c1747e230999db69ca58fce924e4e5040446898bfeab"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-32-s3-artifact-store.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7027a101b054a702786cb34c452c37ef6ba2825b715f9ba30141a75390b22d78"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-33-capacity-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1d07e01373ba5e186cc47e96bb7b591c46b770a3e2658d2b233b2acfb3d829ee"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-34-read-model.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6f23373bd8fddf5c2d4a2bfaef2cff0ec0f80fd0afe2bfcd1a5a4f4eeac30727"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-35-canonical-read-model.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0223c3be629d6cc20d4bf9c2656978a886514e5d99cebeccfdfb260fa0a135ba"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "bda0cd49e50e3181f604324e94877a24b9885334:.github/workflows/rpf-36-production-topology.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "82626282cc77b05c7f7daec5862bdab35a20cd11cf114a03eac80f886f242fd4"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "399af215199119539795c24a03c59347e69b3a93dc96df3ab98951dce27233dd"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/release-gate.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-27-network-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "9de143754c861af7fed1e9e80059d61fb704ccb2a6ed0677bbb9d01bb3d90e44"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-28-multi-service.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b0d44d57729b3ee429356c32af6b6088b00e0c89f0542efc9e4af8e58e9aa657"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-29-otel-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4ab95d642e819ccad03887f15771fbf593a47ca64f3c5420a02a089e07c9ae54"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-30-otel.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6b7bb0f4488b788a3e42a55b6461cc06cee2ce2975f88dc3e42add19a6f6faa3"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-31-s3-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "60a88ad9f80c5e088480c1747e230999db69ca58fce924e4e5040446898bfeab"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-32-s3-artifact-store.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7027a101b054a702786cb34c452c37ef6ba2825b715f9ba30141a75390b22d78"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-33-capacity-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1d07e01373ba5e186cc47e96bb7b591c46b770a3e2658d2b233b2acfb3d829ee"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-34-read-model.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6f23373bd8fddf5c2d4a2bfaef2cff0ec0f80fd0afe2bfcd1a5a4f4eeac30727"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-35-canonical-read-model.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0223c3be629d6cc20d4bf9c2656978a886514e5d99cebeccfdfb260fa0a135ba"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05:.github/workflows/rpf-36-production-topology.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "82626282cc77b05c7f7daec5862bdab35a20cd11cf114a03eac80f886f242fd4"
+    },
+    {
+      "argv": [
+        "git",
+        "ls-tree",
+        "--name-only",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "399af215199119539795c24a03c59347e69b3a93dc96df3ab98951dce27233dd"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/release-gate.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-27-network-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "9de143754c861af7fed1e9e80059d61fb704ccb2a6ed0677bbb9d01bb3d90e44"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-28-multi-service.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "b0d44d57729b3ee429356c32af6b6088b00e0c89f0542efc9e4af8e58e9aa657"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-29-otel-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "4ab95d642e819ccad03887f15771fbf593a47ca64f3c5420a02a089e07c9ae54"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-30-otel.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6b7bb0f4488b788a3e42a55b6461cc06cee2ce2975f88dc3e42add19a6f6faa3"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-31-s3-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "60a88ad9f80c5e088480c1747e230999db69ca58fce924e4e5040446898bfeab"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-32-s3-artifact-store.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "7027a101b054a702786cb34c452c37ef6ba2825b715f9ba30141a75390b22d78"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-33-capacity-spike.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "1d07e01373ba5e186cc47e96bb7b591c46b770a3e2658d2b233b2acfb3d829ee"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-34-read-model.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "6f23373bd8fddf5c2d4a2bfaef2cff0ec0f80fd0afe2bfcd1a5a4f4eeac30727"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-35-canonical-read-model.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "0223c3be629d6cc20d4bf9c2656978a886514e5d99cebeccfdfb260fa0a135ba"
+    },
+    {
+      "argv": [
+        "git",
+        "show",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d:.github/workflows/rpf-36-production-topology.yml"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "82626282cc77b05c7f7daec5862bdab35a20cd11cf114a03eac80f886f242fd4"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+        "--",
+        ".github/workflows"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "diff",
+        "--name-only",
+        "bda0cd49e50e3181f604324e94877a24b9885334",
+        "f123ae13f67b3825c094e3bb7764c348a393b19d",
+        "--",
+        ".github/workflows"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "git",
+        "--version"
+      ],
+      "exit": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stdout_sha256": "a0bef3335cdbc9a4a7733503ecdb281e91319f5a15e22026bfbef750ce76aaba"
+    }
+  ],
+  "prewrite_observed": {
+    "mono": 110095.2138789,
+    "utc": "2026-10-29T17:04:48.160764+00:00"
+  },
+  "prewrite_stdout_raw_sha256": "577ec27804005935240d2a4dac9001498806780fe0375ad15fa7499f6d80104a",
+  "private_raw_receipt": "<RPF82_PRIVATE_ROOT>/g0-prewrite-raw.json",
+  "python": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+  "reparse": false,
+  "research_head": "8c22556f56b088ecae641c96cb9ab8bba6af1c05",
+  "selected_worktree": "Existing primary tracked-clean worktree; no new worktree/branch; main unoccupied",
+  "source_refs": "f123ae13f67b3825c094e3bb7764c348a393b19d\trefs/heads/codex/rpf-79-project-source-migration\n8c22556f56b088ecae641c96cb9ab8bba6af1c05\trefs/heads/codex/rpf-81-durable-unknown-presend-loopback\nbda0cd49e50e3181f604324e94877a24b9885334\trefs/heads/main\n",
+  "task": "RPF-82/rev-1",
+  "workflow_audit": {
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/release-gate.yml": {
+      "sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee",
+      "triggers": "name: RPF-12 Canonical Release Gate\n\non:\n  push:\n    branches:\n      - main\n    paths:\n      - \".github/workflows/release-gate.yml\"\n      - \"ci/**\"\n      - \"control-plane/**\"\n      - \"runtime/**\"\n      - \"spikes/rpf-16/**\"\n      - \"spikes/rpf-17/**\"\n      - \"spikes/rpf-18/**\"\n      - \"demo/**\"\n      - \"docs/DEMO.md\"\n      - \"docs/**\"\n      - \"README.md\"\n      - \"README.zh-CN.md\"\n      - \"web/**\"\n      - \"package.json\"\n      - \"package-lock.json\"\n      - \"AGENTS.md\"\n  pull_request:\n    branches:\n      - main\n    paths:\n      - \".github/workflows/release-gate.yml\"\n      - \"ci/**\"\n      - \"control-plane/**\"\n      - \"runtime/**\"\n      - \"spikes/rpf-16/**\"\n      - \"spikes/rpf-17/**\"\n      - \"spikes/rpf-18/**\"\n      - \"demo/**\"\n      - \"docs/DEMO.md\"\n      - \"docs/**\"\n      - \"README.md\"\n      - \"README.zh-CN.md\"\n      - \"web/**\"\n      - \"package.json\"\n      - \"package-lock.json\"\n      - \"AGENTS.md\"\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf12-release-gate-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-27-network-spike.yml": {
+      "sha256": "9de143754c861af7fed1e9e80059d61fb704ccb2a6ed0677bbb9d01bb3d90e44",
+      "triggers": "name: RPF-27 Multi-service Network Fault Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf27-network-spike-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-28-multi-service.yml": {
+      "sha256": "b0d44d57729b3ee429356c32af6b6088b00e0c89f0542efc9e4af8e58e9aa657",
+      "triggers": "name: RPF-28 Formal Multi-service Environment\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf28-formal-multi-service-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-29-otel-spike.yml": {
+      "sha256": "4ab95d642e819ccad03887f15771fbf593a47ca64f3c5420a02a089e07c9ae54",
+      "triggers": "name: RPF-29 OpenTelemetry Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-30-otel.yml": {
+      "sha256": "6b7bb0f4488b788a3e42a55b6461cc06cee2ce2975f88dc3e42add19a6f6faa3",
+      "triggers": "name: RPF-30 Focused OpenTelemetry Contract\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf30-otel-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-31-s3-spike.yml": {
+      "sha256": "60a88ad9f80c5e088480c1747e230999db69ca58fce924e4e5040446898bfeab",
+      "triggers": "name: RPF-31 S3-compatible Artifact Store Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf31-s3-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-32-s3-artifact-store.yml": {
+      "sha256": "7027a101b054a702786cb34c452c37ef6ba2825b715f9ba30141a75390b22d78",
+      "triggers": "name: RPF-32 Formal S3-compatible Artifact Store\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf32-s3-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-33-capacity-spike.yml": {
+      "sha256": "1d07e01373ba5e186cc47e96bb7b591c46b770a3e2658d2b233b2acfb3d829ee",
+      "triggers": "name: RPF-33 Capacity and Large-Trace Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf33-capacity-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-34-read-model.yml": {
+      "sha256": "6f23373bd8fddf5c2d4a2bfaef2cff0ec0f80fd0afe2bfcd1a5a4f4eeac30727",
+      "triggers": "name: RPF-34 bounded execution read model\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-35-canonical-read-model.yml": {
+      "sha256": "0223c3be629d6cc20d4bf9c2656978a886514e5d99cebeccfdfb260fa0a135ba",
+      "triggers": "name: RPF-35 bounded Canonical Metadata read model\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf35-canonical-read-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "8c22556f56b088ecae641c96cb9ab8bba6af1c05/rpf-36-production-topology.yml": {
+      "sha256": "82626282cc77b05c7f7daec5862bdab35a20cd11cf114a03eac80f886f242fd4",
+      "triggers": "name: RPF-36 Production topology investigation\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf36-production-topology-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/release-gate.yml": {
+      "sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee",
+      "triggers": "name: RPF-12 Canonical Release Gate\n\non:\n  push:\n    branches:\n      - main\n    paths:\n      - \".github/workflows/release-gate.yml\"\n      - \"ci/**\"\n      - \"control-plane/**\"\n      - \"runtime/**\"\n      - \"spikes/rpf-16/**\"\n      - \"spikes/rpf-17/**\"\n      - \"spikes/rpf-18/**\"\n      - \"demo/**\"\n      - \"docs/DEMO.md\"\n      - \"docs/**\"\n      - \"README.md\"\n      - \"README.zh-CN.md\"\n      - \"web/**\"\n      - \"package.json\"\n      - \"package-lock.json\"\n      - \"AGENTS.md\"\n  pull_request:\n    branches:\n      - main\n    paths:\n      - \".github/workflows/release-gate.yml\"\n      - \"ci/**\"\n      - \"control-plane/**\"\n      - \"runtime/**\"\n      - \"spikes/rpf-16/**\"\n      - \"spikes/rpf-17/**\"\n      - \"spikes/rpf-18/**\"\n      - \"demo/**\"\n      - \"docs/DEMO.md\"\n      - \"docs/**\"\n      - \"README.md\"\n      - \"README.zh-CN.md\"\n      - \"web/**\"\n      - \"package.json\"\n      - \"package-lock.json\"\n      - \"AGENTS.md\"\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf12-release-gate-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-27-network-spike.yml": {
+      "sha256": "9de143754c861af7fed1e9e80059d61fb704ccb2a6ed0677bbb9d01bb3d90e44",
+      "triggers": "name: RPF-27 Multi-service Network Fault Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf27-network-spike-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-28-multi-service.yml": {
+      "sha256": "b0d44d57729b3ee429356c32af6b6088b00e0c89f0542efc9e4af8e58e9aa657",
+      "triggers": "name: RPF-28 Formal Multi-service Environment\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf28-formal-multi-service-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-29-otel-spike.yml": {
+      "sha256": "4ab95d642e819ccad03887f15771fbf593a47ca64f3c5420a02a089e07c9ae54",
+      "triggers": "name: RPF-29 OpenTelemetry Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-30-otel.yml": {
+      "sha256": "6b7bb0f4488b788a3e42a55b6461cc06cee2ce2975f88dc3e42add19a6f6faa3",
+      "triggers": "name: RPF-30 Focused OpenTelemetry Contract\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf30-otel-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-31-s3-spike.yml": {
+      "sha256": "60a88ad9f80c5e088480c1747e230999db69ca58fce924e4e5040446898bfeab",
+      "triggers": "name: RPF-31 S3-compatible Artifact Store Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf31-s3-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-32-s3-artifact-store.yml": {
+      "sha256": "7027a101b054a702786cb34c452c37ef6ba2825b715f9ba30141a75390b22d78",
+      "triggers": "name: RPF-32 Formal S3-compatible Artifact Store\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf32-s3-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-33-capacity-spike.yml": {
+      "sha256": "1d07e01373ba5e186cc47e96bb7b591c46b770a3e2658d2b233b2acfb3d829ee",
+      "triggers": "name: RPF-33 Capacity and Large-Trace Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf33-capacity-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-34-read-model.yml": {
+      "sha256": "6f23373bd8fddf5c2d4a2bfaef2cff0ec0f80fd0afe2bfcd1a5a4f4eeac30727",
+      "triggers": "name: RPF-34 bounded execution read model\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-35-canonical-read-model.yml": {
+      "sha256": "0223c3be629d6cc20d4bf9c2656978a886514e5d99cebeccfdfb260fa0a135ba",
+      "triggers": "name: RPF-35 bounded Canonical Metadata read model\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf35-canonical-read-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "bda0cd49e50e3181f604324e94877a24b9885334/rpf-36-production-topology.yml": {
+      "sha256": "82626282cc77b05c7f7daec5862bdab35a20cd11cf114a03eac80f886f242fd4",
+      "triggers": "name: RPF-36 Production topology investigation\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf36-production-topology-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/release-gate.yml": {
+      "sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee",
+      "triggers": "name: RPF-12 Canonical Release Gate\n\non:\n  push:\n    branches:\n      - main\n    paths:\n      - \".github/workflows/release-gate.yml\"\n      - \"ci/**\"\n      - \"control-plane/**\"\n      - \"runtime/**\"\n      - \"spikes/rpf-16/**\"\n      - \"spikes/rpf-17/**\"\n      - \"spikes/rpf-18/**\"\n      - \"demo/**\"\n      - \"docs/DEMO.md\"\n      - \"docs/**\"\n      - \"README.md\"\n      - \"README.zh-CN.md\"\n      - \"web/**\"\n      - \"package.json\"\n      - \"package-lock.json\"\n      - \"AGENTS.md\"\n  pull_request:\n    branches:\n      - main\n    paths:\n      - \".github/workflows/release-gate.yml\"\n      - \"ci/**\"\n      - \"control-plane/**\"\n      - \"runtime/**\"\n      - \"spikes/rpf-16/**\"\n      - \"spikes/rpf-17/**\"\n      - \"spikes/rpf-18/**\"\n      - \"demo/**\"\n      - \"docs/DEMO.md\"\n      - \"docs/**\"\n      - \"README.md\"\n      - \"README.zh-CN.md\"\n      - \"web/**\"\n      - \"package.json\"\n      - \"package-lock.json\"\n      - \"AGENTS.md\"\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf12-release-gate-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-27-network-spike.yml": {
+      "sha256": "9de143754c861af7fed1e9e80059d61fb704ccb2a6ed0677bbb9d01bb3d90e44",
+      "triggers": "name: RPF-27 Multi-service Network Fault Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf27-network-spike-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-28-multi-service.yml": {
+      "sha256": "b0d44d57729b3ee429356c32af6b6088b00e0c89f0542efc9e4af8e58e9aa657",
+      "triggers": "name: RPF-28 Formal Multi-service Environment\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf28-formal-multi-service-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-29-otel-spike.yml": {
+      "sha256": "4ab95d642e819ccad03887f15771fbf593a47ca64f3c5420a02a089e07c9ae54",
+      "triggers": "name: RPF-29 OpenTelemetry Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-30-otel.yml": {
+      "sha256": "6b7bb0f4488b788a3e42a55b6461cc06cee2ce2975f88dc3e42add19a6f6faa3",
+      "triggers": "name: RPF-30 Focused OpenTelemetry Contract\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf30-otel-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-31-s3-spike.yml": {
+      "sha256": "60a88ad9f80c5e088480c1747e230999db69ca58fce924e4e5040446898bfeab",
+      "triggers": "name: RPF-31 S3-compatible Artifact Store Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf31-s3-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-32-s3-artifact-store.yml": {
+      "sha256": "7027a101b054a702786cb34c452c37ef6ba2825b715f9ba30141a75390b22d78",
+      "triggers": "name: RPF-32 Formal S3-compatible Artifact Store\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf32-s3-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-33-capacity-spike.yml": {
+      "sha256": "1d07e01373ba5e186cc47e96bb7b591c46b770a3e2658d2b233b2acfb3d829ee",
+      "triggers": "name: RPF-33 Capacity and Large-Trace Spike\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf33-capacity-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-34-read-model.yml": {
+      "sha256": "6f23373bd8fddf5c2d4a2bfaef2cff0ec0f80fd0afe2bfcd1a5a4f4eeac30727",
+      "triggers": "name: RPF-34 bounded execution read model\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-35-canonical-read-model.yml": {
+      "sha256": "0223c3be629d6cc20d4bf9c2656978a886514e5d99cebeccfdfb260fa0a135ba",
+      "triggers": "name: RPF-35 bounded Canonical Metadata read model\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf35-canonical-read-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    },
+    "f123ae13f67b3825c094e3bb7764c348a393b19d/rpf-36-production-topology.yml": {
+      "sha256": "82626282cc77b05c7f7daec5862bdab35a20cd11cf114a03eac80f886f242fd4",
+      "triggers": "name: RPF-36 Production topology investigation\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: read\n\nconcurrency:\n  group: rpf36-production-topology-${{ github.workflow }}-${{ github.ref }}\n  cancel-in-progress: false\n\n"
+    }
+  }
+}

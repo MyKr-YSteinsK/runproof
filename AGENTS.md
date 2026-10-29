@@ -104,3 +104,10 @@ python spikes/rpf-35/verify-evidence.py <rpf35-result.json>
 - 功能链事实按指定 branch、完整 SHA、RESULT 与实际源码读取；带日期的当前状态及未审查/暂停边界见迁移目录 10/14，不将迁移快照当永久实时状态或阶段批准。
 - 完整 RESULT/diagnostic 随获授权安全分支的 Evidence Commit 普通 Push；最终聊天简报 Status、branch、40 位 SHA、报告和关键异常，Architect 直接读取 GitHub 审查。报告封存与最终 Git 收据分开，不为回填自身 SHA 循环 amend。
 - 已授权范围内常规调查、局部调试、重复聚焦验证自主完成；本段不放宽任何既有 secret、docs/reviews、WAL/UNKNOWN、用户文件、历史证据、Release Authority 或合并/部署保护。
+
+## 8. Main-first collaboration / exception isolation
+
+- 常规研发默认在经过 G0 有界核验的现有 `main` 单工作树直接实施、验证、commit 和普通 push；不再按 RPF 编号默认新建分支/worktree。
+- 每次操作前核验实际根目录、HEAD/upstream、tracked 改动、允许路径与 push/CI 副作用，保留用户文件；main-first 不取消测试、UNKNOWN、历史证据及 Release Authority 保护。
+- 独立生产授权、真实费用/副作用、多方并发冲突、污染风险或明确需隔离的实验，才另行提出分支/worktree；既有工作树和分支不因新默认而清理。
+- RPF-74/rev-4 PAUSED/DEFERRED、RPF-81/rev-1 PARTIAL、rev-2 BLOCKED 的恢复/补证路线已延后，历史源码进入 main 不授权自动启动。旧 feature-branch/迁移文档为当时快照，当前交付事实以 CURRENT_STATE 为准。
