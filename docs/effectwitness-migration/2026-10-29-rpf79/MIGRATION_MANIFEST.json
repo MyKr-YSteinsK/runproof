@@ -1,0 +1,256 @@
+{
+  "version": "MIGRATION-2026-10-29-RPF79-rev1",
+  "created_utc": "2026-10-29T10:15:51.248003+00:00",
+  "tool": "Python stdlib hashlib/json/zipfile; no installs",
+  "documentation_source_commit": "ce57a1009447927ad5fe0f319973f2491b5ed0c5",
+  "input_files": [
+    {
+      "name": "00-START_HERE.md",
+      "bytes": 9719,
+      "sha256": "8bac6fb222ca902c569f0cf612731b9161bef81fac513dcea4df564f34597eec",
+      "mtime_utc": "2026-10-21T19:58:00+00:00"
+    },
+    {
+      "name": "01-PROJECT_BRIEF.md",
+      "bytes": 6888,
+      "sha256": "dbb0b0b04878caae2c96cb6ef0d0c50b4c35934a079ed9919f6c7f1666279ae0",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "02-REQUIREMENTS.md",
+      "bytes": 8795,
+      "sha256": "ef55049da945d22c515ad239665e846fdf3b0877346c294aa2e11d93465f4fd7",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "03-DECISIONS.md",
+      "bytes": 6293,
+      "sha256": "095fe215d859ea6490b3e4ff81a704dbd2334c88b96814b3c5555243465c80c9",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "04-TECHNICAL_CONTEXT.md",
+      "bytes": 11600,
+      "sha256": "5cb9781c0c69eb5033926b413f9cb0ae7b721993ad1df140862a3ff18472740a",
+      "mtime_utc": "2026-10-21T20:01:56+00:00"
+    },
+    {
+      "name": "05-EXPERIMENT_PROTOCOL.md",
+      "bytes": 8937,
+      "sha256": "bc693f62477ef66c28cf02ddb35f2b56aff966ed193c946f031f4d22a44e03e8",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "05-UX_BASELINE.md",
+      "bytes": 6933,
+      "sha256": "f889f489092512310c63fc5d72c0516d3251f31d48a3bf7a815da04ec1b676b7",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "06-PROJECT_INSTRUCTIONS.md",
+      "bytes": 8786,
+      "sha256": "491d48f49f8c0f07a03e8626efcef0198f17945b67805878907a137b13e82255",
+      "mtime_utc": "2026-10-21T19:58:00+00:00"
+    },
+    {
+      "name": "07-CODEX_PLAN_SPEC.md",
+      "bytes": 12574,
+      "sha256": "a05e94e074a254d2b545db1c2014fbffe56da76f36c9439b246a8e57f7f5150b",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "08-ENGINEERING_GOVERNANCE.md",
+      "bytes": 10001,
+      "sha256": "c759361dc95dd247a4b1e9eefb7356f2971b068dd7637115203705ea5d08d76d",
+      "mtime_utc": "2026-10-21T19:53:54+00:00"
+    },
+    {
+      "name": "09-COMPETITION_DELIVERY.md",
+      "bytes": 7193,
+      "sha256": "13454221e2dad779afb74536554be5ab0e98bba34fd369852ded97be4fdf3e2b",
+      "mtime_utc": "2026-10-21T19:58:00+00:00"
+    },
+    {
+      "name": "10-CURRENT_STATE_AND_EVIDENCE.md",
+      "bytes": 12958,
+      "sha256": "01e1aa2612bababfa9678687709f3f932fe0c1b8e15740205afbe6be50be92af",
+      "mtime_utc": "2026-10-21T20:01:56+00:00"
+    },
+    {
+      "name": "11-RPF65_ROADMAP_AND_DECISION_GATE.md",
+      "bytes": 10460,
+      "sha256": "6cd923da5749b0e1fb3e5d29244649d5c432d5254d63fd85a5d684bbdf7652ed",
+      "mtime_utc": "2026-10-21T20:07:54+00:00"
+    },
+    {
+      "name": "12-MIGRATION_HANDOFF.md",
+      "bytes": 5268,
+      "sha256": "35d51298d82f8bdfd0846d5e8ee5543b686cf5cb896a2ded5b7cf2fe40c08267",
+      "mtime_utc": "2026-10-21T20:07:54+00:00"
+    },
+    {
+      "name": "13-PERSONALIZED_WORKFLOW.md",
+      "bytes": 6675,
+      "sha256": "57715c9336ec02af6f93871a214bd6fbe4407b4894c07b56ce84888705f4482f",
+      "mtime_utc": "2026-10-21T20:07:54+00:00"
+    },
+    {
+      "name": "14-SOURCE_AND_RISK_LEDGER.md",
+      "bytes": 9418,
+      "sha256": "71a15a1b732c83c014f5788b6c42c192efd7d0607debaff3f1209ad259862e98",
+      "mtime_utc": "2026-10-21T20:07:54+00:00"
+    }
+  ],
+  "project_sources": [
+    {
+      "name": "00-START_HERE.md",
+      "archive_path": "ProjectSources/00-START_HERE.md",
+      "bytes": 4889,
+      "sha256": "7339c4cf2cbf275fd2311978fff214e32dad4dc855a1cee7b78dee2ab38e5993",
+      "git_blob": "a4c3e93c5ceb87792100414fcdf4a0b8bc573d0b"
+    },
+    {
+      "name": "01-PROJECT_BRIEF.md",
+      "archive_path": "ProjectSources/01-PROJECT_BRIEF.md",
+      "bytes": 7929,
+      "sha256": "74a82ec5a9d6b1f17cb7e629d43eb87d6f274c21e49e389891481a78befc4421",
+      "git_blob": "4ae514f97b6e56524ad84203082de83b9e4f9aab"
+    },
+    {
+      "name": "02-REQUIREMENTS.md",
+      "archive_path": "ProjectSources/02-REQUIREMENTS.md",
+      "bytes": 9836,
+      "sha256": "95075a04ea0a7003d40cddf5e7b48c440a9eee36eca3c7ace6561cde5eac16bf",
+      "git_blob": "3ccd31fa74d3fd17fc19161dcaa5d0f2953ea0de"
+    },
+    {
+      "name": "03-DECISIONS.md",
+      "archive_path": "ProjectSources/03-DECISIONS.md",
+      "bytes": 7334,
+      "sha256": "efc1deb31aceef8500f451170fbae38421d881da87aae8f5e91e194227c78aa7",
+      "git_blob": "5d26d40b96abfdaac9126bcb60e3842ae390afb0"
+    },
+    {
+      "name": "04-TECHNICAL_CONTEXT.md",
+      "archive_path": "ProjectSources/04-TECHNICAL_CONTEXT.md",
+      "bytes": 5786,
+      "sha256": "c075b8d4163c141fbafa2ccf2f5ba0494d8f40d13e35cb7263da01eb07bfdf31",
+      "git_blob": "30e59b4fd287990613cb05cc5825c047a4299b97"
+    },
+    {
+      "name": "05-EXPERIMENT_PROTOCOL.md",
+      "archive_path": "ProjectSources/05-EXPERIMENT_PROTOCOL.md",
+      "bytes": 10499,
+      "sha256": "3aed901768581afb4617191c0b4a4065df091616017327b0c303dd79d46bd4f3",
+      "git_blob": "442cc6cabf8f1930047c16f484ea9e5a7facade1"
+    },
+    {
+      "name": "05-UX_BASELINE.md",
+      "archive_path": "ProjectSources/05-UX_BASELINE.md",
+      "bytes": 8410,
+      "sha256": "9102ea7da31dbfe8c2f695eafe557fb64538e436f65df4ca1e9428b043ddb953",
+      "git_blob": "aec8034ce57450c459c47a340db3eb4d2c6e692b"
+    },
+    {
+      "name": "06-PROJECT_INSTRUCTIONS.md",
+      "archive_path": "ProjectSources/06-PROJECT_INSTRUCTIONS.md",
+      "bytes": 9247,
+      "sha256": "546b400cc5f2fc3ed6dbd0863303c28f5ad5f6f85cc585d425795f88b7b55cf8",
+      "git_blob": "3518cdf76e69023c6b15491b4e26c73e6be249cb"
+    },
+    {
+      "name": "07-CODEX_PLAN_SPEC.md",
+      "archive_path": "ProjectSources/07-CODEX_PLAN_SPEC.md",
+      "bytes": 16638,
+      "sha256": "3fcfbdd8832a37fe38206b90d63ed5b543b84ee939e66b11838d40ac858ec9b0",
+      "git_blob": "4393241651ae443cdf67f97261a5833d62797688"
+    },
+    {
+      "name": "08-ENGINEERING_GOVERNANCE.md",
+      "archive_path": "ProjectSources/08-ENGINEERING_GOVERNANCE.md",
+      "bytes": 13957,
+      "sha256": "172f4f07bd30b8be25719497653a8167fdd09fee9c33b064895e31e48ec55d5c",
+      "git_blob": "8042467f8fcffaff6f579a89c5d71df3c389340c"
+    },
+    {
+      "name": "09-COMPETITION_DELIVERY.md",
+      "archive_path": "ProjectSources/09-COMPETITION_DELIVERY.md",
+      "bytes": 8760,
+      "sha256": "fcfe89c270a08c765dc7c6b5ecfd18cb9c32665286df1310e58272f54b873820",
+      "git_blob": "857c00660547afb6b41028b4224ba559097fa9bb"
+    },
+    {
+      "name": "10-CURRENT_STATE_AND_EVIDENCE.md",
+      "archive_path": "ProjectSources/10-CURRENT_STATE_AND_EVIDENCE.md",
+      "bytes": 14118,
+      "sha256": "9d6ec71b2d6da1bb4e05ef3c2789636ec2645e913f1e391100dfee0fab0fa196",
+      "git_blob": "b14cfadad40001f3c940236e2f075b921090ee73"
+    },
+    {
+      "name": "11-RPF65_ROADMAP_AND_DECISION_GATE.md",
+      "archive_path": "ProjectSources/11-RPF65_ROADMAP_AND_DECISION_GATE.md",
+      "bytes": 8030,
+      "sha256": "8d91aa4feef774aac50751d41da03eb45f5ad6959ed02c03b14db0b1539c8066",
+      "git_blob": "b16ea12f9af3a9b2dcfc8182af00096f2c978134"
+    },
+    {
+      "name": "12-MIGRATION_HANDOFF.md",
+      "archive_path": "ProjectSources/12-MIGRATION_HANDOFF.md",
+      "bytes": 2416,
+      "sha256": "3459f5571689974258504255e83522efe46aaa172a1311a792141a7df74d2f4c",
+      "git_blob": "65ad5c7493c81d396df9bbd5998a09c66470f784"
+    },
+    {
+      "name": "13-PERSONALIZED_WORKFLOW.md",
+      "archive_path": "ProjectSources/13-PERSONALIZED_WORKFLOW.md",
+      "bytes": 3879,
+      "sha256": "3ab65327dbf697cd40836db259e7d28e224b7c7a35db86fad8e00e64ec995d6f",
+      "git_blob": "b63ce0027ca88f713b040d8f72acf45c5ac10275"
+    },
+    {
+      "name": "14-SOURCE_AND_RISK_LEDGER.md",
+      "archive_path": "ProjectSources/14-SOURCE_AND_RISK_LEDGER.md",
+      "bytes": 11956,
+      "sha256": "4e4ef5acaa463c4e1adcaae8f9bcd7ef024d2a23604ccddf0452fefa28019cdd",
+      "git_blob": "5ceca85a5ade21d62413093b3ca933b063aaa21d"
+    },
+    {
+      "name": "15-START_NEW_CHAT.md",
+      "archive_path": "ProjectSources/15-START_NEW_CHAT.md",
+      "bytes": 2514,
+      "sha256": "7110109d01e05dd00c27d0e0641e85be24a74fddb922a33f0fb8628ebcd974aa",
+      "git_blob": "a77cbfc00e1b95c273c50a5138fdef8ac8fe8051"
+    }
+  ],
+  "count": 17,
+  "zip_contents": [
+    "ProjectSources/00-START_HERE.md",
+    "ProjectSources/01-PROJECT_BRIEF.md",
+    "ProjectSources/02-REQUIREMENTS.md",
+    "ProjectSources/03-DECISIONS.md",
+    "ProjectSources/04-TECHNICAL_CONTEXT.md",
+    "ProjectSources/05-EXPERIMENT_PROTOCOL.md",
+    "ProjectSources/05-UX_BASELINE.md",
+    "ProjectSources/06-PROJECT_INSTRUCTIONS.md",
+    "ProjectSources/07-CODEX_PLAN_SPEC.md",
+    "ProjectSources/08-ENGINEERING_GOVERNANCE.md",
+    "ProjectSources/09-COMPETITION_DELIVERY.md",
+    "ProjectSources/10-CURRENT_STATE_AND_EVIDENCE.md",
+    "ProjectSources/11-RPF65_ROADMAP_AND_DECISION_GATE.md",
+    "ProjectSources/12-MIGRATION_HANDOFF.md",
+    "ProjectSources/13-PERSONALIZED_WORKFLOW.md",
+    "ProjectSources/14-SOURCE_AND_RISK_LEDGER.md",
+    "ProjectSources/15-START_NEW_CHAT.md",
+    "MIGRATION_README.md",
+    "MIGRATION_MANIFEST.json",
+    "SOURCE_EVIDENCE_INDEX.json",
+    "Private/PRIVATE-PERSONAL-PREFERENCES.md",
+    "ZIP_CONTENTS.json"
+  ],
+  "hash_scope": "Only17 immutable ProjectSources. Manifest has no own/ZIP hash. ZIP_CONTENTS hashes other payloads except itself; zip-receipt outside archive hashes ZIP.",
+  "privacy": "Private notes are only in ignored local ZIP; not public Git",
+  "original_input_root": "<ORIGINAL_WORKTREE>/docs/migration-input",
+  "project_upload": "NOT_RUN",
+  "instructions_install": "NOT_RUN",
+  "contest_submission": "NOT_RUN"
+}
