@@ -1,0 +1,306 @@
+{
+  "owner": "rpf-78-rev-1",
+  "base": "240dbae75cc70f142c7c37a2a3994085063d7ccc",
+  "branch": "codex/rpf-78-offline-forecast-calibration-abstention",
+  "source_commit": "5a96a11c70976d6617a9a6ad05ff823dac7e309d",
+  "source_sha256": "366617fdb3c1a33a53cd3909ecd65bc7f85747e1ba7c47d6fbada4db6b56fe74",
+  "source_map": {
+    "abi": "rpf78-offline-forecast-v1",
+    "files": [
+      {
+        "bytes": 10350,
+        "git_blob": "fd564d2d68247bd0d48db8642bfbc8ad9c2813df",
+        "lf_sha256": "0fa258728ad13d5c0e423c7345762a4274dc71c3eb0f190e38cfd8b0acd42328",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_contracts.py",
+        "raw_sha256": "0fa258728ad13d5c0e423c7345762a4274dc71c3eb0f190e38cfd8b0acd42328"
+      },
+      {
+        "bytes": 2661,
+        "git_blob": "058e41b1ba5395ee02b40360aa90a46f9f5caca1",
+        "lf_sha256": "60fca72593183775ddf2016791d5cf0cc8c98b616eec16ea9a00a144a72230f6",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_provenance.py",
+        "raw_sha256": "60fca72593183775ddf2016791d5cf0cc8c98b616eec16ea9a00a144a72230f6"
+      },
+      {
+        "bytes": 1174,
+        "git_blob": "be29e199b5c3caffb2e4d93ac861cf3d5219ef8d",
+        "lf_sha256": "5fdd87b61254ac9b7f9a01af96ba3663934e0a0124351df7d6fc3d26b3a53e07",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_forecast.py",
+        "raw_sha256": "5fdd87b61254ac9b7f9a01af96ba3663934e0a0124351df7d6fc3d26b3a53e07"
+      },
+      {
+        "bytes": 1921,
+        "git_blob": "a8b0f32598091cd520b76c4dcaf628618d7a4057",
+        "lf_sha256": "91085f53a577bfb417a336c0eca9397ab059df59939048de2f7e31b9a5ccad9c",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_calibration.py",
+        "raw_sha256": "91085f53a577bfb417a336c0eca9397ab059df59939048de2f7e31b9a5ccad9c"
+      },
+      {
+        "bytes": 2534,
+        "git_blob": "8af7e7200519633b50ff78814bdc5b434ae71ac4",
+        "lf_sha256": "05c9bd96081f49dbdc9edf37e356e670b8fd9bb14bea87efd05cdf25ff83ba08",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_policy.py",
+        "raw_sha256": "05c9bd96081f49dbdc9edf37e356e670b8fd9bb14bea87efd05cdf25ff83ba08"
+      },
+      {
+        "bytes": 864,
+        "git_blob": "0cd34d1b3b5c798d6a5297831ef9360252ed0cd3",
+        "lf_sha256": "f643c371752c2240126597b518bb7104745c311af37dd85c84750e78ba9481a3",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_oracle.py",
+        "raw_sha256": "f643c371752c2240126597b518bb7104745c311af37dd85c84750e78ba9481a3"
+      },
+      {
+        "bytes": 1032,
+        "git_blob": "2aa7b5932790597d8416c877635cb47ce0b87544",
+        "lf_sha256": "cca060fbafc6d4e2a0fd70388e86d8a2a1afb5f7dbb8d907c9d7c877cb73e3a6",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_baselines.py",
+        "raw_sha256": "cca060fbafc6d4e2a0fd70388e86d8a2a1afb5f7dbb8d907c9d7c877cb73e3a6"
+      },
+      {
+        "bytes": 4628,
+        "git_blob": "3afbb9fe6363c109ba242c703b6fb4aef81967c9",
+        "lf_sha256": "138708573aa9a2f58824858b2cc31712fc4ee7cd4b2ff5fa2ddc61d422cfc35f",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_replay.py",
+        "raw_sha256": "138708573aa9a2f58824858b2cc31712fc4ee7cd4b2ff5fa2ddc61d422cfc35f"
+      },
+      {
+        "bytes": 5892,
+        "git_blob": "5e2c0e4def4f20339e97c7b1ce70bff7ef2fcf69",
+        "lf_sha256": "e60a4cbf3d0e307d7436d96c590b3b9fe5ee99093099b6367994a9b025b42a3e",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_metrics.py",
+        "raw_sha256": "e60a4cbf3d0e307d7436d96c590b3b9fe5ee99093099b6367994a9b025b42a3e"
+      },
+      {
+        "bytes": 20431,
+        "git_blob": "26b59938eb26d26b41dc57dcfcc5e4b6f7990cef",
+        "lf_sha256": "17cf5d2e8296476503d90f8283450746bccb2195acd2473418ae51c39158c5f9",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_verify.py",
+        "raw_sha256": "17cf5d2e8296476503d90f8283450746bccb2195acd2473418ae51c39158c5f9"
+      },
+      {
+        "bytes": 12259,
+        "git_blob": "363621db0bb76896fce707b6c92ab08f27a8cf06",
+        "lf_sha256": "07248a969b6e6f64a57b5aea89930c66aff0287ff4b8e56d59528355125f6209",
+        "path": "runtime/tests/test_effectwitness_pge_r78.py",
+        "raw_sha256": "07248a969b6e6f64a57b5aea89930c66aff0287ff4b8e56d59528355125f6209"
+      },
+      {
+        "bytes": 12549,
+        "git_blob": "b260ea478d519b67177e9934e43bfd3b62c61c82",
+        "lf_sha256": "e6c05119e336a5229a2b51703ec1d25b976ca9102fb897c763f90d2fcd22b2b3",
+        "path": "spikes/rpf-78/probe.py",
+        "raw_sha256": "e6c05119e336a5229a2b51703ec1d25b976ca9102fb897c763f90d2fcd22b2b3"
+      },
+      {
+        "bytes": 89632,
+        "git_blob": "fd2951e569c43d747d6b885743b55a59f7435061",
+        "lf_sha256": "40a9167886248463aa97fbfa9cf181037f948d5d10f1e76827ef878c3a5b21c9",
+        "path": "spikes/rpf-78/development-catalog.json",
+        "raw_sha256": "40a9167886248463aa97fbfa9cf181037f948d5d10f1e76827ef878c3a5b21c9"
+      },
+      {
+        "bytes": 65969,
+        "git_blob": "2010e8cb05143b92f878de6ddb32abdd5670cdd2",
+        "lf_sha256": "2ab7d497c3adc009a10173af02b0b583a9d26aaddec17bf73adf03e8f44fc43b",
+        "path": "spikes/rpf-78/challenge-catalog.json",
+        "raw_sha256": "2ab7d497c3adc009a10173af02b0b583a9d26aaddec17bf73adf03e8f44fc43b"
+      },
+      {
+        "bytes": 9519,
+        "git_blob": "9ae3de5284d18be23ce320bf74df1207d7da77ff",
+        "lf_sha256": "849182b1d2fda586d674c29c7d85f0deddfb1eea9b362b21eb535c4a9346492e",
+        "path": "AGENTS.md",
+        "raw_sha256": "7d1a91d73e213dfc4f60c1de9b7446db2d418ecd6aca06167ec6917be4ef50ca"
+      },
+      {
+        "bytes": 989,
+        "git_blob": "514c8556e463c4855812b01c110f9d9d0de0ba83",
+        "lf_sha256": "42ad8458b3037ee23d4ffa9ea4785eec77e098f7f18f9f02a6197cbb480a6f3c",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r77_utility.py",
+        "raw_sha256": "33cf7fb0f85496ac0255a3edb276beb6ef4823ca157329d75deee280ccce49ae"
+      },
+      {
+        "bytes": 2224,
+        "git_blob": "a045ffd5ae5bc7d22e7827f3ad094dd4e793af90",
+        "lf_sha256": "30949e8e83abbec1a81e4333e01674a91aa020a838f53f80a79add35e05f04f0",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r77_policy.py",
+        "raw_sha256": "df5fecbcb41b394735b83e3735d0b43e608865a39336d3fa2786403c3b4742d5"
+      },
+      {
+        "bytes": 3046,
+        "git_blob": "c923600cbc56b566bf229f2df1f0f4dd90c249b0",
+        "lf_sha256": "329a7ba1c932a2314bfb6616ff06a4a097e9eb0647b29224a11cace7abd9a93e",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r77_projection.py",
+        "raw_sha256": "b2a11f35f90b4687fe4a1dbd77bf57b5507f7f8af583cb8bd209deddf6e6ebec"
+      },
+      {
+        "bytes": 1237,
+        "git_blob": "cb94dc772c8fb6512ba32575e82b7dee6064cff6",
+        "lf_sha256": "5c02f5f6fb970becf264497f6843fa45ffebd2904aa422c17a345b71c54d9202",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r77_oracle.py",
+        "raw_sha256": "2d83657e032f3f9b98323cd3aa7bb983f879dd3fb202f12bb264ec9de67bd37b"
+      },
+      {
+        "bytes": 201970,
+        "git_blob": "98edacb0e5727e14819861ec9259a3d19f738578",
+        "lf_sha256": "9dcef05890802af8139a62f8cb71bd8f28ff4519a623aacef058c60f1c2226f7",
+        "path": "spikes/rpf-77/counterexamples.json",
+        "raw_sha256": "249c2fa0fb5139d2477505283a3777c98ba9f733a81a31b4cb6cbdef95a42e0a"
+      }
+    ],
+    "owner": "rpf-78-rev-1"
+  },
+  "model_raw_sha256": "7e7afe079c57ed7a0c281b929fbc98f3d8ee188d8a9c324c01d80d2aca67af47",
+  "model_export_exact": true,
+  "format_check": {
+    "coverage": "explicit staged new paths + cached diff --check + compile/strict JSON + per-file whitespace check",
+    "covered": 14,
+    "paths": [
+      {
+        "lf_sha256": "cca060fbafc6d4e2a0fd70388e86d8a2a1afb5f7dbb8d907c9d7c877cb73e3a6",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_baselines.py",
+        "raw_sha256": "cca060fbafc6d4e2a0fd70388e86d8a2a1afb5f7dbb8d907c9d7c877cb73e3a6",
+        "staged_git_blob": "2aa7b5932790597d8416c877635cb47ce0b87544",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "91085f53a577bfb417a336c0eca9397ab059df59939048de2f7e31b9a5ccad9c",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_calibration.py",
+        "raw_sha256": "91085f53a577bfb417a336c0eca9397ab059df59939048de2f7e31b9a5ccad9c",
+        "staged_git_blob": "a8b0f32598091cd520b76c4dcaf628618d7a4057",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "0fa258728ad13d5c0e423c7345762a4274dc71c3eb0f190e38cfd8b0acd42328",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_contracts.py",
+        "raw_sha256": "0fa258728ad13d5c0e423c7345762a4274dc71c3eb0f190e38cfd8b0acd42328",
+        "staged_git_blob": "fd564d2d68247bd0d48db8642bfbc8ad9c2813df",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "5fdd87b61254ac9b7f9a01af96ba3663934e0a0124351df7d6fc3d26b3a53e07",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_forecast.py",
+        "raw_sha256": "5fdd87b61254ac9b7f9a01af96ba3663934e0a0124351df7d6fc3d26b3a53e07",
+        "staged_git_blob": "be29e199b5c3caffb2e4d93ac861cf3d5219ef8d",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "e60a4cbf3d0e307d7436d96c590b3b9fe5ee99093099b6367994a9b025b42a3e",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_metrics.py",
+        "raw_sha256": "e60a4cbf3d0e307d7436d96c590b3b9fe5ee99093099b6367994a9b025b42a3e",
+        "staged_git_blob": "5e2c0e4def4f20339e97c7b1ce70bff7ef2fcf69",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "f643c371752c2240126597b518bb7104745c311af37dd85c84750e78ba9481a3",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_oracle.py",
+        "raw_sha256": "f643c371752c2240126597b518bb7104745c311af37dd85c84750e78ba9481a3",
+        "staged_git_blob": "0cd34d1b3b5c798d6a5297831ef9360252ed0cd3",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "05c9bd96081f49dbdc9edf37e356e670b8fd9bb14bea87efd05cdf25ff83ba08",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_policy.py",
+        "raw_sha256": "05c9bd96081f49dbdc9edf37e356e670b8fd9bb14bea87efd05cdf25ff83ba08",
+        "staged_git_blob": "8af7e7200519633b50ff78814bdc5b434ae71ac4",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "60fca72593183775ddf2016791d5cf0cc8c98b616eec16ea9a00a144a72230f6",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_provenance.py",
+        "raw_sha256": "60fca72593183775ddf2016791d5cf0cc8c98b616eec16ea9a00a144a72230f6",
+        "staged_git_blob": "058e41b1ba5395ee02b40360aa90a46f9f5caca1",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "138708573aa9a2f58824858b2cc31712fc4ee7cd4b2ff5fa2ddc61d422cfc35f",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_replay.py",
+        "raw_sha256": "138708573aa9a2f58824858b2cc31712fc4ee7cd4b2ff5fa2ddc61d422cfc35f",
+        "staged_git_blob": "3afbb9fe6363c109ba242c703b6fb4aef81967c9",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "17cf5d2e8296476503d90f8283450746bccb2195acd2473418ae51c39158c5f9",
+        "path": "runtime/runproof_runtime/effectwitness/pge_r78_verify.py",
+        "raw_sha256": "17cf5d2e8296476503d90f8283450746bccb2195acd2473418ae51c39158c5f9",
+        "staged_git_blob": "26b59938eb26d26b41dc57dcfcc5e4b6f7990cef",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "07248a969b6e6f64a57b5aea89930c66aff0287ff4b8e56d59528355125f6209",
+        "path": "runtime/tests/test_effectwitness_pge_r78.py",
+        "raw_sha256": "07248a969b6e6f64a57b5aea89930c66aff0287ff4b8e56d59528355125f6209",
+        "staged_git_blob": "363621db0bb76896fce707b6c92ab08f27a8cf06",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "2ab7d497c3adc009a10173af02b0b583a9d26aaddec17bf73adf03e8f44fc43b",
+        "path": "spikes/rpf-78/challenge-catalog.json",
+        "raw_sha256": "2ab7d497c3adc009a10173af02b0b583a9d26aaddec17bf73adf03e8f44fc43b",
+        "staged_git_blob": "2010e8cb05143b92f878de6ddb32abdd5670cdd2",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "40a9167886248463aa97fbfa9cf181037f948d5d10f1e76827ef878c3a5b21c9",
+        "path": "spikes/rpf-78/development-catalog.json",
+        "raw_sha256": "40a9167886248463aa97fbfa9cf181037f948d5d10f1e76827ef878c3a5b21c9",
+        "staged_git_blob": "fd2951e569c43d747d6b885743b55a59f7435061",
+        "status": "PASS"
+      },
+      {
+        "lf_sha256": "e6c05119e336a5229a2b51703ec1d25b976ca9102fb897c763f90d2fcd22b2b3",
+        "path": "spikes/rpf-78/probe.py",
+        "raw_sha256": "e6c05119e336a5229a2b51703ec1d25b976ca9102fb897c763f90d2fcd22b2b3",
+        "staged_git_blob": "b260ea478d519b67177e9934e43bfd3b62c61c82",
+        "status": "PASS"
+      }
+    ],
+    "status": "PASS",
+    "utc": "2026-10-29T07:52:06.955034+00:00"
+  },
+  "source_git_readback": {
+    "status": "PASS",
+    "method": "ls-remote + fetch/FETCH_HEAD + all20 Git blobs",
+    "expected": "5a96a11c70976d6617a9a6ad05ff823dac7e309d"
+  },
+  "source_api_readback": {
+    "status": "PASS",
+    "path": "runtime/runproof_runtime/effectwitness/pge_r78_contracts.py",
+    "sha": "fd564d2d68247bd0d48db8642bfbc8ad9c2813df",
+    "decoded_lf_sha256": "0fa258728ad13d5c0e423c7345762a4274dc71c3eb0f190e38cfd8b0acd42328",
+    "url": "https://github.com/MyKr-YSteinsK/runproof/blob/5a96a11c70976d6617a9a6ad05ff823dac7e309d/runtime/runproof_runtime/effectwitness/pge_r78_contracts.py"
+  },
+  "raw_vs_git": "Raw Windows checkout hashes and LF/Git blobs separately pinned. Cross-platform raw-source portability NOT_ESTABLISHED.",
+  "events": {
+    "source-freeze": {
+      "utc_start": "2026-10-29T07:52:07.113459+00:00",
+      "utc_end": "2026-10-29T07:52:07.269942+00:00",
+      "monotonic_start": 76932.8947278,
+      "monotonic_end": 76933.0512255
+    },
+    "fit-export": {
+      "utc_start": "2026-10-29T07:52:07.457044+00:00",
+      "utc_end": "2026-10-29T07:52:07.634856+00:00",
+      "monotonic_start": 76933.2383136,
+      "monotonic_end": 76933.4161402
+    },
+    "main-1": {
+      "utc_start": "2026-10-29T07:52:40.286663+00:00",
+      "utc_end": "2026-10-29T07:52:40.633034+00:00",
+      "monotonic_start": 76966.0679327,
+      "monotonic_end": 76966.4143237
+    },
+    "main-2": {
+      "utc_start": "2026-10-29T07:52:41.280027+00:00",
+      "utc_end": "2026-10-29T07:52:41.582206+00:00",
+      "monotonic_start": 76967.0612965,
+      "monotonic_end": 76967.3634891
+    },
+    "stress": {
+      "utc_start": "2026-10-29T07:52:42.199626+00:00",
+      "utc_end": "2026-10-29T07:52:42.876662+00:00",
+      "monotonic_start": 76967.980895,
+      "monotonic_end": 76968.657955
+    }
+  }
+}

@@ -1,0 +1,5336 @@
+{
+  "owner": "rpf-78-rev-1",
+  "status": "ACTUAL_FROZEN_REPLAY",
+  "historical_readonly_index": {
+    "entries": [
+      {
+        "case_id": "dev-09",
+        "original_action": "SELECT",
+        "original_missed": 0,
+        "original_over": 1,
+        "original_reason": "MAX_VISIBLE_UTILITY",
+        "split": "development"
+      },
+      {
+        "case_id": "dev-10",
+        "original_action": "STOP",
+        "original_missed": 1,
+        "original_over": 0,
+        "original_reason": "NONPOSITIVE_VISIBLE_UTILITY",
+        "split": "development"
+      },
+      {
+        "case_id": "challenge-09",
+        "original_action": "SELECT",
+        "original_missed": 0,
+        "original_over": 1,
+        "original_reason": "MAX_VISIBLE_UTILITY",
+        "split": "challenge"
+      },
+      {
+        "case_id": "challenge-10",
+        "original_action": "STOP",
+        "original_missed": 1,
+        "original_over": 0,
+        "original_reason": "NONPOSITIVE_VISIBLE_UTILITY",
+        "split": "challenge"
+      },
+      {
+        "case_id": "diag-dev-01",
+        "original_action": "INCONCLUSIVE",
+        "original_missed": 1,
+        "original_over": 0,
+        "original_reason": "UTILITY_FEATURES_UNKNOWN",
+        "split": "diagnostic76"
+      },
+      {
+        "case_id": "diag-dev-13",
+        "original_action": "INCONCLUSIVE",
+        "original_missed": 1,
+        "original_over": 0,
+        "original_reason": "UTILITY_FEATURES_UNKNOWN",
+        "split": "diagnostic76"
+      },
+      {
+        "case_id": "diag-hold-01",
+        "original_action": "INCONCLUSIVE",
+        "original_missed": 1,
+        "original_over": 0,
+        "original_reason": "UTILITY_FEATURES_UNKNOWN",
+        "split": "diagnostic76"
+      }
+    ],
+    "new_model_not_applied": true,
+    "reference": "spikes/rpf-77/counterexamples.json",
+    "reference_commit": "240dbae75cc70f142c7c37a2a3994085063d7ccc",
+    "used_as_new_challenge": false,
+    "used_for_fit": false
+  },
+  "historical_index_timing": "Public reference hashed in source freeze; semantic index exported after evaluation. Never fitted, replayed with the new model, or counted as new challenge.",
+  "examples": [
+    {
+      "category": "HIGH_OVERSELECT",
+      "case_id": "challenge-00",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-00-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-00-initial",
+                  "raw_sha256": "897dc7dacebb5af19d3fb46d8f6b2783c8c0a3ea992f0d04a1c79277f90a3ce0"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-amber-challenge-00-c0",
+                "lower": 0.551001746879,
+                "lower_net": 2.408013975032,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 3.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.040063721656
+              }
+            ],
+            "reason": "POSITIVE_LOWER_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-00-c0"
+            ],
+            "net_units": {
+              "lab-amber-challenge-00-c0": -2
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-00-c0",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-00-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-00-initial",
+                  "raw_sha256": "897dc7dacebb5af19d3fb46d8f6b2783c8c0a3ea992f0d04a1c79277f90a3ce0"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-amber-challenge-00-c0",
+                "lower": 0.551001746879,
+                "lower_net": 2.408013975032,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 3.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.040063721656
+              }
+            ],
+            "reason": "POSITIVE_POINT_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-00-c0"
+            ],
+            "net_units": {
+              "lab-amber-challenge-00-c0": -2
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-00-c0",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-00-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-00-initial",
+                  "raw_sha256": "897dc7dacebb5af19d3fb46d8f6b2783c8c0a3ea992f0d04a1c79277f90a3ce0"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-amber-challenge-00-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-00-c0"
+            ],
+            "net_units": {
+              "lab-amber-challenge-00-c0": -2
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-00-c0",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-00-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-00-initial",
+                  "raw_sha256": "897dc7dacebb5af19d3fb46d8f6b2783c8c0a3ea992f0d04a1c79277f90a3ce0"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-amber-challenge-00-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-00-c0"
+            ],
+            "net_units": {
+              "lab-amber-challenge-00-c0": -2
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-00-c0",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-00",
+          "correct_stop": 1,
+          "decisions": 2,
+          "eligible_selects": 1,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 1,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": -2,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 1,
+          "simulated_cost": 2,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 1,
+          "wasted_simulated_cost": 2
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-00",
+          "correct_stop": 1,
+          "decisions": 2,
+          "eligible_selects": 1,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 1,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": -2,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 1,
+          "simulated_cost": 2,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 1,
+          "wasted_simulated_cost": 2
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-00",
+          "correct_stop": 1,
+          "decisions": 2,
+          "eligible_selects": 1,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 1,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": -2,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 1,
+          "simulated_cost": 2,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 1,
+          "wasted_simulated_cost": 2
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-00",
+          "correct_stop": 1,
+          "decisions": 2,
+          "eligible_selects": 1,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 1,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": -2,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 1,
+          "simulated_cost": 2,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 1,
+          "wasted_simulated_cost": 2
+        }
+      ]
+    },
+    {
+      "category": "HIGH_OVERSELECT",
+      "case_id": "challenge-14",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-14-c2",
+            "cost": 4,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-14-initial",
+                  "raw_sha256": "2940d1b39fbaf1317ffcbfab9efdbca5e7ccea2ce76df0d02be6abff5a650939"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-14-c2",
+                "lower": 0.551001746879,
+                "lower_net": 2.612020962548,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 4.769230769228,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 6.560095582484
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-14-c1",
+                "lower": 0.551001746879,
+                "lower_net": 2.51001746879,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 4.30769230769,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.80007965207
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-14-c0",
+                "lower": 0.551001746879,
+                "lower_net": 2.408013975032,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 3.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.040063721656
+              }
+            ],
+            "reason": "POSITIVE_LOWER_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-14-c0",
+              "lab-cobalt-challenge-14-c1",
+              "lab-cobalt-challenge-14-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-14-c0": -2,
+              "lab-cobalt-challenge-14-c1": -3,
+              "lab-cobalt-challenge-14-c2": -4
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-03": "observed-2"
+            },
+            "outcome_id": "outcome-challenge-14-c2",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-14-c2",
+            "cost": 4,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-14-initial",
+                  "raw_sha256": "2940d1b39fbaf1317ffcbfab9efdbca5e7ccea2ce76df0d02be6abff5a650939"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-14-c2",
+                "lower": 0.551001746879,
+                "lower_net": 2.612020962548,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 4.769230769228,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 6.560095582484
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-14-c1",
+                "lower": 0.551001746879,
+                "lower_net": 2.51001746879,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 4.30769230769,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.80007965207
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-14-c0",
+                "lower": 0.551001746879,
+                "lower_net": 2.408013975032,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 3.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.040063721656
+              }
+            ],
+            "reason": "POSITIVE_POINT_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-14-c0",
+              "lab-cobalt-challenge-14-c1",
+              "lab-cobalt-challenge-14-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-14-c0": -2,
+              "lab-cobalt-challenge-14-c1": -3,
+              "lab-cobalt-challenge-14-c2": -4
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-03": "observed-2"
+            },
+            "outcome_id": "outcome-challenge-14-c2",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-14-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-14-initial",
+                  "raw_sha256": "2940d1b39fbaf1317ffcbfab9efdbca5e7ccea2ce76df0d02be6abff5a650939"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-cobalt-challenge-14-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-14-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-14-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-14-c0",
+              "lab-cobalt-challenge-14-c1",
+              "lab-cobalt-challenge-14-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-14-c0": -2,
+              "lab-cobalt-challenge-14-c1": -3,
+              "lab-cobalt-challenge-14-c2": -4
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-14-c0",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-14-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-14-initial",
+                  "raw_sha256": "2940d1b39fbaf1317ffcbfab9efdbca5e7ccea2ce76df0d02be6abff5a650939"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-cobalt-challenge-14-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-14-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-14-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-14-c0",
+              "lab-cobalt-challenge-14-c1",
+              "lab-cobalt-challenge-14-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-14-c0": -2,
+              "lab-cobalt-challenge-14-c1": -3,
+              "lab-cobalt-challenge-14-c2": -4
+            },
+            "opportunities": [],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "MUST_STOP"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-14-c0",
+            "status": "VERIFIED",
+            "useful_effect": 0
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-14",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 2,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": -7,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 7,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 7
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-14",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 2,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": -7,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 7,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 7
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-14",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 2,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": -5,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 5
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-14",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 2,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": -5,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 5
+        }
+      ]
+    },
+    {
+      "category": "LOW_UNDERSELECT",
+      "case_id": "challenge-01",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-01-initial",
+                  "raw_sha256": "a87e34ca8e99fab26efdb779b8e33ac54e15dff83fe4d284a99303d3c6f1a999"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-bronze-challenge-01-c0",
+                "lower": 0.073067660241,
+                "lower_net": -2.415458718072,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.333333333336,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": 0.081361758128
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-bronze-challenge-01-c1",
+                "lower": 0.073067660241,
+                "lower_net": -3.26932339759,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.91666666667,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.14829780234
+              }
+            ],
+            "reason": "INTERVAL_CROSSES_ZERO",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-01-c0": 5,
+              "lab-bronze-challenge-01-c1": 6
+            },
+            "opportunities": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "STOP",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-01-initial",
+                  "raw_sha256": "a87e34ca8e99fab26efdb779b8e33ac54e15dff83fe4d284a99303d3c6f1a999"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-bronze-challenge-01-c0",
+                "lower": 0.073067660241,
+                "lower_net": -2.415458718072,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.333333333336,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": 0.081361758128
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-bronze-challenge-01-c1",
+                "lower": 0.073067660241,
+                "lower_net": -3.26932339759,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.91666666667,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.14829780234
+              }
+            ],
+            "reason": "NONPOSITIVE_POINT_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-01-c0": 5,
+              "lab-bronze-challenge-01-c1": 6
+            },
+            "opportunities": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "STOP",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-01-initial",
+                  "raw_sha256": "a87e34ca8e99fab26efdb779b8e33ac54e15dff83fe4d284a99303d3c6f1a999"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-01-c0",
+                "order": 0,
+                "score": -1,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-01-c1",
+                "order": 1,
+                "score": -2,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              }
+            ],
+            "reason": "NONPOSITIVE_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-01-c0": 5,
+              "lab-bronze-challenge-01-c1": 6
+            },
+            "opportunities": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-01-c0",
+            "cost": 3,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-01-initial",
+                  "raw_sha256": "a87e34ca8e99fab26efdb779b8e33ac54e15dff83fe4d284a99303d3c6f1a999"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-01-c0",
+                "order": 0,
+                "score": -1,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-01-c1",
+                "order": 1,
+                "score": -2,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-01-c0": 5,
+              "lab-bronze-challenge-01-c1": 6
+            },
+            "opportunities": [
+              "lab-bronze-challenge-01-c0",
+              "lab-bronze-challenge-01-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-01-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-01",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 6,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-01",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 6,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-01",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 6,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-01",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 11,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 7,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "LOW_UNDERSELECT",
+      "case_id": "challenge-15",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-15-initial",
+                  "raw_sha256": "b37a90ee2e002c250765b7f75e2f0646d8f06ac0caaf36598c26b0fd0913c04c"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c0",
+                "lower": 0.073067660241,
+                "lower_net": -2.415458718072,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.333333333336,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": 0.081361758128
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c1",
+                "lower": 0.073067660241,
+                "lower_net": -3.26932339759,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.91666666667,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.14829780234
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c2",
+                "lower": 0.073067660241,
+                "lower_net": -4.123188077108,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -2.500000000004,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.377957362808
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c3",
+                "lower": 0.073067660241,
+                "lower_net": -4.977052756626,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -3.083333333338,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.607616923276
+              }
+            ],
+            "reason": "INTERVAL_CROSSES_ZERO",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-15-c0": 5,
+              "lab-amber-challenge-15-c1": 6,
+              "lab-amber-challenge-15-c2": 7,
+              "lab-amber-challenge-15-c3": 8
+            },
+            "opportunities": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "STOP",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-15-initial",
+                  "raw_sha256": "b37a90ee2e002c250765b7f75e2f0646d8f06ac0caaf36598c26b0fd0913c04c"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c0",
+                "lower": 0.073067660241,
+                "lower_net": -2.415458718072,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.333333333336,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": 0.081361758128
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c1",
+                "lower": 0.073067660241,
+                "lower_net": -3.26932339759,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -1.91666666667,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.14829780234
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c2",
+                "lower": 0.073067660241,
+                "lower_net": -4.123188077108,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -2.500000000004,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.377957362808
+              },
+              {
+                "bucket": "LOW",
+                "candidate_id": "lab-amber-challenge-15-c3",
+                "lower": 0.073067660241,
+                "lower_net": -4.977052756626,
+                "n": 22,
+                "p_hat": 0.208333333333,
+                "point_net": -3.083333333338,
+                "status": "SUPPORTED",
+                "upper": 0.385170219766,
+                "upper_net": -0.607616923276
+              }
+            ],
+            "reason": "NONPOSITIVE_POINT_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-15-c0": 5,
+              "lab-amber-challenge-15-c1": 6,
+              "lab-amber-challenge-15-c2": 7,
+              "lab-amber-challenge-15-c3": 8
+            },
+            "opportunities": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "STOP",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-15-initial",
+                  "raw_sha256": "b37a90ee2e002c250765b7f75e2f0646d8f06ac0caaf36598c26b0fd0913c04c"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-amber-challenge-15-c0",
+                "order": 0,
+                "score": -1,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-15-c1",
+                "order": 1,
+                "score": -2,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-15-c2",
+                "order": 2,
+                "score": -3,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-15-c3",
+                "order": 3,
+                "score": -4,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              }
+            ],
+            "reason": "NONPOSITIVE_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-15-c0": 5,
+              "lab-amber-challenge-15-c1": 6,
+              "lab-amber-challenge-15-c2": 7,
+              "lab-amber-challenge-15-c3": 8
+            },
+            "opportunities": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-15-c0",
+            "cost": 3,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-15-initial",
+                  "raw_sha256": "b37a90ee2e002c250765b7f75e2f0646d8f06ac0caaf36598c26b0fd0913c04c"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-amber-challenge-15-c0",
+                "order": 0,
+                "score": -1,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-15-c1",
+                "order": 1,
+                "score": -2,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-15-c2",
+                "order": 2,
+                "score": -3,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-15-c3",
+                "order": 3,
+                "score": -4,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 0,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 0,
+                  "verification": 0
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-15-c0": 5,
+              "lab-amber-challenge-15-c1": 6,
+              "lab-amber-challenge-15-c2": 7,
+              "lab-amber-challenge-15-c3": 8
+            },
+            "opportunities": [
+              "lab-amber-challenge-15-c0",
+              "lab-amber-challenge-15-c1",
+              "lab-amber-challenge-15-c2",
+              "lab-amber-challenge-15-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-15-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-15",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 8,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-15",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 8,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-15",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 8,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-15",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 11,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 7,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "LOW_SUPPORT_OR_UNAVAILABLE",
+      "case_id": "challenge-03",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-03-initial",
+                  "raw_sha256": "e9c88fc3240ee45619782205f2c89f145f7d6adf0a174cb824d948847d2d3334"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-amber-challenge-03-c0",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c1",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c2",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c3",
+                "status": "INSUFFICIENT_SUPPORT"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-03-c0": 6,
+              "lab-amber-challenge-03-c1": 7,
+              "lab-amber-challenge-03-c2": 8,
+              "lab-amber-challenge-03-c3": 9
+            },
+            "opportunities": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-03-initial",
+                  "raw_sha256": "e9c88fc3240ee45619782205f2c89f145f7d6adf0a174cb824d948847d2d3334"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-amber-challenge-03-c0",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c1",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c2",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c3",
+                "status": "INSUFFICIENT_SUPPORT"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-03-c0": 6,
+              "lab-amber-challenge-03-c1": 7,
+              "lab-amber-challenge-03-c2": 8,
+              "lab-amber-challenge-03-c3": 9
+            },
+            "opportunities": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-03-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-03-initial",
+                  "raw_sha256": "e9c88fc3240ee45619782205f2c89f145f7d6adf0a174cb824d948847d2d3334"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-amber-challenge-03-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c3",
+                "order": 3,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-03-c0": 6,
+              "lab-amber-challenge-03-c1": 7,
+              "lab-amber-challenge-03-c2": 8,
+              "lab-amber-challenge-03-c3": 9
+            },
+            "opportunities": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-03-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-amber-challenge-03-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-03-initial",
+                  "raw_sha256": "e9c88fc3240ee45619782205f2c89f145f7d6adf0a174cb824d948847d2d3334"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-amber-challenge-03-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-amber-challenge-03-c3",
+                "order": 3,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "net_units": {
+              "lab-amber-challenge-03-c0": 6,
+              "lab-amber-challenge-03-c1": 7,
+              "lab-amber-challenge-03-c2": 8,
+              "lab-amber-challenge-03-c3": 9
+            },
+            "opportunities": [
+              "lab-amber-challenge-03-c0",
+              "lab-amber-challenge-03-c1",
+              "lab-amber-challenge-03-c2",
+              "lab-amber-challenge-03-c3"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-03-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-03",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 9,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 4,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-03",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 9,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 4,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-03",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-03",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "LOW_SUPPORT_OR_UNAVAILABLE",
+      "case_id": "challenge-17",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-17-initial",
+                  "raw_sha256": "f681c64490ad7c70c358cedffc6c10583b004fe1a42d65963ac719013b5267a7"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c0",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c1",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c2",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c3",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c4",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c5",
+                "status": "INSUFFICIENT_SUPPORT"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-17-c0": 6,
+              "lab-cobalt-challenge-17-c1": 7,
+              "lab-cobalt-challenge-17-c2": 8,
+              "lab-cobalt-challenge-17-c3": 9,
+              "lab-cobalt-challenge-17-c4": 10,
+              "lab-cobalt-challenge-17-c5": 11
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-17-initial",
+                  "raw_sha256": "f681c64490ad7c70c358cedffc6c10583b004fe1a42d65963ac719013b5267a7"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c0",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c1",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c2",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c3",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c4",
+                "status": "INSUFFICIENT_SUPPORT"
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c5",
+                "status": "INSUFFICIENT_SUPPORT"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-17-c0": 6,
+              "lab-cobalt-challenge-17-c1": 7,
+              "lab-cobalt-challenge-17-c2": 8,
+              "lab-cobalt-challenge-17-c3": 9,
+              "lab-cobalt-challenge-17-c4": 10,
+              "lab-cobalt-challenge-17-c5": 11
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-17-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-17-initial",
+                  "raw_sha256": "f681c64490ad7c70c358cedffc6c10583b004fe1a42d65963ac719013b5267a7"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c3",
+                "order": 3,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c4",
+                "order": 4,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c5",
+                "order": 5,
+                "score": 8,
+                "terms": {
+                  "cost": -7,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-17-c0": 6,
+              "lab-cobalt-challenge-17-c1": 7,
+              "lab-cobalt-challenge-17-c2": 8,
+              "lab-cobalt-challenge-17-c3": 9,
+              "lab-cobalt-challenge-17-c4": 10,
+              "lab-cobalt-challenge-17-c5": 11
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-17-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-17-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-17-initial",
+                  "raw_sha256": "f681c64490ad7c70c358cedffc6c10583b004fe1a42d65963ac719013b5267a7"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c3",
+                "order": 3,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c4",
+                "order": 4,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-17-c5",
+                "order": 5,
+                "score": 8,
+                "terms": {
+                  "cost": -7,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-17-c0": 6,
+              "lab-cobalt-challenge-17-c1": 7,
+              "lab-cobalt-challenge-17-c2": 8,
+              "lab-cobalt-challenge-17-c3": 9,
+              "lab-cobalt-challenge-17-c4": 10,
+              "lab-cobalt-challenge-17-c5": 11
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-17-c0",
+              "lab-cobalt-challenge-17-c1",
+              "lab-cobalt-challenge-17-c2",
+              "lab-cobalt-challenge-17-c3",
+              "lab-cobalt-challenge-17-c4",
+              "lab-cobalt-challenge-17-c5"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-17-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-17",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 11,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 6,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-17",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 11,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 6,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-17",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-17",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "LOW_SUPPORT_OR_UNAVAILABLE",
+      "case_id": "challenge-04",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-04-initial",
+                  "raw_sha256": "3488fddf9157d4ab89e66679d50b73073d045baceb7cd6f672d102204a255872"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-bronze-challenge-04-c0",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c1",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c2",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c3",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c4",
+                "status": "UNSUPPORTED_BUCKET"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-04-c0": 6,
+              "lab-bronze-challenge-04-c1": 7,
+              "lab-bronze-challenge-04-c2": 8,
+              "lab-bronze-challenge-04-c3": 9,
+              "lab-bronze-challenge-04-c4": 10
+            },
+            "opportunities": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-04-initial",
+                  "raw_sha256": "3488fddf9157d4ab89e66679d50b73073d045baceb7cd6f672d102204a255872"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-bronze-challenge-04-c0",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c1",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c2",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c3",
+                "status": "UNSUPPORTED_BUCKET"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c4",
+                "status": "UNSUPPORTED_BUCKET"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-04-c0": 6,
+              "lab-bronze-challenge-04-c1": 7,
+              "lab-bronze-challenge-04-c2": 8,
+              "lab-bronze-challenge-04-c3": 9,
+              "lab-bronze-challenge-04-c4": 10
+            },
+            "opportunities": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-04-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-04-initial",
+                  "raw_sha256": "3488fddf9157d4ab89e66679d50b73073d045baceb7cd6f672d102204a255872"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-04-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c3",
+                "order": 3,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c4",
+                "order": 4,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-04-c0": 6,
+              "lab-bronze-challenge-04-c1": 7,
+              "lab-bronze-challenge-04-c2": 8,
+              "lab-bronze-challenge-04-c3": 9,
+              "lab-bronze-challenge-04-c4": 10
+            },
+            "opportunities": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-04-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-04-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-04-initial",
+                  "raw_sha256": "3488fddf9157d4ab89e66679d50b73073d045baceb7cd6f672d102204a255872"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-04-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c2",
+                "order": 2,
+                "score": 11,
+                "terms": {
+                  "cost": -4,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c3",
+                "order": 3,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-04-c4",
+                "order": 4,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-04-c0": 6,
+              "lab-bronze-challenge-04-c1": 7,
+              "lab-bronze-challenge-04-c2": 8,
+              "lab-bronze-challenge-04-c3": 9,
+              "lab-bronze-challenge-04-c4": 10
+            },
+            "opportunities": [
+              "lab-bronze-challenge-04-c0",
+              "lab-bronze-challenge-04-c1",
+              "lab-bronze-challenge-04-c2",
+              "lab-bronze-challenge-04-c3",
+              "lab-bronze-challenge-04-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-04-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-04",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 10,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 5,
+          "unsafe_select": 0,
+          "unsupported_forecast": 5,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-04",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 10,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 5,
+          "unsafe_select": 0,
+          "unsupported_forecast": 5,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-04",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-04",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "LOW_SUPPORT_OR_UNAVAILABLE",
+      "case_id": "challenge-07",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-07-initial",
+                  "raw_sha256": "84bd09da4e08396722e1f263cebc14972ef0e4ea8d4ae4076bdc7ca571db1780"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-bronze-challenge-07-c0",
+                "status": "UNKNOWN_FEATURE"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-07-c1",
+                "status": "UNKNOWN_FEATURE"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-07-c0": 6,
+              "lab-bronze-challenge-07-c1": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-07-initial",
+                  "raw_sha256": "84bd09da4e08396722e1f263cebc14972ef0e4ea8d4ae4076bdc7ca571db1780"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [],
+            "reason": "UNSUPPORTED_FORECAST",
+            "unsupported": [
+              {
+                "candidate_id": "lab-bronze-challenge-07-c0",
+                "status": "UNKNOWN_FEATURE"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-07-c1",
+                "status": "UNKNOWN_FEATURE"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-07-c0": 6,
+              "lab-bronze-challenge-07-c1": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-07-initial",
+                  "raw_sha256": "84bd09da4e08396722e1f263cebc14972ef0e4ea8d4ae4076bdc7ca571db1780"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [],
+            "reason": "UTILITY_FEATURES_UNKNOWN",
+            "unsupported": [
+              {
+                "candidate_id": "lab-bronze-challenge-07-c0",
+                "status": "UNKNOWN_FEATURE"
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-07-c1",
+                "status": "UNKNOWN_FEATURE"
+              }
+            ]
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-07-c0": 6,
+              "lab-bronze-challenge-07-c1": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-07-c0",
+            "cost": 2,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-07-initial",
+                  "raw_sha256": "84bd09da4e08396722e1f263cebc14972ef0e4ea8d4ae4076bdc7ca571db1780"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-07-c0",
+                "order": 0,
+                "score": 13,
+                "terms": {
+                  "cost": -2,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-07-c1",
+                "order": 1,
+                "score": 12,
+                "terms": {
+                  "cost": -3,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-07-c0": 6,
+              "lab-bronze-challenge-07-c1": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-07-c0",
+              "lab-bronze-challenge-07-c1"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-07-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-07",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 7,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 2,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-07",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 7,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 2,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-07",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 7,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 2,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-07",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 5,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "BOUNDED_WORSE_THAN_POINT_OR_REFERENCE",
+      "case_id": "challenge-02",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-02-initial",
+                  "raw_sha256": "049198f3b10dab47b62d14e983c7ea7d53ae573c4ce2fa0659dbce2b23b1c36f"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-02-c2",
+                "lower": 0.551001746879,
+                "lower_net": -0.387979037452,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.769230769228,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 3.560095582484
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-02-c1",
+                "lower": 0.551001746879,
+                "lower_net": -0.48998253121,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.30769230769,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.80007965207
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-02-c0",
+                "lower": 0.551001746879,
+                "lower_net": -0.591986024968,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 0.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.040063721656
+              }
+            ],
+            "reason": "INTERVAL_CROSSES_ZERO",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-02-c0": 3,
+              "lab-cobalt-challenge-02-c1": 4,
+              "lab-cobalt-challenge-02-c2": 5
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-02-c2",
+            "cost": 7,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-02-initial",
+                  "raw_sha256": "049198f3b10dab47b62d14e983c7ea7d53ae573c4ce2fa0659dbce2b23b1c36f"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-02-c2",
+                "lower": 0.551001746879,
+                "lower_net": -0.387979037452,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.769230769228,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 3.560095582484
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-02-c1",
+                "lower": 0.551001746879,
+                "lower_net": -0.48998253121,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.30769230769,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.80007965207
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-cobalt-challenge-02-c0",
+                "lower": 0.551001746879,
+                "lower_net": -0.591986024968,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 0.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.040063721656
+              }
+            ],
+            "reason": "POSITIVE_POINT_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-02-c0": 3,
+              "lab-cobalt-challenge-02-c1": 4,
+              "lab-cobalt-challenge-02-c2": 5
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-03": "observed-2"
+            },
+            "outcome_id": "outcome-challenge-02-c2",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-02-c0",
+            "cost": 5,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-02-initial",
+                  "raw_sha256": "049198f3b10dab47b62d14e983c7ea7d53ae573c4ce2fa0659dbce2b23b1c36f"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-cobalt-challenge-02-c0",
+                "order": 0,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-02-c1",
+                "order": 1,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-02-c2",
+                "order": 2,
+                "score": 8,
+                "terms": {
+                  "cost": -7,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-02-c0": 3,
+              "lab-cobalt-challenge-02-c1": 4,
+              "lab-cobalt-challenge-02-c2": 5
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-02-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-cobalt-challenge-02-c0",
+            "cost": 5,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-02-initial",
+                  "raw_sha256": "049198f3b10dab47b62d14e983c7ea7d53ae573c4ce2fa0659dbce2b23b1c36f"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-cobalt-challenge-02-c0",
+                "order": 0,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-02-c1",
+                "order": 1,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-cobalt-challenge-02-c2",
+                "order": 2,
+                "score": 8,
+                "terms": {
+                  "cost": -7,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "net_units": {
+              "lab-cobalt-challenge-02-c0": 3,
+              "lab-cobalt-challenge-02-c1": 4,
+              "lab-cobalt-challenge-02-c2": 5
+            },
+            "opportunities": [
+              "lab-cobalt-challenge-02-c0",
+              "lab-cobalt-challenge-02-c1",
+              "lab-cobalt-challenge-02-c2"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-02-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-02",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 5,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-02",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 9,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 13,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-02",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 7,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 11,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-02",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 7,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 11,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    },
+    {
+      "category": "BOUNDED_WORSE_THAN_POINT_OR_REFERENCE",
+      "case_id": "challenge-16",
+      "first_rows": [
+        {
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "INCONCLUSIVE",
+            "candidate_id": null,
+            "cost": 0,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-16-initial",
+                  "raw_sha256": "9d7ec058bc3eac2877b9d9a24b6d14f84cbb67821e302ef42e474118b90bf7f3"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-BOUNDED_ABSTAIN",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c4",
+                "lower": 0.551001746879,
+                "lower_net": -0.183972049936,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 2.692307692304,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.080127443312
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c3",
+                "lower": 0.551001746879,
+                "lower_net": -0.285975543694,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 2.230769230766,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 4.320111512898
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c2",
+                "lower": 0.551001746879,
+                "lower_net": -0.387979037452,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.769230769228,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 3.560095582484
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c1",
+                "lower": 0.551001746879,
+                "lower_net": -0.48998253121,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.30769230769,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.80007965207
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c0",
+                "lower": 0.551001746879,
+                "lower_net": -0.591986024968,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 0.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.040063721656
+              }
+            ],
+            "reason": "INTERVAL_CROSSES_ZERO",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-16-c0": 3,
+              "lab-bronze-challenge-16-c1": 4,
+              "lab-bronze-challenge-16-c2": 5,
+              "lab-bronze-challenge-16-c3": 6,
+              "lab-bronze-challenge-16-c4": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": null
+        },
+        {
+          "policy": "R78-POINT_ESTIMATE",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-16-c4",
+            "cost": 9,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-16-initial",
+                  "raw_sha256": "9d7ec058bc3eac2877b9d9a24b6d14f84cbb67821e302ef42e474118b90bf7f3"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "R78-POINT_ESTIMATE",
+            "ranking": [
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c4",
+                "lower": 0.551001746879,
+                "lower_net": -0.183972049936,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 2.692307692304,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 5.080127443312
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c3",
+                "lower": 0.551001746879,
+                "lower_net": -0.285975543694,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 2.230769230766,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 4.320111512898
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c2",
+                "lower": 0.551001746879,
+                "lower_net": -0.387979037452,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.769230769228,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 3.560095582484
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c1",
+                "lower": 0.551001746879,
+                "lower_net": -0.48998253121,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 1.30769230769,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.80007965207
+              },
+              {
+                "bucket": "HIGH",
+                "candidate_id": "lab-bronze-challenge-16-c0",
+                "lower": 0.551001746879,
+                "lower_net": -0.591986024968,
+                "n": 24,
+                "p_hat": 0.730769230769,
+                "point_net": 0.846153846152,
+                "status": "SUPPORTED",
+                "upper": 0.880007965207,
+                "upper_net": 2.040063721656
+              }
+            ],
+            "reason": "POSITIVE_POINT_NET",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-16-c0": 3,
+              "lab-bronze-challenge-16-c1": 4,
+              "lab-bronze-challenge-16-c2": 5,
+              "lab-bronze-challenge-16-c3": 6,
+              "lab-bronze-challenge-16-c4": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-05": "observed-4"
+            },
+            "outcome_id": "outcome-challenge-16-c4",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "PGE-v3-utility",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-16-c0",
+            "cost": 5,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-16-initial",
+                  "raw_sha256": "9d7ec058bc3eac2877b9d9a24b6d14f84cbb67821e302ef42e474118b90bf7f3"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "PGE-v3-utility",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-16-c0",
+                "order": 0,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c1",
+                "order": 1,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c2",
+                "order": 2,
+                "score": 8,
+                "terms": {
+                  "cost": -7,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c3",
+                "order": 3,
+                "score": 7,
+                "terms": {
+                  "cost": -8,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c4",
+                "order": 4,
+                "score": 6,
+                "terms": {
+                  "cost": -9,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "MAX_VISIBLE_UTILITY",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-16-c0": 3,
+              "lab-bronze-challenge-16-c1": 4,
+              "lab-bronze-challenge-16-c2": 5,
+              "lab-bronze-challenge-16-c3": 6,
+              "lab-bronze-challenge-16-c4": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-16-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        },
+        {
+          "policy": "B0-fixed",
+          "state": {
+            "attempted": [],
+            "elapsed": 0,
+            "remaining": 20,
+            "step": 0,
+            "unknown_domains": []
+          },
+          "decision": {
+            "action": "SELECT",
+            "candidate_id": "lab-bronze-challenge-16-c0",
+            "cost": 5,
+            "evidence": {
+              "accepted": [
+                {
+                  "evidence_id": "challenge-16-initial",
+                  "raw_sha256": "9d7ec058bc3eac2877b9d9a24b6d14f84cbb67821e302ef42e474118b90bf7f3"
+                }
+              ],
+              "conflict": false,
+              "facts": {
+                "fact-00": "ready"
+              },
+              "refused": []
+            },
+            "filtered": [],
+            "policy": "B0-fixed",
+            "ranking": [
+              {
+                "candidate_id": "lab-bronze-challenge-16-c0",
+                "order": 0,
+                "score": 10,
+                "terms": {
+                  "cost": -5,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c1",
+                "order": 1,
+                "score": 9,
+                "terms": {
+                  "cost": -6,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c2",
+                "order": 2,
+                "score": 8,
+                "terms": {
+                  "cost": -7,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c3",
+                "order": 3,
+                "score": 7,
+                "terms": {
+                  "cost": -8,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              },
+              {
+                "candidate_id": "lab-bronze-challenge-16-c4",
+                "order": 4,
+                "score": 6,
+                "terms": {
+                  "cost": -9,
+                  "freshness": 3,
+                  "novelty": 2,
+                  "risk": 0,
+                  "value": 6,
+                  "verification": 4
+                }
+              }
+            ],
+            "reason": "FIXED_ORDER",
+            "unsupported": []
+          },
+          "oracle": {
+            "eligible": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "net_units": {
+              "lab-bronze-challenge-16-c0": 3,
+              "lab-bronze-challenge-16-c1": 4,
+              "lab-bronze-challenge-16-c2": 5,
+              "lab-bronze-challenge-16-c3": 6,
+              "lab-bronze-challenge-16-c4": 7
+            },
+            "opportunities": [
+              "lab-bronze-challenge-16-c0",
+              "lab-bronze-challenge-16-c1",
+              "lab-bronze-challenge-16-c2",
+              "lab-bronze-challenge-16-c3",
+              "lab-bronze-challenge-16-c4"
+            ],
+            "safety_barrier": null,
+            "target": "benefit_units*useful_effect-cost-risk",
+            "trust": "NORMATIVE_SYNTHETIC_NOT_AUTHORITY",
+            "verdict": "SHOULD_SELECT"
+          },
+          "outcome": {
+            "facts": {
+              "fact-01": "observed-0"
+            },
+            "outcome_id": "outcome-challenge-16-c0",
+            "status": "VERIFIED",
+            "useful_effect": 1
+          }
+        }
+      ],
+      "metrics": [
+        {
+          "abstention_count": 1,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-16",
+          "correct_stop": 0,
+          "decisions": 1,
+          "eligible_selects": 0,
+          "missed_opportunity": 1,
+          "opportunity_cost": 7,
+          "over_exploration": 0,
+          "policy": "R78-BOUNDED_ABSTAIN",
+          "realized_synthetic_net_utility": 0,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 0,
+          "selects": 0,
+          "simulated_cost": 0,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 0,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 0,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-16",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "R78-POINT_ESTIMATE",
+          "realized_synthetic_net_utility": 13,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 17,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-16",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "PGE-v3-utility",
+          "realized_synthetic_net_utility": 7,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 11,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        },
+        {
+          "abstention_count": 0,
+          "appropriate_abstention": 0,
+          "case_id": "challenge-16",
+          "correct_stop": 1,
+          "decisions": 3,
+          "eligible_selects": 2,
+          "missed_opportunity": 0,
+          "opportunity_cost": 0,
+          "over_exploration": 0,
+          "policy": "B0-fixed",
+          "realized_synthetic_net_utility": 7,
+          "redundant": 0,
+          "repeated": 0,
+          "risk_guard_violation": 0,
+          "safety_rejections": 1,
+          "selects": 2,
+          "simulated_cost": 11,
+          "split": "challenge",
+          "stop_not_determinable": 0,
+          "total_stop": 1,
+          "unknown_bucket": 0,
+          "unsafe_select": 0,
+          "unsupported_forecast": 0,
+          "verified_facts": 2,
+          "wasted_simulated_cost": 0
+        }
+      ]
+    }
+  ],
+  "shift_examples": [
+    {
+      "transform": "LABEL_FLIP",
+      "case_id": "challenge-00-s-label-flip",
+      "summary": {
+        "R78-BOUNDED_ABSTAIN": {
+          "decisions": 25,
+          "selects": 7,
+          "eligible_selects": 7,
+          "unsafe_select": 0,
+          "total_stop": 8,
+          "correct_stop": 7,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 1,
+          "over_exploration": 4,
+          "wasted_simulated_cost": 18,
+          "simulated_cost": 27,
+          "verified_facts": 6,
+          "realized_synthetic_net_utility": 3,
+          "abstention_count": 10,
+          "appropriate_abstention": 2,
+          "unknown_bucket": 5,
+          "unsupported_forecast": 17,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 1,
+          "safety_rejections": 15,
+          "opportunity_cost": 2
+        },
+        "R78-POINT_ESTIMATE": {
+          "decisions": 29,
+          "selects": 11,
+          "eligible_selects": 11,
+          "unsafe_select": 0,
+          "total_stop": 12,
+          "correct_stop": 11,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 1,
+          "over_exploration": 8,
+          "wasted_simulated_cost": 48,
+          "simulated_cost": 57,
+          "verified_facts": 10,
+          "realized_synthetic_net_utility": -27,
+          "abstention_count": 6,
+          "appropriate_abstention": 2,
+          "unknown_bucket": 5,
+          "unsupported_forecast": 17,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 1,
+          "safety_rejections": 17,
+          "opportunity_cost": 2
+        },
+        "PGE-v3-utility": {
+          "decisions": 34,
+          "selects": 16,
+          "eligible_selects": 16,
+          "unsafe_select": 0,
+          "total_stop": 15,
+          "correct_stop": 14,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 1,
+          "over_exploration": 13,
+          "wasted_simulated_cost": 44,
+          "simulated_cost": 51,
+          "verified_facts": 15,
+          "realized_synthetic_net_utility": -25,
+          "abstention_count": 3,
+          "appropriate_abstention": 2,
+          "unknown_bucket": 0,
+          "unsupported_forecast": 2,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 1,
+          "safety_rejections": 19,
+          "opportunity_cost": 2
+        },
+        "B0-fixed": {
+          "decisions": 41,
+          "selects": 23,
+          "eligible_selects": 23,
+          "unsafe_select": 0,
+          "total_stop": 16,
+          "correct_stop": 16,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 0,
+          "over_exploration": 19,
+          "wasted_simulated_cost": 63,
+          "simulated_cost": 76,
+          "verified_facts": 22,
+          "realized_synthetic_net_utility": -42,
+          "abstention_count": 2,
+          "appropriate_abstention": 2,
+          "unknown_bucket": 0,
+          "unsupported_forecast": 0,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 1,
+          "safety_rejections": 23,
+          "opportunity_cost": 0
+        }
+      }
+    },
+    {
+      "transform": "EXPIRED_SOURCE",
+      "case_id": "challenge-00-s-expired-source",
+      "summary": {
+        "R78-BOUNDED_ABSTAIN": {
+          "decisions": 18,
+          "selects": 0,
+          "eligible_selects": 0,
+          "unsafe_select": 0,
+          "total_stop": 1,
+          "correct_stop": 1,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 0,
+          "over_exploration": 0,
+          "wasted_simulated_cost": 0,
+          "simulated_cost": 0,
+          "verified_facts": 0,
+          "realized_synthetic_net_utility": 0,
+          "abstention_count": 17,
+          "appropriate_abstention": 17,
+          "unknown_bucket": 0,
+          "unsupported_forecast": 0,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 0,
+          "safety_rejections": 0,
+          "opportunity_cost": 0
+        },
+        "R78-POINT_ESTIMATE": {
+          "decisions": 18,
+          "selects": 0,
+          "eligible_selects": 0,
+          "unsafe_select": 0,
+          "total_stop": 1,
+          "correct_stop": 1,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 0,
+          "over_exploration": 0,
+          "wasted_simulated_cost": 0,
+          "simulated_cost": 0,
+          "verified_facts": 0,
+          "realized_synthetic_net_utility": 0,
+          "abstention_count": 17,
+          "appropriate_abstention": 17,
+          "unknown_bucket": 0,
+          "unsupported_forecast": 0,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 0,
+          "safety_rejections": 0,
+          "opportunity_cost": 0
+        },
+        "PGE-v3-utility": {
+          "decisions": 18,
+          "selects": 0,
+          "eligible_selects": 0,
+          "unsafe_select": 0,
+          "total_stop": 1,
+          "correct_stop": 1,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 0,
+          "over_exploration": 0,
+          "wasted_simulated_cost": 0,
+          "simulated_cost": 0,
+          "verified_facts": 0,
+          "realized_synthetic_net_utility": 0,
+          "abstention_count": 17,
+          "appropriate_abstention": 17,
+          "unknown_bucket": 0,
+          "unsupported_forecast": 0,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 0,
+          "safety_rejections": 0,
+          "opportunity_cost": 0
+        },
+        "B0-fixed": {
+          "decisions": 18,
+          "selects": 0,
+          "eligible_selects": 0,
+          "unsafe_select": 0,
+          "total_stop": 1,
+          "correct_stop": 1,
+          "stop_not_determinable": 0,
+          "missed_opportunity": 0,
+          "over_exploration": 0,
+          "wasted_simulated_cost": 0,
+          "simulated_cost": 0,
+          "verified_facts": 0,
+          "realized_synthetic_net_utility": 0,
+          "abstention_count": 17,
+          "appropriate_abstention": 17,
+          "unknown_bucket": 0,
+          "unsupported_forecast": 0,
+          "risk_guard_violation": 0,
+          "repeated": 0,
+          "redundant": 0,
+          "safety_rejections": 0,
+          "opportunity_cost": 0
+        }
+      }
+    }
+  ],
+  "future_label_boundary": "Outcomes and Oracle appear only in evaluation records; never in policy/forecast arguments or outputs."
+}

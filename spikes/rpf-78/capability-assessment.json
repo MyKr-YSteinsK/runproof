@@ -1,0 +1,44 @@
+{
+  "owner": "rpf-78-rev-1",
+  "status": "PARTIAL",
+  "level": "OFFLINE_SYNTHETIC_FORECAST_RELIABILITY_ONLY",
+  "gate_A08": "FAIL",
+  "rpf74": "PAUSED",
+  "established": [
+    "Fit-only finite calibration export and independent descriptive evaluation",
+    "Domain-scoped UNKNOWN hard stop, terminal abstention, no future-label policy input",
+    "58 independently rejected valid mutations and unchanged frozen-source identity"
+  ],
+  "not_established": [
+    "Passing final suite/canonical negative generator",
+    "External blind validation, real-world calibration or interval coverage",
+    "True Agent SDK/Provider/business/Authority/L2 causal information gain",
+    "Web live/general core/production readiness/contest submission"
+  ],
+  "VERIFIED_FINDINGS": [
+    "Fit24/validation12/challenge18; fit-only48 labels, independent model/trace recomputation, main byte identity across two orderings.",
+    "Challenge support27/44; Brier0.262951/ECE0.219492. Bounded net25/misses8/cost27/facts6/abstentions10; no superiority claim.",
+    "58 valid CLI negative controls rejected, 8 compound. Final tests106 twice each1 error; invalid mutation itself is rejected as no-op, not a verifier accepting a forged Oracle."
+  ],
+  "CODEX_ENGINEERING_JUDGMENT": [
+    "Keep known versus predictively reliable distinct. Policy takes current view/state/evidence and frozen fit model; evaluator labels are outside that interface.",
+    "Wilson bounds around sparse hand-authored buckets do not ensure future calibration. Bounded STOP correctness8/8 conceals coverage15/25 and missed opportunity8; do not promote this strategy.",
+    "No-op guard correctly exposed a bad test fixture. A08 remains FAIL and whole task PARTIAL; source freeze forbids retrospective repair."
+  ],
+  "ALTERNATIVE_PATHS_AND_TRADEOFFS": [
+    "Point estimate: more decisions/net47 versus25, but still misses6 and overexplores3.",
+    "B0/v3: challenge net94/65 exceed bounded; B0 cost76 versus27. Cheap refusal cannot establish superior reliability.",
+    "A later revision can choose an Oracle mutation guaranteed different from original and run fit-only mutation validation before freeze. This task deliberately does not implement it."
+  ],
+  "NEXT_DECISION_RECOMMENDATION": [
+    "Architect should review PARTIAL evidence, authorize a new revision only if desired, fix the negative fixture before a new freeze, and repeat the required full suite without rewriting this run.",
+    "Before considering a real Explorer, obtain independently authored evaluation and specify feature availability/utility semantics; no provider/business/live authorization is inferred."
+  ],
+  "POTENTIAL_GENERALIZATION_DEBT": [
+    "Synthetic non-iid, author-exposed challenge; no real calibration/95% coverage or significance.",
+    "Bucket coarseness, low support, OOV and source expiry induce refusal; abstention opportunity cost must remain visible.",
+    "Normative net is simulator truth even if delivery UNKNOWN; verified fact count is not causal information. Local opportunity cost is not sequential regret.",
+    "RPF77 mathematical baseline has added common feature-lifecycle checks; no claim of byte-for-byte old runtime reproduction. Raw source identity is Windows-checkout-specific; verifier and ABI share schema/hash helpers.",
+    "The canonical negative entry aborts at index38. The valid58 subset requires enumerating unchanged public mutant indices and retaining the invalid index, rather than claiming the entry completed."
+  ]
+}
