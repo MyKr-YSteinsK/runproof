@@ -1,0 +1,2687 @@
+{
+  "schema": "rpf82-test-matrix-v1",
+  "required_coverage": "ALL_DISCOVERED",
+  "modules": [
+    {
+      "path": "runtime/tests/test_contracts.py",
+      "source_sha256": "275bd6b8bdd6480d96fce804bddb64c569edd0cf2f661659b1fd69ee00049fac",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_control_plane_client.py",
+      "source_sha256": "3b4f522120bb8fc1fcc9f0d5b9fd1882f3f290cef7fadba38d2c119a74765dd7",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_docker_integration.py",
+      "source_sha256": "7a023efaad0f0ade637e14a543c85abfb1e68d2420b6a27b8af27d372bb1d95f",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_durable_worker.py",
+      "source_sha256": "cd9bc4b78537ea5d9b225c5de3e81b6bc21e0a8527ea461e0d3391e9c6d9cb2d",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_config_experiment.py",
+      "source_sha256": "949beedbbd32362bf2295a872c37d661573f9862a30667a7881a6aabb8fc9ba0",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_config_http.py",
+      "source_sha256": "4c06f91267813b01dbdf922eca7d35655286d90d5aa92d8c16619427602e33a8",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_config_live.py",
+      "source_sha256": "94817ee440b17124cbaa80627bc110ecf5fcf95a3386e92194786ccfc75cbc82",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "ConfigLiveWitnessTests.test_real_independent_cli_anchors_and_rehashed_tamper",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 230,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigLiveWitnessTests.test_scope_rejects_unapproved_paths_and_staged_contamination",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 260,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigLiveWitnessTests.test_total_ledger_reserves_before_network_and_prevents_second_trial",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 285,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigLiveWitnessTests.test_live_offline_gate_requires_fresh_source_controls_gap_and_regression",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 298,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigLiveGuardTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 715,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigLiveBudgetTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 715,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigLiveProtocolTests.test_task_owned_jar_gate_accepts_only_the_copy_under_this_run_root",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 754,
+            "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_config_pge.py",
+      "source_sha256": "931481762121f928fbb473b50d0a102331c491b46f806faab158da51f6f33627",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "ConfigPgeTests.test_v4_shape_is_saved_before_usage_validation_and_parser",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 170,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);path=WORK/(\"shape-\"+uuid.uuid4().hex+\".json\")"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_v4_task_budget_unknown_restart_source_collision_and_probe_no_retry",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 178,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_v4_task_budget_probe_and_session_caps_and_probe_not_witness",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 178,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_v4_full_task_and_session_witness_budget_link",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 178,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_unknown_usage_restart_no_reset",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 221,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_torn_record_and_collision",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 221,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_post_and_jvm_are_not_refundable",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 221,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_budget_overrun",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 221,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_two_processes_cannot_double_reserve",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 221,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigPgeTests.test_export_scope_and_dynamic_outputs_do_not_change_source",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 340,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_config_pge_coverage.py",
+      "source_sha256": "8a88f527fd122d6f3ea36ba1b397b0a3c15f58a82da09fa7ddd8607ac3e22fe5",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "CoverageTests.test_unknown_reservation_restart_and_exclusive_lock",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 128,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "CoverageTests.test_corrupt_ledger_and_duplicate_post",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 128,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "CoverageTests.test_request_role_token_cost_limits",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 128,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        },
+        {
+          "selector": "CoverageTests.test_two_processes_cannot_double_reserve",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 128,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_config_target.py",
+      "source_sha256": "3c3b5aca4381ca056e3673f1de27a2f89d4168e240c5748f5e15d79c2d4b7e17",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "ConfigTargetHttpRejectionRegressionTests.test_twenty_fresh_hosts_two_auth_rejections_sticky_code",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 568,
+            "marker": "folder.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigTargetHttpRejectionRegressionTests.test_rejection_matrix_preserves_auth_host_origin_type_route_method",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 568,
+            "marker": "folder.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigTargetHttpRejectionRegressionTests.test_bounded_missing_large_ambiguous_short_and_stalled_body",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 568,
+            "marker": "folder.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigTargetHttpRejectionRegressionTests.test_client_abort_has_bounded_thread_and_port_cleanup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 568,
+            "marker": "folder.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "ConfigTargetHttpRejectionRegressionTests.test_normal_ready_completion_and_three_callbacks_remain_200",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 568,
+            "marker": "folder.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_lab.py",
+      "source_sha256": "7807d2a6734015a63304442cb53e0d77c743907d76a4748fdc35e43480a311c4",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "LabTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 32,
+            "marker": "TEMP.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_lab_cross_domain.py",
+      "source_sha256": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_lab_cross_domain_gateway.py",
+      "source_sha256": "37778fc41f25642c3217955ee852a87b3b834cbe57a46ef014cd2d48980c3b4b",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "GatewayTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Fixture creates historical owner store/domain sandbox; no access to old private root authorized",
+          "evidence": {
+            "line": 10,
+            "marker": "def setUp(self):"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_live_pge.py",
+      "source_sha256": "9d98b9cbddd0024f682e12ab48f9358c1992925a13b712e0acb9067b920c8c79",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "LiveTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 56,
+            "marker": "TEMP.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_ops.py",
+      "source_sha256": "ecabd10f683405864849204e0038f972da3d93f2a4908305ca97913d54b039fd",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "OpsTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 76,
+            "marker": "TASK.mkdir(parents=True, exist_ok=True)"
+          }
+        },
+        {
+          "selector": "CrossWitnessTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Fixture creates historical owner store/domain sandbox; no access to old private root authorized",
+          "evidence": {
+            "line": 193,
+            "marker": "bundle, usage = run_trial(c, before_cleanup_hook=check)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge.py",
+      "source_sha256": "a7963acb6a273e124de348e342e347a5640bdd0053208a9250932ad811920dac",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "PgeRuntimeTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Runtime methods execute run_trial/run_session against legacy_test_scope old compat root",
+          "evidence": {
+            "line": 149,
+            "marker": "class PgeRuntimeTests(unittest.TestCase):"
+          }
+        },
+        {
+          "selector": "PgeContractTests.test_exclusive_ledger_corrupt_or_restart_cannot_reopen",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Ledger writes old PGE_ROOT; scoped owner context unavailable",
+          "evidence": {
+            "line": 138,
+            "marker": "def test_exclusive_ledger_corrupt_or_restart_cannot_reopen(self):"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_dual.py",
+      "source_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "DualTests.test_four_paths",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 48,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True);meta=total.reserve('metadata');total.settle(meta,status='PASS');total.token_pool();cold_ticket=total.reserve('cold',run_id='synthetic-cold');total.settle(cold_ticket,popen_pid=7000,status='COMPLETED');total.reserve('session')"
+          }
+        },
+        {
+          "selector": "DualTests.test_twenty_one_reanchored_attacks",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 48,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True);meta=total.reserve('metadata');total.settle(meta,status='PASS');total.token_pool();cold_ticket=total.reserve('cold',run_id='synthetic-cold');total.settle(cold_ticket,popen_pid=7000,status='COMPLETED');total.reserve('session')"
+          }
+        },
+        {
+          "selector": "DualTests.test_unknown_usage_and_restart",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 96,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);t=c.TaskLedger(folder/'account',create=True);t.token_pool();a=session.RoundAccount(t,1);b0=b.BrokerLedger(a,'synthetic-test');b0.reserve({'messages':[]},[])"
+          }
+        },
+        {
+          "selector": "DualTests.test_scope_lock_budget_and_invalid_selection",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 105,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);t=c.TaskLedger(folder/'account',create=True);(t.path/'mutation.lock').touch()"
+          }
+        },
+        {
+          "selector": "DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 115,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);t=c.TaskLedger(folder/'account',create=True);t.token_pool();ticket=t.reserve('post',operation='update_config_v2');t.settle(ticket,status=None,unknown=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_portability.py",
+      "source_sha256": "0a900e9f5fa519cdef578d45707f5c01c7540707a0c13695ec59c5924fa18094",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "PortabilityTests.test_shared_entry_three_config_modes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 35,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(8001,8002),(8003,8004),synthetic=True,mode=mode);ctx.root.mkdir(parents=True);ledger=c.Ledger(ctx,ctx.root/'account',create=True);meta=ledger.reserve('metadata');ledger.settle(meta,status='PASS');ct=ctx.public()['cold_contract'];cold_t=ledger.reserve('cold',domain=c.DOMAINS[1],run_id=ct['experiment']['run_id']);j=config.Journal(ledger,ct['experiment']['run_id']);host=config.Host(ct,config.ConfigLiveMemoryBackend(),j);sdk=drive(host,ct,987);ledger.settle(cold_t,popen_pid=987,status='COMPLETED');cold={'status':'PASS','source_kind':'FIXTURE_SCRIPTED','contract':ct,'sources':c.sources(),'verifier':v.identity(),'sdk':sdk,'tool_trace':host.tool_trace,'completions':host.provider_responses,'events':j.events,'checks':{'synthetic':True}}"
+          }
+        },
+        {
+          "selector": "PortabilityTests.test_twenty_two_reanchored_semantic_attacks",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 35,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(8001,8002),(8003,8004),synthetic=True,mode=mode);ctx.root.mkdir(parents=True);ledger=c.Ledger(ctx,ctx.root/'account',create=True);meta=ledger.reserve('metadata');ledger.settle(meta,status='PASS');ct=ctx.public()['cold_contract'];cold_t=ledger.reserve('cold',domain=c.DOMAINS[1],run_id=ct['experiment']['run_id']);j=config.Journal(ledger,ct['experiment']['run_id']);host=config.Host(ct,config.ConfigLiveMemoryBackend(),j);sdk=drive(host,ct,987);ledger.settle(cold_t,popen_pid=987,status='COMPLETED');cold={'status':'PASS','source_kind':'FIXTURE_SCRIPTED','contract':ct,'sources':c.sources(),'verifier':v.identity(),'sdk':sdk,'tool_trace':host.tool_trace,'completions':host.provider_responses,'events':j.events,'checks':{'synthetic':True}}"
+          }
+        },
+        {
+          "selector": "PortabilityTests.test_duplicate_refund_unknown_write_restart_torn_wal",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 81,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(8001,8002),(8003,8004),synthetic=True);ctx.root.mkdir(parents=True);ledger=c.Ledger(ctx,ctx.root/'account',create=True);ticket=ledger.reserve('sqlite_refund');ledger.settle(ticket,status='COMMITTED')"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r65.py",
+      "source_sha256": "24fed9a75823aa1d76f8720b1b9422b62fa01b100f571438792b099eec6131da",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "R65Tests.test_production_factory_signature_and_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 106,
+            "marker": "ctx.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_missing_broker_factory_mutation_is_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 106,
+            "marker": "ctx.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_actual_execute_reaches_same_factory_and_cleans_setup_error",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 106,
+            "marker": "ctx.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_context_rejects_rev1_root_and_probe_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 106,
+            "marker": "ctx.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_actual_execute_full_nonmodel_protocol",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 147,
+            "marker": "ctx,ledger=self.fresh();ct=ctx.contract();jar=ctx.root/'jar/config-center-server-1.0.0.jar';jar.parent.mkdir()"
+          }
+        },
+        {
+          "selector": "R65Tests.test_post_limit_and_nonrefund",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 106,
+            "marker": "ctx.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_provider_usage_unknown_blocks_broker",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 106,
+            "marker": "ctx.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_guarded_error_report_uses_ready_pid",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 47,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002),(45003,45004),synthetic=True); ctx.root.mkdir(parents=True,exist_ok=False); ledger=c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_synthetic_session",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 47,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002),(45003,45004),synthetic=True); ctx.root.mkdir(parents=True,exist_ok=False); ledger=c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_semantic_controls",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 47,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002),(45003,45004),synthetic=True); ctx.root.mkdir(parents=True,exist_ok=False); ledger=c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_budget_unknown_and_lock",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 214,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002),(45003,45004),synthetic=True); ctx.root.mkdir(parents=True); ledger=c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R65Tests.test_supervisor_failed_start_cleanup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 233,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002),(45003,45004),synthetic=True); ctx.root.mkdir(parents=True); ledger=c.Ledger(ctx,ctx.root/'account',create=True); sup=c.ProcessSupervisor(ctx,ledger,ctx.contract(),'sdk')"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r66.py",
+      "source_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "R66Tests.test_four_sequences",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_semantic_attacks",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_factory_same_objects_and_no_io",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_actual_execute_factory_setup_error_cleanup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_actual_execute_full_nonmodel_protocol",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 230,
+            "marker": "ctx,ledger=fresh();ct=ctx.contract();jar=ctx.root/'jar/config-center-server-1.0.0.jar';jar.parent.mkdir()"
+          }
+        },
+        {
+          "selector": "R66Tests.test_actual_execute_failure_keeps_selection_and_reconcile",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 272,
+            "marker": "ctx,ledger=fresh();ct=ctx.contract();jar=ctx.root/'jar/config-center-server-1.0.0.jar';jar.parent.mkdir()"
+          }
+        },
+        {
+          "selector": "R66Tests.test_unknown_blocks_both_roles_and_writes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_round_limits_and_nonrefund",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_lock_torn_scope",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_input_prefix_guard",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66Tests.test_write_after_unknown_rejected_before_io",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66ShapeTests.test_actual_transport_parser_positive_stop_and_tool",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66ShapeTests.test_actual_transport_parser_negative_matrix",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66ShapeTests.test_transport_size_json_timeout_status",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66ShapeTests.test_privacy_canary_never_persisted_or_reversibly_encoded",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66ShapeTests.test_response_and_tool_id_reuse_is_unknown",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66ClockTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66V5Tests.test_parser_differential_and_terminal_range",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66V5Tests.test_child_exact_diff_and_guards",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        },
+        {
+          "selector": "R66V5Tests.test_real_child_wire_usage_300_and_512",
+          "route": "LEGACY_SDK_PRECONDITION",
+          "reason": "Starts historical fixed SDK child/venv; real SDK execution excluded by this Plan",
+          "evidence": {
+            "line": 541,
+            "marker": "ctx,ledger=fresh();ct=ctx.contract(1,candidate);run=ct['experiment']['run_id'];journal=config.Journal(ledger,run);client=FakeHttp(ctx,ct,'synthetic',journal,ledger);client.initial_state_valid()"
+          }
+        },
+        {
+          "selector": "R66V5Tests.test_pre_send_input_bound_and_sixth_slot",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 62,
+            "marker": "ctx=c.make_context(uuid.uuid4().hex[:16],(45001,45002,45003,45004),(45005,45006),synthetic=True);ctx.root.mkdir(parents=True,exist_ok=False);return ctx,c.Ledger(ctx,ctx.root/'account',create=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r67.py",
+      "source_sha256": "23d77100fa046ef6c66980d42e6e0fcc8f0ae7575e2da26035350ded0eadaf97",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "RPF67Tests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "setUpClass calls pge_r67_session.synthetic, which creates a historical scoped SQLite owner; original admitted task runner required",
+          "evidence": {
+            "line": 129,
+            "marker": "def setUpClass(cls):cls.witness=s.synthetic();cls.safe=s.synthetic(reconcile=False)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r68.py",
+      "source_sha256": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "R68Tests",
+          "route": "LEGACY_SDK_PRECONDITION",
+          "reason": "setUpClass synthetic calls copy_jar and fixed SDK execution under historical owner; SDK/JAR/root access excluded",
+          "evidence": {
+            "line": 120,
+            "marker": "cls.lost=s.synthetic();cls.normal=s.synthetic(candidates=(c.CANDIDATES[0][0],c.CANDIDATES[1][0]));cls.mixed=[s.synthetic(candidates=(c.CANDIDATES[0][i],c.CANDIDATES[1][1-i])) for i in (0,1)]"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r69.py",
+      "source_sha256": "054fcf6b3802fe2bd92725714e6a7b4a603d2483f278ae0c7b00c367c0e1be48",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r70.py",
+      "source_sha256": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "OwnerSourceTests.test_actual_sqlite_commit_and_readonly_oracle",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 94,
+            "marker": "ctx,ct,ledger,gate=setup();ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "OwnerSourceTests.test_torn_wal_and_owner_tamper",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 104,
+            "marker": "ctx,ct,_,_=setup();ctx.root.mkdir(parents=True);ledger=Ledger(ctx,create=True)"
+          }
+        },
+        {
+          "selector": "OwnerSourceTests.test_real_junction_rejected",
+          "route": "WINDOWS_NATIVE",
+          "reason": "Requires Windows native junction API; historical owner fixture is not authorized here",
+          "evidence": {
+            "line": 120,
+            "marker": "import _winapi"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r71.py",
+      "source_sha256": "d11733f56ea35d5db606a5ac2a9d39bbb648ac1ebd5b54cbff5fe84d53ae87d2",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "BudgetTests.test_immutable_policy_strict_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_settle_and_append_denied",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_no_operation_no_sqlite_setup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_session_reserve_settle_native_parity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_resource_limit_session_once",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unknown_refund_stops_new_writes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unsettled_refund_stops_second_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_check_before_reserve",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_native_reserve_before_confirmation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_wrong_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_eleven_slots_permanent_native_caps",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_rejects_slot_and_price_forgery",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_junction_and_torn_receipt",
+          "route": "WINDOWS_NATIVE",
+          "reason": "Requires Windows native junction API; historical owner fixture is not authorized here",
+          "evidence": {
+            "line": 95,
+            "marker": "import _winapi"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_normal_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_boolean_round_and_unknown_parameter_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf71-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r72.py",
+      "source_sha256": "a770c5027c3dd8d6ac04abc89eec54414f3de15741565d17a67333f56a3ba41b",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "BudgetTests.test_parent_child_policy_two_domain_totals",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_actual_cfg_limit_threshold_and_legacy35000",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_child_noncanonical_bool_and_crossdomain",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_config_fields_domain_pin_and_output_limits",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_contract_rejects_changed_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_source_drift_independent_capsule",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_immutable_policy_strict_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_settle_and_append_denied",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_no_operation_no_sqlite_setup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_session_reserve_settle_native_parity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_resource_limit_session_once",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unknown_refund_stops_new_writes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unsettled_refund_stops_second_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_check_before_reserve",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_native_reserve_before_confirmation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_wrong_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_eleven_slots_permanent_native_caps",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_rejects_slot_and_price_forgery",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_junction_and_torn_receipt",
+          "route": "WINDOWS_NATIVE",
+          "reason": "Requires Windows native junction API; historical owner fixture is not authorized here",
+          "evidence": {
+            "line": 141,
+            "marker": "import _winapi"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_normal_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_boolean_round_and_unknown_parameter_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r72r2.py",
+      "source_sha256": "93c8a5ec4bb7142d8bff54b7fb1c9e2615b23ecb96e251bc0b6b61af2a4ec3af",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "BudgetTests.test_windows_native_serialized_argv_and_sanitized_env",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_windows_extra_flag_executable_cwd_and_env_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_raw_cfg_duplicate_noncanonical_and_overlong_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_child_policy_two_domain_totals",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_actual_cfg_limit_threshold_and_legacy35000",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_child_noncanonical_bool_and_crossdomain",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_config_fields_domain_pin_and_output_limits",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_contract_rejects_changed_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_source_drift_independent_capsule",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_immutable_policy_strict_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_settle_and_append_denied",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_no_operation_no_sqlite_setup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_session_reserve_settle_native_parity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_resource_limit_session_once",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unknown_refund_stops_new_writes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unsettled_refund_stops_second_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_check_before_reserve",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_native_reserve_before_confirmation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_wrong_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_eleven_slots_permanent_native_caps",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_rejects_slot_and_price_forgery",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_junction_and_torn_receipt",
+          "route": "WINDOWS_NATIVE",
+          "reason": "Requires Windows native junction API; historical owner fixture is not authorized here",
+          "evidence": {
+            "line": 169,
+            "marker": "import _winapi"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_normal_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_boolean_round_and_unknown_parameter_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r2-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r72r3.py",
+      "source_sha256": "546e23f5552e85f402033ac5b9f33965166e209cbc7d36e023f0559def140c2f",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "BudgetTests.test_historical_env_A_accepts_when_host_B_and_native_helper_disabled",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_launch_missing_mapping_and_noncanonical_reject",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_env_reanchored_relative_untrusted_and_key_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_live_actual_env_mismatch_rejects_before_spawn",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_launch_command_owner_and_cross_domain_reanchor_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_frozen_env_snapshot_independent_of_input_mutation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_windows_native_serialized_argv_and_sanitized_env",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_windows_extra_flag_executable_cwd_and_env_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_raw_cfg_duplicate_noncanonical_and_overlong_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_child_policy_two_domain_totals",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_actual_cfg_limit_threshold_and_legacy35000",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_child_noncanonical_bool_and_crossdomain",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_config_fields_domain_pin_and_output_limits",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_parent_contract_rejects_changed_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_source_drift_independent_capsule",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_immutable_policy_strict_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_native_direct_settle_and_append_denied",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_no_operation_no_sqlite_setup",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_session_reserve_settle_native_parity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_resource_limit_session_once",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unknown_refund_stops_new_writes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_unsettled_refund_stops_second_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_check_before_reserve",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_crash_native_reserve_before_confirmation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_wrong_policy_does_not_enter_port",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_eleven_slots_permanent_native_caps",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_component_rejects_slot_and_price_forgery",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_junction_and_torn_receipt",
+          "route": "WINDOWS_NATIVE",
+          "reason": "Requires Windows native junction API; historical owner fixture is not authorized here",
+          "evidence": {
+            "line": 210,
+            "marker": "import _winapi"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_normal_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "BudgetTests.test_boolean_round_and_unknown_parameter_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 12,
+            "marker": "ctx=s.Context(s.OwnerScope('rpf72r3-'+secrets.token_hex(8)),s.SourceCapsule.observe(),(29001,29002,29003));ctx.root.mkdir(parents=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r73.py",
+      "source_sha256": "23a175bc32650d90f2ede20ee19cd00667f3e6b85d5a6c034fa1276f635f07b2",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "FactoryContractTests",
+          "route": "WINDOWS_NATIVE",
+          "reason": "Factory setUp builds Windows environment contract including SYSTEMROOT/COMSPEC; no Linux emulation",
+          "evidence": {
+            "line": 20,
+            "marker": "self.request=LaunchRequest.build('config',25473,fixed=self.paths)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r73r2.py",
+      "source_sha256": "89a077b47ba7cc2fb436892a6b20f8958efa24150d0390b46d5026b283085b87",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "RunnerContractTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Requires original RPF73R2_ENV_RECEIPT and admitted process/environment identity; unavailable, no receipt fabricated or read",
+          "evidence": {
+            "line": 9,
+            "marker": "descriptor=Path(os.environ['RPF73R2_ENV_RECEIPT']);self.expected=e.strict(descriptor.read_bytes());self.contract=e.SuiteEnvironmentContract(e.canonical(self.expected['contract']));self.value=self.contract.public();self.root=Path(self.value['owner_root'])"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r74.py",
+      "source_sha256": "594013696e29c39b1b798d0b4620dfb164385642abe9a35f4729c561e153d707",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "R74ContractTests.test_contract_identity",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_context_rejects_contract_edit",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_native_wal_rejects_ungated_writer",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_ledger_rejects_second_writer",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_ledger_rejects_no_active_operation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_provider_resource_forbidden",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_wrong_domain_resource_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_wrong_phase_resource_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_ticket_replay_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_invalid_settlement_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_bool_amount_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_wrong_domain_tool_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_duplicate_call_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_write_once_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_unknown_stops_write",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_unknown_allows_readonly_reconcile",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_internal_http_response_really_drops",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 146,
+            "marker": "owner.root.mkdir(parents=True,exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_slot_rejects_oversized_input",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_round_two_requires_feedback",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        },
+        {
+          "selector": "R74ContractTests.test_real_cli_admission_rejects_reanchored_wrong_owner",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 20,
+            "marker": "owner.root.mkdir(parents=True, exist_ok=False)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r74r2.py",
+      "source_sha256": "bcfd82748e56deb13b014b47caa67da7b6803efc6c68be551d18cb3ffc2a8b7b",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r74r2_components.py",
+      "source_sha256": "cf90d915e070f2fce289924c3d4096e3f3dcda6212f6d495df309ad9c47541c0",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r75.py",
+      "source_sha256": "f8bd3d3f9977d5dec0eeb49026849a5cc6f10a6ea08ecc7979857a7316fc796c",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "OfflinePolicyTests.test_33_cli_missing_file_exit_two",
+          "route": "FROZEN_PRIVATE_ARTIFACT",
+          "reason": "Calls read on old private absent.json; no old path probing authorized",
+          "evidence": {
+            "line": 177,
+            "marker": "self.assertEqual(verify_file(c.WORK / 'absent.json', '0' * 64)[0], 2)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r76.py",
+      "source_sha256": "6c3b39e40a49e471b03ca6d441a6abe36a5d1918958a5dac9a573e5cc5bb93fa",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "OfflineEvaluationTests.test_44_missing_file_exit_two",
+          "route": "FROZEN_PRIVATE_ARTIFACT",
+          "reason": "Calls read on old private absent.json; no old path probing authorized",
+          "evidence": {
+            "line": 222,
+            "marker": "self.assertEqual(verify_file(c.WORK / 'absent.json', '0' * 64)[0], 2)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r77.py",
+      "source_sha256": "b58541d83853da82a7bb386d337e442b282bc1091c3a4f73b84f58b5ef38f393",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r78.py",
+      "source_sha256": "07248a969b6e6f64a57b5aea89930c66aff0287ff4b8e56d59528355125f6209",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "FrozenAcceptanceTests",
+          "route": "FROZEN_PRIVATE_ARTIFACT",
+          "reason": "Requires private frozen main-1.json/source-freeze/stress/fitted-model bytes; protected inputs not accessed",
+          "evidence": {
+            "line": 131,
+            "marker": "cls.trace=c.strict((c.WORK/'main-1.json').read_bytes())"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r80.py",
+      "source_sha256": "e8fad3c4a18f191d69070a4795d42a7a2de94152efe1669fa7f640e5a42bc897",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r81.py",
+      "source_sha256": "1815f91672cd8c6fca57d098c06147364fbedbe4f9412909439864ace69aa452",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "ConformanceTests.test_normal_journal_ack",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Historical RPF81 scoped journal/host writes; paused recovery not resumed",
+          "evidence": {
+            "line": 35,
+            "marker": "h=Host(self.uid('normal'),True)"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_unknown_denies_all_domains_roles_old_send",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Historical RPF81 scoped journal/host writes; paused recovery not resumed",
+          "evidence": {
+            "line": 40,
+            "marker": "h=Host(self.uid('unknown'),True)"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_restart_same_journal",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Historical RPF81 scoped journal/host writes; paused recovery not resumed",
+          "evidence": {
+            "line": 49,
+            "marker": "name=self.uid('restart');h=Host(name,True);h.reserve();h.unknown();old=h.journal.path.read_bytes();h.close();other=Host(name,False)"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_existing_session_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Historical RPF81 scoped journal/host writes; paused recovery not resumed",
+          "evidence": {
+            "line": 54,
+            "marker": "name=self.uid('exists');h=Host(name,True)"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_single_writer_kernel_lock",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Historical RPF81 scoped journal/host writes; paused recovery not resumed",
+          "evidence": {
+            "line": 59,
+            "marker": "name=self.uid('writer');a=Journal(name,True)"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_lock_timeout_fail_closed",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Historical RPF81 scoped journal/host writes; paused recovery not resumed",
+          "evidence": {
+            "line": 72,
+            "marker": "h=Host(self.uid('timeout'),True);h.reserve();entered=threading.Event();release=threading.Event()"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_torn_new_candidate_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 81,
+            "marker": "name=self.uid('torn');root=c.case_dir(name);root.mkdir(parents=True);(root/'wal.jsonl').write_bytes(b'{\"seq\":0')"
+          }
+        },
+        {
+          "selector": "ConformanceTests.test_missing_committed_tail_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 84,
+            "marker": "name=self.uid('missing');root=c.case_dir(name);root.mkdir(parents=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_select.py",
+      "source_sha256": "317631f6853d0a10003d0f1143e275233275f50148aac60678571b8e6beeb8e7",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "SelectTests.test_rehashed_semantic_controls_all_sequences",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 66,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SelectTests.test_old_certificate_and_synthetic_upgrade_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 66,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SelectTests.test_four_sequences",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 66,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SelectTests.test_cold_closed_host_capture_first_and_no_second_after_pass",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 243,
+            "marker": "root=WORK/(\"cold-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=config_contract()"
+          }
+        },
+        {
+          "selector": "SelectTests.test_cold_malformed_report_captured_failure_spent_no_same_source_retry",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 250,
+            "marker": "root=WORK/(\"cold-fail-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=config_contract()"
+          }
+        },
+        {
+          "selector": "SelectTests.test_cold_cleanup_failure_keeps_capture",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 259,
+            "marker": "root=WORK/(\"cold-cleanup-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=config_contract()"
+          }
+        },
+        {
+          "selector": "SelectTests.test_capture_write_failure_never_passes_or_reuses_attempt",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 268,
+            "marker": "root=WORK/(\"cold-write-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=config_contract();original=config.once"
+          }
+        },
+        {
+          "selector": "SelectTests.test_task_intent_retry_source_limits_torn_and_metadata",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 277,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);task=core.TaskGuard(WORK/(\"task-\"+uuid.uuid4().hex))"
+          }
+        },
+        {
+          "selector": "SelectTests.test_run_sdk_closes_real_host_and_persists_before_postcheck_no_sdk",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 297,
+            "marker": "folder=WORK/(\"lifecycle-\"+uuid.uuid4().hex);folder.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "SelectTests.test_competing_processes_share_provider_reservation",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Direct Ledger path is WORK under old rpf-59 owner; only RPF60 harness relocation is authorized",
+          "evidence": {
+            "line": 156,
+            "marker": "def test_competing_processes_share_provider_reservation(self):"
+          }
+        },
+        {
+          "selector": "SelectTests.test_deadline_source_namespace_and_no_extra_requests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Direct Ledger path is WORK under old rpf-59 owner; only RPF60 harness relocation is authorized",
+          "evidence": {
+            "line": 172,
+            "marker": "def test_deadline_source_namespace_and_no_extra_requests(self):"
+          }
+        },
+        {
+          "selector": "SelectTests.test_unknown_write_lock_torn_restart_and_no_refund",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Direct Ledger path is WORK under old rpf-59 owner; only RPF60 harness relocation is authorized",
+          "evidence": {
+            "line": 196,
+            "marker": "def test_unknown_write_lock_torn_restart_and_no_refund(self):"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_shared_core.py",
+      "source_sha256": "8495b056c0e29ce15da7a32c4200538a2b9e9e201ce482a9fa25d8392533ac58",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "SharedTests.test_two_domains_same_real_core_entry_and_complete_envelope",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 46,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_all_rehashed_semantic_predicates",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 46,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_repeat_has_no_new_fact_but_authority_namespaces_stay_separate",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 46,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_controls_change_both_synthetic_and_real_source_shapes",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 46,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_invalid_missing_authority_never_emits_facts",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 46,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_unknown_write_and_restart_prevent_new_domain",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 150,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);return core.Ledger(WORK/(\"budget-\"+uuid.uuid4().hex),make_plan(),create=True)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_double_write_torn_record_lock_and_budget",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 150,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);return core.Ledger(WORK/(\"budget-\"+uuid.uuid4().hex),make_plan(),create=True)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_strict_ports_paths_domains_and_no_provider",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 150,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);return core.Ledger(WORK/(\"budget-\"+uuid.uuid4().hex),make_plan(),create=True)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_synthetic_promotion_and_old_witness_rejected",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 46,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);plan=make_plan();ledger=core.Ledger(WORK/(\"synthetic-\"+uuid.uuid4().hex),plan,create=True);session=core.SharedSession(ledger)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_cold_closed_host_capture_first_and_no_second_after_pass",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 189,
+            "marker": "root=WORK/(\"cold-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=make_plan()[\"trials\"][1]"
+          }
+        },
+        {
+          "selector": "SharedTests.test_cold_malformed_report_captured_failure_spent_no_same_source_retry",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 196,
+            "marker": "root=WORK/(\"cold-fail-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=make_plan()[\"trials\"][1]"
+          }
+        },
+        {
+          "selector": "SharedTests.test_cold_cleanup_failure_keeps_capture",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 205,
+            "marker": "root=WORK/(\"cold-cleanup-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=make_plan()[\"trials\"][1]"
+          }
+        },
+        {
+          "selector": "SharedTests.test_capture_write_failure_never_passes_or_reuses_attempt",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 214,
+            "marker": "root=WORK/(\"cold-write-\"+uuid.uuid4().hex);(root/\"preflight\").mkdir(parents=True);contract=make_plan()[\"trials\"][1];original=config.once"
+          }
+        },
+        {
+          "selector": "SharedTests.test_task_intent_retry_source_limits_torn_and_metadata",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 223,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);task=core.TaskGuard(WORK/(\"task-\"+uuid.uuid4().hex))"
+          }
+        },
+        {
+          "selector": "SharedTests.test_run_sdk_closes_real_host_and_persists_before_postcheck_no_sdk",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 243,
+            "marker": "folder=WORK/(\"lifecycle-\"+uuid.uuid4().hex);folder.mkdir(parents=True)"
+          }
+        },
+        {
+          "selector": "SharedTests.test_competing_processes_only_one_shared_trial",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 150,
+            "marker": "WORK.mkdir(parents=True,exist_ok=True);return core.Ledger(WORK/(\"budget-\"+uuid.uuid4().hex),make_plan(),create=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_target_capability.py",
+      "source_sha256": "e27fd150e9c880acea780607f176c3e6c1e73fecf834dac42cbecd6514d533c5",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "CapabilityTests.test_synthetic_full_chain",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 29,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True)"
+          }
+        },
+        {
+          "selector": "CapabilityTests.test_fifteen_rehashed_semantic_controls",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 29,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True)"
+          }
+        },
+        {
+          "selector": "CapabilityTests.test_unknown_provider_no_more_requests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 94,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True);total.token_pool();broker=b.BrokerLedger(total,'rpf62-test')"
+          }
+        },
+        {
+          "selector": "CapabilityTests.test_no_refund_restart_duplicate_pool_and_torn_wal",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 99,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True);total.token_pool();total.reserve('trial')"
+          }
+        },
+        {
+          "selector": "CapabilityTests.test_scope_lock_and_body_budget",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
+          "evidence": {
+            "line": 107,
+            "marker": "folder=c.WORK/'tests'/uuid.uuid4().hex;folder.mkdir(parents=True);total=c.TaskLedger(folder/'account',create=True);total.token_pool();(total.path/'mutation.lock').touch()"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pilot.py",
+      "source_sha256": "8a030b1bcbd4a44474ff214da20986f6302469fcf32b92aadeeeccd879482981",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "PilotTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "setUp initializes SQLite under legacy_test_scope historical compat root; no transplant authorized",
+          "evidence": {
+            "line": 45,
+            "marker": "self.s.initialize()"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_target_agent.py",
+      "source_sha256": "acbfd2f5990eb3dfa254d630908e8e0cbfba4656f7af07c1625b859f9dabc04b",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "TargetAgentTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 29,
+            "marker": "LOCAL.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_target_recovery.py",
+      "source_sha256": "36fc2ebf5a4d86f2f19f0b88f1eadb6c7d8b3b30290463db143749b61f376344",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "TargetRecoveryTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 28,
+            "marker": "LOCAL.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_violation.py",
+      "source_sha256": "c54889b67d8319ebb662cb042d1e67f9a7fb9e37f819dd9b798edb592b44b76c",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "ViolationWitnessTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 35,
+            "marker": "LOCAL.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_witness.py",
+      "source_sha256": "c09b7ec975abfd52e3dcb457e073da4390bfb1295616e08765bc056ae70e4853",
+      "default": "PORTABLE",
+      "rules": [
+        {
+          "selector": "WitnessVerifierTests",
+          "route": "DEDICATED_RUNNER",
+          "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
+          "evidence": {
+            "line": 169,
+            "marker": "TEST_ROOT.mkdir(parents=True, exist_ok=True)"
+          }
+        }
+      ]
+    },
+    {
+      "path": "runtime/tests/test_evaluation.py",
+      "source_sha256": "52169e273312a62a87e8add9467b7d0f12dfe501208850fd4811c3984084a246",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_failure_case.py",
+      "source_sha256": "c3ed7add0cd11e2b52c37a6202904756c26fd4b6e56cbc2fe418423c4a001a38",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_failure_intelligence.py",
+      "source_sha256": "fde5fe64f12c79eb9905663871f235cd62778d5d69eabf00649070274be5b38d",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_incident.py",
+      "source_sha256": "cd68089d17cc84abcf729b9ecd830c24ea7437f402c40bbcf6ab35dba59aaecb",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_observability.py",
+      "source_sha256": "6968e7a8ab2f8134fc992e4d4ba1f6ae7c269e1edc0b610c8064b7f0b36eecfd",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_quality.py",
+      "source_sha256": "5b9f54e76509bc5a747c251167c5b45afd79f565f166ecc6d7c8e3d20109ae22",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_regression.py",
+      "source_sha256": "22b568fc6e67bee46a147ecfd48d8129af2014e007632f602f9609cde6240c67",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_rpf05_runtime.py",
+      "source_sha256": "932f6173515d03929db14118a69d4c443048f6eb335b7952e0984f0bbed398e5",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_rpf28_runtime.py",
+      "source_sha256": "3b6264bab4f2f78b63fe324bbfb5f1eea1d40ce1a389f2a3103249e6f614c0da",
+      "default": "PORTABLE",
+      "rules": []
+    },
+    {
+      "path": "runtime/tests/test_statistical.py",
+      "source_sha256": "9e9061a223f17bfc4e766ed4d11ea1d7765512f61f0a2faa81eb31b81deed547",
+      "default": "PORTABLE",
+      "rules": []
+    }
+  ]
+}

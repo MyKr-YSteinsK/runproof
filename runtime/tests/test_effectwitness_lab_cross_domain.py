@@ -6,7 +6,25 @@ from runtime.runproof_runtime.effectwitness import lab_cross_domain_contracts as
 from runtime.runproof_runtime.effectwitness import lab_cross_domain as config,lab_cross_domain_contracts as feedback
 order=config.ORDER_PORT
 from runtime.tests.test_effectwitness_config_experiment import synthetic_scene
-WORK=c.WORK/"tests"
+WORK=None
+_owner_patch=None
+
+def _test_owner(raw):
+    """Test harness only: one explicit owner inherited by competing processes."""
+    owner=Path(raw).absolute()
+    allowed=(c.ROOT/'.local/rpf-82-rev-2-ci-isolation-attempt-02',c.ROOT/'ci-results')
+    c.require(any(owner.is_relative_to(p) and owner.resolve().is_relative_to(p.resolve()) for p in allowed),'TEST_OWNER_SCOPE')
+    c.require(not any(p.is_symlink() or getattr(p,'is_junction',lambda:False)() for p in (owner,*owner.parents)),'TEST_OWNER_REPARSE')
+    return owner
+
+def setUpModule():
+    global WORK,_owner_patch
+    owner=_test_owner(os.environ['RPF82_TEST_ROOT'])
+    _owner_patch=patch.object(c,'WORK',owner);_owner_patch.start()
+    WORK=owner/'rpf60-tests';WORK.mkdir(parents=True,exist_ok=False)
+
+def tearDownModule():
+    if _owner_patch is not None:_owner_patch.stop()
 
 from runtime.runproof_runtime.effectwitness import lab_cross_domain_contracts as explorer
 
@@ -160,13 +178,15 @@ class SelectTests(unittest.TestCase):
 from pathlib import Path
 from runtime.runproof_runtime.effectwitness import lab_cross_domain as s,lab_cross_domain_contracts as e
 d=json.loads(sys.stdin.read())
+from runtime.tests.test_effectwitness_lab_cross_domain import _test_owner
+e.WORK=_test_owner(d['owner_root'])
 try:
  t=s.Ledger(Path(d['path']),d['plan']);t.reserve_request('EXPLORER',1,e.body_for(e.messages_for([])));print('RESERVED')
 except Exception:print('REJECTED')
 '''
         env={k:os.environ[k] for k in ('SYSTEMROOT','WINDIR','PATH') if k in os.environ}
         children=[subprocess.Popen([sys.executable,'-B','-c',code],cwd=c.ROOT,env=env,stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE) for _ in range(2)]
-        results=[child.communicate(c.canonical({'path':str(t.path),'plan':plan}),timeout=30) for child in children]
+        results=[child.communicate(c.canonical({'path':str(t.path),'plan':plan,'owner_root':str(c.WORK)}),timeout=30) for child in children]
         self.assertEqual(sum(out.strip()==b'RESERVED' for out,err in results),1)
         self.assertTrue(all(not err for out,err in results))
         t.read();self.assertEqual(len(t.state['reservations']),1);self.assertEqual(t.state['reservations'][0]['status'],'RESERVED')

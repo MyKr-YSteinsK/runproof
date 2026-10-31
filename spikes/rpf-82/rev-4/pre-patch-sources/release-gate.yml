@@ -1,0 +1,133 @@
+name: RPF-12 Canonical Release Gate
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release-gate.yml"
+      - "ci/**"
+      - "control-plane/**"
+      - "runtime/**"
+      - "spikes/rpf-16/**"
+      - "spikes/rpf-17/**"
+      - "spikes/rpf-18/**"
+      - "demo/**"
+      - "docs/DEMO.md"
+      - "docs/**"
+      - "README.md"
+      - "README.zh-CN.md"
+      - "web/**"
+      - "package.json"
+      - "package-lock.json"
+      - "AGENTS.md"
+  pull_request:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/release-gate.yml"
+      - "ci/**"
+      - "control-plane/**"
+      - "runtime/**"
+      - "spikes/rpf-16/**"
+      - "spikes/rpf-17/**"
+      - "spikes/rpf-18/**"
+      - "demo/**"
+      - "docs/DEMO.md"
+      - "docs/**"
+      - "README.md"
+      - "README.zh-CN.md"
+      - "web/**"
+      - "package.json"
+      - "package-lock.json"
+      - "AGENTS.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rpf12-release-gate-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  canonical-release-gate:
+    name: Fresh canonical Release Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout source commit
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install formal Runtime requirements
+        run: python -m pip install --requirement runtime/requirements.txt
+
+      - name: Set up Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install Web dependencies
+        run: npm ci
+
+      - name: Prepare fixed Docker runtime image
+        run: docker pull alpine:3.22
+
+      - name: Run repository contract checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python ci/verify-public-docs.py
+          python -B -m unittest ci/test_run_runtime_contract_tests.py -v
+          python -B ci/run-runtime-contract-tests.py --output ci-results/runtime-contract-tests
+          python runtime/verify-reviewed-artifacts.py
+          python spikes/rpf-16/probe.py --verify
+          python spikes/rpf-17/verify-evidence.py
+          python spikes/rpf-18/verify-evidence.py
+          python demo/verify-golden-demo.py --root . --json
+          mvn -q test package -f control-plane/pom.xml
+          npm test
+          npm run typecheck
+          npm run build
+
+      - name: Run fresh canonical Release Gate
+        run: python ci/run_release_gate.py --repo-root "$GITHUB_WORKSPACE" --output-dir ci-results
+
+      - name: Verify Job Summary contract
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          summary_file="ci-results/rpf12-release-gate-summary.md"
+          test -s "$summary_file"
+          grep -Fq "RPF-12 Canonical Release Gate" "$summary_file"
+          grep -Fq "Baseline control" "$summary_file"
+          grep -Fq "Candidate Gate" "$summary_file"
+          grep -Fq "Final Decision" "$summary_file"
+          grep -Fq "No release executed; no deployment authorization." "$summary_file"
+          echo "Job Summary contract verified without emitting its contents."
+
+      - name: Upload machine-readable Gate result
+        if: ${{ always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf-12-release-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ci-results/rpf12-release-gate-result.json
+            ci-results/rpf12-release-gate-summary.md
+          if-no-files-found: error
+          retention-days: 14

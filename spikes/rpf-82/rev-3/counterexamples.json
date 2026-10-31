@@ -1,0 +1,367 @@
+{
+  "plan": "RPF-82/rev-3",
+  "formal_unit_tests": [
+    {
+      "id": "test_actual_crash_missing_result_timeout_and_truncation",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_actual_exit_one_cannot_pass",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_actual_r81_hidden_helper_routes_before_import",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_added_tracked_module_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_benign_helper_stays_portable_and_runs",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_duplicate_and_nonfinite_json_fail",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_duplicate_module_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_environment_does_not_inherit_unlisted_values",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_fail_and_error_propagate",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_false_prerequisite_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_forged_owner_prerequisite_or_missing_dependency_rejects",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_inventory_is_exact_tracked_set",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_known_defects_cannot_be_relabelled",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_missing_overlap_unknown_method_fail",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_new_unregistered_helper_method_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_omitted_module_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_output_scope_rejects_legacy_and_escape",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_owner_route_mask_and_dependency_drift_reject",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_parent_has_no_runtime_test_import_or_audit_hook",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_pre_mkdir_and_open_events_denied_without_syscall",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_real_audit_hook_then_unpolluted_sibling",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_real_class_skip_is_accounted_without_claiming_execution",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_recursive_or_duplicate_helper_is_ambiguous",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_result_omission_duplication_and_false_pass_fail",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_rpf60_owner_paths_and_missing_parent",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_source_drift_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_synthetic_hidden_work_helper_is_not_executed",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_unavailable_is_never_skip_or_pass",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_unknown_helper_and_external_call_reject",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_unknown_route_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_weakened_coverage_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_wrong_schema_type_fails",
+      "actual": "PASS"
+    }
+  ],
+  "formal_unit_log_sha256": "933da0d7df155fd04fc76fa1ec3c9526d4f7cb008578f89b4948603ca8cbd633",
+  "launch_receipts": [
+    {
+      "case": "crash",
+      "receipt": {
+        "exit": 7,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 176493653977000,
+        "monotonic_end_ns": 176493810407000,
+        "child_pid": 26188,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      }
+    },
+    {
+      "case": "exit1",
+      "receipt": {
+        "exit": 1,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 176494569151300,
+        "monotonic_end_ns": 176494736610500,
+        "child_pid": 21052,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      }
+    },
+    {
+      "case": "hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "6483ec6954f467a9ba546ebc753461450a0bac73343626513f7d9dcb2dcb8541",
+        "bytes": 92,
+        "monotonic_start_ns": 176495330362900,
+        "monotonic_end_ns": 176495523359700,
+        "child_pid": 28032,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      },
+      "payload": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true
+      }
+    },
+    {
+      "case": "missing",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 176493822200100,
+        "monotonic_end_ns": 176493980742900,
+        "child_pid": 6680,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      }
+    },
+    {
+      "case": "overflow",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": true,
+        "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+        "bytes": 2097153,
+        "monotonic_start_ns": 176494409807900,
+        "monotonic_end_ns": 176494565810200,
+        "child_pid": 25920,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      }
+    },
+    {
+      "case": "premkdir",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 176495151125200,
+        "monotonic_end_ns": 176495324632900,
+        "child_pid": 24560,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      },
+      "payload": {
+        "denied": [
+          "os.mkdir",
+          "open"
+        ],
+        "old_root_syscalls": 0
+      }
+    },
+    {
+      "case": "sibling",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "3c4d2b12cd77af1466f8194cc08297d4bf8974c86e4eeffeaea05a801627094b",
+        "bytes": 52,
+        "monotonic_start_ns": 176495530021300,
+        "monotonic_end_ns": 176495789702300,
+        "child_pid": 20252,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      },
+      "payload": {
+        "loopback_bytes": 5,
+        "python_subprocess_exit": 0
+      }
+    },
+    {
+      "case": "timeout",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 176493982352200,
+        "monotonic_end_ns": 176494407035100,
+        "child_pid": 13632,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      }
+    }
+  ],
+  "rpf75_original_suite": "NOT_RUN after RPF60 formal timeout; separate formal unit self-denial/sibling control PASS",
+  "fresh_complete_inventory": "NOT_RUN after timeout",
+  "intrinsic_basename_stdlib_assertions": "Unchanged/PORTABLE; current revision NOT_RUN; original hosted Linux FAIL retained",
+  "original_errors": [
+    {
+      "id": "test_effectwitness_pge_r81.ConformanceTests.test_injected_fsync_failure_stop",
+      "prior_route": "PORTABLE",
+      "prior_actual": "ERROR",
+      "prior_diagnosis": "persist helper calls Host -> Journal -> mkdir of protected historical root; guard denied before mkdir; original ERROR retained",
+      "proposed_route": "LEGACY_OWNER_ROOT",
+      "reason": "HISTORICAL_OWNER_ROOT_NOT_AUTHORIZED",
+      "helper_chain": [
+        "test_injected_fsync_failure_stop",
+        "ConformanceTests.persist:66-70",
+        "Host.__init__:9-10",
+        "Journal.__init__:8-10",
+        "contracts.case_dir:57-58",
+        "historical owner mkdir"
+      ],
+      "first_unsafe_operation": "Journal.__init__ self.root.mkdir(parents=True,exist_ok=False)",
+      "proposed_destination_template": ".local/rpf-81-durable-unknown-presend-loopback/sessions/unit-{fsync|write}-{pid}-{monotonic_ns}",
+      "actual_original_dynamic_path": "UNAVAILABLE; original private logs not reopened",
+      "old_root_replayed": false
+    },
+    {
+      "id": "test_effectwitness_pge_r81.ConformanceTests.test_injected_write_failure_stop",
+      "prior_route": "PORTABLE",
+      "prior_actual": "ERROR",
+      "prior_diagnosis": "persist helper calls Host -> Journal -> mkdir of protected historical root; guard denied before mkdir; original ERROR retained",
+      "proposed_route": "LEGACY_OWNER_ROOT",
+      "reason": "HISTORICAL_OWNER_ROOT_NOT_AUTHORIZED",
+      "helper_chain": [
+        "test_injected_write_failure_stop",
+        "ConformanceTests.persist:66-70",
+        "Host.__init__:9-10",
+        "Journal.__init__:8-10",
+        "contracts.case_dir:57-58",
+        "historical owner mkdir"
+      ],
+      "first_unsafe_operation": "Journal.__init__ self.root.mkdir(parents=True,exist_ok=False)",
+      "proposed_destination_template": ".local/rpf-81-durable-unknown-presend-loopback/sessions/unit-{fsync|write}-{pid}-{monotonic_ns}",
+      "actual_original_dynamic_path": "UNAVAILABLE; original private logs not reopened",
+      "old_root_replayed": false
+    }
+  ],
+  "formal_r60_partial": [
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_deadline_source_namespace_and_no_extra_requests",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_four_sequences",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_no_free_text_in_safe_projection",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_old_certificate_and_synthetic_upgrade_rejected",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_oracle_copy_and_fixture_no_provider",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_provider_shape_failure_modes",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_rehashed_semantic_controls_all_sequences",
+      "actual": "ERROR",
+      "observed_event": "STARTED",
+      "reason": "MODULE_TIMEOUT_WITHOUT_FINAL_SETTLEMENT"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_unknown_write_lock_torn_restart_and_no_refund",
+      "actual": "NOT_RUN",
+      "observed_event": "NOT_RUN",
+      "reason": "not reached before module timeout"
+    }
+  ]
+}

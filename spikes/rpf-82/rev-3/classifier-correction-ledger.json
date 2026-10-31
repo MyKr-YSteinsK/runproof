@@ -1,0 +1,285 @@
+{
+  "plan": "RPF-82/rev-3",
+  "status": "Partial",
+  "base_sha": "531338ad88e9ba8e6d4d4b271b10fbe7d161d46e",
+  "source_freeze": {
+    "utc": "2026-10-30T11:31:24.761608+00:00",
+    "monotonic_ns": 176492849791600,
+    "raw_sha256": {
+      "ci/run-runtime-contract-tests.py": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "ci/runtime-contract-test-matrix.json": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "ci/test_run_runtime_contract_tests.py": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      ".github/workflows/release-gate.yml": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    "lf_sha256": {
+      "ci/run-runtime-contract-tests.py": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "ci/runtime-contract-test-matrix.json": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+      "ci/test_run_runtime_contract_tests.py": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+      ".github/workflows/release-gate.yml": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f"
+    },
+    "snapshot_map": {
+      "run-runtime-contract-tests.py": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "runtime-contract-test-matrix.json": "1aae16bb743baf3a9eaeda674b15a9a93e0f0601b87d1b1373ae90cd2673cc1f",
+      "test_run_runtime_contract_tests.py": "8751fdb1443d65d07a8ddc86243398e9ffb1a266f6770446dd7156090ddde3c8"
+    },
+    "prefreeze_checks": {
+      "AST_COMPILE": "PASS",
+      "STRICT_JSON_SCHEMA": "PASS",
+      "YAML_PARSE": "PASS",
+      "CLI_HELP_EXIT": 0,
+      "CLI_HELP_STDOUT_SHA256": "ad60fd78056002755f91c8c14f75696984a9d99bbd071369d4f1dc84f9fa3558",
+      "DIFF_CHECK_EXIT": 0,
+      "helper_closure": "PASS",
+      "unit_tests": 32,
+      "prefreeze_r60_tests": 2
+    }
+  },
+  "rev2_report_hashes": {
+    "spikes/rpf-82/rev-2/README.md": {
+      "raw_sha256": "8bd72062187b0cb02b1abab577445b46a67e9e42e85ab8affade274f2a5326f6",
+      "lf_sha256": "dd7f9ebb84d15c107c1051e3fc0de7ec048e4bc4ad85df98ce7fc417e95670d3",
+      "bytes": 4178
+    },
+    "spikes/rpf-82/rev-2/RESULT.md": {
+      "raw_sha256": "31f8c6d76a0ec6108c1842d0b4d64c9a7bfc2f8d81eae38433510c40754bf644",
+      "lf_sha256": "369b13c0ebaba25c8fc836080d9e20805a63248df7a348fa4652967b39a0f085",
+      "bytes": 7621
+    },
+    "spikes/rpf-82/rev-2/preflight-diagnostic.json": {
+      "raw_sha256": "ea8e2a798c24efa18ad1a67281515510f27e6998129496234139c57caeed2e11",
+      "lf_sha256": "b386cf69562775ad5675e26eff1e7e68567c5e7d674fdbbe5632c68a66ca20da",
+      "bytes": 13868
+    },
+    "spikes/rpf-82/rev-2/classification-ledger.json": {
+      "raw_sha256": "21609e8fbadbfce0363d04bb3144c1f9cc61559cb961b32ab9bff3c3ec2dc0a0",
+      "lf_sha256": "7b15618b3c93d188a7b2a03ceae0bb53a57975c71f6a20bc14d91d7e7ec669fe",
+      "bytes": 514098
+    },
+    "spikes/rpf-82/rev-2/verification-diagnostic.json": {
+      "raw_sha256": "242f09bfab51cba8ad65696265e0c219d177dd1f44c2be2b7a1cd1d8775944c4",
+      "lf_sha256": "fcabcd1c4c4d98ce881b5ab27dca6c4a2112fddfc5be7624063185de54a9578d",
+      "bytes": 3506
+    },
+    "spikes/rpf-82/rev-2/counterexamples.json": {
+      "raw_sha256": "07fbbef560947c56aa7178f92b73ef1a81d3531429288817a9023be61c639a1f",
+      "lf_sha256": "10ffcd2990715223c0a87220185a3c17c0fd869971077afebc83210c4b04162c",
+      "bytes": 7352
+    }
+  },
+  "pre_repair_snapshot_map": {
+    "run-runtime-contract-tests.py": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+    "runtime-contract-test-matrix.json": "1aae16bb743baf3a9eaeda674b15a9a93e0f0601b87d1b1373ae90cd2673cc1f",
+    "test_run_runtime_contract_tests.py": "8751fdb1443d65d07a8ddc86243398e9ffb1a266f6770446dd7156090ddde3c8"
+  },
+  "corrections": [
+    {
+      "id": "test_effectwitness_pge_r81.ConformanceTests.test_injected_fsync_failure_stop",
+      "prior_route": "PORTABLE",
+      "prior_actual": "ERROR",
+      "prior_diagnosis": "persist helper calls Host -> Journal -> mkdir of protected historical root; guard denied before mkdir; original ERROR retained",
+      "proposed_route": "LEGACY_OWNER_ROOT",
+      "reason": "HISTORICAL_OWNER_ROOT_NOT_AUTHORIZED",
+      "helper_chain": [
+        "test_injected_fsync_failure_stop",
+        "ConformanceTests.persist:66-70",
+        "Host.__init__:9-10",
+        "Journal.__init__:8-10",
+        "contracts.case_dir:57-58",
+        "historical owner mkdir"
+      ],
+      "first_unsafe_operation": "Journal.__init__ self.root.mkdir(parents=True,exist_ok=False)",
+      "proposed_destination_template": ".local/rpf-81-durable-unknown-presend-loopback/sessions/unit-{fsync|write}-{pid}-{monotonic_ns}",
+      "actual_original_dynamic_path": "UNAVAILABLE; original private logs not reopened",
+      "old_root_replayed": false
+    },
+    {
+      "id": "test_effectwitness_pge_r81.ConformanceTests.test_injected_write_failure_stop",
+      "prior_route": "PORTABLE",
+      "prior_actual": "ERROR",
+      "prior_diagnosis": "persist helper calls Host -> Journal -> mkdir of protected historical root; guard denied before mkdir; original ERROR retained",
+      "proposed_route": "LEGACY_OWNER_ROOT",
+      "reason": "HISTORICAL_OWNER_ROOT_NOT_AUTHORIZED",
+      "helper_chain": [
+        "test_injected_write_failure_stop",
+        "ConformanceTests.persist:66-70",
+        "Host.__init__:9-10",
+        "Journal.__init__:8-10",
+        "contracts.case_dir:57-58",
+        "historical owner mkdir"
+      ],
+      "first_unsafe_operation": "Journal.__init__ self.root.mkdir(parents=True,exist_ok=False)",
+      "proposed_destination_template": ".local/rpf-81-durable-unknown-presend-loopback/sessions/unit-{fsync|write}-{pid}-{monotonic_ns}",
+      "actual_original_dynamic_path": "UNAVAILABLE; original private logs not reopened",
+      "old_root_replayed": false
+    }
+  ],
+  "other_module_entries_semantically_unchanged": true,
+  "other_r81_rules_unchanged": true,
+  "helper_registry": {
+    "path": "runtime/tests/test_effectwitness_pge_r81.py",
+    "class": "ConformanceTests",
+    "owner_calls": [
+      "Host",
+      "Journal",
+      "c.case_dir"
+    ],
+    "approved_calls": [
+      "str",
+      "os.getpid",
+      "time.monotonic_ns",
+      "c.strict",
+      "oracle.strict",
+      "c.ROOT",
+      "c.digest",
+      "c.spec",
+      "c.source_id",
+      "c.scope",
+      "c.sha",
+      "c.canonical",
+      "c.claim_send",
+      "probe.proposal",
+      "probe.rechain",
+      "oracle.inspect",
+      "ast.parse",
+      "ast.walk",
+      "isinstance",
+      "len",
+      "dict",
+      "set",
+      "copy.deepcopy",
+      "ValueError",
+      "FileExistsError",
+      "x.items",
+      "<expr>.read_bytes",
+      "<expr>.read_text",
+      "all",
+      "<expr>.decode",
+      "<expr>.join",
+      "<expr>.splitlines"
+    ],
+    "method_ids": [
+      "test_strict_json",
+      "test_fixture_roots",
+      "test_oracle_imports_independent",
+      "test_normal_journal_ack",
+      "test_unknown_denies_all_domains_roles_old_send",
+      "test_restart_same_journal",
+      "test_existing_session_rejected",
+      "test_single_writer_kernel_lock",
+      "test_injected_write_failure_stop",
+      "test_injected_fsync_failure_stop",
+      "test_lock_timeout_fail_closed",
+      "test_torn_new_candidate_rejected",
+      "test_missing_committed_tail_rejected",
+      "test_units_cannot_consume_network_budget",
+      "test_old_scope_refused",
+      "test_semantic_old_ticket_proposal",
+      "test_semantic_new_ticket_proposal",
+      "test_wrong_missing_anchor",
+      "test_bad_owner_source_boolean_seq"
+    ],
+    "dependencies": [
+      {
+        "path": "runtime/runproof_runtime/effectwitness/pge_r81_contracts.py",
+        "sha256": "682ecfb90ea23d0d1fc785053bfe5bbcc786121370920bfac9da9c3b0c3eb247"
+      },
+      {
+        "path": "runtime/runproof_runtime/effectwitness/pge_r81_journal.py",
+        "sha256": "69b380778496d84a07629db5d0986677763aca2a4011e7f008ecf44fccb82d6c"
+      },
+      {
+        "path": "runtime/runproof_runtime/effectwitness/pge_r81_barrier.py",
+        "sha256": "fc11642a4bba6cb13600a0a6829e8d9261bf4251939195cc1589f83d0d05bfe7"
+      }
+    ]
+  },
+  "old_discovered_ids": 1232,
+  "fresh_complete_inventory": "NOT_RUN",
+  "fresh_module_discovery": {
+    "module": "test_effectwitness_lab_cross_domain",
+    "ids": [
+      "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_deadline_source_namespace_and_no_extra_requests",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_four_sequences",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_no_free_text_in_safe_projection",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_old_certificate_and_synthetic_upgrade_rejected",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_oracle_copy_and_fixture_no_provider",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_provider_shape_failure_modes",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_rehashed_semantic_controls_all_sequences",
+      "test_effectwitness_lab_cross_domain.SelectTests.test_unknown_write_lock_torn_restart_and_no_refund"
+    ],
+    "count": 9
+  },
+  "prior_counts": {
+    "PASS": 688,
+    "SKIP": 5,
+    "UNAVAILABLE": 537,
+    "ERROR": 2
+  },
+  "projected_route_change_only": {
+    "PORTABLE": -2,
+    "LEGACY_OWNER_ROOT": 2,
+    "all_required": true,
+    "not_a_new_execution_or_complete_discovery": true
+  },
+  "formal_r60_rows": [
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_deadline_source_namespace_and_no_extra_requests",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_four_sequences",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_no_free_text_in_safe_projection",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_old_certificate_and_synthetic_upgrade_rejected",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_oracle_copy_and_fixture_no_provider",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_provider_shape_failure_modes",
+      "actual": "PASS",
+      "observed_event": "PASS",
+      "reason": "original unittest event"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_rehashed_semantic_controls_all_sequences",
+      "actual": "ERROR",
+      "observed_event": "STARTED",
+      "reason": "MODULE_TIMEOUT_WITHOUT_FINAL_SETTLEMENT"
+    },
+    {
+      "id": "test_effectwitness_lab_cross_domain.SelectTests.test_unknown_write_lock_torn_restart_and_no_refund",
+      "actual": "NOT_RUN",
+      "observed_event": "NOT_RUN",
+      "reason": "not reached before module timeout"
+    }
+  ],
+  "no_old_root_io": true,
+  "reason_for_stop": "300-second frozen module timeout; no source edits/retry/budget expansion after failure"
+}

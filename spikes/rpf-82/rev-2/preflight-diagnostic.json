@@ -1,0 +1,332 @@
+{
+  "plan": "RPF-82/rev-2",
+  "attempt": 2,
+  "status": "PASS",
+  "base_sha": "531338ad88e9ba8e6d4d4b271b10fbe7d161d46e",
+  "utc": "2026-10-30T02:55:45.919022+00:00",
+  "monotonic_ns": 145554037267800,
+  "receipt_raw_sha256": "1f1ecd20b9a591abad7ce347fb6974ae314142425283b07521d9ecb289854d6f",
+  "checks_raw_sha256": "6e4536387a2bfc6b36872f9a56e0c8779d83df28815a47fa12459d6d498a68df",
+  "checks": {
+    "root": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "bbf7458fa1736d98c88be45df36a72c12e4da73a5222ed33e48b612587afb44e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "branch": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "head": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "6889f29d8a1267dc9416fe31fe4a35627296eea8d5b262265ad04581c36ae57a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "status": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "remote": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e5453c2ffebbaf0d3666fe3edcf5b5bbea722e0dfbb098fd3d5472e20684b15c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "lsremote": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "24c1015bed2ceb402b5a7aefe645cfa54336bb237c3d35f6607780f5187ca069",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "worktrees": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "ca1857f25a56687adad10723d0bfa43321b551cfaae7dc4ab3a92768fccc8a44",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "config": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "611ecf6d994c8375e1de94f90549e10736791c618219ee21a564ebcf295d062b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ACL:.": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "9cbb7fba62e799fcf7403543e7bdf93630f2b82f8c38ec61d341077de7a20e36",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "ACL:.local": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "9cbb7fba62e799fcf7403543e7bdf93630f2b82f8c38ec61d341077de7a20e36",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "base:.github/workflows/release-gate.yml": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "29704db27e1ce0620fcaf34d1b2cff068c323874054c0e641fd63baf94dd153f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "index:.github/workflows/release-gate.yml": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "29704db27e1ce0620fcaf34d1b2cff068c323874054c0e641fd63baf94dd153f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "base:runtime/tests/test_effectwitness_lab_cross_domain.py": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "0bde14a02f0fa863a346c4a384c4c99c7a8aa35251b78ba82e234f8cda6b92ea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "index:runtime/tests/test_effectwitness_lab_cross_domain.py": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "0bde14a02f0fa863a346c4a384c4c99c7a8aa35251b78ba82e234f8cda6b92ea",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "absent-head:ci/run-runtime-contract-tests.py": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d817b3236653e02fc2194f75070f8a71eb31999a5be31b645d20c995d4d8c6c6"
+    },
+    "absent-index:ci/run-runtime-contract-tests.py": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:ci/run-runtime-contract-tests.py": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:ci/runtime-contract-test-matrix.json": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "82f7604f25cb90b1d94a74d1d83a28e3fed796ad0ac7e07f5c3779aff4f771cb"
+    },
+    "absent-index:ci/runtime-contract-test-matrix.json": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:ci/runtime-contract-test-matrix.json": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:ci/test_run_runtime_contract_tests.py": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "4c0bd87769b968aba3f338cfa229b0d97a47f4080d8796ed86be831ef17a1179"
+    },
+    "absent-index:ci/test_run_runtime_contract_tests.py": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:ci/test_run_runtime_contract_tests.py": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:spikes/rpf-82/rev-2/README.md": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "9865216d15c96570425380088415bd3478d3bb477233bb1238a21cff173ddbd6"
+    },
+    "absent-index:spikes/rpf-82/rev-2/README.md": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:spikes/rpf-82/rev-2/README.md": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:spikes/rpf-82/rev-2/RESULT.md": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e19e32d6281a42d0c46a03e24034b061c879ebf6d6d7ae92c37ebd33b5051ece"
+    },
+    "absent-index:spikes/rpf-82/rev-2/RESULT.md": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:spikes/rpf-82/rev-2/RESULT.md": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:spikes/rpf-82/rev-2/preflight-diagnostic.json": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "d4f75977889b7eaf99507e5f2142ac124b32775919b5ac9baf5f85b74935a653"
+    },
+    "absent-index:spikes/rpf-82/rev-2/preflight-diagnostic.json": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:spikes/rpf-82/rev-2/preflight-diagnostic.json": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:spikes/rpf-82/rev-2/classification-ledger.json": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "15ed6cfc772f4f8f0ac4fe81cb981a6f94840c85ee9d558c063ee4ac09eb662b"
+    },
+    "absent-index:spikes/rpf-82/rev-2/classification-ledger.json": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:spikes/rpf-82/rev-2/classification-ledger.json": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:spikes/rpf-82/rev-2/verification-diagnostic.json": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "c35efbf67e5020e2a52e8e5fac6e0b1c2e36dfc882a3b7d2d211edba7d905021"
+    },
+    "absent-index:spikes/rpf-82/rev-2/verification-diagnostic.json": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:spikes/rpf-82/rev-2/verification-diagnostic.json": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "absent-head:spikes/rpf-82/rev-2/counterexamples.json": {
+      "status": "PASS",
+      "exit": 128,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e705def7bc888ab074fe87f5c06167d88a90eb8abf415b14ff83765d9e4134c2"
+    },
+    "absent-index:spikes/rpf-82/rev-2/counterexamples.json": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:spikes/rpf-82/rev-2/counterexamples.json": {
+      "status": "PASS",
+      "exists": false,
+      "ignored": false,
+      "ancestors_reparse": false
+    },
+    "ignored:.local/rpf-82-rev-2-ci-isolation-attempt-02": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "b78e9a9c56b87c0ca91787e085dbbedefeeaf3def748675f4f3e00773833f9f9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:.local/rpf-82-rev-2-ci-isolation-attempt-02": {
+      "status": "PASS",
+      "exists": false,
+      "ancestors_reparse": false
+    },
+    "ignored:.local/rpf-82-rev-2-g0-receipt-attempt-02.json": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "590427e7bb0536c06f9d9475e1c76772222406e29a23b6383b944f8663715026",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "FS:.local/rpf-82-rev-2-g0-receipt-attempt-02.json": {
+      "status": "PASS",
+      "exists": false,
+      "ancestors_reparse": false
+    },
+    "file:AGENTS.md": {
+      "status": "PASS",
+      "sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c"
+    },
+    "file:.gitignore": {
+      "status": "PASS",
+      "sha256": "0522e40e0a528ccb1227f5d7503e7e6a876b12b6dc9c75d9f86163cc150eff6f"
+    },
+    "file:docs/project/PROJECT_BRIEF.md": {
+      "status": "PASS",
+      "sha256": "7de71198436548dd4890913c812a99431a3faa733070baf5756157fc885a5cfd"
+    },
+    "file:docs/project/CURRENT_STATE.md": {
+      "status": "PASS",
+      "sha256": "a5ae908b7338b075dde579d60278e9275d566c15047a2cc8dc24a76d6faa26b1"
+    },
+    "file:docs/project/DECISIONS.md": {
+      "status": "PASS",
+      "sha256": "d7eeaf5831f7a36e821ee0daca50e60368a920574e3917b007ead15971e25018"
+    },
+    "file:.github/workflows/release-gate.yml": {
+      "status": "PASS",
+      "sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee"
+    },
+    "platform": {
+      "status": "PASS"
+    },
+    "CI_REVIEW": {
+      "status": "PASS"
+    },
+    "head_recheck": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "6889f29d8a1267dc9416fe31fe4a35627296eea8d5b262265ad04581c36ae57a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "status_recheck": {
+      "status": "PASS",
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "prior_attempt": {
+    "status": "INVALID",
+    "reason": "ACL child PowerShell failure was not propagated; prior PASS invalid; original receipt/root not opened or modified"
+  },
+  "directory_fsync": "UNAVAILABLE on Windows stdlib; file flush+fsync required",
+  "git_https": "Local Git Schannel sslVerify=true returned exact fixed main SHA; no persistent TLS configuration changed",
+  "platform": {
+    "os": "Windows",
+    "python_version": "3.14.6"
+  }
+}

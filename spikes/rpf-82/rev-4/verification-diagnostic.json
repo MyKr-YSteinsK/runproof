@@ -1,0 +1,123 @@
+{
+  "plan": "RPF-82/rev-4",
+  "outcome": "B_UNACTIVATED_ROUTER",
+  "status_at_seal": "Partial_PENDING_GIT_DELIVERY",
+  "gates_at_seal": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "NOT_APPLICABLE",
+    "A04": "NOT_RUN",
+    "A05": "FAIL",
+    "A06": "PASS",
+    "A07": "NOT_RUN",
+    "A08": "NOT_RUN",
+    "A09": "PASS"
+  },
+  "format_checks": {
+    "AST_compile": "PASS",
+    "strict_JSON_schema": "PASS",
+    "PyYAML": "PASS",
+    "CLI_help_exit": 0,
+    "CLI_help_stdout_sha256": "ad60fd78056002755f91c8c14f75696984a9d99bbd071369d4f1dc84f9fa3558"
+  },
+  "inventory": {
+    "manifest_modules": 57,
+    "prior_unique_required_methods": 1232,
+    "prior_sources_match": true,
+    "fresh_discovery": "NOT_RUN"
+  },
+  "new_tests": {
+    "Router": "NOT_RUN",
+    "RPF60_nine": "NOT_RUN",
+    "RPF75": "NOT_RUN",
+    "reason": "No proven causal patch; conservative B does not require repeating runtime tests"
+  },
+  "prior_rev3": {
+    "Router": {
+      "PASS": 32,
+      "restamped": false
+    },
+    "RPF60": {
+      "PASS": 7,
+      "ERROR_TIMEOUT": 1,
+      "NOT_RUN": 1,
+      "receipt_sha256": "cf7a621bc3be0c7cb4274fbb3342b5b2e2df3a8bf5638688c702be402b5b57e8",
+      "output_sha256": "fe4ea87ed4d79da79b2ddb0e584fb8ab38410c24791534be5331dbabe7409981",
+      "restamped": false
+    }
+  },
+  "preservation": {
+    "prior_18_public_files_and_RPF60_raw_match_G0": true,
+    "five_new_snapshots": {
+      "ci/run-runtime-contract-tests.py": {
+        "path": "spikes/rpf-82/rev-4/pre-patch-sources/run-runtime-contract-tests.py",
+        "raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "bytes": 31798
+      },
+      "ci/runtime-contract-test-matrix.json": {
+        "path": "spikes/rpf-82/rev-4/pre-patch-sources/runtime-contract-test-matrix.json",
+        "raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+        "lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+        "bytes": 138888
+      },
+      "ci/test_run_runtime_contract_tests.py": {
+        "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_run_runtime_contract_tests.py",
+        "raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+        "lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+        "bytes": 12093
+      },
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": {
+        "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+        "raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8",
+        "lf_sha256": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+        "bytes": 20384
+      },
+      ".github/workflows/release-gate.yml": {
+        "path": "spikes/rpf-82/rev-4/pre-patch-sources/release-gate.yml",
+        "raw_sha256": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+        "lf_sha256": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb",
+        "bytes": 3998
+      }
+    },
+    "three_prior_snapshots_intact": true,
+    "no_source_patch": true
+  },
+  "workflow_blob": "99aee95819cf1e2ea41b0bcfe68b3444730c6ba9",
+  "rpf60_harness_static_proof": {
+    "all_original_assertions_equal": true,
+    "all_9_method_names_equal": true,
+    "all_original_helpers_ast_equal": true,
+    "race_method_equal_after_only_owner_plumbing_normalization": true,
+    "new_harness_functions": [
+      "setUpModule",
+      "tearDownModule",
+      "_test_owner"
+    ],
+    "side_effect_review": "same two bounded Python race children, same synthetic ledger operations; only scoped owner/temp initialization added; no new network/SDK/business operation; unset RPF82_TEST_ROOT fails before writing",
+    "canonical_fixture_precondition": "Original workflow has no RPF82_TEST_ROOT admission; conservative CI may report RPF60 setUpModule ERROR, not 9 separate assertion failures"
+  },
+  "whitespace": {
+    "working_diff_check_exit": 0,
+    "archive_diff_check": "Only inherited RPF60 EOF line appears; --no-index has diff bit1, whitespace bit2",
+    "inherited_exception_authority": "User previously authorized only three inherited historical whitespace issues, including RPF60 EOF; this byte-identical archive repeats that same EOF condition",
+    "no_blanket_whitespace_relaxation": true
+  },
+  "supply_chain": {
+    "exact_public_paths_reviewed": 32,
+    "known_sensitive_host_and_credential_patterns": "NO_MATCH",
+    "source_identifiers_and_synthetic_negative_control_placeholders": "retained, reviewed as public code; no private provider text or credential"
+  },
+  "lifecycle": {
+    "recorded_pid": 668,
+    "current_state": "ABSENT",
+    "observed_utc": "2026-10-30T12:58:42.542035+00:00",
+    "stdout_sha256": "495415d7012d8099c49dabcf801aaaf3f3c68063904e02a9abb09e6a5113d383",
+    "exit": 0
+  },
+  "new_local_provider_sdk_business_writes": 0,
+  "new_actions_at_seal": 0,
+  "CPU_RAM_IO_money": "UNAVAILABLE",
+  "sealed_utc": "2026-10-30T13:08:15.720622+00:00"
+}

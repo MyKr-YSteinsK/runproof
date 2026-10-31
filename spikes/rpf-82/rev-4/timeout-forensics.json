@@ -1,0 +1,188 @@
+{
+  "plan": "RPF-82/rev-4",
+  "run_index": "rev3 formal RPF60 first attempt; no rev4 repetition",
+  "timed_out_id": "test_effectwitness_lab_cross_domain.SelectTests.test_rehashed_semantic_controls_all_sequences",
+  "prior_pass_ids": [
+    "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation",
+    "test_effectwitness_lab_cross_domain.SelectTests.test_deadline_source_namespace_and_no_extra_requests",
+    "test_effectwitness_lab_cross_domain.SelectTests.test_four_sequences",
+    "test_effectwitness_lab_cross_domain.SelectTests.test_no_free_text_in_safe_projection",
+    "test_effectwitness_lab_cross_domain.SelectTests.test_old_certificate_and_synthetic_upgrade_rejected",
+    "test_effectwitness_lab_cross_domain.SelectTests.test_oracle_copy_and_fixture_no_provider",
+    "test_effectwitness_lab_cross_domain.SelectTests.test_provider_shape_failure_modes"
+  ],
+  "prior_not_run_ids": [
+    "test_effectwitness_lab_cross_domain.SelectTests.test_unknown_write_lock_torn_restart_and_no_refund"
+  ],
+  "receipt": {
+    "exit": 1,
+    "timeout": true,
+    "truncated": false,
+    "stdout_sha256": "fe4ea87ed4d79da79b2ddb0e584fb8ab38410c24791534be5331dbabe7409981",
+    "bytes": 1130,
+    "monotonic_start_ns": 176523152578200,
+    "monotonic_end_ns": 176823179306300,
+    "child_pid": 668,
+    "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+  },
+  "module_duration_seconds": 300.0267281,
+  "per_method_durations": "UNAVAILABLE",
+  "parent_pid": null,
+  "parent_pid_status": "UNAVAILABLE_NOT_RECORDED",
+  "child_pid": 668,
+  "child_os_creation_time": null,
+  "raw_start_stop_utc": "UNAVAILABLE_NOT_RECORDED",
+  "derived_utc": {
+    "start": "2026-10-30T11:31:55.064395+00:00",
+    "stop": "2026-10-30T11:36:55.091123+00:00",
+    "basis": "INFERENCE from rev3 freeze UTC/monotonic pair on same run; not raw process clock and not proof against wall-clock adjustments"
+  },
+  "raw_log_anchor": {
+    "sha256": "fe4ea87ed4d79da79b2ddb0e584fb8ab38410c24791534be5331dbabe7409981",
+    "bytes": 1130,
+    "streams": "merged stdout and stderr",
+    "last_complete_record": "provider_shape_failure_modes PASS",
+    "last_record": "rehashed_semantic_controls_all_sequences STARTED; no terminal result"
+  },
+  "progress_anchor_sha256": "f0c83bff43dfa06db8be923c9312701ce163e4cf9247e0f968e90217b92241f7",
+  "final_result_json": "ABSENT; report null in original summary; partial events retained, not discarded",
+  "lifecycle": {
+    "current_exact_pid_check": {
+      "recorded_pid": 668,
+      "current_state": "ABSENT",
+      "observed_utc": "2026-10-30T12:58:42.542035+00:00",
+      "stdout_sha256": "495415d7012d8099c49dabcf801aaaf3f3c68063904e02a9abb09e6a5113d383",
+      "exit": 0
+    },
+    "parent_kill_wait": "Source kills exact Popen handle then waits; actual exit code recorded",
+    "kernel_group_termination": "UNAVAILABLE: no process group/job receipt",
+    "remaining_descendants": "No outstanding children supported for this failure: prior race communicate calls returned; active synthetic/reanchor path has no process spawning. Descendant PID list was not recorded; no blanket process scan or kill was performed",
+    "further_local_tests": "NOT_RUN; no new runtime admitted"
+  },
+  "static_call_trace": [
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "callable": "fake_order",
+      "line": 36,
+      "end_line": 55,
+      "source_raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "callable": "fake_config",
+      "line": 56,
+      "end_line": 69,
+      "source_raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "callable": "synthetic_payload",
+      "line": 84,
+      "end_line": 98,
+      "source_raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "callable": "rehash",
+      "line": 138,
+      "end_line": 156,
+      "source_raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "callable": "controls",
+      "line": 158,
+      "end_line": 172,
+      "source_raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "callable": "test_rehashed_semantic_controls_all_sequences",
+      "line": 210,
+      "end_line": 216,
+      "source_raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain.py",
+      "callable": "verify_chain",
+      "line": 102,
+      "end_line": 112,
+      "source_raw_sha256": "d5f70aa57a8b3041bbb744aa286613e089af82c7e7d7f6d15711118fd74bf13e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain.py",
+      "callable": "_write",
+      "line": 42,
+      "end_line": 44,
+      "source_raw_sha256": "d5f70aa57a8b3041bbb744aa286613e089af82c7e7d7f6d15711118fd74bf13e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain.py",
+      "callable": "read",
+      "line": 45,
+      "end_line": 51,
+      "source_raw_sha256": "d5f70aa57a8b3041bbb744aa286613e089af82c7e7d7f6d15711118fd74bf13e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain.py",
+      "callable": "mutate",
+      "line": 52,
+      "end_line": 60,
+      "source_raw_sha256": "d5f70aa57a8b3041bbb744aa286613e089af82c7e7d7f6d15711118fd74bf13e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain.py",
+      "callable": "execute_trial",
+      "line": 131,
+      "end_line": 155,
+      "source_raw_sha256": "d5f70aa57a8b3041bbb744aa286613e089af82c7e7d7f6d15711118fd74bf13e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain.py",
+      "callable": "read",
+      "line": 164,
+      "end_line": 183,
+      "source_raw_sha256": "d5f70aa57a8b3041bbb744aa286613e089af82c7e7d7f6d15711118fd74bf13e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/lab_cross_domain_verify.py",
+      "callable": "verify_payload",
+      "line": 38,
+      "end_line": 120,
+      "source_raw_sha256": "40d32b22094525269990d06b3fb0dfc716b3ce322bffda078aec99d11529854f"
+    }
+  ],
+  "possible_causes": [
+    {
+      "hypothesis": "Aggregate module deadline expired while eighth method was active",
+      "evidence": "FACT: launch p.wait(timeout=300), progress shows seven PASS then STARTED, timeout true; not a per-method 300-second timer",
+      "missing": "No method/subtest timestamps; cannot determine how much of 300 seconds each method used",
+      "classification": "CONFIRMED_STOP_MECHANISM_NOT_ROOT_CAUSE"
+    },
+    {
+      "hypothesis": "Synthetic ledger/reanchor CPU or filesystem cost",
+      "evidence": "Source: four sequences, mutations, deepcopy, canonical rehash and verification; fixture Ledger uses repeated snapshots/readback/fsync",
+      "counterevidence": "rev2 historical full nine passed in 244.694s; no performance samples for comparison",
+      "classification": "INFERENCE_UNPROVEN"
+    },
+    {
+      "hypothesis": "Hanging race/CLI child",
+      "evidence": "First contention test PASS implies both communicate(timeout=30) completed; timeout active method does not call controls CLI or Popen; mocked executors only",
+      "counterevidence": "Parent process exited; no subprocess launch on active method/helper/verifier path",
+      "classification": "NO_SUPPORT_FOR_THIS_TIMEOUT"
+    },
+    {
+      "hypothesis": "Host contention/IO/antivirus",
+      "evidence": "No CPU/RAM/IO/host contention telemetry in old receipt",
+      "classification": "UNAVAILABLE_UNPROVEN"
+    },
+    {
+      "hypothesis": "Output pipe backpressure",
+      "evidence": "Reader thread active in source, only 1130 output bytes, truncated false, no pipe telemetry",
+      "classification": "UNPROVEN_LOW_SUPPORT"
+    }
+  ],
+  "root_cause": "UNPROVEN",
+  "new_experiments": "NOT_RUN",
+  "decision": "B_UNACTIVATED_ROUTER"
+}

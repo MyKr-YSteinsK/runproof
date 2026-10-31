@@ -1,0 +1,149 @@
+{
+  "plan": "RPF-82/rev-3",
+  "source_freeze": {
+    "utc": "2026-10-30T11:31:24.761608+00:00",
+    "monotonic_ns": 176492849791600,
+    "raw_sha256": {
+      "ci/run-runtime-contract-tests.py": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "ci/runtime-contract-test-matrix.json": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "ci/test_run_runtime_contract_tests.py": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      ".github/workflows/release-gate.yml": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8"
+    },
+    "lf_sha256": {
+      "ci/run-runtime-contract-tests.py": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "ci/runtime-contract-test-matrix.json": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+      "ci/test_run_runtime_contract_tests.py": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+      ".github/workflows/release-gate.yml": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f"
+    },
+    "snapshot_map": {
+      "run-runtime-contract-tests.py": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "runtime-contract-test-matrix.json": "1aae16bb743baf3a9eaeda674b15a9a93e0f0601b87d1b1373ae90cd2673cc1f",
+      "test_run_runtime_contract_tests.py": "8751fdb1443d65d07a8ddc86243398e9ffb1a266f6770446dd7156090ddde3c8"
+    },
+    "prefreeze_checks": {
+      "AST_COMPILE": "PASS",
+      "STRICT_JSON_SCHEMA": "PASS",
+      "YAML_PARSE": "PASS",
+      "CLI_HELP_EXIT": 0,
+      "CLI_HELP_STDOUT_SHA256": "ad60fd78056002755f91c8c14f75696984a9d99bbd071369d4f1dc84f9fa3558",
+      "DIFF_CHECK_EXIT": 0,
+      "helper_closure": "PASS",
+      "unit_tests": 32,
+      "prefreeze_r60_tests": 2
+    }
+  },
+  "formal_tests": {
+    "router_unit": {
+      "count": 32,
+      "exit": 0,
+      "stdout_stderr_sha256": "933da0d7df155fd04fc76fa1ec3c9526d4f7cb008578f89b4948603ca8cbd633"
+    },
+    "r60": {
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "fe4ea87ed4d79da79b2ddb0e584fb8ab38410c24791534be5331dbabe7409981",
+        "bytes": 1130,
+        "monotonic_start_ns": 176523152578200,
+        "monotonic_end_ns": 176823179306300,
+        "child_pid": 668,
+        "runner_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      },
+      "rows": [
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_deadline_source_namespace_and_no_extra_requests",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_four_sequences",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_no_free_text_in_safe_projection",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_old_certificate_and_synthetic_upgrade_rejected",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_oracle_copy_and_fixture_no_provider",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_provider_shape_failure_modes",
+          "actual": "PASS",
+          "observed_event": "PASS",
+          "reason": "original unittest event"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_rehashed_semantic_controls_all_sequences",
+          "actual": "ERROR",
+          "observed_event": "STARTED",
+          "reason": "MODULE_TIMEOUT_WITHOUT_FINAL_SETTLEMENT"
+        },
+        {
+          "id": "test_effectwitness_lab_cross_domain.SelectTests.test_unknown_write_lock_torn_restart_and_no_refund",
+          "actual": "NOT_RUN",
+          "observed_event": "NOT_RUN",
+          "reason": "not reached before module timeout"
+        }
+      ],
+      "final_unittest_settlement": "UNAVAILABLE",
+      "raw_log_sha256": "fe4ea87ed4d79da79b2ddb0e584fb8ab38410c24791534be5331dbabe7409981",
+      "progress_sha256": "f0c83bff43dfa06db8be923c9312701ce163e4cf9247e0f968e90217b92241f7"
+    },
+    "r75_original_suite": "NOT_RUN",
+    "complete_inventory": "NOT_RUN"
+  },
+  "sealed": true,
+  "status": "Partial",
+  "sealed_utc": "2026-10-30T11:41:12.482388+00:00",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "NOT_RUN",
+    "A04": "PASS",
+    "A05": "FAIL",
+    "A06": "PASS",
+    "A07": "NOT_RUN",
+    "A08": "NOT_RUN",
+    "A09": "PASS"
+  },
+  "delivery": {
+    "commit": "NOT_RUN",
+    "push": "NOT_RUN",
+    "hosted_ci": "NOT_RUN",
+    "reason": "Frozen RPF60 module timed out at 300 seconds; A05 did not pass"
+  },
+  "cost": {
+    "provider_calls": 0,
+    "sdk_launches": 0,
+    "business_mutation": 0,
+    "docker_jvm": 0,
+    "actions_new_runs": 0,
+    "money": "UNAVAILABLE"
+  },
+  "freeze_unchanged": true,
+  "pre_repair_snapshots_unchanged": true
+}

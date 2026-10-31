@@ -1,0 +1,240 @@
+{
+  "source_freeze": {
+    "utc": "2026-10-30T09:09:20.271412+00:00",
+    "monotonic_ns": 167968342229600,
+    "source_sha256_lf": {
+      "ci/run-runtime-contract-tests.py": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "ci/test_run_runtime_contract_tests.py": "1bddfc9ad24ee1698a1d8ac24cbc5aa17e9bea6bdf80d35136910a2329235e61",
+      "ci/runtime-contract-test-matrix.json": "20273266dfb0a3e9e3b4f2040779aca739b24aca74d5adb340ea8cfc0e252183",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+      ".github/workflows/release-gate.yml": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb"
+    },
+    "AST_COMPILE": "PASS",
+    "JSON_SCHEMA": "PASS",
+    "YAML_PARSE": "PASS",
+    "router_unit_tests": {
+      "tests": 22,
+      "exit": 0
+    },
+    "freeze": "SOURCE_AND_MATRIX_FROZEN_BEFORE_INTEGRATION"
+  },
+  "controls": [
+    {
+      "case": "hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "6483ec6954f467a9ba546ebc753461450a0bac73343626513f7d9dcb2dcb8541",
+        "bytes": 92,
+        "monotonic_start_ns": 168256637042800,
+        "monotonic_end_ns": 168256793319800
+      },
+      "payload": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true
+      }
+    },
+    {
+      "case": "sibling",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "3c4d2b12cd77af1466f8194cc08297d4bf8974c86e4eeffeaea05a801627094b",
+        "bytes": 52,
+        "monotonic_start_ns": 168256798937400,
+        "monotonic_end_ns": 168257000591000
+      },
+      "payload": {
+        "loopback_bytes": 5,
+        "python_subprocess_exit": 0
+      }
+    },
+    {
+      "case": "crash",
+      "receipt": {
+        "exit": 7,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 168257015754300,
+        "monotonic_end_ns": 168257161425300
+      },
+      "payload": null
+    },
+    {
+      "case": "timeout",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 168257163586300,
+        "monotonic_end_ns": 168257585931700
+      },
+      "payload": null
+    },
+    {
+      "case": "overflow",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": true,
+        "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+        "bytes": 2097153,
+        "monotonic_start_ns": 168257588211400,
+        "monotonic_end_ns": 168257738672800
+      },
+      "payload": null
+    },
+    {
+      "case": "missing",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 168257744061000,
+        "monotonic_end_ns": 168257898965000
+      },
+      "payload": null
+    },
+    {
+      "case": "dynamic-inventory-change",
+      "receipt": {
+        "exit": 2,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "4ccccb8d4870f4e1b42d73e40265b39f7311e0090e0f73bc9c4309ac0eb71d53",
+        "bytes": 46,
+        "monotonic_start_ns": 168257911522800,
+        "monotonic_end_ns": 168258550571400
+      },
+      "result_exists": false
+    }
+  ],
+  "router_unit_cases": [
+    {
+      "id": "test_actual_crash_missing_result_timeout_and_truncation",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_added_tracked_module_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_duplicate_and_nonfinite_json_fail",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_duplicate_module_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_environment_does_not_inherit_unlisted_values",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_fail_and_error_propagate",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_false_prerequisite_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_inventory_is_exact_tracked_set",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_known_defects_cannot_be_relabelled",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_missing_overlap_unknown_method_fail",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_omitted_module_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_output_scope_rejects_legacy_and_escape",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_parent_has_no_runtime_test_import_or_audit_hook",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_real_audit_hook_then_unpolluted_sibling",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_real_class_skip_is_accounted_without_claiming_execution",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_result_omission_duplication_and_false_pass_fail",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_rpf60_owner_paths_and_missing_parent",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_source_drift_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_unavailable_is_never_skip_or_pass",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_unknown_route_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_weakened_coverage_fails",
+      "actual": "PASS"
+    },
+    {
+      "id": "test_wrong_schema_type_fails",
+      "actual": "PASS"
+    }
+  ],
+  "known_independent_failures": [
+    {
+      "id": "test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename",
+      "route": "PORTABLE",
+      "current_windows_actual": "PASS",
+      "original_fixed_linux_run": "FAIL",
+      "source_modified": false,
+      "meaning": "Windows PASS does not resolve original Linux failure; rev-3 work remains unauthorized"
+    },
+    {
+      "id": "test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime",
+      "route": "PORTABLE",
+      "current_windows_actual": "PASS",
+      "original_fixed_linux_run": "FAIL",
+      "source_modified": false,
+      "meaning": "Windows PASS does not resolve original Linux failure; rev-3 work remains unauthorized"
+    }
+  ],
+  "historical_receipt_forgery": {
+    "actual": "NOT_RUN",
+    "reason": "No historical receipt fabricated/read; invalid prerequisite marker and coverage-policy negative controls rejected by router unit assertions"
+  },
+  "new_classification_counterexamples": [
+    "test_effectwitness_pge_r81.ConformanceTests.test_injected_fsync_failure_stop",
+    "test_effectwitness_pge_r81.ConformanceTests.test_injected_write_failure_stop"
+  ],
+  "policy": "Required obligations unchanged; no failed ERROR reclassified post-freeze"
+}

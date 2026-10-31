@@ -1,0 +1,112 @@
+{
+  "plan": "RPF-82/rev-2",
+  "status": "Partial",
+  "base_sha": "531338ad88e9ba8e6d4d4b271b10fbe7d161d46e",
+  "source_freeze": {
+    "utc": "2026-10-30T09:09:20.271412+00:00",
+    "monotonic_ns": 167968342229600,
+    "source_sha256_lf": {
+      "ci/run-runtime-contract-tests.py": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "ci/test_run_runtime_contract_tests.py": "1bddfc9ad24ee1698a1d8ac24cbc5aa17e9bea6bdf80d35136910a2329235e61",
+      "ci/runtime-contract-test-matrix.json": "20273266dfb0a3e9e3b4f2040779aca739b24aca74d5adb340ea8cfc0e252183",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+      ".github/workflows/release-gate.yml": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb"
+    },
+    "AST_COMPILE": "PASS",
+    "JSON_SCHEMA": "PASS",
+    "YAML_PARSE": "PASS",
+    "router_unit_tests": {
+      "tests": 22,
+      "exit": 0
+    },
+    "freeze": "SOURCE_AND_MATRIX_FROZEN_BEFORE_INTEGRATION"
+  },
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "FAIL",
+    "A05": "PASS",
+    "A06": "PASS",
+    "A07": "NOT_RUN",
+    "A08": "NOT_RUN",
+    "A09": "PASS"
+  },
+  "unit_tests": {
+    "count": 22,
+    "exit": 0,
+    "stdout_stderr_sha256": "da772afad202bf371debe5def16514564778c487a0af10904a3faf34ba56daa2"
+  },
+  "focused_attempt_01": {
+    "exit": 1,
+    "ledger_sha256": "a7571628a1591f10ef0184773006d0354bf3bbc8a69bf617efc154ba25e3940b",
+    "r75": {
+      "PASS": 87,
+      "UNAVAILABLE": 1
+    },
+    "r60": "ERROR then 120s timeout; original log retained"
+  },
+  "r60_focused_attempt_02": {
+    "receipt": {
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "stdout_sha256": "fa525fb45de09836ab22fc0cbdeecede5dabb1d08c7153c357f4edea46c19d61",
+      "bytes": 1399,
+      "monotonic_start_ns": 167634279225500,
+      "monotonic_end_ns": 167879444798600
+    },
+    "methods": 9,
+    "PASS": 9,
+    "runtime_seconds": 244.694
+  },
+  "integration": {
+    "attempt": 1,
+    "exit": 1,
+    "counts": {
+      "PASS": 688,
+      "SKIP": 5,
+      "UNAVAILABLE": 537,
+      "ERROR": 2
+    },
+    "routes": {
+      "DEDICATED_RUNNER": {
+        "UNAVAILABLE": 417
+      },
+      "FROZEN_PRIVATE_ARTIFACT": {
+        "UNAVAILABLE": 69
+      },
+      "LEGACY_SDK_PRECONDITION": {
+        "UNAVAILABLE": 16
+      },
+      "PORTABLE": {
+        "PASS": 688,
+        "SKIP": 5,
+        "ERROR": 2
+      },
+      "WINDOWS_NATIVE": {
+        "UNAVAILABLE": 35
+      }
+    },
+    "discovered": 1232,
+    "ledger_sha256": "a912d1255c41167a7327ef53a6db83436b14b04229bcd3f8fc0def8f520248d4",
+    "inventory_modules": 57,
+    "execution_modules": 43,
+    "reason": "Two portable methods depend transitively on protected historical owner; ERROR retained; no post-freeze source change"
+  },
+  "source_identity_after_run": "UNCHANGED",
+  "provider_requests": 0,
+  "real_sdk_children": 0,
+  "production_or_external_business_writes": 0,
+  "deployments": 0,
+  "canonical_gate": "NOT_RUN",
+  "git_delivery": {
+    "commit": "NOT_RUN",
+    "push": "NOT_RUN",
+    "new_hosted_ci": "NOT_RUN",
+    "reason": "Plan 5.4 stop after newly identified errors; A04 FAIL means stage quality boundary not met"
+  },
+  "actual_platform_cost": "UNAVAILABLE",
+  "reports_sealed_utc": "2026-10-30T09:17:19.842730+00:00"
+}

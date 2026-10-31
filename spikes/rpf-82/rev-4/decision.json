@@ -1,0 +1,32 @@
+{
+  "plan": "RPF-82/rev-4",
+  "outcome": "B_UNACTIVATED_ROUTER",
+  "reason": "Existing logs identify stop location and module budget, not a precise authorized causal bug; no repeat 300-second attempt justified",
+  "workflow_blob": "99aee95819cf1e2ea41b0bcfe68b3444730c6ba9",
+  "workflow_archival_raw_sha256": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+  "source_patch": "NONE; only exact workflow Base restoration after archive",
+  "candidate_ci_sources": "unchanged rev3 candidate, unactivated",
+  "rpf60_inherited_fix": {
+    "all_original_assertions_equal": true,
+    "all_9_method_names_equal": true,
+    "all_original_helpers_ast_equal": true,
+    "race_method_equal_after_only_owner_plumbing_normalization": true,
+    "new_harness_functions": [
+      "setUpModule",
+      "tearDownModule",
+      "_test_owner"
+    ],
+    "side_effect_review": "same two bounded Python race children, same synthetic ledger operations; only scoped owner/temp initialization added; no new network/SDK/business operation; unset RPF82_TEST_ROOT fails before writing",
+    "canonical_fixture_precondition": "Original workflow has no RPF82_TEST_ROOT admission; conservative CI may report RPF60 setUpModule ERROR, not 9 separate assertion failures"
+  },
+  "historical_A05": "FAIL",
+  "new_tests": "NOT_RUN",
+  "canonical_ci": "Not repaired; actual new hosted result must be observed after single push",
+  "retained_limits": [
+    "rev2/rev3 PARTIAL",
+    "RPF74 PAUSED",
+    "RPF81 rev2 BLOCKED",
+    "basename and stdlib defects unresolved",
+    "ALL_DISCOVERED required coverage unchanged"
+  ]
+}

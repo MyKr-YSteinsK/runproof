@@ -1,0 +1,348 @@
+{
+  "plan": "RPF-82/rev-4",
+  "outcome": "B_UNACTIVATED_ROUTER",
+  "base_sha": "531338ad88e9ba8e6d4d4b271b10fbe7d161d46e",
+  "authorized_paths": 32,
+  "expected_staged_paths": 31,
+  "expected_change_counts": {
+    "A": 30,
+    "M": 1,
+    "D": 0
+  },
+  "workflow_base_blob": "99aee95819cf1e2ea41b0bcfe68b3444730c6ba9",
+  "prior_raw_hashes": {
+    "ci/run-runtime-contract-tests.py": {
+      "raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "bytes": 31798
+    },
+    "ci/runtime-contract-test-matrix.json": {
+      "raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+      "bytes": 138888
+    },
+    "ci/test_run_runtime_contract_tests.py": {
+      "raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      "lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+      "bytes": 12093
+    },
+    "spikes/rpf-82/rev-2/README.md": {
+      "raw_sha256": "8bd72062187b0cb02b1abab577445b46a67e9e42e85ab8affade274f2a5326f6",
+      "lf_sha256": "dd7f9ebb84d15c107c1051e3fc0de7ec048e4bc4ad85df98ce7fc417e95670d3",
+      "bytes": 4178
+    },
+    "spikes/rpf-82/rev-2/RESULT.md": {
+      "raw_sha256": "31f8c6d76a0ec6108c1842d0b4d64c9a7bfc2f8d81eae38433510c40754bf644",
+      "lf_sha256": "369b13c0ebaba25c8fc836080d9e20805a63248df7a348fa4652967b39a0f085",
+      "bytes": 7621
+    },
+    "spikes/rpf-82/rev-2/preflight-diagnostic.json": {
+      "raw_sha256": "ea8e2a798c24efa18ad1a67281515510f27e6998129496234139c57caeed2e11",
+      "lf_sha256": "b386cf69562775ad5675e26eff1e7e68567c5e7d674fdbbe5632c68a66ca20da",
+      "bytes": 13868
+    },
+    "spikes/rpf-82/rev-2/verification-diagnostic.json": {
+      "raw_sha256": "242f09bfab51cba8ad65696265e0c219d177dd1f44c2be2b7a1cd1d8775944c4",
+      "lf_sha256": "fcabcd1c4c4d98ce881b5ab27dca6c4a2112fddfc5be7624063185de54a9578d",
+      "bytes": 3506
+    },
+    "spikes/rpf-82/rev-2/classification-ledger.json": {
+      "raw_sha256": "21609e8fbadbfce0363d04bb3144c1f9cc61559cb961b32ab9bff3c3ec2dc0a0",
+      "lf_sha256": "7b15618b3c93d188a7b2a03ceae0bb53a57975c71f6a20bc14d91d7e7ec669fe",
+      "bytes": 514098
+    },
+    "spikes/rpf-82/rev-2/counterexamples.json": {
+      "raw_sha256": "07fbbef560947c56aa7178f92b73ef1a81d3531429288817a9023be61c639a1f",
+      "lf_sha256": "10ffcd2990715223c0a87220185a3c17c0fd869971077afebc83210c4b04162c",
+      "bytes": 7352
+    },
+    "spikes/rpf-82/rev-3/README.md": {
+      "raw_sha256": "d9e3223205e2273ebe4321251b8017b2d57d2e01d0943721efd3caf373a5010f",
+      "lf_sha256": "dc7e3ba797363e666821de0d1eb6e4643bd5a785d375ce4ce65468e78b9e4c7a",
+      "bytes": 4495
+    },
+    "spikes/rpf-82/rev-3/RESULT.md": {
+      "raw_sha256": "018d2d0546d0ac6d68e1e156f5fb211e770e9f9ec7e7de6ed5321777d9ca0daf",
+      "lf_sha256": "40526fc71d33e4a5165c716f41b0dfdfb0cdf8acb964a1b6cdcd7b5d2d85a0c6",
+      "bytes": 8745
+    },
+    "spikes/rpf-82/rev-3/preflight-diagnostic.json": {
+      "raw_sha256": "4b9735d95b9fbf4c11caa55f9a060ded958d3913a1703beba1c6f1633f6670fe",
+      "lf_sha256": "8fc54337bc53b6970386242ea07b83a464e633b820f867e6eb5ae8e83a9a9dd0",
+      "bytes": 20833
+    },
+    "spikes/rpf-82/rev-3/verification-diagnostic.json": {
+      "raw_sha256": "135dc8ae54f31e0ac05e81a5ab0e72e6857b7034b412cf68672ecf90fa6446c5",
+      "lf_sha256": "3d3a88e1c334f83649dc80343724864f2d03bfee3d7c07fccdc49b2e3a749a18",
+      "bytes": 6114
+    },
+    "spikes/rpf-82/rev-3/classifier-correction-ledger.json": {
+      "raw_sha256": "de129d9002be1212f47063dec9be47779705dbc39c53c74e505cb9f2e34d773f",
+      "lf_sha256": "5895be1cae4699195d37b204d921ec30ed89e4807886c0fb5f684d88502e585e",
+      "bytes": 12244
+    },
+    "spikes/rpf-82/rev-3/counterexamples.json": {
+      "raw_sha256": "7810afc90b6b16a4de1dee16367803f8d2fdcdc2722f3f366a12851503e0712b",
+      "lf_sha256": "2132a7030a6ed8068dedb58508f2c200a2d37ce6979b90857d5078c4ac1788fc",
+      "bytes": 12010
+    },
+    "spikes/rpf-82/rev-3/pre-repair-sources/run-runtime-contract-tests.py": {
+      "raw_sha256": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "lf_sha256": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "bytes": 23839
+    },
+    "spikes/rpf-82/rev-3/pre-repair-sources/runtime-contract-test-matrix.json": {
+      "raw_sha256": "1aae16bb743baf3a9eaeda674b15a9a93e0f0601b87d1b1373ae90cd2673cc1f",
+      "lf_sha256": "20273266dfb0a3e9e3b4f2040779aca739b24aca74d5adb340ea8cfc0e252183",
+      "bytes": 135712
+    },
+    "spikes/rpf-82/rev-3/pre-repair-sources/test_run_runtime_contract_tests.py": {
+      "raw_sha256": "8751fdb1443d65d07a8ddc86243398e9ffb1a266f6770446dd7156090ddde3c8",
+      "lf_sha256": "1bddfc9ad24ee1698a1d8ac24cbc5aa17e9bea6bdf80d35136910a2329235e61",
+      "bytes": 7939
+    },
+    ".github/workflows/release-gate.yml": {
+      "raw_sha256": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+      "lf_sha256": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb",
+      "bytes": 3998
+    },
+    "runtime/tests/test_effectwitness_lab_cross_domain.py": {
+      "raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8",
+      "lf_sha256": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+      "bytes": 20384
+    }
+  },
+  "five_prepatch_archives": {
+    "ci/run-runtime-contract-tests.py": {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/run-runtime-contract-tests.py",
+      "raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "bytes": 31798
+    },
+    "ci/runtime-contract-test-matrix.json": {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/runtime-contract-test-matrix.json",
+      "raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+      "bytes": 138888
+    },
+    "ci/test_run_runtime_contract_tests.py": {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_run_runtime_contract_tests.py",
+      "raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      "lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+      "bytes": 12093
+    },
+    "runtime/tests/test_effectwitness_lab_cross_domain.py": {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8",
+      "lf_sha256": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+      "bytes": 20384
+    },
+    ".github/workflows/release-gate.yml": {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/release-gate.yml",
+      "raw_sha256": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+      "lf_sha256": "37662ab1c57d90b54185bed5db28c46f40b9115d93d5470d5ad0a3cbf0c28dcb",
+      "bytes": 3998
+    }
+  },
+  "paths": [
+    {
+      "path": "ci/run-runtime-contract-tests.py",
+      "expected_git_status": "A",
+      "raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "bytes": 31798
+    },
+    {
+      "path": "ci/runtime-contract-test-matrix.json",
+      "expected_git_status": "A",
+      "raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "bytes": 138888
+    },
+    {
+      "path": "ci/test_run_runtime_contract_tests.py",
+      "expected_git_status": "A",
+      "raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      "bytes": 12093
+    },
+    {
+      "path": "spikes/rpf-82/rev-2/README.md",
+      "expected_git_status": "A",
+      "raw_sha256": "8bd72062187b0cb02b1abab577445b46a67e9e42e85ab8affade274f2a5326f6",
+      "bytes": 4178
+    },
+    {
+      "path": "spikes/rpf-82/rev-2/RESULT.md",
+      "expected_git_status": "A",
+      "raw_sha256": "31f8c6d76a0ec6108c1842d0b4d64c9a7bfc2f8d81eae38433510c40754bf644",
+      "bytes": 7621
+    },
+    {
+      "path": "spikes/rpf-82/rev-2/preflight-diagnostic.json",
+      "expected_git_status": "A",
+      "raw_sha256": "ea8e2a798c24efa18ad1a67281515510f27e6998129496234139c57caeed2e11",
+      "bytes": 13868
+    },
+    {
+      "path": "spikes/rpf-82/rev-2/verification-diagnostic.json",
+      "expected_git_status": "A",
+      "raw_sha256": "242f09bfab51cba8ad65696265e0c219d177dd1f44c2be2b7a1cd1d8775944c4",
+      "bytes": 3506
+    },
+    {
+      "path": "spikes/rpf-82/rev-2/classification-ledger.json",
+      "expected_git_status": "A",
+      "raw_sha256": "21609e8fbadbfce0363d04bb3144c1f9cc61559cb961b32ab9bff3c3ec2dc0a0",
+      "bytes": 514098
+    },
+    {
+      "path": "spikes/rpf-82/rev-2/counterexamples.json",
+      "expected_git_status": "A",
+      "raw_sha256": "07fbbef560947c56aa7178f92b73ef1a81d3531429288817a9023be61c639a1f",
+      "bytes": 7352
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/README.md",
+      "expected_git_status": "A",
+      "raw_sha256": "d9e3223205e2273ebe4321251b8017b2d57d2e01d0943721efd3caf373a5010f",
+      "bytes": 4495
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/RESULT.md",
+      "expected_git_status": "A",
+      "raw_sha256": "018d2d0546d0ac6d68e1e156f5fb211e770e9f9ec7e7de6ed5321777d9ca0daf",
+      "bytes": 8745
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/preflight-diagnostic.json",
+      "expected_git_status": "A",
+      "raw_sha256": "4b9735d95b9fbf4c11caa55f9a060ded958d3913a1703beba1c6f1633f6670fe",
+      "bytes": 20833
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/verification-diagnostic.json",
+      "expected_git_status": "A",
+      "raw_sha256": "135dc8ae54f31e0ac05e81a5ab0e72e6857b7034b412cf68672ecf90fa6446c5",
+      "bytes": 6114
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/classifier-correction-ledger.json",
+      "expected_git_status": "A",
+      "raw_sha256": "de129d9002be1212f47063dec9be47779705dbc39c53c74e505cb9f2e34d773f",
+      "bytes": 12244
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/counterexamples.json",
+      "expected_git_status": "A",
+      "raw_sha256": "7810afc90b6b16a4de1dee16367803f8d2fdcdc2722f3f366a12851503e0712b",
+      "bytes": 12010
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/pre-repair-sources/run-runtime-contract-tests.py",
+      "expected_git_status": "A",
+      "raw_sha256": "5a6cb4f8e02104a3342e9f1ece5b45a94fe463a6e93e378bccefe409302f9d21",
+      "bytes": 23839
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/pre-repair-sources/runtime-contract-test-matrix.json",
+      "expected_git_status": "A",
+      "raw_sha256": "1aae16bb743baf3a9eaeda674b15a9a93e0f0601b87d1b1373ae90cd2673cc1f",
+      "bytes": 135712
+    },
+    {
+      "path": "spikes/rpf-82/rev-3/pre-repair-sources/test_run_runtime_contract_tests.py",
+      "expected_git_status": "A",
+      "raw_sha256": "8751fdb1443d65d07a8ddc86243398e9ffb1a266f6770446dd7156090ddde3c8",
+      "bytes": 7939
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "expected_git_status": "UNCHANGED_BASE",
+      "raw_sha256": "2cfd883a90c852ed0210c63edd55b6f6d5a55b8bc5a6b46ab885080fc98d07ee",
+      "bytes": 3769
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_lab_cross_domain.py",
+      "expected_git_status": "M",
+      "raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8",
+      "bytes": 20384
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/README.md",
+      "expected_git_status": "A",
+      "raw_sha256": "1f30076db4c9384ef2cc0763782a87d6ed762bdcdad3e7fa1925031cecf92f7b",
+      "bytes": 2054
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/RESULT.md",
+      "expected_git_status": "A",
+      "raw_sha256": "453eb1af85a2027b340d91e81126cc4e3f6b89c96cdefafafea46a370cd3c602",
+      "bytes": 7372
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/preflight-diagnostic.json",
+      "expected_git_status": "A",
+      "raw_sha256": "a7260241001417eeabbe2e6383656d8bde8ea20c6bc7f42420b097905ee6f60b",
+      "bytes": 35662
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/verification-diagnostic.json",
+      "expected_git_status": "A",
+      "raw_sha256": "a176f70aa56961633042f25d2b7a64dc0b82d730e98fcb96d4e9eb060696fa62",
+      "bytes": 5267
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/timeout-forensics.json",
+      "expected_git_status": "A",
+      "raw_sha256": "c418f6d1700536e2850e46470f242fc14bbf7a9606c82ff60a14695be45bd3e6",
+      "bytes": 8703
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/delivery-ledger.json",
+      "expected_git_status": "A",
+      "raw_sha256": null,
+      "hash_status": "SELF_HASH_BY_FINAL_GIT_RECEIPT"
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/decision.json",
+      "expected_git_status": "A",
+      "raw_sha256": "f46ebdd0393a12e5a7ef10da79f09edd3c074afc56a10c53949d6ec00578bb3f",
+      "bytes": 1636
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/run-runtime-contract-tests.py",
+      "expected_git_status": "A",
+      "raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "bytes": 31798
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/runtime-contract-test-matrix.json",
+      "expected_git_status": "A",
+      "raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "bytes": 138888
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_run_runtime_contract_tests.py",
+      "expected_git_status": "A",
+      "raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      "bytes": 12093
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/test_effectwitness_lab_cross_domain.py",
+      "expected_git_status": "A",
+      "raw_sha256": "286ea3097a738a041c8f91aa9ec6fe2d361c1512f7a0fe7d0dbb2a1036ea0ef8",
+      "bytes": 20384
+    },
+    {
+      "path": "spikes/rpf-82/rev-4/pre-patch-sources/release-gate.yml",
+      "expected_git_status": "A",
+      "raw_sha256": "e047e9fbe13c673be515abee6365531bbb4d613e7d2fb080a595c650206b4aa5",
+      "bytes": 3998
+    }
+  ],
+  "self_hash_note": "This ledger cannot contain its own raw hash; all 31 staged blobs and raw hashes will be checked against index/remote after sealing and reported via final Git receipt",
+  "git_commit_push_remote": "NOT_RUN_AT_SEAL",
+  "CI": "NOT_RUN_AT_SEAL",
+  "stage_policy": "exact allowlist only; command-local core.autocrlf=false preserves raw archive CRLF; no deletes/symlinks/submodules",
+  "old_reports_snapshots_mutated": false,
+  "new_tests": "NOT_RUN",
+  "sealed_utc": "2026-10-30T13:08:15.759782+00:00"
+}
