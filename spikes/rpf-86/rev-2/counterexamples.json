@@ -1,0 +1,218 @@
+{
+  "plan": "RPF-86/rev-2",
+  "base": "75799b74d97f6eb485182697b3608e5267b9a065",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "formal_unit_root": ".local/rpf-86-owner-admission/rev2-465d4589e4114e4cb966d6ee8dd3b552/unit-4de9006c08374ee0ac4b40395a85b308",
+  "formal_suite_status": "12 PASS",
+  "old_protections": {
+    "status": "PASS",
+    "rejected": [
+      "old-open",
+      "old-mkdir",
+      "old-stat",
+      "outside-write",
+      "socket",
+      "process"
+    ],
+    "guard": {
+      "observed": {
+        "read": 1
+      },
+      "denied": {
+        "OLD_ROOT_ACCESS_DENIED": 3,
+        "WRITE_SCOPE_DENIED": 1,
+        "NETWORK_PROCESS_NATIVE_DENIED": 2
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE"
+    },
+    "old_root_delegations": 0,
+    "canary_relative": ".local/rpf-86-owner-admission/rev2-465d4589e4114e4cb966d6ee8dd3b552/unit-4de9006c08374ee0ac4b40395a85b308/outside-guard-9d1133ab84494a829e099271b89aa3e1.txt",
+    "proof_scope": "Actual Python APIs and pre-delegation metadata shims; no claim of a kernel sandbox"
+  },
+  "certificate_controls": {
+    "status": "PASS",
+    "rejected": [
+      "directory",
+      "sibling",
+      "other-json",
+      "write",
+      "truncate-audit",
+      "case-alias"
+    ],
+    "helper_identity_type": "dict",
+    "original_helper_called": true,
+    "guard": {
+      "observed": {
+        "read": 61,
+        "certificate_read_granted": 1
+      },
+      "denied": {
+        "READ_SCOPE_DENIED": 3,
+        "CERTIFICATE_WRITE_DENIED": 2,
+        "CERTIFICATE_CASE_ALIAS_DENIED": 1
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE"
+    },
+    "certificate_values_exported": false
+  },
+  "controls": [
+    {
+      "id": "hash-mismatch",
+      "actual": "REJECTED",
+      "method": "test_certificate_hash_source_and_unobserved_read_fail_closed",
+      "fixture": "synthetic non-certificate bytes only"
+    },
+    {
+      "id": "source-drift",
+      "actual": "REJECTED",
+      "method": "test_certificate_hash_source_and_unobserved_read_fail_closed"
+    },
+    {
+      "id": "casefold-owner-and-reparse",
+      "actual": "REJECTED",
+      "method": "test_owner_escape_casefold_reparse_and_ci_identity"
+    },
+    {
+      "id": "certificate-reparse",
+      "actual": "REJECTED",
+      "method": "test_certificate_reparse_rejected_before_read",
+      "fixture": "synthetic bytes or junction in new owner only"
+    },
+    {
+      "id": "false-green-source-owner-events",
+      "actual": "REJECTED",
+      "method": "test_protocol_control_not_native_pass_and_false_greens_reject",
+      "fixture": "protocol metadata only; not native pass"
+    },
+    {
+      "id": "log-byte-drift",
+      "actual": "REJECTED",
+      "method": "test_real_log_byte_drift_rejected"
+    },
+    {
+      "id": "unsettled-child",
+      "actual": "REJECTED",
+      "method": "test_unsettled_child_never_passes"
+    },
+    {
+      "id": "duplicate-nonfinite-json",
+      "actual": "REJECTED",
+      "method": "test_json_duplicate_nonfinite"
+    }
+  ],
+  "process_controls": [
+    {
+      "mode": "crash",
+      "pid": 35784,
+      "exit": 7,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 436211387760700,
+      "monotonic_end_ns": 436211544937200,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "exit1",
+      "pid": 32964,
+      "exit": 1,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 436211551120800,
+      "monotonic_end_ns": 436211704320900,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "missing",
+      "pid": 36664,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 436211708986100,
+      "monotonic_end_ns": 436211864043500,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "overflow",
+      "pid": 21364,
+      "exit": 0,
+      "timeout": false,
+      "truncated": true,
+      "bytes": 2097153,
+      "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+      "monotonic_start_ns": 436212328475700,
+      "monotonic_end_ns": 436212491231400,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "timeout",
+      "pid": 18504,
+      "exit": 1,
+      "timeout": true,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 436211870025700,
+      "monotonic_end_ns": 436212310849500,
+      "timeout_limit_seconds": 0.4,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    }
+  ],
+  "truncate_control_scope": "Actual sys.audit open event with O_TRUNC; no kernel file write attempted. Exclusive xb open denied separately."
+}

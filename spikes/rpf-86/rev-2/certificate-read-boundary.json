@@ -1,0 +1,72 @@
+{
+  "plan": "RPF-86/rev-2",
+  "base": "75799b74d97f6eb485182697b3608e5267b9a065",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "certificate": {
+    "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+    "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+    "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+    "bytes": 21170,
+    "git_blob_bytes_equal": true,
+    "unexpected_secret_shape": false,
+    "payload_type": "dict",
+    "identity_structure_type": "dict",
+    "content_exported": false
+  },
+  "original_helper_blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+  "original_helper_called": true,
+  "identity_type": "dict",
+  "identity_values_exported": false,
+  "exact_read": "PASS",
+  "pretrial_certificate_read_granted": 424,
+  "formal_unit_controls": {
+    "status": "PASS",
+    "rejected": [
+      "directory",
+      "sibling",
+      "other-json",
+      "write",
+      "truncate-audit",
+      "case-alias"
+    ],
+    "helper_identity_type": "dict",
+    "original_helper_called": true,
+    "guard": {
+      "observed": {
+        "read": 61,
+        "certificate_read_granted": 1
+      },
+      "denied": {
+        "READ_SCOPE_DENIED": 3,
+        "CERTIFICATE_WRITE_DENIED": 2,
+        "CERTIFICATE_CASE_ALIAS_DENIED": 1
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE"
+    },
+    "certificate_values_exported": false
+  },
+  "pretrial_denials": {
+    "READ_SCOPE_DENIED": 2
+  },
+  "unapproved_path_attribution": "UNAVAILABLE: pretrial guard retained counts but no per-denial path/caller; no permission expansion or repeated native execution",
+  "directory_grant": false,
+  "certificate_written_or_copied": false,
+  "security_limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE"
+}

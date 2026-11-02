@@ -8,6 +8,7 @@ import ast
 from collections import Counter
 import hashlib
 import importlib
+import builtins
 import json
 import math
 import os
@@ -23,6 +24,13 @@ import unittest
 ROOT=Path(__file__).resolve().parents[1]
 SELF=Path(__file__).resolve()
 LOCAL=ROOT/'.local/rpf-86-owner-admission'
+CERT_NAME='spikes/rpf-53/rev-6/config-live-evidence.json'
+CERT_PATH=ROOT/CERT_NAME
+CERT_SHA='f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43'
+CERT_BLOB='b80c7d1b98daf9d336e8c90caa767b3d1113a3e9'
+CERT_BYTES=21170
+HELPER='runtime/runproof_runtime/effectwitness/config_experiment_verify.py'
+HELPER_BLOB='e675dd04d6a9bcc09c87d798222d48f972488f3f'
 MODULE='runtime.tests.test_effectwitness_pge_dual'
 NAMES=('test_four_paths','test_twenty_one_reanchored_attacks','test_unknown_usage_and_restart',
        'test_scope_lock_budget_and_invalid_selection','test_unknown_mutation_stops_writes_but_allows_readback')
@@ -51,6 +59,40 @@ def nonlink(path):
     for p in (path,*path.parents):
         need(not p.is_symlink() and not getattr(p,'is_junction',lambda:False)(),'REPARSE')
         if p.exists():need(not bool(getattr(p.lstat(),'st_file_attributes',0)&1024),'REPARSE')
+
+def certificate_bytes(raw):
+    need(len(raw)==CERT_BYTES and sha(raw)==CERT_SHA,'CERTIFICATE_HASH')
+    value=strict(raw)
+    fields=value['payload']['contracts']['execution']['framework']['identity']
+    need(type(fields) is dict,'CERTIFICATE_STRUCTURE')
+    def scan(v):
+        if isinstance(v,dict):
+            for k,item in v.items():
+                need(not (str(k).lower() in ('api_key','authorization','access_token','refresh_token','password','private_key','secret_key')
+                          and isinstance(item,str) and item.strip()),'CERTIFICATE_SECRET')
+                scan(item)
+        elif isinstance(v,list):
+            for item in v:scan(item)
+        elif isinstance(v,str):
+            need(not re.search(r'sk-[A-Za-z0-9_-]{16,}|gh[pousr]_[A-Za-z0-9]{20,}|-----BEGIN .*PRIVATE KEY',v),'CERTIFICATE_SECRET')
+    scan(value)
+    return dict(path=CERT_NAME,blob=CERT_BLOB,raw_sha256=sha(raw),bytes=len(raw),
+                structure='identity:dict',status='PIN_VERIFIED',secret_scan='NO_UNEXPECTED_CREDENTIAL_SHAPE')
+
+def certificate_identity():
+    nonlink(CERT_PATH)
+    mode=subprocess.check_output(['git','ls-files','--stage','--',CERT_NAME],cwd=ROOT).decode().split()
+    need(mode[:2]==['100644',CERT_BLOB] and mode[-1]==CERT_NAME,'CERTIFICATE_TRACKED_IDENTITY')
+    raw=CERT_PATH.read_bytes()
+    need(subprocess.check_output(['git','cat-file','blob',CERT_BLOB],cwd=ROOT)==raw,'CERTIFICATE_BLOB_BYTES')
+    return certificate_bytes(raw)
+
+def local_task():
+    raw=os.environ.get('RPF86_TASK_ROOT','')
+    p=Path(raw)
+    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev2-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
+    nonlink(p)
+    return p
 def owned(raw):
     p=Path(raw)
     need(p.is_absolute() and '..' not in p.parts,'OWNER_LEXICAL')
@@ -64,7 +106,7 @@ def owned(raw):
         base=ci/name
     else:
         need(str(p).startswith(str(LOCAL)+os.sep),'OWNER_SCOPE')
-        base=LOCAL
+        base=local_task();need(str(p).startswith(str(base)+os.sep),'OWNER_SCOPE')
     nonlink(p);need(p.resolve().is_relative_to(base.resolve()),'OWNER_ESCAPE')
     return p
 def identity():
@@ -81,7 +123,9 @@ def identity():
     original=ast.parse(subprocess.check_output(['git','cat-file','blob',PINS[next(iter(PINS))]],cwd=ROOT))
     other=next(n for n in original.body if isinstance(n,ast.ClassDef) and n.name=='DualTests')
     need(ast.dump(cls,include_attributes=False)==ast.dump(other,include_attributes=False),'ORIGINAL_ASSERTION_DRIFT')
-    return dict(files=result,method_ast={name:sha(ast.dump(methods[name],include_attributes=False).encode()) for name in NAMES},
+    helper=(ROOT/HELPER).read_bytes()
+    need(helper.replace(b'\r\n',b'\n')==subprocess.check_output(['git','cat-file','blob',HELPER_BLOB],cwd=ROOT).replace(b'\r\n',b'\n'),'HELPER_PIN')
+    return dict(files=result,certificate=certificate_identity(),helper=dict(blob=HELPER_BLOB,raw_sha256=sha(helper)),method_ast={name:sha(ast.dump(methods[name],include_attributes=False).encode()) for name in NAMES},
                 assertion_counts={name:sum(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr.startswith('assert') for n in ast.walk(methods[name])) for name in NAMES},
                 harness_lf_sha256=sha(SELF.read_bytes().replace(b'\r\n',b'\n')))
 
@@ -92,6 +136,8 @@ class Guard:
         self.read_roots=tuple(read_roots)
         self.counts=Counter();self.denials=Counter();self.cache=set()
         self.raw_stat=os.stat;self.raw_lstat=os.lstat;self.raw_mkdir=os.mkdir
+        self.raw_open=builtins.open;self.checking_certificate=False
+        self.certificate_pin=certificate_identity()
         self.resolve=Path.resolve
         self.runtime=[Path(sys.base_prefix).resolve(),Path(sys.prefix).resolve(),Path(sysconfig.get_path('stdlib')).resolve()]
     def denied(self,code):
@@ -111,12 +157,15 @@ class Guard:
     def check(self,path,write=False):
         p=self.lexical(path)
         if p is None:return
+        exact=str(p)==str(CERT_PATH)
+        if str(p).casefold()==str(CERT_PATH).casefold() and not exact:self.denied('CERTIFICATE_CASE_ALIAS_DENIED')
+        if exact and write:self.denied('CERTIFICATE_WRITE_DENIED')
         if write and not p.is_relative_to(self.owner):self.denied('WRITE_SCOPE_DENIED')
-        if not write and not (p.is_relative_to(self.owner) or any(p.is_relative_to(r) for r in self.read_roots) or p==ROOT or p.is_relative_to(ROOT/'runtime')
+        if not write and not (exact or p.is_relative_to(self.owner) or any(p.is_relative_to(r) for r in self.read_roots) or p==ROOT or p.is_relative_to(ROOT/'runtime')
                 or p in [ROOT/f'spikes/rpf-{n}/probe.py' for n in (53,55,63)]
                 or any(p.is_relative_to(r) for r in self.runtime)):
             self.denied('READ_SCOPE_DENIED')
-        if p not in self.cache:
+        if exact or p not in self.cache:
             if p.is_relative_to(ROOT):
                 q=p
                 while q!=ROOT:
@@ -131,7 +180,18 @@ class Guard:
             self.lexical(resolved)
             if write and not resolved.is_relative_to(self.owner):self.denied('WRITE_ESCAPE_DENIED')
             self.cache.add(p)
-        if not write and not p.is_relative_to(self.owner) and not any(p.is_relative_to(r) for r in self.read_roots) and p.suffix.lower() not in ('.py','.pyc','.pyd','.so','.zip'):
+        if exact:
+            # Internal verification opens only this exact file read-only. The
+            # original helper independently hashes the actual returned bytes.
+            self.checking_certificate=True
+            try:
+                with self.raw_open(CERT_PATH,'rb') as stream:
+                    import stat
+                    need(stat.S_ISREG(os.fstat(stream.fileno()).st_mode),'CERTIFICATE_NORMAL_FILE')
+                    need(certificate_bytes(stream.read(CERT_BYTES+1))==self.certificate_pin,'CERTIFICATE_PIN_DRIFT')
+            finally:self.checking_certificate=False
+            self.counts['certificate_read_granted']+=1
+        if not write and not exact and not p.is_relative_to(self.owner) and not any(p.is_relative_to(r) for r in self.read_roots) and p.suffix.lower() not in ('.py','.pyc','.pyd','.so','.zip'):
             import stat
             try:is_dir=stat.S_ISDIR(self.raw_stat(p).st_mode)
             except OSError:is_dir=False
@@ -140,7 +200,9 @@ class Guard:
     def audit(self,event,args):
         if event=='open':
             path,mode,flags=args
-            self.check(path,bool(isinstance(mode,str) and any(x in mode for x in 'wax+') or isinstance(flags,int) and flags&(os.O_WRONLY|os.O_RDWR|os.O_CREAT)))
+            writing=bool(isinstance(mode,str) and any(x in mode for x in 'wax+') or isinstance(flags,int) and flags&(os.O_WRONLY|os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_APPEND))
+            if self.checking_certificate and str(path)==str(CERT_PATH) and not writing:return
+            self.check(path,writing)
         elif event in ('os.listdir','os.scandir'):self.check(args[0])
         elif event in ('os.mkdir','os.remove','os.rmdir','os.chmod','os.utime','os.truncate'):self.check(args[0],True)
         elif event in ('os.rename','os.link','os.symlink'):self.denied('LINK_OR_RENAME_DENIED')
@@ -155,7 +217,7 @@ class Guard:
         def resolve(path,*a,**kw):guard.lexical(path,query=True);return guard.resolve(path,*a,**kw)
         os.stat=stat;os.lstat=lstat;os.mkdir=mkdir;Path.resolve=resolve
         sys.addaudithook(self.audit)
-    def projection(self):return dict(observed=dict(self.counts),denied=dict(self.denials),
+    def projection(self):return dict(observed=dict(self.counts),denied=dict(self.denials),certificate=self.certificate_pin,
         metadata_intercepts=['os.stat','os.lstat','Path.resolve','os.mkdir'],
         limitations='Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE')
 
@@ -215,6 +277,7 @@ def environment(folder):
     env={k:os.environ[k] for k in ('PATH','SYSTEMROOT','WINDIR','COMSPEC','PATHEXT','LANG','LC_ALL') if k in os.environ}
     if os.environ.get('GITHUB_ACTIONS')=='true':
         env.update({k:os.environ[k] for k in ('GITHUB_ACTIONS','GITHUB_WORKSPACE','GITHUB_RUN_ID','GITHUB_RUN_ATTEMPT','GITHUB_SHA')})
+    else:env['RPF86_TASK_ROOT']=str(local_task())
     env.update(PYTHONDONTWRITEBYTECODE='1',PYTHONUTF8='1',HOME=str(folder),USERPROFILE=str(folder),TEMP=str(folder),TMP=str(folder),TMPDIR=str(folder))
     return env
 
@@ -265,6 +328,7 @@ def validate_native(report,receipt,source,work):
     need(report.get('marker')=='TEST_HARNESS_OWNER_SUBSTITUTION' and report.get('patch_points')==['pge_dual_contracts.WORK']
          and report.get('patch_restored') is True,'PATCH_SCOPE')
     need(report.get('status')=='PASS' and report.get('error') is None and report.get('guard',{}).get('denied')=={},'GUARD_OR_NATIVE_FAILURE')
+    need(report['guard'].get('certificate')==source['certificate'] and report['guard'].get('observed',{}).get('certificate_read_granted',0)>0,'CERTIFICATE_READ_UNOBSERVED')
     need(report.get('source_level')=='SYNTHETIC_OFFLINE_TEST','SOURCE_LEVEL')
     need(report.get('actual_provider_calls')==report.get('actual_sdk_calls')==report.get('actual_java_processes')==report.get('actual_business_writes')==0,'REAL_RESOURCE_CLAIM')
     need(receipt.get('mode')=='native' and receipt.get('exit')==0 and receipt.get('timeout') is False and receipt.get('truncated') is False
@@ -280,11 +344,14 @@ def validate_native(report,receipt,source,work):
     need(type(report.get('manifest')) is list and bool(report['manifest']),'MISSING_PHYSICAL_WRITES')
     return True
 
+def validate_log(log,receipt):
+    need(len(log)<=LIMIT and len(log)==receipt['bytes'] and sha(log)==receipt['stdout_sha256'],'LOG_BINDING')
+
 def independent(folder,input_root):
     input_root=owned(input_root);source=identity();guard=Guard(input_root);guard.install()
     native_dir=input_root/'native';report=strict((native_dir/'child-result.json').read_bytes());receipt=strict((native_dir/'launch-receipt.json').read_bytes())
     work=native_dir/'work';validate_native(report,receipt,source,work)
-    log=(native_dir/'output.log').read_bytes();need(len(log)<=LIMIT and len(log)==receipt['bytes'] and sha(log)==receipt['stdout_sha256'],'LOG_BINDING')
+    log=(native_dir/'output.log').read_bytes();validate_log(log,receipt)
     files=manifest(work);need(files==report['manifest'],'PHYSICAL_MANIFEST_DRIFT')
     wal_count=0
     for file in files:
@@ -296,6 +363,25 @@ def independent(folder,input_root):
     write(folder/'verification.json',dict(status='PASS',native_ids=IDS,manifest_sha256=sha(json.dumps(files,sort_keys=True).encode()),
         wal_files=wal_count,logical_owner='rpf-63',source_identity=source,guard=guard.projection(),
         source_level='SYNTHETIC_OFFLINE_TEST',independent_process=True,independent_issuer=False))
+    return 0
+
+def certificate_controls(folder):
+    guard=Guard(folder);guard.install();rejected=[]
+    sys.path.insert(0,str(ROOT))
+    from runtime.runproof_runtime.effectwitness.config_experiment_verify import pinned_sdk_fields
+    fields=pinned_sdk_fields();need(type(fields) is dict,'ORIGINAL_HELPER_IDENTITY')
+    for label,fn in (
+        ('directory',lambda:os.listdir(CERT_PATH.parent)),
+        ('sibling',lambda:open(CERT_PATH.with_name('not-authorized.json'),'rb')),
+        ('other-json',lambda:open(ROOT/'spikes/rpf-53/not-authorized.json','rb')),
+        ('write',lambda:open(CERT_PATH,'xb')),
+        ('truncate-audit',lambda:sys.audit('open',str(CERT_PATH),None,os.O_TRUNC)),
+        ('case-alias',lambda:open(CERT_PATH.with_name('CONFIG-live-evidence.json'),'rb'))):
+        try:fn()
+        except PermissionError:rejected.append(label)
+        else:raise Invalid('CERTIFICATE_BOUNDARY_INACTIVE')
+    write(folder/'certificate-controls.json',dict(status='PASS',rejected=rejected,helper_identity_type='dict',
+        original_helper_called=True,guard=guard.projection(),certificate_values_exported=False))
     return 0
 
 def controls(folder):
@@ -325,7 +411,8 @@ def verify_failure(folder,input_root,snapshot):
     """Read-only verification of this task's failed run, no method re-execution."""
     input_root=owned(input_root);snapshot=owned(snapshot);source=identity()
     guard=Guard(folder,read_roots=(input_root,snapshot));guard.install()
-    native_dir=input_root/'native';raw=(native_dir/'child-result.json').read_bytes();report=strict(raw)
+    native_dir=input_root if (input_root/'child-result.json').exists() else input_root/'native'
+    raw=(native_dir/'child-result.json').read_bytes();report=strict(raw)
     receipt=strict((native_dir/'launch-receipt.json').read_bytes())
     old_source=snapshot.read_bytes()
     need(report['ids']==IDS and [r['id'] for r in report['results']]==IDS and report['tests_run']==5,'FAILED_RUN_IDS')
@@ -341,7 +428,8 @@ def verify_failure(folder,input_root,snapshot):
         else:need(e['id'] in states and e['actual'] in ('PASS','FAIL','ERROR','SKIP'),'FAILED_EVENT_STATUS')
         states[e['id']]=e['actual']
     need([dict(id=tid,actual=states.get(tid,'NOT_RUN')) for tid in IDS]==report['results'],'FAILED_EVENT_SETTLEMENT')
-    need(Counter(r['actual'] for r in report['results'])=={'PASS':3,'ERROR':2},'FAILED_RUN_COUNTS')
+    counts=dict(Counter(r['actual'] for r in report['results']))
+    need(counts in ({'PASS':3,'ERROR':2},{'PASS':5}),'FAILED_RUN_COUNTS')
     need(report['guard']['denied'].get('OLD_ROOT_ACCESS_DENIED',0)==0
          and report['guard']['denied'].get('READ_SCOPE_DENIED',0)>0,'FAILED_BOUNDARY_REASON')
     need(report['patch_restored'] is True and report['logical_owner']=='rpf-63','FAILED_PATCH_RESTORE')
@@ -354,11 +442,15 @@ def verify_failure(folder,input_root,snapshot):
             wal_files+=1
     need(wal_files>0,'FAILED_NO_PHYSICAL_WAL')
     log=(native_dir/'output.log').read_bytes();need(sha(log)==receipt['stdout_sha256'] and len(log)==receipt['bytes'],'FAILED_LOG')
-    write(folder/'failure-verification.json',dict(status='PASS_NEGATIVE_EVIDENCE_ONLY',counts={'PASS':3,'ERROR':2},
+    need(report.get('error') is None and report.get('source_level')=='SYNTHETIC_OFFLINE_TEST','FAILED_SOURCE_LEVEL')
+    if counts=={'PASS':5}:
+        need(report['guard'].get('certificate')==source['certificate']
+             and report['guard'].get('observed',{}).get('certificate_read_granted',0)>0,'FAILED_CERTIFICATE_READ')
+    write(folder/'failure-verification.json',dict(status='PASS_NEGATIVE_EVIDENCE_ONLY',counts=counts,
         source_level='SYNTHETIC_OFFLINE_TEST',original_methods_reexecuted=False,report_sha256=sha(raw),
         manifest_sha256=sha(json.dumps(files,sort_keys=True).encode()),wal_files=wal_files,prior_harness_lf_sha256=receipt['harness_lf_sha256'],
         verifier_harness_lf_sha256=source['harness_lf_sha256'],guard=guard.projection(),
-        conclusion='Five-method admission FAIL; original sources unchanged; unsupported evidence read denied; independent process verified retained negative run.'))
+        admission_pass=False,conclusion='Five-method admission FAIL despite any passing methods; original sources unchanged; read-scope denials retained; independent process verified negative run.'))
     return 0
 
 def run(output,total_deadline=None):
@@ -389,7 +481,7 @@ def run(output,total_deadline=None):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
+    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
     parser.add_argument('--source-snapshot',type=Path)
     parser.add_argument('--deadline',type=float)
     args=parser.parse_args()
@@ -399,6 +491,7 @@ def main():
         if args.mode=='native':return native(folder)
         if args.mode=='verify':return independent(folder,args.input)
         if args.mode=='controls':return controls(folder)
+        if args.mode=='certificate-controls':return certificate_controls(folder)
         if args.mode=='verify-failure':return verify_failure(folder,args.input,args.source_snapshot)
         if args.mode=='crash':return 7
         if args.mode=='exit1':return 1

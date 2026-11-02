@@ -18,7 +18,7 @@ class OwnerAdmissionTests(unittest.TestCase):
     def setUpClass(cls):
         if os.environ.get('GITHUB_ACTIONS')=='true':
             cls.root=r.ROOT/'ci-results'/('rpf86-unit-'+os.environ['GITHUB_RUN_ID']+'-'+os.environ['GITHUB_RUN_ATTEMPT']+'-'+uuid.uuid4().hex)
-        else:cls.root=r.LOCAL/('unit-'+uuid.uuid4().hex)
+        else:cls.root=r.local_task()/('unit-'+uuid.uuid4().hex)
         r.owned(cls.root).mkdir(parents=True,exist_ok=False)
         cls.source=r.identity()
     def folder(self,label):return self.root/(label+'-'+uuid.uuid4().hex)
@@ -29,7 +29,7 @@ class OwnerAdmissionTests(unittest.TestCase):
             source_identity=self.source,source_unchanged=True,physical_owner=work.relative_to(r.ROOT).as_posix(),
             logical_owner='rpf-63',logical_identity_changed=False,marker='TEST_HARNESS_OWNER_SUBSTITUTION',
             patch_points=['pge_dual_contracts.WORK'],patch_restored=True,status='PASS',error=None,
-            guard={'denied':{}},source_level='SYNTHETIC_OFFLINE_TEST',events=events,pid=123,
+            guard={'denied':{},'certificate':self.source['certificate'],'observed':{'certificate_read_granted':1}},source_level='SYNTHETIC_OFFLINE_TEST',events=events,pid=123,
             actual_provider_calls=0,actual_sdk_calls=0,actual_java_processes=0,actual_business_writes=0,
             manifest=[{'path':'synthetic-only-not-executed','bytes':1,'sha256':'0'*64}])
         receipt=dict(mode='native',exit=0,timeout=False,truncated=False,child_exited=True,drain_joined=True,pid=123,harness_lf_sha256=self.source['harness_lf_sha256'])
@@ -93,5 +93,46 @@ class OwnerAdmissionTests(unittest.TestCase):
     def test_json_duplicate_nonfinite(self):
         for raw in (b'{"x":1,"x":2}',b'{"x":NaN}',b'{"x":Infinity}'):
             with self.assertRaises(r.Invalid):r.strict(raw)
+
+    def test_exact_certificate_original_helper_and_real_denials(self):
+        folder=self.folder('certificate');receipt=r.launch('certificate-controls',folder,deadline=time.monotonic()+20,timeout=20)
+        self.assertEqual(receipt['exit'],0)
+        report=r.strict((folder/'certificate-controls.json').read_bytes())
+        self.assertEqual(report['rejected'],['directory','sibling','other-json','write','truncate-audit','case-alias'])
+        self.assertTrue(report['original_helper_called']);self.assertFalse(report['certificate_values_exported'])
+        self.assertGreater(report['guard']['observed']['certificate_read_granted'],0)
+        self.assertEqual(report['guard']['certificate'],self.source['certificate'])
+        self.assertEqual(report['guard']['denied'],{'READ_SCOPE_DENIED':3,'CERTIFICATE_WRITE_DENIED':2,'CERTIFICATE_CASE_ALIAS_DENIED':1})
+
+    def test_certificate_hash_source_and_unobserved_read_fail_closed(self):
+        with self.assertRaisesRegex(r.Invalid,'CERTIFICATE_HASH'):r.certificate_bytes(b'not a historical certificate')
+        with patch.object(r,'CERT_BLOB','0'*40):
+            with self.assertRaisesRegex(r.Invalid,'CERTIFICATE_TRACKED_IDENTITY'):r.certificate_identity()
+        with patch.object(r,'HELPER_BLOB',r.PINS[next(iter(r.PINS))]):
+            with self.assertRaisesRegex(r.Invalid,'HELPER_PIN'):r.identity()
+        work,base,receipt=self.protocol()
+        for change in (lambda x:x['guard'].update(certificate={}),lambda x:x['guard'].update(observed={})):
+            report=copy.deepcopy(base);change(report)
+            with self.assertRaisesRegex(r.Invalid,'CERTIFICATE_READ_UNOBSERVED'):r.validate_native(report,receipt,self.source,work)
+
+    def test_certificate_reparse_rejected_before_read(self):
+        target=self.folder('synthetic-bytes');target.write_bytes(b'not certificate content')
+        link=self.folder('synthetic-link')
+        try:link.symlink_to(target)
+        except OSError:
+            # A real junction exercises the same ancestor check on Windows.
+            if os.name!='nt':raise
+            directory=self.folder('synthetic-directory');directory.mkdir()
+            import _winapi
+            _winapi.CreateJunction(str(directory),str(link))
+        with patch.object(r,'CERT_PATH',link):
+            with self.assertRaisesRegex(r.Invalid,'REPARSE'):r.certificate_identity()
+
+    def test_real_log_byte_drift_rejected(self):
+        path=self.folder('log');path.write_bytes(b'actual local log\n')
+        raw=path.read_bytes();receipt={'bytes':len(raw),'stdout_sha256':r.sha(raw)}
+        r.validate_log(raw,receipt)
+        path.write_bytes(raw.replace(b'local',b'LOCAL'))
+        with self.assertRaisesRegex(r.Invalid,'LOG_BINDING'):r.validate_log(path.read_bytes(),receipt)
 
 if __name__=='__main__':unittest.main()

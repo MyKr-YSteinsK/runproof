@@ -1,0 +1,28 @@
+{
+  "plan": "RPF-86/rev-2",
+  "base": "75799b74d97f6eb485182697b3608e5267b9a065",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "reason": "Five native methods PASS but two READ_SCOPE_DENIED events make pretrial admission FAIL (exit1). No remaining path attribution; no broadened access.",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "NOT_RUN_FORMAL",
+    "A04": "PASS_BOUNDED_PYTHON_CONTROLS",
+    "A05": "PASS_NEGATIVE_EVIDENCE_ONLY",
+    "A06": "PASS_12",
+    "A07": "PASS_B_WORKFLOW_UNCHANGED",
+    "A08": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_RUN_AT_SEAL_PILOT_NOT_APPLICABLE",
+    "A10": "BOUNDARIES_PRESERVED"
+  },
+  "formal_required_unavailable": 539,
+  "official_coverage_changed": false,
+  "task_complete": false,
+  "evidence_accepted": "ARCHITECT_NOT_DECIDED",
+  "stage_advanced": false,
+  "release_executed": false,
+  "deployment_authorized": false
+}

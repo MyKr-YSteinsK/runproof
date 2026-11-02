@@ -1,0 +1,301 @@
+{
+  "plan": "RPF-86/rev-2",
+  "base": "75799b74d97f6eb485182697b3608e5267b9a065",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "source_freeze": {
+    "status": "FROZEN",
+    "utc": "2026-11-02T11:39:35Z",
+    "monotonic_ns": 436187038268600,
+    "base": "75799b74d97f6eb485182697b3608e5267b9a065",
+    "decision": "B_UNACTIVATED",
+    "files": {
+      "ci/run-rpf86-owner-admission.py": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "ci/test_run_rpf86_owner_admission.py": "8e7440a77d3ad4bb208a4d5f0f1fa90d9d15ebfba9e83b6b728ca53dd60845f5",
+      "spikes/rpf-86/rev-2/pre-repair-sources/run-rpf86-owner-admission.py": "5c652aa05a771e9cfd2cf2a054506f6a7e7703092b7f04221df0968e85244220",
+      "spikes/rpf-86/rev-2/pre-repair-sources/test_run_rpf86_owner_admission.py": "fc9b877586110a638eef6d105508d1e3aec5fad0be206ba767a9bf896f261631",
+      ".github/workflows/release-gate.yml": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+    },
+    "certificate_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+    "static": {
+      "ast_compile": "PASS",
+      "snapshot_byte_identity": "PASS",
+      "original_8_assertions": "PASS",
+      "diff_check": "PASS",
+      "yaml_bash": "NOT_APPLICABLE_B_WORKFLOW_UNCHANGED"
+    }
+  },
+  "snapshots": [
+    {
+      "path": "spikes/rpf-86/rev-2/pre-repair-sources/run-rpf86-owner-admission.py",
+      "base_blob": "b1723620369f48f968642c671bc3b8da61ffa700",
+      "raw_sha256": "5c652aa05a771e9cfd2cf2a054506f6a7e7703092b7f04221df0968e85244220",
+      "lf_sha256": "5c652aa05a771e9cfd2cf2a054506f6a7e7703092b7f04221df0968e85244220"
+    },
+    {
+      "path": "spikes/rpf-86/rev-2/pre-repair-sources/test_run_rpf86_owner_admission.py",
+      "base_blob": "c9f9a6497c9ddcf0e175f6a4df34acc17a5a64a6",
+      "raw_sha256": "fc9b877586110a638eef6d105508d1e3aec5fad0be206ba767a9bf896f261631",
+      "lf_sha256": "fc9b877586110a638eef6d105508d1e3aec5fad0be206ba767a9bf896f261631"
+    }
+  ],
+  "prefreeze_units": [
+    {
+      "exit": 1,
+      "tests": 12,
+      "failures": 1,
+      "reason": "certificate-controls subprocess lacked ROOT in sys.path; ModuleNotFoundError runtime; original child output.log retained",
+      "raw_full_unit_output": "UNAVAILABLE: initially tool stdout only"
+    },
+    {
+      "exit": 0,
+      "start": 435958661903900,
+      "end": 435961883735500,
+      "log_sha256": "9677af26b402422aee0a6e049510bad6b1d7b21a9a0a491da5562fa7aca1a7bf"
+    }
+  ],
+  "pretrial": {
+    "native_results": [
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+        "actual": "PASS"
+      }
+    ],
+    "tests_run": 5,
+    "native_event_counts": {
+      "STARTED": 5,
+      "PASS": 5,
+      "ERROR": 0,
+      "FAIL": 0,
+      "SKIP": 0
+    },
+    "status": "FAIL",
+    "receipt": {
+      "mode": "native",
+      "pid": 24208,
+      "exit": 1,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 778,
+      "stdout_sha256": "5f56ff968bb428cebe9b790f88b61318c14a2289ea05a452e1d58b91c339168e",
+      "monotonic_start_ns": 435967669378700,
+      "monotonic_end_ns": 435997810034800,
+      "timeout_limit_seconds": 179.9986624000012,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "77ee00acb6c32ff2a50c75b0531f513fad22c0f836966991f5eb4a8284f2b4bd",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    "guard": {
+      "observed": {
+        "write": 3005,
+        "read": 7539,
+        "certificate_read_granted": 424
+      },
+      "denied": {
+        "READ_SCOPE_DENIED": 2
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE"
+    },
+    "source_identity": {
+      "files": {
+        "runtime/tests/test_effectwitness_pge_dual.py": {
+          "blob": "f98fb2da033dc62a0d5f785c06b837990912caf6",
+          "raw_sha256": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+          "lf_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": {
+          "blob": "2cc4145369918d265df6e3cdcdbce9ac7ecd9bd4",
+          "raw_sha256": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+          "lf_sha256": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": {
+          "blob": "5b626b547a884035c3c968f2a1f95f77f941aec9",
+          "raw_sha256": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+          "lf_sha256": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": {
+          "blob": "79c210fa5579235447157858f2c62ddd61983a91",
+          "raw_sha256": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+          "lf_sha256": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": {
+          "blob": "ed4329a0064daae75792eddfdfdd5cebc1b4b695",
+          "raw_sha256": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+          "lf_sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474"
+        }
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "helper": {
+        "blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+        "raw_sha256": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198"
+      },
+      "method_ast": {
+        "test_four_paths": "84af5ec7fad46019a96426e9097d493300582e298ebe6992a9baa03e88f619d9",
+        "test_twenty_one_reanchored_attacks": "4b1ab2b581480d298f5e10d00a9084124561f318209ad653eeaa25e3e932c71c",
+        "test_unknown_usage_and_restart": "879583932738356d05f7b60655131e91b278a5ef6608e95e5fbf827541a7536a",
+        "test_scope_lock_budget_and_invalid_selection": "a86fc58196bd8b570ff57c0ca67b9f05f267c17644e1f70c4398030067ca98e9",
+        "test_unknown_mutation_stops_writes_but_allows_readback": "a0b9c17ae1455f3e7347a4a9878491257bf7e0b9c8dfc3f6c4fc5ce1ae735875"
+      },
+      "assertion_counts": {
+        "test_four_paths": 1,
+        "test_twenty_one_reanchored_attacks": 1,
+        "test_unknown_usage_and_restart": 4,
+        "test_scope_lock_budget_and_invalid_selection": 4,
+        "test_unknown_mutation_stops_writes_but_allows_readback": 3
+      },
+      "harness_lf_sha256": "77ee00acb6c32ff2a50c75b0531f513fad22c0f836966991f5eb4a8284f2b4bd"
+    },
+    "patch_restored": true,
+    "source_unchanged": true,
+    "manifest_files": 9,
+    "report_raw_sha256": "42f9ccca3e200c505552adf8619568160c9e13327161a100148726fcaf50e61e"
+  },
+  "formal": {
+    "unit": {
+      "status": "PASS",
+      "pid": 29804,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "child_exited": true,
+      "drain_joined": true,
+      "bytes": 2002,
+      "stdout_sha256": "c71c52fcf9ef408a15a7234769547329609d9e50fac0ef60193c6c12934106c5",
+      "seconds": 3.1524430999998003,
+      "timeout_limit": 180,
+      "command": [
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "ci",
+        "-p",
+        "test_run_rpf86_owner_admission.py",
+        "-v"
+      ],
+      "expected_methods": 12
+    },
+    "verifier": {
+      "mode": "verify-failure",
+      "pid": 29840,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 436212534061500,
+      "monotonic_end_ns": 436213347750400,
+      "timeout_limit_seconds": 60,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    "seconds": 3.9862712000031024,
+    "budget": 420,
+    "source_freeze_unchanged": true,
+    "formal_native": "NOT_RUN_B_READ_SCOPE_DENIALS"
+  },
+  "independent_negative_verification": {
+    "status": "PASS_NEGATIVE_EVIDENCE_ONLY",
+    "counts": {
+      "PASS": 5
+    },
+    "source_level": "SYNTHETIC_OFFLINE_TEST",
+    "original_methods_reexecuted": false,
+    "report_sha256": "42f9ccca3e200c505552adf8619568160c9e13327161a100148726fcaf50e61e",
+    "manifest_sha256": "60f7efb444615b4e2163c7ce84063681c5cc800f22eda326fe9add9dbdb58dd3",
+    "wal_files": 8,
+    "prior_harness_lf_sha256": "77ee00acb6c32ff2a50c75b0531f513fad22c0f836966991f5eb4a8284f2b4bd",
+    "verifier_harness_lf_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+    "guard": {
+      "observed": {
+        "read": 57,
+        "stat": 9
+      },
+      "denied": {},
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE"
+    },
+    "admission_pass": false,
+    "conclusion": "Five-method admission FAIL despite any passing methods; original sources unchanged; read-scope denials retained; independent process verified negative run."
+  },
+  "formal_unit_methods": 12,
+  "formal_native": "NOT_RUN: pretrial retains READ_SCOPE_DENIED=2",
+  "workflow_base_blob": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+  "workflow_changed": false,
+  "coverage": {
+    "required": 1232,
+    "pass_count": 688,
+    "native_skip": 5,
+    "unavailable": 539,
+    "provenance": "Existing RPF85 hosted baseline; NOT_REEXECUTED locally"
+  },
+  "cost": {
+    "provider_calls": 0,
+    "sdk_calls": 0,
+    "key_reads": 0,
+    "java": 0,
+    "docker": 0,
+    "business_http": 0,
+    "production_writes": 0
+  },
+  "git_push": "NOT_RUN_AT_SEAL",
+  "hosted_ci": "NOT_RUN_AT_SEAL",
+  "new_pilot_step": "NOT_APPLICABLE_B"
+}

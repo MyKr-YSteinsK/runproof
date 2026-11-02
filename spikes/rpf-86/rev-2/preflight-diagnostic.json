@@ -1,0 +1,744 @@
+{
+  "plan": "RPF-86/rev-2",
+  "base": "75799b74d97f6eb485182697b3608e5267b9a065",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "g0": "PASS",
+  "receipt_path": ".local/rpf-86-rev-2-g0-receipt.json",
+  "receipt_raw_sha256": "37de9385d348ec05f30bac6626ba05e6fd3849ffb7a046320ae755f2156f8d62",
+  "prewrite_stdout_sha256": "b31fe584df0d1d0c2969a5997c60ea02532ab1c9fc00de95020747c7f67af282",
+  "prewrite_utc": "2026-11-02T11:29:21.891694+00:00",
+  "prewrite_monotonic_ns": 435573033781600,
+  "directory_fsync": "UNAVAILABLE Windows stdlib; receipt file flush/fsync enforced",
+  "owner": ".local/rpf-86-owner-admission/rev2-465d4589e4114e4cb966d6ee8dd3b552",
+  "certificate": {
+    "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+    "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+    "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+    "bytes": 21170,
+    "git_blob_bytes_equal": true,
+    "unexpected_secret_shape": false,
+    "payload_type": "dict",
+    "identity_structure_type": "dict",
+    "content_exported": false
+  },
+  "checks": [
+    {
+      "name": "root",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:09.907560+00:00",
+      "monotonic_ns": 435561049649500,
+      "child_exit": 0,
+      "stdout_sha256": "bbf7458fa1736d98c88be45df36a72c12e4da73a5222ed33e48b612587afb44e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "branch",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:09.960716+00:00",
+      "monotonic_ns": 435561102803000,
+      "child_exit": 0,
+      "stdout_sha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "head",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:10.007566+00:00",
+      "monotonic_ns": 435561149653200,
+      "child_exit": 0,
+      "stdout_sha256": "f467d2a40904ec7337b9aa5d132a3378d533c02c1f9ba21f33c7854ea53c96f4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "upstream",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:10.057951+00:00",
+      "monotonic_ns": 435561200046200,
+      "child_exit": 0,
+      "stdout_sha256": "047f220328b7a2219f45225722c482dd31cf8c6ce01fdad1e8eccab7d01fcd01",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "tracking",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:10.105928+00:00",
+      "monotonic_ns": 435561248014800,
+      "child_exit": 0,
+      "stdout_sha256": "f467d2a40904ec7337b9aa5d132a3378d533c02c1f9ba21f33c7854ea53c96f4",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "clean",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:10.173546+00:00",
+      "monotonic_ns": 435561315633100,
+      "child_exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "index",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:10.228915+00:00",
+      "monotonic_ns": 435561371010700,
+      "child_exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "origin",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:10.285017+00:00",
+      "monotonic_ns": 435561427107700,
+      "child_exit": 0,
+      "stdout_sha256": "e5453c2ffebbaf0d3666fe3edcf5b5bbea722e0dfbb098fd3d5472e20684b15c",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "https",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.292512+00:00",
+      "monotonic_ns": 435562434600400,
+      "child_exit": 0,
+      "stdout_sha256": "7ccd4b9d37c8fb0c42f4255cd0f6c745265c3091127a0328ecb8f1bc20a2dae5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "metadata:diff --quiet",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.359857+00:00",
+      "monotonic_ns": 435562501944200,
+      "child_exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "metadata:diff --cached --quiet",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.419025+00:00",
+      "monotonic_ns": 435562561112000,
+      "child_exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "metadata:worktree list --porcelain",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.489015+00:00",
+      "monotonic_ns": 435562631111700,
+      "child_exit": 0,
+      "stdout_sha256": "915071b2e0871161bc0c2b971bf3cb0d63abfe6fb6344ad6cabb90a3816d75c0",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "source:.github/workflows/release-gate.yml",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.613223+00:00",
+      "monotonic_ns": 435562755309200,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:ci/run-runtime-contract-tests.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.720834+00:00",
+      "monotonic_ns": 435562862922000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:ci/runtime-contract-test-matrix.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.830413+00:00",
+      "monotonic_ns": 435562972499400,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:ci/verify-runtime-coverage-handoff.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:11.947037+00:00",
+      "monotonic_ns": 435563089123200,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:runtime/tests/test_effectwitness_pge_dual.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.060172+00:00",
+      "monotonic_ns": 435563202259100,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:runtime/runproof_runtime/effectwitness/pge_dual_contracts.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.165001+00:00",
+      "monotonic_ns": 435563307088400,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:runtime/runproof_runtime/effectwitness/pge_dual_session.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.291053+00:00",
+      "monotonic_ns": 435563433144300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:runtime/runproof_runtime/effectwitness/pge_dual_config_port.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.398652+00:00",
+      "monotonic_ns": 435563540739000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:runtime/runproof_runtime/effectwitness/pge_dual_verify.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.503298+00:00",
+      "monotonic_ns": 435563645386000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:ci/run-rpf86-owner-admission.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.612531+00:00",
+      "monotonic_ns": 435563754617300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:ci/test_run_rpf86_owner_admission.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.720338+00:00",
+      "monotonic_ns": 435563862423200,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "source:runtime/runproof_runtime/effectwitness/config_experiment_verify.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.827142+00:00",
+      "monotonic_ns": 435563969228300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/README.md",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:12.988534+00:00",
+      "monotonic_ns": 435564130620400,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/RESULT.md",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:13.143615+00:00",
+      "monotonic_ns": 435564285705100,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/preflight-diagnostic.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:13.311510+00:00",
+      "monotonic_ns": 435564453599000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/verification-diagnostic.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:14.663917+00:00",
+      "monotonic_ns": 435565806002500,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/counterexamples.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:14.815307+00:00",
+      "monotonic_ns": 435565957392800,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/decision.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:14.982879+00:00",
+      "monotonic_ns": 435566124968500,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/certificate-read-boundary.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:15.150463+00:00",
+      "monotonic_ns": 435566292548400,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/pre-repair-sources/run-rpf86-owner-admission.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:15.307498+00:00",
+      "monotonic_ns": 435566449582500,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:spikes/rpf-86/rev-2/pre-repair-sources/test_run_rpf86_owner_admission.py",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:15.505097+00:00",
+      "monotonic_ns": 435566647182800,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:.local/rpf-86-rev-2-g0-receipt.json",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:15.692952+00:00",
+      "monotonic_ns": 435566835036900,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "vacant:.local/rpf-86-owner-admission/rev2-465d4589e4114e4cb966d6ee8dd3b552",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:15.852385+00:00",
+      "monotonic_ns": 435566994470300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "reparse:.",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:15.853113+00:00",
+      "monotonic_ns": 435566995191800,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:.",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:16.430462+00:00",
+      "monotonic_ns": 435567572564300,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:.github",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:16.430638+00:00",
+      "monotonic_ns": 435567572725300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:.github",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:16.965302+00:00",
+      "monotonic_ns": 435568107388400,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:.github\\workflows",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:16.965368+00:00",
+      "monotonic_ns": 435568107445500,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:.github\\workflows",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:17.497193+00:00",
+      "monotonic_ns": 435568639279400,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:.local",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:17.497254+00:00",
+      "monotonic_ns": 435568639331600,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:.local",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:18.046454+00:00",
+      "monotonic_ns": 435569188539300,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:.local\\rpf-86-owner-admission",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:18.046514+00:00",
+      "monotonic_ns": 435569188592200,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:.local\\rpf-86-owner-admission",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:18.606675+00:00",
+      "monotonic_ns": 435569748761400,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:ci",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:18.606736+00:00",
+      "monotonic_ns": 435569748814000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:ci",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:19.165077+00:00",
+      "monotonic_ns": 435570307182100,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:spikes",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:19.165217+00:00",
+      "monotonic_ns": 435570307296800,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:spikes",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:19.759767+00:00",
+      "monotonic_ns": 435570901854200,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:spikes\\rpf-53",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:19.759827+00:00",
+      "monotonic_ns": 435570901905200,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:spikes\\rpf-53",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:20.370178+00:00",
+      "monotonic_ns": 435571512264000,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:spikes\\rpf-53\\rev-6",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:20.370236+00:00",
+      "monotonic_ns": 435571512313700,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:spikes\\rpf-53\\rev-6",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:20.957927+00:00",
+      "monotonic_ns": 435572100012600,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "reparse:spikes\\rpf-86",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:20.957988+00:00",
+      "monotonic_ns": 435572100066100,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "ACL:spikes\\rpf-86",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.509155+00:00",
+      "monotonic_ns": 435572651240300,
+      "child_exit": 0,
+      "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "casefold-parent:.",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.536907+00:00",
+      "monotonic_ns": 435572678992500,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:.github",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537028+00:00",
+      "monotonic_ns": 435572679106700,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:.github\\workflows",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537097+00:00",
+      "monotonic_ns": 435572679174700,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:.local",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537151+00:00",
+      "monotonic_ns": 435572679228300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:.local\\rpf-86-owner-admission",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537204+00:00",
+      "monotonic_ns": 435572679281300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:ci",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537249+00:00",
+      "monotonic_ns": 435572679326300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:spikes",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537291+00:00",
+      "monotonic_ns": 435572679367800,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:spikes\\rpf-53",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537339+00:00",
+      "monotonic_ns": 435572679415400,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:spikes\\rpf-53\\rev-6",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537386+00:00",
+      "monotonic_ns": 435572679462900,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "casefold-parent:spikes\\rpf-86",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.537431+00:00",
+      "monotonic_ns": 435572679508100,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "certificate-file-metadata",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.662909+00:00",
+      "monotonic_ns": 435572804998600,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "certificate-exact-raw-pin",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.721377+00:00",
+      "monotonic_ns": 435572863462700,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "active-hooks",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.774362+00:00",
+      "monotonic_ns": 435572916448100,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "hooksPath",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.825736+00:00",
+      "monotonic_ns": 435572967824400,
+      "child_exit": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "python",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.841775+00:00",
+      "monotonic_ns": 435572983864600,
+      "child_exit": 0,
+      "stdout_sha256": "2b095b05c4093ebca54b87bd2c6a6f557935e6b3f8f506a0c2e5e294a763f4ad",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "git",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.888742+00:00",
+      "monotonic_ns": 435573030829600,
+      "child_exit": 0,
+      "stdout_sha256": "a0bef3335cdbc9a4a7733503ecdb281e91319f5a15e22026bfbef750ce76aaba",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "yaml",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.890000+00:00",
+      "monotonic_ns": 435573032087000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "disk",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.890160+00:00",
+      "monotonic_ns": 435573032239100,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "contract:AGENTS.md",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.890418+00:00",
+      "monotonic_ns": 435573032499000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "contract:.gitignore",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.890556+00:00",
+      "monotonic_ns": 435573032634500,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "contract:docs/project/PROJECT_BRIEF.md",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.890705+00:00",
+      "monotonic_ns": 435573032783000,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "contract:docs/project/CURRENT_STATE.md",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.890867+00:00",
+      "monotonic_ns": 435573032945300,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    },
+    {
+      "name": "contract:docs/project/DECISIONS.md",
+      "status": "PASS",
+      "utc": "2026-11-02T11:29:21.891074+00:00",
+      "monotonic_ns": 435573033151800,
+      "child_exit": null,
+      "stdout_sha256": null,
+      "stderr_sha256": null
+    }
+  ],
+  "source_pins": {
+    ".github/workflows/release-gate.yml": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+    "ci/run-runtime-contract-tests.py": "88396fa78d73ba091e91992d4d51263063a95aa7",
+    "ci/runtime-contract-test-matrix.json": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+    "ci/verify-runtime-coverage-handoff.py": "0e22b02048497b21d698dfe6cd958a437583c94d",
+    "runtime/tests/test_effectwitness_pge_dual.py": "f98fb2da033dc62a0d5f785c06b837990912caf6",
+    "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "2cc4145369918d265df6e3cdcdbce9ac7ecd9bd4",
+    "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "5b626b547a884035c3c968f2a1f95f77f941aec9",
+    "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "79c210fa5579235447157858f2c62ddd61983a91",
+    "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "ed4329a0064daae75792eddfdfdd5cebc1b4b695",
+    "ci/run-rpf86-owner-admission.py": "b1723620369f48f968642c671bc3b8da61ffa700",
+    "ci/test_run_rpf86_owner_admission.py": "c9f9a6497c9ddcf0e175f6a4df34acc17a5a64a6",
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "e675dd04d6a9bcc09c87d798222d48f972488f3f"
+  }
+}
