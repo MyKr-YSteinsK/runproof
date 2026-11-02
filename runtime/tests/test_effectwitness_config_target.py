@@ -2,9 +2,11 @@ from __future__ import annotations
 
 import ast
 import http.client
+import importlib.metadata
 import os
 import socket
 import sys
+import sysconfig
 import time
 import unittest
 import uuid
@@ -507,18 +509,21 @@ class ConfigTargetVerifierBoundaryTests(unittest.TestCase):
 
     def test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime(self):
         denied = []
-        audit = _guard(19002, ROOT / ".local" / "rpf-52-rev3" / "diagnostic-1",
-                       ROOT / ".local" / "rpf-48" / "venv" / "Lib" / "site-packages",
+        audit = _guard(19002, ROOT / "ci-results" / "rpf83-guard-fixture",
+                       ROOT / "ci-results" / "rpf83-sdk-readonly-fixture",
                        denied)
-        base_executable = Path(getattr(sys, "_base_executable", sys.executable))
-        runtime_root = base_executable.resolve(strict=True).parent
-        if os.name == "nt":
-            candidate = runtime_root / "Lib" / "importlib" / "metadata" / "__init__.py"
-        else:
-            candidate = runtime_root / "lib" / f"python{sys.version_info.major}.{sys.version_info.minor}" / "importlib" / "metadata" / "__init__.py"
+        stdlib = Path(sysconfig.get_path("stdlib")).resolve(strict=True)
+        candidate = Path(importlib.metadata.__file__).resolve(strict=True)
+        self.assertEqual(candidate.relative_to(stdlib).as_posix(),
+                         "importlib/metadata/__init__.py")
         self.assertTrue(candidate.is_file())
         audit("open", (str(candidate), "r", os.O_RDONLY))
         self.assertEqual(denied, [])
+        # Only invoke the audit callback; no outside file is opened or created.
+        with self.assertRaisesRegex(PermissionError, "RPF52_FILE_ACCESS_DENIED"):
+            audit("open", (str(ROOT / "ci-results" / "rpf83-outside-guard.txt"),
+                           "r", os.O_RDONLY))
+        self.assertEqual(denied, ["RPF52_FILE_ACCESS_DENIED"])
 
 
 class ConfigTargetHttpRejectionRegressionTests(unittest.TestCase):

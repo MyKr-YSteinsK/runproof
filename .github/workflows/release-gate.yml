@@ -87,7 +87,18 @@ jobs:
       - name: Prepare fixed Docker runtime image
         run: docker pull alpine:3.22
 
+      - name: Run focused cross-platform safety contracts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m unittest -v \
+            runtime.tests.test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename \
+            runtime.tests.test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime
+          python -B -m unittest -v ci.test_rpf83_ci_preconditions
+
       - name: Run repository contract checks
+        env:
+          RPF82_TEST_ROOT: ${{ github.workspace }}/ci-results/rpf83-r60-${{ github.run_id }}-${{ github.run_attempt }}
         shell: bash
         run: |
           set -euo pipefail

@@ -11,17 +11,29 @@ _owner_patch=None
 
 def _test_owner(raw):
     """Test harness only: one explicit owner inherited by competing processes."""
-    owner=Path(raw).absolute()
+    c.require(isinstance(raw,str) and bool(raw),'TEST_OWNER_SCOPE')
+    owner=Path(raw)
+    c.require(owner.is_absolute() and '..' not in owner.parts,'TEST_OWNER_SCOPE')
     allowed=(c.ROOT/'.local/rpf-82-rev-2-ci-isolation-attempt-02',c.ROOT/'ci-results')
-    c.require(any(owner.is_relative_to(p) and owner.resolve().is_relative_to(p.resolve()) for p in allowed),'TEST_OWNER_SCOPE')
+    c.require(any(owner!=p and owner.is_relative_to(p) for p in allowed),'TEST_OWNER_SCOPE')
     c.require(not any(p.is_symlink() or getattr(p,'is_junction',lambda:False)() for p in (owner,*owner.parents)),'TEST_OWNER_REPARSE')
+    c.require(any(owner.resolve().is_relative_to(p.resolve()) for p in allowed),'TEST_OWNER_SCOPE')
+    if os.environ.get('GITHUB_ACTIONS')=='true':
+        workspace=os.environ.get('GITHUB_WORKSPACE','')
+        run_id=os.environ.get('GITHUB_RUN_ID','');attempt=os.environ.get('GITHUB_RUN_ATTEMPT','')
+        c.require(workspace==str(c.ROOT) and run_id.isascii() and run_id.isdecimal()
+                  and attempt.isascii() and attempt.isdecimal(),'TEST_OWNER_CI_IDENTITY')
+        c.require(owner==c.ROOT/'ci-results'/f'rpf83-r60-{run_id}-{attempt}','TEST_OWNER_CI_IDENTITY')
     return owner
 
 def setUpModule():
     global WORK,_owner_patch
     owner=_test_owner(os.environ['RPF82_TEST_ROOT'])
-    _owner_patch=patch.object(c,'WORK',owner);_owner_patch.start()
+    if owner.parent==c.ROOT/'ci-results' and owner.name.startswith('rpf83-r60-'):
+        c.require(not os.path.lexists(owner),'TEST_OWNER_OCCUPIED')
+        owner.mkdir(parents=True,exist_ok=False)
     WORK=owner/'rpf60-tests';WORK.mkdir(parents=True,exist_ok=False)
+    _owner_patch=patch.object(c,'WORK',owner);_owner_patch.start()
 
 def tearDownModule():
     if _owner_patch is not None:_owner_patch.stop()

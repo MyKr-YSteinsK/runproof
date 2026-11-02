@@ -555,6 +555,30 @@ class ConfigLiveContractsTests(unittest.TestCase):
         self.assertEqual(_safe_denied_basename(r"C:\Users\Alice\secret token.json"),
                          "secret_token.json")
         self.assertEqual(_safe_denied_basename("x" * 200), "x" * 80)
+        for path in ("/home/alice/secret token.json",
+                     r"\\server\share\secret token.json",
+                     r"C:\Users/alice\secret token.json",
+                     Path("synthetic-parent") / "secret token.json"):
+            with self.subTest(kind=type(path).__name__):
+                name = _safe_denied_basename(path)
+                self.assertEqual(name, "secret_token.json")
+                self.assertRegex(name, r"\A[A-Za-z0-9_.-]{1,80}\Z")
+        class TextPath:
+            def __fspath__(self):
+                return r"C:\synthetic-parent\file.json"
+        class InvalidPath:
+            def __fspath__(self):
+                return 42
+        self.assertEqual(_safe_denied_basename(TextPath()), "file.json")
+        for path in ("", ".", "..", "/", "C:\\", r"\\server\share",
+                     "parent/", "parent\\", "parent/../file.json",
+                     "parent/./file.json", "file.json:stream", "C:file.json",
+                     r"\\?\C:\file.json", "file\x00.json", "file\n.json",
+                     b"parent/file.json", None, 42, object(), InvalidPath()):
+            with self.subTest(kind=type(path).__name__):
+                self.assertEqual(_safe_denied_basename(path), "UNKNOWN")
+        # Even a filename composed entirely of non-ASCII characters stays bounded.
+        self.assertEqual(_safe_denied_basename("\u79d8" * 200), "_" * 80)
 
     def test_external_child_uses_the_pinned_http_transport_module(self):
         source = (ROOT / "runtime/runproof_runtime/effectwitness/config_live_external.py").read_text(

@@ -1,0 +1,199 @@
+{
+  "plan": "RPF-83/rev-2",
+  "environment": {
+    "os": "win32",
+    "python_version": "3.14.6",
+    "linux_local": "UNAVAILABLE",
+    "hosted_python": "3.12 configured; execution pending"
+  },
+  "source_freeze": {
+    "plan": "RPF-83/rev-2",
+    "utc": "2026-11-02T06:24:29.411301+00:00",
+    "monotonic_ns": 417278994479500,
+    "sources": [
+      {
+        "path": "runtime/runproof_runtime/effectwitness/config_live_external.py",
+        "sha256": "d8e01dcb5c8e63a227f188d67c1e2a0b52eb203457e6d6159f24f71ec170d813"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_config_live.py",
+        "sha256": "f8f7596af26eaeae84a818033bd04f60933fba7630b345b73d07d37a34adaa60"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_config_target.py",
+        "sha256": "e6c0402d16f5e99100e9a7f76f8b109c12b9668fea23bb0994809959949f6ea2"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_lab_cross_domain.py",
+        "sha256": "d708e6548b3f67045a1a7ca950c13f602c7d813599ae5e53c6ac4f41b9de853e"
+      },
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344"
+      },
+      {
+        "path": "ci/test_rpf83_ci_preconditions.py",
+        "sha256": "4839b73d0ab34f4d05867b6e525ef37a996cddd270f336889e378acef5949141"
+      }
+    ],
+    "budget": {
+      "groups": 2,
+      "formal_runs_per_group": 1,
+      "timeout_seconds": 60,
+      "process_memory_bytes": 536870912,
+      "combined_output_bytes": 1048576,
+      "memory_enforcement": "Windows Job Object PROCESS_MEMORY before child unittest release"
+    },
+    "provider": 0,
+    "sdk": 0,
+    "business_writes": 0
+  },
+  "static_checks": {
+    "status": "PASS",
+    "sources": [
+      {
+        "path": "runtime/runproof_runtime/effectwitness/config_live_external.py",
+        "sha256": "d8e01dcb5c8e63a227f188d67c1e2a0b52eb203457e6d6159f24f71ec170d813"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_config_live.py",
+        "sha256": "f8f7596af26eaeae84a818033bd04f60933fba7630b345b73d07d37a34adaa60"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_config_target.py",
+        "sha256": "e6c0402d16f5e99100e9a7f76f8b109c12b9668fea23bb0994809959949f6ea2"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_lab_cross_domain.py",
+        "sha256": "d708e6548b3f67045a1a7ca950c13f602c7d813599ae5e53c6ac4f41b9de853e"
+      },
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344"
+      },
+      {
+        "path": "ci/test_rpf83_ci_preconditions.py",
+        "sha256": "4839b73d0ab34f4d05867b6e525ef37a996cddd270f336889e378acef5949141"
+      }
+    ],
+    "unchanged_r60_test_methods": 9,
+    "unchanged_guards": [
+      "config_target_external.py",
+      "config_live_external._guard_events",
+      "config_live_external._guard"
+    ],
+    "yaml_parser": "PyYAML 6.0.3",
+    "workflow_negative_controls": [
+      {
+        "name": "late-focus",
+        "status": "REJECTED"
+      },
+      {
+        "name": "no-fail-fast",
+        "status": "REJECTED"
+      },
+      {
+        "name": "missing-global",
+        "status": "REJECTED"
+      },
+      {
+        "name": "wrong-owner",
+        "status": "REJECTED"
+      }
+    ],
+    "default_crlf_check": {
+      "exit": 2,
+      "stdout_sha256": "ed412d45ef0ad5fec3d9917bb51ac622724425036304493849fb666147a8c792",
+      "stderr_sha256": "ea32d81f807dc51923ad0f5a955254d3bff4a1b25018846a3911501b030cd970"
+    },
+    "diff_check": {
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "ea32d81f807dc51923ad0f5a955254d3bff4a1b25018846a3911501b030cd970"
+    }
+  },
+  "formal_runs": [
+    {
+      "group": "cross-platform",
+      "unittest_ids": [
+        "runtime.tests.test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "runtime.tests.test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename",
+        "runtime.tests.test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime"
+      ],
+      "supervisor": "gated runpy unittest in Windows Job Object",
+      "pid": 8268,
+      "exit": 0,
+      "utc_start": "2026-11-02T06:24:29.413305+00:00",
+      "monotonic_start_ns": 417278996469000,
+      "monotonic_end_ns": 417279536658600,
+      "seconds": 0.5401902,
+      "termination_reason": null,
+      "peak_process_memory_bytes": 32894976,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "afeaf3eefdc946c7e62768bf0f41f814fe429abb8c1ec620b9eb586c3475cb81",
+      "output_bytes": 536,
+      "status": "PASS",
+      "exited": true,
+      "threads_drained": true
+    },
+    {
+      "group": "preconditions",
+      "unittest_ids": [
+        "ci.test_rpf83_ci_preconditions"
+      ],
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "-v",
+        "ci.test_rpf83_ci_preconditions"
+      ],
+      "supervisor": "gated runpy unittest in Windows Job Object",
+      "pid": 28956,
+      "exit": 0,
+      "utc_start": "2026-11-02T06:24:29.954758+00:00",
+      "monotonic_start_ns": 417279537919800,
+      "monotonic_end_ns": 417279981434700,
+      "seconds": 0.4435152,
+      "termination_reason": null,
+      "peak_process_memory_bytes": 34230272,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "3fe6520b15a441d48efac60c8515dc46d5c8161e7be96bc27cf6ce5baf773c3e",
+      "output_bytes": 1011,
+      "status": "PASS",
+      "exited": true,
+      "threads_drained": true
+    }
+  ],
+  "source_unchanged_after_tests": true,
+  "checks_not_run": [
+    "Full local Runtime",
+    "RPF60 nine-method module",
+    "RPF82 Router inventory",
+    "Provider/SDK/Java/Docker/business experiments",
+    "Historical certificate reproduction"
+  ],
+  "prefreeze_tooling": [
+    {
+      "name": "diff-check CRLF interpretation",
+      "first_exit": 1,
+      "reason": "First static checker asserted default git diff --check exit2; existing CRLF endings are interpreted as trailing whitespace",
+      "resolution": "Verified every warning is CR only; command-local cr-at-eol keeps all other whitespace checks; final exit0",
+      "raw_default_log_sha256": "5bafa77a201650b5e4971036806dee71fecd64783b691dee1e8433de8a560574"
+    },
+    {
+      "name": "Precondition environment copy hardening",
+      "reason": "Before freeze, replaced full environment copy with SYSTEMROOT/WINDIR/PATH allowlist; no secret read or output"
+    }
+  ],
+  "new_run": "NOT_RUN_AT_SEAL"
+}

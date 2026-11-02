@@ -1,0 +1,54 @@
+{
+  "plan": "RPF-83/rev-2",
+  "status": "PASS",
+  "basename": {
+    "test_id": "runtime.tests.test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename",
+    "checks": [
+      "Original Windows-path expectation retained",
+      "POSIX, UNC and mixed separators expose only the filename",
+      "bytes, invalid PathLike, empty/dot/parent, traversal, device and stream inputs return UNKNOWN",
+      "ASCII sanitization and maximum length 80 retained"
+    ],
+    "stderr_sha256": "afeaf3eefdc946c7e62768bf0f41f814fe429abb8c1ec620b9eb586c3475cb81"
+  },
+  "stdlib": {
+    "test_id": "runtime.tests.test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime",
+    "checks": [
+      "Real importlib.metadata.__file__ matches interpreter sysconfig stdlib/importlib/metadata/__init__.py",
+      "Guard allows the stdlib fixture",
+      "Guard denies the outside synthetic path via callback without opening it"
+    ],
+    "guard_modified": false
+  },
+  "owner": {
+    "methods": [
+      "test_actual_symlink_or_junction_is_rejected",
+      "test_ci_identity_mismatch_is_rejected",
+      "test_escape_and_unauthorized_owner_fail_lexically",
+      "test_fresh_ci_owner_is_created_once_and_propagated",
+      "test_missing_env_fails_before_directory_creation",
+      "test_preoccupied_root_is_not_reused"
+    ],
+    "status": "6 PASS",
+    "fixture_scope": "New ci-results/rpf83-preconditions-{run}-{attempt}-{uuid}; isolated synthetic checkout; no old owner IO",
+    "stderr_sha256": "3fe6520b15a441d48efac60c8515dc46d5c8161e7be96bc27cf6ce5baf773c3e"
+  },
+  "workflow": [
+    {
+      "name": "late-focus",
+      "status": "REJECTED"
+    },
+    {
+      "name": "no-fail-fast",
+      "status": "REJECTED"
+    },
+    {
+      "name": "missing-global",
+      "status": "REJECTED"
+    },
+    {
+      "name": "wrong-owner",
+      "status": "REJECTED"
+    }
+  ]
+}

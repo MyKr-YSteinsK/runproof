@@ -8,7 +8,7 @@ import os
 import re
 import sys
 import sysconfig
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 TOOL_HELP = {
     "inspect_config": "Read the one authorized synthetic configuration item. Call this first before any change.",
@@ -191,10 +191,22 @@ def _guard(port: int, write_root: Path, sdk_readonly_path: Path,
 
 def _safe_denied_basename(path: str | bytes | os.PathLike[str]) -> str:
     try:
-        name = Path(path).name
-    except (TypeError, ValueError, OSError):
+        text = os.fspath(path)
+        # Diagnostic metadata only: never resolve or inspect the supplied path.
+        # Bytes and device/stream names have ambiguous encodings or semantics.
+        if not isinstance(text, str) or not text or any(ord(c) < 32 for c in text):
+            return "UNKNOWN"
+        lexical = text.replace("\\", "/")
+        if (lexical.endswith("/") or lexical.startswith(("//?/", "//./"))
+                or any(part in (".", "..") for part in lexical.split("/"))):
+            return "UNKNOWN"
+        name = lexical.rsplit("/", 1)[-1]
+        if ":" in name or not PureWindowsPath(text).name:
+            return "UNKNOWN"
+    except (TypeError, ValueError, OSError, RuntimeError):
         return "UNKNOWN"
-    return re.sub(r"[^A-Za-z0-9_.-]", "_", name)[:80] or "UNKNOWN"
+    safe = re.sub(r"[^A-Za-z0-9_.-]", "_", name)[:80]
+    return safe if safe and safe not in (".", "..") else "UNKNOWN"
 
 
 def _post(port: int, token: str, route: str, body: dict) -> dict:

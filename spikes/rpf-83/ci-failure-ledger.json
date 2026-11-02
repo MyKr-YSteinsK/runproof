@@ -1,0 +1,65 @@
+{
+  "plan": "RPF-83/rev-2",
+  "old_run": {
+    "id": 41172290021,
+    "head": "76088c6e268388fe414956d48cad0242641ae01a",
+    "status": "completed",
+    "conclusion": "failure",
+    "tests": 1109,
+    "errors": 116,
+    "failures": 2,
+    "skipped": 2,
+    "provenance": "Architect fixed-SHA CI analysis embedded in rev-2 Plan; not locally reproduced",
+    "canonical_gate": "SKIPPED"
+  },
+  "new_run": {
+    "id": null,
+    "status": "NOT_RUN_AT_SEAL",
+    "conclusion": null
+  },
+  "obligations": [
+    {
+      "name": "Basename leak",
+      "status": "LOCAL_FOCUSED_PASS_HOSTED_PENDING"
+    },
+    {
+      "name": "Stdlib fixture path",
+      "status": "LOCAL_FOCUSED_PASS_HOSTED_PENDING"
+    },
+    {
+      "name": "RPF60 missing owner env",
+      "status": "MICRO_TEST_PASS_FULL_MODULE_NOT_RUN"
+    },
+    {
+      "name": "RPF75 global audit hook pollution",
+      "status": "UNRESOLVED"
+    },
+    {
+      "name": "Windows-only tests",
+      "status": "RETAINED_NOT_REPRODUCED"
+    },
+    {
+      "name": "Historical SDK/venv and RPF73R2 receipt prerequisites",
+      "status": "UNAVAILABLE_NOT_PASS"
+    },
+    {
+      "name": "RPF78 frozen inputs",
+      "status": "UNAVAILABLE_NOT_PASS"
+    },
+    {
+      "name": "RPF60 300-second module timeout",
+      "status": "UNPROVEN_NOT_RERUN"
+    },
+    {
+      "name": "RPF82 Router and 1232 required-method obligations",
+      "status": "UNACTIVATED_RETAINED"
+    }
+  ],
+  "decision": {
+    "rpf82": "PARTIAL",
+    "rpf74": "PAUSED_DEFERRED",
+    "rpf81rev2": "BLOCKED",
+    "release": "NOT_AUTHORIZED",
+    "stage_advanced": false
+  }
+}
