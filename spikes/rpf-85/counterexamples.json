@@ -1,0 +1,107 @@
+{
+  "plan": "RPF-85/rev-1",
+  "status": "PASS",
+  "formal_tests": [
+    "test_synthetic_positive_continues_but_barrier_rejects",
+    "test_json_duplicate_nonfinite_oversize_and_truncation",
+    "test_missing_ledger_escape_and_reparse",
+    "test_identity_coverage_routes_and_fake_green_reject",
+    "test_real_receipt_timeout_exit_truncation_and_missing_final_reject",
+    "test_native_skip_and_partial_progress_cannot_be_invented",
+    "test_enforce_revalidates_status_and_original_ledger",
+    "test_ci_identity_and_synthetic_cannot_cross_boundary",
+    "test_false_coverage_flag_cannot_replace_actual_dynamic_ids",
+    "test_summary_appends_separate_blocker_and_rejects_escape",
+    "test_cli_actual_assess_zero_enforce_one_invalid_two_and_no_overwrite"
+  ],
+  "negative_control_families": [
+    "JSON duplicate key",
+    "NaN/Infinity",
+    "oversize/truncated/missing ledger",
+    "lexical escape / actual symlink or junction",
+    "runner exit0 paired with coverage gaps",
+    "missing/duplicate module",
+    "missing/duplicate/new method ID",
+    "required_methods reduced to693",
+    "required=false",
+    "inventory_verified=false",
+    "unavailable relabeled SKIP/PASS",
+    "portable NOT_RUN / executed=false",
+    "source or matrix mismatch",
+    "timeout/truncated/exit1/unexited/undrained child",
+    "missing final report",
+    "missing/duplicate/partial progress",
+    "class setup SKIP relabeled PASS",
+    "stdout hash mismatch",
+    "status forgery / missing status / changed ledger / changed source",
+    "CI run/path mismatch and synthetic fixture crossing into CI",
+    "summary scope escape / original summary prefix preservation",
+    "exclusive output occupancy"
+  ],
+  "synthetic_positive": {
+    "counts": {
+      "PASS": 688,
+      "SKIP": 5,
+      "UNAVAILABLE": 539
+    },
+    "required_modules": 57,
+    "required_methods": 1232,
+    "evidence_kind": "SYNTHETIC_OFFLINE_TEST",
+    "assess_exit": 0,
+    "enforce_exit": 1,
+    "occupied_exit": 2,
+    "reason": "RELEASE_BLOCKED_BY_REQUIRED_COVERAGE",
+    "release_eligible": false,
+    "release_executed": false,
+    "deployment_authorized": false,
+    "status_sha256": "c445f0e49e0f03eb273be939c629c875e04a1cc74f4cb75bc262ed8c408547db",
+    "router_ledger_sha256": "cf9795c9d6f5c875b17f43b29ce957956cffb7fd79dcf12927641614f9bef502",
+    "evidence_manifest_sha256": "2341755802e15d0839adf644cf3c2d9afdcf15e6afc9a2db094f48c4e0ae1cd5",
+    "source_validation": {
+      "modules": 57,
+      "required_methods": 1232,
+      "runner_lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+      "matrix_lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+      "baseline_lf_sha256": "7b15618b3c93d188a7b2a03ceae0bb53a57975c71f6a20bc14d91d7e7ec669fe",
+      "verifier_lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+    },
+    "assess_stdout_sha256": "c5b5aa8aa4d0e072049062f3cf8f32a519e0461e7690309b311d29ef53d3c27e",
+    "enforce_stdout_sha256": "3ece890e2ae6224f55df6a4f7707bc57dd06846aa09f0ee3ad2a804217199e1a"
+  },
+  "workflow_negative_controls": [
+    {
+      "name": "drop-npm",
+      "status": "REJECTED"
+    },
+    {
+      "name": "wrap-handoff-ignore",
+      "status": "REJECTED"
+    },
+    {
+      "name": "wrong-exit-capture",
+      "status": "REJECTED"
+    },
+    {
+      "name": "no-final-barrier",
+      "status": "REJECTED"
+    },
+    {
+      "name": "barrier-not-always",
+      "status": "REJECTED"
+    },
+    {
+      "name": "remove-original-artifact",
+      "status": "REJECTED"
+    },
+    {
+      "name": "change-permissions",
+      "status": "REJECTED"
+    },
+    {
+      "name": "remove-r83-focus",
+      "status": "REJECTED"
+    }
+  ],
+  "not_a_runtime_execution": true,
+  "issuer_boundary": "Same-owner hashes/source-bound process receipts are not third-party signatures or independent Issuer attestation."
+}

@@ -1,0 +1,35 @@
+{
+  "plan": "RPF-85/rev-1",
+  "decision": "A_DIAGNOSTIC_HANDOFF_FAIL_CLOSED",
+  "local_gates": "PASS",
+  "handoff": "PORTABLE_PASS and fully reconciled source/receipts => CONTINUE_DIAGNOSTIC_ONLY",
+  "required_barrier": "539 required UNAVAILABLE => enforce exit1 / job FAILURE; missing or invalid evidence => exit2",
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "historical_run": {
+    "id": 41408665295,
+    "head": "c341c28d1afc7d23b3e09934bf51788ffae62700",
+    "job_conclusion": "failure",
+    "counts": {
+      "PASS": 688,
+      "SKIP": 5,
+      "UNAVAILABLE": 539
+    },
+    "counts_provenance": "Fixed hosted evidence in Plan; no local Runtime reproduction",
+    "fresh_canonical_gate": "SKIPPED"
+  },
+  "new_hosted_run": "NOT_RUN_AT_SEAL",
+  "rpf12_result": "NOT_RUN_AT_SEAL",
+  "artifact_required_blocker": "NOT_RUN_AT_SEAL",
+  "task_complete": "PENDING_GIT_DELIVERY",
+  "evidence_accepted": "ARCHITECT_ONLY",
+  "stage_advanced": false,
+  "preserved_states": {
+    "RPF82": "PARTIAL",
+    "RPF74rev4": "PAUSED_DEFERRED",
+    "RPF81rev2": "BLOCKED",
+    "RPF78_A08": "FAIL"
+  },
+  "next_decision": "Observe real hosted downstream stages; future Plans must close required prerequisite categories without waiving them."
+}

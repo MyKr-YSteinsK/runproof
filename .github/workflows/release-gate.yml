@@ -103,7 +103,15 @@ jobs:
         run: |
           set -euo pipefail
           python ci/verify-public-docs.py
+          set +e
           python -B ci/run-runtime-contract-tests.py --output "$GITHUB_WORKSPACE/ci-results/rpf84-${{ github.run_id }}-${{ github.run_attempt }}"
+          router_rc=$?
+          set -euo pipefail
+          python -B ci/verify-runtime-coverage-handoff.py assess \
+            --ledger "$GITHUB_WORKSPACE/ci-results/rpf84-${{ github.run_id }}-${{ github.run_attempt }}/ledger.json" \
+            --runner-exit "$router_rc" \
+            --output "$GITHUB_WORKSPACE/ci-results/rpf85-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
           python runtime/verify-reviewed-artifacts.py
           python spikes/rpf-16/probe.py --verify
           python spikes/rpf-17/verify-evidence.py
@@ -139,5 +147,16 @@ jobs:
           path: |
             ci-results/rpf12-release-gate-result.json
             ci-results/rpf12-release-gate-summary.md
+            ci-results/rpf85-coverage-*.json
           if-no-files-found: error
           retention-days: 14
+
+      - name: Enforce all required Runtime coverage
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B ci/verify-runtime-coverage-handoff.py enforce \
+            --ledger "$GITHUB_WORKSPACE/ci-results/rpf84-${{ github.run_id }}-${{ github.run_attempt }}/ledger.json" \
+            --status "$GITHUB_WORKSPACE/ci-results/rpf85-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"

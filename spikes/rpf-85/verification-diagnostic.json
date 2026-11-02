@@ -1,0 +1,217 @@
+{
+  "plan": "RPF-85/rev-1",
+  "base": "c341c28d1afc7d23b3e09934bf51788ffae62700",
+  "source_identity": {
+    "old_workflow_blob": "02c4cd43c1c014be7f37ee3a109cbac5335d5b7c",
+    "old_workflow_raw_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460",
+    "new_sources": [
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+        "lf_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+      },
+      {
+        "path": "ci/verify-runtime-coverage-handoff.py",
+        "raw_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+        "lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+      },
+      {
+        "path": "ci/test_verify_runtime_coverage_handoff.py",
+        "raw_sha256": "abe1aa18fff8d45dfd818b676cbe0837716803dca55b548e797201bc0b9de204",
+        "lf_sha256": "abe1aa18fff8d45dfd818b676cbe0837716803dca55b548e797201bc0b9de204"
+      }
+    ],
+    "immutable_sources": [
+      {
+        "path": "ci/run-runtime-contract-tests.py",
+        "blob": "88396fa78d73ba091e91992d4d51263063a95aa7",
+        "lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+      },
+      {
+        "path": "ci/runtime-contract-test-matrix.json",
+        "blob": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+        "lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+      },
+      {
+        "path": "ci/test_run_runtime_contract_tests.py",
+        "blob": "1d9bf41a075ab480e4f9a45205935904df6c3639",
+        "lf_sha256": "33e1df05cd2776d531d78c0fca0e7e9608a028346c8ab34841a0bbb60a9b580a"
+      },
+      {
+        "path": "ci/run_release_gate.py",
+        "blob": "6c10faca700717d5fa5d30b3dada1f8eb4a2dfbe",
+        "lf_sha256": "9231885cf46cfcab85fd2f7f3d4dbd1373bfd02eb2eda5b79eece66ff0bc9291"
+      }
+    ],
+    "historical_required_identity": {
+      "path": "spikes/rpf-82/rev-2/classification-ledger.json",
+      "raw_sha256": "21609e8fbadbfce0363d04bb3144c1f9cc61559cb961b32ab9bff3c3ec2dc0a0"
+    },
+    "historical_r84_coverage": {
+      "path": "spikes/rpf-84/isolation-coverage-ledger.json",
+      "raw_sha256": "0b7225cdfe4c3c6c123abae005707ca06297fa0873bbab29516585f2a88edca4",
+      "copied_rows": false
+    }
+  },
+  "freeze": {
+    "plan": "RPF-85/rev-1",
+    "utc": "2026-11-02T08:37:24.789416+00:00",
+    "monotonic_ns": 425254372597700,
+    "sources": [
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+        "lf_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+      },
+      {
+        "path": "ci/verify-runtime-coverage-handoff.py",
+        "raw_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+        "lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+      },
+      {
+        "path": "ci/test_verify_runtime_coverage_handoff.py",
+        "raw_sha256": "abe1aa18fff8d45dfd818b676cbe0837716803dca55b548e797201bc0b9de204",
+        "lf_sha256": "abe1aa18fff8d45dfd818b676cbe0837716803dca55b548e797201bc0b9de204"
+      }
+    ],
+    "formal_budget": {
+      "unittest_runs": 1,
+      "timeout_seconds": 240,
+      "combined_output_bytes": 2097152,
+      "full_runtime_lane": "NOT_RUN"
+    },
+    "fixture_kind": "SYNTHETIC_OFFLINE_TEST",
+    "decision_candidate": "A_DIAGNOSTIC_HANDOFF_FAIL_CLOSED"
+  },
+  "static": {
+    "status": "PASS",
+    "sources": [
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+        "lf_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+      },
+      {
+        "path": "ci/verify-runtime-coverage-handoff.py",
+        "raw_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+        "lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+      },
+      {
+        "path": "ci/test_verify_runtime_coverage_handoff.py",
+        "raw_sha256": "abe1aa18fff8d45dfd818b676cbe0837716803dca55b548e797201bc0b9de204",
+        "lf_sha256": "abe1aa18fff8d45dfd818b676cbe0837716803dca55b548e797201bc0b9de204"
+      }
+    ],
+    "yaml_version": "6.0.3",
+    "yaml_safe_load": "PASS",
+    "workflow_exact_authorized_transform": "PASS",
+    "workflow_negative_controls": [
+      {
+        "name": "drop-npm",
+        "status": "REJECTED"
+      },
+      {
+        "name": "wrap-handoff-ignore",
+        "status": "REJECTED"
+      },
+      {
+        "name": "wrong-exit-capture",
+        "status": "REJECTED"
+      },
+      {
+        "name": "no-final-barrier",
+        "status": "REJECTED"
+      },
+      {
+        "name": "barrier-not-always",
+        "status": "REJECTED"
+      },
+      {
+        "name": "remove-original-artifact",
+        "status": "REJECTED"
+      },
+      {
+        "name": "change-permissions",
+        "status": "REJECTED"
+      },
+      {
+        "name": "remove-r83-focus",
+        "status": "REJECTED"
+      }
+    ],
+    "bash_syntax": [
+      {
+        "step": "Run focused cross-platform safety contracts",
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "step": "Run repository contract checks",
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "step": "Verify Job Summary contract",
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "step": "Enforce all required Runtime coverage",
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ],
+    "whitespace_default_exit": 0,
+    "whitespace_crlf_exit": 0
+  },
+  "prefreeze_unit": {
+    "exit": 0,
+    "seconds": 101.39586019999115,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "9173870c5bbe5aa4e9ed7d1226e78567e825999bd589f514d45ee812d2ed8bca",
+    "output_bytes": 1738
+  },
+  "prefreeze_test_count": 9,
+  "formal_unit": {
+    "command": [
+      "python",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "ci.test_verify_runtime_coverage_handoff"
+    ],
+    "exit": 0,
+    "utc_start": "2026-11-02T08:38:04.051135+00:00",
+    "seconds": 111.09767129999818,
+    "stdout_sha256": "6a0461c3e19754dbcd39cefcbb00c0d22733105b470919e3053cdb22665748d0",
+    "bytes": 2113,
+    "timeout": false,
+    "truncated": false,
+    "child_exited": true,
+    "drain_joined": true,
+    "source_freeze_unchanged": true
+  },
+  "formal_test_count": 11,
+  "synthetic_cli_dual_state_receipt": {
+    "assess_exit": 0,
+    "enforce_exit": 1,
+    "occupied_exit": 2,
+    "assess_stdout_sha256": "c5b5aa8aa4d0e072049062f3cf8f32a519e0461e7690309b311d29ef53d3c27e",
+    "enforce_stdout_sha256": "3ece890e2ae6224f55df6a4f7707bc57dd06846aa09f0ee3ad2a804217199e1a",
+    "synthetic_only": true,
+    "status_sha256": "c445f0e49e0f03eb273be939c629c875e04a1cc74f4cb75bc262ed8c408547db"
+  },
+  "local_full_runtime": "NOT_RUN",
+  "actual_provider": 0,
+  "actual_sdk": 0,
+  "local_java_docker_database_experiments": 0,
+  "business_writes": 0,
+  "cost": "CPU/disk/hosted CI actual cost UNAVAILABLE; Provider0",
+  "new_git_push_ci": "NOT_RUN_AT_SEAL",
+  "rpf12_cleanup_review": "run_release_gate.py creates output_dir with exist_ok=True and removes only its own tempfile tree; no delete of coverage/router sibling outputs in reviewed path."
+}
