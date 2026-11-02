@@ -1,0 +1,822 @@
+{
+  "plan": "RPF-84/rev-1",
+  "router_registered_tests": 41,
+  "retained_original_tests": 32,
+  "formal_exit": 0,
+  "negative_test_ids": [
+    "test_inventory_is_exact_tracked_set",
+    "test_omitted_module_fails",
+    "test_duplicate_module_fails",
+    "test_added_tracked_module_fails",
+    "test_source_drift_fails",
+    "test_unknown_route_fails",
+    "test_false_prerequisite_fails",
+    "test_weakened_coverage_fails",
+    "test_duplicate_and_nonfinite_json_fail",
+    "test_wrong_schema_type_fails",
+    "test_missing_overlap_unknown_method_fail",
+    "test_known_defects_cannot_be_relabelled",
+    "test_unavailable_is_never_skip_or_pass",
+    "test_result_omission_duplication_and_false_pass_fail",
+    "test_fail_and_error_propagate",
+    "test_real_class_skip_is_accounted_without_claiming_execution",
+    "test_output_scope_rejects_legacy_and_escape",
+    "test_parent_has_no_runtime_test_import_or_audit_hook",
+    "test_environment_does_not_inherit_unlisted_values",
+    "test_real_audit_hook_then_unpolluted_sibling",
+    "test_actual_crash_missing_result_timeout_and_truncation",
+    "test_rpf60_owner_paths_and_missing_parent",
+    "test_actual_r81_hidden_helper_routes_before_import",
+    "test_synthetic_hidden_work_helper_is_not_executed",
+    "test_benign_helper_stays_portable_and_runs",
+    "test_unknown_helper_and_external_call_reject",
+    "test_recursive_or_duplicate_helper_is_ambiguous",
+    "test_new_unregistered_helper_method_fails",
+    "test_owner_route_mask_and_dependency_drift_reject",
+    "test_pre_mkdir_and_open_events_denied_without_syscall",
+    "test_actual_exit_one_cannot_pass",
+    "test_forged_owner_prerequisite_or_missing_dependency_rejects",
+    "test_required_historical_ids_are_exact_and_unique",
+    "test_forged_skip_and_pass_need_real_progress_events",
+    "test_deadline_clamps_child_and_prevents_next_launch",
+    "test_r66_actual_historical_bytes_and_unchanged_guard",
+    "test_r66_wrong_blob_zero_two_tokens_and_child_drift_reject",
+    "test_rpf75_actual_socket_hook_is_not_only_a_callback",
+    "test_guard_source_weakening_cannot_keep_its_identity",
+    "test_owned_reparse_and_ci_identity_reject",
+    "test_partial_progress_never_upgrades_unstarted_or_duplicate"
+  ],
+  "actual_control_receipts": [
+    {
+      "case": "unit-actual-hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "5f734662feb860943df720d08e21bd19a32c4d1dd3781f843dcaa724f0d5c79d",
+        "bytes": 122,
+        "monotonic_start_ns": 421778565002700,
+        "monotonic_end_ns": 421778764605300,
+        "child_pid": 13696,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true,
+        "actual_socket_denied": true
+      }
+    },
+    {
+      "case": "unit-actual-hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "5f734662feb860943df720d08e21bd19a32c4d1dd3781f843dcaa724f0d5c79d",
+        "bytes": 122,
+        "monotonic_start_ns": 421948289058600,
+        "monotonic_end_ns": 421948483496800,
+        "child_pid": 4536,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true,
+        "actual_socket_denied": true
+      }
+    },
+    {
+      "case": "unit-actual-hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "5f734662feb860943df720d08e21bd19a32c4d1dd3781f843dcaa724f0d5c79d",
+        "bytes": 122,
+        "monotonic_start_ns": 421537872335000,
+        "monotonic_end_ns": 421538062610700,
+        "child_pid": 24988,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true,
+        "actual_socket_denied": true
+      }
+    },
+    {
+      "case": "unit-crash",
+      "receipt": {
+        "exit": 7,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421944783065300,
+        "monotonic_end_ns": 421944957314900,
+        "child_pid": 11488,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-crash",
+      "receipt": {
+        "exit": 7,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421775079387400,
+        "monotonic_end_ns": 421775249533300,
+        "child_pid": 10412,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-crash",
+      "receipt": {
+        "exit": 7,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421534276622700,
+        "monotonic_end_ns": 421534434470800,
+        "child_pid": 8188,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-deadline",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421946017509000,
+        "monotonic_end_ns": 421946530467800,
+        "child_pid": 656,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 0.498239700042177,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-deadline",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421776306637600,
+        "monotonic_end_ns": 421776825346000,
+        "child_pid": 34416,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 0.498814599995967,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-deadline",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421535430353200,
+        "monotonic_end_ns": 421535938815500,
+        "child_pid": 32112,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 0.49849969998467714,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-exit1",
+      "receipt": {
+        "exit": 1,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421945765710000,
+        "monotonic_end_ns": 421945948402100,
+        "child_pid": 33400,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-exit1",
+      "receipt": {
+        "exit": 1,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421776073068300,
+        "monotonic_end_ns": 421776245032300,
+        "child_pid": 29672,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-exit1",
+      "receipt": {
+        "exit": 1,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421535189391800,
+        "monotonic_end_ns": 421535363470300,
+        "child_pid": 36800,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "5f734662feb860943df720d08e21bd19a32c4d1dd3781f843dcaa724f0d5c79d",
+        "bytes": 122,
+        "monotonic_start_ns": 421947507022600,
+        "monotonic_end_ns": 421947692919200,
+        "child_pid": 8260,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true,
+        "actual_socket_denied": true
+      }
+    },
+    {
+      "case": "unit-hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "5f734662feb860943df720d08e21bd19a32c4d1dd3781f843dcaa724f0d5c79d",
+        "bytes": 122,
+        "monotonic_start_ns": 421777817021900,
+        "monotonic_end_ns": 421777999240100,
+        "child_pid": 2580,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true,
+        "actual_socket_denied": true
+      }
+    },
+    {
+      "case": "unit-hook",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "5f734662feb860943df720d08e21bd19a32c4d1dd3781f843dcaa724f0d5c79d",
+        "bytes": 122,
+        "monotonic_start_ns": 421536921684500,
+        "monotonic_end_ns": 421537126201000,
+        "child_pid": 19356,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "guard_denied": [
+          "subprocess.Popen",
+          "socket.connect"
+        ],
+        "actual_subprocess_denied": true,
+        "actual_socket_denied": true
+      }
+    },
+    {
+      "case": "unit-missing",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421534436161800,
+        "monotonic_end_ns": 421534585238000,
+        "child_pid": 25076,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-missing",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421775251753800,
+        "monotonic_end_ns": 421775436516500,
+        "child_pid": 33392,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-missing",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421944959739700,
+        "monotonic_end_ns": 421945137577300,
+        "child_pid": 13080,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-overflow",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": true,
+        "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+        "bytes": 2097153,
+        "monotonic_start_ns": 421535007310800,
+        "monotonic_end_ns": 421535185620200,
+        "child_pid": 34004,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-overflow",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": true,
+        "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+        "bytes": 2097153,
+        "monotonic_start_ns": 421775862850200,
+        "monotonic_end_ns": 421776069782200,
+        "child_pid": 27972,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-overflow",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": true,
+        "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+        "bytes": 2097153,
+        "monotonic_start_ns": 421945556961000,
+        "monotonic_end_ns": 421945760844200,
+        "child_pid": 8956,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 10,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-premkdir",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421536247426600,
+        "monotonic_end_ns": 421536416522100,
+        "child_pid": 31368,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "denied": [
+          "os.mkdir",
+          "open"
+        ],
+        "old_root_syscalls": 0
+      }
+    },
+    {
+      "case": "unit-premkdir",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421946872850100,
+        "monotonic_end_ns": 421947045878400,
+        "child_pid": 34808,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "denied": [
+          "os.mkdir",
+          "open"
+        ],
+        "old_root_syscalls": 0
+      }
+    },
+    {
+      "case": "unit-premkdir",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421777200244600,
+        "monotonic_end_ns": 421777381819100,
+        "child_pid": 4440,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "denied": [
+          "os.mkdir",
+          "open"
+        ],
+        "old_root_syscalls": 0
+      }
+    },
+    {
+      "case": "unit-r66",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421947051764300,
+        "monotonic_end_ns": 421947385832100,
+        "child_pid": 16204,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "old_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+        "child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+        "old_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+        "child_raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "unique_replacement": true,
+        "working_child_raw_sha256": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+        "working_child_lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "checkout_eol_mapping": "CRLF->LF only, Git blob comparison is raw byte equality",
+        "original_method_disposition": "UNAVAILABLE: original fresh() requires historical owner; not executed",
+        "guard_denials": [
+          "NETWORK_DENIED",
+          "DNS_DENIED",
+          "FILE_ACCESS_DENIED",
+          "PROCESS_EXEC_DENIED",
+          "SOCKET_OPERATION_DENIED"
+        ],
+        "guard_negative_count": 5,
+        "old_source_executed": false
+      }
+    },
+    {
+      "case": "unit-r66",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421536444744300,
+        "monotonic_end_ns": 421536798822500,
+        "child_pid": 16348,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "old_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+        "child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+        "old_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+        "child_raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "unique_replacement": true,
+        "working_child_raw_sha256": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+        "working_child_lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "checkout_eol_mapping": "CRLF->LF only, Git blob comparison is raw byte equality",
+        "original_method_disposition": "UNAVAILABLE: original fresh() requires historical owner; not executed",
+        "guard_denials": [
+          "NETWORK_DENIED",
+          "DNS_DENIED",
+          "FILE_ACCESS_DENIED",
+          "PROCESS_EXEC_DENIED",
+          "SOCKET_OPERATION_DENIED"
+        ],
+        "guard_negative_count": 5,
+        "old_source_executed": false
+      }
+    },
+    {
+      "case": "unit-r66",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421777386435700,
+        "monotonic_end_ns": 421777706760700,
+        "child_pid": 22556,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "old_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+        "child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+        "old_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+        "child_raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "unique_replacement": true,
+        "working_child_raw_sha256": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+        "working_child_lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "checkout_eol_mapping": "CRLF->LF only, Git blob comparison is raw byte equality",
+        "original_method_disposition": "UNAVAILABLE: original fresh() requires historical owner; not executed",
+        "guard_denials": [
+          "NETWORK_DENIED",
+          "DNS_DENIED",
+          "FILE_ACCESS_DENIED",
+          "PROCESS_EXEC_DENIED",
+          "SOCKET_OPERATION_DENIED"
+        ],
+        "guard_negative_count": 5,
+        "old_source_executed": false
+      }
+    },
+    {
+      "case": "unit-sibling",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "3c4d2b12cd77af1466f8194cc08297d4bf8974c86e4eeffeaea05a801627094b",
+        "bytes": 52,
+        "monotonic_start_ns": 421537138342200,
+        "monotonic_end_ns": 421537371357500,
+        "child_pid": 15804,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "loopback_bytes": 5,
+        "python_subprocess_exit": 0
+      }
+    },
+    {
+      "case": "unit-sibling",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "3c4d2b12cd77af1466f8194cc08297d4bf8974c86e4eeffeaea05a801627094b",
+        "bytes": 52,
+        "monotonic_start_ns": 421947710673900,
+        "monotonic_end_ns": 421947936224500,
+        "child_pid": 26988,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "loopback_bytes": 5,
+        "python_subprocess_exit": 0
+      }
+    },
+    {
+      "case": "unit-sibling",
+      "receipt": {
+        "exit": 0,
+        "timeout": false,
+        "truncated": false,
+        "stdout_sha256": "3c4d2b12cd77af1466f8194cc08297d4bf8974c86e4eeffeaea05a801627094b",
+        "bytes": 52,
+        "monotonic_start_ns": 421778002856400,
+        "monotonic_end_ns": 421778224058400,
+        "child_pid": 36140,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 300,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      },
+      "result": {
+        "loopback_bytes": 5,
+        "python_subprocess_exit": 0
+      }
+    },
+    {
+      "case": "unit-timeout",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421775438711500,
+        "monotonic_end_ns": 421775856888300,
+        "child_pid": 34500,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 0.4,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-timeout",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421945139558300,
+        "monotonic_end_ns": 421945551579800,
+        "child_pid": 30760,
+        "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "timeout_limit_seconds": 0.4,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    },
+    {
+      "case": "unit-timeout",
+      "receipt": {
+        "exit": 1,
+        "timeout": true,
+        "truncated": false,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "bytes": 0,
+        "monotonic_start_ns": 421534587990600,
+        "monotonic_end_ns": 421535004990300,
+        "child_pid": 10128,
+        "runner_sha256": "17472959c377713486254cc875654ba32298a73ac5dc4a189ea2adbe74ec7cfe",
+        "timeout_limit_seconds": 0.4,
+        "child_exited": true,
+        "drain_joined": true,
+        "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+      }
+    }
+  ],
+  "workflow_mutations": [
+    {
+      "name": "gate-removal",
+      "status": "REJECTED"
+    },
+    {
+      "name": "reorder-focus",
+      "status": "REJECTED"
+    },
+    {
+      "name": "false-green",
+      "status": "REJECTED"
+    },
+    {
+      "name": "wrong-output-owner",
+      "status": "REJECTED"
+    },
+    {
+      "name": "permission-change",
+      "status": "REJECTED"
+    }
+  ],
+  "r66_token_controls": [
+    "wrong object hash",
+    "zero token occurrences",
+    "two token occurrences",
+    "non-token child byte drift",
+    "current RPF83 source substituted for historical parent"
+  ],
+  "guard_scope": "Synthetic old-root audit events rejected before any corresponding mkdir/open syscall; actual symlink/junction admission refusal in new task root",
+  "unresolved": [
+    "Original R66 historical-owner method remains UNAVAILABLE",
+    "RPF60 full module timeout root cause UNPROVEN",
+    "Historical SDK/runner/frozen inputs required but UNAVAILABLE",
+    "Full Linux Runtime execution pending"
+  ]
+}

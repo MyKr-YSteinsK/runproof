@@ -1,0 +1,228 @@
+{
+  "plan": "RPF-84/rev-1",
+  "freeze": {
+    "plan": "RPF-84/rev-1",
+    "utc": "2026-11-02T07:41:56.926659+00:00",
+    "monotonic_ns": 421926509836300,
+    "sources": [
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "old_blob": "0b5d6d40c816b08c19051408bc432d84f4209758",
+        "old_raw_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+        "old_lf_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+        "new_raw_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460",
+        "new_lf_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460"
+      },
+      {
+        "path": "ci/run-runtime-contract-tests.py",
+        "old_blob": "527b789af0a3b8ed9067a126ac7750190345b576",
+        "old_raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "old_lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "new_raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "new_lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+      },
+      {
+        "path": "ci/runtime-contract-test-matrix.json",
+        "old_blob": "70857e69ec3707f102a7c165069a675cddda47c0",
+        "old_raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+        "old_lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+        "new_raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+        "new_lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+      },
+      {
+        "path": "ci/test_run_runtime_contract_tests.py",
+        "old_blob": "cbebf89e025943913b1cbdfd16649bdbc3d190bc",
+        "old_raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+        "old_lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+        "new_raw_sha256": "b18143e93ffd9d347800d03ff8378b156485318357af6628809d1f33399fab0e",
+        "new_lf_sha256": "33e1df05cd2776d531d78c0fca0e7e9608a028346c8ab34841a0bbb60a9b580a"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_pge_r66.py",
+        "old_blob": "65189d7a8ba26d1e8656a2cb4f11d8aa2c5346fd",
+        "old_raw_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+        "old_lf_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+        "new_raw_sha256": "c382b3c54247738092ea2dcb2b1c593e39e3be1029e743d59aac4d6342c64ebe",
+        "new_lf_sha256": "2d6bd1a0d1b9d5f51cf1bef96668859a6cc0d7ab32cce2ca9b76448197200f1b"
+      }
+    ],
+    "selected_path": "A_ACTIVATED_FAIL_CLOSED",
+    "budgets": {
+      "lane_seconds": 1500,
+      "per_child_seconds": 300,
+      "stdout_bytes": 2097152,
+      "focused_unit_outer_seconds": 180,
+      "focused_r60_outer_seconds": 40
+    },
+    "local_full_runtime": "NOT_RUN"
+  },
+  "static": {
+    "status": "PASS",
+    "sources": [
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "old_blob": "0b5d6d40c816b08c19051408bc432d84f4209758",
+        "old_raw_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+        "old_lf_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+        "new_raw_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460",
+        "new_lf_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460"
+      },
+      {
+        "path": "ci/run-runtime-contract-tests.py",
+        "old_blob": "527b789af0a3b8ed9067a126ac7750190345b576",
+        "old_raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "old_lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "new_raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "new_lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+      },
+      {
+        "path": "ci/runtime-contract-test-matrix.json",
+        "old_blob": "70857e69ec3707f102a7c165069a675cddda47c0",
+        "old_raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+        "old_lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+        "new_raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+        "new_lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+      },
+      {
+        "path": "ci/test_run_runtime_contract_tests.py",
+        "old_blob": "cbebf89e025943913b1cbdfd16649bdbc3d190bc",
+        "old_raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+        "old_lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+        "new_raw_sha256": "b18143e93ffd9d347800d03ff8378b156485318357af6628809d1f33399fab0e",
+        "new_lf_sha256": "33e1df05cd2776d531d78c0fca0e7e9608a028346c8ab34841a0bbb60a9b580a"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_pge_r66.py",
+        "old_blob": "65189d7a8ba26d1e8656a2cb4f11d8aa2c5346fd",
+        "old_raw_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+        "old_lf_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+        "new_raw_sha256": "c382b3c54247738092ea2dcb2b1c593e39e3be1029e743d59aac4d6342c64ebe",
+        "new_lf_sha256": "2d6bd1a0d1b9d5f51cf1bef96668859a6cc0d7ab32cce2ca9b76448197200f1b"
+      }
+    ],
+    "r66_unchanged_other_functions": 77,
+    "r66_original_guard_ast": "UNCHANGED",
+    "router_old_test_ids_preserved": 32,
+    "router_new_test_ids": 41,
+    "workflow_counterexamples": [
+      {
+        "name": "gate-removal",
+        "status": "REJECTED"
+      },
+      {
+        "name": "reorder-focus",
+        "status": "REJECTED"
+      },
+      {
+        "name": "false-green",
+        "status": "REJECTED"
+      },
+      {
+        "name": "wrong-output-owner",
+        "status": "REJECTED"
+      },
+      {
+        "name": "permission-change",
+        "status": "REJECTED"
+      }
+    ],
+    "protected_sources": [
+      "runtime/runproof_runtime/effectwitness/config_live_external.py",
+      "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py",
+      "spikes/rpf-75/probe.py",
+      "runtime/tests/test_effectwitness_pge_r75.py"
+    ],
+    "default_whitespace_exit": 2,
+    "crlf_aware_whitespace_exit": 0,
+    "yaml_version": "6.0.3",
+    "prefreeze_checker_correction": "First AST counter counted a nested Benign.test_entry as a RouterTests method (33 vs32); corrected to direct RouterTests methods; no Runtime test failure or source mutation caused by that assertion."
+  },
+  "prefreeze_runs": [
+    {
+      "exit": 0,
+      "seconds": 4.158534199988935,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "017ecb82c6c8fc1cf8d5fe93a3e62fae398803e3653a60adf6a8d670c1c515b2"
+    },
+    {
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "98d4688f0dbf820896004e4cb8d2cdc393a95ad82dd0c428112421b18f57c85c"
+    }
+  ],
+  "formal_unit": {
+    "command": [
+      "python",
+      "-B",
+      "-m",
+      "unittest",
+      "-v",
+      "ci.test_run_runtime_contract_tests"
+    ],
+    "exit": 0,
+    "seconds": 4.065863799944054,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "stderr_sha256": "13cee69d8d0703c4f652f618fffbbde8bb1c9c255b83054726c559168aa3c0f4",
+    "source_freeze_unchanged": true
+  },
+  "formal_unit_tests": 41,
+  "r60_formal_receipt": {
+    "exit": 0,
+    "timeout": false,
+    "truncated": false,
+    "stdout_sha256": "0fdd0e2d763300fe3dd84e469ea3bcc2680b68949bbd4298d3d37bf3ee71b29a",
+    "bytes": 264,
+    "monotonic_start_ns": 421948736247400,
+    "monotonic_end_ns": 421950203357900,
+    "child_pid": 19252,
+    "runner_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+    "timeout_limit_seconds": 39.99807969998801,
+    "child_exited": true,
+    "drain_joined": true,
+    "descendant_cleanup": "UNAVAILABLE: exact Popen handle only"
+  },
+  "r60_report": {
+    "ids": [
+      "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation"
+    ],
+    "results": [
+      {
+        "id": "test_effectwitness_lab_cross_domain.SelectTests.test_competing_processes_share_provider_reservation",
+        "actual": "PASS"
+      }
+    ],
+    "tests_run": 1,
+    "successful": true,
+    "fixture_skips": []
+  },
+  "r60_child_cleanup": [
+    {
+      "pid": 16472,
+      "exit": 0,
+      "killed": false,
+      "waited": true
+    },
+    {
+      "pid": 19520,
+      "exit": 0,
+      "killed": false,
+      "waited": true
+    }
+  ],
+  "cleanup_limit": "Only exact launched Popen handles were polled/killed/waited. No OS process-group proof or claim.",
+  "inventory_receipt": {
+    "exit": 1,
+    "seconds": 36.685052899993025,
+    "expected_reason": "REQUIRED_COVERAGE_UNAVAILABLE",
+    "ledger_sha256": "9e73aa14ee986f978f8bd4adc1207085875a6c17d56e534d17d8899f9ffd0ade"
+  },
+  "local_full_runtime": "NOT_RUN",
+  "r60_full_nine_methods": "NOT_RUN",
+  "provider": 0,
+  "real_sdk": 0,
+  "business_http": 0,
+  "database_business_effect": 0,
+  "actual_cost": "UNAVAILABLE for CPU/disk/hosted CI; no Provider usage",
+  "future_git_ci": "NOT_RUN_AT_SEAL"
+}

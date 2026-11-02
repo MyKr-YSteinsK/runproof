@@ -1,0 +1,19 @@
+{
+  "plan": "RPF-84/rev-1",
+  "decision": "A_ACTIVATED_FAIL_CLOSED",
+  "local_activation_prerequisites": "PASS",
+  "reason": "Actual hook self-denial and unpolluted sibling; 57/1232 discovery identity; current-source R60 two-child contention; independent fixed-blob R66 equality and unchanged guard controls; all original 32 router tests retained and 41 total pass; workflow equivalence and false-green negatives pass.",
+  "required_coverage": "NOT_PASS: 539 required UNAVAILABLE; exit nonzero is mandatory",
+  "hosted_execution": "NOT_RUN_AT_SEAL",
+  "fresh_canonical_gate": "NOT_RUN",
+  "task_complete": "PENDING_DELIVERY",
+  "evidence_accepted": "ARCHITECT_ONLY",
+  "stage_advanced": false,
+  "preserved_states": {
+    "RPF82": "PARTIAL",
+    "RPF74rev4": "PAUSED_DEFERRED",
+    "RPF81rev2": "BLOCKED",
+    "RPF78_A08": "FAIL"
+  },
+  "release_deploy": "NOT_AUTHORIZED"
+}

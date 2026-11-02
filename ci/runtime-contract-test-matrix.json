@@ -40,7 +40,7 @@
     },
     {
       "path": "runtime/tests/test_effectwitness_config_live.py",
-      "source_sha256": "94817ee440b17124cbaa80627bc110ecf5fcf95a3386e92194786ccfc75cbc82",
+      "source_sha256": "4aae3d0565b62e9c3c306bd714f7ce7bf97667724014ac1054ab1989b5b59c4a",
       "default": "PORTABLE",
       "rules": [
         {
@@ -84,7 +84,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
           "evidence": {
-            "line": 715,
+            "line": 739,
             "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
           }
         },
@@ -93,7 +93,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Class fixture writes historical task-owned root; original scoped runner required, transplant not authorized by rev-2",
           "evidence": {
-            "line": 715,
+            "line": 739,
             "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
           }
         },
@@ -102,7 +102,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
           "evidence": {
-            "line": 754,
+            "line": 739,
             "marker": "TASK_TEST_ROOT.mkdir(parents=True, exist_ok=True)"
           }
         }
@@ -250,7 +250,7 @@
     },
     {
       "path": "runtime/tests/test_effectwitness_config_target.py",
-      "source_sha256": "3c3b5aca4381ca056e3673f1de27a2f89d4168e240c5748f5e15d79c2d4b7e17",
+      "source_sha256": "0d350d6004a80457f9ace4c6416cc95a1386ed373e87d88db456f483507f69fd",
       "default": "PORTABLE",
       "rules": [
         {
@@ -258,7 +258,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
           "evidence": {
-            "line": 568,
+            "line": 573,
             "marker": "folder.mkdir(parents=True, exist_ok=True)"
           }
         },
@@ -267,7 +267,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
           "evidence": {
-            "line": 568,
+            "line": 573,
             "marker": "folder.mkdir(parents=True, exist_ok=True)"
           }
         },
@@ -276,7 +276,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
           "evidence": {
-            "line": 568,
+            "line": 573,
             "marker": "folder.mkdir(parents=True, exist_ok=True)"
           }
         },
@@ -285,7 +285,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
           "evidence": {
-            "line": 568,
+            "line": 573,
             "marker": "folder.mkdir(parents=True, exist_ok=True)"
           }
         },
@@ -294,7 +294,7 @@
           "route": "DEDICATED_RUNNER",
           "reason": "Method/helper writes historical task owner root; needs original admitted owner context, no old root access",
           "evidence": {
-            "line": 568,
+            "line": 573,
             "marker": "folder.mkdir(parents=True, exist_ok=True)"
           }
         }
@@ -318,7 +318,7 @@
     },
     {
       "path": "runtime/tests/test_effectwitness_lab_cross_domain.py",
-      "source_sha256": "6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f",
+      "source_sha256": "06bac79a3a297df75e6ae555468b7bf3be74d4ac190073c39c9545f3348d9773",
       "default": "PORTABLE",
       "rules": []
     },
@@ -607,7 +607,7 @@
     },
     {
       "path": "runtime/tests/test_effectwitness_pge_r66.py",
-      "source_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+      "source_sha256": "2d6bd1a0d1b9d5f51cf1bef96668859a6cc0d7ab32cce2ca9b76448197200f1b",
       "default": "PORTABLE",
       "rules": [
         {
@@ -786,7 +786,7 @@
           "route": "LEGACY_SDK_PRECONDITION",
           "reason": "Starts historical fixed SDK child/venv; real SDK execution excluded by this Plan",
           "evidence": {
-            "line": 541,
+            "line": 551,
             "marker": "ctx,ledger=fresh();ct=ctx.contract(1,candidate);run=ct['experiment']['run_id'];journal=config.Journal(ledger,run);client=FakeHttp(ctx,ct,'synthetic',journal,ledger);client.initial_state_valid()"
           }
         },

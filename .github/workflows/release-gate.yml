@@ -103,7 +103,7 @@ jobs:
         run: |
           set -euo pipefail
           python ci/verify-public-docs.py
-          python -m unittest discover -s runtime/tests -p 'test_*.py' -v
+          python -B ci/run-runtime-contract-tests.py --output "$GITHUB_WORKSPACE/ci-results/rpf84-${{ github.run_id }}-${{ github.run_attempt }}"
           python runtime/verify-reviewed-artifacts.py
           python spikes/rpf-16/probe.py --verify
           python spikes/rpf-17/verify-evidence.py

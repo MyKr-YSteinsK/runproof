@@ -8,6 +8,9 @@ from pathlib import Path
 import tempfile
 import unittest
 import uuid
+import subprocess
+import time
+import hashlib
 
 spec=importlib.util.spec_from_file_location('rpf82_router',Path(__file__).with_name('run-runtime-contract-tests.py'))
 r=importlib.util.module_from_spec(spec)
@@ -170,6 +173,90 @@ class RouterTests(unittest.TestCase):
                        lambda m:m['helper_registry']['dependencies'].pop()]:
             m=copy.deepcopy(self.matrix);mutate(m)
             with self.assertRaises(r.Invalid):r.validate_helper_registry(m)
+
+    def test_required_historical_ids_are_exact_and_unique(self):
+        values=r.required_inventory(r.tracked_modules())
+        self.assertEqual(len(values),57)
+        self.assertEqual(len({x for rows in values.values() for x in rows}),1232)
+        with self.assertRaisesRegex(r.Invalid,'REQUIRED_MODULE_DRIFT'):
+            r.required_inventory(r.tracked_modules()+['runtime/tests/test_extra.py'])
+
+    def test_forged_skip_and_pass_need_real_progress_events(self):
+        for actual in ('SKIP','PASS'):
+            v=dict(ids=['a.C.test_one'],results=[dict(id='a.C.test_one',actual=actual)],tests_run=1,successful=True,fixture_skips=[])
+            with self.assertRaises(r.Invalid):r.reconcile(v['ids'],v,0,[])
+        v=dict(ids=['a.C.test_one'],results=[dict(id='a.C.test_one',actual='SKIP')],tests_run=0,successful=True,fixture_skips=['a.C.test_one'])
+        with self.assertRaisesRegex(r.Invalid,'UNOBSERVED_RESULT'):r.reconcile(v['ids'],v,0,[])
+        r.reconcile(v['ids'],v,0,[dict(id='setUpClass (a.C)',actual='SKIP')])
+
+    def test_deadline_clamps_child_and_prevents_next_launch(self):
+        folder=self.folder('deadline')
+        rec=r.launch(['--control','timeout','--output',str(folder)],folder,deadline=time.monotonic()+.5)
+        self.assertTrue(rec['timeout']);self.assertLessEqual(rec['timeout_limit_seconds'],.5)
+        self.assertTrue(rec['child_exited']);self.assertTrue(rec['drain_joined'])
+        other=self.folder('expired')
+        with self.assertRaisesRegex(r.Invalid,'SUITE_DEADLINE'):
+            r.launch(['--control','missing','--output',str(other)],other,deadline=time.monotonic()-1)
+        self.assertFalse(other.exists())
+
+    def test_r66_actual_historical_bytes_and_unchanged_guard(self):
+        folder=self.folder('r66')
+        rec=r.launch(['--control','r66','--output',str(folder)],folder)
+        self.assertEqual(rec['exit'],0)
+        value=r.strict((folder/'result.json').read_bytes())
+        self.assertTrue(value['unique_replacement']);self.assertEqual(value['guard_negative_count'],5)
+        self.assertFalse(value['old_source_executed'])
+
+    def test_r66_wrong_blob_zero_two_tokens_and_child_drift_reject(self):
+        old=subprocess.check_output(['git','cat-file','blob','677d957302476bb89b52dedb5ab047f2850bd686'],cwd=r.ROOT)
+        child=subprocess.check_output(['git','cat-file','blob','b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01'],cwd=r.ROOT)
+        token=b'model_settings={"max_tokens": 256,'
+        self.assertEqual(r.token_transform(old),child)
+        for raw in (old.replace(token,b'no token'),old+token):
+            with self.assertRaisesRegex(r.Invalid,'R66_TOKEN_COUNT'):r.token_transform(raw)
+        current=(r.ROOT/'runtime/runproof_runtime/effectwitness/config_live_external.py').read_bytes()
+        for a,b in ((current,child),(old+b'x',child),(old,child+b'x')):
+            with self.assertRaises(r.Invalid):r.lineage_bytes(a,b)
+
+    def test_rpf75_actual_socket_hook_is_not_only_a_callback(self):
+        folder=self.folder('actual-hook');rec=r.launch(['--control','hook','--output',str(folder)],folder)
+        self.assertEqual(rec['exit'],0)
+        self.assertTrue(r.strict((folder/'result.json').read_bytes())['actual_socket_denied'])
+
+    def test_guard_source_weakening_cannot_keep_its_identity(self):
+        raw=(r.ROOT/'spikes/rpf-75/probe.py').read_bytes().replace(b'\r\n',b'\n')
+        self.assertEqual(r.sha(raw),r.R75_SHA)
+        for changed in (raw.replace(b'sys.addaudithook(offline_guard)',b'pass'),
+                        raw.replace(b"'socket.', 'subprocess.'",b"'unrelated.'")):
+            self.assertNotEqual(r.sha(changed),r.R75_SHA)
+
+    def test_owned_reparse_and_ci_identity_reject(self):
+        from unittest.mock import patch
+        target=self.folder('link-target');target.mkdir()
+        link=self.folder('link')
+        try:link.symlink_to(target,target_is_directory=True)
+        except OSError:
+            if os.name!='nt':raise
+            import _winapi
+            _winapi.CreateJunction(str(target),str(link))
+        with self.assertRaisesRegex(r.Invalid,'OUTPUT_REPARSE'):r.owned(link/'x')
+        for path in (r.ROOT/'ci-results/RPF84-casefold',r.ROOT/'ci-results/rpf83-wrong-owner'):
+            with self.assertRaises(r.Invalid):r.owned(path)
+        with patch.dict(os.environ,{'GITHUB_ACTIONS':'true','GITHUB_WORKSPACE':str(r.ROOT),'GITHUB_RUN_ID':'123','GITHUB_RUN_ATTEMPT':'1'}):
+            self.assertEqual(r.owned(r.ROOT/'ci-results/rpf84-123-1/x'),r.ROOT/'ci-results/rpf84-123-1/x')
+            with self.assertRaisesRegex(r.Invalid,'OUTPUT_CI_IDENTITY'):r.owned(r.ROOT/'ci-results/rpf84-123-2/x')
+
+    def test_partial_progress_never_upgrades_unstarted_or_duplicate(self):
+        template=[dict(id='a.C.test_one',route='PORTABLE',actual='NOT_RUN',executed=False),
+                  dict(id='a.C.test_two',route='PORTABLE',actual='NOT_RUN',executed=False)]
+        for events in ([dict(id='a.C.test_one',actual='PASS')],
+                       [dict(id='a.C.test_one',actual='STARTED')]*2):
+            rows=copy.deepcopy(template)
+            with self.assertRaises(r.Invalid):r.partial_progress(rows,events)
+            self.assertEqual(rows,template)
+        rows=copy.deepcopy(template)
+        r.partial_progress(rows,[dict(id='a.C.test_one',actual='STARTED')])
+        self.assertEqual([x['actual'] for x in rows],['ERROR','NOT_RUN'])
 
 
 if __name__=='__main__':unittest.main()

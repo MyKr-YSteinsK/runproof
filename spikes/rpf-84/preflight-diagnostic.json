@@ -1,0 +1,918 @@
+{
+  "plan": "RPF-84/rev-1",
+  "status": "PASS",
+  "base": "e477be107dd186c45cdef750cd00ebf82ea55402",
+  "receipt_sha256": "17a3665a6367815ac422ec8a84af3a15e3c7917675ae4ecf29f12a4e4b9ecb87",
+  "prewrite_stdout_sha256": "b925caf92bf55d45fc739f53fcefe696c4b12dd181466f1fa8006031ac4261b8",
+  "prewrite_utc": "2026-11-02T07:28:58.730545+00:00",
+  "prewrite_monotonic_ns": 421148313723000,
+  "checks": [
+    {
+      "name": "root",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "bbf7458fa1736d98c88be45df36a72c12e4da73a5222ed33e48b612587afb44e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.618418+00:00",
+      "monotonic_ns": 421136201597200
+    },
+    {
+      "name": "branch",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.666106+00:00",
+      "monotonic_ns": 421136249283200
+    },
+    {
+      "name": "head",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "ec89ea3027cc265f56c162a95dcc596c108c2f7bcc30752165c6403a41888409",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.717280+00:00",
+      "monotonic_ns": 421136300460900
+    },
+    {
+      "name": "upstream",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "047f220328b7a2219f45225722c482dd31cf8c6ce01fdad1e8eccab7d01fcd01",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.770722+00:00",
+      "monotonic_ns": 421136353899900
+    },
+    {
+      "name": "tracking",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "ec89ea3027cc265f56c162a95dcc596c108c2f7bcc30752165c6403a41888409",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.823284+00:00",
+      "monotonic_ns": 421136406461600
+    },
+    {
+      "name": "clean",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.884775+00:00",
+      "monotonic_ns": 421136467952600
+    },
+    {
+      "name": "index",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.936652+00:00",
+      "monotonic_ns": 421136519828700
+    },
+    {
+      "name": "origin",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "e5453c2ffebbaf0d3666fe3edcf5b5bbea722e0dfbb098fd3d5472e20684b15c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:46.987306+00:00",
+      "monotonic_ns": 421136570486100
+    },
+    {
+      "name": "https",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "afa76a6100faea0bb5aa6c49d999f7144d0951dae11d7ba6c2a256a801fe9a34",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:48.179284+00:00",
+      "monotonic_ns": 421137762461900
+    },
+    {
+      "name": "metadata:remote",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "ff187a7746fa1391e090f1e68fd0404f5b638d72cc6ef78aef5f5b12002f27c4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:48.239442+00:00",
+      "monotonic_ns": 421137822619700
+    },
+    {
+      "name": "metadata:branch",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "9c33f35cc54465cb4409d7963f2a8e30fc0c14f618b080a42dbec79ee292aa6c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:48.361212+00:00",
+      "monotonic_ns": 421137944389800
+    },
+    {
+      "name": "metadata:worktree",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "92a5ac2619d5d822a60bf5dc0b82cd2c948268325439d085cd0826402cd53c25",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:48.432922+00:00",
+      "monotonic_ns": 421138016099700
+    },
+    {
+      "name": "source:.github/workflows/release-gate.yml",
+      "status": "PASS",
+      "details": {
+        "base": {
+          "exit": 0,
+          "stdout_sha256": "71b311682211340e08f385f2f07c45d006596e5dee0f97b142023a46034aaf70",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "index": {
+          "exit": 0,
+          "stdout_sha256": "71b311682211340e08f385f2f07c45d006596e5dee0f97b142023a46034aaf70",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "working_raw_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344"
+      },
+      "utc": "2026-11-02T07:28:48.550119+00:00",
+      "monotonic_ns": 421138133300300
+    },
+    {
+      "name": "source:ci/run-runtime-contract-tests.py",
+      "status": "PASS",
+      "details": {
+        "base": {
+          "exit": 0,
+          "stdout_sha256": "65f763e1cad9c0f80567e247caec67a43256548c5d0afea12ffe94b5211981e3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "index": {
+          "exit": 0,
+          "stdout_sha256": "65f763e1cad9c0f80567e247caec67a43256548c5d0afea12ffe94b5211981e3",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "working_raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca"
+      },
+      "utc": "2026-11-02T07:28:48.672271+00:00",
+      "monotonic_ns": 421138255447900
+    },
+    {
+      "name": "source:ci/runtime-contract-test-matrix.json",
+      "status": "PASS",
+      "details": {
+        "base": {
+          "exit": 0,
+          "stdout_sha256": "c0c4bbf5610389b8f81adf23a1df503bd34f8d832eb0ab54e0823e1c34b5c7c9",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "index": {
+          "exit": 0,
+          "stdout_sha256": "c0c4bbf5610389b8f81adf23a1df503bd34f8d832eb0ab54e0823e1c34b5c7c9",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "working_raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b"
+      },
+      "utc": "2026-11-02T07:28:48.791488+00:00",
+      "monotonic_ns": 421138374666000
+    },
+    {
+      "name": "source:ci/test_run_runtime_contract_tests.py",
+      "status": "PASS",
+      "details": {
+        "base": {
+          "exit": 0,
+          "stdout_sha256": "742d83eb86dd2dfaf9b0b32e06d21b962b6b0d1d373b9ef67c4cbabda01f78ec",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "index": {
+          "exit": 0,
+          "stdout_sha256": "742d83eb86dd2dfaf9b0b32e06d21b962b6b0d1d373b9ef67c4cbabda01f78ec",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "working_raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1"
+      },
+      "utc": "2026-11-02T07:28:48.920724+00:00",
+      "monotonic_ns": 421138503899900
+    },
+    {
+      "name": "source:runtime/tests/test_effectwitness_pge_r66.py",
+      "status": "PASS",
+      "details": {
+        "base": {
+          "exit": 0,
+          "stdout_sha256": "95fd2774f5d45db592d528080b29e4a3eacddc782b793f7d2258e42758fe4de0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "index": {
+          "exit": 0,
+          "stdout_sha256": "95fd2774f5d45db592d528080b29e4a3eacddc782b793f7d2258e42758fe4de0",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "working_raw_sha256": "eee4be85daac58ca2da6eb7457054454081669c88f18f096a1892f7fcef68726"
+      },
+      "utc": "2026-11-02T07:28:49.043027+00:00",
+      "monotonic_ns": 421138626203500
+    },
+    {
+      "name": "anchor:76088c6e268388fe414956d48cad0242641ae01a:runtime/runproof_runtime/effectwitness/config_live_external.py",
+      "status": "PASS",
+      "details": {
+        "ref": {
+          "exit": 0,
+          "stdout_sha256": "f5f2b64a9bf6936cb7a9819c7bd18388aefd2ae7d40858b3faa5aae4f3030ff2",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+        "raw_bytes": 19059,
+        "cat_file_exit": 0
+      },
+      "utc": "2026-11-02T07:28:49.150788+00:00",
+      "monotonic_ns": 421138733964600
+    },
+    {
+      "name": "anchor:e477be107dd186c45cdef750cd00ebf82ea55402:runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py",
+      "status": "PASS",
+      "details": {
+        "ref": {
+          "exit": 0,
+          "stdout_sha256": "6e71a5a3bb96692fefaba6769a5f47bd8757edfc3dc9bf6a81fd213849ba81d8",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+        "raw_bytes": 19059,
+        "cat_file_exit": 0
+      },
+      "utc": "2026-11-02T07:28:49.257837+00:00",
+      "monotonic_ns": 421138841014800
+    },
+    {
+      "name": "anchor:e477be107dd186c45cdef750cd00ebf82ea55402:runtime/runproof_runtime/effectwitness/config_live_external.py",
+      "status": "PASS",
+      "details": {
+        "ref": {
+          "exit": 0,
+          "stdout_sha256": "88318ca8d2713e5b36ad482c28aaccc08130b4afb93af27ee7e6875be3b2bc6b",
+          "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "raw_sha256": "d8e01dcb5c8e63a227f188d67c1e2a0b52eb203457e6d6159f24f71ec170d813",
+        "raw_bytes": 20184,
+        "cat_file_exit": 0
+      },
+      "utc": "2026-11-02T07:28:49.367472+00:00",
+      "monotonic_ns": 421138950649400
+    },
+    {
+      "name": "vacant:spikes/rpf-84/README.md",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:49.530055+00:00",
+      "monotonic_ns": 421139113233000
+    },
+    {
+      "name": "vacant:spikes/rpf-84/RESULT.md",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:49.679259+00:00",
+      "monotonic_ns": 421139262434600
+    },
+    {
+      "name": "vacant:spikes/rpf-84/preflight-diagnostic.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:49.839275+00:00",
+      "monotonic_ns": 421139422456600
+    },
+    {
+      "name": "vacant:spikes/rpf-84/verification-diagnostic.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:51.268501+00:00",
+      "monotonic_ns": 421140851678600
+    },
+    {
+      "name": "vacant:spikes/rpf-84/isolation-coverage-ledger.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:51.422394+00:00",
+      "monotonic_ns": 421141005570900
+    },
+    {
+      "name": "vacant:spikes/rpf-84/source-identity-ledger.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:51.579344+00:00",
+      "monotonic_ns": 421141162529300
+    },
+    {
+      "name": "vacant:spikes/rpf-84/counterexamples.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:51.730605+00:00",
+      "monotonic_ns": 421141313781100
+    },
+    {
+      "name": "vacant:spikes/rpf-84/decision.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 1,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:51.880517+00:00",
+      "monotonic_ns": 421141463696700
+    },
+    {
+      "name": "vacant:.local/rpf-84-g0-receipt-attempt-01.json",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "cf1d97ed5e42d14c09a31cde90d59df789f3b16db551b3d39c4e9df89a1b28e3",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:52.045525+00:00",
+      "monotonic_ns": 421141628701900
+    },
+    {
+      "name": "vacant:.local/rpf-84-ci-isolation",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "2ecfd5d704f5a69a4146df5f0b9d740d62a140da9b7aed282e339964112f3632",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:52.213219+00:00",
+      "monotonic_ns": 421141796395300
+    },
+    {
+      "name": "vacant:ci-results/rpf84-local-attempt-01",
+      "status": "PASS",
+      "details": {
+        "exists": false,
+        "casefold": [],
+        "commands": [
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          {
+            "exit": 0,
+            "stdout_sha256": "1da62b86f35a780f2c4f11eb104e9a6eba15e3b16f48452dd31e645fceec540d",
+            "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        ]
+      },
+      "utc": "2026-11-02T07:28:52.364899+00:00",
+      "monotonic_ns": 421141948084600
+    },
+    {
+      "name": "reparse:.",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:52.365907+00:00",
+      "monotonic_ns": 421141949081400
+    },
+    {
+      "name": "ACL:.",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:53.096207+00:00",
+      "monotonic_ns": 421142679408100
+    },
+    {
+      "name": "reparse:.github",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:53.096361+00:00",
+      "monotonic_ns": 421142679535700
+    },
+    {
+      "name": "ACL:.github",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:53.764787+00:00",
+      "monotonic_ns": 421143347963700
+    },
+    {
+      "name": "reparse:.github\\workflows",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:53.764863+00:00",
+      "monotonic_ns": 421143348032000
+    },
+    {
+      "name": "ACL:.github\\workflows",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:54.405307+00:00",
+      "monotonic_ns": 421143988483900
+    },
+    {
+      "name": "reparse:.local",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:54.405369+00:00",
+      "monotonic_ns": 421143988537300
+    },
+    {
+      "name": "ACL:.local",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:55.006335+00:00",
+      "monotonic_ns": 421144589515700
+    },
+    {
+      "name": "reparse:ci",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:55.006432+00:00",
+      "monotonic_ns": 421144589606200
+    },
+    {
+      "name": "ACL:ci",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:55.619376+00:00",
+      "monotonic_ns": 421145202553000
+    },
+    {
+      "name": "reparse:ci-results",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:55.619442+00:00",
+      "monotonic_ns": 421145202610200
+    },
+    {
+      "name": "ACL:ci-results",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:56.175403+00:00",
+      "monotonic_ns": 421145758579500
+    },
+    {
+      "name": "reparse:runtime",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:56.175458+00:00",
+      "monotonic_ns": 421145758626300
+    },
+    {
+      "name": "ACL:runtime",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:56.766653+00:00",
+      "monotonic_ns": 421146349829800
+    },
+    {
+      "name": "reparse:runtime\\tests",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:56.766720+00:00",
+      "monotonic_ns": 421146349888200
+    },
+    {
+      "name": "ACL:runtime\\tests",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:57.327626+00:00",
+      "monotonic_ns": 421146910806400
+    },
+    {
+      "name": "reparse:spikes",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:57.327716+00:00",
+      "monotonic_ns": 421146910887800
+    },
+    {
+      "name": "ACL:spikes",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "06096ec6a1d8b7ed609f5936ec204b1796ec3096cd4026068117118835d9590d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:57.956121+00:00",
+      "monotonic_ns": 421147539302100
+    },
+    {
+      "name": "hook:pre-commit",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "13cb3e05fe71479ec7ec5d980230f8ea54b75c19df5c60d85ada8364e78de00f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.032634+00:00",
+      "monotonic_ns": 421147615816300
+    },
+    {
+      "name": "hook:prepare-commit-msg",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "00a247f6570ddcceff87f78dd85cae45fb2ff7402ad7dae52cc9cc05a7bbbcc4",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.086903+00:00",
+      "monotonic_ns": 421147670083600
+    },
+    {
+      "name": "hook:commit-msg",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "572b182cc71ac50df1d4feaff3e39f48ffd4fa49352bd6e68afd0e3797e5d167",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.174703+00:00",
+      "monotonic_ns": 421147757890000
+    },
+    {
+      "name": "hook:post-commit",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "792748ce7738ea3a2f65e2d2eeada95b2f9e77240f9789199cd39b22d9ed0afc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.330650+00:00",
+      "monotonic_ns": 421147913834500
+    },
+    {
+      "name": "hook:pre-push",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "1087ce928b4bb014303b6a2b3c8e70e8e0b633cc228c73eb7ccdcd554da70a1d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.481718+00:00",
+      "monotonic_ns": 421148064902700
+    },
+    {
+      "name": "hooksPath",
+      "status": "PASS",
+      "details": {
+        "exit": 1,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.569541+00:00",
+      "monotonic_ns": 421148152724100
+    },
+    {
+      "name": "python",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "2b095b05c4093ebca54b87bd2c6a6f557935e6b3f8f506a0c2e5e294a763f4ad",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.589635+00:00",
+      "monotonic_ns": 421148172819200
+    },
+    {
+      "name": "git",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "a0bef3335cdbc9a4a7733503ecdb281e91319f5a15e22026bfbef750ce76aaba",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.651810+00:00",
+      "monotonic_ns": 421148234994700
+    },
+    {
+      "name": "node",
+      "status": "PASS",
+      "details": {
+        "exit": 0,
+        "stdout_sha256": "1e818e7c43f4b13c1e913709e2425959af4b584c0bd6693bb6b5f31c29afd5e0",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T07:28:58.726628+00:00",
+      "monotonic_ns": 421148309812900
+    },
+    {
+      "name": "yaml",
+      "status": "PASS",
+      "details": {},
+      "utc": "2026-11-02T07:28:58.728475+00:00",
+      "monotonic_ns": 421148311654500
+    },
+    {
+      "name": "disk",
+      "status": "PASS",
+      "details": {
+        "free_bytes": 111642812416
+      },
+      "utc": "2026-11-02T07:28:58.728636+00:00",
+      "monotonic_ns": 421148311806500
+    },
+    {
+      "name": "contract:AGENTS.md",
+      "status": "PASS",
+      "details": {
+        "sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c"
+      },
+      "utc": "2026-11-02T07:28:58.728943+00:00",
+      "monotonic_ns": 421148312115800
+    },
+    {
+      "name": "contract:.gitignore",
+      "status": "PASS",
+      "details": {
+        "sha256": "0522e40e0a528ccb1227f5d7503e7e6a876b12b6dc9c75d9f86163cc150eff6f"
+      },
+      "utc": "2026-11-02T07:28:58.729113+00:00",
+      "monotonic_ns": 421148312283700
+    },
+    {
+      "name": "contract:docs/project/PROJECT_BRIEF.md",
+      "status": "PASS",
+      "details": {
+        "sha256": "7de71198436548dd4890913c812a99431a3faa733070baf5756157fc885a5cfd"
+      },
+      "utc": "2026-11-02T07:28:58.729285+00:00",
+      "monotonic_ns": 421148312455100
+    },
+    {
+      "name": "contract:docs/project/CURRENT_STATE.md",
+      "status": "PASS",
+      "details": {
+        "sha256": "a5ae908b7338b075dde579d60278e9275d566c15047a2cc8dc24a76d6faa26b1"
+      },
+      "utc": "2026-11-02T07:28:58.729442+00:00",
+      "monotonic_ns": 421148312611500
+    },
+    {
+      "name": "contract:docs/project/DECISIONS.md",
+      "status": "PASS",
+      "details": {
+        "sha256": "d7eeaf5831f7a36e821ee0daca50e60368a920574e3917b007ead15971e25018"
+      },
+      "utc": "2026-11-02T07:28:58.729642+00:00",
+      "monotonic_ns": 421148312812700
+    },
+    {
+      "name": "push-effects",
+      "status": "PASS",
+      "details": {
+        "workflow_blob": "0b5d6d40c816b08c19051408bc432d84f4209758",
+        "effects": "Existing canonical hosted CI; no deployment/release; triggers/permissions fixed; inspect current YAML before activation"
+      },
+      "utc": "2026-11-02T07:28:58.729651+00:00",
+      "monotonic_ns": 421148312819700
+    }
+  ],
+  "order": "binary stdout -> exclusive-create receipt -> flush/fsync -> new owner",
+  "directory_fsync": "UNAVAILABLE Windows stdlib; receipt file flush/fsync enforced",
+  "tool_host": "Explicit pwsh7 ACL; no reproduction of old PowerShell5 failure"
+}

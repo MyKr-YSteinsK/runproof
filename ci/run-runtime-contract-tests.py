@@ -25,11 +25,15 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 SELF = Path(__file__).resolve()
 MATRIX = ROOT / 'ci/runtime-contract-test-matrix.json'
-OWNER = ROOT / '.local/rpf-82-rev-3-classifier-closure'
+OWNER = ROOT / '.local/rpf-84-ci-isolation'
+BASELINE = ROOT / 'spikes/rpf-82/rev-2/classification-ledger.json'
 ROUTES = {'PORTABLE', 'WINDOWS_NATIVE', 'DEDICATED_RUNNER',
           'LEGACY_SDK_PRECONDITION', 'FROZEN_PRIVATE_ARTIFACT', 'LEGACY_OWNER_ROOT'}
 LIMIT = 2 * 1024 * 1024
-TIMEOUT = 300  # RPF60 semantic matrix exceeded 120s locally; suite deadline remains 1800s.
+TIMEOUT = 300
+LANE_TIMEOUT = 1500
+CHILD_DEADLINE = None
+R75_SHA = '1f584711563ae77723a9c04c02d1cc8a356eb0cd1d999df4aca04aaa4a434e77'
 KNOWN = {
     'test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename',
     'test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime',
@@ -65,8 +69,17 @@ def source_sha(path):
 
 
 def owned(path):
-    path = Path(path).absolute()
-    allowed = (OWNER, ROOT / 'ci-results')
+    path = Path(path)
+    require(path.is_absolute() and '..' not in path.parts, 'OUTPUT_SCOPE')
+    ci = ROOT / 'ci-results'
+    allowed = (OWNER,)
+    if path.is_relative_to(ci) and path != ci:
+        top = ci / path.relative_to(ci).parts[0]
+        require(re.fullmatch(r'rpf84-[A-Za-z0-9-]+',top.name) is not None,'OUTPUT_CI_OWNER')
+        if os.environ.get('GITHUB_ACTIONS') == 'true':
+            require(os.environ.get('GITHUB_WORKSPACE') == str(ROOT)
+                    and top.name == 'rpf84-'+os.environ.get('GITHUB_RUN_ID','')+'-'+os.environ.get('GITHUB_RUN_ATTEMPT',''), 'OUTPUT_CI_IDENTITY')
+        allowed = (*allowed, top)
     require(any(path.is_relative_to(p) for p in allowed), 'OUTPUT_SCOPE')
     for p in (path, *path.parents):
         require(not p.is_symlink() and not getattr(p, 'is_junction', lambda: False)(), 'OUTPUT_REPARSE')
@@ -203,7 +216,7 @@ def classify(module, ids):
     return rows
 
 
-def reconcile(expected, report, returncode):
+def reconcile(expected, report, returncode, events=None):
     require(type(report) is dict and set(report) == {'ids', 'results', 'tests_run', 'successful', 'fixture_skips'}, 'CHILD_REPORT_SCHEMA')
     require(report['ids'] == expected and len(set(report['ids'])) == len(expected), 'CHANGED_OR_DUPLICATE_IDS')
     rows = report['results']
@@ -218,6 +231,19 @@ def reconcile(expected, report, returncode):
             and set(skips) <= {r['id'] for r in rows if r['actual'] == 'SKIP'}, 'FIXTURE_SKIPS')
     require(not success or report['tests_run'] + len(skips) == len(expected), 'UNEXECUTED_PASS')
     require(returncode == (0 if success else 1), 'CHILD_EXIT_DISAGREES')
+    if events is not None:
+        require(all(type(e) is dict and set(e)=={'id','actual'} for e in events),'EVENT_SCHEMA')
+        started={e['id'] for e in events if e['actual']=='STARTED'}
+        require(len(started)==sum(e['actual']=='STARTED' for e in events),'DUPLICATE_START')
+        require(len(started)==report['tests_run'] and started<=set(expected),'START_COUNT')
+        for row in rows:
+            tid,actual=row['id'],row['actual']
+            direct=any(e==row for e in events)
+            fixture=actual=='SKIP' and tid in skips and any(e['actual']=='SKIP' and
+                (e['id']=='setUpModule ('+tid.split('.')[0]+')' or
+                 e['id']=='setUpClass ('+tid.rsplit('.',1)[0]+')') for e in events)
+            require(direct or fixture or actual=='ERROR' and tid not in started,'UNOBSERVED_RESULT')
+            require(actual!='PASS' or tid in started,'UNEXECUTED_PASS')
     return rows
 
 
@@ -228,12 +254,19 @@ def child_environment(folder):
     return env
 
 
-def launch(args, folder, timeout=TIMEOUT):
+def launch(args, folder, timeout=TIMEOUT, deadline=None):
     """Only own CLI and the current Python; bound logs and propagate timeout/crash."""
     folder = owned(folder)
+    if deadline is not None:
+        timeout = min(timeout, deadline-time.monotonic())
+    require(0 < timeout <= TIMEOUT, 'SUITE_DEADLINE')
     folder.mkdir(parents=True, exist_ok=False)
     argv = [sys.executable, '-B', str(SELF), *args]
     start = time.monotonic_ns()
+    if deadline is not None:
+        timeout=min(timeout,deadline-time.monotonic())
+        require(timeout>0,'SUITE_DEADLINE')
+        args=[*args,'--deadline',str(deadline)]
     p = subprocess.Popen(argv, cwd=ROOT, env=child_environment(folder),
                          stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     chunks, count, overflow = [], 0, threading.Event()
@@ -246,14 +279,14 @@ def launch(args, folder, timeout=TIMEOUT):
             count += len(b)
             if count > LIMIT:
                 overflow.set()
-                p.kill()
+                if p.poll() is None:p.kill()
                 break
             chunks.append(b)
     thread = threading.Thread(target=drain, daemon=True)
     thread.start()
     timed_out = False
     try:
-        code = p.wait(timeout=timeout)
+        code = p.wait(timeout=max(.001,timeout-(time.monotonic_ns()-start)/1e9))
     except subprocess.TimeoutExpired:
         timed_out = True
         p.kill()
@@ -267,7 +300,9 @@ def launch(args, folder, timeout=TIMEOUT):
     receipt = dict(exit=code, timeout=timed_out, truncated=overflow.is_set() or thread.is_alive(),
                    stdout_sha256=sha(raw), bytes=count, monotonic_start_ns=start,
                    monotonic_end_ns=time.monotonic_ns(), child_pid=p.pid,
-                   runner_sha256=source_sha(SELF))
+                   runner_sha256=source_sha(SELF), timeout_limit_seconds=timeout,
+                   child_exited=p.poll() is not None, drain_joined=not thread.is_alive(),
+                   descendant_cleanup='UNAVAILABLE: exact Popen handle only')
     with (folder/'launch-receipt.json').open('x',encoding='utf-8') as f:
         json.dump(receipt,f,indent=2)
     return receipt
@@ -281,9 +316,12 @@ def guard(folder):
     def check(path, write=False):
         if isinstance(path, int) or path is None:
             return
-        p = Path(os.fsdecode(path)).absolute()
+        p = Path(os.path.abspath(os.fsdecode(path)))
         # Check lexical scope first, so a protected directory is never traversed.
         if p.is_relative_to(forbidden) or (p.is_relative_to(private) and not p.is_relative_to(folder)):
+            raise PermissionError('RPF82_PROTECTED_PATH')
+        resolved=p.resolve()
+        if resolved.is_relative_to(forbidden) or (resolved.is_relative_to(private) and not resolved.is_relative_to(folder)):
             raise PermissionError('RPF82_PROTECTED_PATH')
         if write and not p.is_relative_to(folder):
             raise PermissionError('RPF82_WRITE_SCOPE')
@@ -326,7 +364,7 @@ def guard(folder):
 
 
 R60_PATH = 'runtime/tests/test_effectwitness_lab_cross_domain.py'
-R60_SHA = '6ee0cfd3620381c3d0415601d9d05e9cfe916803df29e78425081b16c364c08f'
+R60_SHA = '06bac79a3a297df75e6ae555468b7bf3be74d4ac190073c39c9545f3348d9773'  # fixed RPF83 harness, all original method bodies unchanged
 
 
 def r60_owner(raw):
@@ -347,12 +385,38 @@ def r60_harness(module, folder):
               and isinstance(n.value,ast.Constant) and isinstance(n.value.value,str)
               and any(isinstance(x,ast.Name) and x.id=='code' for x in n.targets))
     original=subprocess.Popen
+    children=[]
     def popen(argv, *args, **kwargs):
         if argv == [sys.executable,'-B','-c',code]:
+            require(CHILD_DEADLINE is None or time.monotonic()<CHILD_DEADLINE,'SUITE_DEADLINE')
             argv=[sys.executable,'-B',str(SELF),'--r60-race','--output',str(folder)]
+            p=original(argv,*args,**kwargs);children.append(p)
+            communicate=p.communicate
+            def bounded(*a,**kw):
+                remaining=30 if CHILD_DEADLINE is None else max(.001,CHILD_DEADLINE-time.monotonic())
+                kw['timeout']=min(kw.get('timeout',30),remaining)
+                try:return communicate(*a,**kw)
+                except subprocess.TimeoutExpired:
+                    p.kill();p.wait();raise
+            p.communicate=bounded
+            return p
         return original(argv,*args,**kwargs)
-    with patch.object(module,'_test_owner',r60_owner), patch.object(subprocess,'Popen',popen):
-        yield
+    # Keep the original fresh-CI admission callable intact. The adapter admits
+    # only this already source-bound child folder, then the original setUpModule
+    # creates rpf60-tests there. No original method or assertion is replaced.
+    def owner(raw):
+        require(r60_owner(raw)==folder,'R60_ADAPTER_OWNER')
+        return folder
+    with patch.object(module,'_test_owner',owner), patch.object(subprocess,'Popen',popen):
+        try:yield
+        finally:
+            cleanup=[]
+            for p in children:
+                killed=p.poll() is None
+                if killed:p.kill()
+                p.wait()
+                cleanup.append(dict(pid=p.pid,exit=p.returncode,killed=killed,waited=True))
+            (folder/'r60-children-cleanup.json').write_text(json.dumps(cleanup),encoding='utf8')
 
 
 def r60_race(folder):
@@ -464,77 +528,148 @@ def child(module, mode, folder):
     return code
 
 
+def required_inventory(files):
+    baseline=strict(BASELINE.read_bytes())
+    modules={m['path']:[r['id'] for r in m['rows']] for m in baseline['modules']}
+    require(len(modules)==len(baseline['modules'])==57 and set(modules)==set(files),'REQUIRED_MODULE_DRIFT')
+    ids=[tid for values in modules.values() for tid in values]
+    require(len(ids)==len(set(ids))==1232,'REQUIRED_ID_DRIFT')
+    return modules
+
+
+def token_transform(raw):
+    token=b'model_settings={"max_tokens": 256,'
+    require(raw.count(token)==1,'R66_TOKEN_COUNT')
+    return raw.replace(token,b'model_settings={"max_tokens": 512,')
+
+
+def lineage_bytes(old,new):
+    def blob(raw):return hashlib.sha1(b'blob '+str(len(raw)).encode()+b'\0'+raw).hexdigest()
+    require(blob(old)=='677d957302476bb89b52dedb5ab047f2850bd686','R66_OLD_BLOB')
+    require(blob(new)=='b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01','R66_CHILD_BLOB')
+    require(token_transform(old)==new,'R66_EXACT_DIFF')
+    return dict(old_blob=blob(old),child_blob=blob(new),old_raw_sha256=sha(old),child_raw_sha256=sha(new),unique_replacement=True)
+
+
+def r66_control(folder):
+    # Git object access occurs before the Python-only process guard is installed.
+    commit='76088c6e268388fe414956d48cad0242641ae01a'
+    path='runtime/runproof_runtime/effectwitness/config_live_external.py'
+    ref=subprocess.check_output(['git','rev-parse',commit+':'+path],cwd=ROOT).decode().strip()
+    require(ref=='677d957302476bb89b52dedb5ab047f2850bd686','R66_COMMIT_BINDING')
+    old=subprocess.check_output(['git','cat-file','blob',ref],cwd=ROOT)
+    new=subprocess.check_output(['git','cat-file','blob','b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01'],cwd=ROOT)
+    result=lineage_bytes(old,new)
+    child_path=ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py'
+    raw=child_path.read_bytes()
+    require(raw.replace(b'\r\n',b'\n')==new,'R66_WORKTREE_SOURCE')
+    require((ROOT/path).read_bytes().replace(b'\r\n',b'\n')!=old,'R66_CURRENT_IS_NOT_HISTORICAL')
+    result.update(working_child_raw_sha256=sha(raw),working_child_lf_sha256=source_sha(child_path),
+                  checkout_eol_mapping='CRLF->LF only, Git blob comparison is raw byte equality',
+                  original_method_disposition='UNAVAILABLE: original fresh() requires historical owner; not executed')
+    guard(folder)
+    import runpy
+    child_module=runpy.run_path(str(child_path))
+    denied=[]
+    audit=child_module['_guard_events'](45002,folder,folder/'sdk',[],child_path,denied,[])
+    for event,args in [('socket.connect',(None,('127.0.0.1',45003))),('socket.getaddrinfo',('invalid.example',)),('open',(str(folder.parent/'outside'),'r',0)),('subprocess.Popen',('x',)),('socket.bind',(None,('127.0.0.1',0)))]:
+        try:audit(event,args)
+        except PermissionError:pass
+        else:raise Invalid('R66_GUARD_INACTIVE')
+    result.update(guard_denials=denied,guard_negative_count=5,old_source_executed=False)
+    (folder/'result.json').write_text(json.dumps(result),encoding='utf8')
+    return 0
+
+
+def partial_progress(rows, events):
+    ids={row['id'] for row in rows if row['route']=='PORTABLE'}
+    states={}
+    for e in events:
+        require(type(e) is dict and set(e)=={'id','actual'},'PROGRESS_SCHEMA')
+        tid,actual=e['id'],e['actual']
+        if tid not in ids:
+            require(actual in {'ERROR','SKIP'} and re.fullmatch(r'(?:setUp|tearDown)(?:Class|Module) \([A-Za-z0-9_.]+\)',tid),'UNSELECTED_PROGRESS')
+            continue
+        if actual=='STARTED':require(tid not in states,'DUPLICATE_START')
+        else:require(tid in states and actual in {'PASS','FAIL','ERROR','SKIP'}
+                     and (states[tid]=='STARTED' or states[tid] in {'FAIL','ERROR'} and actual in {'FAIL','ERROR'}),'UNOBSERVED_RESULT')
+        states[tid]=actual
+    for row in rows:
+        if row['id'] in states:row.update(executed=True,actual='ERROR' if states[row['id']]=='STARTED' else states[row['id']])
+
+
 def run(matrix, output, only=None, execute=True):
-    matrix = validate_matrix(matrix, tracked_modules())
-    root = owned(output)
-    root.mkdir(parents=True, exist_ok=False)
-    ledger = dict(schema='rpf82-runtime-ledger-v1', modules=[],
-                  coverage_policy='ALL_DISCOVERED_REQUIRED', overall='FAIL', portable='NOT_RUN')
-    failure, uncovered = False, False
-    deadline = time.monotonic() + 1800
+    files=tracked_modules()
+    matrix=validate_matrix(matrix,files)
+    required=required_inventory(files)
+    root=owned(output);root.mkdir(parents=True,exist_ok=False)
+    ledger=dict(schema='rpf84-runtime-ledger-v1',modules=[],coverage_policy='ALL_DISCOVERED_REQUIRED',
+                overall='FAIL',portable='NOT_RUN',required_modules=57,required_methods=1232,
+                baseline_sha256=source_sha(BASELINE),lane_limit_seconds=LANE_TIMEOUT)
+    failure,uncovered=False,False
+    dynamic=[];deadline=time.monotonic()+LANE_TIMEOUT
     for m in matrix['modules']:
-        stem = Path(m['path']).stem
-        record = dict(path=m['path'], source_sha256=m['source_sha256'], rows=[], invocations=[],
-                      runner_sha256=source_sha(SELF), matrix_sha256=source_sha(MATRIX))
+        stem=Path(m['path']).stem
+        rows=classify(m,required[m['path']])
+        for row in rows:
+            if row['route']!='PORTABLE':row['actual']='UNAVAILABLE';uncovered=True
+        record=dict(path=m['path'],source_sha256=m['source_sha256'],rows=rows,invocations=[],
+                    inventory_verified=False,runner_sha256=source_sha(SELF),matrix_sha256=source_sha(MATRIX))
         ledger['modules'].append(record)
-        invdir = root / (stem + '-inventory')
-        receipt = launch(['--child', m['path'], '--mode', 'inventory', '--output', str(invdir)], invdir)
-        record['invocations'].append(receipt)
+        invdir=root/(stem+'-inventory')
+        selected=[]
         try:
-            require(not receipt['timeout'] and not receipt['truncated'] and receipt['exit'] == 0, 'INVENTORY_PROCESS')
-            report = strict((invdir / 'result.json').read_bytes())
-            require(set(report) == {'ids'}, 'INVENTORY_SCHEMA')
-            rows = classify(m, report['ids'])
-            record['rows'] = rows
-            selected = []
-            for row in rows:
-                if row['route'] != 'PORTABLE':
-                    row['actual'] = 'UNAVAILABLE'
-                    uncovered = True
-                elif execute and (only is None or m['path'] in only):
-                    selected.append(row['id'])
+            receipt=launch(['--child',m['path'],'--mode','inventory','--output',str(invdir)],invdir,deadline=deadline)
+            record['invocations'].append(receipt)
+            require(not receipt['timeout'] and not receipt['truncated'] and receipt['exit']==0,'INVENTORY_PROCESS')
+            report=strict((invdir/'result.json').read_bytes())
+            require(set(report)=={'ids'},'INVENTORY_SCHEMA')
+            require(report['ids']==required[m['path']],'REQUIRED_ID_DRIFT')
+            dynamic.extend(report['ids']);record['inventory_verified']=True
+            selected=[r['id'] for r in rows if r['route']=='PORTABLE' and execute and (only is None or m['path'] in only)]
             if selected:
-                require(time.monotonic() < deadline, 'SUITE_DEADLINE')
-                folder = root / (stem + '-execution')
-                # launch owns mkdir. Selection is passed through an owned input file
-                # in a separate directory, then copied by the child before test import.
-                selection_path = root / (stem + '-selection.json')
-                selection_path.write_text(json.dumps(dict(inventory=report['ids'], selected=selected)), encoding='utf-8')
-                rec = launch(['--child', m['path'], '--mode', 'execute', '--output', str(folder),
-                              '--selection', str(selection_path)], folder)
+                folder=root/(stem+'-execution')
+                selection=root/(stem+'-selection.json')
+                selection.write_text(json.dumps(dict(inventory=report['ids'],selected=selected)),encoding='utf8')
+                rec=launch(['--child',m['path'],'--mode','execute','--output',str(folder),'--selection',str(selection)],folder,deadline=deadline)
                 record['invocations'].append(rec)
-                require(not rec['timeout'] and not rec['truncated'], 'EXECUTION_PROCESS')
-                observed = reconcile(selected, strict((folder / 'result.json').read_bytes()), rec['exit'])
-                results = {r['id']: r['actual'] for r in observed}
+                require(not rec['timeout'] and not rec['truncated'],'EXECUTION_PROCESS')
+                events=[strict(x) for x in (folder/'progress.jsonl').read_text(encoding='utf8').splitlines()]
+                child_report=strict((folder/'result.json').read_bytes())
+                observed=reconcile(selected,child_report,rec['exit'],events)
+                record['tests_run']=child_report['tests_run'];record['fixture_skips']=child_report['fixture_skips']
+                results={r['id']:r['actual'] for r in observed};started={e['id'] for e in events if e['actual']=='STARTED'}
                 for row in rows:
-                    if row['id'] in results:
-                        row.update(executed=True, actual=results[row['id']])
-                failure |= any(r['actual'] not in {'PASS', 'SKIP'} for r in observed)
-        except (Invalid, OSError, ValueError, KeyError, TypeError) as exc:
-            record['error'] = type(exc).__name__ + ':' + (str(exc) if isinstance(exc, Invalid) else 'INVALID_CHILD_SETTLEMENT')
-            # Preserve real completed assertions even when the module never settled.
-            progress = root / (stem + '-execution') / 'progress.jsonl'
+                    if row['id'] in results:row.update(executed=row['id'] in started,actual=results[row['id']])
+                failure|=any(r['actual'] not in {'PASS','SKIP'} for r in observed)
+        except (Invalid,OSError,ValueError,KeyError,TypeError) as exc:
+            record['error']=type(exc).__name__+':'+(str(exc) if isinstance(exc,Invalid) else 'INVALID_CHILD_SETTLEMENT')
+            progress=root/(stem+'-execution')/'progress.jsonl'
             if progress.is_file():
-                for raw in progress.read_text(encoding='utf-8').splitlines():
-                    event = strict(raw)
-                    for row in record['rows']:
-                        if row['id'] == event.get('id'):
-                            actual = event.get('actual')
-                            row.update(executed=True, actual='ERROR' if actual == 'STARTED' else actual)
-            failure = True
-    rows = [row for m in ledger['modules'] for row in m['rows']]
-    ledger['counts'] = dict(Counter(row['actual'] for row in rows))
-    ledger['routes'] = {route: dict(Counter(row['actual'] for row in rows if row['route'] == route)) for route in sorted(ROUTES)}
-    ledger['discovered'] = len(rows)
-    complete_portable = all(row['actual'] in {'PASS', 'SKIP'} for row in rows if row['route'] == 'PORTABLE')
-    ledger['portable'] = 'FAIL' if failure else 'PASS' if execute and complete_portable else 'NOT_RUN'
-    ledger['overall'] = 'FAIL' if failure else 'REQUIRED_COVERAGE_UNAVAILABLE' if uncovered else 'PASS' if complete_portable else 'NOT_RUN'
-    (root / 'ledger.json').write_text(json.dumps(ledger, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({k: ledger[k] for k in ('overall', 'portable', 'discovered', 'counts', 'routes')}))
-    return (1 if ledger['overall'] != 'PASS' else 0), ledger
+                try:
+                    partial_progress(rows,[strict(raw) for raw in progress.read_text(encoding='utf8').splitlines()])
+                except (Invalid,OSError,ValueError,KeyError,TypeError):record['progress_error']='INVALID_PARTIAL_PROGRESS'
+            failure=True
+        (root/'ledger.json').write_text(json.dumps(ledger,indent=2)+'\n',encoding='utf8')
+    rows=[r for m in ledger['modules'] for r in m['rows']]
+    expected=[tid for values in required.values() for tid in values]
+    verified=len(dynamic)==len(set(dynamic))==len(expected) and set(dynamic)==set(expected)
+    ledger['coverage_verified']=verified
+    ledger['discovered']=len(dynamic);ledger['unique_dispositions']=len({r['id'] for r in rows})
+    ledger['counts']=dict(Counter(r['actual'] for r in rows))
+    ledger['routes']={route:dict(Counter(r['actual'] for r in rows if r['route']==route)) for route in sorted(ROUTES)}
+    failure|=not verified
+    complete=all(r['actual'] in {'PASS','SKIP'} for r in rows if r['route']=='PORTABLE')
+    ledger['portable']='FAIL' if failure else 'PASS' if execute and complete else 'NOT_RUN'
+    ledger['overall']='FAIL' if failure else 'REQUIRED_COVERAGE_UNAVAILABLE' if uncovered else 'PASS' if execute and complete else 'NOT_RUN'
+    ledger['lane_finished_monotonic']=time.monotonic()
+    (root/'ledger.json').write_text(json.dumps(ledger,indent=2)+'\n',encoding='utf8')
+    print(json.dumps({k:ledger[k] for k in ('overall','portable','discovered','unique_dispositions','counts','routes')}))
+    return (0 if ledger['overall']=='PASS' else 1),ledger
 
 
 def main():
+    global CHILD_DEADLINE
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--matrix', type=Path, default=MATRIX)
     parser.add_argument('--output', type=Path, required=True)
@@ -543,14 +678,18 @@ def main():
     parser.add_argument('--child')
     parser.add_argument('--mode', choices=['inventory', 'execute'])
     parser.add_argument('--selection', type=Path)
+    parser.add_argument('--deadline', type=float)
     parser.add_argument('--r60-race', action='store_true')
-    parser.add_argument('--control', choices=['hook', 'sibling', 'crash', 'exit1', 'timeout', 'overflow', 'missing', 'premkdir'])
+    parser.add_argument('--control', choices=['hook', 'sibling', 'crash', 'exit1', 'timeout', 'overflow', 'missing', 'premkdir', 'r66'])
     args = parser.parse_args()
+    CHILD_DEADLINE=args.deadline
     try:
         if args.r60_race:
             return r60_race(owned(args.output))
         if args.control:
             folder=owned(args.output)
+            if args.control == 'r66':
+                return r66_control(folder)
             if args.control == 'premkdir':
                 guard(folder)
                 denied=[]
@@ -580,6 +719,7 @@ def main():
             if args.control == 'hook':
                 sys.path.insert(0, str(ROOT / 'runtime'))
                 spec=importlib.util.spec_from_file_location('rpf82_guard_control', ROOT/'spikes/rpf-75/probe.py')
+                require(source_sha(ROOT/'spikes/rpf-75/probe.py')==R75_SHA,'R75_GUARD_SOURCE')
                 probe=importlib.util.module_from_spec(spec)
                 spec.loader.exec_module(probe)
                 rejected=[]
@@ -596,7 +736,11 @@ def main():
                     require(str(exc) == 'OFFLINE_OPERATION_FORBIDDEN', 'HOOK_REASON')
                 else:
                     raise Invalid('HOOK_NOT_INSTALLED')
-                payload={'guard_denied':rejected,'actual_subprocess_denied':True}
+                import socket
+                try:socket.socket()
+                except Exception as exc:require(str(exc)=='OFFLINE_OPERATION_FORBIDDEN','SOCKET_HOOK_REASON')
+                else:raise Invalid('SOCKET_HOOK_NOT_INSTALLED')
+                payload={'guard_denied':rejected,'actual_subprocess_denied':True,'actual_socket_denied':True}
             else:
                 import socket
                 with socket.socket() as listener:

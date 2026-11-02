@@ -519,9 +519,19 @@ class R66V5Tests(unittest.TestCase):
     with self.assertRaises(Exception):parser.validate(value,authorization=terminal,account=account)
  def test_child_exact_diff_and_guards(self):
   import runpy
-  old=(c.ROOT/'runtime/runproof_runtime/effectwitness/config_live_external.py').read_bytes()
-  new=(c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py').read_bytes()
-  self.assertEqual(new,old.replace(b'model_settings={"max_tokens": 256,',b'model_settings={"max_tokens": 512,'))
+  historical='677d957302476bb89b52dedb5ab047f2850bd686'
+  frozen='b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01'
+  commit='76088c6e268388fe414956d48cad0242641ae01a'
+  self.assertEqual(subprocess.check_output(['git','rev-parse',commit+':runtime/runproof_runtime/effectwitness/config_live_external.py'],cwd=c.ROOT).decode().strip(),historical)
+  old=subprocess.check_output(['git','cat-file','blob',historical],cwd=c.ROOT)
+  self.assertEqual(hashlib.sha1(b'blob '+str(len(old)).encode()+b'\0'+old).hexdigest(),historical)
+  new=subprocess.check_output(['git','cat-file','blob',frozen],cwd=c.ROOT)
+  self.assertEqual(hashlib.sha1(b'blob '+str(len(new)).encode()+b'\0'+new).hexdigest(),frozen)
+  current=(c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py').read_bytes()
+  self.assertEqual(current.replace(b'\r\n',b'\n'),new)  # explicit Git checkout EOL mapping
+  token=b'model_settings={"max_tokens": 256,'
+  self.assertEqual(old.count(token),1)
+  self.assertEqual(new,old.replace(token,b'model_settings={"max_tokens": 512,'))
   ctx,_=fresh();mod=runpy.run_path(str(c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py'))
   denied=[];guard=mod['_guard_events'](45002,ctx.root,ctx.root/'sdk',[],c.ROOT/'runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py',denied,[])
   for event,args in [('socket.connect',(None,('127.0.0.1',45003))),('socket.getaddrinfo',('invalid.example',)),('open',(str(ctx.root.parent/'outside'),'r',0)),('subprocess.Popen',('x',)),('socket.bind',(None,('127.0.0.1',0)))]:

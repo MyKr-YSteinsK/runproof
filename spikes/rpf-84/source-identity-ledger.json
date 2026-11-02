@@ -1,0 +1,201 @@
+{
+  "plan": "RPF-84/rev-1",
+  "base": "e477be107dd186c45cdef750cd00ebf82ea55402",
+  "modified": [
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "old_blob": "0b5d6d40c816b08c19051408bc432d84f4209758",
+      "old_raw_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+      "old_lf_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+      "new_raw_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460",
+      "new_lf_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460"
+    },
+    {
+      "path": "ci/run-runtime-contract-tests.py",
+      "old_blob": "527b789af0a3b8ed9067a126ac7750190345b576",
+      "old_raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "old_lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+      "new_raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+      "new_lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+    },
+    {
+      "path": "ci/runtime-contract-test-matrix.json",
+      "old_blob": "70857e69ec3707f102a7c165069a675cddda47c0",
+      "old_raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+      "old_lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+      "new_raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+      "new_lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+    },
+    {
+      "path": "ci/test_run_runtime_contract_tests.py",
+      "old_blob": "cbebf89e025943913b1cbdfd16649bdbc3d190bc",
+      "old_raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+      "old_lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+      "new_raw_sha256": "b18143e93ffd9d347800d03ff8378b156485318357af6628809d1f33399fab0e",
+      "new_lf_sha256": "33e1df05cd2776d531d78c0fca0e7e9608a028346c8ab34841a0bbb60a9b580a"
+    },
+    {
+      "path": "runtime/tests/test_effectwitness_pge_r66.py",
+      "old_blob": "65189d7a8ba26d1e8656a2cb4f11d8aa2c5346fd",
+      "old_raw_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+      "old_lf_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+      "new_raw_sha256": "c382b3c54247738092ea2dcb2b1c593e39e3be1029e743d59aac4d6342c64ebe",
+      "new_lf_sha256": "2d6bd1a0d1b9d5f51cf1bef96668859a6cc0d7ab32cce2ca9b76448197200f1b"
+    }
+  ],
+  "r66_lineage_controls": [
+    {
+      "old_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+      "child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+      "old_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "child_raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "unique_replacement": true,
+      "working_child_raw_sha256": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+      "working_child_lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "checkout_eol_mapping": "CRLF->LF only, Git blob comparison is raw byte equality",
+      "original_method_disposition": "UNAVAILABLE: original fresh() requires historical owner; not executed",
+      "guard_denials": [
+        "NETWORK_DENIED",
+        "DNS_DENIED",
+        "FILE_ACCESS_DENIED",
+        "PROCESS_EXEC_DENIED",
+        "SOCKET_OPERATION_DENIED"
+      ],
+      "guard_negative_count": 5,
+      "old_source_executed": false
+    },
+    {
+      "old_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+      "child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+      "old_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "child_raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "unique_replacement": true,
+      "working_child_raw_sha256": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+      "working_child_lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "checkout_eol_mapping": "CRLF->LF only, Git blob comparison is raw byte equality",
+      "original_method_disposition": "UNAVAILABLE: original fresh() requires historical owner; not executed",
+      "guard_denials": [
+        "NETWORK_DENIED",
+        "DNS_DENIED",
+        "FILE_ACCESS_DENIED",
+        "PROCESS_EXEC_DENIED",
+        "SOCKET_OPERATION_DENIED"
+      ],
+      "guard_negative_count": 5,
+      "old_source_executed": false
+    },
+    {
+      "old_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+      "child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+      "old_raw_sha256": "0d977965f72d2a8ade8d02d0ce4963742cb8952976f012459c58423aefe9bdfe",
+      "child_raw_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "unique_replacement": true,
+      "working_child_raw_sha256": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+      "working_child_lf_sha256": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "checkout_eol_mapping": "CRLF->LF only, Git blob comparison is raw byte equality",
+      "original_method_disposition": "UNAVAILABLE: original fresh() requires historical owner; not executed",
+      "guard_denials": [
+        "NETWORK_DENIED",
+        "DNS_DENIED",
+        "FILE_ACCESS_DENIED",
+        "PROCESS_EXEC_DENIED",
+        "SOCKET_OPERATION_DENIED"
+      ],
+      "guard_negative_count": 5,
+      "old_source_executed": false
+    }
+  ],
+  "source_boundary": {
+    "rpf83_current_config_child_blob": "d37f027631fe0eff26f33b29e407281971d9c40c",
+    "historical_parent_blob": "677d957302476bb89b52dedb5ab047f2850bd686",
+    "frozen_v5_child_blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+    "historical_source_commit": "76088c6e268388fe414956d48cad0242641ae01a",
+    "old_source_executed": false,
+    "old_witness_resigned": false,
+    "normalization": "Git object raw bytes are compared exactly. Windows working child CRLF raw hash recorded separately with explicit LF checkout mapping."
+  },
+  "static_scope": {
+    "status": "PASS",
+    "sources": [
+      {
+        "path": ".github/workflows/release-gate.yml",
+        "old_blob": "0b5d6d40c816b08c19051408bc432d84f4209758",
+        "old_raw_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+        "old_lf_sha256": "d81bd9ec399c99dfef9fc1b5e2960da354352e07c4c44e30349e16e9694b5344",
+        "new_raw_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460",
+        "new_lf_sha256": "4e40c97ec61e07b76049a3ebd786795b369291e0217ed794be33f44708f4d460"
+      },
+      {
+        "path": "ci/run-runtime-contract-tests.py",
+        "old_blob": "527b789af0a3b8ed9067a126ac7750190345b576",
+        "old_raw_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "old_lf_sha256": "b3974b16d761ee90b8e88c426d29027909a9e91db2e9f4f95b93a931bbfe85ca",
+        "new_raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+        "new_lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+      },
+      {
+        "path": "ci/runtime-contract-test-matrix.json",
+        "old_blob": "70857e69ec3707f102a7c165069a675cddda47c0",
+        "old_raw_sha256": "4383574d3d7dea552116401c475f1eb0c44d43416b8bf9e1c66dace27e7b606b",
+        "old_lf_sha256": "e478ff3d1f8aeac0ce3f093e23c97d8a6442919a3d2baab2350fd38d75ff9dcb",
+        "new_raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+        "new_lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+      },
+      {
+        "path": "ci/test_run_runtime_contract_tests.py",
+        "old_blob": "cbebf89e025943913b1cbdfd16649bdbc3d190bc",
+        "old_raw_sha256": "bd3b7ba81b42fd6645e6ff0347e3fd4b182a0413a95be5c89413034d7762dde1",
+        "old_lf_sha256": "086f2d755f5364161c21eb272ffc96b3f07de0d6ea6b889e21af5350381f2047",
+        "new_raw_sha256": "b18143e93ffd9d347800d03ff8378b156485318357af6628809d1f33399fab0e",
+        "new_lf_sha256": "33e1df05cd2776d531d78c0fca0e7e9608a028346c8ab34841a0bbb60a9b580a"
+      },
+      {
+        "path": "runtime/tests/test_effectwitness_pge_r66.py",
+        "old_blob": "65189d7a8ba26d1e8656a2cb4f11d8aa2c5346fd",
+        "old_raw_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+        "old_lf_sha256": "2c3a3051ac809d8b57c2ce2484cb7c693ba1d4012379f435f909d96642390fa9",
+        "new_raw_sha256": "c382b3c54247738092ea2dcb2b1c593e39e3be1029e743d59aac4d6342c64ebe",
+        "new_lf_sha256": "2d6bd1a0d1b9d5f51cf1bef96668859a6cc0d7ab32cce2ca9b76448197200f1b"
+      }
+    ],
+    "r66_unchanged_other_functions": 77,
+    "r66_original_guard_ast": "UNCHANGED",
+    "router_old_test_ids_preserved": 32,
+    "router_new_test_ids": 41,
+    "workflow_counterexamples": [
+      {
+        "name": "gate-removal",
+        "status": "REJECTED"
+      },
+      {
+        "name": "reorder-focus",
+        "status": "REJECTED"
+      },
+      {
+        "name": "false-green",
+        "status": "REJECTED"
+      },
+      {
+        "name": "wrong-output-owner",
+        "status": "REJECTED"
+      },
+      {
+        "name": "permission-change",
+        "status": "REJECTED"
+      }
+    ],
+    "protected_sources": [
+      "runtime/runproof_runtime/effectwitness/config_live_external.py",
+      "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py",
+      "runtime/tests/test_effectwitness_lab_cross_domain.py",
+      "spikes/rpf-75/probe.py",
+      "runtime/tests/test_effectwitness_pge_r75.py"
+    ],
+    "default_whitespace_exit": 2,
+    "crlf_aware_whitespace_exit": 0,
+    "yaml_version": "6.0.3",
+    "prefreeze_checker_correction": "First AST counter counted a nested Benign.test_entry as a RouterTests method (33 vs32); corrected to direct RouterTests methods; no Runtime test failure or source mutation caused by that assertion."
+  },
+  "matrix_change": "Only four source hashes and moved evidence line numbers; no route/default/helper-registry change",
+  "r66_original_method": "Still required DEDICATED_RUNNER/UNAVAILABLE; independent byte+guard control PASS does not upgrade that method"
+}
