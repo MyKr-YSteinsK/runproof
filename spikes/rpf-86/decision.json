@@ -1,0 +1,31 @@
+{
+  "plan": "RPF-86/rev-1",
+  "decision": "B_UNACTIVATED",
+  "reason": "Exact owner-only admission fails two methods at a historical public certificate read by an unlisted helper; guard correctly denies. Additional read scope or replacing identity data is not authorized.",
+  "native_prefreeze_counts": {
+    "PASS": 3,
+    "ERROR": 2
+  },
+  "formal_five": "NOT_RUN",
+  "dedicated_owner_admission_pilot_pass": 0,
+  "formal_required_unavailable": 539,
+  "official_coverage_changed": false,
+  "workflow_blob": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+  "workflow_unchanged": true,
+  "harness_formal": "8 PASS",
+  "independent_negative_review": "PASS_NEGATIVE_EVIDENCE_ONLY",
+  "hosted_pilot": "NOT_APPLICABLE_B_UNACTIVATED",
+  "future_existing_ci": "NOT_RUN_AT_SEAL",
+  "evidence_accepted": "ARCHITECT_ONLY",
+  "stage_advanced": false,
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "next_decision": "Architect may authorize exact helper/certificate read-only audit in a new Plan, or choose a different owner-only cohort. No source/read-scope expansion inferred.",
+  "preserved_states": {
+    "RPF82": "PARTIAL",
+    "RPF74rev4": "PAUSED_DEFERRED",
+    "RPF81rev2": "BLOCKED",
+    "RPF78_A08": "FAIL"
+  }
+}
