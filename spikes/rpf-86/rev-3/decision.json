@@ -1,0 +1,30 @@
+{
+  "plan": "RPF-86/rev-3",
+  "base": "8953f6a4f85a614c7cabf74903e4c7e1d89c45dd",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "UNAVAILABLE_NATIVE_DIAGNOSTIC_TIMEOUT",
+    "A03": "NOT_RUN_FORMAL_DIAGNOSTIC_TIMEOUT",
+    "A04": "PASS_16_CONTROL_TESTS",
+    "A05": "PASS_INCOMPLETE_NEGATIVE_EVIDENCE_ONLY",
+    "A06": "PASS_FROZEN_16_TESTS",
+    "A07": "PASS_B_UNCHANGED",
+    "A08": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_RUN_AT_SEAL_PILOT_NOT_APPLICABLE",
+    "A10": "PRESERVED"
+  },
+  "reason": "Only authorized diagnostic reached 180s during first method; denial journal and completed native result unavailable. No extra native run or permission expansion.",
+  "task_complete": false,
+  "documentary_delivery": "PENDING_AT_SEAL",
+  "rpf86_overall": "PARTIAL",
+  "evidence_accepted": "ARCHITECT_NOT_DECIDED",
+  "stage_advanced": "ARCHITECT_NOT_DECIDED",
+  "formal_required_unavailable": 539,
+  "official_coverage_changed": false,
+  "release_executed": false,
+  "deployment_authorized": false
+}

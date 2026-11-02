@@ -29,7 +29,10 @@ class OwnerAdmissionTests(unittest.TestCase):
             source_identity=self.source,source_unchanged=True,physical_owner=work.relative_to(r.ROOT).as_posix(),
             logical_owner='rpf-63',logical_identity_changed=False,marker='TEST_HARNESS_OWNER_SUBSTITUTION',
             patch_points=['pge_dual_contracts.WORK'],patch_restored=True,status='PASS',error=None,
-            guard={'denied':{},'certificate':self.source['certificate'],'observed':{'certificate_read_granted':1}},source_level='SYNTHETIC_OFFLINE_TEST',events=events,pid=123,
+            guard={'denied':{},'certificate':self.source['certificate'],'observed':{'certificate_read_granted':1},
+                'attribution_schema':'rpf86-denial-events-v1','attribution_events':[],
+                'attribution_total':0,'attribution_truncated':False,'attribution_sources':self.source['attribution_sources'],
+                'attribution_sha256':r.sha(b'[]')},source_level='SYNTHETIC_OFFLINE_TEST',events=events,pid=123,
             actual_provider_calls=0,actual_sdk_calls=0,actual_java_processes=0,actual_business_writes=0,
             manifest=[{'path':'synthetic-only-not-executed','bytes':1,'sha256':'0'*64}])
         receipt=dict(mode='native',exit=0,timeout=False,truncated=False,child_exited=True,drain_joined=True,pid=123,harness_lf_sha256=self.source['harness_lf_sha256'])
@@ -134,5 +137,64 @@ class OwnerAdmissionTests(unittest.TestCase):
         r.validate_log(raw,receipt)
         path.write_bytes(raw.replace(b'local',b'LOCAL'))
         with self.assertRaisesRegex(r.Invalid,'LOG_BINDING'):r.validate_log(path.read_bytes(),receipt)
+
+    def false_green(self):
+        cls=type(self)
+        if not hasattr(cls,'false_green_report'):
+            folder=self.folder('false-green')
+            receipt=r.launch('false-green',folder,deadline=time.monotonic()+20,timeout=20)
+            self.assertEqual(receipt['exit'],0)
+            cls.false_green_report=r.strict((folder/'sandbox/false-green.json').read_bytes())
+        return copy.deepcopy(cls.false_green_report)
+
+    def test_real_broad_assertion_permission_error_is_never_admitted(self):
+        report=self.false_green();self.assertEqual(report['native_method_status'],'PASS')
+        self.assertEqual(report['admission_status'],'FAIL');self.assertEqual(report['delegated_target_io'],0)
+        event=report['guard']['attribution_events'][0]
+        self.assertEqual(event['phase'],'method');self.assertEqual(event['event_kind'],'Guard.check')
+        self.assertEqual(event['caller']['function'],'test_guard_false_green')
+        self.assertTrue(event['permission_error_observed_in_method']);self.assertTrue(event['continued_after_broad_context'])
+        self.assertEqual(event['method_later_status'],'PASS')
+        self.assertEqual(event['assertRaises_broad_exception_risk'],'SUSPECTED')
+        work,native,receipt=self.protocol();native['guard']=report['guard']
+        with self.assertRaises(r.Invalid):r.validate_native(native,receipt,self.source,work)
+
+    def test_attribution_missing_binding_spoof_tamper_duplicate_and_stale_source(self):
+        report=self.false_green();base=report['guard'];sources=self.source['attribution_sources'];ids=report['ids']
+        r.validate_attribution(base,sources,ids)
+        changes=[lambda g:g['attribution_events'][0].update(method_id=None),
+            lambda g:g['attribution_events'][0].update(phase='fabricated'),
+            lambda g:g['attribution_events'][0]['caller_chain'][0].update(path='unapproved.py'),
+            lambda g:g['attribution_events'][0]['caller_chain'][0].update(line=999999),
+            lambda g:g['attribution_events'][0]['caller_chain'][0].update(function='spoofed'),
+            lambda g:g['attribution_events'][0]['caller_chain'][0].update(source_sha256='0'*64),
+            lambda g:g['attribution_events'].append(copy.deepcopy(g['attribution_events'][0])),
+            lambda g:g.update(attribution_sources={}),lambda g:g.update(attribution_total=0)]
+        for change in changes:
+            g=copy.deepcopy(base);change(g)
+            g['attribution_sha256']=r.sha(json.dumps(g['attribution_events'],sort_keys=True,separators=(',',':')).encode())
+            with self.assertRaises(r.Invalid):r.validate_attribution(g,sources,ids)
+        g=copy.deepcopy(base);g['attribution_events'][0]['intent']='write'
+        with self.assertRaisesRegex(r.Invalid,'ATTRIBUTION_EVENT_HASH'):r.validate_attribution(g,sources,ids)
+
+    def test_real_denial_precedes_io_and_event_overflow_fails_closed(self):
+        fixture=self.folder('new-owned-synthetic');fixture.write_bytes(b'new fixture only')
+        guard=r.Guard(self.folder('isolated'))
+        def forbidden_metadata(*a,**kw):raise AssertionError('metadata delegated')
+        with patch.object(guard,'raw_lstat',forbidden_metadata):
+            for _ in range(r.ATTRIBUTION_LIMIT+1):
+                guard.context('Guard.check',fixture)
+                with self.assertRaises(PermissionError):guard.check(fixture)
+        projection=guard.projection();self.assertEqual(len(projection['attribution_events']),16)
+        self.assertEqual(projection['attribution_total'],17);self.assertTrue(projection['attribution_truncated'])
+        with self.assertRaisesRegex(r.Invalid,'ATTRIBUTION_TRUNCATED'):r.validate_attribution(projection,guard.sources,[])
+
+    def test_actual_child_report_byte_and_receipt_binding(self):
+        folder=self.folder('report-binding');folder.mkdir();r.write(folder/'child-result.json',{'kind':'synthetic-control'})
+        raw=(folder/'child-result.json').read_bytes();receipt={'child_result_raw_sha256':r.sha(raw)}
+        self.assertEqual(r.read_child_report(folder,receipt),{'kind':'synthetic-control'})
+        (folder/'child-result.json').write_bytes(raw+b' ')
+        with self.assertRaisesRegex(r.Invalid,'CHILD_REPORT_BINDING'):r.read_child_report(folder,receipt)
+        with self.assertRaisesRegex(r.Invalid,'CHILD_REPORT_BINDING'):r.read_child_report(folder,{})
 
 if __name__=='__main__':unittest.main()

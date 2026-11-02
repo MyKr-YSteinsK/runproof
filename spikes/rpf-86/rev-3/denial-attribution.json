@@ -1,0 +1,161 @@
+{
+  "schema": "rpf86-rev3-denial-attribution-v1",
+  "plan": "RPF-86/rev-3",
+  "base": "8953f6a4f85a614c7cabf74903e4c7e1d89c45dd",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "cohort": "single diagnostic; first method start observed in stdout; no sealed child result",
+  "diagnostic_receipt": {
+    "mode": "native",
+    "pid": 14792,
+    "exit": 1,
+    "timeout": true,
+    "truncated": false,
+    "bytes": 90,
+    "stdout_sha256": "8bcf89ba7befd3e584c27608a10f544e8ac5b4f90bada5f8d6a04552398ae0da",
+    "monotonic_start_ns": 438561769434000,
+    "monotonic_end_ns": 438741791518500,
+    "timeout_limit_seconds": 180,
+    "child_exited": true,
+    "drain_joined": true,
+    "harness_lf_sha256": "3b56c8807058fc7802f2406e63d0303e0de971e0a72612c2b7fc91470c5e187b",
+    "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+  },
+  "events_summary": {
+    "status": "UNAVAILABLE",
+    "total": null,
+    "reason": "Supervisor timeout before in-memory journal sealed. Empty event list does not mean zero denials.",
+    "historical_rev2_count": 2,
+    "historical_source": "committed rev2 report, not old private roots"
+  },
+  "events_bounded": [],
+  "per_method_taint": {
+    "test_four_paths": "UNKNOWN_NO_SEALED_METHOD_OR_GUARD_EVENTS",
+    "test_twenty_one_reanchored_attacks": "UNKNOWN_NO_SEALED_METHOD_OR_GUARD_EVENTS",
+    "test_unknown_usage_and_restart": "UNKNOWN_NO_SEALED_METHOD_OR_GUARD_EVENTS",
+    "test_scope_lock_budget_and_invalid_selection": "UNKNOWN_NO_SEALED_METHOD_OR_GUARD_EVENTS",
+    "test_unknown_mutation_stops_writes_but_allows_readback": "UNKNOWN_NO_SEALED_METHOD_OR_GUARD_EVENTS"
+  },
+  "classification": {
+    "two_historical_denial_causes": "UNKNOWN",
+    "diagnostic": "TIMEOUT",
+    "native_false_green": "UNKNOWN_NOT_PROVED",
+    "synthetic_false_green": "CONFIRMED_BY_NEW_CONTROL_WITH_CAUSAL_TRACE",
+    "timeout_cause": "UNCONFIRMED: global tracing overhead suspected; not measured or reproduced with native retry"
+  },
+  "original_method_status": "UNAVAILABLE; no completed native method result",
+  "formal_admission_status": "NOT_RUN",
+  "new_input_permissions_granted": false,
+  "redaction_pass": true,
+  "known_limitations": [
+    "Diagnostic stopped at 180 seconds; no per-event cause can be recovered from unsealed memory.",
+    "Only synthetic control has a concrete denial/caller/phase/exception/continuation trace.",
+    "Python audit and metadata interception are not kernel sandbox proof."
+  ],
+  "synthetic_control": {
+    "status": "PASS_NEGATIVE_CONTROL",
+    "native_method_status": "PASS",
+    "admission_status": "FAIL",
+    "guard": {
+      "observed": {},
+      "denied": {
+        "READ_SCOPE_DENIED": 1
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [
+        {
+          "sequence": 1,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "Guard.check",
+          "intent": "read",
+          "phase": "method",
+          "method_id": "__main__.false_green_controls.<locals>.Synthetic.test_guard_false_green",
+          "target_class": "private_old_root",
+          "public_repo_relative_path": null,
+          "target_token": "2c32d8cb136b7d448ed31274f41374cccb3a585338e7ea9cb32247c3bc2a4d95",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "test_guard_false_green",
+            "line": 529,
+            "source_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "test_guard_false_green",
+              "line": 529,
+              "source_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "run_suite",
+              "line": 338,
+              "source_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "false_green_controls",
+              "line": 531,
+              "source_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 674,
+              "source_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "<module>",
+              "line": 684,
+              "source_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": "PASS",
+          "broad_exception_context": true,
+          "assertRaises_broad_exception_risk": "SUSPECTED",
+          "permission_error_observed_in_method": true,
+          "continued_after_broad_context": true
+        }
+      ],
+      "attribution_total": 1,
+      "attribution_truncated": false,
+      "attribution_sha256": "bb8da79b821307438f93969e43053f5c01181831cec8eba708b9d1482e8c51c1",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6",
+        "ci/test_run_rpf86_owner_admission.py": "541d7413f21af2b50c70bfc891d2f00de54ad3dbb94e3742bab87deabac11de1",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "ids": [
+      "__main__.false_green_controls.<locals>.Synthetic.test_guard_false_green"
+    ],
+    "delegated_target_io": 0
+  }
+}

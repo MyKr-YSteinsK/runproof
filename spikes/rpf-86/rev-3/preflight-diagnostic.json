@@ -1,0 +1,2260 @@
+{
+  "plan": "RPF-86/rev-3",
+  "base": "8953f6a4f85a614c7cabf74903e4c7e1d89c45dd",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "G0": "PASS",
+  "receipt_raw_sha256": "1f2f16ac47c600a3067a264e67aa6038b0be94d090d246ae75d37a5989dab3dc",
+  "prewrite_payload_sha256": "7c2d2e216844ab1cb1579050d4ea68cb3db490f5928c2500413178c5b8e8a679",
+  "utc": "2026-11-02T12:12:56Z",
+  "monotonic_ns": 438188087715700,
+  "source_rows": [
+    {
+      "path": "runtime/tests/test_effectwitness_pge_dual.py",
+      "blob": "f98fb2da033dc62a0d5f785c06b837990912caf6",
+      "raw_sha256": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+      "blob_raw_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py",
+      "blob": "2cc4145369918d265df6e3cdcdbce9ac7ecd9bd4",
+      "raw_sha256": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+      "blob_raw_sha256": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_dual_session.py",
+      "blob": "5b626b547a884035c3c968f2a1f95f77f941aec9",
+      "raw_sha256": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+      "blob_raw_sha256": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py",
+      "blob": "79c210fa5579235447157858f2c62ddd61983a91",
+      "raw_sha256": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+      "blob_raw_sha256": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_dual_verify.py",
+      "blob": "ed4329a0064daae75792eddfdfdd5cebc1b4b695",
+      "raw_sha256": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+      "blob_raw_sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474"
+    },
+    {
+      "path": "ci/run-rpf86-owner-admission.py",
+      "blob": "526a76e0f895ad039ef67b9493a87a18ffcb6ed3",
+      "raw_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+      "blob_raw_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415"
+    },
+    {
+      "path": "ci/test_run_rpf86_owner_admission.py",
+      "blob": "693992de738a9370dea11f3e94b6712122e7b983",
+      "raw_sha256": "8e7440a77d3ad4bb208a4d5f0f1fa90d9d15ebfba9e83b6b728ca53dd60845f5",
+      "blob_raw_sha256": "8e7440a77d3ad4bb208a4d5f0f1fa90d9d15ebfba9e83b6b728ca53dd60845f5"
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "blob": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+      "raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+      "blob_raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/config_experiment_verify.py",
+      "blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+      "raw_sha256": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+      "blob_raw_sha256": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3"
+    },
+    {
+      "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+      "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+      "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "blob_raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+    }
+  ],
+  "certificate": {
+    "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+    "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+    "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+    "bytes": 21170,
+    "structure": "identity:dict",
+    "status": "PIN_VERIFIED",
+    "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+  },
+  "create_only_paths": [
+    "spikes/rpf-86/rev-3/README.md",
+    "spikes/rpf-86/rev-3/RESULT.md",
+    "spikes/rpf-86/rev-3/denial-attribution.json",
+    "spikes/rpf-86/rev-3/verification-diagnostic.json",
+    "spikes/rpf-86/rev-3/counterexamples.json",
+    "spikes/rpf-86/rev-3/decision.json",
+    "spikes/rpf-86/rev-3/preflight-diagnostic.json",
+    "spikes/rpf-86/rev-3/pre-repair-sources/run-rpf86-owner-admission.py",
+    "spikes/rpf-86/rev-3/pre-repair-sources/test_run_rpf86_owner_admission.py",
+    "spikes/rpf-86/rev-3/pre-repair-sources/release-gate.yml"
+  ],
+  "checks": [
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "bbf7458fa1736d98c88be45df36a72c12e4da73a5222ed33e48b612587afb44e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178765663100
+    },
+    {
+      "name": "root",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178765670200
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e445da4f9a724ba8d2fe75f15fc03e70195ce0699257bea8bc48e1af0ed278bd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178821507000
+    },
+    {
+      "name": "HEAD",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178821514000
+    },
+    {
+      "name": "git branch",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178872105500
+    },
+    {
+      "name": "main",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178872112300
+    },
+    {
+      "name": "git status",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178933424100
+    },
+    {
+      "name": "clean",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178933428300
+    },
+    {
+      "name": "git diff",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438178997792100
+    },
+    {
+      "name": "git diff",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438179055778200
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "047f220328b7a2219f45225722c482dd31cf8c6ce01fdad1e8eccab7d01fcd01",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438179107819000
+    },
+    {
+      "name": "upstream",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:47Z",
+      "monotonic_ns": 438179107825400
+    },
+    {
+      "name": "git remote",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e5453c2ffebbaf0d3666fe3edcf5b5bbea722e0dfbb098fd3d5472e20684b15c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:48Z",
+      "monotonic_ns": 438179163051000
+    },
+    {
+      "name": "remote",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:48Z",
+      "monotonic_ns": 438179163059900
+    },
+    {
+      "name": "git -c",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "73f0f480a1eb73d4ffdd55beb187a09f2965adb66a083ee40cd8ef1ff506c8e3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181312015600
+    },
+    {
+      "name": "remoteSHA",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181312023600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181372748900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181372764000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181372772600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181372780500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181372787600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181372793700
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "0fddfa9ecb0b199f517fc3f9967519cef742a99a869c6ee13fa321174c272867",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181429602400
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "070d860b9b7682711f64d995dc01a45665a528bb4d1342cc78abd2279c3fb3cd",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181486721800
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/tests/test_effectwitness_pge_dual.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181486731600
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181546925800
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/tests/test_effectwitness_pge_dual.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181546964800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547067900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547080100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547088200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547096400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547104300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547115500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181547122900
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "d4bc1f360e2d499b95b5ee32c83a0f4692833694718a636e1a1b1c21eeff71ff",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181605812100
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "b02a78d1c070f3d83a669af928c5be063fc9d023fe317844284bdc2c7a07d097",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181668498600
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181668508700
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723743800
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723769300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723863700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723874800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723890400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723898400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723905900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723913000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181723919700
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "3bd309b7e15b4928f881ef737ad565a5925b127c9609ac48437965847a66f819",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181781572800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "17e3dcb466b1e06ce8618738bf0b950855aeb3cf074d0a00ba0ec9c42e0323ed",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181834823000
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_session.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181834831000
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894654800
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_session.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894673300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894768100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894779900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894788300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894796500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894803500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894810600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181894816900
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "13aee32327a1f05a3fdb7599ddbee6977af31c92d6f285d83b7dcc4fc8f224cc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438181955235000
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "bbb85424d9d88a0c17c1b8258c223bf5328ddb82210b2be895a0d1b6176c128e",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182011979200
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182011999700
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182064838500
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182064897600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065053500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065080100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065100200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065119200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065140200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065158300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182065177500
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "796a7c1e28c1b8616f3a0d253c4e85a0415b88a6b4b00d16801c9ae623e40432",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:50Z",
+      "monotonic_ns": 438182120499800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "8fca1199bd7f6899d30aee06db724ebbac9ecb144e6e3dcb569772b7f7db32ca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182173707500
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_verify.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182173715800
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226058100
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/pge_dual_verify.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226091700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226192200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226202800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226211300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226218200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182226224200
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "b2458ac7d1c73a265d435ea14d959dd1cb1321f6f12f2e07f7974e2de3c46d2f",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182278093800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "0d3282925615c26de53770d13033aacb57c07f5f18c47e8411043e86b48a09e6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182337481100
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "ci/run-rpf86-owner-admission.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182337488900
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "ac5950c34e310939f698b4021d8074d8ff41d80fe97587b2c785d7e5f2813415",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182398880600
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "ci/run-rpf86-owner-admission.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182398925000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182399055800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182399068300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182399077100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182399085000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182399092300
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "36ecfa092ed4387e4a8d2be8b4e9dcd917cba5cc2d657874452be06b31b38b1d",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182458612800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "c961ac6e637b04c1e914e09b50ef764e3a7404f2f54e33b024e318a7f7aa2795",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182515842100
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "ci/test_run_rpf86_owner_admission.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182515850700
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "8e7440a77d3ad4bb208a4d5f0f1fa90d9d15ebfba9e83b6b728ca53dd60845f5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573577600
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "ci/test_run_rpf86_owner_admission.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573593600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573686200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573697400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573705500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573712700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573720700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182573726600
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e1a32dbe658783a044a4538b71a6f1ac122b00997c9434ca2500769f04135614",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182624370200
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e91cdf85b708b7434e6db5273a2b59197e9fe36dcc922325048a9482cc39d1bc",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182677298800
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": ".github/workflows/release-gate.yml"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182677307700
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182730806900
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": ".github/workflows/release-gate.yml"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182730829100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182730972500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182731008600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182731027500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182731047800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182731065000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182731081500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182731096500
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "b76a8d6112fdb5effc168ae89845b2767e59b03107e5dc776fb7577dd4501aa5",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182785065000
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "1315cb9ed06d85d73b21e7afe2ccbe526fa26adafb04cef77ec08d7c75755a71",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182837552500
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/config_experiment_verify.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182837561000
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896046100
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "runtime/runproof_runtime/effectwitness/config_experiment_verify.py"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896080600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896183900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896195200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896203600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896211100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896218200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896224900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182896231100
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "33425243e31272de8ee1fd2be1d1e38e4ee33ddf4279cdcb81c6d9008d31a6e3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438182959768800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "bc0c9f928c5050651d870c2d5500fc1f8fa045e55cf883bd1185ee3b7210d968",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438183017751500
+    },
+    {
+      "name": "pin",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438183017760600
+    },
+    {
+      "name": "git cat-file",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438183077162200
+    },
+    {
+      "name": "sourcebytes",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json"
+      },
+      "utc": "2026-11-02T12:12:51Z",
+      "monotonic_ns": 438183077182000
+    },
+    {
+      "name": "certificate",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183197461500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183197597800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183197608800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183197617000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183197625100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183197631800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183250471800
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183311072300
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/README.md"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183311077100
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/README.md",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183368592000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183368723800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183368733300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183368739700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183368746300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183368752300
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183423712800
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183476066000
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/RESULT.md"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183476070800
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/RESULT.md",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183531649000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183531779900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183531789800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183531796900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183531804100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183531810800
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183588516000
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183647066800
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/denial-attribution.json"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183647071800
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/denial-attribution.json",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183710267100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183710392800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183710402700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183710409500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183710416400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183710423100
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183773187300
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183834478000
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/verification-diagnostic.json"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183834482800
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/verification-diagnostic.json",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183890036000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183890155900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183890165100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183890171600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183890178800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183890185000
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438183946860400
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184002074800
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/counterexamples.json"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184002081900
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/counterexamples.json",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184060572600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184060734200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184060745400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184060753500
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184060760600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184060767300
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:52Z",
+      "monotonic_ns": 438184119058600
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184180689900
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/decision.json"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184180694200
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/decision.json",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184250667900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184250852300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184250863300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184250871200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184250879600
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184250887500
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184315855000
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184387689400
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/preflight-diagnostic.json"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184387694000
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/preflight-diagnostic.json",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184452517200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184452747900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184452759800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184452766900
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184452773800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184452780300
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184517024800
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184576829900
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/pre-repair-sources/run-rpf86-owner-admission.py"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184576843400
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/pre-repair-sources/run-rpf86-owner-admission.py",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184641423800
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184641737000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184641763000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184641780700
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184641822300
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184641842400
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184702514200
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184765288400
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/pre-repair-sources/test_run_rpf86_owner_admission.py"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184765293400
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/pre-repair-sources/test_run_rpf86_owner_admission.py",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184823839400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184824069200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184824084200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184824095200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184824107100
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184824295600
+    },
+    {
+      "name": "git ls-files",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184887563000
+    },
+    {
+      "name": "git ls-tree",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184948171000
+    },
+    {
+      "name": "createonly",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/pre-repair-sources/release-gate.yml"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438184948177200
+    },
+    {
+      "name": "notignored",
+      "status": "PASS",
+      "facts": {
+        "path": "spikes/rpf-86/rev-3/pre-repair-sources/release-gate.yml",
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185008953000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185009086400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185009098200
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185009106400
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185009114000
+    },
+    {
+      "name": "nonreparse",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185009120300
+    },
+    {
+      "name": "freshowner",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185009132800
+    },
+    {
+      "name": "git check-ignore",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "d1b9a00e9efd484dace7496f448760043ec1800e4eda24c1b8c1143dcf8ee013",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185079740100
+    },
+    {
+      "name": "ownerignored",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185079744900
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185079994900
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080042000
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080064200
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080093200
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080110500
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080138500
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080150800
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080176800
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080189900
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080217700
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080231000
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080258200
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080271200
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080298800
+    },
+    {
+      "name": "dirhandle",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080312100
+    },
+    {
+      "name": "casefold",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:53Z",
+      "monotonic_ns": 438185080335600
+    },
+    {
+      "name": "ACL",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "a864fa190c9da60e8600fa31a4c0b1b4450d18c5b502b6de29b4225a3a485bc3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:54Z",
+      "monotonic_ns": 438185696361400
+    },
+    {
+      "name": "ACL",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "a864fa190c9da60e8600fa31a4c0b1b4450d18c5b502b6de29b4225a3a485bc3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:55Z",
+      "monotonic_ns": 438186275475100
+    },
+    {
+      "name": "ACL",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "a864fa190c9da60e8600fa31a4c0b1b4450d18c5b502b6de29b4225a3a485bc3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:55Z",
+      "monotonic_ns": 438186863236200
+    },
+    {
+      "name": "ACL",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "a864fa190c9da60e8600fa31a4c0b1b4450d18c5b502b6de29b4225a3a485bc3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438187467130900
+    },
+    {
+      "name": "ACL",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "a864fa190c9da60e8600fa31a4c0b1b4450d18c5b502b6de29b4225a3a485bc3",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438187983551800
+    },
+    {
+      "name": "git rev-parse",
+      "status": "PASS",
+      "facts": {
+        "exit": 0,
+        "stdout_sha256": "0e80aa3e00491eab353c789ed23d8e6d729074f135dbf9d5803fef5986f77f70",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438188033096600
+    },
+    {
+      "name": "hooks",
+      "status": "PASS",
+      "facts": {},
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438188033721900
+    },
+    {
+      "name": "hookspath",
+      "status": "PASS",
+      "facts": {
+        "exit": 1
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438188086851000
+    },
+    {
+      "name": "CI",
+      "status": "PASS",
+      "facts": {
+        "actions": [
+          "actions/checkout@v4",
+          "actions/setup-java@v4",
+          "actions/setup-python@v5",
+          "actions/setup-node@v4",
+          "actions/upload-artifact@v4"
+        ]
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438188087379600
+    },
+    {
+      "name": "AGENTS_read",
+      "status": "PASS",
+      "facts": {
+        "raw_sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c"
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438188087671300
+    },
+    {
+      "name": "Python",
+      "status": "PASS",
+      "facts": {
+        "version": "3.14.6"
+      },
+      "utc": "2026-11-02T12:12:56Z",
+      "monotonic_ns": 438188087677100
+    }
+  ],
+  "directory_fsync": "UNAVAILABLE_WINDOWS",
+  "owner_scope": "Unique fresh rev3 child of approved ignored parent; private name omitted",
+  "correction": "First G0 host classified literal deployment disclaimer as deploy; no persistent write; replaced by actual executable-step check"
+}

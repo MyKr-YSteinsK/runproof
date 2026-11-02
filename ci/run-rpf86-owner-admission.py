@@ -41,6 +41,9 @@ PINS={'runtime/tests/test_effectwitness_pge_dual.py':'f98fb2da033dc62a0d5f785c06
       'runtime/runproof_runtime/effectwitness/pge_dual_config_port.py':'79c210fa5579235447157858f2c62ddd61983a91',
       'runtime/runproof_runtime/effectwitness/pge_dual_verify.py':'ed4329a0064daae75792eddfdfdd5cebc1b4b695'}
 LIMIT=2*1024*1024
+ATTRIBUTION_LIMIT=16
+ATTRIBUTION_FILES=tuple(PINS)+(HELPER,'ci/run-rpf86-owner-admission.py',
+    'ci/test_run_rpf86_owner_admission.py')+tuple(f'spikes/rpf-{n}/probe.py' for n in (53,55,63))
 
 class Invalid(ValueError):pass
 def need(ok,code):
@@ -90,9 +93,19 @@ def certificate_identity():
 def local_task():
     raw=os.environ.get('RPF86_TASK_ROOT','')
     p=Path(raw)
-    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev2-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
+    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev3-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
     nonlink(p)
     return p
+
+def attribution_sources(overrides=None):
+    result={};overrides=overrides or {}
+    for name in ATTRIBUTION_FILES:
+        raw=overrides.get(name)
+        if raw is None:raw=(ROOT/name).read_bytes()
+        tree=ast.parse(raw)
+        result[name]=dict(raw_sha256=sha(raw),lines=len(raw.splitlines()),
+            functions=[dict(name=n.name,start=n.lineno,end=n.end_lineno) for n in ast.walk(tree) if isinstance(n,(ast.FunctionDef,ast.AsyncFunctionDef))])
+    return result
 def owned(raw):
     p=Path(raw)
     need(p.is_absolute() and '..' not in p.parts,'OWNER_LEXICAL')
@@ -125,7 +138,7 @@ def identity():
     need(ast.dump(cls,include_attributes=False)==ast.dump(other,include_attributes=False),'ORIGINAL_ASSERTION_DRIFT')
     helper=(ROOT/HELPER).read_bytes()
     need(helper.replace(b'\r\n',b'\n')==subprocess.check_output(['git','cat-file','blob',HELPER_BLOB],cwd=ROOT).replace(b'\r\n',b'\n'),'HELPER_PIN')
-    return dict(files=result,certificate=certificate_identity(),helper=dict(blob=HELPER_BLOB,raw_sha256=sha(helper)),method_ast={name:sha(ast.dump(methods[name],include_attributes=False).encode()) for name in NAMES},
+    return dict(files=result,certificate=certificate_identity(),helper=dict(blob=HELPER_BLOB,raw_sha256=sha(helper)),attribution_sources=attribution_sources(),method_ast={name:sha(ast.dump(methods[name],include_attributes=False).encode()) for name in NAMES},
                 assertion_counts={name:sum(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr.startswith('assert') for n in ast.walk(methods[name])) for name in NAMES},
                 harness_lf_sha256=sha(SELF.read_bytes().replace(b'\r\n',b'\n')))
 
@@ -140,8 +153,76 @@ class Guard:
         self.certificate_pin=certificate_identity()
         self.resolve=Path.resolve
         self.runtime=[Path(sys.base_prefix).resolve(),Path(sys.prefix).resolve(),Path(sysconfig.get_path('stdlib')).resolve()]
+        self.events=[];self.sequence=0;self.truncated=False;self.phase='setup';self.method=None
+        self.operation=('unknown',None,False);self.salt=os.urandom(32);self.sources=attribution_sources();self.broad={}
+        for name in ATTRIBUTION_FILES:
+            raw=(ROOT/name).read_bytes();tree=ast.parse(raw)
+            self.broad[name]=[(n.lineno,n.end_lineno) for n in ast.walk(tree) if isinstance(n,ast.With)
+                and any(isinstance(i.context_expr,ast.Call) and isinstance(i.context_expr.func,ast.Attribute)
+                and i.context_expr.func.attr=='assertRaises' and any(isinstance(a,ast.Name) and a.id=='Exception' for a in i.context_expr.args) for i in n.items)]
+    def context(self,event,path=None,write=False):self.operation=(event,path,write)
+    def method_start(self,method):self.method=method;self.phase='setup'
+    def method_stop(self,method,actual):
+        need(self.method==method,'ATTRIBUTION_METHOD_TRANSITION')
+        for e in self.events:
+            if e['method_id']==method:e['method_later_status']=actual
+        self.method=None;self.phase='report'
+    def trace(self,frame,event,arg):
+        # Reject unrelated calls before constructing any Path. Global tracing
+        # observes call events throughout this source-heavy synthetic cohort.
+        if self.method is None or frame.f_code.co_name!=self.method.rsplit('.',1)[-1]:return None
+        name=frame.f_code.co_filename
+        try:relative=Path(name).relative_to(ROOT).as_posix()
+        except ValueError:return None
+        if relative not in self.sources:return None
+        if event=='call':self.phase='method'
+        if event=='exception' and arg[0] is PermissionError:
+            for e in reversed(self.events):
+                if e['method_id']==self.method and e['reason']==str(arg[1]):
+                    e['permission_error_observed_in_method']=True;break
+        if event=='line':
+            for e in self.events:
+                if e['method_id']==self.method and e['permission_error_observed_in_method'] and e['broad_exception_context']:
+                    if not any(a<=frame.f_lineno<=b for a,b in self.broad[relative]):e['continued_after_broad_context']=True
+        if event=='return':self.phase='teardown'
+        return self.trace
+    def target(self,path):
+        if path is None or isinstance(path,int):return 'unknown',None,None
+        p=Path(os.path.abspath(os.fsdecode(path)));s=str(p).casefold()
+        inside=lambda base:s==str(base).casefold() or s.startswith(str(base).casefold()+os.sep)
+        public=None
+        if inside(self.forbidden):kind='protected'
+        elif inside(self.owner):kind='fresh_owned_synthetic_path'
+        elif inside(self.private):kind='private_old_root'
+        elif str(p)==str(CERT_PATH):kind='exact_pinned_certificate';public=CERT_NAME
+        elif inside(ROOT):
+            relative=p.relative_to(ROOT).as_posix()
+            if relative in ATTRIBUTION_FILES:kind='approved_source';public=relative
+            else:kind='unapproved_repo_public_path'
+        elif any(inside(r) for r in self.runtime):kind='interpreter_runtime'
+        else:kind='outside_repo'
+        return kind,public,sha(self.salt+str(p).encode('utf8',errors='replace'))
     def denied(self,code):
-        self.denials[code]+=1;raise PermissionError(code)
+        self.denials[code]+=1;self.sequence+=1
+        if len(self.events)>=ATTRIBUTION_LIMIT:self.truncated=True
+        else:
+            event,path,writing=self.operation;kind,public,token=self.target(path);callers=[];broad=False
+            frame=sys._getframe(1)
+            for _ in range(48):
+                if frame is None:break
+                try:name=Path(frame.f_code.co_filename).relative_to(ROOT).as_posix()
+                except ValueError:name=None
+                if name in self.sources and not (name=='ci/run-rpf86-owner-admission.py' and frame.f_code.co_name in
+                    ('denied','lexical','check','audit','stat','lstat','mkdir','resolve')):
+                    if len(callers)<8:callers.append(dict(path=name,function=frame.f_code.co_name,line=frame.f_lineno,source_sha256=self.sources[name]['raw_sha256']))
+                    broad=broad or any(a<=frame.f_lineno<=b for a,b in self.broad[name])
+                frame=frame.f_back
+            self.events.append(dict(sequence=self.sequence,reason=code,event_kind=event,intent='write' if writing else 'read',
+                phase=self.phase,method_id=self.method,target_class=kind,public_repo_relative_path=public,target_token=token,
+                caller=callers[0] if callers else None,caller_chain=callers,status='DENIED_BEFORE_IO',method_later_status=None,
+                broad_exception_context=broad,assertRaises_broad_exception_risk='SUSPECTED' if broad else 'NOT_OBSERVED',
+                permission_error_observed_in_method=False,continued_after_broad_context=False))
+        raise PermissionError(code)
     def lexical(self,path,query=False):
         if path is None or isinstance(path,int):return None
         p=Path(os.path.abspath(os.fsdecode(path)))
@@ -155,6 +236,7 @@ class Guard:
             self.denied('OLD_ROOT_ACCESS_DENIED')
         return p
     def check(self,path,write=False):
+        if self.operation[0]=='unknown':self.context('Guard.check',path,write)
         p=self.lexical(path)
         if p is None:return
         exact=str(p)==str(CERT_PATH)
@@ -198,33 +280,47 @@ class Guard:
             if not is_dir:self.denied('NON_SOURCE_READ_DENIED')
         self.counts['write' if write else 'read']+=1
     def audit(self,event,args):
+        if event in ('open','os.listdir','os.scandir','os.mkdir','os.remove','os.rmdir','os.chmod','os.utime','os.truncate','os.rename','os.link','os.symlink'):
+            self.context(event,args[0] if args else None)
         if event=='open':
             path,mode,flags=args
             writing=bool(isinstance(mode,str) and any(x in mode for x in 'wax+') or isinstance(flags,int) and flags&(os.O_WRONLY|os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_APPEND))
             if self.checking_certificate and str(path)==str(CERT_PATH) and not writing:return
+            self.context(event,path,writing)
             self.check(path,writing)
         elif event in ('os.listdir','os.scandir'):self.check(args[0])
-        elif event in ('os.mkdir','os.remove','os.rmdir','os.chmod','os.utime','os.truncate'):self.check(args[0],True)
+        elif event in ('os.mkdir','os.remove','os.rmdir','os.chmod','os.utime','os.truncate'):
+            self.context(event,args[0],True);self.check(args[0],True)
         elif event in ('os.rename','os.link','os.symlink'):self.denied('LINK_OR_RENAME_DENIED')
         elif event.startswith(('socket.','subprocess.','ctypes.')) or event in ('os.system','os.posix_spawn','os.spawn','os.fork','os.forkpty') or event.startswith('os.exec'):
+            self.context(event)
             self.denied('NETWORK_PROCESS_NATIVE_DENIED')
-        elif event=='import' and str(args[0]).startswith(('pydantic_ai','openai','httpx2')):self.denied('SDK_IMPORT_DENIED')
+        elif event=='import' and str(args[0]).startswith(('pydantic_ai','openai','httpx2')):
+            self.context(event);self.denied('SDK_IMPORT_DENIED')
     def install(self):
         guard=self
-        def stat(path,*a,**kw):guard.lexical(path,query=True);guard.counts['stat']+=1;return guard.raw_stat(path,*a,**kw)
-        def lstat(path,*a,**kw):guard.lexical(path,query=True);guard.counts['lstat']+=1;return guard.raw_lstat(path,*a,**kw)
-        def mkdir(path,*a,**kw):guard.check(path,True);return guard.raw_mkdir(path,*a,**kw)
-        def resolve(path,*a,**kw):guard.lexical(path,query=True);return guard.resolve(path,*a,**kw)
+        def stat(path,*a,**kw):guard.context('stat interception',path);guard.lexical(path,query=True);guard.counts['stat']+=1;return guard.raw_stat(path,*a,**kw)
+        def lstat(path,*a,**kw):guard.context('lstat interception',path);guard.lexical(path,query=True);guard.counts['lstat']+=1;return guard.raw_lstat(path,*a,**kw)
+        def mkdir(path,*a,**kw):guard.context('mkdir interception',path,True);guard.check(path,True);return guard.raw_mkdir(path,*a,**kw)
+        def resolve(path,*a,**kw):guard.context('resolve interception',path);guard.lexical(path,query=True);return guard.resolve(path,*a,**kw)
         os.stat=stat;os.lstat=lstat;os.mkdir=mkdir;Path.resolve=resolve
         sys.addaudithook(self.audit)
     def projection(self):return dict(observed=dict(self.counts),denied=dict(self.denials),certificate=self.certificate_pin,
+        attribution_schema='rpf86-denial-events-v1',attribution_events=self.events,attribution_total=self.sequence,
+        attribution_truncated=self.truncated,attribution_sources=self.sources,
+        attribution_sha256=sha(json.dumps(self.events,sort_keys=True,separators=(',',':')).encode()),
         metadata_intercepts=['os.stat','os.lstat','Path.resolve','os.mkdir'],
         limitations='Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE')
 
 class NativeResult(unittest.TextTestResult):
-    def __init__(self,*args):super().__init__(*args);self.events=[];self.states={}
+    def __init__(self,*args,guard=None):super().__init__(*args);self.events=[];self.states={};self.guard=guard
     def event(self,test,actual):self.events.append(dict(id=test.id(),actual=actual));self.states[test.id()]=actual
-    def startTest(self,test):super().startTest(test);self.event(test,'STARTED')
+    def startTest(self,test):
+        super().startTest(test);self.event(test,'STARTED')
+        if self.guard:self.guard.method_start(test.id())
+    def stopTest(self,test):
+        if self.guard:self.guard.method_stop(test.id(),self.states.get(test.id(),'NOT_RUN'))
+        super().stopTest(test)
     def addSuccess(self,test):
         super().addSuccess(test)
         if self.states.get(test.id())=='STARTED':self.event(test,'PASS')
@@ -237,6 +333,35 @@ class NativeResult(unittest.TextTestResult):
     def addExpectedFailure(self,test,err):super().addExpectedFailure(test,err);self.event(test,'FAIL')
     def addUnexpectedSuccess(self,test):super().addUnexpectedSuccess(test);self.event(test,'FAIL')
 
+def run_suite(suite,guard):
+    before=sys.gettrace();sys.settrace(guard.trace)
+    try:return unittest.TextTestRunner(verbosity=2,resultclass=lambda *a:NativeResult(*a,guard=guard)).run(suite)
+    finally:sys.settrace(before)
+
+def validate_attribution(guard,sources,ids):
+    need(guard.get('attribution_schema')=='rpf86-denial-events-v1','ATTRIBUTION_SCHEMA')
+    events=guard.get('attribution_events');need(type(events) is list and len(events)<=ATTRIBUTION_LIMIT,'ATTRIBUTION_SIZE')
+    need(guard.get('attribution_truncated') is False and guard.get('attribution_total')==len(events),'ATTRIBUTION_TRUNCATED')
+    need(guard.get('attribution_sources')==sources,'ATTRIBUTION_SOURCE')
+    need(guard.get('attribution_sha256')==sha(json.dumps(events,sort_keys=True,separators=(',',':')).encode()),'ATTRIBUTION_EVENT_HASH')
+    need([e.get('sequence') for e in events]==list(range(1,len(events)+1)),'ATTRIBUTION_SEQUENCE')
+    need(dict(Counter(e.get('reason') for e in events))==guard.get('denied'),'ATTRIBUTION_COUNTS')
+    for e in events:
+        need(e.get('status')=='DENIED_BEFORE_IO' and e.get('phase') in ('import','setup','method','teardown','report'),'ATTRIBUTION_PHASE')
+        method=e.get('method_id');need(method is None or method in ids,'ATTRIBUTION_METHOD')
+        need(e['phase'] not in ('method','teardown') or method in ids,'ATTRIBUTION_METHOD_MISSING')
+        need(e.get('intent') in ('read','write') and isinstance(e.get('event_kind'),str),'ATTRIBUTION_OPERATION')
+        public=e.get('public_repo_relative_path')
+        need(public is None or public in ATTRIBUTION_FILES+(CERT_NAME,),'ATTRIBUTION_REDACTION')
+        need(e.get('target_token') is None or re.fullmatch('[0-9a-f]{64}',e['target_token']) is not None,'ATTRIBUTION_TOKEN')
+        callers=e.get('caller_chain');need(type(callers) is list and len(callers)<=8 and e.get('caller')==(callers[0] if callers else None),'ATTRIBUTION_CALLER')
+        for caller in callers:
+            name=caller.get('path');need(name in sources,'ATTRIBUTION_CALLER_SOURCE')
+            info=sources[name];need(caller.get('source_sha256')==info['raw_sha256'],'ATTRIBUTION_CALLER_PIN')
+            line=caller.get('line');need(type(line) is int and 1<=line<=info['lines'],'ATTRIBUTION_CALLER_LINE')
+            need(caller.get('function')=='<module>' or any(f['name']==caller.get('function') and f['start']<=line<=f['end'] for f in info['functions']),'ATTRIBUTION_CALLER_FUNCTION')
+    return True
+
 def manifest(work):
     rows=[]
     for p in sorted(work.rglob('*')):
@@ -248,7 +373,7 @@ def native(folder):
     result=None;error=None;work=folder/'work';work.mkdir(exist_ok=False)
     restored=False
     try:
-        sys.path.insert(0,str(ROOT));module=importlib.import_module(MODULE)
+        guard.phase='import';sys.path.insert(0,str(ROOT));module=importlib.import_module(MODULE);guard.phase='setup'
         need(module.c.ROOT==ROOT,'ORIGINAL_ROOT')
         before=module.c.WORK
         need(not str(work).casefold().startswith(str(before).casefold()+os.sep) and work!=before,'OLD_OWNER_ALIAS')
@@ -256,10 +381,10 @@ def native(folder):
         with patch.object(module.c,'WORK',work):
             suite=unittest.TestSuite(module.DualTests(n) for n in NAMES)
             need([x.id() for x in suite]==IDS,'NATIVE_IDS')
-            result=unittest.TextTestRunner(verbosity=2,resultclass=NativeResult).run(suite)
+            result=run_suite(suite,guard)
         restored=module.c.WORK==before
     except Exception as exc:error=type(exc).__name__
-    states=result.states if result else {}
+    guard.phase='report';states=result.states if result else {}
     report=dict(schema='rpf86-native-v1',source_level='SYNTHETIC_OFFLINE_TEST',
         marker='TEST_HARNESS_OWNER_SUBSTITUTION',ids=IDS,results=[dict(id=x,actual=states.get(x,'NOT_RUN')) for x in IDS],
         events=result.events if result else [],tests_run=result.testsRun if result else 0,source_identity=source,
@@ -269,7 +394,10 @@ def native(folder):
         manifest=manifest(work),error=error,pid=os.getpid(),monotonic_start_ns=started,monotonic_end_ns=time.monotonic_ns(),
         actual_provider_calls=0,actual_sdk_calls=0,actual_java_processes=0,actual_business_writes=0,
         old_inode_comparison='UNAVAILABLE: no historical stat; fresh mkdir and no-reparse admission prove separation')
-    success=report['tests_run']==5 and all(x['actual']=='PASS' for x in report['results']) and not report['guard']['denied'] and restored and report['source_unchanged'] and error is None
+    report['guard']=guard.projection()
+    try:validate_attribution(report['guard'],source['attribution_sources'],IDS)
+    except Invalid as exc:report['error']=str(exc)
+    success=report['tests_run']==5 and all(x['actual']=='PASS' for x in report['results']) and not report['guard']['denied'] and restored and report['source_unchanged'] and report['error'] is None
     report['status']='PASS' if success else 'FAIL';write(folder/'child-result.json',report)
     return 0 if success else 1
 
@@ -315,6 +443,7 @@ def launch(mode,folder,*,deadline,timeout=180,input_root=None,source_snapshot=No
         child_exited=process.poll() is not None,drain_joined=not thread.is_alive(),
         harness_lf_sha256=sha(SELF.read_bytes().replace(b'\r\n',b'\n')),
         cleanup_scope='Exact Popen handle; OS process-tree coverage UNAVAILABLE')
+    if (folder/'child-result.json').is_file():receipt['child_result_raw_sha256']=sha((folder/'child-result.json').read_bytes())
     write(folder/'launch-receipt.json',receipt)
     return receipt
 
@@ -323,6 +452,7 @@ def validate_native(report,receipt,source,work):
     need(report.get('ids')==IDS and report.get('results')==[dict(id=x,actual='PASS') for x in IDS],'EXACT_FIVE_PASS')
     need(type(report.get('tests_run')) is int and report['tests_run']==5,'FIVE_TESTS_RUN')
     need(report.get('source_identity')==source and report.get('source_unchanged') is True,'SOURCE_OR_ASSERTION_DRIFT')
+    validate_attribution(report.get('guard',{}),source['attribution_sources'],IDS)
     need(report.get('physical_owner')==work.relative_to(ROOT).as_posix() and report.get('logical_owner')=='rpf-63'
          and report.get('logical_identity_changed') is False,'OWNER_BINDING')
     need(report.get('marker')=='TEST_HARNESS_OWNER_SUBSTITUTION' and report.get('patch_points')==['pge_dual_contracts.WORK']
@@ -347,9 +477,14 @@ def validate_native(report,receipt,source,work):
 def validate_log(log,receipt):
     need(len(log)<=LIMIT and len(log)==receipt['bytes'] and sha(log)==receipt['stdout_sha256'],'LOG_BINDING')
 
+def read_child_report(folder,receipt):
+    raw=(folder/'child-result.json').read_bytes()
+    need(sha(raw)==receipt.get('child_result_raw_sha256'),'CHILD_REPORT_BINDING')
+    return strict(raw)
+
 def independent(folder,input_root):
     input_root=owned(input_root);source=identity();guard=Guard(input_root);guard.install()
-    native_dir=input_root/'native';report=strict((native_dir/'child-result.json').read_bytes());receipt=strict((native_dir/'launch-receipt.json').read_bytes())
+    native_dir=input_root/'native';receipt=strict((native_dir/'launch-receipt.json').read_bytes());report=read_child_report(native_dir,receipt)
     work=native_dir/'work';validate_native(report,receipt,source,work)
     log=(native_dir/'output.log').read_bytes();validate_log(log,receipt)
     files=manifest(work);need(files==report['manifest'],'PHYSICAL_MANIFEST_DRIFT')
@@ -384,6 +519,26 @@ def certificate_controls(folder):
         original_helper_called=True,guard=guard.projection(),certificate_values_exported=False))
     return 0
 
+def false_green_controls(folder):
+    target=folder/'new-synthetic-input.json';target.write_bytes(b'not historical data')
+    sandbox=folder/'sandbox';sandbox.mkdir(exist_ok=False)
+    guard=Guard(sandbox);guard.install()
+    class Synthetic(unittest.TestCase):
+        def test_guard_false_green(self):
+            with self.assertRaises(Exception):
+                guard.context('Guard.check',target);guard.check(target)
+            self.assertTrue(True)
+    result=run_suite(unittest.TestSuite([Synthetic('test_guard_false_green')]),guard)
+    projection=guard.projection();ids=list(result.states)
+    validate_attribution(projection,guard.sources,ids)
+    need(result.wasSuccessful() and len(projection['attribution_events'])==1,'FALSE_GREEN_NOT_EXERCISED')
+    event=projection['attribution_events'][0]
+    need(event['phase']=='method' and event['method_later_status']=='PASS' and event['permission_error_observed_in_method']
+         and event['continued_after_broad_context'] and event['broad_exception_context'],'FALSE_GREEN_CAUSAL_TRACE')
+    write(sandbox/'false-green.json',dict(status='PASS_NEGATIVE_CONTROL',native_method_status='PASS',
+        admission_status='FAIL',guard=projection,ids=ids,delegated_target_io=0))
+    return 0
+
 def controls(folder):
     guard=Guard(folder);guard.install();codes=[]
     # The mkdir/stat shims deny before delegating to saved OS functions.
@@ -411,16 +566,39 @@ def verify_failure(folder,input_root,snapshot):
     """Read-only verification of this task's failed run, no method re-execution."""
     input_root=owned(input_root);snapshot=owned(snapshot);source=identity()
     guard=Guard(folder,read_roots=(input_root,snapshot));guard.install()
+    if not (input_root/'child-result.json').exists() and (input_root/'launch-receipt.json').exists():
+        receipt=strict((input_root/'launch-receipt.json').read_bytes());old_source=snapshot.read_bytes()
+        need(receipt.get('mode')=='native' and receipt.get('timeout') is True and receipt.get('exit')!=0
+             and receipt.get('child_exited') is True and receipt.get('drain_joined') is True and receipt.get('truncated') is False,'INCOMPLETE_CHILD_RECEIPT')
+        need(sha(old_source.replace(b'\r\n',b'\n'))==receipt['harness_lf_sha256'],'INCOMPLETE_SOURCE_BINDING')
+        validate_log((input_root/'output.log').read_bytes(),receipt)
+        work=input_root/'work';files=manifest(work);checkpoint=strict((input_root/'postmortem-manifest.json').read_bytes())
+        need(checkpoint['files']==files,'INCOMPLETE_MANIFEST_DRIFT')
+        owner_count=0
+        for row in files:
+            if row['path'].endswith('/ledger.jsonl'):
+                lines=(work/row['path']).read_bytes().splitlines();need(bool(lines),'INCOMPLETE_EMPTY_WAL')
+                need(strict(lines[0])['event'].get('owner')=='rpf-63','INCOMPLETE_WAL_OWNER');owner_count+=1
+        need(owner_count>0,'INCOMPLETE_NO_WAL')
+        write(folder/'failure-verification.json',dict(status='PASS_INCOMPLETE_NEGATIVE_EVIDENCE_ONLY',admission_pass=False,
+            child_pid=receipt['pid'],native_timeout=True,native_result='UNAVAILABLE',denial_attribution='UNAVAILABLE',
+            original_methods_reexecuted=False,source_snapshot_lf_sha256=receipt['harness_lf_sha256'],
+            manifest_sha256=sha(json.dumps(files,sort_keys=True).encode()),wal_files=owner_count,
+            conclusion='Terminated diagnostic; persisted files/log/receipt checked only; no completed native test or denial cause inferred.',guard=guard.projection()))
+        return 0
     native_dir=input_root if (input_root/'child-result.json').exists() else input_root/'native'
     raw=(native_dir/'child-result.json').read_bytes();report=strict(raw)
     receipt=strict((native_dir/'launch-receipt.json').read_bytes())
+    need(sha(raw)==receipt.get('child_result_raw_sha256'),'FAILED_REPORT_BINDING')
     old_source=snapshot.read_bytes()
+    expected_sources=attribution_sources({'ci/run-rpf86-owner-admission.py':old_source})
+    validate_attribution(report['guard'],expected_sources,IDS)
     need(report['ids']==IDS and [r['id'] for r in report['results']]==IDS and report['tests_run']==5,'FAILED_RUN_IDS')
     need(report['status']=='FAIL' and receipt['exit']==1 and receipt['mode']=='native'
          and receipt['timeout'] is False and receipt['truncated'] is False
          and receipt['child_exited'] is True and receipt['drain_joined'] is True,'FAILED_RUN_RECEIPT')
     need(receipt['pid']==report['pid'] and sha(old_source.replace(b'\r\n',b'\n'))==receipt['harness_lf_sha256']==report['source_identity']['harness_lf_sha256'],'FAILED_RUN_SOURCE_SNAPSHOT')
-    need(all(report['source_identity'][k]==source[k] for k in ('files','method_ast','assertion_counts')) and report['source_unchanged'] is True,'ORIGINAL_SOURCE_DRIFT')
+    need(all(report['source_identity'][k]==source[k] for k in ('files','method_ast','assertion_counts','certificate','helper')) and report['source_unchanged'] is True,'ORIGINAL_SOURCE_DRIFT')
     states={}
     for e in report['events']:
         need(e['id'] in IDS,'FAILED_EVENT_ID')
@@ -450,6 +628,7 @@ def verify_failure(folder,input_root,snapshot):
         source_level='SYNTHETIC_OFFLINE_TEST',original_methods_reexecuted=False,report_sha256=sha(raw),
         manifest_sha256=sha(json.dumps(files,sort_keys=True).encode()),wal_files=wal_files,prior_harness_lf_sha256=receipt['harness_lf_sha256'],
         verifier_harness_lf_sha256=source['harness_lf_sha256'],guard=guard.projection(),
+        native_attribution_sha256=report['guard']['attribution_sha256'],native_denials=report['guard']['denied'],
         admission_pass=False,conclusion='Five-method admission FAIL despite any passing methods; original sources unchanged; read-scope denials retained; independent process verified negative run.'))
     return 0
 
@@ -460,7 +639,7 @@ def run(output,total_deadline=None):
     source=identity();native_receipt=launch('native',output/'native',deadline=deadline)
     verification=None;error=None
     try:
-        report=strict((output/'native/child-result.json').read_bytes())
+        report=read_child_report(output/'native',native_receipt)
         validate_native(report,native_receipt,source,output/'native/work')
         verification=launch('verify',output/'verify',deadline=deadline,timeout=60,input_root=output)
         need(verification['exit']==0 and not verification['timeout'] and not verification['truncated'] and verification['child_exited'],'INDEPENDENT_VERIFICATION')
@@ -481,7 +660,7 @@ def run(output,total_deadline=None):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
+    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','false-green','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
     parser.add_argument('--source-snapshot',type=Path)
     parser.add_argument('--deadline',type=float)
     args=parser.parse_args()
@@ -492,6 +671,7 @@ def main():
         if args.mode=='verify':return independent(folder,args.input)
         if args.mode=='controls':return controls(folder)
         if args.mode=='certificate-controls':return certificate_controls(folder)
+        if args.mode=='false-green':return false_green_controls(folder)
         if args.mode=='verify-failure':return verify_failure(folder,args.input,args.source_snapshot)
         if args.mode=='crash':return 7
         if args.mode=='exit1':return 1
