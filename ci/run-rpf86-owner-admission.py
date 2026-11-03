@@ -93,7 +93,7 @@ def certificate_identity():
 def local_task():
     raw=os.environ.get('RPF86_TASK_ROOT','')
     p=Path(raw)
-    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev3-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
+    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev4-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
     nonlink(p)
     return p
 
@@ -142,10 +142,94 @@ def identity():
                 assertion_counts={name:sum(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr.startswith('assert') for n in ast.walk(methods[name])) for name in NAMES},
                 harness_lf_sha256=sha(SELF.read_bytes().replace(b'\r\n',b'\n')))
 
+JOURNAL_SCHEMA='rpf86-durable-denial-v1'
+JOURNAL_MAX_FRAMES=32
+JOURNAL_MAX_FRAME_BYTES=16384
+
+class Journal:
+    """One preopened, exclusive descriptor; durable before control continues."""
+    def __init__(self,path,source,ids):
+        nonlink(path);self.fd=os.open(path,os.O_WRONLY|os.O_CREAT|os.O_EXCL|getattr(os,'O_BINARY',0),0o600)
+        self.source=source;self.ids=ids;self.pid=os.getpid();self.run_id=os.urandom(16).hex()
+        self.thread=threading.get_ident();self.seq=0;self.previous=None;self.failed=False;self.closed=False
+        try:self.emit('INIT',dict(ids=ids))
+        except Exception:self.close();raise
+    def emit(self,kind,data):
+        if threading.get_ident()!=self.thread:self.failed=True;raise Invalid('JOURNAL_THREAD')
+        need(not self.failed and not self.closed,'JOURNAL_FAILED')
+        try:
+            need(self.seq<JOURNAL_MAX_FRAMES,'JOURNAL_CAP')
+            frame=dict(schema=JOURNAL_SCHEMA,seq=self.seq,previous_raw_sha256=self.previous,pid=self.pid,
+                monotonic_ns=time.monotonic_ns(),source_sha256=self.source,run_id=self.run_id,kind=kind,data=data)
+            raw=json.dumps(frame,sort_keys=True,separators=(',',':'),allow_nan=False).encode()+b'\n'
+            need(len(raw)<=JOURNAL_MAX_FRAME_BYTES,'JOURNAL_FRAME_SIZE')
+            pending=memoryview(raw)
+            while pending:
+                n=os.write(self.fd,pending);need(type(n) is int and 0<n<=len(pending),'JOURNAL_SHORT_WRITE');pending=pending[n:]
+            os.fsync(self.fd)
+            self.previous=sha(raw);self.seq+=1
+        except Exception:
+            self.failed=True;raise Invalid('JOURNAL_IO') from None
+    def close(self):
+        if not self.closed:os.close(self.fd);self.closed=True
+
+def read_journal(path,source,pid,ids,sources,*,timeout=False):
+    """Recover only validated physical frames. An empty prefix never proves zero."""
+    frames=[];denials=[];methods={};active=None;previous=None;last_ns=-1;run_id=None;terminal=None;error=None
+    try:
+        raw=path.read_bytes();need(len(raw)<=JOURNAL_MAX_FRAMES*JOURNAL_MAX_FRAME_BYTES,'JOURNAL_FILE_SIZE')
+        lines=raw.splitlines(keepends=True)
+        for line in lines:
+            need(line.endswith(b'\n') and len(line)<=JOURNAL_MAX_FRAME_BYTES,'JOURNAL_TORN')
+            f=strict(line)
+            need(set(f)=={'schema','seq','previous_raw_sha256','pid','monotonic_ns','source_sha256','run_id','kind','data'},'JOURNAL_FIELDS')
+            need(f['schema']==JOURNAL_SCHEMA and type(f['seq']) is int and f['seq']==len(frames)<JOURNAL_MAX_FRAMES,'JOURNAL_SEQUENCE')
+            need(f['previous_raw_sha256']==previous and f['pid']==pid and type(f['pid']) is int and f['source_sha256']==source,'JOURNAL_BINDING')
+            need(type(f['monotonic_ns']) is int and f['monotonic_ns']>last_ns and re.fullmatch('[0-9a-f]{32}',f['run_id']) is not None,'JOURNAL_CLOCK_ID')
+            need(run_id is None or run_id==f['run_id'],'JOURNAL_RUN_ID');need(terminal is None,'JOURNAL_AFTER_TERMINAL')
+            kind=f['kind'];d=f['data'];need(type(d) is dict,'JOURNAL_DATA')
+            if kind=='INIT':need(not frames and d==dict(ids=ids),'JOURNAL_INIT')
+            else:need(bool(frames),'JOURNAL_MISSING_INIT')
+            if kind=='METHOD_START':
+                need(set(d)=={'id'} and d['id'] in ids and active is None and d['id'] not in methods,'JOURNAL_METHOD_START')
+                active=d['id'];methods[active]='STARTED'
+            elif kind=='METHOD_STOP':
+                need(set(d)=={'id','actual'} and d['id']==active and d['actual'] in ('PASS','FAIL','ERROR','SKIP'),'JOURNAL_METHOD_STOP')
+                methods[active]=d['actual'];active=None
+            elif kind=='GUARD_DENY':
+                fields={'sequence','reason','event_kind','intent','phase','method_id','target_class','public_repo_relative_path','target_token',
+                    'caller','caller_chain','status','method_later_status','broad_exception_context','assertRaises_broad_exception_risk',
+                    'permission_error_observed_in_method','continued_after_broad_context'}
+                need(set(d)==fields and len(denials)<ATTRIBUTION_LIMIT,'JOURNAL_DENIAL_FIELDS')
+                need(d['method_id']==active and d['method_later_status'] is None,'JOURNAL_METHOD_BINDING')
+                need(d['caller'] is not None and bool(d['caller_chain']) and all(not c['function'].startswith('<') for c in d['caller_chain']),'JOURNAL_UNKNOWN_CALLER')
+                need(d['target_class'] in ('unknown','protected','fresh_owned_synthetic_path','private_old_root','exact_pinned_certificate','approved_source','unapproved_repo_public_path','interpreter_runtime','outside_repo'),'JOURNAL_TARGET_CLASS')
+                candidate=denials+[d]
+                proxy=dict(attribution_schema='rpf86-denial-events-v1',attribution_events=candidate,attribution_total=len(candidate),
+                    attribution_truncated=False,attribution_sources=sources,attribution_sha256=sha(json.dumps(candidate,sort_keys=True,separators=(',',':')).encode()),denied=dict(Counter(e['reason'] for e in candidate)))
+                validate_attribution(proxy,sources,ids);denials=candidate
+            elif kind=='TERMINAL':
+                need(set(d)=={'status','error'} and d['status'] in ('PASS','FAIL') and (d['error'] is None or re.fullmatch('[A-Z_]{1,64}',d['error']) is not None),'JOURNAL_TERMINAL')
+                if d['status']=='PASS':need(active is None and methods==dict.fromkeys(ids,'PASS') and not denials and d['error'] is None,'JOURNAL_FALSE_GREEN')
+                terminal=d
+            elif kind not in ('INIT','METHOD_START','METHOD_STOP','GUARD_DENY'):raise Invalid('JOURNAL_KIND_OR_OVERFLOW')
+            frames.append(f);previous=sha(line);last_ns=f['monotonic_ns'];run_id=f['run_id']
+        need(bool(frames),'JOURNAL_EMPTY')
+    except (Invalid,OSError,ValueError,TypeError,KeyError) as exc:
+        if 'raw' not in locals():raw=b''
+        error=str(exc) if isinstance(exc,Invalid) else type(exc).__name__
+    return dict(schema=JOURNAL_SCHEMA,status='TORN_OR_MISSING' if error else 'COMPLETE' if terminal else 'INCOMPLETE_TIMEOUT' if timeout else 'INCOMPLETE_EXIT',
+        error=error,raw_sha256=sha(raw),bytes=len(raw),valid_prefix_frames=len(frames),prefix_tip_sha256=previous,
+        pid=pid,source_sha256=source,run_id=run_id,method_start_stop=[f for f in frames if f['kind'] in ('METHOD_START','METHOD_STOP')],
+        methods=methods,latest_method=active,denial_events=denials,terminal=terminal,terminal_present=terminal is not None,
+        zero_denials_proven=bool(not error and terminal and terminal['status']=='PASS' and not denials),
+        last_frame_monotonic_ns=last_ns if frames else None,completion_without_terminal='UNAVAILABLE')
+
 class Guard:
     """CPython audit + bounded metadata intercepts; not a kernel sandbox."""
-    def __init__(self,owner,read_roots=()):
+    def __init__(self,owner,read_roots=(),journal=None):
         self.owner=owner;self.private=ROOT/'.local';self.forbidden=ROOT/'docs/reviews'
+        self.task_scope=Path(os.environ['RPF86_TASK_ROOT']) if os.environ.get('RPF86_TASK_ROOT') else owner
         self.read_roots=tuple(read_roots)
         self.counts=Counter();self.denials=Counter();self.cache=set()
         self.raw_stat=os.stat;self.raw_lstat=os.lstat;self.raw_mkdir=os.mkdir
@@ -154,6 +238,7 @@ class Guard:
         self.resolve=Path.resolve
         self.runtime=[Path(sys.base_prefix).resolve(),Path(sys.prefix).resolve(),Path(sysconfig.get_path('stdlib')).resolve()]
         self.events=[];self.sequence=0;self.truncated=False;self.phase='setup';self.method=None
+        self.journal=journal
         self.operation=('unknown',None,False);self.salt=os.urandom(32);self.sources=attribution_sources();self.broad={}
         for name in ATTRIBUTION_FILES:
             raw=(ROOT/name).read_bytes();tree=ast.parse(raw)
@@ -161,11 +246,14 @@ class Guard:
                 and any(isinstance(i.context_expr,ast.Call) and isinstance(i.context_expr.func,ast.Attribute)
                 and i.context_expr.func.attr=='assertRaises' and any(isinstance(a,ast.Name) and a.id=='Exception' for a in i.context_expr.args) for i in n.items)]
     def context(self,event,path=None,write=False):self.operation=(event,path,write)
-    def method_start(self,method):self.method=method;self.phase='setup'
+    def method_start(self,method):
+        self.method=method;self.phase='method'
+        if self.journal:self.journal.emit('METHOD_START',dict(id=method))
     def method_stop(self,method,actual):
         need(self.method==method,'ATTRIBUTION_METHOD_TRANSITION')
         for e in self.events:
             if e['method_id']==method:e['method_later_status']=actual
+        if self.journal:self.journal.emit('METHOD_STOP',dict(id=method,actual=actual))
         self.method=None;self.phase='report'
     def trace(self,frame,event,arg):
         # Reject unrelated calls before constructing any Path. Global tracing
@@ -192,7 +280,7 @@ class Guard:
         inside=lambda base:s==str(base).casefold() or s.startswith(str(base).casefold()+os.sep)
         public=None
         if inside(self.forbidden):kind='protected'
-        elif inside(self.owner):kind='fresh_owned_synthetic_path'
+        elif inside(self.owner) or inside(self.task_scope):kind='fresh_owned_synthetic_path'
         elif inside(self.private):kind='private_old_root'
         elif str(p)==str(CERT_PATH):kind='exact_pinned_certificate';public=CERT_NAME
         elif inside(ROOT):
@@ -204,7 +292,9 @@ class Guard:
         return kind,public,sha(self.salt+str(p).encode('utf8',errors='replace'))
     def denied(self,code):
         self.denials[code]+=1;self.sequence+=1
-        if len(self.events)>=ATTRIBUTION_LIMIT:self.truncated=True
+        if len(self.events)>=ATTRIBUTION_LIMIT:
+            if not self.truncated and self.journal:self.journal.emit('OVERFLOW',dict(reason='ATTRIBUTION_TRUNCATED'))
+            self.truncated=True
         else:
             event,path,writing=self.operation;kind,public,token=self.target(path);callers=[];broad=False
             frame=sys._getframe(1)
@@ -212,7 +302,7 @@ class Guard:
                 if frame is None:break
                 try:name=Path(frame.f_code.co_filename).relative_to(ROOT).as_posix()
                 except ValueError:name=None
-                if name in self.sources and not (name=='ci/run-rpf86-owner-admission.py' and frame.f_code.co_name in
+                if name in self.sources and not frame.f_code.co_name.startswith('<') and not (name=='ci/run-rpf86-owner-admission.py' and frame.f_code.co_name in
                     ('denied','lexical','check','audit','stat','lstat','mkdir','resolve')):
                     if len(callers)<8:callers.append(dict(path=name,function=frame.f_code.co_name,line=frame.f_lineno,source_sha256=self.sources[name]['raw_sha256']))
                     broad=broad or any(a<=frame.f_lineno<=b for a,b in self.broad[name])
@@ -222,6 +312,7 @@ class Guard:
                 caller=callers[0] if callers else None,caller_chain=callers,status='DENIED_BEFORE_IO',method_later_status=None,
                 broad_exception_context=broad,assertRaises_broad_exception_risk='SUSPECTED' if broad else 'NOT_OBSERVED',
                 permission_error_observed_in_method=False,continued_after_broad_context=False))
+            if self.journal:self.journal.emit('GUARD_DENY',self.events[-1])
         raise PermissionError(code)
     def lexical(self,path,query=False):
         if path is None or isinstance(path,int):return None
@@ -333,10 +424,13 @@ class NativeResult(unittest.TextTestResult):
     def addExpectedFailure(self,test,err):super().addExpectedFailure(test,err);self.event(test,'FAIL')
     def addUnexpectedSuccess(self,test):super().addUnexpectedSuccess(test);self.event(test,'FAIL')
 
-def run_suite(suite,guard):
-    before=sys.gettrace();sys.settrace(guard.trace)
+def run_suite(suite,guard,*,synthetic_trace=False):
+    # Production five-method cohort never installs a per-line/global tracer.
+    before=sys.gettrace()
+    if synthetic_trace:sys.settrace(guard.trace)
     try:return unittest.TextTestRunner(verbosity=2,resultclass=lambda *a:NativeResult(*a,guard=guard)).run(suite)
-    finally:sys.settrace(before)
+    finally:
+        if synthetic_trace:sys.settrace(before)
 
 def validate_attribution(guard,sources,ids):
     need(guard.get('attribution_schema')=='rpf86-denial-events-v1','ATTRIBUTION_SCHEMA')
@@ -369,7 +463,8 @@ def manifest(work):
     return rows
 
 def native(folder):
-    source=identity();guard=Guard(folder);guard.install();started=time.monotonic_ns()
+    source=identity();journal=Journal(folder/'denial-journal.jsonl',source['harness_lf_sha256'],IDS)
+    guard=Guard(folder,journal=journal);guard.install();started=time.monotonic_ns()
     result=None;error=None;work=folder/'work';work.mkdir(exist_ok=False)
     restored=False
     try:
@@ -399,6 +494,8 @@ def native(folder):
     except Invalid as exc:report['error']=str(exc)
     success=report['tests_run']==5 and all(x['actual']=='PASS' for x in report['results']) and not report['guard']['denied'] and restored and report['source_unchanged'] and report['error'] is None
     report['status']='PASS' if success else 'FAIL';write(folder/'child-result.json',report)
+    journal.emit('TERMINAL',dict(status=report['status'],error=None if report['error'] is None else 'NATIVE_ERROR'))
+    journal.close()
     return 0 if success else 1
 
 def environment(folder):
@@ -444,6 +541,9 @@ def launch(mode,folder,*,deadline,timeout=180,input_root=None,source_snapshot=No
         harness_lf_sha256=sha(SELF.read_bytes().replace(b'\r\n',b'\n')),
         cleanup_scope='Exact Popen handle; OS process-tree coverage UNAVAILABLE')
     if (folder/'child-result.json').is_file():receipt['child_result_raw_sha256']=sha((folder/'child-result.json').read_bytes())
+    if (folder/'denial-journal.jsonl').is_file():
+        receipt['journal']=read_journal(folder/'denial-journal.jsonl',receipt['harness_lf_sha256'],process.pid,
+            IDS if mode=='native' else ['synthetic.durable_control'],attribution_sources(),timeout=timed_out)
     write(folder/'launch-receipt.json',receipt)
     return receipt
 
@@ -482,10 +582,19 @@ def read_child_report(folder,receipt):
     need(sha(raw)==receipt.get('child_result_raw_sha256'),'CHILD_REPORT_BINDING')
     return strict(raw)
 
+def validate_physical_journal(folder,receipt,source):
+    journal=read_journal(folder/'denial-journal.jsonl',source['harness_lf_sha256'],receipt['pid'],IDS,source['attribution_sources'])
+    need(journal['status']=='COMPLETE' and journal['zero_denials_proven'] and journal['methods']==dict.fromkeys(IDS,'PASS'),'JOURNAL_NOT_ADMISSIBLE')
+    need(receipt.get('journal')==journal and receipt.get('exit')==0 and receipt.get('timeout') is False
+         and receipt.get('child_exited') is True and receipt.get('drain_joined') is True,'JOURNAL_RECEIPT_BINDING')
+    need(receipt['monotonic_start_ns']<=journal['last_frame_monotonic_ns']<=receipt['monotonic_end_ns'],'JOURNAL_RECEIPT_TIME')
+    return journal
+
 def independent(folder,input_root):
     input_root=owned(input_root);source=identity();guard=Guard(input_root);guard.install()
     native_dir=input_root/'native';receipt=strict((native_dir/'launch-receipt.json').read_bytes());report=read_child_report(native_dir,receipt)
     work=native_dir/'work';validate_native(report,receipt,source,work)
+    journal=validate_physical_journal(native_dir,receipt,source)
     log=(native_dir/'output.log').read_bytes();validate_log(log,receipt)
     files=manifest(work);need(files==report['manifest'],'PHYSICAL_MANIFEST_DRIFT')
     wal_count=0
@@ -497,6 +606,7 @@ def independent(folder,input_root):
     need(wal_count>0,'NO_WAL')
     write(folder/'verification.json',dict(status='PASS',native_ids=IDS,manifest_sha256=sha(json.dumps(files,sort_keys=True).encode()),
         wal_files=wal_count,logical_owner='rpf-63',source_identity=source,guard=guard.projection(),
+        journal=journal,
         source_level='SYNTHETIC_OFFLINE_TEST',independent_process=True,independent_issuer=False))
     return 0
 
@@ -528,7 +638,7 @@ def false_green_controls(folder):
             with self.assertRaises(Exception):
                 guard.context('Guard.check',target);guard.check(target)
             self.assertTrue(True)
-    result=run_suite(unittest.TestSuite([Synthetic('test_guard_false_green')]),guard)
+    result=run_suite(unittest.TestSuite([Synthetic('test_guard_false_green')]),guard,synthetic_trace=True)
     projection=guard.projection();ids=list(result.states)
     validate_attribution(projection,guard.sources,ids)
     need(result.wasSuccessful() and len(projection['attribution_events'])==1,'FALSE_GREEN_NOT_EXERCISED')
@@ -537,6 +647,44 @@ def false_green_controls(folder):
          and event['continued_after_broad_context'] and event['broad_exception_context'],'FALSE_GREEN_CAUSAL_TRACE')
     write(sandbox/'false-green.json',dict(status='PASS_NEGATIVE_CONTROL',native_method_status='PASS',
         admission_status='FAIL',guard=projection,ids=ids,delegated_target_io=0))
+    return 0
+
+def durable_control(folder,mode):
+    target=folder/'new-synthetic-input.json';target.write_bytes(b'new fixture')
+    sandbox=folder/'sandbox';sandbox.mkdir(exist_ok=False)
+    journal=Journal(folder/'denial-journal.jsonl',sha(SELF.read_bytes().replace(b'\r\n',b'\n')),['synthetic.durable_control'])
+    guard=Guard(sandbox,journal=journal);guard.install();guard.method_start('synthetic.durable_control')
+    if mode=='durable-timeout':time.sleep(10);return 1
+    try:guard.context('Guard.check',target);guard.check(target)
+    except PermissionError:os._exit(7)  # Descriptor was fsynced before the exception.
+    return 1
+
+def performance_probe(folder):
+    import statistics
+    old=ROOT/'spikes/rpf-86/rev-4/pre-repair-sources/run-rpf86-owner-admission.py'
+    old_raw=old.read_bytes();tree=ast.parse(old_raw);cls=next(x for x in tree.body if isinstance(x,ast.ClassDef) and x.name=='Guard')
+    node=next(x for x in cls.body if isinstance(x,ast.FunctionDef) and x.name=='trace')
+    namespace=dict(ROOT=ROOT,Path=Path);exec(compile(ast.Module(body=[node],type_ignores=[]),'<pinned-trace-microprobe>','exec'),namespace)
+    candidate_sha=sha(SELF.read_bytes().replace(b'\r\n',b'\n'))
+    guard=Guard(folder);guard.install();samples=[];calls=0
+    def traced(frame,event,arg):
+        nonlocal calls
+        calls+=1;return namespace['trace'](guard,frame,event,arg)
+    def normal_call(i):return (i*7+3)%101
+    previous=sys.gettrace()
+    for mode in ('base_global_trace','candidate_no_trace'):
+        rows=[]
+        for _ in range(7):
+            guard.method='synthetic.never_matched';start=time.perf_counter_ns()
+            if mode=='base_global_trace':sys.settrace(traced)
+            try:value=sum(normal_call(i) for i in range(2000))
+            finally:
+                if mode=='base_global_trace':sys.settrace(previous)
+            rows.append(time.perf_counter_ns()-start)
+        samples.append(dict(mode=mode,iterations=2000,samples_ns=rows,median_ns=statistics.median(rows),min_ns=min(rows),max_ns=max(rows),checksum=value))
+    write(folder/'performance.json',dict(status='OBSERVED_NO_SPEED_THRESHOLD',samples=samples,base_trace_callbacks=calls,
+        base_source_raw_sha256=sha(old_raw),candidate_source_lf_sha256=candidate_sha,
+        scope='Fixed arithmetic calls under actual Guard audit hook; independent microprobe, not native-cohort causal proof'))
     return 0
 
 def controls(folder):
@@ -566,6 +714,29 @@ def verify_failure(folder,input_root,snapshot):
     """Read-only verification of this task's failed run, no method re-execution."""
     input_root=owned(input_root);snapshot=owned(snapshot);source=identity()
     guard=Guard(folder,read_roots=(input_root,snapshot));guard.install()
+    if (input_root/'denial-journal.jsonl').exists():
+        receipt=strict((input_root/'launch-receipt.json').read_bytes());old_source=snapshot.read_bytes()
+        need(receipt.get('mode')=='native' and receipt.get('exit')!=0 and receipt.get('child_exited') is True
+             and receipt.get('drain_joined') is True and not receipt.get('truncated'),'NEGATIVE_NATIVE_RECEIPT')
+        need(sha(old_source.replace(b'\r\n',b'\n'))==receipt['harness_lf_sha256'],'NEGATIVE_SOURCE_BINDING')
+        sources=attribution_sources({'ci/run-rpf86-owner-admission.py':old_source})
+        journal=read_journal(input_root/'denial-journal.jsonl',receipt['harness_lf_sha256'],receipt['pid'],IDS,sources,timeout=receipt.get('timeout',False))
+        need(journal==receipt.get('journal'),'NEGATIVE_JOURNAL_BINDING')
+        validate_log((input_root/'output.log').read_bytes(),receipt)
+        files=manifest(input_root/'work');wal_count=0
+        for row in files:
+            if row['path'].endswith('/ledger.jsonl'):
+                need(strict((input_root/'work'/row['path']).read_bytes().splitlines()[0])['event'].get('owner')=='rpf-63','NEGATIVE_WAL_OWNER');wal_count+=1
+        need(wal_count>0,'NEGATIVE_NO_WAL')
+        if (input_root/'child-result.json').exists():
+            report=read_child_report(input_root,receipt)
+            need(report['status']=='FAIL' and report['manifest']==files and report['logical_owner']=='rpf-63'
+                 and report['patch_restored'] is True and report['source_unchanged'] is True,'NEGATIVE_REPORT')
+            need(all(report['source_identity'][k]==source[k] for k in ('files','method_ast','assertion_counts','certificate','helper')),'NEGATIVE_ORIGINAL_SOURCE')
+        write(folder/'failure-verification.json',dict(status='PASS_NEGATIVE_EVIDENCE_ONLY',admission_pass=False,
+            journal=journal,wal_files=wal_count,manifest_sha256=sha(json.dumps(files,sort_keys=True).encode()),
+            child_report_present=(input_root/'child-result.json').exists(),original_methods_reexecuted=False,guard=guard.projection()))
+        return 0
     if not (input_root/'child-result.json').exists() and (input_root/'launch-receipt.json').exists():
         receipt=strict((input_root/'launch-receipt.json').read_bytes());old_source=snapshot.read_bytes()
         need(receipt.get('mode')=='native' and receipt.get('timeout') is True and receipt.get('exit')!=0
@@ -636,11 +807,12 @@ def run(output,total_deadline=None):
     output=owned(output);output.mkdir(parents=True,exist_ok=False);started=time.monotonic();deadline=started+420
     if total_deadline is not None:
         need(math.isfinite(total_deadline),'TOTAL_DEADLINE');deadline=min(deadline,total_deadline)
-    source=identity();native_receipt=launch('native',output/'native',deadline=deadline)
+    source=identity();native_receipt=launch('native',output/'native',deadline=deadline,timeout=120)
     verification=None;error=None
     try:
         report=read_child_report(output/'native',native_receipt)
         validate_native(report,native_receipt,source,output/'native/work')
+        validate_physical_journal(output/'native',native_receipt,source)
         verification=launch('verify',output/'verify',deadline=deadline,timeout=60,input_root=output)
         need(verification['exit']==0 and not verification['timeout'] and not verification['truncated'] and verification['child_exited'],'INDEPENDENT_VERIFICATION')
     except (Invalid,OSError,ValueError,TypeError,KeyError) as exc:
@@ -660,7 +832,7 @@ def run(output,total_deadline=None):
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','false-green','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
+    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','false-green','durable-deny-crash','durable-timeout','performance','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
     parser.add_argument('--source-snapshot',type=Path)
     parser.add_argument('--deadline',type=float)
     args=parser.parse_args()
@@ -672,6 +844,8 @@ def main():
         if args.mode=='controls':return controls(folder)
         if args.mode=='certificate-controls':return certificate_controls(folder)
         if args.mode=='false-green':return false_green_controls(folder)
+        if args.mode in ('durable-deny-crash','durable-timeout'):return durable_control(folder,args.mode)
+        if args.mode=='performance':return performance_probe(folder)
         if args.mode=='verify-failure':return verify_failure(folder,args.input,args.source_snapshot)
         if args.mode=='crash':return 7
         if args.mode=='exit1':return 1

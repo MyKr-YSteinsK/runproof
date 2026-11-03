@@ -1,0 +1,418 @@
+{
+  "schema": "rpf86-rev4-denial-attribution-v1",
+  "plan": "RPF-86/rev-4",
+  "base": "0d6c5c034e611b529af90c66b495f19eaa8b2df8",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "harness_source_hash": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9",
+  "cohort": "one new diagnostic of the original five methods",
+  "journal_schema": "rpf86-durable-denial-v1",
+  "method_start_stop": [
+    {
+      "data": {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+      },
+      "kind": "METHOD_START",
+      "monotonic_ns": 493885973198500,
+      "pid": 20872,
+      "previous_raw_sha256": "cc98554c59b0b9f815dafd986503eacb811a2bb03181afb44ce6f308361abc44",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 3,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "actual": "PASS",
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+      },
+      "kind": "METHOD_STOP",
+      "monotonic_ns": 493920896130800,
+      "pid": 20872,
+      "previous_raw_sha256": "19836225653e5dcf7e26f86d082cb0888fa571e10ae15efb45910f85560e9b8e",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 4,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+      },
+      "kind": "METHOD_START",
+      "monotonic_ns": 493920900108800,
+      "pid": 20872,
+      "previous_raw_sha256": "c4257ff00942e94fd654b652db138391b6b8e61feabbee55ebe6b2e9bdc04f74",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 5,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "actual": "PASS",
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+      },
+      "kind": "METHOD_STOP",
+      "monotonic_ns": 493932885416600,
+      "pid": 20872,
+      "previous_raw_sha256": "2a45582691f513b332f5d045480ee9fdd1bd37f0c2523656ea69a6f01cb986dd",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 6,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+      },
+      "kind": "METHOD_START",
+      "monotonic_ns": 493932897500100,
+      "pid": 20872,
+      "previous_raw_sha256": "3e2c8dbe420b9c59331a8c9b99c6650a6f01158346c9027d5a34fcb3717a0acb",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 7,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "actual": "PASS",
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+      },
+      "kind": "METHOD_STOP",
+      "monotonic_ns": 493933046243700,
+      "pid": 20872,
+      "previous_raw_sha256": "0b6bd29c7bf27b12d6c3502eb4916ba50189c2f4d774c33d316f4eb6e925e3a2",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 8,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+      },
+      "kind": "METHOD_START",
+      "monotonic_ns": 493933048231500,
+      "pid": 20872,
+      "previous_raw_sha256": "79d0cec56f67651ffc0236ecdb1bfae3f58bff56f71d0710fa1e5a4fb10953c3",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 9,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "actual": "PASS",
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+      },
+      "kind": "METHOD_STOP",
+      "monotonic_ns": 493933106637100,
+      "pid": 20872,
+      "previous_raw_sha256": "e1f938faa86993e3cb50908e4500531cd374bb0508a6156048f208298af725f5",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 10,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+      },
+      "kind": "METHOD_START",
+      "monotonic_ns": 493933109137100,
+      "pid": 20872,
+      "previous_raw_sha256": "d68ab8cf9ce5eaefe62a3d89cedd44a83e465adbfea02538c968fc273928e138",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 11,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    },
+    {
+      "data": {
+        "actual": "PASS",
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+      },
+      "kind": "METHOD_STOP",
+      "monotonic_ns": 493933302075900,
+      "pid": 20872,
+      "previous_raw_sha256": "308cf35bbd30c4260eeeabfbcdfd12b853430dd04e8cb39a7a687c215218921e",
+      "run_id": "bc884501ea313b48131178bfbfebb16f",
+      "schema": "rpf86-durable-denial-v1",
+      "seq": 12,
+      "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+    }
+  ],
+  "denial_events": [
+    {
+      "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+      "broad_exception_context": false,
+      "caller": {
+        "function": "native",
+        "line": 471,
+        "path": "ci/run-rpf86-owner-admission.py",
+        "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+      },
+      "caller_chain": [
+        {
+          "function": "native",
+          "line": 471,
+          "path": "ci/run-rpf86-owner-admission.py",
+          "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+        },
+        {
+          "function": "main",
+          "line": 842,
+          "path": "ci/run-rpf86-owner-admission.py",
+          "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+        }
+      ],
+      "continued_after_broad_context": false,
+      "event_kind": "open",
+      "intent": "read",
+      "method_id": null,
+      "method_later_status": null,
+      "permission_error_observed_in_method": false,
+      "phase": "import",
+      "public_repo_relative_path": null,
+      "reason": "READ_SCOPE_DENIED",
+      "sequence": 1,
+      "status": "DENIED_BEFORE_IO",
+      "target_class": "unapproved_repo_public_path",
+      "target_token": "f82ce7c780ee3e449d39ca511794e3836bac239824653c85eeb200a78391b4c5"
+    },
+    {
+      "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+      "broad_exception_context": false,
+      "caller": {
+        "function": "native",
+        "line": 471,
+        "path": "ci/run-rpf86-owner-admission.py",
+        "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+      },
+      "caller_chain": [
+        {
+          "function": "native",
+          "line": 471,
+          "path": "ci/run-rpf86-owner-admission.py",
+          "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+        },
+        {
+          "function": "main",
+          "line": 842,
+          "path": "ci/run-rpf86-owner-admission.py",
+          "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+        }
+      ],
+      "continued_after_broad_context": false,
+      "event_kind": "open",
+      "intent": "read",
+      "method_id": null,
+      "method_later_status": null,
+      "permission_error_observed_in_method": false,
+      "phase": "import",
+      "public_repo_relative_path": null,
+      "reason": "READ_SCOPE_DENIED",
+      "sequence": 2,
+      "status": "DENIED_BEFORE_IO",
+      "target_class": "unapproved_repo_public_path",
+      "target_token": "66782312fca72a3bd7344e85bfac56f8d8c2b151b305f628554e25262fa55059"
+    }
+  ],
+  "chain_verification": {
+    "status": "PASS",
+    "frames": 14,
+    "bytes": 8108,
+    "raw_sha256": "08801af7f7b277f7517d5c0419706cb17312794291056aa6277828474c54d851",
+    "prefix_tip_sha256": "2b47c497bbbe2247a41586ec76a3a1f5cc7823418ab98da34a65dd6ba22ef94a",
+    "independent_process_verified": true
+  },
+  "journal_persisted_before_timeout": "NOT_APPLICABLE_NATIVE_NO_TIMEOUT; all 14 important frames write-all/fsync completed; separate crash/timeout controls below",
+  "terminal_present": true,
+  "terminal": {
+    "error": null,
+    "status": "FAIL"
+  },
+  "native_receipt": {
+    "mode": "native",
+    "pid": 20872,
+    "exit": 1,
+    "timeout": false,
+    "truncated": false,
+    "bytes": 778,
+    "stdout_sha256": "03dbf017a3f1e75524aed48fbbd53c87e584f265050610b34e3efd5fb35920a7",
+    "monotonic_start_ns": 493884380810300,
+    "monotonic_end_ns": 493933558165100,
+    "timeout_limit_seconds": 120,
+    "child_exited": true,
+    "drain_joined": true,
+    "harness_lf_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9",
+    "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE",
+    "child_result_raw_sha256": "2b68f2df8acf846b2f84b68fc96803f9f632aa70889239d2bcccb01abb11fd69"
+  },
+  "candidate_denial_explanation": {
+    "classification": "REAL_READ_SCOPE_DENIAL_DURING_IMPORT",
+    "caller": "ci/run-rpf86-owner-admission.py:native:471",
+    "caller_source_line": "importlib.import_module(MODULE)",
+    "method_id": null,
+    "phase": "import",
+    "operation": "open/read",
+    "target_class": "unapproved_repo_public_path",
+    "broad_exception_context": false,
+    "method_false_green_from_these_events": "NOT_OBSERVED: events precede all method-start frames",
+    "exact_target": "WITHHELD_NOT_ON_EXACT_PUBLIC_READ_WHITELIST",
+    "causal_origin_beyond_import_call": "UNKNOWN: no unapproved source/target inspection",
+    "no_access_expansion": true
+  },
+  "historical_comparison_LIMITED": "rev2 reported two count-only denials; rev3 journal unavailable after timeout. These are new rev4 events; count agreement does not reconstruct or identify the old events.",
+  "unavailable_fields": [
+    "Exact denied target path and non-approved intermediate import caller are not exported or inspected.",
+    "Native-cohort tracing-only causal speedup and CPU profile were not measured."
+  ],
+  "guard_taint": true,
+  "formal_admission": "NOT_RUN_B",
+  "method_results": [
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+      "actual": "PASS"
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+      "actual": "PASS"
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+      "actual": "PASS"
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+      "actual": "PASS"
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+      "actual": "PASS"
+    }
+  ],
+  "crash_negative": {
+    "exit": 7,
+    "journal": {
+      "schema": "rpf86-durable-denial-v1",
+      "status": "INCOMPLETE_EXIT",
+      "error": null,
+      "raw_sha256": "5436ca7173f12581c141eebf5c2c6fb270b6a5acef83f5ce4b8773937c219870",
+      "bytes": 2036,
+      "valid_prefix_frames": 3,
+      "prefix_tip_sha256": "15b003022089471bdf8e2e063dacfad339ce4b4af6a2ec1a50619c95151eafa5",
+      "pid": 34724,
+      "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+      "run_id": "9be074b5314dd94b9235ee73ea75da39",
+      "method_start_stop": [
+        {
+          "data": {
+            "id": "synthetic.durable_control"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 494225731732500,
+          "pid": 34724,
+          "previous_raw_sha256": "c733b0285cd9f6f2d63c2ac2215d65379ed672b0b3807865c09fc1cc43eed863",
+          "run_id": "9be074b5314dd94b9235ee73ea75da39",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 1,
+          "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef"
+        }
+      ],
+      "methods": {
+        "synthetic.durable_control": "STARTED"
+      },
+      "latest_method": "synthetic.durable_control",
+      "denial_events": [
+        {
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "broad_exception_context": false,
+          "caller": {
+            "function": "durable_control",
+            "line": 658,
+            "path": "ci/run-rpf86-owner-admission.py",
+            "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef"
+          },
+          "caller_chain": [
+            {
+              "function": "durable_control",
+              "line": 658,
+              "path": "ci/run-rpf86-owner-admission.py",
+              "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef"
+            },
+            {
+              "function": "main",
+              "line": 847,
+              "path": "ci/run-rpf86-owner-admission.py",
+              "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef"
+            }
+          ],
+          "continued_after_broad_context": false,
+          "event_kind": "Guard.check",
+          "intent": "read",
+          "method_id": "synthetic.durable_control",
+          "method_later_status": null,
+          "permission_error_observed_in_method": false,
+          "phase": "method",
+          "public_repo_relative_path": null,
+          "reason": "READ_SCOPE_DENIED",
+          "sequence": 1,
+          "status": "DENIED_BEFORE_IO",
+          "target_class": "fresh_owned_synthetic_path",
+          "target_token": "96303ef0ec3597bc36d127b8ccc4d1e3557d852667dd9cecc875337bb91a2da2"
+        }
+      ],
+      "terminal": null,
+      "terminal_present": false,
+      "zero_denials_proven": false,
+      "last_frame_monotonic_ns": 494225744620500,
+      "completion_without_terminal": "UNAVAILABLE"
+    },
+    "child_report_present": false
+  },
+  "timeout_negative": {
+    "timeout": true,
+    "journal": {
+      "schema": "rpf86-durable-denial-v1",
+      "status": "INCOMPLETE_TIMEOUT",
+      "error": null,
+      "raw_sha256": "9154d179d0979c8d39bd2d25d639a18a41afeeb578085094f74899329a9bad39",
+      "bytes": 669,
+      "valid_prefix_frames": 2,
+      "prefix_tip_sha256": "af86ef0e65afe18db6259c925c03c8759348f3f8aa06d305492b5df940536012",
+      "pid": 10732,
+      "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+      "run_id": "e87ce9eaddd41da33c5328f1833a2e96",
+      "method_start_stop": [
+        {
+          "data": {
+            "id": "synthetic.durable_control"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 494227475654900,
+          "pid": 10732,
+          "previous_raw_sha256": "d17dc8a4c1d8afd7885c74b3de79882fc9b309e7c7b47074d929d610bc399d19",
+          "run_id": "e87ce9eaddd41da33c5328f1833a2e96",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 1,
+          "source_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef"
+        }
+      ],
+      "methods": {
+        "synthetic.durable_control": "STARTED"
+      },
+      "latest_method": "synthetic.durable_control",
+      "denial_events": [],
+      "terminal": null,
+      "terminal_present": false,
+      "zero_denials_proven": false,
+      "last_frame_monotonic_ns": 494227475654900,
+      "completion_without_terminal": "UNAVAILABLE"
+    },
+    "no_terminal_means_no_zero_denial_proof": true
+  }
+}

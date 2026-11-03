@@ -197,4 +197,96 @@ class OwnerAdmissionTests(unittest.TestCase):
         with self.assertRaisesRegex(r.Invalid,'CHILD_REPORT_BINDING'):r.read_child_report(folder,receipt)
         with self.assertRaisesRegex(r.Invalid,'CHILD_REPORT_BINDING'):r.read_child_report(folder,{})
 
+    def durable(self):
+        cls=type(self)
+        if not hasattr(cls,'durable_receipt'):
+            cls.durable_folder=self.folder('durable-exit')
+            cls.durable_receipt=r.launch('durable-deny-crash',cls.durable_folder,deadline=time.monotonic()+20,timeout=20)
+        return cls.durable_folder,copy.deepcopy(cls.durable_receipt)
+
+    def test_durable_denial_survives_actual_child_exit(self):
+        folder,receipt=self.durable();self.assertEqual(receipt['exit'],7)
+        j=receipt['journal'];self.assertEqual(j['status'],'INCOMPLETE_EXIT');self.assertFalse(j['terminal_present'])
+        self.assertFalse(j['zero_denials_proven']);self.assertEqual(len(j['denial_events']),1)
+        e=j['denial_events'][0];self.assertEqual(e['reason'],'READ_SCOPE_DENIED')
+        self.assertEqual(e['caller']['function'],'durable_control');self.assertEqual(e['phase'],'method')
+        self.assertTrue(receipt['child_exited']);self.assertTrue(receipt['drain_joined'])
+        self.assertFalse((folder/'child-result.json').exists())
+        self.assertEqual(j,r.read_journal(folder/'denial-journal.jsonl',receipt['harness_lf_sha256'],receipt['pid'],['synthetic.durable_control'],self.source['attribution_sources']))
+
+    def test_durable_start_timeout_never_proves_zero_denials(self):
+        folder=self.folder('durable-timeout');rec=r.launch('durable-timeout',folder,deadline=time.monotonic()+20,timeout=2)
+        self.assertTrue(rec['timeout']);self.assertTrue(rec['child_exited']);self.assertTrue(rec['drain_joined'])
+        j=rec['journal'];self.assertEqual(j['status'],'INCOMPLETE_TIMEOUT')
+        self.assertEqual(j['latest_method'],'synthetic.durable_control');self.assertFalse(j['terminal_present']);self.assertFalse(j['zero_denials_proven'])
+
+    def test_durable_torn_duplicate_pid_source_caller_and_raw_path_rejected(self):
+        folder,receipt=self.durable();raw=(folder/'denial-journal.jsonl').read_bytes();base=[r.strict(x) for x in raw.splitlines()]
+        def encode(frames):
+            previous=None;lines=[]
+            for f in frames:
+                f['previous_raw_sha256']=previous
+                line=json.dumps(f,sort_keys=True,separators=(',',':')).encode()+b'\n';lines.append(line);previous=r.sha(line)
+            return b''.join(lines)
+        changes=[lambda fs:fs[-1].update(seq=fs[-2]['seq']),lambda fs:fs[-1].update(pid=999),
+            lambda fs:fs[-1].update(source_sha256='0'*64),lambda fs:fs[-1]['data'].update(raw_path='synthetic-forbidden-field'),
+            lambda fs:fs[-1]['data']['caller_chain'][0].update(function='<anonymous>'),
+            lambda fs:fs[-1]['data']['caller_chain'][0].update(line=999999)]
+        variants=[raw[:-5]]
+        for change in changes:
+            frames=copy.deepcopy(base);change(frames);variants.append(encode(frames))
+        for value in variants:
+            path=self.folder('journal-corrupt');path.write_bytes(value)
+            j=r.read_journal(path,receipt['harness_lf_sha256'],receipt['pid'],['synthetic.durable_control'],self.source['attribution_sources'])
+            self.assertEqual(j['status'],'TORN_OR_MISSING');self.assertFalse(j['zero_denials_proven']);self.assertGreaterEqual(j['valid_prefix_frames'],1)
+
+    def test_journal_write_all_audit_fsync_failure_and_thread_rejection(self):
+        import threading
+        path=self.folder('partial-journal');source=self.source['harness_lf_sha256'];ids=['synthetic.durable_control']
+        original=r.os.write;calls=[];audit_events=[];active=[False]
+        def observe(event,args):
+            if active[0]:audit_events.append(event)
+        sys.addaudithook(observe)
+        def short(fd,data):calls.append(len(data));return original(fd,data[:7])
+        with patch.object(r.os,'write',short):
+            j=r.Journal(path,source,ids);active[0]=True
+            try:j.emit('METHOD_START',{'id':ids[0]})
+            finally:active[0]=False
+        self.assertGreater(len(calls),2);self.assertEqual(audit_events,[])
+        errors=[]
+        def other():
+            try:j.emit('METHOD_STOP',{'id':ids[0],'actual':'PASS'})
+            except r.Invalid as exc:errors.append(str(exc))
+        t=threading.Thread(target=other);t.start();t.join();self.assertEqual(errors,['JOURNAL_THREAD']);self.assertTrue(j.failed)
+        with self.assertRaises(r.Invalid):j.emit('TERMINAL',{'status':'PASS','error':None})
+        j.close()
+        with patch.object(r.os,'fsync',side_effect=OSError('synthetic fsync failure')):
+            with self.assertRaisesRegex(r.Invalid,'JOURNAL_IO'):r.Journal(self.folder('fsync-failure'),source,ids)
+
+    def test_durable_real_denial_overflow_is_not_admissible(self):
+        folder=self.folder('durable-overflow');folder.mkdir();sandbox=folder/'sandbox';sandbox.mkdir()
+        target=folder/'new-fixture';target.write_bytes(b'new fixture');source=self.source['harness_lf_sha256'];ids=['synthetic.durable_control']
+        j=r.Journal(folder/'journal.jsonl',source,ids);g=r.Guard(sandbox,journal=j);g.method_start(ids[0])
+        for _ in range(17):
+            g.context('Guard.check',target)
+            with self.assertRaises(PermissionError):g.check(target)
+        j.close();result=r.read_journal(folder/'journal.jsonl',source,os.getpid(),ids,self.source['attribution_sources'])
+        self.assertEqual(result['status'],'TORN_OR_MISSING');self.assertEqual(len(result['denial_events']),16)
+        self.assertFalse(result['zero_denials_proven']);self.assertTrue(g.truncated)
+
+    def test_native_suite_does_not_install_global_trace(self):
+        def fixture():pass
+        suite=unittest.TestSuite([unittest.FunctionTestCase(fixture)]);g=r.Guard(self.folder('no-trace'));before=sys.gettrace()
+        with patch.object(r.sys,'settrace',side_effect=AssertionError('global trace forbidden')):
+            result=r.run_suite(suite,g)
+        self.assertTrue(result.wasSuccessful());self.assertIs(sys.gettrace(),before)
+
+    def test_actual_independent_performance_microprobe_is_observation_only(self):
+        folder=self.folder('performance');rec=r.launch('performance',folder,deadline=time.monotonic()+20,timeout=20)
+        self.assertEqual(rec['exit'],0);p=r.strict((folder/'performance.json').read_bytes())
+        self.assertEqual(p['status'],'OBSERVED_NO_SPEED_THRESHOLD');self.assertGreater(p['base_trace_callbacks'],0)
+        self.assertEqual([x['mode'] for x in p['samples']],['base_global_trace','candidate_no_trace'])
+        self.assertEqual([len(x['samples_ns']) for x in p['samples']],[7,7])
+        self.assertEqual(p['samples'][0]['checksum'],p['samples'][1]['checksum'])
+
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,34 @@
+{
+  "plan": "RPF-86/rev-4",
+  "base": "0d6c5c034e611b529af90c66b495f19eaa8b2df8",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "FAIL",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06": "PASS",
+    "A07": "PASS",
+    "A08": "NOT_RUN",
+    "A09": "NOT_RUN",
+    "A10": "PASS"
+  },
+  "gate_notes": {
+    "A03": "Diagnostic 5 PASS, but 2 durable pre-method read denials; formal native NOT_RUN",
+    "A08": "NOT_RUN_AT_SEAL; final chat records delivery",
+    "A09": "NOT_RUN_AT_SEAL; pilot NOT_APPLICABLE"
+  },
+  "bounded_forensic_work": "COMPLETE",
+  "documentary_delivery": "PENDING_AT_SEAL",
+  "rpf86_overall": "PARTIAL",
+  "formal_required_unavailable": 539,
+  "official_coverage_changed": false,
+  "evidence_accepted": "ARCHITECT_NOT_DECIDED",
+  "stage_advanced": "ARCHITECT_NOT_DECIDED",
+  "release_executed": false,
+  "deployment_authorized": false
+}

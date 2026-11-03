@@ -1,0 +1,91 @@
+{
+  "plan": "RPF-86/rev-4",
+  "base": "0d6c5c034e611b529af90c66b495f19eaa8b2df8",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "base_native_tracing": "sys.settrace(guard.trace) across original suite at Base",
+  "candidate_native_tracing": "NO sys.settrace installation in real native run_suite; actual negative test forbids it",
+  "sys_settrace_remains_in_source": true,
+  "remaining_trace_scope": "Only explicitly requested synthetic broad-assert single-function control and isolated Base-vs-candidate microprobe",
+  "microprobe": {
+    "status": "OBSERVED_NO_SPEED_THRESHOLD",
+    "samples": [
+      {
+        "mode": "base_global_trace",
+        "iterations": 2000,
+        "samples_ns": [
+          4956200,
+          4922300,
+          5517700,
+          5923200,
+          5830400,
+          5141400,
+          4789500
+        ],
+        "median_ns": 5141400,
+        "min_ns": 4789500,
+        "max_ns": 5923200,
+        "checksum": 99784
+      },
+      {
+        "mode": "candidate_no_trace",
+        "iterations": 2000,
+        "samples_ns": [
+          123600,
+          126500,
+          123800,
+          121000,
+          118800,
+          120500,
+          120500
+        ],
+        "median_ns": 121000,
+        "min_ns": 118800,
+        "max_ns": 126500,
+        "checksum": 99784
+      }
+    ],
+    "base_trace_callbacks": 28007,
+    "base_source_raw_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6",
+    "candidate_source_lf_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+    "scope": "Fixed arithmetic calls under actual Guard audit hook; independent microprobe, not native-cohort causal proof"
+  },
+  "native_diagnostic_wall_seconds": 49.59150109998882,
+  "native_limit_seconds": 120,
+  "method_wall_timings": [
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+      "status": "PASS",
+      "wall_seconds": 34.9229323
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+      "status": "PASS",
+      "wall_seconds": 11.9853078
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+      "status": "PASS",
+      "wall_seconds": 0.1487436
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+      "status": "PASS",
+      "wall_seconds": 0.0584056
+    },
+    {
+      "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+      "status": "PASS",
+      "wall_seconds": 0.1929388
+    }
+  ],
+  "prior_rev3": {
+    "timeout_seconds": 180,
+    "completed_methods": "UNAVAILABLE",
+    "source": "committed rev3 report; no private root accessed"
+  },
+  "causality": "Microprobe measures identical arithmetic calls under two tracing modes. Native 49s-vs-old-timeout is not a controlled tracing-only comparison.",
+  "cpu_profile": "NOT_RUN",
+  "performance_pass_threshold": "NONE; observations, not a guessed speed multiplier"
+}

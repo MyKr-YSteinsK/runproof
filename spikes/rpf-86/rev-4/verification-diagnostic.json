@@ -1,0 +1,626 @@
+{
+  "plan": "RPF-86/rev-4",
+  "base": "0d6c5c034e611b529af90c66b495f19eaa8b2df8",
+  "status": "PARTIAL",
+  "decision": "B_UNACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "source_freeze": {
+    "status": "FROZEN",
+    "decision": "B_UNACTIVATED",
+    "source_identity": {
+      "files": {
+        "runtime/tests/test_effectwitness_pge_dual.py": {
+          "blob": "f98fb2da033dc62a0d5f785c06b837990912caf6",
+          "raw_sha256": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+          "lf_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": {
+          "blob": "2cc4145369918d265df6e3cdcdbce9ac7ecd9bd4",
+          "raw_sha256": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+          "lf_sha256": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": {
+          "blob": "5b626b547a884035c3c968f2a1f95f77f941aec9",
+          "raw_sha256": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+          "lf_sha256": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": {
+          "blob": "79c210fa5579235447157858f2c62ddd61983a91",
+          "raw_sha256": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+          "lf_sha256": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": {
+          "blob": "ed4329a0064daae75792eddfdfdd5cebc1b4b695",
+          "raw_sha256": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+          "lf_sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474"
+        }
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "helper": {
+        "blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+        "raw_sha256": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198"
+      },
+      "method_ast": {
+        "test_four_paths": "84af5ec7fad46019a96426e9097d493300582e298ebe6992a9baa03e88f619d9",
+        "test_twenty_one_reanchored_attacks": "4b1ab2b581480d298f5e10d00a9084124561f318209ad653eeaa25e3e932c71c",
+        "test_unknown_usage_and_restart": "879583932738356d05f7b60655131e91b278a5ef6608e95e5fbf827541a7536a",
+        "test_scope_lock_budget_and_invalid_selection": "a86fc58196bd8b570ff57c0ca67b9f05f267c17644e1f70c4398030067ca98e9",
+        "test_unknown_mutation_stops_writes_but_allows_readback": "a0b9c17ae1455f3e7347a4a9878491257bf7e0b9c8dfc3f6c4fc5ce1ae735875"
+      },
+      "assertion_counts": {
+        "test_four_paths": 1,
+        "test_twenty_one_reanchored_attacks": 1,
+        "test_unknown_usage_and_restart": 4,
+        "test_scope_lock_budget_and_invalid_selection": 4,
+        "test_unknown_mutation_stops_writes_but_allows_readback": 3
+      },
+      "harness_lf_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+        "ci/test_run_rpf86_owner_admission.py": "662727f201a2f2a73d89f48d9997dabf610245710f4a92ad9c99386ceb0b5dbc",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "files": {
+      "ci/run-rpf86-owner-admission.py": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+      "ci/test_run_rpf86_owner_admission.py": "662727f201a2f2a73d89f48d9997dabf610245710f4a92ad9c99386ceb0b5dbc",
+      ".github/workflows/release-gate.yml": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+    },
+    "monotonic_ns": 494067412912500,
+    "static": {
+      "ast_compile": "PASS",
+      "strict_json": "PASS",
+      "diff_check": "PASS",
+      "snapshot_raw_lf": "PASS",
+      "original_16_assertions": "PASS",
+      "new_yaml_bash": "NOT_APPLICABLE"
+    }
+  },
+  "snapshots": [
+    {
+      "source": "ci/run-rpf86-owner-admission.py",
+      "snapshot": "spikes/rpf-86/rev-4/pre-repair-sources/run-rpf86-owner-admission.py",
+      "blob": "8463ae30bebe6310a752fb934651833be363ab2e",
+      "raw_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6",
+      "lf_sha256": "a83a4aad43e7130f2cd8baaea95c083b716a07b18eff7e206b3b28b875a1aaa6"
+    },
+    {
+      "source": "ci/test_run_rpf86_owner_admission.py",
+      "snapshot": "spikes/rpf-86/rev-4/pre-repair-sources/test_run_rpf86_owner_admission.py",
+      "blob": "eaa7701c96ee777ffe20043f1b4033617551e618",
+      "raw_sha256": "541d7413f21af2b50c70bfc891d2f00de54ad3dbb94e3742bab87deabac11de1",
+      "lf_sha256": "541d7413f21af2b50c70bfc891d2f00de54ad3dbb94e3742bab87deabac11de1"
+    },
+    {
+      "source": ".github/workflows/release-gate.yml",
+      "snapshot": "spikes/rpf-86/rev-4/pre-repair-sources/release-gate.yml",
+      "blob": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+      "raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+      "lf_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+    }
+  ],
+  "prefreeze_units": [
+    {
+      "exit": 1,
+      "start": 493713420904200,
+      "end": 493724192486100
+    },
+    {
+      "exit": 0,
+      "start": 493781691946500,
+      "end": 493792464549600
+    }
+  ],
+  "diagnostic": {
+    "receipt": {
+      "mode": "native",
+      "pid": 20872,
+      "exit": 1,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 778,
+      "stdout_sha256": "03dbf017a3f1e75524aed48fbbd53c87e584f265050610b34e3efd5fb35920a7",
+      "monotonic_start_ns": 493884380810300,
+      "monotonic_end_ns": 493933558165100,
+      "timeout_limit_seconds": 120,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE",
+      "child_result_raw_sha256": "2b68f2df8acf846b2f84b68fc96803f9f632aa70889239d2bcccb01abb11fd69",
+      "journal": {
+        "schema": "rpf86-durable-denial-v1",
+        "status": "COMPLETE",
+        "error": null,
+        "raw_sha256": "08801af7f7b277f7517d5c0419706cb17312794291056aa6277828474c54d851",
+        "bytes": 8108,
+        "valid_prefix_frames": 14,
+        "prefix_tip_sha256": "2b47c497bbbe2247a41586ec76a3a1f5cc7823418ab98da34a65dd6ba22ef94a",
+        "pid": 20872,
+        "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9",
+        "run_id": "bc884501ea313b48131178bfbfebb16f",
+        "method_start_stop": [
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 493885973198500,
+            "pid": 20872,
+            "previous_raw_sha256": "cc98554c59b0b9f815dafd986503eacb811a2bb03181afb44ce6f308361abc44",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 3,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 493920896130800,
+            "pid": 20872,
+            "previous_raw_sha256": "19836225653e5dcf7e26f86d082cb0888fa571e10ae15efb45910f85560e9b8e",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 4,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 493920900108800,
+            "pid": 20872,
+            "previous_raw_sha256": "c4257ff00942e94fd654b652db138391b6b8e61feabbee55ebe6b2e9bdc04f74",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 5,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 493932885416600,
+            "pid": 20872,
+            "previous_raw_sha256": "2a45582691f513b332f5d045480ee9fdd1bd37f0c2523656ea69a6f01cb986dd",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 6,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 493932897500100,
+            "pid": 20872,
+            "previous_raw_sha256": "3e2c8dbe420b9c59331a8c9b99c6650a6f01158346c9027d5a34fcb3717a0acb",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 7,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 493933046243700,
+            "pid": 20872,
+            "previous_raw_sha256": "0b6bd29c7bf27b12d6c3502eb4916ba50189c2f4d774c33d316f4eb6e925e3a2",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 8,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 493933048231500,
+            "pid": 20872,
+            "previous_raw_sha256": "79d0cec56f67651ffc0236ecdb1bfae3f58bff56f71d0710fa1e5a4fb10953c3",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 9,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 493933106637100,
+            "pid": 20872,
+            "previous_raw_sha256": "e1f938faa86993e3cb50908e4500531cd374bb0508a6156048f208298af725f5",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 10,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 493933109137100,
+            "pid": 20872,
+            "previous_raw_sha256": "d68ab8cf9ce5eaefe62a3d89cedd44a83e465adbfea02538c968fc273928e138",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 11,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 493933302075900,
+            "pid": 20872,
+            "previous_raw_sha256": "308cf35bbd30c4260eeeabfbcdfd12b853430dd04e8cb39a7a687c215218921e",
+            "run_id": "bc884501ea313b48131178bfbfebb16f",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 12,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          }
+        ],
+        "methods": {
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback": "PASS"
+        },
+        "latest_method": null,
+        "denial_events": [
+          {
+            "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+            "broad_exception_context": false,
+            "caller": {
+              "function": "native",
+              "line": 471,
+              "path": "ci/run-rpf86-owner-admission.py",
+              "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+            },
+            "caller_chain": [
+              {
+                "function": "native",
+                "line": 471,
+                "path": "ci/run-rpf86-owner-admission.py",
+                "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+              },
+              {
+                "function": "main",
+                "line": 842,
+                "path": "ci/run-rpf86-owner-admission.py",
+                "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+              }
+            ],
+            "continued_after_broad_context": false,
+            "event_kind": "open",
+            "intent": "read",
+            "method_id": null,
+            "method_later_status": null,
+            "permission_error_observed_in_method": false,
+            "phase": "import",
+            "public_repo_relative_path": null,
+            "reason": "READ_SCOPE_DENIED",
+            "sequence": 1,
+            "status": "DENIED_BEFORE_IO",
+            "target_class": "unapproved_repo_public_path",
+            "target_token": "f82ce7c780ee3e449d39ca511794e3836bac239824653c85eeb200a78391b4c5"
+          },
+          {
+            "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+            "broad_exception_context": false,
+            "caller": {
+              "function": "native",
+              "line": 471,
+              "path": "ci/run-rpf86-owner-admission.py",
+              "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+            },
+            "caller_chain": [
+              {
+                "function": "native",
+                "line": 471,
+                "path": "ci/run-rpf86-owner-admission.py",
+                "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+              },
+              {
+                "function": "main",
+                "line": 842,
+                "path": "ci/run-rpf86-owner-admission.py",
+                "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+              }
+            ],
+            "continued_after_broad_context": false,
+            "event_kind": "open",
+            "intent": "read",
+            "method_id": null,
+            "method_later_status": null,
+            "permission_error_observed_in_method": false,
+            "phase": "import",
+            "public_repo_relative_path": null,
+            "reason": "READ_SCOPE_DENIED",
+            "sequence": 2,
+            "status": "DENIED_BEFORE_IO",
+            "target_class": "unapproved_repo_public_path",
+            "target_token": "66782312fca72a3bd7344e85bfac56f8d8c2b151b305f628554e25262fa55059"
+          }
+        ],
+        "terminal": {
+          "error": null,
+          "status": "FAIL"
+        },
+        "terminal_present": true,
+        "zero_denials_proven": false,
+        "last_frame_monotonic_ns": 493933480117100,
+        "completion_without_terminal": "UNAVAILABLE"
+      }
+    },
+    "method_results": [
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+        "actual": "PASS"
+      }
+    ],
+    "tests_run": 5,
+    "guard": {
+      "observed": {
+        "write": 3005,
+        "read": 7589,
+        "certificate_read_granted": 424,
+        "stat": 9
+      },
+      "denied": {
+        "READ_SCOPE_DENIED": 2
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [
+        {
+          "sequence": 1,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "import",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "f82ce7c780ee3e449d39ca511794e3836bac239824653c85eeb200a78391b4c5",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "native",
+            "line": 471,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "native",
+              "line": 471,
+              "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 842,
+              "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false
+        },
+        {
+          "sequence": 2,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "import",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "66782312fca72a3bd7344e85bfac56f8d8c2b151b305f628554e25262fa55059",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "native",
+            "line": 471,
+            "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "native",
+              "line": 471,
+              "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 842,
+              "source_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false
+        }
+      ],
+      "attribution_total": 2,
+      "attribution_truncated": false,
+      "attribution_sha256": "c935e911346ab6d1c1a04dafe14492e5b458a82939a7a3087fee735a64e0f4e5",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9",
+        "ci/test_run_rpf86_owner_admission.py": "662727f201a2f2a73d89f48d9997dabf610245710f4a92ad9c99386ceb0b5dbc",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "patch_restored": true,
+    "source_unchanged": true,
+    "manifest_files": 9,
+    "child_result_raw_sha256": "2b68f2df8acf846b2f84b68fc96803f9f632aa70889239d2bcccb01abb11fd69"
+  },
+  "formal": {
+    "unit": {
+      "exit": 0,
+      "pid": 18392,
+      "timeout": false,
+      "truncated": false,
+      "child_exited": true,
+      "drain_joined": true,
+      "bytes": 4113,
+      "stdout_sha256": "66890b718e62eea3d958e6268d5cef1110d09ce22a95aa5b7eacaaf3bdb9f749",
+      "monotonic_start_ns": 494222387928500,
+      "monotonic_end_ns": 494233056754000,
+      "timeout_limit": 141.98307159997057
+    },
+    "verifier": {
+      "exit": 0,
+      "pid": 724,
+      "timeout": false,
+      "truncated": false,
+      "child_exited": true,
+      "drain_joined": true,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 494233077505400,
+      "monotonic_end_ns": 494234048925200,
+      "timeout_limit": 60
+    },
+    "formal_wall": 11.701494100037962,
+    "total_wall_since_native": 349.6949663000414,
+    "cap": 480,
+    "formal_methods": 23,
+    "formal_native": "NOT_RUN_B",
+    "focused_native": "NOT_RUN",
+    "source_freeze_unchanged": true
+  },
+  "independent_review": {
+    "status": "PASS_NEGATIVE_EVIDENCE_ONLY",
+    "admission_pass": false,
+    "journal_raw_sha256": "08801af7f7b277f7517d5c0419706cb17312794291056aa6277828474c54d851",
+    "journal_frames": 14,
+    "journal_denials": 2,
+    "journal_terminal": {
+      "error": null,
+      "status": "FAIL"
+    },
+    "wal_files": 8,
+    "manifest_sha256": "6d3c93c74fa034d7afa6c4b9118bf05aaf261e11266b15fc9b44d8e135f882f8",
+    "source_snapshot_lf_sha256": "9b3654f4df81983657f97902ce11b3bf610ebff0f0dd1002900feed6be09b7c9",
+    "verifier_source_sha256": "9615247510c952105692343e712a62d6327b6e58c59b4fbc2fa4c3b1cbe6ffe3",
+    "independent_process": true,
+    "independent_issuer": false,
+    "original_methods_reexecuted": false,
+    "scope": "Only exact authorized source pins and this new task diagnostic receipts/journal/work files. No old private owner inspected."
+  },
+  "independent_verifier": {
+    "freeze": {
+      "raw_sha256": "9615247510c952105692343e712a62d6327b6e58c59b4fbc2fa4c3b1cbe6ffe3",
+      "monotonic_ns": 494222353500600,
+      "harness_freeze_unchanged": true
+    },
+    "source_utf8": "\"\"\"One read-only review of the new diagnostic; no test-method import/execution.\"\"\"\nimport importlib.util\nimport json\nimport os\nfrom pathlib import Path\nimport stat\nimport sys\nfrom collections import Counter\n\nROOT=Path.cwd()\nspec=importlib.util.spec_from_file_location('frozen_review_harness',ROOT/'ci/run-rpf86-owner-admission.py')\nr=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)\nw=r.local_task();out=r.owned(Path(sys.argv[1]));native=w/'diagnostic-native'\nfrozen=r.strict((w/'preflight/source-freeze.json').read_bytes())\nr.need(all(r.sha((ROOT/p).read_bytes())==h for p,h in frozen['files'].items()),'FROZEN_SOURCE')\nreceipt=r.strict((native/'launch-receipt.json').read_bytes())\nreport=r.read_child_report(native,receipt)\nold=(w/'preflight/diagnostic-harness.py').read_bytes()\nunit=(w/'preflight/diagnostic-unit.py').read_bytes()\nr.need(r.sha(old.replace(b'\\r\\n',b'\\n'))==receipt['harness_lf_sha256'],'DIAGNOSTIC_SOURCE_BINDING')\ncatalog=r.attribution_sources({'ci/run-rpf86-owner-admission.py':old,'ci/test_run_rpf86_owner_admission.py':unit})\nr.need(report['source_identity']['attribution_sources']==catalog,'DIAGNOSTIC_CATALOG')\ncurrent=r.identity()\nr.need(all(report['source_identity'][k]==current[k] for k in ('files','method_ast','assertion_counts','certificate','helper')),'ORIGINAL_PINS')\nr.validate_attribution(report['guard'],catalog,r.IDS)\nj=r.read_journal(native/'denial-journal.jsonl',receipt['harness_lf_sha256'],receipt['pid'],r.IDS,catalog,timeout=receipt['timeout'])\nr.need(j==receipt['journal'] and j['status']=='COMPLETE' and j['terminal']=={'status':'FAIL','error':None},'NEGATIVE_JOURNAL')\nr.need(report['status']=='FAIL' and receipt['exit']==1 and not receipt['timeout'] and not receipt['truncated']\n       and receipt['child_exited'] and receipt['drain_joined'] and receipt['pid']==report['pid'],'NATIVE_SETTLEMENT')\nr.validate_log((native/'output.log').read_bytes(),receipt)\nr.need(report['ids']==r.IDS and report['tests_run']==5 and report['results']==[dict(id=x,actual='PASS') for x in r.IDS],'METHOD_RESULTS')\nr.need(j['methods']==dict.fromkeys(r.IDS,'PASS') and not j['zero_denials_proven'],'NO_FALSE_GREEN')\nr.need(dict(Counter(x['reason'] for x in j['denial_events']))==report['guard']['denied']\n       and len(j['denial_events'])==2,'DENIAL_COUNTS')\nr.need(j['denial_events']==report['guard']['attribution_events'],'DENIAL_EVENT_BINDING')\nr.need(receipt['monotonic_start_ns']<=j['last_frame_monotonic_ns']<=receipt['monotonic_end_ns'],'JOURNAL_TIME')\nr.need(report['physical_owner']==(native/'work').relative_to(ROOT).as_posix() and report['logical_owner']=='rpf-63'\n       and report['patch_restored'] is True and report['source_unchanged'] is True,'PHYSICAL_LOGICAL_OWNER')\nfiles=[];wal=0\ndef walk(folder):\n    global wal\n    for entry in os.scandir(folder):\n        p=Path(entry.path);s=entry.stat(follow_symlinks=False)\n        r.need(not (stat.S_ISLNK(s.st_mode) or getattr(s,'st_file_attributes',0)&1024),'REVIEW_REPARSE')\n        if stat.S_ISDIR(s.st_mode):walk(p)\n        else:\n            r.need(stat.S_ISREG(s.st_mode),'REVIEW_NORMAL_FILE')\n            raw=p.read_bytes();rel=p.relative_to(native/'work').as_posix()\n            files.append(dict(path=rel,bytes=len(raw),sha256=r.sha(raw)))\n            if rel.endswith('/ledger.jsonl'):\n                r.need(r.strict(raw.splitlines()[0])['event']['owner']=='rpf-63','LOGICAL_WAL_OWNER');wal+=1\nwalk(native/'work');files.sort(key=lambda x:x['path'])\nr.need(files==report['manifest'] and wal>0,'PHYSICAL_MANIFEST')\nr.write(out/'verification.json',dict(status='PASS_NEGATIVE_EVIDENCE_ONLY',admission_pass=False,\n    journal_raw_sha256=j['raw_sha256'],journal_frames=j['valid_prefix_frames'],journal_denials=len(j['denial_events']),\n    journal_terminal=j['terminal'],wal_files=wal,manifest_sha256=r.sha(json.dumps(files,sort_keys=True).encode()),\n    source_snapshot_lf_sha256=receipt['harness_lf_sha256'],verifier_source_sha256=r.sha(Path(__file__).read_bytes()),\n    independent_process=True,independent_issuer=False,original_methods_reexecuted=False,\n    scope='Only exact authorized source pins and this new task diagnostic receipts/journal/work files. No old private owner inspected.'))\n",
+    "entry": "Separate task-owned source-frozen read-only script; no test methods imported",
+    "shared_parser_boundary": "Uses frozen harness journal parser, then separately checks raw report/log, original pins, all methods, event equality, owner and physical manifest.",
+    "cli_verify_failure_branch": "NOT_RUN; not the formal entry for this revision"
+  },
+  "formal_native": "NOT_RUN_B",
+  "focused_native": "NOT_RUN",
+  "workflow_blob": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+  "workflow_modified": false,
+  "cost": {
+    "provider": 0,
+    "real_sdk": 0,
+    "key_reads": 0,
+    "java": 0,
+    "docker": 0,
+    "business_http": 0,
+    "production_writes": 0,
+    "api_fee": 0
+  },
+  "coverage": {
+    "required": 1232,
+    "prior_pass": 688,
+    "prior_native_skip": 5,
+    "unavailable": 539,
+    "official_changed": false
+  },
+  "push": "NOT_RUN_AT_SEAL",
+  "hosted_ci": "NOT_RUN_AT_SEAL",
+  "pilot": "NOT_APPLICABLE_B"
+}
