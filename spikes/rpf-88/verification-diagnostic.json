@@ -1,0 +1,192 @@
+{
+  "actual_original_sqlite_tests": "NOT_RUN",
+  "base": "ed242f02cc3e40ac0a9f084619d4335a028bfbc6",
+  "branch": "main",
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "evidence_limits": "64MiB task; 8MiB JSON; 2MiB stdout; formal 420s/60s/600s NOT_RUN",
+  "existing_hosted_ci": "NOT_RUN_AT_SEAL",
+  "formal_control_ids": [
+    "test_inventory_and_ast_pins",
+    "test_descriptor_only_adapter_restore",
+    "test_lexical_denial_before_metadata",
+    "test_real_reparse_denied",
+    "test_sqlite_validation_and_original_callable",
+    "test_guard_physical_process_controls",
+    "test_source_finder_denial_explains_import_boundary",
+    "test_journal_strict_false_greens",
+    "test_receipt_schema_time_and_resources",
+    "test_physical_validation_and_false_green_matrix",
+    "test_strict_json_and_exclusive_output",
+    "test_projection_has_no_private_fields_or_promotion",
+    "test_original_workflow_and_neighbor_pure_controls"
+  ],
+  "formal_controls": {
+    "end_ns": 520942971901100,
+    "exit": 0,
+    "original_R72_methods_run": 0,
+    "pid": 22852,
+    "source_freeze_sha256": "64bc1526550f8fbf7cfbe33f1ef44a654186961c98a8fee910d1b2da94a1dccf",
+    "start_ns": 520941953272500,
+    "status": "PASS",
+    "stdout_sha256": "69fa8ee51a985fc9af33f47544d18481e876040c770babef5a038e272e1dd0a0",
+    "test_count": 13,
+    "timeout": false,
+    "truncated": false
+  },
+  "formal_controls_log_sha256": "69fa8ee51a985fc9af33f47544d18481e876040c770babef5a038e272e1dd0a0",
+  "formal_coverage_unavailable_remaining": 534,
+  "formal_native_cohort": "NOT_RUN_SAFETY_STOP",
+  "independent_b_diagnostic": {
+    "cohort_readback_status": "NOT_RUN",
+    "files_observed": 41,
+    "formal_control_tests": 13,
+    "formal_coverage_remaining": 534,
+    "frozen_candidate_unchanged": true,
+    "local_private_roots_exported": false,
+    "monotonic_ns": 520999821410100,
+    "native_cohort_status": "NOT_RUN",
+    "old_owner_io": 0,
+    "original_sources_unchanged": true,
+    "owned_control_reparse_entries_not_traversed": 4,
+    "pid": 30040,
+    "pretrial_cache_files": 0,
+    "pretrial_original_methods_run": 0,
+    "pretrial_status": "FAIL_GUARD_DENIAL",
+    "pretrial_work_regular_files": 0,
+    "source_identity": "WORKTREE_RAW_HASHES_CHECKED",
+    "status": "PASS_B_DIAGNOSTIC_ONLY",
+    "total_bytes_observed": 369904,
+    "workflow_raw_unchanged": true
+  },
+  "independent_b_diagnostic_sha256": "d33a346d98e1a6655f5e8019d127ce406c598e9d3f9228352272d0e4f9a9bd17",
+  "independent_native_verifier": "NOT_RUN_NO_COHORT",
+  "invalid_cli": {
+    "actual_native_child_launched": false,
+    "end_ns": 521060009255100,
+    "exit": 2,
+    "formal_cohort": "NOT_RUN",
+    "output": "RPF88_INVALID_FAIL_CLOSED",
+    "start_ns": 521059765510100,
+    "stderr_sha256": "7813b78f3b53a69835b7f983e986eb442cbef25935e03db0913730d7d8a7e993",
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "target_old_path": "STRING_ONLY_REJECTED_BEFORE_METADATA"
+  },
+  "key_control": "DENIED_BEFORE_ENV_MAPPING_ACCESS; no secret inspected",
+  "plan": "RPF-88/rev-1",
+  "prefreeze_runs": [
+    {
+      "file": "prefreeze-controls-01.json",
+      "receipt": {
+        "end_ns": 520660552021700,
+        "exit": 0,
+        "start_ns": 520659823624300
+      },
+      "sha256": "c9beb55d31f8bceaaa027adc6169edbffd5a5fbafa7f95d37573acd8db278dc6"
+    },
+    {
+      "file": "prefreeze-controls-02.json",
+      "receipt": {
+        "end_ns": 520779247213800,
+        "exit": 0,
+        "start_ns": 520778447149900
+      },
+      "sha256": "81fbad1672fd18ccbecf3787f955fc6081e60c37f002c2bdf337ca404dfc51e6"
+    },
+    {
+      "file": "prefreeze-controls-03.json",
+      "receipt": {
+        "end_ns": 520866498780100,
+        "exit": 0,
+        "start_ns": 520865467994200
+      },
+      "sha256": "de379f89c3c67daa808b532010a82af2121ffd2bae95824b8796e17a8a9113ac"
+    }
+  ],
+  "prefreeze_warning": "Run02 ResourceWarning unclosed control/verifier connections; corrected before freeze using explicit closing; raw warning retained",
+  "pretrial": {
+    "candidate_bytes_at_pretrial": "UNAVAILABLE_NOT_ARCHIVED; later candidate frozen separately",
+    "child_pid": "UNAVAILABLE_NOT_RECORDED",
+    "descriptor_false_flag_meaning": "RESTORATION_MARKER_NOT_REACHED; no patch applied",
+    "native_methods_run": 0,
+    "original_guard_event_details": "UNAVAILABLE_COUNTER_ONLY",
+    "output_log_sha256": "18d7eff11c91e9ab8f1ffae9c3d5753af3b9e6e0d0214322775896335ecba37d",
+    "owner_patch_applied": false,
+    "receipt": {
+      "end_ns": 520719314093600,
+      "exit": 1,
+      "scope": "one pretrial; import/setup only; zero original test methods",
+      "start_ns": 520719017761000,
+      "stdout_sha256": "18d7eff11c91e9ab8f1ffae9c3d5753af3b9e6e0d0214322775896335ecba37d"
+    },
+    "receipt_sha256": "a8d6877175476c7c07cdc9c2852148f6915e98199002ab2deb6bc771fc43864e",
+    "report": {
+      "cache_empty": true,
+      "descriptor_restored": false,
+      "error": "ModuleNotFoundError:No module named 'runtime'",
+      "guard": {
+        "arbitrary_native_syscalls": "UNAVAILABLE_NOT_KERNEL_SANDBOX",
+        "denied": {
+          "UNAPPROVED_PATH": 1
+        },
+        "metadata_intercepts": [
+          "os.stat",
+          "os.lstat",
+          "Path.resolve"
+        ],
+        "native_boundary": "SQLITE_CONNECT_TARGET_ADMISSION",
+        "observed": {}
+      },
+      "original_test_methods_run": 0,
+      "source_unchanged": true,
+      "status": "FAIL"
+    },
+    "report_sha256": "3fc2ec7092896252a921516fb2331bd4554b855809c13c05a8624e62182780f9",
+    "status": "FAIL",
+    "subsequent_finder_control": "same failure mechanism demonstrated without importing target; not retrospective native evidence"
+  },
+  "pretrial_native_business_writes": 0,
+  "push": "NOT_RUN_AT_SEAL",
+  "release_executed": false,
+  "resources": {
+    "api_cost": 0,
+    "docker": 0,
+    "external_business_http": 0,
+    "java": 0,
+    "key_lookup": 0,
+    "provider": 0,
+    "sdk": 0
+  },
+  "rpf88_hosted_pilot": "NOT_APPLICABLE_B_UNACTIVATED",
+  "schema": "rpf88-verification-v1",
+  "sealed_utc": "2026-11-03T11:16:25Z",
+  "source_capsule_execution": "NOT_RUN_IMPORT_FAILED",
+  "source_freeze": {
+    "controlled_tests": 13,
+    "decision": "B_UNACTIVATED",
+    "formal_original_cohort": "NOT_RUN_SAFETY_STOP",
+    "format": {
+      "ast": "PASS",
+      "compile": "PASS",
+      "py_compile_explicit_owner_cfile": "PASS",
+      "workflow_raw_base": "PASS",
+      "workflow_yaml_bash_new_checks": "NOT_APPLICABLE_NO_WORKFLOW_CHANGE"
+    },
+    "max_total_bytes": 67108864,
+    "monotonic_ns": 520934675920200,
+    "original_methods_executed": 0,
+    "pretrial_consumed": 1,
+    "source_sha256": {
+      ".github/workflows/release-gate.yml": "521a20d6cd7a21e5e7200bc9897cec8766e80a349b61e407d8bc20c009eaad23",
+      "ci/run-rpf88-r72-owner-scope.py": "347c1274f7d9a39273ab8275f9ca15e0ab00a9c7ad2f0d79645f910cf0a9c3cf",
+      "ci/test_run_rpf88_r72_owner_scope.py": "956566449f9aa8a06d7c2d9105cae2810e2ad04755ce179d18a1f8569e77b854"
+    },
+    "status": "FROZEN"
+  },
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "source_tests_unchanged": true,
+  "source_unchanged_after_freeze": true,
+  "sqlite_controls": "REAL_SQLITE_SYNTHETIC_FIXTURES_ONLY; original callable forwarded; connections closed",
+  "status": "PARTIAL",
+  "workflow_changed": false
+}

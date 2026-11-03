@@ -1,0 +1,444 @@
+{
+  "G0": "PASS",
+  "base": "ed242f02cc3e40ac0a9f084619d4335a028bfbc6",
+  "branch": "main",
+  "budget": {
+    "controller_s": 600,
+    "formal_cohorts": 1,
+    "json_bytes": 8388608,
+    "native_s": 420,
+    "pretrial_max": 1,
+    "stdout_bytes": 2097152,
+    "total_bytes": 67108864,
+    "verify_s": 60
+  },
+  "check_count": 206,
+  "checks_all_pass": true,
+  "checks_summary": [
+    "root main upstream fixed HEAD and local Git HTTPS remote match",
+    "tracked and index clean",
+    "10 create-only paths absent Base/index/filesystem and not ignored",
+    "parent nonreparse and casefold absence checks",
+    "actual PowerShell ACL owner and SDDL read, exit0/no exception",
+    "one ignored new owner only; no protected directory traversal",
+    "exact source pins, AST closure and approved public certificate hash",
+    "known automatic CI only; no deployment"
+  ],
+  "create_only": [
+    "ci/run-rpf88-r72-owner-scope.py",
+    "ci/test_run_rpf88_r72_owner_scope.py",
+    "spikes/rpf-88/README.md",
+    "spikes/rpf-88/RESULT.md",
+    "spikes/rpf-88/preflight-diagnostic.json",
+    "spikes/rpf-88/verification-diagnostic.json",
+    "spikes/rpf-88/counterexamples.json",
+    "spikes/rpf-88/decision.json",
+    "spikes/rpf-88/cohort-inventory.json",
+    "spikes/rpf-88/pre-repair-sources/release-gate.yml"
+  ],
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "directory_fsync": "UNAVAILABLE_WINDOWS; file flush/fsync used",
+  "formal_coverage_unavailable_remaining": 534,
+  "g0_monotonic_ns": 520290677561000,
+  "g0_utc": "2026-11-03T11:01:19Z",
+  "plan": "RPF-88/rev-1",
+  "prior_tool_error": "prewrite source path predicate omitted authorized workflow; no files created; corrected predicate",
+  "private_g0_receipt_sha256": "3c786f59c9bf3afbe3f4feb9db2b47c97a5b65a88d303505b277bbb1764d1a85",
+  "private_owner_exported": false,
+  "probe_source_only_admissions": [
+    {
+      "authorization": "AST/source enumeration closure; source-only",
+      "blob": "2758370aeeb012840807930c69c5b865e6713ae1",
+      "path": "spikes/rpf-68/rev-3/probe.py"
+    },
+    {
+      "authorization": "AST/source enumeration closure; source-only",
+      "blob": "9c733e541f2e70d2d4c0205cffa124af71467171",
+      "path": "spikes/rpf-72/probe.py"
+    },
+    {
+      "authorization": "AST/source enumeration closure; source-only",
+      "blob": "127ce2df3c9e0b8ccd2cb3816c62615da4732699",
+      "path": "spikes/rpf-71/probe.py"
+    },
+    {
+      "authorization": "AST/source enumeration closure; source-only",
+      "blob": "90ec3173e7d5724af2e81b33f94de2e266b66ec4",
+      "path": "spikes/rpf-70/probe.py"
+    },
+    {
+      "authorization": "AST/source enumeration closure; source-only",
+      "blob": "6a1ae9d154adcc35f69455b32982faaedb5483bc",
+      "path": "spikes/rpf-55/probe.py"
+    },
+    {
+      "authorization": "AST/source enumeration closure; source-only",
+      "blob": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+      "path": "spikes/rpf-53/probe.py"
+    }
+  ],
+  "release_executed": false,
+  "schema": "rpf88-preflight-v1",
+  "sealed_utc": "2026-11-03T11:16:25Z",
+  "source_catalog": {
+    ".github/workflows/release-gate.yml": {
+      "blob": "28527312ec8cfd4e24200c529324a581c04892d6",
+      "lf": "521a20d6cd7a21e5e7200bc9897cec8766e80a349b61e407d8bc20c009eaad23",
+      "raw": "521a20d6cd7a21e5e7200bc9897cec8766e80a349b61e407d8bc20c009eaad23"
+    },
+    "AGENTS.md": {
+      "blob": "30ae70de50ffa48a89679cac5e74cf9fbb4af179",
+      "lf": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c",
+      "raw": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c"
+    },
+    "ci/reconcile-rpf86-required-coverage.py": {
+      "blob": "1d8d502e0a8db08e56763272565386dc246469b0",
+      "lf": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d",
+      "raw": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d"
+    },
+    "ci/run-rpf86-owner-admission.py": {
+      "blob": "482f14ebc463f623d5de62d38043f88fbce43cb0",
+      "lf": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "raw": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+    },
+    "ci/run-runtime-contract-tests.py": {
+      "blob": "88396fa78d73ba091e91992d4d51263063a95aa7",
+      "lf": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+      "raw": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+    },
+    "ci/runtime-contract-test-matrix.json": {
+      "blob": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+      "lf": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+      "raw": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+    },
+    "ci/verify-runtime-coverage-handoff.py": {
+      "blob": "0e22b02048497b21d698dfe6cd958a437583c94d",
+      "lf": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+      "raw": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+    },
+    "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": {
+      "blob": "257b677a91da15032962dc3eaac8729dd01e66a0",
+      "lf": "3c88e456b4503bb5e8fbe2b87cef5a80381872be4976d43e9848cb7670a78e43",
+      "raw": "643db90835705b414bf3db3c4ca5bded37a2e4a774d793b81bd9661673ba14b4"
+    },
+    "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": {
+      "blob": "8d2c05bd874a8517ccfdc6ba20fbf589e8130d7f",
+      "lf": "1866cbe105ef387793f6132c5801c86ae7c07189e64baeaf5ae21991851eb631",
+      "raw": "c21ca2e231ecb73d0f587cae02f9cb1b955099508f0ddbd3d7808b0f5d213f04"
+    },
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": {
+      "blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+      "lf": "41fc05e3da0b3b89da5cad0a63fa8f0f7017d7d63cddfb8aabf8fd24343f5db3",
+      "raw": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": {
+      "blob": "08f78670f110d7a41035494ce37e3b1436bb5787",
+      "lf": "4a2e111c643d20e2873f4b46c665c58bce3b2b4fa27f5e55fe6467a00ee5443f",
+      "raw": "b121ff3006bb8d8008697e7c33b41e19fffd2e6ed5ceb033f0c53c4e5c98dd15"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": {
+      "blob": "ff16b23d13ffa82cc2571b1f6b64e92f8f380e7e",
+      "lf": "b973698450a42be8f74838f5aa8377bb45010694a2aa555819caa48ceb1c86a9",
+      "raw": "c2c8b8eac56d1e1cf56bd32823b4813fc771083711c57efb99901d5378e181f8"
+    },
+    "runtime/runproof_runtime/effectwitness/config_live_verify.py": {
+      "blob": "88156284be44671f823cc511d44d36028511dbba",
+      "lf": "75fa9329f8773279801b6e5c3165fe0bd8fc22ead60f7001f6c885827f8d0282",
+      "raw": "5a4501dd22cd736f20a0ac56e0d71281e1fec667cd128687806c69f5a46a208a"
+    },
+    "runtime/runproof_runtime/effectwitness/contracts.py": {
+      "blob": "0321f5d7353f7aa09f00df55806f0815381ac4dc",
+      "lf": "dad9f0f56d0533b28b6f02ae9a6b9dfad1cbc3f53bf70825b6f0c54ffdbf6d4d",
+      "raw": "4dfe578ca7dda68ca5642d1882586dfee80d235a6edb1dfb41674fbbd65a2761"
+    },
+    "runtime/runproof_runtime/effectwitness/effect_oracle.py": {
+      "blob": "3d1322472b1621f4061db4331914dc4e36b23fa0",
+      "lf": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "raw": "cb6f1fab4a7c05bf2c448b7728d35bdf5cf663d39a56513564bc020c9f56a834"
+    },
+    "runtime/runproof_runtime/effectwitness/orders.py": {
+      "blob": "f302fe8a3dd71ae08121d427407c427757666942",
+      "lf": "b28a00b9b43342ac6d85693aee0a5902aa60d4060446347a6f381a7de4b6d3ef",
+      "raw": "83358139c849cc2444827df6e74f183b55e03e39b8bdafde5f3356d2a0298f1e"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py": {
+      "blob": "b10e9bbc7d59fcab7b0dea6db9c214a27b0dce01",
+      "lf": "a27f4970754bf1de38338f935a2056d91c98412d63ef7ee37d6c2cce00ee9504",
+      "raw": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r67_order_child.py": {
+      "blob": "eca1b240f9512b665792141e53c4103c5b4dcddb",
+      "lf": "1c3a3543061d81c5a07654284cfa531160498facbb0bb57175bf2fe94c3ee90c",
+      "raw": "72d2cfa9ac53b790b7bdd5ccbb0d8024198372fe43723becfa6d7bbd7a044529"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": {
+      "blob": "ef34deac1efb3b828e779359f8c65e511b014939",
+      "lf": "86a9cec7bf426c83aa0e98d85ca981b69e40c644efb6640999fa9e5141f7b5cc",
+      "raw": "5797c584ee099a3777073b5733762a2cf034b8fd17f7bffb82a8db902823ecf3"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py": {
+      "blob": "34d5fd69480359cb09d8c839596dbfd3d5aabcd7",
+      "lf": "3fc3e12bbef251f853527cb2b16a23a819babda96997af9056344db9ae672612",
+      "raw": "5a8be2163a3d37108b7cb121015c54339e305db5e3deef589ce6de3b9f34df4e"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_context.py": {
+      "blob": "cb69d8bb696f03224fdffde55999a8f44274802c",
+      "lf": "3daa88f37a8b3f3e0d7041e397443fa40997594efca3d52dc25dfd1e76aff4c9",
+      "raw": "ece2dabb7c0fb10d3fdd9557027632d67c1a8151d68eeeb3f8aeffd8c1a5144a"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": {
+      "blob": "8c59dd7b12a5fc0e7d7f80e6f72810085282ebe3",
+      "lf": "ef2bbc53af1650613926c37dbe204cea21331c6ed7415c92058626020b503a23",
+      "raw": "94f4155b170967f36bc606cedb06affc43b03c7a19cd83e1f1b265229c143891"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": {
+      "blob": "3896c73991957b0d0e70f83e77cece8318b21c3b",
+      "lf": "ae98e1db1a194b3b72c0d469b31545726babfaea2ff4ca6eaa20c4d67b018750",
+      "raw": "013b95b1041eec855cdc6b9d485ef15ff3e73af4e95bac3363da73024777ccd0"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py": {
+      "blob": "b775a9d1fcebaaf5984d3a9499aca153fec00e9e",
+      "lf": "3812392af66340099f44ee4efe1dbf80856346ce53eb317ae39f822858c98235",
+      "raw": "450713c5c0dd9745121cc85f24bf9fcad7f4b78147b702174b1f091629205767"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py": {
+      "blob": "e3990d1c5f887592cbeff2a10db7a7b27292115f",
+      "lf": "4fabc4aa26cf54cb6b387f06c895123432fb9ce0fc3a05c89d01c7401884babb",
+      "raw": "7a62b7dd91ef21a94da8536611ddc0e2179b1bb146514535dcb07dcbc431f117"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": {
+      "blob": "632224882fef588bbc26ce78a6bb5daaf9873f53",
+      "lf": "c278eae783e3fa3eacdb0c852c9ab7b4a9685bb7f4669395bb316460cd5eb5f7",
+      "raw": "947b3a2a198508fe6fbb900df385962b4928773aa91bdd237ef064d1731170af"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_session.py": {
+      "blob": "f613345128b2040a06879b625a7733c72bd7c1c0",
+      "lf": "bd5ab2c74e14c7b6573d062522db09865c9b54fecb8e303205781ff75aad25af",
+      "raw": "083a59a07be60d6bb16ea48aba11c484c4a57ce763d6fb0329c8cc82c1096d74"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r68_verify.py": {
+      "blob": "48baa89ec24a51ebe39a597e89aa1753e0a200db",
+      "lf": "3e4b89e5a0142887b42640c56db7775001684bc3f96b26f120fa28cdd8122d78",
+      "raw": "430578f210db791381bfc2a0952a8cd7ce46d3d0b2f57ce3ce06285c7e489b56"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_capability.py": {
+      "blob": "3edfd818e900083874c05987b17aff8cca06d649",
+      "lf": "99ab82737e56c3b7c7348abad67a303f02a05d705e64200dad3946bf87868ef5",
+      "raw": "3482e9c9b6f9b3bedeb7eb284021b161414b6eccfb8486c8b8d9cd95b2b6f39b"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py": {
+      "blob": "a4232f929b145b6a4e9170302a02f5e8b9312888",
+      "lf": "a652266689efb30b597c9532b79bf31f855dd37595d27f341e4f3c0e547a6061",
+      "raw": "8aeb4b759f8451ada7f7a517bbe3504be89d2c5b0689af1269f3fb733979961c"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_migration.py": {
+      "blob": "a92597af93bc2a3d42fc0574032ff24eae9bbe34",
+      "lf": "662413e152268a130e9c7b7ae1b265960a7d2b53a544044d1da127813ed30b8d",
+      "raw": "f27e11c905f60591768b25831cc9885181c48713db1fd7607fe6ba02a7f3f9e4"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py": {
+      "blob": "878f95ea6e18c823d9b956326ff39bd35c62d6f7",
+      "lf": "d3e8daf092cd7b20305b78833553f5c3a84e55a1c9efe7f8f36facf416a10846",
+      "raw": "7ec770a2ed0e024e07460967ae9a6bd7b0dbf440b22a7c5761d668670cad5941"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_ports.py": {
+      "blob": "dfb63bc7407cf9b8e00d46d47138652bc3029f95",
+      "lf": "99d054bee0ec93e4ebf7863bd25644b382b3e79b5664b2c00ba556737d881e7d",
+      "raw": "efd959eb73114817a0da1dc30a812c18b06ff177966c4968303a8c1ea89c2577"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_session.py": {
+      "blob": "2bc9f84ff7625d3face351a6946ad6d5c8ace7e8",
+      "lf": "08ec12af5106578d9ca9a6b408090f54bf6298bcf4df0a92e6a755d008ea8821",
+      "raw": "ee4c761855d9235e0568f83d03c9655c00e31062ef1b1b7986a41d914c543827"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r70_verify.py": {
+      "blob": "8e0cc897dabdbc3812059a545454ad5204b8ea42",
+      "lf": "2c650c99231193edaad9484f08c4c55264f996bca7a11c8197b31b7856de69d3",
+      "raw": "679724b1a35937fed5e3353e0a7b53a5bf06dec13a834c95b953a679cd5a322a"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_budget_ledger.py": {
+      "blob": "45d5cc1c77f08a95998aef8091610121356fc58e",
+      "lf": "02c2eb2835b546073904d03e8db10fbdc7cf3f21d206b8c4fbc1c73ca68ac746",
+      "raw": "571b10907f1de2f0261519dcf4f3ae8605306563f2b8041899b5d96650e89b3b"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_budget_policy.py": {
+      "blob": "f3b957ba9d520a239db0ddf58b5cf85ef372e586",
+      "lf": "bf183b085f659e937494a36ab0c0ff2c42ce66c8d76d6914a64fe05f1e03a597",
+      "raw": "8b3a86604b2ffcc381dee04944d24b3148e36da88c059fe745ea4813ef33ef9e"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_capability.py": {
+      "blob": "012cd10318d0253a5b8b1ac00a8adfcd1aae6845",
+      "lf": "d1fac0452e40f24a3d10445fa7b150d9c035f7977c66dd5df6c451c96ce0f19b",
+      "raw": "403cfa72a10d3590ee386aa9b5d3008db50d7ebb13c441dafe4f8f578e9d9b9a"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_contracts.py": {
+      "blob": "3aa0bc586c23b18034921b175fad8c8bce7cf6d1",
+      "lf": "43c40f8b63eb0cf6f8e9f478f87e0350a0fcbdb467256d7ee92815a5c9e60417",
+      "raw": "b83fea268ded9ca640d44c23324aaa0c03e38e4356a7c9e9ad97356dcacf145a"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_migration.py": {
+      "blob": "d6985011f0aff1a0ef96f797ff4bf9f8be0f1224",
+      "lf": "86da2a4a29c76d731f8e826d5832237e385720e6046b98d942e0242654ee2d7b",
+      "raw": "e0d58262455d9e80f089999edd5c2372849f0ec4908b30b844200c96d0e12039"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_owner_source.py": {
+      "blob": "121ce3d8a9fdbb11dc37229a86469f1f4db152df",
+      "lf": "1164324fb618f975d7fcbe3cd16a28ae08829aa7c9ce349972514b3f3c9cf930",
+      "raw": "4ecf3de3c2d12edd64fcc907bd004fbe6b32052ab27c6f28aa665533e683af02"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_ports.py": {
+      "blob": "fa61b3c66dcfa2cf529a740f361432830ea3f247",
+      "lf": "6158c301a050a6dbee14dcc1ba7d639f3b77a5e623b55d63f2311c27520a06c3",
+      "raw": "f12e7a6c3cf6794d6093c7da9f8dafd7042a7baaf834ab7e2b7a3d2d6e65e34c"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_session.py": {
+      "blob": "71f9c19c848b0930d81480551574184c2af17998",
+      "lf": "b233d43f08e832047d30e96502330f3d1ae902e36842f6bae49b46979df57810",
+      "raw": "87f07dc3089ed4e0e9365f4666ff37dad98a6247a4b268606af2a5bc1f43efa9"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r71_verify.py": {
+      "blob": "8807ba58d054e58968daff977dbdc81ad78e0608",
+      "lf": "eab8c3703142f6ed59c74c9cdb45b4108d24db33c6f4199aa7e2c7d987c45181",
+      "raw": "a0938374ef5d0e4c642de93cd7f0e07511bc0f2a68c52a5ecc1b8301e9b420e7"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_budget_ledger.py": {
+      "blob": "1f7346cd2ce97c0f1dbd35601633358dda305074",
+      "lf": "d9ffe8d543e5a41a4d443359af59888f658685f042e76deac0a1ac780bcd1a7f",
+      "raw": "b58c3e3e0afd10c27a1e43a167058335c136339a2dcb42c5135327309495eba9"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_budget_policy.py": {
+      "blob": "7cb8e5dbdc734a983c0c366f6c7ccab3d479e3c1",
+      "lf": "70243f5eae873e929523486fb6f247419c723d05b906e4b0fe24702284cde27e",
+      "raw": "3b27a38e7b6de4846849cc4e118ab335c2575a8789277e159ca8e8a7fcdaec18"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_capability.py": {
+      "blob": "94b61784b27929e704a871cc6159dfac7db51156",
+      "lf": "25dba0c9e13cadf7825bff0b641eb81e792878901403500aa41ccdd8b9fa5d87",
+      "raw": "8f93cae0a15f699a924ba8521a0d1e460fc0a3edb487178547eee97b253c4641"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_contracts.py": {
+      "blob": "efea283ef6288a4cb0452ec9fbdd15340bacf46f",
+      "lf": "be91b7d536530e134d3805c4f133d91574405eddc23e29832e9970a26d4422b1",
+      "raw": "83812205a8740f738452a3c69e2b43ffb598a1b8cc0d623d5f03b7a2aa036c0e"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_migration.py": {
+      "blob": "a8771e7fd994aa7cea41643431ee0e85afbfcf5d",
+      "lf": "79d036667c030ac3de28da0350990f7d1bc01d1a08500a4f2391829cb808d1ac",
+      "raw": "b5c5063f796ff3f308d5708e07f000d8baa094cc5b57e656a81f61d91c67030c"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_owner_source.py": {
+      "blob": "033ac2721d609ebe34261d90420472781b20465b",
+      "lf": "bc06b8ce05975d9afd4b8f5fd42cfe2f7e8123cc0e81e2e7a4d9ec979340bec2",
+      "raw": "7a220a3bc56a913b20a45c716f8715160d00b2c602473e76c9d6d5a823c45d69"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_ports.py": {
+      "blob": "d226a22118debaccf216e153476a4e374c3fd3ea",
+      "lf": "bef3cccd08be3f03d467eaa6e3e037dd642639ebe02930177afd13e982b98ff8",
+      "raw": "4ec3bbcf39fce8ed34b99bf6b98b3416c90c56a9bdeacc091486c12884ff92bd"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_sdk_contract.py": {
+      "blob": "029c4f83c543b0666b30a3918add84df027256e2",
+      "lf": "9051b6e92aeb57de388e7480aafeaab44f86a3930e947bc2d5d1d089304348fb",
+      "raw": "11d2fd961e9f899a628c85fb07ffeded01f9475967f72da786c3c1942dd01129"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_session.py": {
+      "blob": "fe350a90247242031175db1a59e5d352137f10a2",
+      "lf": "a4d76afef0d3cbbd9a98d0c1430bfabb4ad3b0379b4796180e5a5b78875f883c",
+      "raw": "8aa43b864dff8358931bf3c6dd5ed0bae6f97575123b72d4558918bfa98e69bf"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r72_verify.py": {
+      "blob": "373e3756d22e957a532db7a7c3263a72f4d43ed6",
+      "lf": "10fec4ba8e635f298be04d65e5ceafd778623164e19e69271ffc8d0736f9e5bf",
+      "raw": "79024efb6686c85489c1957a819fa6a409b23c36cb3e976888c52526bef96420"
+    },
+    "runtime/runproof_runtime/models.py": {
+      "blob": "05343951e4a2faf34c80e2657586296ca3f36897",
+      "lf": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+      "raw": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3"
+    },
+    "runtime/tests/test_effectwitness_pge_r68.py": {
+      "blob": "654dd0c9e87a39287a66c48958d52cf8b9398234",
+      "lf": "a5cc81986279dbbbdb6a419d1dd1c94e00eeb6d6d6ce4959e37a66b6077a4449",
+      "raw": "b0d8f688bcf33fbe0d39a1e4baa3f5b9eb1158e725745ea1adc8939cf121958c"
+    },
+    "runtime/tests/test_effectwitness_pge_r70.py": {
+      "blob": "70bb2ab41b88e0f117af3d8010a5cccf370a57fb",
+      "lf": "e346e1a357b859e68a221dd1dc6a03e321e77eb4d08b8be981eaefe1db6d0919",
+      "raw": "26f3dbec9bfe12d6f4e02ba8c9c484d0a20358e67aab5c96d954432513c9a1c6"
+    },
+    "runtime/tests/test_effectwitness_pge_r71.py": {
+      "blob": "0d4e5342a1e0cb6a0d2d890181d70e20ec658162",
+      "lf": "d11733f56ea35d5db606a5ac2a9d39bbb648ac1ebd5b54cbff5fe84d53ae87d2",
+      "raw": "3798f0897b49d7e26ca8127adc995a3a484de9a0c9220efdeba0610c7f062203"
+    },
+    "runtime/tests/test_effectwitness_pge_r72.py": {
+      "blob": "4db22ba737e47f26a157a9371e88b5b941ff62ed",
+      "lf": "a770c5027c3dd8d6ac04abc89eec54414f3de15741565d17a67333f56a3ba41b",
+      "raw": "d607258ff9cb6bed509d795eed06c8fc06551b7feb86be78557ba39906f539b9"
+    },
+    "spikes/rpf-53/probe.py": {
+      "blob": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+      "lf": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e",
+      "raw": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6"
+    },
+    "spikes/rpf-53/rev-6/config-live-evidence.json": {
+      "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+      "lf": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+      "raw": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43"
+    },
+    "spikes/rpf-55/probe.py": {
+      "blob": "6a1ae9d154adcc35f69455b32982faaedb5483bc",
+      "lf": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c",
+      "raw": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6"
+    },
+    "spikes/rpf-68/rev-3/probe.py": {
+      "blob": "2758370aeeb012840807930c69c5b865e6713ae1",
+      "lf": "2f62f4b61066f92d7d48a00fefa584273c177656c10afff686b90a001eddb10a",
+      "raw": "1823de87e7c814c106d205bc431d25a10ed6bd6bf2fb0b6d82989d9b1983fdab"
+    },
+    "spikes/rpf-70/probe.py": {
+      "blob": "90ec3173e7d5724af2e81b33f94de2e266b66ec4",
+      "lf": "c5f9af2f76e1115540ab6f99b72f4842b6e4d4629cd0dd5c2eec0109a20efee0",
+      "raw": "d34843910ec38db125e701733498ab318c6675f9fc72b54487725ddf3e7b6311"
+    },
+    "spikes/rpf-71/probe.py": {
+      "blob": "127ce2df3c9e0b8ccd2cb3816c62615da4732699",
+      "lf": "fd3efaac12b75fd8bad3fc5f4538408cb1a93e4a0df121d312bd662bc14fb261",
+      "raw": "dc939d846e73257746e4298b699af330af1a3e40ce0f4dcaf81bc0ee0bc07644"
+    },
+    "spikes/rpf-72/probe.py": {
+      "blob": "9c733e541f2e70d2d4c0205cffa124af71467171",
+      "lf": "10df49b4a17e545ee281b271ed6220c6b8193cd025757922a591a5ceaed8b819",
+      "raw": "ca07c68f7ef3bda0067b2efc6a166d16de8fe5072b858bf2cca24e69d49bf361"
+    }
+  },
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "source_package_admission": {
+    "source_only_init_files": {
+      "runtime/__init__.py": {
+        "blob": "d7a89e7df9ec62d95e768e89ad674e1ce77aca39",
+        "lf": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778",
+        "raw": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778"
+      },
+      "runtime/runproof_runtime/__init__.py": {
+        "blob": "817d8f1c56cdebddf47d8c879ecba58a1adc1894",
+        "lf": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757",
+        "raw": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757"
+      },
+      "runtime/runproof_runtime/effectwitness/__init__.py": {
+        "blob": "61d072f601e62afad21a5cfd4282d66c8db4228f",
+        "lf": "eed7d971a9b3fc80994c5458e21599dcc6df6b0b4734c67fcb6455561613b90b",
+        "raw": "7c1b13051e78e9c839c8545fcaab4fe14ffce627232ddfd48cb590516484f4c5"
+      },
+      "runtime/tests/__init__.py": {
+        "blob": "13b315b207b2dd91730c3dd702bca475aeb14ff3",
+        "lf": "9bdd237c2661d4ea0decc14c6cc221785d9d2150336ae50dcef64de5fa73218f",
+        "raw": "9bdd237c2661d4ea0decc14c6cc221785d9d2150336ae50dcef64de5fa73218f"
+      }
+    }
+  },
+  "status": "PARTIAL",
+  "workflow_base_blob": "28527312ec8cfd4e24200c529324a581c04892d6",
+  "workflow_raw_sha256": "521a20d6cd7a21e5e7200bc9897cec8766e80a349b61e407d8bc20c009eaad23"
+}
