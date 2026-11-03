@@ -1,0 +1,167 @@
+{
+  "plan": "RPF-87/rev-1",
+  "base": "26e9bddafd29c5fea4ea604871429b019e35d264",
+  "status": "PARTIAL",
+  "decision": "A_ACTIVE",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "formal_control_methods": 17,
+  "classes": {
+    "test_actual_cli_assess_zero_enforce_one_invalid_two": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 26596,
+      "seconds": 25.8552565,
+      "stdout_sha256": "7451e84b1d1acd416518727edef7a3bfbd4127e39f7636f5ad24fd4510d1ea01"
+    },
+    "test_atomic_positive_exact_difference_and_no_release": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 32036,
+      "seconds": 12.699937,
+      "stdout_sha256": "83023ff467cb5813e039377e0b8c0132a9972a6166e30375dd055d1074ae9767"
+    },
+    "test_exact_source_loader_does_not_patch_global_imports": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 23972,
+      "seconds": 2.4359529,
+      "stdout_sha256": "ecdcfd8bd1f5793e5ec9c3d1fd39b31c0ac65e2fb42b89d04cc774cfae331516"
+    },
+    "test_existing_pure_safety_boundaries_regress": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 2288,
+      "seconds": 12.9950061,
+      "stdout_sha256": "9e060e422b3c947eac12a0756dc216a8286bd75db6f35538fe893497a94cab7c"
+    },
+    "test_guard_even_with_all_method_pass_is_not_admitted": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 13080,
+      "seconds": 9.277118,
+      "stdout_sha256": "ea022fa19c3230f8eebabf0d57048c5c864396d32013f7c8570fecb66428da27"
+    },
+    "test_independent_pid_time_and_same_run_are_required": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 21268,
+      "seconds": 42.1623269,
+      "stdout_sha256": "3ae4eabf7e90905a72e035cfb4c7169279ccd1af92930e5344aefea56e6c6a1d"
+    },
+    "test_json_unknown_duplicate_nonfinite_and_overwrite": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 9748,
+      "seconds": 7.3684128,
+      "stdout_sha256": "e6abb6f4210314ca00edf603c3a57512a64f1bcbde4261b81fae4328f0249ee3"
+    },
+    "test_method_missing_duplicate_wrong_portable_and_source_drift": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 22224,
+      "seconds": 30.1887724,
+      "stdout_sha256": "9c89e9952bb5ecfd705da9c1f1fad4ca936cc03b4bf21614bb687c91f2665258"
+    },
+    "test_missing_pilot_retains_539_and_safe_projection": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 16168,
+      "seconds": 7.1728569,
+      "stdout_sha256": "1d6970ce057c0d5d53ecebf07760e26d951ddc8ad11acce474bde42644e85c04"
+    },
+    "test_original_handoff_and_routes_cannot_be_changed": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 3728,
+      "seconds": 21.3536048,
+      "stdout_sha256": "f3c90c9b9b94c08c27b0623581af04ab76ebaae0c446a3a48b066903ec1cf554"
+    },
+    "test_paths_cannot_touch_old_or_cross_run_targets": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 10856,
+      "seconds": 1.9397395,
+      "stdout_sha256": "b8c570ad4310c04db0b9387f8db3adc29a7cd0e77f4388c429c0418af4247489"
+    },
+    "test_physical_log_manifest_and_wal_drift_reject": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 35828,
+      "seconds": 39.0367636,
+      "stdout_sha256": "a6a7cbda2f7311067ce412d3c2a3c937e2db8fbe916ba47e1f98951c64ffb9ed"
+    },
+    "test_public_only_and_result_only_cannot_admit": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 6656,
+      "seconds": 55.840968,
+      "stdout_sha256": "01d865097872a95109049b52490033c55f587ddec811fe34c335270d5f4bda56"
+    },
+    "test_receipt_pid_clock_timeout_exit_and_hash_reject": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 23040,
+      "seconds": 78.580231,
+      "stdout_sha256": "80e1905eb394be48f7d44ec0378a54a845fec17d279e4fa3594830200df41433"
+    },
+    "test_rehashed_fake_native_events_and_bool_resource_still_reject": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 35588,
+      "seconds": 43.386345,
+      "stdout_sha256": "19d71d6563f5be72f67bc3405e2150287aa755cddc4cc7ce85cf0ebd8b0dbc33"
+    },
+    "test_rehashed_wal_owner_source_cannot_be_self_signed_into_pass": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 9168,
+      "seconds": 15.0225858,
+      "stdout_sha256": "22357bf1c4756249e05eae2df38f7cad673e1bdec07db71b934f86f2e652c86d"
+    },
+    "test_reparse_is_rejected_before_following": {
+      "status": "PASS",
+      "exit": 0,
+      "pid": 7208,
+      "seconds": 9.9604591,
+      "stdout_sha256": "5b03c7d0f0272f92fe3bc6255261fb940938ea51553d7987022e0f7ba99a4e0f"
+    }
+  },
+  "coverage": [
+    "Atomic five-ID positive and unchanged 1227 IDs",
+    "assess0/enforce1/invalid2 and exclusive output",
+    "public PASS only, native/report/verifier/journal missing",
+    "exit1, bool PID/resource, timeout/truncation, stdout hash, unsettled child",
+    "missing/duplicate/wrong/sixth-portable IDs and source drift",
+    "Guard denial despite five PASS",
+    "rehashed fake native START events and self-signed WAL source",
+    "independent PID same, clock reverse, wrong run/attempt/commit",
+    "original RPF85/Router ledger route/count/status forgery",
+    "external/old/protected/cross-run path rejected before target lstat",
+    "real reparse point rejected before follow",
+    "strict JSON duplicate/nonfinite/oversize/unknown and no overwrite",
+    "safe derived projection without raw SDK/path tokens",
+    "source-only validator imports; no global hook mutation"
+  ],
+  "original_regression_methods": {
+    "rpf86": [
+      "test_original_source_and_assertions_pinned",
+      "test_protocol_control_not_native_pass_and_false_greens_reject",
+      "test_unsettled_child_never_passes",
+      "test_json_duplicate_nonfinite",
+      "test_hosted_public_projection_omits_paths_protocol_and_identity_values"
+    ],
+    "rpf84": [
+      "test_duplicate_and_nonfinite_json_fail",
+      "test_wrong_schema_type_fails",
+      "test_forged_skip_and_pass_need_real_progress_events",
+      "test_partial_progress_never_upgrades_unstarted_or_duplicate"
+    ],
+    "rpf85": [
+      "test_synthetic_positive_continues_but_barrier_rejects",
+      "test_ci_identity_and_synthetic_cannot_cross_boundary",
+      "test_summary_appends_separate_blocker_and_rejects_escape"
+    ]
+  },
+  "remaining_rpf86_controls": "Unchanged exact source/27 test IDs; prior RPF86 proof reused rather than creating a forbidden new RPF86 local native owner",
+  "fixture_boundary": "Protocol metadata and two real short-lived Python control child receipts; no original Runtime test methods executed. Synthetic mode cannot be CI."
+}

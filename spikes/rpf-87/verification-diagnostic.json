@@ -1,0 +1,610 @@
+{
+  "plan": "RPF-87/rev-1",
+  "base": "26e9bddafd29c5fea4ea604871429b019e35d264",
+  "status": "PARTIAL",
+  "decision": "A_ACTIVE",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "source_freeze": {
+    "status": "FROZEN",
+    "monotonic_ns": 505605760585400,
+    "source_sha256": {
+      "ci/reconcile-rpf86-required-coverage.py": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d",
+      "ci/test_reconcile_rpf86_required_coverage.py": "430a6fa5110f5fb5a2c7db9bf37959ae0567331ff22fe204a32c737679ec161d",
+      ".github/workflows/release-gate.yml": "521a20d6cd7a21e5e7200bc9897cec8766e80a349b61e407d8bc20c009eaad23"
+    },
+    "driver_sha256": "62837ca76c55a802b4f3bf39d47b4b0eed1b8fd8491511ee3ed97ca3e77a7e44",
+    "test_count": 17,
+    "checks": {
+      "ast_compile": "PASS",
+      "yaml_model_exact_delta": "PASS",
+      "original_prefix_lines_preserved": "PASS",
+      "bash_n": "PASS",
+      "diff_check": "PASS"
+    },
+    "source_scope": "Original RPF84/85/86 source unchanged; no original Runtime methods run"
+  },
+  "formal_tests": {
+    "status": "PASS",
+    "methods": 17,
+    "receipts": [
+      {
+        "method": "test_actual_cli_assess_zero_enforce_one_invalid_two",
+        "pid": 26596,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 279,
+        "stdout_sha256": "7451e84b1d1acd416518727edef7a3bfbd4127e39f7636f5ad24fd4510d1ea01",
+        "monotonic_start_ns": 505671010673700,
+        "monotonic_end_ns": 505696865930200,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_atomic_positive_exact_difference_and_no_release",
+        "pid": 32036,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 281,
+        "stdout_sha256": "83023ff467cb5813e039377e0b8c0132a9972a6166e30375dd055d1074ae9767",
+        "monotonic_start_ns": 505696871860500,
+        "monotonic_end_ns": 505709571797500,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_exact_source_loader_does_not_patch_global_imports",
+        "pid": 23972,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 284,
+        "stdout_sha256": "ecdcfd8bd1f5793e5ec9c3d1fd39b31c0ac65e2fb42b89d04cc774cfae331516",
+        "monotonic_start_ns": 505709576299700,
+        "monotonic_end_ns": 505712012252600,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_existing_pure_safety_boundaries_regress",
+        "pid": 2288,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 265,
+        "stdout_sha256": "9e060e422b3c947eac12a0756dc216a8286bd75db6f35538fe893497a94cab7c",
+        "monotonic_start_ns": 505712017791700,
+        "monotonic_end_ns": 505725012797800,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_guard_even_with_all_method_pass_is_not_admitted",
+        "pid": 13080,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 280,
+        "stdout_sha256": "ea022fa19c3230f8eebabf0d57048c5c864396d32013f7c8570fecb66428da27",
+        "monotonic_start_ns": 505725019192200,
+        "monotonic_end_ns": 505734296310200,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_independent_pid_time_and_same_run_are_required",
+        "pid": 21268,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 279,
+        "stdout_sha256": "3ae4eabf7e90905a72e035cfb4c7169279ccd1af92930e5344aefea56e6c6a1d",
+        "monotonic_start_ns": 505734302454400,
+        "monotonic_end_ns": 505776464781300,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_json_unknown_duplicate_nonfinite_and_overwrite",
+        "pid": 9748,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 278,
+        "stdout_sha256": "e6abb6f4210314ca00edf603c3a57512a64f1bcbde4261b81fae4328f0249ee3",
+        "monotonic_start_ns": 505776478631300,
+        "monotonic_end_ns": 505783847044100,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_method_missing_duplicate_wrong_portable_and_source_drift",
+        "pid": 22224,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 299,
+        "stdout_sha256": "9c89e9952bb5ecfd705da9c1f1fad4ca936cc03b4bf21614bb687c91f2665258",
+        "monotonic_start_ns": 505783852565500,
+        "monotonic_end_ns": 505814041337900,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_missing_pilot_retains_539_and_safe_projection",
+        "pid": 16168,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 276,
+        "stdout_sha256": "1d6970ce057c0d5d53ecebf07760e26d951ddc8ad11acce474bde42644e85c04",
+        "monotonic_start_ns": 505814045529600,
+        "monotonic_end_ns": 505821218386500,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_original_handoff_and_routes_cannot_be_changed",
+        "pid": 3728,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 277,
+        "stdout_sha256": "f3c90c9b9b94c08c27b0623581af04ab76ebaae0c446a3a48b066903ec1cf554",
+        "monotonic_start_ns": 505821231627100,
+        "monotonic_end_ns": 505842585231900,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_paths_cannot_touch_old_or_cross_run_targets",
+        "pid": 10856,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 272,
+        "stdout_sha256": "b8c570ad4310c04db0b9387f8db3adc29a7cd0e77f4388c429c0418af4247489",
+        "monotonic_start_ns": 505842599398900,
+        "monotonic_end_ns": 505844539138400,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_physical_log_manifest_and_wal_drift_reject",
+        "pid": 35828,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 271,
+        "stdout_sha256": "a6a7cbda2f7311067ce412d3c2a3c937e2db8fbe916ba47e1f98951c64ffb9ed",
+        "monotonic_start_ns": 505844552724100,
+        "monotonic_end_ns": 505883589487700,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_public_only_and_result_only_cannot_admit",
+        "pid": 6656,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 267,
+        "stdout_sha256": "01d865097872a95109049b52490033c55f587ddec811fe34c335270d5f4bda56",
+        "monotonic_start_ns": 505883594652200,
+        "monotonic_end_ns": 505939435620200,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_receipt_pid_clock_timeout_exit_and_hash_reject",
+        "pid": 23040,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 279,
+        "stdout_sha256": "80e1905eb394be48f7d44ec0378a54a845fec17d279e4fa3594830200df41433",
+        "monotonic_start_ns": 505939439850500,
+        "monotonic_end_ns": 506018020081500,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_rehashed_fake_native_events_and_bool_resource_still_reject",
+        "pid": 35588,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 303,
+        "stdout_sha256": "19d71d6563f5be72f67bc3405e2150287aa755cddc4cc7ce85cf0ebd8b0dbc33",
+        "monotonic_start_ns": 506018035222400,
+        "monotonic_end_ns": 506061421567400,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_rehashed_wal_owner_source_cannot_be_self_signed_into_pass",
+        "pid": 9168,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 301,
+        "stdout_sha256": "22357bf1c4756249e05eae2df38f7cad673e1bdec07db71b934f86f2e652c86d",
+        "monotonic_start_ns": 506061435843700,
+        "monotonic_end_ns": 506076458429500,
+        "child_exited": true,
+        "stdout_closed": true
+      },
+      {
+        "method": "test_reparse_is_rejected_before_following",
+        "pid": 7208,
+        "exit": 0,
+        "timeout_or_overflow": false,
+        "bytes": 258,
+        "stdout_sha256": "5b03c7d0f0272f92fe3bc6255261fb940938ea51553d7987022e0f7ba99a4e0f",
+        "monotonic_start_ns": 506076464201100,
+        "monotonic_end_ns": 506086424660200,
+        "child_exited": true,
+        "stdout_closed": true
+      }
+    ],
+    "monotonic_start_ns": 505671010667800,
+    "monotonic_end_ns": 506086437959200,
+    "synthetic_controls_only": true,
+    "original_runtime_methods_executed": false
+  },
+  "independent_id_diff": {
+    "status": "PASS_SYNTHETIC_ONLY",
+    "required_ids": 1232,
+    "exact_changed_ids": [
+      "test_effectwitness_pge_dual.DualTests.test_four_paths",
+      "test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+      "test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+      "test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+      "test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+    ],
+    "unchanged_ids": 1227,
+    "original_counts": {
+      "PASS": 688,
+      "SKIP": 5,
+      "UNAVAILABLE": 539
+    },
+    "effective_counts": {
+      "PASS": 693,
+      "SKIP": 5,
+      "UNAVAILABLE": 534
+    },
+    "required_id_set_sha256": "eee8187d6e71833774fe3bce07fe642d1c84470a5e13527b91a3f5c69d40b141",
+    "outcome_raw_sha256": "b89b89a52952e5fd0efd29c364df5216c5b662e5fa60300e0bc97b899826bbce",
+    "original_runtime_methods_executed": false
+  },
+  "prefreeze": {
+    "initial_suite_timeout": {
+      "status": "TIMEOUT",
+      "limit_seconds": 180,
+      "unit_suite_completed": false,
+      "raw_unit_stdout": "UNAVAILABLE: outer subprocess.run raised before log persistence",
+      "tool_traceback_preserved": true,
+      "pid": "UNAVAILABLE",
+      "no_original_runtime_tests_executed": true,
+      "monotonic_observed": 503905344755100
+    },
+    "isolated_positive_failure": {
+      "exit": 1,
+      "pid": 17364,
+      "timeout": false,
+      "seconds": 11.80306509998627,
+      "stdout_sha256": "e921f274c94590475ec2b9970fb21e5452378f62d917a24a4688976540252add",
+      "child_exited": true
+    },
+    "batch03": {
+      "status": "FAIL",
+      "methods": 13,
+      "receipts": [
+        {
+          "method": "test_actual_cli_assess_zero_enforce_one_invalid_two",
+          "pid": 12584,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 279,
+          "stdout_sha256": "a8fb9d63350b3619bfda94a10b32e29e34508a2f6618074892d852beeb178787",
+          "monotonic_start_ns": 504335210357900,
+          "monotonic_end_ns": 504354540656800,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_atomic_positive_exact_difference_and_no_release",
+          "pid": 28284,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 280,
+          "stdout_sha256": "8c20e35713eadbf7f268be680a37a55bd1de4ebd81804a15b3d05fad6f8735fc",
+          "monotonic_start_ns": 504354546369000,
+          "monotonic_end_ns": 504364621475100,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_existing_pure_safety_boundaries_regress",
+          "pid": 22908,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 264,
+          "stdout_sha256": "21058bbf7aa2f0bc5f52ebba399e5e6013049ecf04147cd7e307da3d610ac3b0",
+          "monotonic_start_ns": 504364628331500,
+          "monotonic_end_ns": 504372498046900,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_guard_even_with_all_method_pass_is_not_admitted",
+          "pid": 22224,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 280,
+          "stdout_sha256": "431e8fec1fc7152ef6d0ab6b08ec48206f088b35475feeb8a0305fb0cae11b66",
+          "monotonic_start_ns": 504372511787800,
+          "monotonic_end_ns": 504379771180100,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_json_unknown_duplicate_nonfinite_and_overwrite",
+          "pid": 24452,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 278,
+          "stdout_sha256": "db62b357d2818c619be29bb040b09e56080c2b3b331014a30af0760e4caea142",
+          "monotonic_start_ns": 504379776335000,
+          "monotonic_end_ns": 504385148310300,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_method_missing_duplicate_wrong_portable_and_source_drift",
+          "pid": 16848,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 299,
+          "stdout_sha256": "a6bbc51ed4acd8811c8714da32938e94fbfe714b6925a1b5c1cead86ade6567d",
+          "monotonic_start_ns": 504385153464900,
+          "monotonic_end_ns": 504406080398100,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_missing_pilot_retains_539_and_safe_projection",
+          "pid": 18108,
+          "exit": 1,
+          "timeout_or_overflow": false,
+          "bytes": 291516,
+          "stdout_sha256": "ef46d9483b80c9e4eed05daf51fe38e7c1c70c1d9a0231ff411d24fa74be6e62",
+          "monotonic_start_ns": 504406086413900,
+          "monotonic_end_ns": 504411229690100,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_original_handoff_and_routes_cannot_be_changed",
+          "pid": 19632,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 277,
+          "stdout_sha256": "c145affdd036595f17fda519472727a507fffa532facc3737df46419191c284c",
+          "monotonic_start_ns": 504411233247900,
+          "monotonic_end_ns": 504424818683000,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_paths_cannot_touch_old_or_cross_run_targets",
+          "pid": 36056,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 272,
+          "stdout_sha256": "28dfdb418152f9ceda25338a0ee015ce7e8f6e8017c28b407115070503cc1b9e",
+          "monotonic_start_ns": 504424822207000,
+          "monotonic_end_ns": 504426656382500,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_physical_log_manifest_and_wal_drift_reject",
+          "pid": 30840,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 271,
+          "stdout_sha256": "7c602e75c81b29a337cf202e51ef3fc3d46dfa0449c011bf967d3c9429d86394",
+          "monotonic_start_ns": 504426669589800,
+          "monotonic_end_ns": 504454243683200,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_public_only_and_result_only_cannot_admit",
+          "pid": 28192,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 267,
+          "stdout_sha256": "e3eddc11ef35b1f189ef93f5d5a2f3cde60ba1319e3bd193d783dc0b0ec47331",
+          "monotonic_start_ns": 504454250050300,
+          "monotonic_end_ns": 504494264241500,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_receipt_pid_clock_timeout_exit_and_hash_reject",
+          "pid": 26616,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 279,
+          "stdout_sha256": "cf46f86a8ed49346df5b25300d156c6c54ac6bbca2bf017d7b8b442ce68dd834",
+          "monotonic_start_ns": 504494268912200,
+          "monotonic_end_ns": 504547128071200,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_reparse_is_rejected_before_following",
+          "pid": 24936,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 258,
+          "stdout_sha256": "92ea2a6debc0437cc3112d0ba8b28cdebeda99006b8f619912ca7d46aa53f127",
+          "monotonic_start_ns": 504547133415500,
+          "monotonic_end_ns": 504554208167500,
+          "child_exited": true,
+          "stdout_closed": true
+        }
+      ],
+      "monotonic_start_ns": 504335210353700,
+      "monotonic_end_ns": 504554212720600,
+      "synthetic_controls_only": true,
+      "original_runtime_methods_executed": false
+    },
+    "batch04": {
+      "status": "PASS",
+      "methods": 5,
+      "receipts": [
+        {
+          "method": "test_exact_source_loader_does_not_patch_global_imports",
+          "pid": 34540,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 284,
+          "stdout_sha256": "a7e0e2cc9603f96744d8de46760db3f27ff71cad763785dd625b9c94ff46eb70",
+          "monotonic_start_ns": 504798309503400,
+          "monotonic_end_ns": 504800748498300,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_independent_pid_time_and_same_run_are_required",
+          "pid": 34456,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 279,
+          "stdout_sha256": "ea39003da7502cbb4fa2b0a06e24e121f1d67555bd75e4c91d97508d53cce3bd",
+          "monotonic_start_ns": 504800752226800,
+          "monotonic_end_ns": 504850295956800,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_missing_pilot_retains_539_and_safe_projection",
+          "pid": 8848,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 276,
+          "stdout_sha256": "81f697adb5662ef0e05bdc4103cc73a4bd10d0a24520fa2a572c1b1320444845",
+          "monotonic_start_ns": 504850300862000,
+          "monotonic_end_ns": 504858441938700,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_rehashed_fake_native_events_and_bool_resource_still_reject",
+          "pid": 28956,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 303,
+          "stdout_sha256": "5997bb5670bd896c3db2bee36ce41a50ae803a1b402c2a5fff5eedcb3c5f4d0a",
+          "monotonic_start_ns": 504858456405400,
+          "monotonic_end_ns": 504902324626500,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_rehashed_wal_owner_source_cannot_be_self_signed_into_pass",
+          "pid": 17548,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 301,
+          "stdout_sha256": "6b992092767794879e0ec132f660be1fe0d9e150a1b2dc5af482622b70abde1e",
+          "monotonic_start_ns": 504902338693600,
+          "monotonic_end_ns": 504916371761300,
+          "child_exited": true,
+          "stdout_closed": true
+        }
+      ],
+      "monotonic_start_ns": 504798309498500,
+      "monotonic_end_ns": 504916385592400,
+      "synthetic_controls_only": true,
+      "original_runtime_methods_executed": false
+    },
+    "batch05": {
+      "status": "PASS",
+      "methods": 3,
+      "receipts": [
+        {
+          "method": "test_actual_cli_assess_zero_enforce_one_invalid_two",
+          "pid": 17684,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 279,
+          "stdout_sha256": "39115efa0bb1c59ea5e4a66007b8ed7d17f29137cd23e3366d367c829dbad549",
+          "monotonic_start_ns": 505145864777300,
+          "monotonic_end_ns": 505168418753600,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_atomic_positive_exact_difference_and_no_release",
+          "pid": 21416,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 281,
+          "stdout_sha256": "366cbcd44eaf66e9b1eb3337a38e8b530d312f4f76b735414c823349a57af927",
+          "monotonic_start_ns": 505168433181400,
+          "monotonic_end_ns": 505181530601000,
+          "child_exited": true,
+          "stdout_closed": true
+        },
+        {
+          "method": "test_existing_pure_safety_boundaries_regress",
+          "pid": 3036,
+          "exit": 0,
+          "timeout_or_overflow": false,
+          "bytes": 264,
+          "stdout_sha256": "41ae4aca4657de6284ab8f5fa246d9da9f13a6d21e7c0cb19307a0a802a8f718",
+          "monotonic_start_ns": 505181536594700,
+          "monotonic_end_ns": 505192225750500,
+          "child_exited": true,
+          "stdout_closed": true
+        }
+      ],
+      "monotonic_start_ns": 505145864767900,
+      "monotonic_end_ns": 505192230795300,
+      "synthetic_controls_only": true,
+      "original_runtime_methods_executed": false
+    }
+  },
+  "actual_cli_exits": [
+    0,
+    1,
+    2
+  ],
+  "original_vs_effective": {
+    "evidence_kind": "LOCAL_SYNTHETIC_CONTROL_ONLY",
+    "original": {
+      "PASS": 688,
+      "SKIP": 5,
+      "UNAVAILABLE": 539
+    },
+    "effective": {
+      "PASS": 693,
+      "SKIP": 5,
+      "UNAVAILABLE": 534
+    },
+    "remaining": 534,
+    "dedicated_remaining": 412,
+    "real_hosted": "NOT_RUN_AT_SEAL"
+  },
+  "sources": {
+    "original_rpf84_85_86_blobs_unchanged": true,
+    "original_rpf86_27_test_ids_unchanged": true,
+    "loader": "Exact pinned CI source compiled directly; module-local RPF85 loader adapter for Router; global importlib unchanged",
+    "local_scope": "Only synthetic local RPF85 OWNER variable bound to the new RPF87 fixture owner; hosted RPF85 scope is untouched",
+    "historical_certificate_content_read": false,
+    "original_runtime_test_import_or_execution": false,
+    "guard_install_called": false
+  },
+  "cost": {
+    "provider": 0,
+    "real_sdk": 0,
+    "key_probe": 0,
+    "additional_local_java": 0,
+    "additional_local_docker": 0,
+    "business_http": 0,
+    "llm_api_fee": 0
+  },
+  "git_push": "NOT_RUN_AT_SEAL",
+  "hosted": "NOT_RUN_AT_SEAL",
+  "release_executed": false,
+  "deployment_authorized": false
+}

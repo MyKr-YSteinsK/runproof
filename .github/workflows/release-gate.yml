@@ -129,6 +129,17 @@ jobs:
         id: rpf86_pilot
         run: python -B ci/run-rpf86-owner-admission.py --output "$GITHUB_WORKSPACE/ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}"
 
+      - name: Reconcile admitted RPF-86 required methods
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B ci/reconcile-rpf86-required-coverage.py assess \
+            --ledger "$GITHUB_WORKSPACE/ci-results/rpf84-${{ github.run_id }}-${{ github.run_attempt }}/ledger.json" \
+            --handoff "$GITHUB_WORKSPACE/ci-results/rpf85-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --pilot "$GITHUB_WORKSPACE/ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}" \
+            --output "$GITHUB_WORKSPACE/ci-results/rpf87-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
+
       - name: Verify Job Summary contract
         if: ${{ always() }}
         shell: bash
@@ -152,6 +163,7 @@ jobs:
             ci-results/rpf12-release-gate-result.json
             ci-results/rpf12-release-gate-summary.md
             ci-results/rpf85-coverage-*.json
+            ci-results/rpf87-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json
           if-no-files-found: error
           retention-days: 14
 
@@ -169,7 +181,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python -B ci/verify-runtime-coverage-handoff.py enforce \
+          python -B ci/reconcile-rpf86-required-coverage.py enforce \
             --ledger "$GITHUB_WORKSPACE/ci-results/rpf84-${{ github.run_id }}-${{ github.run_attempt }}/ledger.json" \
-            --status "$GITHUB_WORKSPACE/ci-results/rpf85-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --handoff "$GITHUB_WORKSPACE/ci-results/rpf85-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --pilot "$GITHUB_WORKSPACE/ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}" \
+            --output "$GITHUB_WORKSPACE/ci-results/rpf87-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
             --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"

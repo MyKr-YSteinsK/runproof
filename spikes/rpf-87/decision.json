@@ -1,0 +1,34 @@
+{
+  "plan": "RPF-87/rev-1",
+  "base": "26e9bddafd29c5fea4ea604871429b019e35d264",
+  "status": "PARTIAL",
+  "decision": "A_ACTIVE",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06": "PASS",
+    "A07": "PASS",
+    "A08": "NOT_RUN",
+    "A09": "NOT_RUN",
+    "A10": "PASS"
+  },
+  "local_evidence": "SYNTHETIC_CONTROL_ONLY",
+  "hosted_admission": "NOT_RUN_AT_SEAL",
+  "expected_only": {
+    "PASS": 693,
+    "SKIP": 5,
+    "UNAVAILABLE": 534
+  },
+  "official_new_coverage_fact": "NOT_ESTABLISHED_AT_SEAL",
+  "original_unavailable_preserved": 539,
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "evidence_accepted": "ARCHITECT_NOT_DECIDED",
+  "stage_advanced": "NOT_APPROVED"
+}
