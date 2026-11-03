@@ -1,0 +1,92 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_RUN_AT_SEAL",
+  "base": "40cea7e770555642543357806c4b0e61589d2d12",
+  "coverage_promoted": false,
+  "decision": "A_ACTIVATED_LOCAL",
+  "deployment_authorized": false,
+  "formal_events": [
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "REPO",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "RUNTIME",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "TESTS",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "PACKAGE",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "EFFECTWITNESS",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    }
+  ],
+  "formal_journal_sha256": "397062b749e4896006d124e9d8eabfef8cf83dad4fdccd370a3b5b308e878203",
+  "listing_names_exported": false,
+  "plan": "RPF-88/rev-2",
+  "pretrial_events": [
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "REPO",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "RUNTIME",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "TESTS",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "PACKAGE",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    },
+    {
+      "caller_kind": "CPYTHON_FILEFINDER",
+      "decision": "ALLOW",
+      "directory_id": "EFFECTWITNESS",
+      "event": "os.listdir",
+      "phase": "MODULE_IMPORT"
+    }
+  ],
+  "pretrial_journal_sha256": "a3dc7f2a1f0213912ec979ad4505baea4c8bf3bc1e7660840a78cf97145c1670",
+  "pretrial_native_observation": true,
+  "provenance": "exact FileFinder._fill_cache and bootstrap._find_spec code objects in bounded20 frame stack; phase MODULE_IMPORT only",
+  "raw_journal_exported": false,
+  "release_executed": false,
+  "remaining_required": 534,
+  "status": "PARTIAL"
+}

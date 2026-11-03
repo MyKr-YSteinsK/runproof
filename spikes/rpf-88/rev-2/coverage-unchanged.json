@@ -1,0 +1,27 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_RUN_AT_SEAL",
+  "RPF88_formal_promotion": 0,
+  "RPF88_pilot_eligible": 18,
+  "base": "40cea7e770555642543357806c4b0e61589d2d12",
+  "coverage_promoted": false,
+  "current_RPF87": {
+    "PASS": 693,
+    "SKIP": 5,
+    "UNAVAILABLE": 534
+  },
+  "decision": "A_ACTIVATED_LOCAL",
+  "deployment_authorized": false,
+  "final_barrier_expected_exit": 1,
+  "historical_RPF74_RPF81": "PAUSED_NOT_RESUMED",
+  "original_router": {
+    "PASS": 688,
+    "SKIP": 5,
+    "UNAVAILABLE": 539
+  },
+  "plan": "RPF-88/rev-2",
+  "release_executed": false,
+  "remaining_required": 534,
+  "required": 1232,
+  "status": "PARTIAL"
+}

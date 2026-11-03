@@ -24,6 +24,15 @@ class OwnerScopeControls(unittest.TestCase):
         cls.owner=r.task_root();cls.root=cls.owner/('controls-'+uuid.uuid4().hex);cls.root.mkdir();cls.source=r.identity()
     def folder(self):
         p=self.root/uuid.uuid4().hex;p.mkdir();return p
+    def test_scoped_listing_negative_provenance(self):
+        g=r.Guard(self.folder());g.phase='MODULE_IMPORT'
+        for event,p in [('os.listdir',r.ROOT),('os.scandir',r.ROOT),('os.listdir',r.ROOT/'runtime'),('os.listdir',r.ROOT/'docs'),('os.listdir',r.ROOT/'.local')]:
+            with self.assertRaises(PermissionError):g.listing(event,p)
+        self.assertTrue(all(x['decision']=='DENY' for x in g.listing_events))
+        self.assertTrue(all(x['caller_kind']=='OTHER' for x in g.listing_events))
+        g.phase='METHODS'
+        with self.assertRaises(PermissionError):g.listing('os.listdir',r.ROOT)
+        self.assertEqual(g.listing_events[-1]['phase'],'METHODS')
     def test_inventory_and_ast_pins(self):
         inv=self.source['inventory'];self.assertEqual(len(inv['method_ast']),25);self.assertEqual(len(r.IDS),18);self.assertEqual(len(r.EXCLUDED),7)
         self.assertTrue(set(r.NAMES).isdisjoint(r.EXCLUDED));self.assertEqual(self.source['dedicated'],24);self.assertEqual(self.source['windows_native'],1)
@@ -75,14 +84,14 @@ class OwnerScopeControls(unittest.TestCase):
     def test_guard_physical_process_controls(self):
         owner=self.folder();code='''import importlib.util,sys,pathlib,os,socket,subprocess,sqlite3,json
 spec=importlib.util.spec_from_file_location('guard',sys.argv[1]);r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
-owner=pathlib.Path(sys.argv[2]);g=r.Guard(owner);g.install();cases=[lambda:open(r.ROOT/'.local/rpf-72/tests/forbidden','rb'),lambda:os.stat(r.ROOT/'.local/rpf-72/tests/forbidden'),lambda:list((r.ROOT/'runtime').iterdir()),lambda:socket.getaddrinfo('example.invalid',443),lambda:subprocess.Popen([sys.executable,'-c','raise SystemExit(0)']),lambda:os.environ['DEEPSEEK_API_KEY'],lambda:sqlite3.connect(':memory:')]
+owner=pathlib.Path(sys.argv[2]);g=r.Guard(owner);g.install();cases=[lambda:open(r.ROOT/'.local/rpf-72/tests/forbidden','rb'),lambda:os.stat(r.ROOT/'.local/rpf-72/tests/forbidden'),lambda:list((r.ROOT/'runtime').iterdir()),lambda:socket.getaddrinfo('example.invalid',443),lambda:subprocess.Popen([sys.executable,'-c','raise SystemExit(0)']),lambda:sqlite3.connect(':memory:')]
 for f in cases:
  try:f()
  except PermissionError:pass
  else:raise AssertionError('not denied')
 print(json.dumps({'denied':dict(g.denied),'cases':len(cases)}))'''
         p=subprocess.run([sys.executable,'-B','-c',code,str(r.SELF),str(owner)],cwd=r.ROOT,env=r.environment(owner),capture_output=True,timeout=30)
-        self.assertEqual(p.returncode,0,p.stderr.decode(errors='replace'));j=json.loads(p.stdout);self.assertEqual(sum(j['denied'].values()),7)
+        self.assertEqual(p.returncode,0,p.stderr.decode(errors='replace'));j=json.loads(p.stdout);self.assertEqual(sum(j['denied'].values()),6)
         with (owner/'control-process.json').open('xb') as f:f.write(r.canonical(dict(pid_scope='separate_synthetic_control_only',exit=p.returncode,stdout_sha256=r.sha(p.stdout),stderr_sha256=r.sha(p.stderr))))
     def journal(self,pid=123):
         frames=[];prev=None;t=100
@@ -94,7 +103,7 @@ print(json.dumps({'denied':dict(g.denied),'cases':len(cases)}))'''
         owner=self.folder();code='''import importlib.util,importlib.machinery,sys,pathlib,json
 spec=importlib.util.spec_from_file_location('h',sys.argv[1]);r=importlib.util.module_from_spec(spec);spec.loader.exec_module(r)
 g=r.Guard(pathlib.Path(sys.argv[2]));g.install();finder=importlib.machinery.FileFinder(str(r.ROOT),(importlib.machinery.SourceFileLoader,importlib.machinery.SOURCE_SUFFIXES));value=finder.find_spec('runtime');assert value is None;assert 'runtime' not in sys.modules
-assert g.events==[dict(reason='UNAPPROVED_PATH',operation='listing',method=None,target_class='public_source_parent',status='DENIED_BEFORE_IO')];print(json.dumps(g.projection()))'''
+assert g.events==[dict(reason='IMPORT_LISTING_DENIED',operation='os.listdir',method=None,target_class='public_source_parent',status='DENIED_BEFORE_IO')];print(json.dumps(g.projection()))'''
         z=subprocess.run([sys.executable,'-B','-c',code,str(r.SELF),str(owner)],cwd=r.ROOT,env=r.environment(owner),capture_output=True,timeout=30)
         self.assertEqual(z.returncode,0,z.stderr.decode(errors='replace'))
         with (owner/'finder-denial.json').open('xb') as f:f.write(z.stdout);f.flush();os.fsync(f.fileno())

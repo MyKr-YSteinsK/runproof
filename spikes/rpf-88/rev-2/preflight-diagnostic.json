@@ -1,0 +1,35 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_RUN_AT_SEAL",
+  "G0": "PASS",
+  "acl": "actual PowerShell Get-Acl exit0 no error",
+  "base": "40cea7e770555642543357806c4b0e61589d2d12",
+  "check_count": 88,
+  "coverage_promoted": false,
+  "create_only": [
+    "spikes/rpf-88/rev-2/README.md",
+    "spikes/rpf-88/rev-2/RESULT.md",
+    "spikes/rpf-88/rev-2/preflight-diagnostic.json",
+    "spikes/rpf-88/rev-2/verification-diagnostic.json",
+    "spikes/rpf-88/rev-2/import-listing-attribution.json",
+    "spikes/rpf-88/rev-2/counterexamples.json",
+    "spikes/rpf-88/rev-2/decision.json",
+    "spikes/rpf-88/rev-2/source-identity-ledger.json",
+    "spikes/rpf-88/rev-2/coverage-unchanged.json",
+    "spikes/rpf-88/rev-2/pre-repair-sources/release-gate.yml"
+  ],
+  "decision": "A_ACTIVATED_LOCAL",
+  "deployment_authorized": false,
+  "owner_policy": "new single rev2 nonce; old owners not accessed",
+  "pins": {
+    ".github/workflows/release-gate.yml": "28527312ec8cfd4e24200c529324a581c04892d6",
+    "ci/run-rpf88-r72-owner-scope.py": "a3ac8ef7ea4eddebdf539a5863b0c89cea261ee6",
+    "ci/test_run_rpf88_r72_owner_scope.py": "fa3a3fed07593fc49bbf1181989aa43f77487863"
+  },
+  "plan": "RPF-88/rev-2",
+  "private_g0_sha256": "4ae4509d55c42be96b9948fbed9ec469b562cbc0cba7b501f50229fb7df875b2",
+  "release_executed": false,
+  "remaining_required": 534,
+  "status": "PARTIAL",
+  "workflow_source": "fixed Base raw copy"
+}

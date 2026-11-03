@@ -1,0 +1,30 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_RUN_AT_SEAL",
+  "base": "40cea7e770555642543357806c4b0e61589d2d12",
+  "coverage_promoted": false,
+  "decision": "A_ACTIVATED_LOCAL",
+  "deployment_authorized": false,
+  "evidence_accepted": "ARCHITECT_RESERVED",
+  "gates": {
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS_18_ORIGINAL",
+    "A04": "PASS_TWO_DATABASES_DISTINCT_PID",
+    "A05": "PASS_CONTROLS",
+    "A06": "PASS",
+    "A07": "PASS",
+    "A08": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_RUN_AT_SEAL",
+    "A10": "PASS_SEALED",
+    "G0": "PASS"
+  },
+  "native_guard_denied": 0,
+  "plan": "RPF-88/rev-2",
+  "release_executed": false,
+  "remaining_required": 534,
+  "stage_advanced": false,
+  "status": "PARTIAL",
+  "task_complete": "ARCHITECT_RESERVED",
+  "workflow_delta": "two new steps only"
+}

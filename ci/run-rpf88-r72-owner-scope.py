@@ -87,7 +87,7 @@ def task_root():
         p=ROOT/'ci-results'/f'rpf88-{run}-{att}'
     else:
         p=Path(os.environ.get('RPF88_TASK_ROOT',''))
-        need(p.is_absolute() and p.parent==ROOT/'.local/rpf-88-owner-scope' and re.fullmatch('[a-f0-9]{32}',p.name), 'LOCAL_OWNER')
+        need(p.is_absolute() and p.parent==ROOT/'.local/rpf-88-rev-2' and re.fullmatch('[a-f0-9]{32}',p.name), 'LOCAL_OWNER')
     nonlink(p); return p
 def discover(raw, names=NAMES):
     t=ast.parse(raw); classes=[n for n in t.body if isinstance(n,ast.ClassDef) and n.name=='BudgetTests']
@@ -142,11 +142,13 @@ def read_journal(raw,source,pid):
             active=d['id'];states[active]='STARTED'
         elif kind=='STOP':
             fields(d,'id actual');need(d['id']==active and d['actual'] in ('PASS','FAIL','ERROR','SKIP'),'JOURNAL_STOP');states[active]=d['actual'];active=None
+        elif kind=='LISTING':
+            fields(d,'event directory_id phase caller_kind decision');need(d['decision']=='ALLOW' and d['caller_kind']=='CPYTHON_FILEFINDER' and d['phase']=='MODULE_IMPORT' and d['event']=='os.listdir' and d['directory_id'] in ('REPO','RUNTIME','TESTS','PACKAGE','EFFECTWITNESS'),'LISTING_FALSE_GREEN')
         elif kind=='DENIED':
             fields(d,'reason method');need(d['method'] is None or d['method'] in IDS,'DENIAL_METHOD');denials.append(d)
         elif kind=='TERMINAL':
             fields(d,'status');need(d['status'] in ('PASS','FAIL'),'TERMINAL_STATUS');terminal=d
-        elif kind!='INIT':raise Invalid('JOURNAL_KIND')
+        elif kind not in ('INIT','LISTING'):raise Invalid('JOURNAL_KIND')
         frames.append(v);prev=sha(line);last=v['time_ns']
     need(terminal==dict(status='PASS') and active is None and states==dict.fromkeys(IDS,'PASS') and not denials,'JOURNAL_NOT_PASS')
     need([f['data']['id'] for f in frames if f['kind']=='STARTED']==IDS,'JOURNAL_METHOD_ORDER')
@@ -163,7 +165,8 @@ class Guard:
         self.parents={p for q in self.allowed|self.prospective|{self.owner} for p in q.parents}
         self.runtime=tuple(dict.fromkeys([Path(sys.base_prefix).absolute(),Path(sys.prefix).absolute(),Path(sysconfig.get_path('stdlib')).absolute()]))
         self.checked=set();self.thread=threading.get_ident()
-        self.operation='unknown';self.target_class='unknown';self.events=[]
+        self.operation='unknown';self.target_class='unknown';self.events=[];self.phase='SETUP';self.listing_events=[]
+        self.import_parents={ROOT:'REPO',ROOT/'runtime':'RUNTIME',ROOT/'runtime/tests':'TESTS',ROOT/'runtime/runproof_runtime':'PACKAGE',ROOT/'runtime/runproof_runtime/effectwitness':'EFFECTWITNESS'}
     def deny(self,code):
         self.denied[code]+=1
         if len(self.events)<16:self.events.append(dict(reason=code,operation=self.operation,method=self.method,target_class=self.target_class,status='DENIED_BEFORE_IO'))
@@ -199,11 +202,32 @@ class Guard:
                 if stat.S_ISLNK(s.st_mode) or getattr(s,'st_file_attributes',0)&1024:self.deny('REPARSE')
             self.checked.add(p)
         self.observed['write' if write else 'metadata' if metadata else 'read']+=1
+    def listing(self,event,target):
+        p=Path(os.fsdecode(target));caller='OTHER';frame=sys._getframe(1);fill=False;find=False
+        import importlib._bootstrap_external as ext
+        import importlib._bootstrap as boot
+        for _ in range(20):
+            if frame is None:break
+            fill |= frame.f_code is ext.FileFinder._fill_cache.__code__
+            find |= frame.f_code is boot._find_spec.__code__
+            frame=frame.f_back
+        if fill and find:caller='CPYTHON_FILEFINDER'
+        directory=self.import_parents.get(p,'OTHER')
+        allow=(event=='os.listdir' and self.phase=='MODULE_IMPORT' and caller=='CPYTHON_FILEFINDER' and directory!='OTHER' and str(p)==str(next(x for x in self.import_parents if x==p)) and '..' not in p.parts)
+        row=dict(event=event,directory_id=directory,phase=self.phase,caller_kind=caller,decision='ALLOW' if allow else 'DENY')
+        need(len(self.listing_events)<128,'LISTING_EVENT_BOUND');self.listing_events.append(row)
+        if self.journal:self.journal.emit('LISTING',row)
+        if allow:
+            self.check(p,metadata=True);return
+        self.operation=event;self.target_class='public_source_parent' if directory!='OTHER' else 'unapproved';self.deny('IMPORT_LISTING_DENIED')
     def audit(self,event,args):
         if event=='open':
             p,mode,flags=args;writing=bool(isinstance(mode,str) and any(x in mode for x in 'wax+') or isinstance(flags,int) and flags&(os.O_WRONLY|os.O_RDWR|os.O_CREAT|os.O_TRUNC|os.O_APPEND))
             self.check(p,writing)
-        elif event in ('os.listdir','os.scandir'):self.check(args[0],listing=True)
+        elif event in ('os.listdir','os.scandir'):
+            p=Path(os.fsdecode(args[0]))
+            if p.is_relative_to(self.owner) or (not p.is_relative_to(ROOT) and any(p.is_relative_to(rt) for rt in self.runtime)):self.check(p,listing=True)
+            else:self.listing(event,args[0])
         elif event in ('os.mkdir','os.remove','os.rmdir','os.chmod','os.utime','os.truncate'):self.check(args[0],True)
         elif event in ('os.rename','os.link','os.symlink'):self.deny('LINK_RENAME_DENIED')
         elif event.startswith(('socket.','subprocess.','ctypes.','os.exec','os.spawn','os.posix_spawn')) or event in ('os.system','os.fork','os.forkpty'):self.deny('NETWORK_PROCESS_NATIVE_DENIED')
@@ -287,7 +311,10 @@ def native(folder):
     work=folder/'work';work.mkdir();journal=Journal(folder/'journal.jsonl',source['harness_lf_sha256']);g=Guard(folder,journal);g.install()
     result=None;error=None;restored=False;sqlite_calls=[];sqlite_restored=False;alias=False
     try:
-        sys.path.insert(0,str(ROOT));module=importlib.import_module(MODULE);s=module.s;before=s.OwnerScope.__dict__['root'];need(s.ROOT==ROOT and s.native.ROOT==ROOT,'ORIGINAL_ROOT')
+        sys.path.insert(0,str(ROOT));g.phase='MODULE_IMPORT'
+        try:module=importlib.import_module(MODULE)
+        finally:g.phase='METHODS'
+        s=module.s;before=s.OwnerScope.__dict__['root'];need(s.ROOT==ROOT and s.native.ROOT==ROOT,'ORIGINAL_ROOT')
         orders=importlib.import_module('runtime.runproof_runtime.effectwitness.orders');order_port=importlib.import_module('runtime.runproof_runtime.effectwitness.pge_r68_order_port')
         alias=orders.sqlite3 is sqlite3 and order_port.sqlite3 is sqlite3;need(alias,'SQLITE_MODULE_ALIAS')
         original_connect=sqlite3.connect;sql=SQLiteAdmission(g,work,original_connect);sqlite_calls=sql.calls

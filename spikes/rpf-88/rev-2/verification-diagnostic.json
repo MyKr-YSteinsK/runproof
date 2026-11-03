@@ -1,0 +1,127 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_RUN_AT_SEAL",
+  "base": "40cea7e770555642543357806c4b0e61589d2d12",
+  "controller_compatibility": "local formal sub-owner uses frozen wrapper invoking native/verify directly; standard harness CLI exact child-root restriction retained for hosted root",
+  "controls": "14/14 PASS",
+  "controls_log_sha256": "8cce362effb7991fcc22abe7d83b1b8dcff2fb33c905e15a0ae80fb39fab40cd",
+  "coverage_promoted": false,
+  "database_count": 2,
+  "database_evidence": [
+    {
+      "amount_minor": 2500,
+      "refund_count": 1,
+      "sha256": "83f453fb4a160213dc1da5f47e7ac059b4c0866dfeeb4a893cbac1a3c024b720",
+      "status": "REFUNDED"
+    },
+    {
+      "amount_minor": 2500,
+      "refund_count": 1,
+      "sha256": "ab62d6b5f78e85bcc96e2a569d3884ed4aa22bf12cc7088c455501838f6be4af",
+      "status": "REFUNDED"
+    }
+  ],
+  "decision": "A_ACTIVATED_LOCAL",
+  "deployment_authorized": false,
+  "formal_independent": {
+    "child_exited": true,
+    "drain_joined": true,
+    "end_ns": 525736021964200,
+    "exit": 0,
+    "mode": "verify",
+    "pid": 5720,
+    "report_sha256": "d50fecddec8efc18ad939b55ae08f1f70cf7263da05ee9f7e98a5d5fdb4cb231",
+    "start_ns": 525735218883700,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "timeout": false,
+    "truncated": false
+  },
+  "formal_native": {
+    "child_exited": true,
+    "drain_joined": true,
+    "end_ns": 525735195871400,
+    "exit": 0,
+    "mode": "native",
+    "pid": 30808,
+    "report_sha256": "ac70abbaef9e96cf4ef77efc2bf73e789101866521a2d755285ac0553d176b96",
+    "start_ns": 525497868739800,
+    "stdout_sha256": "2d25fe29d9afa8a828e276ffae04fbd47e40958a2224e4a086fad2eae089606b",
+    "timeout": false,
+    "truncated": false
+  },
+  "guard": {
+    "arbitrary_native_syscalls": "UNAVAILABLE_NOT_KERNEL_SANDBOX",
+    "denial_events": [],
+    "denied": {},
+    "metadata_intercepts": [
+      "os.stat",
+      "os.lstat",
+      "Path.resolve"
+    ],
+    "native_boundary": "SQLITE_CONNECT_TARGET_ADMISSION",
+    "observed": {
+      "metadata": 42581,
+      "read": 15389,
+      "write": 801
+    }
+  },
+  "journal": {
+    "frames": 43,
+    "sha256": "397062b749e4896006d124e9d8eabfef8cf83dad4fdccd370a3b5b308e878203"
+  },
+  "kernel_syscalls": "UNAVAILABLE_NOT_KERNEL_SANDBOX",
+  "original_source_unchanged": true,
+  "owner_descriptor_restored": true,
+  "plan": "RPF-88/rev-2",
+  "pretrial": {
+    "end_ns": 525465529795000,
+    "exit": 0,
+    "input_sha256": "64d66443312725c786b407fa8cdedc5cdd28bdc7311c173a3027ad53bd24e871",
+    "output_sha256": "bc9cfe839510ec1c19c193454a5aa50c882f30a0860e47df9fd27207fb4dc874",
+    "pid": 10248,
+    "start_ns": 525460425990400,
+    "timeout": false
+  },
+  "release_executed": false,
+  "remaining_required": 534,
+  "resources": {
+    "api_cost": 0,
+    "docker": 0,
+    "external_business_http": 0,
+    "java": 0,
+    "key_lookup": 0,
+    "provider": 0,
+    "sdk": 0
+  },
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "sqlite_wrapper_restored": true,
+  "states": {
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_boolean_round_and_unknown_parameter_rejected": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_component_eleven_slots_permanent_native_caps": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_component_rejects_slot_and_price_forgery": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_crash_check_before_reserve": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_crash_native_reserve_before_confirmation": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_duplicate_settlement_is_not_reclaimed": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_immutable_policy_strict_identity": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_native_direct_reserve_denied_before_wal_write": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_native_direct_settle_and_append_denied": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_no_operation_no_sqlite_setup": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_normal_gate_and_policy": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_resource_limit_session_once": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_session_reserve_settle_native_parity": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_unknown_refund_stops_new_writes": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_unsettled_refund_stops_second_write": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_valid_owner_missing_policy_does_not_enter_port": "PASS",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_wrong_policy_does_not_enter_port": "PASS"
+  },
+  "status": "PARTIAL",
+  "workflow": {
+    "bash_n": "PASS",
+    "only_two_steps_added": true,
+    "raw_lines_preserved": true,
+    "sha256": "f7ef4405143bbbeb13187f11c5dd57a5a475631e209ea3176d023e3d0d5bb429",
+    "status": "PASS",
+    "yaml_semantics_preserved": true
+  }
+}

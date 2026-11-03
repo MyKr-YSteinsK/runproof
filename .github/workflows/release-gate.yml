@@ -140,6 +140,10 @@ jobs:
             --output "$GITHUB_WORKSPACE/ci-results/rpf87-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
             --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
 
+      - name: Run RPF-88 R72 fresh-owner cohort pilot
+        id: rpf88_pilot
+        run: python -B ci/run-rpf88-r72-owner-scope.py --output "$GITHUB_WORKSPACE/ci-results/rpf88-${{ github.run_id }}-${{ github.run_attempt }}"
+
       - name: Verify Job Summary contract
         if: ${{ always() }}
         shell: bash
@@ -173,6 +177,15 @@ jobs:
         with:
           name: rpf86-dedicated-owner-${{ github.run_id }}-${{ github.run_attempt }}
           path: ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}/public-result.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload redacted RPF-88 pilot result
+        if: ${{ always() && (steps.rpf88_pilot.outcome == 'success' || steps.rpf88_pilot.outcome == 'failure') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf88-r72-owner-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf88-${{ github.run_id }}-${{ github.run_attempt }}/public-result.json
           if-no-files-found: error
           retention-days: 14
 
