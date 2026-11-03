@@ -1,0 +1,36 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "architect_reserved": [
+    "TASK_COMPLETE",
+    "EVIDENCE_ACCEPTED",
+    "STAGE_ADVANCED"
+  ],
+  "base": "0530d2c019e0fd812658b28f61688b21d4fc5753",
+  "branch": "main",
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "full_assessor_implemented": false,
+  "gates": {
+    "A01": "PARTIAL_SOURCE_AND_INVENTORY",
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN_PRECONDITION_UNAVAILABLE",
+    "A04": "NOT_RUN",
+    "A05": "PARTIAL_12_B_CONTROLS_PASS; FULL_SUITE_NOT_RUN",
+    "A06": "PASS_B_FORMAT_AND_FREEZE",
+    "A07": "PASS_B_LIMITS",
+    "A08": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+    "A10": "PASS_SEALED_B_SCOPE",
+    "G0": "PASS"
+  },
+  "new_admissions": 0,
+  "next_review": "Approve an explicit completion receipt or an explicit workflow-order alternative; no automatic permission expansion",
+  "plan": "RPF-89/rev-1",
+  "reason": "RPF87_COMPLETION_OBSERVATION_UNAVAILABLE",
+  "release_executed": false,
+  "source_level": "SOURCE_AUDIT_AND_LOCAL_CONTROLS_ONLY",
+  "status": "PARTIAL",
+  "strict_order_interpretation": "Do not use workflow source order as missing native completion observation without explicit alternate contract",
+  "workflow_changed": false
+}

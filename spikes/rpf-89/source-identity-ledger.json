@@ -1,0 +1,150 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "RPF87_completion_evidence_analysis": {
+    "actual_run_evidence_read": false,
+    "observation": "PINNED_SOURCE_SCHEMA_ONLY",
+    "own_completion_clock_declared": false,
+    "pilot_proof_fields": [
+      "native_receipt_sha256",
+      "journal_sha256",
+      "independent_receipt_sha256",
+      "manifest_sha256",
+      "wal_files"
+    ],
+    "return_fields": [
+      "schema",
+      "run_id",
+      "attempt",
+      "commit",
+      "evidence_kind",
+      "source_level",
+      "no_real_provider_claim",
+      "original_router",
+      "admitted_dedicated",
+      "not_admitted",
+      "effective_required",
+      "unavailable_remaining",
+      "dedicated_unavailable_remaining",
+      "evidence_anchors",
+      "source_identity",
+      "release_eligible",
+      "release_executed",
+      "deployment_authorized",
+      "bounded_summary"
+    ],
+    "timestamp_inference_from_step_order": false
+  },
+  "base": "0530d2c019e0fd812658b28f61688b21d4fc5753",
+  "branch": "main",
+  "candidate_kind": "B diagnostic; full assessor NOT_IMPLEMENTED",
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "excluded7": [
+    "test_parent_child_policy_two_domain_totals",
+    "test_actual_cfg_limit_threshold_and_legacy35000",
+    "test_parent_child_noncanonical_bool_and_crossdomain",
+    "test_config_fields_domain_pin_and_output_limits",
+    "test_parent_contract_rejects_changed_policy",
+    "test_source_drift_independent_capsule",
+    "test_junction_and_torn_receipt"
+  ],
+  "method_ast": {
+    "test_actual_cfg_limit_threshold_and_legacy35000": "535020f3850e818cc2874bfda9390f7a9654bd3d45d72dce01bd3248adedec19",
+    "test_boolean_round_and_unknown_parameter_rejected": "2c6419de77bf5f0c8613db995011fdc2ecc839d1b71323bd1725176d4e61d8b0",
+    "test_component_eleven_slots_permanent_native_caps": "dcf6e06018bca0c2facf21982ea024bf12054f7631aebc88208d3f0078c2e289",
+    "test_component_rejects_slot_and_price_forgery": "17a92e4a08e2d34d9b250202e53e069c1f9d7d0edfaeaa533f8237945ea5cdd5",
+    "test_config_fields_domain_pin_and_output_limits": "60217d7f88166b59e3db9c409140f188fbadcc7ca8a3e83ba4a7395572559ee2",
+    "test_crash_check_before_reserve": "e11a63726485691d1c8b41a7eef7154ab372156b58e5be16a3b1dbbab9ede0d5",
+    "test_crash_native_reserve_before_confirmation": "85933bc184450087729fec20ca998381ecfa30baff41dce826918a2c3ea0d50e",
+    "test_duplicate_settlement_is_not_reclaimed": "a6f2cca4b171f4185335baf76d6d59f92db13aa7b57895526f0f3bbcb6aaa27b",
+    "test_immutable_policy_strict_identity": "458b0852766e8155f4f2fb9ffe9619c947f74147c3022144897f7073ce626f17",
+    "test_junction_and_torn_receipt": "6aac52fe41cbe77f136e48ef7902d25ecae476e117bfdde0bb7a6cfe8d30e6d4",
+    "test_native_direct_reserve_denied_before_wal_write": "cad23c170565a8825f45d7cbbf4e126b1191d7829d0f975168408dfda844732a",
+    "test_native_direct_settle_and_append_denied": "2443291cb53146af8af06c92c06b3f0155ff84b55ca4fb281b1244b3c57d335d",
+    "test_no_operation_no_sqlite_setup": "74ef23dcc5b9702cf93c48e1761dc95ae843bb0101824a82e24da066843966da",
+    "test_parent_child_noncanonical_bool_and_crossdomain": "368e2dbea1f35e048fa0c41e3e6ec5b18f34111ad64069b53b385d8fd5c6bd1e",
+    "test_parent_child_policy_two_domain_totals": "2d500296a6ccc61927c6c6e5e6d805f82745d52dcd4d8ae88759776e2d684470",
+    "test_parent_contract_rejects_changed_policy": "5fa6ae7124bf081a658d847e10e89304662d041328dcd0c4017163d9b0f43136",
+    "test_real_sqlite_normal_gate_and_policy": "7e1b1bb5fd66c9931a112e07dcfeefe418637abbde6dcde66ca6da42138c5752",
+    "test_real_sqlite_unknown_readonly_gate_and_policy": "01f8e8488ab48de0a295fd37a47e2f6a89e95154d435e0b2dcded5baeb6df87f",
+    "test_resource_limit_session_once": "4eed6e1795ae27c59411763ec9c5b549ea7bd58596bca4726c98cfdc047a1f38",
+    "test_session_reserve_settle_native_parity": "da74a56d32d6406185b42ae63d7bbb122a531dc9227a71eedaefd4a127b1a608",
+    "test_source_drift_independent_capsule": "4e53fb079cd07008e05c8d77224957d48319d1a2ac00aa075245cd7e8df4c84a",
+    "test_unknown_refund_stops_new_writes": "f22d89de584af2bdeb2ba9cb58d98938c5e0e633962cf8eff892601ac35dca87",
+    "test_unsettled_refund_stops_second_write": "bb85464c6b8fddaf2cf00f38dbf4ae6d2d918168fee0952c2af60c38dc792529",
+    "test_valid_owner_missing_policy_does_not_enter_port": "e870b0633abe2a9841a80506b03cde328c82352cdbff2b44ed81272740b53b60",
+    "test_wrong_policy_does_not_enter_port": "632b20e51137793ad3c15fbc5dac42375ed5c9f3f4ab2f802fed60b04a6d5930"
+  },
+  "new_admissions": 0,
+  "new_source_freeze": {
+    "ast_compile_pycompile": "PASS",
+    "decision": "B_UNACTIVATED",
+    "monotonic_ns": 529531548641000,
+    "new_YAML_Bash": "NOT_APPLICABLE_UNCHANGED",
+    "source_sha256": {
+      "ci/reconcile-rpf88-required-coverage.py": "f1ac1afd77cbba41c37a4be28c79c33b7e8c176d0d7d0e09143dadfe21d19899",
+      "ci/test_reconcile_rpf88_required_coverage.py": "1d851d294e71dd3a89179391efc12ed433b5b7b198b4c5e588fec3b59fc16e1a"
+    },
+    "workflow": "BASE_RAW_IDENTICAL"
+  },
+  "observed_source": {
+    ".github/workflows/release-gate.yml": {
+      "blob": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+      "lf_sha256": "f7ef4405143bbbeb13187f11c5dd57a5a475631e209ea3176d023e3d0d5bb429",
+      "raw_sha256": "f7ef4405143bbbeb13187f11c5dd57a5a475631e209ea3176d023e3d0d5bb429"
+    },
+    "ci/reconcile-rpf86-required-coverage.py": {
+      "blob": "1d8d502e0a8db08e56763272565386dc246469b0",
+      "lf_sha256": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d",
+      "raw_sha256": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d"
+    },
+    "ci/run-rpf88-r72-owner-scope.py": {
+      "blob": "6ca463addf0b861dfe1be854ea305d5f5b369c9c",
+      "lf_sha256": "49edbeec6613ed1d07f3dda11064db4f4cc63a33879036640b10bdc996401117",
+      "raw_sha256": "49edbeec6613ed1d07f3dda11064db4f4cc63a33879036640b10bdc996401117"
+    },
+    "ci/run-runtime-contract-tests.py": {
+      "blob": "88396fa78d73ba091e91992d4d51263063a95aa7",
+      "lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+      "raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+    },
+    "ci/runtime-contract-test-matrix.json": {
+      "blob": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+      "lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+      "raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+    },
+    "ci/verify-runtime-coverage-handoff.py": {
+      "blob": "0e22b02048497b21d698dfe6cd958a437583c94d",
+      "lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+      "raw_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+    }
+  },
+  "only_approved_sources_read": true,
+  "original_source_modified": false,
+  "plan": "RPF-89/rev-1",
+  "release_executed": false,
+  "runtime_modules_imported": false,
+  "selected18": [
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_immutable_policy_strict_identity",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_native_direct_settle_and_append_denied",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_no_operation_no_sqlite_setup",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_session_reserve_settle_native_parity",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_resource_limit_session_once",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_unknown_refund_stops_new_writes",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_unsettled_refund_stops_second_write",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_crash_check_before_reserve",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_crash_native_reserve_before_confirmation",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_wrong_policy_does_not_enter_port",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_component_eleven_slots_permanent_native_caps",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_component_rejects_slot_and_price_forgery",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_normal_gate_and_policy",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_boolean_round_and_unknown_parameter_rejected"
+  ],
+  "source_level": "SOURCE_AUDIT_AND_LOCAL_CONTROLS_ONLY",
+  "status": "PARTIAL"
+}
