@@ -1,0 +1,68 @@
+{
+  "plan": "RPF-86/rev-5",
+  "base": "d6304828fc223ce7aff743e3b786780d7fc3a925",
+  "status": "PARTIAL",
+  "decision": "STRICT_ADMISSION_ACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "import_only_seconds": 1.478431,
+  "import_limit": 20,
+  "native_diagnostic_seconds": 21.45718470000429,
+  "native_diagnostic_limit": 120,
+  "formal_native_and_verifier_seconds": 23.986782799998764,
+  "formal_native_limit": 120,
+  "formal_verifier_limit": 60,
+  "formal_unit_seconds": 10.960500699991826,
+  "total_experiment_wall_seconds": 355.81140990002314,
+  "total_cap": 520,
+  "python_version": "3.14.6",
+  "platform": "win32",
+  "cache_tag": "cpython-314",
+  "native_trace": "NO GLOBAL TRACE; existing synthetic and isolated microprobe exceptions only",
+  "inherited_microprobe": {
+    "status": "OBSERVED_NO_SPEED_THRESHOLD",
+    "samples": [
+      {
+        "mode": "base_global_trace",
+        "iterations": 2000,
+        "samples_ns": [
+          4970900,
+          4664500,
+          4813300,
+          4810900,
+          4788600,
+          4726900,
+          4721300
+        ],
+        "median_ns": 4788600,
+        "min_ns": 4664500,
+        "max_ns": 4970900,
+        "checksum": 99784
+      },
+      {
+        "mode": "candidate_no_trace",
+        "iterations": 2000,
+        "samples_ns": [
+          125000,
+          127800,
+          148600,
+          135600,
+          129700,
+          123100,
+          138100
+        ],
+        "median_ns": 129700,
+        "min_ns": 123100,
+        "max_ns": 148600,
+        "checksum": 99784
+      }
+    ],
+    "base_trace_callbacks": 28007,
+    "base_source_raw_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+    "candidate_source_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+    "scope": "Fixed arithmetic calls under actual Guard audit hook; independent microprobe, not native-cohort causal proof"
+  },
+  "microprobe_limit": "Base already disables native global trace. This inherited microprobe manually enables its trace callback on synthetic arithmetic calls; not a comparison of actual Base native defaults.",
+  "causal_limit": "Denial classification and new-owner loading establish this import-cache mechanism. Wall differences from rev4 are not a controlled timing-only experiment.",
+  "cpu_profile": "NOT_RUN",
+  "hosted_python_312": "NOT_RUN_AT_SEAL; cache candidate tag computed dynamically in hosted interpreter"
+}

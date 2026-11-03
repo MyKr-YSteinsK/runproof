@@ -125,6 +125,10 @@ jobs:
       - name: Run fresh canonical Release Gate
         run: python ci/run_release_gate.py --repo-root "$GITHUB_WORKSPACE" --output-dir ci-results
 
+      - name: Run RPF-86 dedicated-owner admission pilot
+        id: rpf86_pilot
+        run: python -B ci/run-rpf86-owner-admission.py --output "$GITHUB_WORKSPACE/ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}"
+
       - name: Verify Job Summary contract
         if: ${{ always() }}
         shell: bash
@@ -148,6 +152,15 @@ jobs:
             ci-results/rpf12-release-gate-result.json
             ci-results/rpf12-release-gate-summary.md
             ci-results/rpf85-coverage-*.json
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload redacted RPF-86 pilot result
+        if: ${{ always() && (steps.rpf86_pilot.outcome == 'success' || steps.rpf86_pilot.outcome == 'failure') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf86-dedicated-owner-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}/public-result.json
           if-no-files-found: error
           retention-days: 14
 

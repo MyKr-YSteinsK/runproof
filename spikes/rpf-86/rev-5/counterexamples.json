@@ -1,0 +1,1083 @@
+{
+  "plan": "RPF-86/rev-5",
+  "base": "d6304828fc223ce7aff743e3b786780d7fc3a925",
+  "status": "PARTIAL",
+  "decision": "STRICT_ADMISSION_ACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "formal_unit_methods": 27,
+  "original_test_ids_preserved": 23,
+  "original_assertions_preserved": true,
+  "formal_unit_status": "PASS",
+  "old_guards": {
+    "status": "PASS",
+    "rejected": [
+      "old-open",
+      "old-mkdir",
+      "old-stat",
+      "outside-write",
+      "socket",
+      "process"
+    ],
+    "guard": {
+      "observed": {
+        "read": 1
+      },
+      "denied": {
+        "OLD_ROOT_ACCESS_DENIED": 3,
+        "WRITE_SCOPE_DENIED": 1,
+        "NETWORK_PROCESS_NATIVE_DENIED": 2
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [
+        {
+          "sequence": 1,
+          "reason": "OLD_ROOT_ACCESS_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "private_old_root",
+          "public_repo_relative_path": null,
+          "target_token": "4982f5415e63b63ac394f0c692de62132592af90827444f7e680aeca01a80e4a",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "controls",
+            "line": 779,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "controls",
+              "line": 779,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 945,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "private_or_protected"
+        },
+        {
+          "sequence": 2,
+          "reason": "OLD_ROOT_ACCESS_DENIED",
+          "event_kind": "mkdir interception",
+          "intent": "write",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "private_old_root",
+          "public_repo_relative_path": null,
+          "target_token": "4982f5415e63b63ac394f0c692de62132592af90827444f7e680aeca01a80e4a",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "controls",
+            "line": 779,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "controls",
+              "line": 779,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 945,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "private_or_protected"
+        },
+        {
+          "sequence": 3,
+          "reason": "OLD_ROOT_ACCESS_DENIED",
+          "event_kind": "stat interception",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "private_old_root",
+          "public_repo_relative_path": null,
+          "target_token": "4982f5415e63b63ac394f0c692de62132592af90827444f7e680aeca01a80e4a",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "controls",
+            "line": 779,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "controls",
+              "line": 779,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 945,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "private_or_protected"
+        },
+        {
+          "sequence": 4,
+          "reason": "WRITE_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "write",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "fresh_owned_synthetic_path",
+          "public_repo_relative_path": null,
+          "target_token": "e1b3823b749eaab35111b3db3e3cda3a5c56825ac6145f9be5a89d15e20ae913",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "controls",
+            "line": 784,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "controls",
+              "line": 784,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 945,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 5,
+          "reason": "NETWORK_PROCESS_NATIVE_DENIED",
+          "event_kind": "socket.__new__",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unknown",
+          "public_repo_relative_path": null,
+          "target_token": null,
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "controls",
+            "line": 789,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "controls",
+              "line": 789,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 945,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 6,
+          "reason": "NETWORK_PROCESS_NATIVE_DENIED",
+          "event_kind": "subprocess.Popen",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unknown",
+          "public_repo_relative_path": null,
+          "target_token": null,
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "controls",
+            "line": 789,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "controls",
+              "line": 789,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 945,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        }
+      ],
+      "attribution_total": 6,
+      "attribution_truncated": false,
+      "attribution_sha256": "35fea981a208ddaf62360a8c9b38c69adade61fda49742da3472c760e5d9ae50",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "old_root_delegations": 0,
+    "proof_scope": "Actual Python APIs and pre-delegation metadata shims; no claim of a kernel sandbox"
+  },
+  "certificate_controls": {
+    "status": "PASS",
+    "rejected": [
+      "directory",
+      "sibling",
+      "other-json",
+      "write",
+      "truncate-audit",
+      "case-alias"
+    ],
+    "helper_identity_type": "dict",
+    "original_helper_called": true,
+    "guard": {
+      "observed": {
+        "read": 61,
+        "certificate_read_granted": 1
+      },
+      "denied": {
+        "READ_SCOPE_DENIED": 3,
+        "CERTIFICATE_WRITE_DENIED": 2,
+        "CERTIFICATE_CASE_ALIAS_DENIED": 1
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [
+        {
+          "sequence": 1,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "os.listdir",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "bce2245521bc293433d9fa6acea77b033c23bda7e31f68ff8d5ad41b161ca9d7",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "certificate_controls",
+            "line": 672,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "certificate_controls",
+              "line": 672,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 946,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 2,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "76c18bc7611f48edbe62ce8901d4ec90d6db50e37ff864ed1d0478de94655481",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "certificate_controls",
+            "line": 672,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "certificate_controls",
+              "line": 672,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 946,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 3,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "87a92230602231ecd54015d5203e710495b5a7385cf6e06289913c1f773d782b",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "certificate_controls",
+            "line": 672,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "certificate_controls",
+              "line": 672,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 946,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 4,
+          "reason": "CERTIFICATE_WRITE_DENIED",
+          "event_kind": "open",
+          "intent": "write",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "exact_pinned_certificate",
+          "public_repo_relative_path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+          "target_token": "f2e7babd3940d9607b169d93cb8879174bc030151713f789c166da05d38cd207",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "certificate_controls",
+            "line": 672,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "certificate_controls",
+              "line": 672,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 946,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 5,
+          "reason": "CERTIFICATE_WRITE_DENIED",
+          "event_kind": "open",
+          "intent": "write",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "exact_pinned_certificate",
+          "public_repo_relative_path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+          "target_token": "f2e7babd3940d9607b169d93cb8879174bc030151713f789c166da05d38cd207",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "certificate_controls",
+            "line": 672,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "certificate_controls",
+              "line": 672,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 946,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 6,
+          "reason": "CERTIFICATE_CASE_ALIAS_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "5fee48e89a4d979db45040959d16ef8d5045db21883a9943a0c4581a6867f4bd",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "certificate_controls",
+            "line": 672,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "certificate_controls",
+              "line": 672,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 946,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        }
+      ],
+      "attribution_total": 6,
+      "attribution_truncated": false,
+      "attribution_sha256": "f6791fd7e78017b3f257d973d72dc632dd9129369a28e6d5e2cd3aaf2d118454",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "certificate_values_exported": false
+  },
+  "false_green": {
+    "status": "PASS_NEGATIVE_CONTROL",
+    "native_method_status": "PASS",
+    "admission_status": "FAIL",
+    "guard": {
+      "observed": {},
+      "denied": {
+        "READ_SCOPE_DENIED": 1
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [
+        {
+          "sequence": 1,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "Guard.check",
+          "intent": "read",
+          "phase": "method",
+          "method_id": "__main__.false_green_controls.<locals>.Synthetic.test_guard_false_green",
+          "target_class": "fresh_owned_synthetic_path",
+          "public_repo_relative_path": null,
+          "target_token": "144528fb3f4aadfb46d3d72d62b785799033ba662d20e0f444e3423c8812d8e6",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "test_guard_false_green",
+            "line": 686,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "test_guard_false_green",
+              "line": 686,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "run_suite",
+              "line": 462,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "false_green_controls",
+              "line": 688,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 947,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": "PASS",
+          "broad_exception_context": true,
+          "assertRaises_broad_exception_risk": "SUSPECTED",
+          "permission_error_observed_in_method": true,
+          "continued_after_broad_context": true,
+          "cache_probe": "other_public"
+        }
+      ],
+      "attribution_total": 1,
+      "attribution_truncated": false,
+      "attribution_sha256": "df28a0baf6c28e066d63b18c407209edb26639dface8b7fb9e327b4638c48d98",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "ids": [
+      "__main__.false_green_controls.<locals>.Synthetic.test_guard_false_green"
+    ],
+    "delegated_target_io": 0
+  },
+  "cache_controls": {
+    "status": "PASS",
+    "policy": {
+      "policy": "FRESH_OWNER_PREFIX",
+      "prefix_relative": "FRESH_OWNED_PYCACHE_PRIVATE_NAME_OMITTED",
+      "dont_write_bytecode": true,
+      "source_pins": {
+        "spikes/rpf-53/probe.py": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+        "spikes/rpf-55/probe.py": "6a1ae9d154adcc35f69455b32982faaedb5483bc"
+      },
+      "global_loader_patch": false
+    },
+    "loaded_source_files": [
+      "spikes/rpf-53/probe.py",
+      "spikes/rpf-55/probe.py"
+    ],
+    "source_pins": {
+      "spikes/rpf-53/probe.py": {
+        "blob": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+        "raw_sha256": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "lf_sha256": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+      },
+      "spikes/rpf-55/probe.py": {
+        "blob": "6a1ae9d154adcc35f69455b32982faaedb5483bc",
+        "raw_sha256": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "lf_sha256": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+      }
+    },
+    "historical_cache_reads_denied": 2,
+    "actual_cache_files_created": 0,
+    "guard": {
+      "observed": {
+        "read": 135
+      },
+      "denied": {
+        "READ_SCOPE_DENIED": 2
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [
+        {
+          "sequence": 1,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "2196a52a2e7a29aa21bc22d342b3bcb610c6f20ff5bd7134e78a13bccecbaea6",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "cache_controls",
+            "line": 764,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "cache_controls",
+              "line": 764,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 951,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        },
+        {
+          "sequence": 2,
+          "reason": "READ_SCOPE_DENIED",
+          "event_kind": "open",
+          "intent": "read",
+          "phase": "setup",
+          "method_id": null,
+          "target_class": "unapproved_repo_public_path",
+          "public_repo_relative_path": null,
+          "target_token": "70b968c8626e66e932fd6fa440e08465f99437a2f0f200ab9bfa4d41f9b2b9b0",
+          "caller": {
+            "path": "ci/run-rpf86-owner-admission.py",
+            "function": "cache_controls",
+            "line": 764,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          },
+          "caller_chain": [
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "cache_controls",
+              "line": 764,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            {
+              "path": "ci/run-rpf86-owner-admission.py",
+              "function": "main",
+              "line": 951,
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            }
+          ],
+          "status": "DENIED_BEFORE_IO",
+          "method_later_status": null,
+          "broad_exception_context": false,
+          "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+          "permission_error_observed_in_method": false,
+          "continued_after_broad_context": false,
+          "cache_probe": "other_public"
+        }
+      ],
+      "attribution_total": 2,
+      "attribution_truncated": false,
+      "attribution_sha256": "9d8b0bb2bca26b8820ac28e2b694de866bd017f5003022192860c859585b20e0",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "global_loader_patch": false
+  },
+  "new_test_methods": [
+    {
+      "id": "test_exact_lexical_cache_classification_never_grants_target_io",
+      "status": "PASS"
+    },
+    {
+      "id": "test_real_fresh_prefix_source_load_and_historical_cache_denial",
+      "status": "PASS"
+    },
+    {
+      "id": "test_cache_source_pin_prefix_scope_and_journal_class_forgery_rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "test_hosted_public_projection_omits_paths_protocol_and_identity_values",
+      "status": "PASS"
+    }
+  ],
+  "journal_faults": "Existing durable exit7/timeout/torn/seq/pid/source/caller/raw-path/overflow/short-write/fsync/thread tests retained and PASS; formal unit log hash in verification.",
+  "child_controls": [
+    {
+      "mode": "crash",
+      "pid": 15788,
+      "exit": 7,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 496835455853900,
+      "monotonic_end_ns": 496835629857400,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "durable-deny-crash",
+      "pid": 19980,
+      "exit": 7,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 496831111090500,
+      "monotonic_end_ns": 496831607753300,
+      "timeout_limit_seconds": 19.99854590004543,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE",
+      "journal": {
+        "schema": "rpf86-durable-denial-v1",
+        "status": "INCOMPLETE_EXIT",
+        "error": null,
+        "raw_sha256": "98eb0d7c08f0d75aa82dc6a2a0b83e991240371b72bc3ebb0bd115002a65eaf4",
+        "bytes": 2065,
+        "valid_prefix_frames": 3,
+        "prefix_tip_sha256": "6df5700c034e69d91c6ff5d1f73b7782a099e534db2766c470f6b87de1abe4ca",
+        "pid": 19980,
+        "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "run_id": "92c5e52adb37160133659403f9b63f78",
+        "method_start_stop": [
+          {
+            "data": {
+              "id": "synthetic.durable_control"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496831587412500,
+            "pid": 19980,
+            "previous_raw_sha256": "774db21b1ba05e9d5a0ed2921f06b064ac162f5bd22e58d36bbaa05ab74274e6",
+            "run_id": "92c5e52adb37160133659403f9b63f78",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 1,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          }
+        ],
+        "methods": {
+          "synthetic.durable_control": "STARTED"
+        },
+        "latest_method": "synthetic.durable_control",
+        "denial_events": [
+          {
+            "assertRaises_broad_exception_risk": "NOT_OBSERVED",
+            "broad_exception_context": false,
+            "cache_probe": "other_public",
+            "caller": {
+              "function": "durable_control",
+              "line": 705,
+              "path": "ci/run-rpf86-owner-admission.py",
+              "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+            },
+            "caller_chain": [
+              {
+                "function": "durable_control",
+                "line": 705,
+                "path": "ci/run-rpf86-owner-admission.py",
+                "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+              },
+              {
+                "function": "main",
+                "line": 948,
+                "path": "ci/run-rpf86-owner-admission.py",
+                "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+              }
+            ],
+            "continued_after_broad_context": false,
+            "event_kind": "Guard.check",
+            "intent": "read",
+            "method_id": "synthetic.durable_control",
+            "method_later_status": null,
+            "permission_error_observed_in_method": false,
+            "phase": "method",
+            "public_repo_relative_path": null,
+            "reason": "READ_SCOPE_DENIED",
+            "sequence": 1,
+            "status": "DENIED_BEFORE_IO",
+            "target_class": "fresh_owned_synthetic_path",
+            "target_token": "7331752f192abfb26585414e1f0d023ac1c9601d9e025c7a1b5127d89a1ee0e7"
+          }
+        ],
+        "terminal": null,
+        "terminal_present": false,
+        "zero_denials_proven": false,
+        "last_frame_monotonic_ns": 496831600573100,
+        "completion_without_terminal": "UNAVAILABLE"
+      }
+    },
+    {
+      "mode": "durable-timeout",
+      "pid": 29996,
+      "exit": 1,
+      "timeout": true,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 496832156367100,
+      "monotonic_end_ns": 496834196594600,
+      "timeout_limit_seconds": 2,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE",
+      "journal": {
+        "schema": "rpf86-durable-denial-v1",
+        "status": "INCOMPLETE_TIMEOUT",
+        "error": null,
+        "raw_sha256": "4a1f9fec177f7f24ef9782c5244b39d445112bcdb064e5c708c4912771afd913",
+        "bytes": 669,
+        "valid_prefix_frames": 2,
+        "prefix_tip_sha256": "78a95cea3f0ada3e25067d01c0baf2a1fadfb7cc66013767bc8a2d9316d7b124",
+        "pid": 29996,
+        "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "run_id": "5ed2b8f7826c35c233a7452974a8fcac",
+        "method_start_stop": [
+          {
+            "data": {
+              "id": "synthetic.durable_control"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496832615968600,
+            "pid": 29996,
+            "previous_raw_sha256": "3359c24796fe3a0d22fd454223e32b21908c6b24735a91e13a1c67dc4ba096af",
+            "run_id": "5ed2b8f7826c35c233a7452974a8fcac",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 1,
+            "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+          }
+        ],
+        "methods": {
+          "synthetic.durable_control": "STARTED"
+        },
+        "latest_method": "synthetic.durable_control",
+        "denial_events": [],
+        "terminal": null,
+        "terminal_present": false,
+        "zero_denials_proven": false,
+        "last_frame_monotonic_ns": 496832615968600,
+        "completion_without_terminal": "UNAVAILABLE"
+      }
+    },
+    {
+      "mode": "exit1",
+      "pid": 5124,
+      "exit": 1,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 496835644348600,
+      "monotonic_end_ns": 496835812715700,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "missing",
+      "pid": 9068,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 496835820084000,
+      "monotonic_end_ns": 496835989576800,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "overflow",
+      "pid": 10100,
+      "exit": 0,
+      "timeout": false,
+      "truncated": true,
+      "bytes": 2097153,
+      "stdout_sha256": "6932fd31e5daf4739b9fa78ff777b2831b0995cc1d0b0093cac80601902013bc",
+      "monotonic_start_ns": 496836427292200,
+      "monotonic_end_ns": 496836603806600,
+      "timeout_limit_seconds": 10,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    },
+    {
+      "mode": "timeout",
+      "pid": 34740,
+      "exit": 1,
+      "timeout": true,
+      "truncated": false,
+      "bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "monotonic_start_ns": 496836002011900,
+      "monotonic_end_ns": 496836419335900,
+      "timeout_limit_seconds": 0.4,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+    }
+  ],
+  "scope": "Only new-owner synthetic fixtures mutated; historical cache/certificate/source not copied or changed"
+}

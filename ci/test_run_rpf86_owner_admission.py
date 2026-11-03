@@ -35,7 +35,11 @@ class OwnerAdmissionTests(unittest.TestCase):
                 'attribution_sha256':r.sha(b'[]')},source_level='SYNTHETIC_OFFLINE_TEST',events=events,pid=123,
             actual_provider_calls=0,actual_sdk_calls=0,actual_java_processes=0,actual_business_writes=0,
             manifest=[{'path':'synthetic-only-not-executed','bytes':1,'sha256':'0'*64}])
+        report['cache_policy']=dict(policy='FRESH_OWNER_PREFIX',prefix_relative=(work.parent/'pycache').relative_to(r.ROOT).as_posix(),
+            dont_write_bytecode=True,source_pins=r.CACHE_SOURCES,global_loader_patch=False)
         receipt=dict(mode='native',exit=0,timeout=False,truncated=False,child_exited=True,drain_joined=True,pid=123,harness_lf_sha256=self.source['harness_lf_sha256'])
+        receipt['journal']=dict(schema=r.JOURNAL_SCHEMA,status='COMPLETE',zero_denials_proven=True,methods=dict.fromkeys(r.IDS,'PASS'),
+            denial_events=[],terminal={'status':'PASS','error':None},pid=123,source_sha256=self.source['harness_lf_sha256'])
         return work,report,receipt
     def test_original_source_and_assertions_pinned(self):
         self.assertEqual(len(r.NAMES),5);self.assertEqual(len(set(r.IDS)),5)
@@ -288,5 +292,56 @@ class OwnerAdmissionTests(unittest.TestCase):
         self.assertEqual([x['mode'] for x in p['samples']],['base_global_trace','candidate_no_trace'])
         self.assertEqual([len(x['samples_ns']) for x in p['samples']],[7,7])
         self.assertEqual(p['samples'][0]['checksum'],p['samples'][1]['checksum'])
+
+    def test_exact_lexical_cache_classification_never_grants_target_io(self):
+        candidates=r.cache_candidates()
+        with patch.object(r.os,'stat',side_effect=AssertionError('target stat forbidden')),patch.object(r.os,'lstat',side_effect=AssertionError('target lstat forbidden')):
+            for target,kind in candidates.items():
+                self.assertEqual(r.classify_cache(target,candidates),kind)
+                self.assertEqual(r.classify_cache(target.replace(sys.implementation.cache_tag,'wrong-tag'),candidates),'other_public')
+                self.assertEqual(r.classify_cache(str(Path(target).with_name('unlisted.pyc')),candidates),'other_public')
+                self.assertEqual(r.classify_cache(str(Path(target).with_name(Path(target).name.upper())),candidates),'other_public')
+                self.assertEqual(r.classify_cache(str(Path(target).parent/'..'/Path(target).name),candidates),'other_public')
+
+    def test_real_fresh_prefix_source_load_and_historical_cache_denial(self):
+        folder=self.folder('cache-control');rec=r.launch('cache-controls',folder,deadline=time.monotonic()+20,timeout=20)
+        self.assertEqual(rec['exit'],0);p=r.strict((folder/'cache-controls.json').read_bytes())
+        self.assertEqual(p['loaded_source_files'],list(r.CACHE_SOURCES));self.assertEqual(p['historical_cache_reads_denied'],2)
+        self.assertEqual(p['actual_cache_files_created'],0);self.assertFalse(p['global_loader_patch'])
+        self.assertEqual(p['source_pins'],self.source['cache_sources'])
+
+    def test_cache_source_pin_prefix_scope_and_journal_class_forgery_rejected(self):
+        with patch.object(r,'CACHE_SOURCES',{next(iter(r.CACHE_SOURCES)):r.PINS[next(iter(r.PINS))]}):
+            with self.assertRaisesRegex(r.Invalid,'CACHE_SOURCE_PIN'):r.identity()
+        with self.assertRaises(r.Invalid):r.configure_cache(r.ROOT/'.local/rpf-63/no-access')
+        work,report,rec=self.protocol()
+        for change in (lambda p:p.update(prefix_relative='outside'),lambda p:p.update(dont_write_bytecode=False),lambda p:p.update(global_loader_patch=True)):
+            p=copy.deepcopy(report);change(p['cache_policy'])
+            with self.assertRaisesRegex(r.Invalid,'CACHE_POLICY_BINDING'):r.validate_native(p,rec,self.source,work)
+        fg=self.false_green();g=fg['guard'];g['attribution_events'][0]['cache_probe']='forged-cache-tag'
+        g['attribution_sha256']=r.sha(json.dumps(g['attribution_events'],sort_keys=True,separators=(',',':')).encode())
+        with self.assertRaisesRegex(r.Invalid,'CACHE_CLASSIFICATION'):r.validate_attribution(g,self.source['attribution_sources'],fg['ids'])
+        directory=self.folder('cache-reparse');directory.mkdir();target=self.folder('cache-target');target.mkdir();link=directory/'pycache'
+        try:link.symlink_to(target,target_is_directory=True)
+        except OSError:
+            if os.name!='nt':raise
+            import _winapi
+            _winapi.CreateJunction(str(target),str(link))
+        with self.assertRaisesRegex(r.Invalid,'REPARSE'):r.configure_cache(directory)
+        work,p,rec=self.protocol()
+        for change in (lambda x:x.pop('journal'),lambda x:x['journal'].update(status='INCOMPLETE_TIMEOUT'),
+                       lambda x:x['journal'].update(denial_events=[{}]),lambda x:x['journal'].update(pid=999)):
+            bad=copy.deepcopy(rec);change(bad)
+            with self.assertRaisesRegex(r.Invalid,'JOURNAL_NATIVE_BINDING'):r.validate_native(p,bad,self.source,work)
+
+    def test_hosted_public_projection_omits_paths_protocol_and_identity_values(self):
+        marker='synthetic-private-canary'
+        result=dict(status='FAIL',physical_owner=marker,error=marker,source_identity={'sdk_identity':marker},
+            native_results=[{'id':x,'actual':'PASS'} for x in r.IDS],
+            native_receipt={'pid':123,'exit':1,'stdout':marker,'stderr':marker,'path':marker,
+                'journal':{'status':'COMPLETE','terminal':{'status':'FAIL','error':marker},'denial_events':[{'target_token':marker,'caller':marker}]}})
+        projected=r.public_projection(result);self.assertNotIn(marker,json.dumps(projected))
+        self.assertEqual(projected['journal_denial_count'],1);self.assertFalse(projected['journal_terminal_pass'])
+        self.assertEqual(projected['status'],'FAIL');self.assertEqual(projected['formal_required_unavailable'],539)
 
 if __name__=='__main__':unittest.main()

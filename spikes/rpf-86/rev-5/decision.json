@@ -1,0 +1,29 @@
+{
+  "plan": "RPF-86/rev-5",
+  "base": "d6304828fc223ce7aff743e3b786780d7fc3a925",
+  "status": "PARTIAL",
+  "decision": "STRICT_ADMISSION_ACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06": "PASS",
+    "A07": "PASS",
+    "A08": "NOT_RUN",
+    "A09": "NOT_RUN",
+    "A10": "PASS"
+  },
+  "local_strict_admission": "PASS_FIVE_METHODS_ZERO_DENIAL_COMPLETE_JOURNAL",
+  "documentary_delivery": "PENDING_AT_SEAL",
+  "hosted_pilot": "NOT_RUN_AT_SEAL",
+  "official_required_unavailable": 539,
+  "official_coverage_changed": false,
+  "stage_advanced": "ARCHITECT_NOT_DECIDED",
+  "evidence_accepted": "ARCHITECT_NOT_DECIDED",
+  "release_executed": false,
+  "deployment_authorized": false
+}

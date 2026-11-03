@@ -1,0 +1,1036 @@
+{
+  "plan": "RPF-86/rev-5",
+  "base": "d6304828fc223ce7aff743e3b786780d7fc3a925",
+  "status": "PARTIAL",
+  "decision": "STRICT_ADMISSION_ACTIVATED",
+  "source_level": "SYNTHETIC_OFFLINE_TEST",
+  "source_freeze": {
+    "status": "FROZEN",
+    "candidate": "A_PENDING_FORMAL",
+    "source_identity": {
+      "files": {
+        "runtime/tests/test_effectwitness_pge_dual.py": {
+          "blob": "f98fb2da033dc62a0d5f785c06b837990912caf6",
+          "raw_sha256": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+          "lf_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": {
+          "blob": "2cc4145369918d265df6e3cdcdbce9ac7ecd9bd4",
+          "raw_sha256": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+          "lf_sha256": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": {
+          "blob": "5b626b547a884035c3c968f2a1f95f77f941aec9",
+          "raw_sha256": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+          "lf_sha256": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": {
+          "blob": "79c210fa5579235447157858f2c62ddd61983a91",
+          "raw_sha256": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+          "lf_sha256": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": {
+          "blob": "ed4329a0064daae75792eddfdfdd5cebc1b4b695",
+          "raw_sha256": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+          "lf_sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474"
+        }
+      },
+      "cache_sources": {
+        "spikes/rpf-53/probe.py": {
+          "blob": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+          "raw_sha256": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+          "lf_sha256": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+        },
+        "spikes/rpf-55/probe.py": {
+          "blob": "6a1ae9d154adcc35f69455b32982faaedb5483bc",
+          "raw_sha256": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+          "lf_sha256": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+        }
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "helper": {
+        "blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+        "raw_sha256": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198"
+      },
+      "method_ast": {
+        "test_four_paths": "84af5ec7fad46019a96426e9097d493300582e298ebe6992a9baa03e88f619d9",
+        "test_twenty_one_reanchored_attacks": "4b1ab2b581480d298f5e10d00a9084124561f318209ad653eeaa25e3e932c71c",
+        "test_unknown_usage_and_restart": "879583932738356d05f7b60655131e91b278a5ef6608e95e5fbf827541a7536a",
+        "test_scope_lock_budget_and_invalid_selection": "a86fc58196bd8b570ff57c0ca67b9f05f267c17644e1f70c4398030067ca98e9",
+        "test_unknown_mutation_stops_writes_but_allows_readback": "a0b9c17ae1455f3e7347a4a9878491257bf7e0b9c8dfc3f6c4fc5ce1ae735875"
+      },
+      "assertion_counts": {
+        "test_four_paths": 1,
+        "test_twenty_one_reanchored_attacks": 1,
+        "test_unknown_usage_and_restart": 4,
+        "test_scope_lock_budget_and_invalid_selection": 4,
+        "test_unknown_mutation_stops_writes_but_allows_readback": 3
+      },
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "files": {
+      "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab"
+    },
+    "monotonic_ns": 496777987096300,
+    "static": {
+      "ast_compile": "PASS",
+      "diff_check": "PASS",
+      "strict_json": "PASS",
+      "snapshot_raw_lf": "PASS",
+      "original_23_assertions": "PASS"
+    },
+    "method_count": 27
+  },
+  "workflow_delivery_freeze": {
+    "status": "FROZEN",
+    "workflow_raw_sha256": "bb655eb6244fa2c44615e108d91d5f0c266d57127e993338212e6849a9def82f",
+    "harness_source_freeze_unchanged": true,
+    "existing_workflow_semantics": "PASS_BYTE_SEMANTIC_MODEL",
+    "yaml": "PASS",
+    "bash_n": "PASS",
+    "public_artifact": "PASS_ALLOWLISTED_NO_PATH_PROTOCOL_IDENTITY",
+    "pilot_added_after_formal_success": true,
+    "formal_result_sha256": "6b4d698bf2d07ca80586c48f0c8b44dee012221bc332c42b48bd780c99fa39ee",
+    "monotonic_ns": 496933640489400
+  },
+  "separate_freezes": "Harness frozen before formal unit/native/verifier; additive workflow frozen only after all local formal checks passed.",
+  "snapshots": [
+    {
+      "source": "ci/run-rpf86-owner-admission.py",
+      "snapshot": "spikes/rpf-86/rev-5/pre-repair-sources/run-rpf86-owner-admission.py",
+      "blob": "112a834876bb8b087d5c683b49548cfb5dabc2c1",
+      "raw_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef",
+      "lf_sha256": "1add0d0aea09483f23c4aaa5ddfe5b493f4def15aa51830fcab36255d910aaef"
+    },
+    {
+      "source": "ci/test_run_rpf86_owner_admission.py",
+      "snapshot": "spikes/rpf-86/rev-5/pre-repair-sources/test_run_rpf86_owner_admission.py",
+      "blob": "2521374d5dd0c883444704466a061163206d4bf5",
+      "raw_sha256": "662727f201a2f2a73d89f48d9997dabf610245710f4a92ad9c99386ceb0b5dbc",
+      "lf_sha256": "662727f201a2f2a73d89f48d9997dabf610245710f4a92ad9c99386ceb0b5dbc"
+    },
+    {
+      "source": ".github/workflows/release-gate.yml",
+      "snapshot": "spikes/rpf-86/rev-5/pre-repair-sources/release-gate.yml",
+      "blob": "fe060ccb918acd318ff1b542cc6ece597a80d424",
+      "raw_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078",
+      "lf_sha256": "9fe4eeedaff21ac1bd920fbcb0fbc3a1c355080362f275c89f379f2477b0e078"
+    }
+  ],
+  "prefreeze_unit": {
+    "exit": 0,
+    "start": 496600050061900,
+    "end": 496611386051100
+  },
+  "diagnostic": {
+    "receipt": {
+      "mode": "native",
+      "pid": 19656,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "bytes": 778,
+      "stdout_sha256": "fe05f9c01cdae76b369847f0db21f2e7d167eab1c546f95a2beb056f14430677",
+      "monotonic_start_ns": 496674658299500,
+      "monotonic_end_ns": 496695964231500,
+      "timeout_limit_seconds": 120,
+      "child_exited": true,
+      "drain_joined": true,
+      "harness_lf_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906",
+      "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE",
+      "child_result_raw_sha256": "6e85e61933365df83cb24ca3f9a9ee8650bdabbc98b3feb10679907a48378990",
+      "journal": {
+        "schema": "rpf86-durable-denial-v1",
+        "status": "COMPLETE",
+        "error": null,
+        "raw_sha256": "2b5e8478d647f208ead6eb37a7fea7f223cfcb540b2c00f1fed026c4f2150c43",
+        "bytes": 5466,
+        "valid_prefix_frames": 12,
+        "prefix_tip_sha256": "2380bb445ae3aed369f5fd893af0bd99b401c94e6ca327025d25b5daa7553bfa",
+        "pid": 19656,
+        "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906",
+        "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+        "method_start_stop": [
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496676545156000,
+            "pid": 19656,
+            "previous_raw_sha256": "f9bb66ed879a831e3fc23aaed3a74761875d8a75c4e74605ed234b5fee64b945",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 1,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 496691140399400,
+            "pid": 19656,
+            "previous_raw_sha256": "de1c90e4adff9392980418abe593bbc9bd1c2b753bff335d972ba75272da5d12",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 2,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496691142187000,
+            "pid": 19656,
+            "previous_raw_sha256": "a51ab22b082fab5a19e443cdeac332776dab89bed845a74bc45976c40430db50",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 3,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 496695704701500,
+            "pid": 19656,
+            "previous_raw_sha256": "48083ce9eb4228d53d9db4a698c1ccbe9bd470708b7c6152fa9c798ec952e1d0",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 4,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496695707607000,
+            "pid": 19656,
+            "previous_raw_sha256": "1086730da30dce77a98431caf4c2ea306c0c5cbbaea14eb77f5e80f6aa84e006",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 5,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 496695781402800,
+            "pid": 19656,
+            "previous_raw_sha256": "501d6aefe400a09048e2ea8f745be1aaa55cbae5fe63f0181c5843124926d417",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 6,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496695783072200,
+            "pid": 19656,
+            "previous_raw_sha256": "33da786f77317c8cb27836c82414dfc891f6a1180802846cc3087664d1469327",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 7,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 496695809529200,
+            "pid": 19656,
+            "previous_raw_sha256": "93c59d378718c9d6ace7fbd92f8660c985909bf46ff23e9d9442c5ff5243194b",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 8,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+            },
+            "kind": "METHOD_START",
+            "monotonic_ns": 496695811184200,
+            "pid": 19656,
+            "previous_raw_sha256": "0e429be66243130475a2118fbe31e9a5ff9c0882c4e804de30b774a544e3e01f",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 9,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          },
+          {
+            "data": {
+              "actual": "PASS",
+              "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+            },
+            "kind": "METHOD_STOP",
+            "monotonic_ns": 496695884400600,
+            "pid": 19656,
+            "previous_raw_sha256": "8e3bda3afb362dac38a85b98ea293cfad18ef124e84a76cf784d1a93e0999722",
+            "run_id": "fa14c5ac93cb3216fcd0282c0bdb09fe",
+            "schema": "rpf86-durable-denial-v1",
+            "seq": 10,
+            "source_sha256": "527142efcbfa1fb4c86496554bf2d44837a3d129f4c499b768a59523f91f2906"
+          }
+        ],
+        "methods": {
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection": "PASS",
+          "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback": "PASS"
+        },
+        "latest_method": null,
+        "denial_events": [],
+        "terminal": {
+          "error": null,
+          "status": "PASS"
+        },
+        "terminal_present": true,
+        "zero_denials_proven": true,
+        "last_frame_monotonic_ns": 496695938213300,
+        "completion_without_terminal": "UNAVAILABLE"
+      }
+    },
+    "seconds": 21.45718470000429,
+    "report_present": true,
+    "results": [
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+        "actual": "PASS"
+      }
+    ]
+  },
+  "formal_settlement": {
+    "unit": {
+      "exit": 0,
+      "pid": 14012,
+      "timeout": false,
+      "truncated": false,
+      "child_exited": true,
+      "drain_joined": true,
+      "bytes": 4891,
+      "stdout_sha256": "38f21e959c1619fe82e29546c37a75239c7f14835a85f870444c5d08942a32f0",
+      "seconds": 10.960500699991826,
+      "timeout_limit": 180,
+      "method_count": 27
+    },
+    "formal_cohort_exit": 0,
+    "formal_wall": 34.96793919999618,
+    "total_wall": 355.81140990002314,
+    "cap": 520,
+    "source_freeze_unchanged": true
+  },
+  "formal_native": {
+    "status": "PASS",
+    "tests_run": 5,
+    "results": [
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+        "actual": "PASS"
+      }
+    ],
+    "guard": {
+      "observed": {
+        "write": 3005,
+        "read": 7680,
+        "certificate_read_granted": 424,
+        "stat": 9
+      },
+      "denied": {},
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [],
+      "attribution_total": 0,
+      "attribution_truncated": false,
+      "attribution_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "source_unchanged": true,
+    "patch_restored": true,
+    "manifest_files": 9,
+    "physical_owner_verified": true,
+    "logical_owner": "rpf-63",
+    "cache_policy": {
+      "policy": "FRESH_OWNER_PREFIX",
+      "dont_write_bytecode": true,
+      "source_pins": {
+        "spikes/rpf-53/probe.py": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+        "spikes/rpf-55/probe.py": "6a1ae9d154adcc35f69455b32982faaedb5483bc"
+      },
+      "global_loader_patch": false
+    },
+    "child_result_raw_sha256": "6e60b17528f502c4cc4eca3012c50f0795d3d07958419bc7c83a6a1c1e47a1dd"
+  },
+  "formal_native_receipt": {
+    "mode": "native",
+    "pid": 9168,
+    "exit": 0,
+    "timeout": false,
+    "truncated": false,
+    "bytes": 778,
+    "stdout_sha256": "d324ac544eed04f351faa43e60138d8e48feb3004a71b610e21bade2cb2967e7",
+    "monotonic_start_ns": 496839460690800,
+    "monotonic_end_ns": 496861272464400,
+    "timeout_limit_seconds": 120,
+    "child_exited": true,
+    "drain_joined": true,
+    "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+    "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE",
+    "child_result_raw_sha256": "6e60b17528f502c4cc4eca3012c50f0795d3d07958419bc7c83a6a1c1e47a1dd",
+    "journal": {
+      "schema": "rpf86-durable-denial-v1",
+      "status": "COMPLETE",
+      "error": null,
+      "raw_sha256": "ca2142f8babf3aba35887ccfd792b638d161c40e29e1243413f310047e97ca2b",
+      "bytes": 5454,
+      "valid_prefix_frames": 12,
+      "prefix_tip_sha256": "284bb8a7992ac23997b76f77db0331e1aa957efc5e078a906d2748377a53e09d",
+      "pid": 9168,
+      "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+      "method_start_stop": [
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496841407695900,
+          "pid": 9168,
+          "previous_raw_sha256": "df675cf9c66d4e60798c929b065a2702b6789791c7e063ed632788b4408420c5",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 1,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496856118629100,
+          "pid": 9168,
+          "previous_raw_sha256": "8a84b69c3cfe57e4cb6ef998a017af73d7998a669ffd85e8bc478a4280fce523",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 2,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496856120322700,
+          "pid": 9168,
+          "previous_raw_sha256": "bc9a31ea1bdb93359bcc9c631b69b2935234be699f4d899c31c80826655779b4",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 3,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496860962373400,
+          "pid": 9168,
+          "previous_raw_sha256": "e69bace6945a8a2c7f8e6890f032e920e28488005e2293b2348d8494683ac7f4",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 4,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496860972901700,
+          "pid": 9168,
+          "previous_raw_sha256": "480f231bf01f4bfc6979a08bb6c98133268c25707d6d6ab392f66f07d8638a70",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 5,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496861084347300,
+          "pid": 9168,
+          "previous_raw_sha256": "fb032e727fcd7963e94fd910d706aecb386e5150da57dd8bdb288c69cdbcc2fb",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 6,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496861086094200,
+          "pid": 9168,
+          "previous_raw_sha256": "bf613df46a4aae9a471e83e72527c1b647c5dd0058e46293ed3b2b99b341e8b5",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 7,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496861120300000,
+          "pid": 9168,
+          "previous_raw_sha256": "89e8a05ba60a8678e32e930a92c6765988f76c09834a5732193548216c10557a",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 8,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496861122008500,
+          "pid": 9168,
+          "previous_raw_sha256": "dcd500c00b553bd60606d4c3495e2072ad7fa47bf9653c88de13413e4b6df7c0",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 9,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496861192199000,
+          "pid": 9168,
+          "previous_raw_sha256": "080e74043ce27d68ca642ea3fd9d963db2a9b5f6c510c7ad7934b30743e75e6a",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 10,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        }
+      ],
+      "methods": {
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback": "PASS"
+      },
+      "latest_method": null,
+      "denial_events": [],
+      "terminal": {
+        "error": null,
+        "status": "PASS"
+      },
+      "terminal_present": true,
+      "zero_denials_proven": true,
+      "last_frame_monotonic_ns": 496861246842400,
+      "completion_without_terminal": "UNAVAILABLE"
+    }
+  },
+  "formal_verifier_receipt": {
+    "mode": "verify",
+    "pid": 33044,
+    "exit": 0,
+    "timeout": false,
+    "truncated": false,
+    "bytes": 0,
+    "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "monotonic_start_ns": 496861444848400,
+    "monotonic_end_ns": 496862707658500,
+    "timeout_limit_seconds": 60,
+    "child_exited": true,
+    "drain_joined": true,
+    "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+    "cleanup_scope": "Exact Popen handle; OS process-tree coverage UNAVAILABLE"
+  },
+  "independent_verification": {
+    "status": "PASS",
+    "native_ids": [
+      "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+      "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+      "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+      "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+      "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+    ],
+    "manifest_sha256": "ca24136af591da1305d0bb1d23840e8088e06e919e34466fea193da054054b4a",
+    "wal_files": 8,
+    "logical_owner": "rpf-63",
+    "source_identity": {
+      "files": {
+        "runtime/tests/test_effectwitness_pge_dual.py": {
+          "blob": "f98fb2da033dc62a0d5f785c06b837990912caf6",
+          "raw_sha256": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+          "lf_sha256": "17f820ade00716f451807529dee1ac83103ff5408a256a6f9a1e10fe0663037c"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": {
+          "blob": "2cc4145369918d265df6e3cdcdbce9ac7ecd9bd4",
+          "raw_sha256": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+          "lf_sha256": "ce8deac63516ff268064e8cc9442add724954dae220ad3cfdedf667991d9b47f"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": {
+          "blob": "5b626b547a884035c3c968f2a1f95f77f941aec9",
+          "raw_sha256": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+          "lf_sha256": "3c16b8d3611da521e8af7f2eada207bbf555f947434faef2477fbe76c81e12c1"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": {
+          "blob": "79c210fa5579235447157858f2c62ddd61983a91",
+          "raw_sha256": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+          "lf_sha256": "bca0a5b7b222b17b4dea4ee14fc862531cb9ff429cc85eeead4031730b94acba"
+        },
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": {
+          "blob": "ed4329a0064daae75792eddfdfdd5cebc1b4b695",
+          "raw_sha256": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+          "lf_sha256": "b3b4e09a6755ec258a5b6ad5d6aba041fe4ad0fa16f426abb35e2e0c98169474"
+        }
+      },
+      "cache_sources": {
+        "spikes/rpf-53/probe.py": {
+          "blob": "b15c595754c1ff4b213d3cbc0c6324622b9083e7",
+          "raw_sha256": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+          "lf_sha256": "b877325e833c6170148e73fd2b290ab0a4165033668570744067cee24ef2210e"
+        },
+        "spikes/rpf-55/probe.py": {
+          "blob": "6a1ae9d154adcc35f69455b32982faaedb5483bc",
+          "raw_sha256": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+          "lf_sha256": "a5c9745409531cb71632c236ce5e3a09c86b0d3c776ca35ebdf76eed9dc77f5c"
+        }
+      },
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "helper": {
+        "blob": "e675dd04d6a9bcc09c87d798222d48f972488f3f",
+        "raw_sha256": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198"
+      },
+      "method_ast": {
+        "test_four_paths": "84af5ec7fad46019a96426e9097d493300582e298ebe6992a9baa03e88f619d9",
+        "test_twenty_one_reanchored_attacks": "4b1ab2b581480d298f5e10d00a9084124561f318209ad653eeaa25e3e932c71c",
+        "test_unknown_usage_and_restart": "879583932738356d05f7b60655131e91b278a5ef6608e95e5fbf827541a7536a",
+        "test_scope_lock_budget_and_invalid_selection": "a86fc58196bd8b570ff57c0ca67b9f05f267c17644e1f70c4398030067ca98e9",
+        "test_unknown_mutation_stops_writes_but_allows_readback": "a0b9c17ae1455f3e7347a4a9878491257bf7e0b9c8dfc3f6c4fc5ce1ae735875"
+      },
+      "assertion_counts": {
+        "test_four_paths": 1,
+        "test_twenty_one_reanchored_attacks": 1,
+        "test_unknown_usage_and_restart": 4,
+        "test_scope_lock_budget_and_invalid_selection": 4,
+        "test_unknown_mutation_stops_writes_but_allows_readback": 3
+      },
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "guard": {
+      "observed": {
+        "read": 59,
+        "lstat": 9,
+        "stat": 9
+      },
+      "denied": {},
+      "certificate": {
+        "path": "spikes/rpf-53/rev-6/config-live-evidence.json",
+        "blob": "b80c7d1b98daf9d336e8c90caa767b3d1113a3e9",
+        "raw_sha256": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+        "bytes": 21170,
+        "structure": "identity:dict",
+        "status": "PIN_VERIFIED",
+        "secret_scan": "NO_UNEXPECTED_CREDENTIAL_SHAPE"
+      },
+      "attribution_schema": "rpf86-denial-events-v1",
+      "attribution_events": [],
+      "attribution_total": 0,
+      "attribution_truncated": false,
+      "attribution_sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "metadata_intercepts": [
+        "os.stat",
+        "os.lstat",
+        "Path.resolve",
+        "os.mkdir"
+      ],
+      "limitations": "Python audit and explicit metadata interfaces only; arbitrary native syscalls/kernel sandbox coverage UNAVAILABLE",
+      "attribution_source_hashes": {
+        "runtime/tests/test_effectwitness_pge_dual.py": "46a7b58496e91fdd7279bfe8d2824a6bfdecab7f23875098d84ef042bbc1e949",
+        "runtime/runproof_runtime/effectwitness/pge_dual_contracts.py": "70e6bc82b41de493d9d3baf5df9d9fd29a496463090caa623f9f3881470f820c",
+        "runtime/runproof_runtime/effectwitness/pge_dual_session.py": "8cc854fdb67d2525e6a2f565b4d075134e478cb3b3adea98e089080de9df96e6",
+        "runtime/runproof_runtime/effectwitness/pge_dual_config_port.py": "d0b09e29cc26e80783d72613afad164f51fd74e174039d1f3ce2102eabf04d68",
+        "runtime/runproof_runtime/effectwitness/pge_dual_verify.py": "1cbd9f04f5e17a0665e3dc23f8156f1706d947cd448b4f73991bd800a9a6c769",
+        "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+        "ci/run-rpf86-owner-admission.py": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+        "ci/test_run_rpf86_owner_admission.py": "0a1b3a7c1fcd67e49bb435944e3b022d0ef0070864fe9b38aa9439195f9c3eab",
+        "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+        "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+        "spikes/rpf-63/probe.py": "9c7baddd9b122657953f3c6e39f91e998d516c90de7ac072a809d4ef984f564b"
+      }
+    },
+    "journal": {
+      "schema": "rpf86-durable-denial-v1",
+      "status": "COMPLETE",
+      "error": null,
+      "raw_sha256": "ca2142f8babf3aba35887ccfd792b638d161c40e29e1243413f310047e97ca2b",
+      "bytes": 5454,
+      "valid_prefix_frames": 12,
+      "prefix_tip_sha256": "284bb8a7992ac23997b76f77db0331e1aa957efc5e078a906d2748377a53e09d",
+      "pid": 9168,
+      "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+      "method_start_stop": [
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496841407695900,
+          "pid": 9168,
+          "previous_raw_sha256": "df675cf9c66d4e60798c929b065a2702b6789791c7e063ed632788b4408420c5",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 1,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496856118629100,
+          "pid": 9168,
+          "previous_raw_sha256": "8a84b69c3cfe57e4cb6ef998a017af73d7998a669ffd85e8bc478a4280fce523",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 2,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496856120322700,
+          "pid": 9168,
+          "previous_raw_sha256": "bc9a31ea1bdb93359bcc9c631b69b2935234be699f4d899c31c80826655779b4",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 3,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496860962373400,
+          "pid": 9168,
+          "previous_raw_sha256": "e69bace6945a8a2c7f8e6890f032e920e28488005e2293b2348d8494683ac7f4",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 4,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496860972901700,
+          "pid": 9168,
+          "previous_raw_sha256": "480f231bf01f4bfc6979a08bb6c98133268c25707d6d6ab392f66f07d8638a70",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 5,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496861084347300,
+          "pid": 9168,
+          "previous_raw_sha256": "fb032e727fcd7963e94fd910d706aecb386e5150da57dd8bdb288c69cdbcc2fb",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 6,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496861086094200,
+          "pid": 9168,
+          "previous_raw_sha256": "bf613df46a4aae9a471e83e72527c1b647c5dd0058e46293ed3b2b99b341e8b5",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 7,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496861120300000,
+          "pid": 9168,
+          "previous_raw_sha256": "89e8a05ba60a8678e32e930a92c6765988f76c09834a5732193548216c10557a",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 8,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+          },
+          "kind": "METHOD_START",
+          "monotonic_ns": 496861122008500,
+          "pid": 9168,
+          "previous_raw_sha256": "dcd500c00b553bd60606d4c3495e2072ad7fa47bf9653c88de13413e4b6df7c0",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 9,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        },
+        {
+          "data": {
+            "actual": "PASS",
+            "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+          },
+          "kind": "METHOD_STOP",
+          "monotonic_ns": 496861192199000,
+          "pid": 9168,
+          "previous_raw_sha256": "080e74043ce27d68ca642ea3fd9d963db2a9b5f6c510c7ad7934b30743e75e6a",
+          "run_id": "9ce025eb3a683a1c4796abb64169d7e3",
+          "schema": "rpf86-durable-denial-v1",
+          "seq": 10,
+          "source_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6"
+        }
+      ],
+      "methods": {
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection": "PASS",
+        "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback": "PASS"
+      },
+      "latest_method": null,
+      "denial_events": [],
+      "terminal": {
+        "error": null,
+        "status": "PASS"
+      },
+      "terminal_present": true,
+      "zero_denials_proven": true,
+      "last_frame_monotonic_ns": 496861246842400,
+      "completion_without_terminal": "UNAVAILABLE"
+    },
+    "source_level": "SYNTHETIC_OFFLINE_TEST",
+    "independent_process": true,
+    "independent_issuer": false
+  },
+  "redacted_artifact": {
+    "schema": "rpf86-redacted-pilot-v1",
+    "status": "PASS",
+    "source_level": "SYNTHETIC_OFFLINE_TEST",
+    "native_receipt": {
+      "pid": 9168,
+      "exit": 0,
+      "bytes": 778,
+      "timeout": false,
+      "truncated": false,
+      "child_exited": true,
+      "drain_joined": true,
+      "stdout_sha256": "d324ac544eed04f351faa43e60138d8e48feb3004a71b610e21bade2cb2967e7",
+      "harness_lf_sha256": "7fab39c179cf6024242ef399581911fc84f13f698620524a7f48519bc4e187b6",
+      "child_result_raw_sha256": "6e60b17528f502c4cc4eca3012c50f0795d3d07958419bc7c83a6a1c1e47a1dd"
+    },
+    "methods": [
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_four_paths",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+        "actual": "PASS"
+      },
+      {
+        "id": "runtime.tests.test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback",
+        "actual": "PASS"
+      }
+    ],
+    "journal_complete": true,
+    "journal_terminal_pass": true,
+    "journal_denial_count": 0,
+    "formal_required_unavailable": 539,
+    "official_coverage_changed": false,
+    "release_executed": false,
+    "deployment_authorized": false,
+    "actual_provider_calls": 0,
+    "actual_sdk_calls": 0,
+    "actual_business_writes": 0
+  },
+  "formal_full_result_raw_sha256": "6b4d698bf2d07ca80586c48f0c8b44dee012221bc332c42b48bd780c99fa39ee",
+  "resource_cost": {
+    "provider": 0,
+    "real_sdk": 0,
+    "key_reads": 0,
+    "java": 0,
+    "local_docker": 0,
+    "business_http": 0,
+    "production_writes": 0,
+    "llm_api_fee": 0
+  },
+  "official_coverage": {
+    "required": 1232,
+    "prior_pass": 688,
+    "prior_native_skip": 5,
+    "unavailable": 539,
+    "changed": false
+  },
+  "push": "NOT_RUN_AT_SEAL",
+  "hosted": "NOT_RUN_AT_SEAL",
+  "release_executed": false,
+  "deployment_authorized": false
+}

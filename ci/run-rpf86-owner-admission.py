@@ -8,6 +8,8 @@ import ast
 from collections import Counter
 import hashlib
 import importlib
+import importlib.util
+import importlib.machinery
 import builtins
 import json
 import math
@@ -44,6 +46,26 @@ LIMIT=2*1024*1024
 ATTRIBUTION_LIMIT=16
 ATTRIBUTION_FILES=tuple(PINS)+(HELPER,'ci/run-rpf86-owner-admission.py',
     'ci/test_run_rpf86_owner_admission.py')+tuple(f'spikes/rpf-{n}/probe.py' for n in (53,55,63))
+CACHE_SOURCES={'spikes/rpf-53/probe.py':'b15c595754c1ff4b213d3cbc0c6324622b9083e7',
+               'spikes/rpf-55/probe.py':'6a1ae9d154adcc35f69455b32982faaedb5483bc'}
+
+def cache_candidates():
+    # Pure lexical computation. Never stat/open/list a historical cache.
+    return {str(Path(importlib.util.cache_from_source(str(ROOT/name)))):'cache_probe_rpf'+('53' if 'rpf-53/' in name else '55') for name in CACHE_SOURCES}
+
+def classify_cache(path,candidates):
+    if path is None or isinstance(path,int):return 'other_public'
+    p=Path(os.fsdecode(path))
+    if '..' in p.parts or not p.is_absolute():return 'other_public'
+    return candidates.get(str(p),'other_public')
+
+def configure_cache(folder):
+    folder=owned(folder);prefix=folder/'pycache';nonlink(prefix)
+    need(sys.dont_write_bytecode is True,'BYTECODE_WRITES_ENABLED')
+    prefix.mkdir(exist_ok=False);sys.pycache_prefix=str(prefix)
+    need(all(Path(p).is_relative_to(prefix) for p in cache_candidates()),'CACHE_PREFIX_ESCAPE')
+    return dict(policy='FRESH_OWNER_PREFIX',prefix_relative=prefix.relative_to(ROOT).as_posix(),dont_write_bytecode=True,
+                source_pins=CACHE_SOURCES,global_loader_patch=False)
 
 class Invalid(ValueError):pass
 def need(ok,code):
@@ -93,7 +115,7 @@ def certificate_identity():
 def local_task():
     raw=os.environ.get('RPF86_TASK_ROOT','')
     p=Path(raw)
-    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev4-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
+    need(p.is_absolute() and str(p.parent)==str(LOCAL) and re.fullmatch('rev5-[0-9a-f]{32}',p.name),'LOCAL_TASK_ROOT')
     nonlink(p)
     return p
 
@@ -116,6 +138,8 @@ def owned(raw):
         ci=ROOT/'ci-results';need(p!=ci and p.is_relative_to(ci),'OWNER_SCOPE')
         name=p.relative_to(ci).parts[0]
         need(name==f'rpf86-{run}-{attempt}' or re.fullmatch('rpf86-unit-'+run+'-'+attempt+'-[0-9a-f]{32}',name),'CI_OWNER')
+        commit=os.environ.get('GITHUB_SHA','')
+        need(re.fullmatch('[0-9a-f]{40}',commit) is not None and subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT).decode().strip()==commit,'CI_COMMIT')
         base=ci/name
     else:
         need(str(p).startswith(str(LOCAL)+os.sep),'OWNER_SCOPE')
@@ -138,7 +162,12 @@ def identity():
     need(ast.dump(cls,include_attributes=False)==ast.dump(other,include_attributes=False),'ORIGINAL_ASSERTION_DRIFT')
     helper=(ROOT/HELPER).read_bytes()
     need(helper.replace(b'\r\n',b'\n')==subprocess.check_output(['git','cat-file','blob',HELPER_BLOB],cwd=ROOT).replace(b'\r\n',b'\n'),'HELPER_PIN')
-    return dict(files=result,certificate=certificate_identity(),helper=dict(blob=HELPER_BLOB,raw_sha256=sha(helper)),attribution_sources=attribution_sources(),method_ast={name:sha(ast.dump(methods[name],include_attributes=False).encode()) for name in NAMES},
+    cache_sources={}
+    for name,pin in CACHE_SOURCES.items():
+        raw=(ROOT/name).read_bytes();blob=subprocess.check_output(['git','cat-file','blob',pin],cwd=ROOT)
+        need(raw.replace(b'\r\n',b'\n')==blob.replace(b'\r\n',b'\n'),'CACHE_SOURCE_PIN')
+        cache_sources[name]=dict(blob=pin,raw_sha256=sha(raw),lf_sha256=sha(raw.replace(b'\r\n',b'\n')))
+    return dict(files=result,cache_sources=cache_sources,certificate=certificate_identity(),helper=dict(blob=HELPER_BLOB,raw_sha256=sha(helper)),attribution_sources=attribution_sources(),method_ast={name:sha(ast.dump(methods[name],include_attributes=False).encode()) for name in NAMES},
                 assertion_counts={name:sum(isinstance(n,ast.Call) and isinstance(n.func,ast.Attribute) and n.func.attr.startswith('assert') for n in ast.walk(methods[name])) for name in NAMES},
                 harness_lf_sha256=sha(SELF.read_bytes().replace(b'\r\n',b'\n')))
 
@@ -199,7 +228,7 @@ def read_journal(path,source,pid,ids,sources,*,timeout=False):
             elif kind=='GUARD_DENY':
                 fields={'sequence','reason','event_kind','intent','phase','method_id','target_class','public_repo_relative_path','target_token',
                     'caller','caller_chain','status','method_later_status','broad_exception_context','assertRaises_broad_exception_risk',
-                    'permission_error_observed_in_method','continued_after_broad_context'}
+                    'permission_error_observed_in_method','continued_after_broad_context','cache_probe'}
                 need(set(d)==fields and len(denials)<ATTRIBUTION_LIMIT,'JOURNAL_DENIAL_FIELDS')
                 need(d['method_id']==active and d['method_later_status'] is None,'JOURNAL_METHOD_BINDING')
                 need(d['caller'] is not None and bool(d['caller_chain']) and all(not c['function'].startswith('<') for c in d['caller_chain']),'JOURNAL_UNKNOWN_CALLER')
@@ -239,6 +268,7 @@ class Guard:
         self.runtime=[Path(sys.base_prefix).resolve(),Path(sys.prefix).resolve(),Path(sysconfig.get_path('stdlib')).resolve()]
         self.events=[];self.sequence=0;self.truncated=False;self.phase='setup';self.method=None
         self.journal=journal
+        self.cache_candidates=cache_candidates()
         self.operation=('unknown',None,False);self.salt=os.urandom(32);self.sources=attribution_sources();self.broad={}
         for name in ATTRIBUTION_FILES:
             raw=(ROOT/name).read_bytes();tree=ast.parse(raw)
@@ -311,7 +341,8 @@ class Guard:
                 phase=self.phase,method_id=self.method,target_class=kind,public_repo_relative_path=public,target_token=token,
                 caller=callers[0] if callers else None,caller_chain=callers,status='DENIED_BEFORE_IO',method_later_status=None,
                 broad_exception_context=broad,assertRaises_broad_exception_risk='SUSPECTED' if broad else 'NOT_OBSERVED',
-                permission_error_observed_in_method=False,continued_after_broad_context=False))
+                permission_error_observed_in_method=False,continued_after_broad_context=False,
+                cache_probe='private_or_protected' if kind in ('private_old_root','protected','outside_repo') else classify_cache(path,self.cache_candidates)))
             if self.journal:self.journal.emit('GUARD_DENY',self.events[-1])
         raise PermissionError(code)
     def lexical(self,path,query=False):
@@ -445,6 +476,9 @@ def validate_attribution(guard,sources,ids):
         method=e.get('method_id');need(method is None or method in ids,'ATTRIBUTION_METHOD')
         need(e['phase'] not in ('method','teardown') or method in ids,'ATTRIBUTION_METHOD_MISSING')
         need(e.get('intent') in ('read','write') and isinstance(e.get('event_kind'),str),'ATTRIBUTION_OPERATION')
+        need(e.get('cache_probe') in ('cache_probe_rpf53','cache_probe_rpf55','other_public','private_or_protected'),'CACHE_CLASSIFICATION')
+        if e['cache_probe'].startswith('cache_probe_'):
+            need(e['intent']=='read' and e['event_kind']=='open' and e['target_class']=='unapproved_repo_public_path','CACHE_EVENT_CONTEXT')
         public=e.get('public_repo_relative_path')
         need(public is None or public in ATTRIBUTION_FILES+(CERT_NAME,),'ATTRIBUTION_REDACTION')
         need(e.get('target_token') is None or re.fullmatch('[0-9a-f]{64}',e['target_token']) is not None,'ATTRIBUTION_TOKEN')
@@ -463,6 +497,7 @@ def manifest(work):
     return rows
 
 def native(folder):
+    cache_policy=configure_cache(folder)
     source=identity();journal=Journal(folder/'denial-journal.jsonl',source['harness_lf_sha256'],IDS)
     guard=Guard(folder,journal=journal);guard.install();started=time.monotonic_ns()
     result=None;error=None;work=folder/'work';work.mkdir(exist_ok=False)
@@ -489,7 +524,7 @@ def native(folder):
         manifest=manifest(work),error=error,pid=os.getpid(),monotonic_start_ns=started,monotonic_end_ns=time.monotonic_ns(),
         actual_provider_calls=0,actual_sdk_calls=0,actual_java_processes=0,actual_business_writes=0,
         old_inode_comparison='UNAVAILABLE: no historical stat; fresh mkdir and no-reparse admission prove separation')
-    report['guard']=guard.projection()
+    report['cache_policy']=cache_policy;report['guard']=guard.projection()
     try:validate_attribution(report['guard'],source['attribution_sources'],IDS)
     except Invalid as exc:report['error']=str(exc)
     success=report['tests_run']==5 and all(x['actual']=='PASS' for x in report['results']) and not report['guard']['denied'] and restored and report['source_unchanged'] and report['error'] is None
@@ -522,7 +557,7 @@ def launch(mode,folder,*,deadline,timeout=180,input_root=None,source_snapshot=No
             data=process.stdout.read(65536)
             if not data:break
             size+=len(data)
-            if size>LIMIT:
+            if size>(256*1024 if mode=='import-probe' else LIMIT):
                 overflow.set()
                 if process.poll() is None:process.kill()
                 break
@@ -543,7 +578,7 @@ def launch(mode,folder,*,deadline,timeout=180,input_root=None,source_snapshot=No
     if (folder/'child-result.json').is_file():receipt['child_result_raw_sha256']=sha((folder/'child-result.json').read_bytes())
     if (folder/'denial-journal.jsonl').is_file():
         receipt['journal']=read_journal(folder/'denial-journal.jsonl',receipt['harness_lf_sha256'],process.pid,
-            IDS if mode=='native' else ['synthetic.durable_control'],attribution_sources(),timeout=timed_out)
+            IDS if mode=='native' else [] if mode=='import-probe' else ['synthetic.durable_control'],attribution_sources(),timeout=timed_out)
     write(folder/'launch-receipt.json',receipt)
     return receipt
 
@@ -555,6 +590,7 @@ def validate_native(report,receipt,source,work):
     validate_attribution(report.get('guard',{}),source['attribution_sources'],IDS)
     need(report.get('physical_owner')==work.relative_to(ROOT).as_posix() and report.get('logical_owner')=='rpf-63'
          and report.get('logical_identity_changed') is False,'OWNER_BINDING')
+    validate_cache_policy(report.get('cache_policy'),work)
     need(report.get('marker')=='TEST_HARNESS_OWNER_SUBSTITUTION' and report.get('patch_points')==['pge_dual_contracts.WORK']
          and report.get('patch_restored') is True,'PATCH_SCOPE')
     need(report.get('status')=='PASS' and report.get('error') is None and report.get('guard',{}).get('denied')=={},'GUARD_OR_NATIVE_FAILURE')
@@ -564,6 +600,11 @@ def validate_native(report,receipt,source,work):
     need(receipt.get('mode')=='native' and receipt.get('exit')==0 and receipt.get('timeout') is False and receipt.get('truncated') is False
          and receipt.get('child_exited') is True and receipt.get('drain_joined') is True,'CHILD_UNSETTLED')
     need(receipt.get('pid')==report.get('pid') and receipt.get('harness_lf_sha256')==source['harness_lf_sha256'],'PROCESS_SOURCE_BINDING')
+    journal=receipt.get('journal',{})
+    need(journal.get('schema')==JOURNAL_SCHEMA and journal.get('status')=='COMPLETE' and journal.get('zero_denials_proven') is True
+         and journal.get('methods')==dict.fromkeys(IDS,'PASS') and journal.get('denial_events')==[]
+         and journal.get('terminal')=={'status':'PASS','error':None} and journal.get('pid')==receipt['pid']
+         and journal.get('source_sha256')==source['harness_lf_sha256'],'JOURNAL_NATIVE_BINDING')
     states={}
     for e in report.get('events',[]):
         need(type(e) is dict and set(e)=={'id','actual'} and e['id'] in IDS,'EVENT_ID')
@@ -576,6 +617,11 @@ def validate_native(report,receipt,source,work):
 
 def validate_log(log,receipt):
     need(len(log)<=LIMIT and len(log)==receipt['bytes'] and sha(log)==receipt['stdout_sha256'],'LOG_BINDING')
+
+def validate_cache_policy(policy,work):
+    expected=dict(policy='FRESH_OWNER_PREFIX',prefix_relative=(work.parent/'pycache').relative_to(ROOT).as_posix(),
+        dont_write_bytecode=True,source_pins=CACHE_SOURCES,global_loader_patch=False)
+    need(policy==expected,'CACHE_POLICY_BINDING')
 
 def read_child_report(folder,receipt):
     raw=(folder/'child-result.json').read_bytes()
@@ -595,6 +641,7 @@ def independent(folder,input_root):
     native_dir=input_root/'native';receipt=strict((native_dir/'launch-receipt.json').read_bytes());report=read_child_report(native_dir,receipt)
     work=native_dir/'work';validate_native(report,receipt,source,work)
     journal=validate_physical_journal(native_dir,receipt,source)
+    nonlink(native_dir/'pycache');need(not list((native_dir/'pycache').rglob('*.pyc')),'BYTECODE_CACHE_WRITES')
     log=(native_dir/'output.log').read_bytes();validate_log(log,receipt)
     files=manifest(work);need(files==report['manifest'],'PHYSICAL_MANIFEST_DRIFT')
     wal_count=0
@@ -661,7 +708,7 @@ def durable_control(folder,mode):
 
 def performance_probe(folder):
     import statistics
-    old=ROOT/'spikes/rpf-86/rev-4/pre-repair-sources/run-rpf86-owner-admission.py'
+    old=ROOT/'spikes/rpf-86/rev-5/pre-repair-sources/run-rpf86-owner-admission.py'
     old_raw=old.read_bytes();tree=ast.parse(old_raw);cls=next(x for x in tree.body if isinstance(x,ast.ClassDef) and x.name=='Guard')
     node=next(x for x in cls.body if isinstance(x,ast.FunctionDef) and x.name=='trace')
     namespace=dict(ROOT=ROOT,Path=Path);exec(compile(ast.Module(body=[node],type_ignores=[]),'<pinned-trace-microprobe>','exec'),namespace)
@@ -685,6 +732,42 @@ def performance_probe(folder):
     write(folder/'performance.json',dict(status='OBSERVED_NO_SPEED_THRESHOLD',samples=samples,base_trace_callbacks=calls,
         base_source_raw_sha256=sha(old_raw),candidate_source_lf_sha256=candidate_sha,
         scope='Fixed arithmetic calls under actual Guard audit hook; independent microprobe, not native-cohort causal proof'))
+    return 0
+
+def import_probe(folder):
+    source=identity();journal=Journal(folder/'denial-journal.jsonl',source['harness_lf_sha256'],[])
+    metadata=dict(cache_tag=sys.implementation.cache_tag,dont_write_bytecode=sys.dont_write_bytecode,
+        pycache_prefix_present=sys.pycache_prefix is not None,candidate_classes=sorted(cache_candidates().values()),
+        candidate_path_hashes={v:sha(k.encode()) for k,v in cache_candidates().items()})
+    guard=Guard(folder,journal=journal);guard.install();guard.phase='import';error=None
+    try:sys.path.insert(0,str(ROOT));importlib.import_module(MODULE)
+    except Exception as exc:error=type(exc).__name__
+    projection=guard.projection()
+    supported=sorted(e['cache_probe'] for e in guard.events)==['cache_probe_rpf53','cache_probe_rpf55'] and len(guard.events)==2 and error is None
+    journal.emit('TERMINAL',dict(status='FAIL' if guard.events or error else 'PASS',error=None if error is None else 'IMPORT_ERROR'));journal.close()
+    write(folder/'import-probe.json',dict(status='H_CACHE_SUPPORTED' if supported else 'H_CACHE_NOT_CONFIRMED',
+        python_version=sys.version.split()[0],python_identity=metadata,source_identity=source,guard=projection,
+        original_methods_executed=False,no_target_bytes_read=True,no_target_stat_or_list=True,error=error))
+    return 0 if supported else 1
+
+def cache_controls(folder):
+    before=cache_candidates();policy=configure_cache(folder);source=identity()
+    loader=importlib.machinery.SourceFileLoader;guard=Guard(folder);guard.install();sys.path.insert(0,str(ROOT))
+    loaded=[]
+    for name in CACHE_SOURCES:
+        spec=importlib.util.spec_from_file_location('controlled_'+('53' if 'rpf-53/' in name else '55'),ROOT/name)
+        need(type(spec.loader) is loader,'CACHE_LOADER_CHANGED');module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
+        need(module.__file__==str(ROOT/name),'CACHE_MODULE_SOURCE');loaded.append(name)
+    need(not guard.denials,'CACHE_CONTROL_IMPORT_DENIAL')
+    refused=0
+    for target in before:
+        try:open(target,'rb')
+        except PermissionError:refused+=1
+        else:raise Invalid('HISTORICAL_CACHE_GRANTED')
+    need(refused==2 and importlib.machinery.SourceFileLoader is loader,'CACHE_OLD_PROTECTION')
+    write(folder/'cache-controls.json',dict(status='PASS',policy=policy,loaded_source_files=loaded,
+        source_pins=source['cache_sources'],historical_cache_reads_denied=refused,
+        actual_cache_files_created=len(list((folder/'pycache').rglob('*.pyc'))),guard=guard.projection(),global_loader_patch=False))
     return 0
 
 def controls(folder):
@@ -803,6 +886,23 @@ def verify_failure(folder,input_root,snapshot):
         admission_pass=False,conclusion='Five-method admission FAIL despite any passing methods; original sources unchanged; read-scope denials retained; independent process verified negative run.'))
     return 0
 
+def public_projection(result):
+    """Allowlisted hosted artifact; never export logs, paths, tokens or identity values."""
+    native=result.get('native_receipt') or {};journal=native.get('journal') or {}
+    safe_receipt={k:native[k] for k in ('pid','exit','bytes') if type(native.get(k)) is int}
+    safe_receipt.update({k:native[k] for k in ('timeout','truncated','child_exited','drain_joined') if type(native.get(k)) is bool})
+    for k in ('stdout_sha256','harness_lf_sha256','child_result_raw_sha256'):
+        value=native.get(k)
+        if isinstance(value,str) and re.fullmatch('[0-9a-f]{64}',value):safe_receipt[k]=value
+    states={row['id']:row.get('actual') for row in result.get('native_results',[]) if isinstance(row,dict) and row.get('id') in IDS}
+    return dict(schema='rpf86-redacted-pilot-v1',status='PASS' if result.get('status')=='PASS' else 'FAIL',
+        source_level='SYNTHETIC_OFFLINE_TEST',native_receipt=safe_receipt,
+        methods=[dict(id=x,actual=states.get(x) if states.get(x) in ('PASS','FAIL','ERROR','SKIP','NOT_RUN') else 'NOT_RUN') for x in IDS],
+        journal_complete=journal.get('status')=='COMPLETE',journal_terminal_pass=journal.get('terminal')=={'status':'PASS','error':None},
+        journal_denial_count=len(journal.get('denial_events',[])) if isinstance(journal.get('denial_events'),list) else None,
+        formal_required_unavailable=539,official_coverage_changed=False,release_executed=False,deployment_authorized=False,
+        actual_provider_calls=0,actual_sdk_calls=0,actual_business_writes=0)
+
 def run(output,total_deadline=None):
     output=owned(output);output.mkdir(parents=True,exist_ok=False);started=time.monotonic();deadline=started+420
     if total_deadline is not None:
@@ -827,12 +927,13 @@ def run(output,total_deadline=None):
         formal_required_unavailable=539,official_coverage_changed=False,release_eligible=False,
         release_executed=False,deployment_authorized=False,actual_provider_calls=0,actual_sdk_calls=0,
         actual_java_processes=0,actual_business_writes=0,syscall_proof='Python audit + explicit metadata intercepts; arbitrary native syscall coverage UNAVAILABLE')
-    write(output/'result.json',result);print(json.dumps({k:result[k] for k in ('status','dedicated_owner_admission_pilot_pass','formal_required_unavailable','error')}))
+    write(output/'result.json',result);write(output/'public-result.json',public_projection(result))
+    print(json.dumps({k:result[k] for k in ('status','dedicated_owner_admission_pilot_pass','formal_required_unavailable','error')}))
     return 0 if passed else 1
 
 def main():
     parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--output',type=Path,required=True)
-    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','false-green','durable-deny-crash','durable-timeout','performance','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
+    parser.add_argument('--mode',choices=('run','native','verify','verify-failure','controls','certificate-controls','false-green','durable-deny-crash','durable-timeout','performance','import-probe','cache-controls','crash','exit1','missing','timeout','overflow'),default='run');parser.add_argument('--input',type=Path)
     parser.add_argument('--source-snapshot',type=Path)
     parser.add_argument('--deadline',type=float)
     args=parser.parse_args()
@@ -846,6 +947,8 @@ def main():
         if args.mode=='false-green':return false_green_controls(folder)
         if args.mode in ('durable-deny-crash','durable-timeout'):return durable_control(folder,args.mode)
         if args.mode=='performance':return performance_probe(folder)
+        if args.mode=='import-probe':return import_probe(folder)
+        if args.mode=='cache-controls':return cache_controls(folder)
         if args.mode=='verify-failure':return verify_failure(folder,args.input,args.source_snapshot)
         if args.mode=='crash':return 7
         if args.mode=='exit1':return 1
