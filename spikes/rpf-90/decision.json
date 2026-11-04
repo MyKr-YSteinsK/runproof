@@ -1,0 +1,15 @@
+{
+  "schema": "rpf90-decision-v1",
+  "path": "A_CAPTURE_ACTIVE",
+  "implementation_controls": "PASS",
+  "delivery_at_seal": "NOT_RUN",
+  "hosted_at_seal": "NOT_RUN",
+  "historical_12_error_cause": "UNAVAILABLE",
+  "rpf89_admission": false,
+  "coverage_promoted": false,
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "authority": "NO_RELEASE/NO_DEPLOY",
+  "architect_review_required_for_acceptance": true
+}

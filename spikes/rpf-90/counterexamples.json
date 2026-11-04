@@ -1,0 +1,35 @@
+{
+  "schema": "rpf90-counterexamples-v1",
+  "status": "PASS",
+  "formal_suite_log_sha256": "41f6232b6a11b545b81229cb30dcd5cff68543a993448ceb44c10b4742b11a1d",
+  "controls": [
+    "12 exact ERROR IDs with no invented module error",
+    "FAIL separated from ERROR",
+    "688 PASS / 5 SKIP / 539 UNAVAILABLE normal",
+    "timeout / truncation / nonzero exit / child settlement separately projected",
+    "partial ERROR and module inventory invalid",
+    "57 modules / 1232 unique IDs / pinned matrix router baseline",
+    "wrong source / duplicate ID / wrong route / false actual-executed / fabricated counts",
+    "relative path / dot-dot / case alias / previous owner / overwrite denied before read",
+    "Windows junction and hardlink rejected",
+    "duplicate JSON / NaN / Infinity / invalid Unicode / oversize input-output rejected",
+    "fake hosted metadata / missing synthetic flag / wrong HEAD rejected",
+    "secret-like exception and reason not exported",
+    "real diagnostic CLI subprocess / independent stdlib readback",
+    "independent frozen source and synthetic input hash check",
+    "original gate failure not suppressed; upload exact one redacted JSON"
+  ],
+  "synthetic_failure_counts": {
+    "PASS": 676,
+    "ERROR": 12,
+    "SKIP": 5,
+    "UNAVAILABLE": 539
+  },
+  "synthetic_normal_counts": {
+    "PASS": 688,
+    "SKIP": 5,
+    "UNAVAILABLE": 539
+  },
+  "evidence_kind": "LOCAL_SYNTHETIC_CONTROL_ONLY",
+  "not_historical_reproduction": true
+}

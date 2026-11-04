@@ -1,0 +1,108 @@
+{
+  "schema": "rpf90-verification-v1",
+  "path": "A_CAPTURE_ACTIVE",
+  "sealed_status": "PARTIAL",
+  "freeze": {
+    "plan": "RPF-90/rev-1",
+    "utc": "2026-11-04T09:56:24.251025+00:00",
+    "files": {
+      "ci/diagnose-runtime-router-gate.py": "b451c91ee3d100b3abc6bc6dd300a86ef01b1fdf858e506629423b918053131c",
+      "ci/test_diagnose_runtime_router_gate.py": "2e45cda4dc53ce03366f3eec8517c985356174a28417ec4c589e51290b674fc3",
+      ".github/workflows/release-gate.yml": "d3ec762ec737e9b5da60ae18a741286eef3735d96f5bf2e49cb2b2576319905d"
+    },
+    "inputs": {
+      "frozen-normal.json": "36eb54bc7637d27316da0d9e958e238a5aba879946e0dcb4f554e137de75ecc2",
+      "frozen-failure.json": "8f4eafaa77e36aa523c2af49543939e63eea389d5f4d898fb48ac95b0805b0f5"
+    },
+    "preflight": {
+      "ast_compile": "PASS",
+      "yaml_structure_exact_two_steps": "PASS",
+      "bash_syntax_all_run_steps": "PASS",
+      "diff_check": "PASS",
+      "prefreeze_focused_runs": [
+        {
+          "tests": 4,
+          "exit": 0
+        },
+        {
+          "tests": 5,
+          "exit": 0
+        }
+      ]
+    },
+    "hosted_focused_omitted": "Synthetic tests require explicit fresh local owner and base snapshot; avoid creating extra hosted fixture roots outside the narrow CI output grant. Identical frozen controls run locally."
+  },
+  "formal_suite": {
+    "exit": 0,
+    "timeout": false,
+    "duration_seconds": 1.0932581999986724,
+    "log_bytes": 2630,
+    "log_sha256": "41f6232b6a11b545b81229cb30dcd5cff68543a993448ceb44c10b4742b11a1d",
+    "utc": "2026-11-04T09:56:38.484523+00:00",
+    "final_full_suite_attempts": 1,
+    "source_unchanged": true,
+    "tests": 15,
+    "passed": 15,
+    "failed": 0,
+    "skipped": 0
+  },
+  "workflow_raw_previous_bytes_preserved": true,
+  "negative_case_count_note": "15 unittest methods, including parameterized counterexamples; not 15 Runtime methods",
+  "gates": {
+    "G0": {
+      "status": "PASS"
+    },
+    "A01": {
+      "status": "PASS"
+    },
+    "A02": {
+      "status": "PASS"
+    },
+    "A03": {
+      "status": "PASS"
+    },
+    "A04": {
+      "status": "PASS"
+    },
+    "A05": {
+      "status": "PASS"
+    },
+    "A06": {
+      "status": "PASS"
+    },
+    "A07": {
+      "status": "PASS"
+    },
+    "A10": {
+      "status": "PASS"
+    },
+    "A08": {
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN_AT_SEAL; final Git/hosted receipts reported in chat without amending this report"
+    },
+    "A09": {
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN_AT_SEAL; final Git/hosted receipts reported in chat without amending this report"
+    }
+  },
+  "limits": {
+    "input_bytes": 8388608,
+    "output_bytes": 65536,
+    "log_bytes": 2097152,
+    "local_child_seconds": 120,
+    "owner_bytes": 67108864
+  },
+  "costs": {
+    "provider": 0,
+    "sdk": 0,
+    "key_lookup": 0,
+    "business_http": 0,
+    "business_write": 0,
+    "java_local": 0,
+    "docker_local": 0,
+    "database_connections": 0,
+    "model_cost": 0
+  },
+  "historical_failure_root_cause": "UNAVAILABLE",
+  "new_hosted_result": "NOT_RUN_AT_SEAL"
+}

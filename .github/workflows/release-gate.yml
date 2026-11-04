@@ -122,6 +122,24 @@ jobs:
           npm run typecheck
           npm run build
 
+      - name: Capture bounded Router failure evidence
+        id: rpf90_capture
+        if: ${{ always() }}
+        run: |
+          python -B ci/diagnose-runtime-router-gate.py capture \
+            --ledger "$GITHUB_WORKSPACE/ci-results/rpf84-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}/ledger.json" \
+            --output "$GITHUB_WORKSPACE/ci-results/rpf90-router-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}.json" \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
+
+      - name: Upload bounded Router failure evidence
+        if: ${{ always() && (steps.rpf90_capture.outcome == 'success' || steps.rpf90_capture.outcome == 'failure') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf90-router-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf90-router-${{ github.run_id }}-${{ github.run_attempt }}.json
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Run fresh canonical Release Gate
         run: python ci/run_release_gate.py --repo-root "$GITHUB_WORKSPACE" --output-dir ci-results
 

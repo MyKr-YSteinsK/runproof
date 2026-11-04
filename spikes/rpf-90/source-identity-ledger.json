@@ -1,0 +1,41 @@
+{
+  "schema": "rpf90-source-identity-v1",
+  "base": "6c1bfb1c51e7c9b2bd6027087fe2becc7190e81a",
+  "pinned_read_only_sources": {
+    ".github/workflows/release-gate.yml": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+    "ci/run-runtime-contract-tests.py": "88396fa78d73ba091e91992d4d51263063a95aa7",
+    "ci/runtime-contract-test-matrix.json": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+    "ci/verify-runtime-coverage-handoff.py": "0e22b02048497b21d698dfe6cd958a437583c94d",
+    "spikes/rpf-82/rev-2/classification-ledger.json": "51fefc01b4c4d3b465f7b7584b8384e1b9994c78",
+    "AGENTS.md": "30ae70de50ffa48a89679cac5e74cf9fbb4af179",
+    "ci/test_run_runtime_contract_tests.py": "1d9bf41a075ab480e4f9a45205935904df6c3639"
+  },
+  "frozen_implementation": [
+    {
+      "path": "ci/diagnose-runtime-router-gate.py",
+      "raw_sha256": "b451c91ee3d100b3abc6bc6dd300a86ef01b1fdf858e506629423b918053131c",
+      "git_clean_blob": "a3abf6dadbd4241f5c573b7616cc62999680ccdb",
+      "bytes": 19294
+    },
+    {
+      "path": "ci/test_diagnose_runtime_router_gate.py",
+      "raw_sha256": "2e45cda4dc53ce03366f3eec8517c985356174a28417ec4c589e51290b674fc3",
+      "git_clean_blob": "ab2acce00fa00e1d71132ea6146a1d4f36e9633a",
+      "bytes": 18884
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "raw_sha256": "d3ec762ec737e9b5da60ae18a741286eef3735d96f5bf2e49cb2b2576319905d",
+      "git_clean_blob": "bbfe6151c54405a0f1aecd7bcfc9796e8308c1a3",
+      "bytes": 9027
+    }
+  ],
+  "frozen_synthetic_inputs": {
+    "frozen-normal.json": "36eb54bc7637d27316da0d9e958e238a5aba879946e0dcb4f554e137de75ecc2",
+    "frozen-failure.json": "8f4eafaa77e36aa523c2af49543939e63eea389d5f4d898fb48ac95b0805b0f5"
+  },
+  "pre_repair_workflow_blob": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+  "source_freeze_utc": "2026-11-04T09:56:24.251025+00:00",
+  "source_identity_not_independent_issuer": true,
+  "self_hash_not_claimed": true
+}
