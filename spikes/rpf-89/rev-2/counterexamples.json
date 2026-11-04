@@ -1,0 +1,197 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "actual_hosted_RPF89_acceptance": false,
+  "base": "7e12a7b6b2315977b975ec42672cbf101c37bf19",
+  "branch": "main",
+  "completed_partial_synthetic_CLI_exits": [
+    0,
+    1,
+    2
+  ],
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "formal_completed_PASS": 10,
+  "formal_incomplete": 1,
+  "formal_not_started": 24,
+  "formal_status": "FAIL_TIMEOUT",
+  "formal_stdout_hash": "33e9eed936b84c2487fa1d973adcc5f3f0a2689021b4604f9ff422bde615c51e",
+  "formal_test_states": [
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_source_pins_and_inventory",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_missing_clock_is_observed_not_inferred",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_unidentifiable_schedules",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_both_admission_commands_refuse_before_any_receipt_io",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_fake_hosted_env_cannot_enable_assessment",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_json_duplicate_and_nonfinite",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_schema_change_is_not_silently_accepted",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_source_drift_rejects",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_runtime_not_imported",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_legacy_workflow_unchanged_and_live_enforce_kept",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_no_derived_counts_or_release_claim",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_actual_cli_fail_closed",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_checkpoint_rejects_wrong_identity_source_time_and_pid",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_stamp_outcome_and_existing_file_fail_before_revalidation",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_stamp_legacy_invalid_does_not_create_receipt",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_18_atomic_mapping_negative_controls",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_baseline_invalid_is_not_fallback_success",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_missing_private_evidence_atomically_keeps_534",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_source_and_public_and_database_tampering",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_reader_escapes_reparse_and_oversize_rejected",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_cli_synthetic_assess_enforce_and_overwrite",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_context_identity_and_old_path_rejected",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_workflow_only_authorized_delta_and_two_live_barriers",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_integrated_public_verifier_and_reanchored_listing_reject",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+      "status": "INCOMPLETE_TIMEOUT"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_reanchored_unknown_wal_write_and_external_manifest_reject",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_output_noncanonical_extra_fields_and_exclusive",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_pinned_neighbor_strict_functions_without_runtime",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_legacy_host_dispatch_checks_actual_exit_not_pass_text",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_manifest_extra_file_and_journal_false_start_reanchored",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_readonly_sqlite_uri_admission_precedes_native_connect",
+      "status": "NOT_RUN"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+      "status": "PASS"
+    },
+    {
+      "id": "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_hardlink_is_rejected_without_external_target_probe",
+      "status": "PASS"
+    }
+  ],
+  "official_new_admissions": 0,
+  "old_root_IO_negative_controls": "only declared strings; no protected target stat/read",
+  "plan": "RPF-89/rev-2",
+  "planned": 35,
+  "release_executed": false,
+  "report_date_client": "2026-11-04 Asia/Shanghai",
+  "safety_stop": "No test repetition or budget increase; failed A workflow not active",
+  "scope": "Earlier 24/32/6/2 prefreeze runs passed for their recorded versions; never substitute for frozen full suite",
+  "source_code_presence_is_not_PASS": true,
+  "status": "PARTIAL",
+  "unexecuted_method_names": [
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_missing_private_evidence_atomically_keeps_534",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_output_noncanonical_extra_fields_and_exclusive",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_pinned_neighbor_strict_functions_without_runtime",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_reader_escapes_reparse_and_oversize_rejected",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_readonly_sqlite_uri_admission_precedes_native_connect",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_reanchored_unknown_wal_write_and_external_manifest_reject",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_source_and_public_and_database_tampering",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_stamp_legacy_invalid_does_not_create_receipt",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_stamp_outcome_and_existing_file_fail_before_revalidation",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+    "ci.test_reconcile_rpf88_required_coverage.CheckpointAdmission.test_workflow_only_authorized_delta_and_two_live_barriers",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_actual_cli_fail_closed",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_both_admission_commands_refuse_before_any_receipt_io",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_fake_hosted_env_cannot_enable_assessment",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_json_duplicate_and_nonfinite",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_legacy_workflow_unchanged_and_live_enforce_kept",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_missing_clock_is_observed_not_inferred",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_no_derived_counts_or_release_claim",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_runtime_not_imported",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_schema_change_is_not_silently_accepted",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_source_drift_rejects",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_source_pins_and_inventory",
+    "ci.test_reconcile_rpf88_required_coverage.Preconditions.test_unidentifiable_schedules"
+  ]
+}

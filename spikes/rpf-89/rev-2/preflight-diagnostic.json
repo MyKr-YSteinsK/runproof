@@ -1,0 +1,67 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "ACL": "actual PowerShell Get-Acl exit0; no exception; raw SDDL private",
+  "G0": "PASS",
+  "actual_hosted_RPF89_acceptance": false,
+  "all_checks_pass": true,
+  "base": "7e12a7b6b2315977b975ec42672cbf101c37bf19",
+  "branch": "main",
+  "checks_count": 144,
+  "create_only": [
+    "spikes/rpf-89/rev-2/README.md",
+    "spikes/rpf-89/rev-2/RESULT.md",
+    "spikes/rpf-89/rev-2/preflight-diagnostic.json",
+    "spikes/rpf-89/rev-2/verification-diagnostic.json",
+    "spikes/rpf-89/rev-2/counterexamples.json",
+    "spikes/rpf-89/rev-2/decision.json",
+    "spikes/rpf-89/rev-2/chronology-boundary.json",
+    "spikes/rpf-89/rev-2/source-identity-ledger.json",
+    "spikes/rpf-89/rev-2/coverage-provenance.json",
+    "spikes/rpf-89/rev-2/pre-repair-sources/release-gate.yml"
+  ],
+  "creation": "10 Base/index/lexists/casefold/ignore/parent nonreparse checks passed; rechecked absent before reports",
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "identity": "requested repo main/upstream Git HTTPS remote exact Base",
+  "ignored_roots": "one new rev2 nonce owner; ci-results",
+  "no_new_owner_or_task_created": true,
+  "official_new_admissions": 0,
+  "owned_test_pid_state": {
+    "direct_children": 0,
+    "pid": 9804,
+    "state": "NOT_RUNNING"
+  },
+  "pins": {
+    ".github/workflows/release-gate.yml": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+    "ci/reconcile-rpf86-required-coverage.py": "1d8d502e0a8db08e56763272565386dc246469b0",
+    "ci/reconcile-rpf88-required-coverage.py": "5ea7f127e5b2e51e8619b9e257d72a0a4f2e4156",
+    "ci/run-rpf88-r72-owner-scope.py": "6ca463addf0b861dfe1be854ea305d5f5b369c9c",
+    "ci/run-runtime-contract-tests.py": "88396fa78d73ba091e91992d4d51263063a95aa7",
+    "ci/runtime-contract-test-matrix.json": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+    "ci/test_reconcile_rpf88_required_coverage.py": "b79f8f676e8c2b5e7ba2714aeb2a51e094c77f82",
+    "ci/verify-runtime-coverage-handoff.py": "0e22b02048497b21d698dfe6cd958a437583c94d"
+  },
+  "plan": "RPF-89/rev-2",
+  "private_g0_sha256": "74cc7bbf705c38244c843bd7f211421813d8e37a6c7a9aa69ad49ce96f162c3f",
+  "push_effects": "existing canonical CI only; no deploy/release",
+  "release_executed": false,
+  "report_date_client": "2026-11-04 Asia/Shanghai",
+  "resume": {
+    "assertion_failure_lines": false,
+    "completed_pass": 10,
+    "frozen_hashes_match": {
+      ".github/workflows/release-gate.yml": true,
+      "ci/reconcile-rpf88-required-coverage.py": true,
+      "ci/test_reconcile_rpf88_required_coverage.py": true
+    },
+    "no_rerun": true,
+    "not_started": 24,
+    "planned": 35,
+    "started_incomplete": [
+      "test_missing_checkpoint_and_missing_native_reject"
+    ],
+    "timeout": true
+  },
+  "status": "PARTIAL"
+}

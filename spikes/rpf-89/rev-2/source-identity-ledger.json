@@ -1,0 +1,86 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "actual_hosted_RPF89_acceptance": false,
+  "base": "7e12a7b6b2315977b975ec42672cbf101c37bf19",
+  "base_pins": {
+    ".github/workflows/release-gate.yml": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+    "ci/reconcile-rpf86-required-coverage.py": "1d8d502e0a8db08e56763272565386dc246469b0",
+    "ci/reconcile-rpf88-required-coverage.py": "5ea7f127e5b2e51e8619b9e257d72a0a4f2e4156",
+    "ci/run-rpf88-r72-owner-scope.py": "6ca463addf0b861dfe1be854ea305d5f5b369c9c",
+    "ci/run-runtime-contract-tests.py": "88396fa78d73ba091e91992d4d51263063a95aa7",
+    "ci/runtime-contract-test-matrix.json": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+    "ci/test_reconcile_rpf88_required_coverage.py": "b79f8f676e8c2b5e7ba2714aeb2a51e094c77f82",
+    "ci/verify-runtime-coverage-handoff.py": "0e22b02048497b21d698dfe6cd958a437583c94d"
+  },
+  "branch": "main",
+  "current_workflow": {
+    "blob": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+    "raw_sha256": "f7ef4405143bbbeb13187f11c5dd57a5a475631e209ea3176d023e3d0d5bb429",
+    "role": "B_BASE_RESTORED"
+  },
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "excluded7": [
+    "test_parent_child_policy_two_domain_totals",
+    "test_actual_cfg_limit_threshold_and_legacy35000",
+    "test_parent_child_noncanonical_bool_and_crossdomain",
+    "test_config_fields_domain_pin_and_output_limits",
+    "test_parent_contract_rejects_changed_policy",
+    "test_source_drift_independent_capsule",
+    "test_junction_and_torn_receipt"
+  ],
+  "failed_A_workflow_preserved": {
+    "raw_sha256": "e21ae2127ece0bf9511697345c7df1233910243960ff5542aa5b9af652086825",
+    "tracked_or_activated": false
+  },
+  "freeze_after_failure_source_changes": "Python NONE; workflow only explicit authorized B restoration",
+  "frozen_candidate": {
+    ".github/workflows/release-gate.yml": {
+      "lf": "e21ae2127ece0bf9511697345c7df1233910243960ff5542aa5b9af652086825",
+      "raw": "e21ae2127ece0bf9511697345c7df1233910243960ff5542aa5b9af652086825"
+    },
+    "ci/reconcile-rpf88-required-coverage.py": {
+      "lf": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3",
+      "raw": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3"
+    },
+    "ci/test_reconcile_rpf88_required_coverage.py": {
+      "lf": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2",
+      "raw": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2"
+    }
+  },
+  "frozen_python_still_current": true,
+  "native_original_methods_unchanged": true,
+  "official_new_admissions": 0,
+  "old_RPF87_RPF88_Router_Handoff_Matrix_unchanged": true,
+  "original_class_AST_sha256": "3c2460d984ab661077b8485958b9730f5f3b103adca093db433c7bd17e8a3eed",
+  "plan": "RPF-89/rev-2",
+  "reference_workflow_snapshot": {
+    "blob": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+    "path": "pre-repair-sources/release-gate.yml",
+    "reference_only": true
+  },
+  "release_executed": false,
+  "report_date_client": "2026-11-04 Asia/Shanghai",
+  "selected18": [
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_immutable_policy_strict_identity",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_native_direct_settle_and_append_denied",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_no_operation_no_sqlite_setup",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_session_reserve_settle_native_parity",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_resource_limit_session_once",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_unknown_refund_stops_new_writes",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_unsettled_refund_stops_second_write",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_crash_check_before_reserve",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_crash_native_reserve_before_confirmation",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_wrong_policy_does_not_enter_port",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_component_eleven_slots_permanent_native_caps",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_component_rejects_slot_and_price_forgery",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_normal_gate_and_policy",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+    "runtime.tests.test_effectwitness_pge_r72.BudgetTests.test_boolean_round_and_unknown_parameter_rejected"
+  ],
+  "status": "PARTIAL"
+}

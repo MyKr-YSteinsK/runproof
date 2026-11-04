@@ -1,0 +1,175 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "actual_RPF87_enforce_local": "NOT_RUN; synthetic upstream model/dispatch controls only",
+  "actual_RPF88_private_revalidation_hosted": "NOT_RUN",
+  "actual_hosted_RPF89_acceptance": false,
+  "base": "7e12a7b6b2315977b975ec42672cbf101c37bf19",
+  "branch": "main",
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "diagnosis": "TIMEOUT_CONFIRMED; specific performance cause UNAVAILABLE; no assertion FAIL/ERROR recorded",
+  "formal": {
+    "end_ns": 9194121564000,
+    "exit": 1,
+    "pid": 9804,
+    "source_freeze_sha256": "4a6af2f9cf4b0b504b1199e9491e497da090860e9399fa48b194d27ac9191fea",
+    "start_ns": 8894074445800,
+    "status": "FAIL",
+    "stdout_sha256": "33e9eed936b84c2487fa1d973adcc5f3f0a2689021b4604f9ff422bde615c51e",
+    "test_count": 35,
+    "timeout": true,
+    "truncated": false
+  },
+  "formal_actual_states": {
+    "completed_pass": 10,
+    "not_started": 24,
+    "started_incomplete": 1
+  },
+  "formal_log_sha256": "33e9eed936b84c2487fa1d973adcc5f3f0a2689021b4604f9ff422bde615c51e",
+  "full_A_test_acceptance": false,
+  "independent_B_audit": {
+    "A_test_acceptance": false,
+    "active_workflow_base_identical": true,
+    "actual_hosted_acceptance": false,
+    "checkpoint_kind": "SYNTHETIC_POSTCHECK_MODEL_ONLY",
+    "completed_pass": 10,
+    "formal_suite_status": "FAIL_TIMEOUT",
+    "frozen_A_workflow_preserved": true,
+    "frozen_python_unchanged": true,
+    "no_original_methods_run": true,
+    "not_started": 24,
+    "original_legacy_execution_local": false,
+    "own_control_reparse_entries_not_traversed": 2,
+    "owner_bytes": 20004929,
+    "owner_files": 656,
+    "partial_synthetic_counts": {
+      "PASS": 711,
+      "SKIP": 5,
+      "UNAVAILABLE": 516
+    },
+    "partial_synthetic_exact_new_admitted": 18,
+    "partial_synthetic_old_admitted": 5,
+    "partial_synthetic_other_rows_unchanged": 1214,
+    "pid": 30232,
+    "release_executed": false,
+    "source_unchanged": true,
+    "started_incomplete": [
+      "test_missing_checkpoint_and_missing_native_reject"
+    ],
+    "status": "PASS_B_CLOSEOUT_AUDIT_ONLY"
+  },
+  "independent_B_audit_sha256": "6b64815982867516c3958e8b32cc6edafc556eed9c3562d39598dd907160ec32",
+  "initial_format_failure": {
+    "correction": "trailing newline only; preserved attempt01 bytes",
+    "formal_tests_launched": false,
+    "partial_snapshot": "frozen-source/",
+    "reason": "new blank line at EOF",
+    "source_freeze_receipt_created": false,
+    "status": "PRE_FREEZE_FORMAT_FAILURE"
+  },
+  "local_fixture_SQL": "controlled synthetic tables only; not original methods",
+  "local_original_Runtime_methods_run": 0,
+  "official_new_admissions": 0,
+  "plan": "RPF-89/rev-2",
+  "prefreeze_runs": [
+    {
+      "receipt": {
+        "end_ns": 533004640511400,
+        "exit": 0,
+        "log_sha256": "0a2ce969bfc9b43634a61f2ff7fad52f2af6fa1145801b6a80ab1ac22d3bfa59",
+        "pid": 13140,
+        "start_ns": 532947219080300
+      },
+      "sha256": "8323f8437d1bf813ad464bb65c8fbb75f4ff2318b0dab4d9018972e9c61340e8"
+    },
+    {
+      "receipt": {
+        "end_ns": 534079548813300,
+        "exit": 0,
+        "log_sha256": "dd692e1ab6eeac725487d42bc816e75e4f136e5b93496c4da771450451f63498",
+        "pid": 29692,
+        "start_ns": 533947475488500
+      },
+      "sha256": "c45f74160e30e7a9347aefdb0cf4dc738202b9d4e4fda279a89599a9883d08bb"
+    },
+    {
+      "receipt": {
+        "end_ns": 534423706103100,
+        "exit": 0,
+        "log_sha256": "bafe8f81f7550c946c70bca7964aea66718bccb34e84c3ef37e7eb68e7cc9f17",
+        "methods": [
+          "test_readonly_sqlite_uri_admission_precedes_native_connect",
+          "test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+          "test_synthetic_full_positive_and_no_release",
+          "test_cli_synthetic_assess_enforce_and_overwrite",
+          "test_checkpoint_rejects_wrong_identity_source_time_and_pid",
+          "test_workflow_only_authorized_delta_and_two_live_barriers"
+        ],
+        "pid": 27052,
+        "start_ns": 534313498231600
+      },
+      "sha256": "06d773aee87c3db98bfd8aa31f6f54bd0655b915283ada2faba590add2bb46bd"
+    }
+  ],
+  "prefreeze_small_log_sha256": "d3ca01d501119e77e81fee0c692aa99ec5fb03baa2911fc2a873ecca29352ef9",
+  "python_repair_after_failure": false,
+  "release_executed": false,
+  "report_date_client": "2026-11-04 Asia/Shanghai",
+  "rerun_after_failure": false,
+  "resources": {
+    "api_cost": 0,
+    "external_business_http": 0,
+    "java": 0,
+    "key_lookup": 0,
+    "new_docker": 0,
+    "provider": 0,
+    "real_business_writes": 0,
+    "real_sdk": 0
+  },
+  "source_freeze": {
+    "checks": {
+      "ast_compile_pycompile": "PASS",
+      "authorized_semantics_only": "PASS",
+      "converted_GitHub_expressions_bash_n": "PASS",
+      "diff_check": "PASS",
+      "yaml_on_string": "PASS"
+    },
+    "input_factory_frozen_runtime_values": "PID/monotonic only; exclusive fresh synthetic fixtures",
+    "monotonic_ns": 8894061134800,
+    "original_native_methods_locally": 0,
+    "owner_bytes_limit": 67108864,
+    "prior_format_failure_retained": true,
+    "snapshot": "frozen-source-attempt02",
+    "source_sha256": {
+      ".github/workflows/release-gate.yml": {
+        "lf": "e21ae2127ece0bf9511697345c7df1233910243960ff5542aa5b9af652086825",
+        "raw": "e21ae2127ece0bf9511697345c7df1233910243960ff5542aa5b9af652086825"
+      },
+      "ci/reconcile-rpf88-required-coverage.py": {
+        "lf": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3",
+        "raw": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3"
+      },
+      "ci/test_reconcile_rpf88_required_coverage.py": {
+        "lf": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2",
+        "raw": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2"
+      }
+    },
+    "status": "FROZEN",
+    "stdout_cap_bytes": 2097152,
+    "test_budget_s": 300,
+    "test_count": 35,
+    "utc": "2026-11-04T07:45:44Z"
+  },
+  "status": "PARTIAL",
+  "workflow_fallback": {
+    "candidate_workflow_sha256": "e21ae2127ece0bf9511697345c7df1233910243960ff5542aa5b9af652086825",
+    "decision": "B_UNACTIVATED",
+    "frozen_candidate_retained": "frozen-source-attempt02/release-gate.yml",
+    "python_frozen_unchanged": true,
+    "reason": "Frozen full suite timed out at 300s; no rerun or source repair",
+    "restore_monotonic_ns": 13577317391800,
+    "restored_workflow_git_blob": "0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b",
+    "restored_workflow_raw_sha256": "f7ef4405143bbbeb13187f11c5dd57a5a475631e209ea3176d023e3d0d5bb429"
+  }
+}

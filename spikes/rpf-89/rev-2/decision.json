@@ -1,0 +1,43 @@
+{
+  "A08": "NOT_RUN_AT_SEAL",
+  "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+  "actual_completed_pass": 10,
+  "actual_hosted_RPF89_acceptance": false,
+  "actual_not_started": 24,
+  "actual_scope": "2M+10A",
+  "actual_started_incomplete": 1,
+  "architect_reserved": [
+    "TASK_COMPLETE",
+    "EVIDENCE_ACCEPTED",
+    "STAGE_ADVANCED"
+  ],
+  "base": "7e12a7b6b2315977b975ec42672cbf101c37bf19",
+  "branch": "main",
+  "decision": "B_UNACTIVATED",
+  "deployment_authorized": false,
+  "gates": {
+    "A01": "PASS_STATIC_ONLY",
+    "A02": "PARTIAL_SYNTHETIC; HOSTED_NOT_RUN",
+    "A03": "NOT_RUN_HOSTED",
+    "A04": "NOT_RUN_HOSTED; LOCAL_FIXTURES_PARTIAL",
+    "A05": "PARTIAL_SYNTHETIC_ONLY",
+    "A06": "FAIL_TIMEOUT",
+    "A07": "PASS_B_BOUNDARIES_AND_STOP",
+    "A08": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_APPLICABLE_B; EXISTING_CI_NOT_RUN_AT_SEAL",
+    "A10": "PASS_B_REPORT_SCOPE",
+    "G0": "PASS"
+  },
+  "new_coverage_admitted": 0,
+  "next_review": "Investigate recorded execution cost; authorize any new frozen candidate or per-method validation explicitly before new acceptance attempt",
+  "official_new_admissions": 0,
+  "plan": "RPF-89/rev-2",
+  "planned_test_count": 35,
+  "reason": "FROZEN_FULL_SUITE_TIMEOUT_300_SECONDS",
+  "release_executed": false,
+  "remaining_gap": 534,
+  "report_date_client": "2026-11-04 Asia/Shanghai",
+  "rerun_or_timeout_extension": false,
+  "status": "PARTIAL",
+  "workflow_activated": false
+}
