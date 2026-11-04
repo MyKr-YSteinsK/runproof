@@ -148,6 +148,7 @@ jobs:
         run: python -B ci/run-rpf86-owner-admission.py --output "$GITHUB_WORKSPACE/ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}"
 
       - name: Reconcile admitted RPF-86 required methods
+        id: rpf87_assess
         shell: bash
         run: |
           set -euo pipefail
@@ -158,9 +159,23 @@ jobs:
             --output "$GITHUB_WORKSPACE/ci-results/rpf87-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
             --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
 
+      - name: Record verified RPF-87 post-completion boundary
+        if: ${{ success() && steps.rpf87_assess.outcome == 'success' }}
+        env:
+          RPF87_STEP_OUTCOME: ${{ steps.rpf87_assess.outcome }}
+        run: |
+          python -B ci/reconcile-rpf88-required-coverage.py stamp \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
+
       - name: Run RPF-88 R72 fresh-owner cohort pilot
         id: rpf88_pilot
         run: python -B ci/run-rpf88-r72-owner-scope.py --output "$GITHUB_WORKSPACE/ci-results/rpf88-${{ github.run_id }}-${{ github.run_attempt }}"
+
+      - name: Reconcile admitted RPF-88 R72 required methods
+        id: rpf89_assess
+        run: |
+          python -B ci/reconcile-rpf88-required-coverage.py assess \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
 
       - name: Verify Job Summary contract
         if: ${{ always() }}
@@ -207,6 +222,15 @@ jobs:
           if-no-files-found: error
           retention-days: 14
 
+      - name: Upload RPF-89 derived required coverage
+        if: ${{ always() && (steps.rpf89_assess.outcome == 'success' || steps.rpf89_assess.outcome == 'failure') }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf89-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ci-results/rpf89-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json
+          if-no-files-found: error
+          retention-days: 14
+
       - name: Enforce all required Runtime coverage
         if: ${{ always() }}
         shell: bash
@@ -217,4 +241,9 @@ jobs:
             --handoff "$GITHUB_WORKSPACE/ci-results/rpf85-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
             --pilot "$GITHUB_WORKSPACE/ci-results/rpf86-${{ github.run_id }}-${{ github.run_attempt }}" \
             --output "$GITHUB_WORKSPACE/ci-results/rpf87-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json" \
+            --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"
+      - name: Enforce RPF-89 derived required coverage
+        if: ${{ always() }}
+        run: |
+          python -B ci/reconcile-rpf88-required-coverage.py enforce \
             --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --commit "$GITHUB_SHA"

@@ -1,0 +1,16 @@
+{
+  "schema": "rpf89-rev3-decision-v1",
+  "status_at_seal": "PARTIAL",
+  "path": "A_ACTIVATED",
+  "reason": "38/38 formal controls PASS in 27.678s; batch preserves every source/HEAD check; candidate bytes activated after PASS",
+  "new_formal_hosted_admissions_at_seal": 0,
+  "local_synthetic_admissions": 18,
+  "hosted_validation": "NOT_RUN_AT_SEAL",
+  "historical_router_12_error_cause": "UNAVAILABLE",
+  "historical_300_second_timeout_cause": "UNAVAILABLE; measured serial Git cost is supported contributor",
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "stage_advanced": false,
+  "architect_acceptance_not_claimed": true
+}

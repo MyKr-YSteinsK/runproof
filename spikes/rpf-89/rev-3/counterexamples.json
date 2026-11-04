@@ -1,0 +1,242 @@
+{
+  "schema": "rpf89-rev3-counterexamples-v1",
+  "suite_exit": 0,
+  "all_original_ids_preserved": true,
+  "controls": [
+    {
+      "test_id": "CheckpointAdmission.test_18_atomic_mapping_negative_controls",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_baseline_invalid_is_not_fallback_success",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_batch_protocol_rejects_truncated_and_extra_bytes",
+      "actual": "PASS",
+      "assertion_calls_unchanged": false,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_batch_source_equivalence_and_drift_no_cross_call_cache",
+      "actual": "PASS",
+      "assertion_calls_unchanged": false,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_checkpoint_rejects_wrong_identity_source_time_and_pid",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_cli_synthetic_assess_enforce_and_overwrite",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_context_identity_and_old_path_rejected",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_hardlink_is_rejected_without_external_target_probe",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_integrated_public_verifier_and_reanchored_listing_reject",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_legacy_host_dispatch_checks_actual_exit_not_pass_text",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_manifest_extra_file_and_journal_false_start_reanchored",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_missing_private_evidence_atomically_keeps_534",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_output_noncanonical_extra_fields_and_exclusive",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_pinned_neighbor_strict_functions_without_runtime",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_reader_escapes_reparse_and_oversize_rejected",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_readonly_sqlite_uri_admission_precedes_native_connect",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_reanchored_unknown_wal_write_and_external_manifest_reject",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_source_and_public_and_database_tampering",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_stamp_legacy_invalid_does_not_create_receipt",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_stamp_outcome_and_existing_file_fail_before_revalidation",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_workflow_head_identity_never_bypassed_by_synthetic",
+      "actual": "PASS",
+      "assertion_calls_unchanged": false,
+      "method_completed": true
+    },
+    {
+      "test_id": "CheckpointAdmission.test_workflow_only_authorized_delta_and_two_live_barriers",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_actual_cli_fail_closed",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_both_admission_commands_refuse_before_any_receipt_io",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_fake_hosted_env_cannot_enable_assessment",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_json_duplicate_and_nonfinite",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_legacy_workflow_unchanged_and_live_enforce_kept",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_missing_clock_is_observed_not_inferred",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_no_derived_counts_or_release_claim",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_runtime_not_imported",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_schema_change_is_not_silently_accepted",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_source_drift_rejects",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_source_pins_and_inventory",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    },
+    {
+      "test_id": "Preconditions.test_unidentifiable_schedules",
+      "actual": "PASS",
+      "assertion_calls_unchanged": true,
+      "method_completed": true
+    }
+  ],
+  "coverage_note": "Per-method actual unittest events. Parameterized subcase timings and individual caught exception enums NOT_OBSERVED; original assertions and mutation bodies retained. A PASS records all expected-rejection assertions completed, not a claim of Runtime execution.",
+  "new_controls": [
+    "Batch HEAD/worktree drift after previous successful call; no cross-call cache",
+    "Batch truncated/extra/invalid protocol rejects",
+    "Local synthetic cannot bypass actual workflow HEAD identity"
+  ],
+  "source_stdout_sha256": "f24e053def6fb1f57972c771b3f4dc3f0f958e21335f9b1f7b3e47a0673ecc64"
+}

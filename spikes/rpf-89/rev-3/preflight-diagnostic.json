@@ -1,0 +1,138 @@
+{
+  "schema": "rpf89-rev3-preflight-v1",
+  "plan": "RPF-89/rev-3",
+  "status": "PASS",
+  "base": "1b949b60ff6b52a911b7ebcdd8b05a23311a5ba9",
+  "source_identity": {
+    ".github/workflows/release-gate.yml": {
+      "blob": "bbfe6151c54405a0f1aecd7bcfc9796e8308c1a3",
+      "raw_sha256": "d3ec762ec737e9b5da60ae18a741286eef3735d96f5bf2e49cb2b2576319905d",
+      "lf_sha256": "d3ec762ec737e9b5da60ae18a741286eef3735d96f5bf2e49cb2b2576319905d"
+    },
+    "ci/reconcile-rpf88-required-coverage.py": {
+      "blob": "7215a31b351a56568dfefb5a27dfe49a973fed8b",
+      "raw_sha256": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3",
+      "lf_sha256": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3"
+    },
+    "ci/test_reconcile_rpf88_required_coverage.py": {
+      "blob": "7ec0591ef3cf31797e88ef0f51b726db4116d256",
+      "raw_sha256": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2",
+      "lf_sha256": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2"
+    },
+    "ci/reconcile-rpf86-required-coverage.py": {
+      "blob": "1d8d502e0a8db08e56763272565386dc246469b0",
+      "raw_sha256": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d",
+      "lf_sha256": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d"
+    },
+    "ci/run-rpf88-r72-owner-scope.py": {
+      "blob": "6ca463addf0b861dfe1be854ea305d5f5b369c9c",
+      "raw_sha256": "49edbeec6613ed1d07f3dda11064db4f4cc63a33879036640b10bdc996401117",
+      "lf_sha256": "49edbeec6613ed1d07f3dda11064db4f4cc63a33879036640b10bdc996401117"
+    },
+    "ci/verify-runtime-coverage-handoff.py": {
+      "blob": "0e22b02048497b21d698dfe6cd958a437583c94d",
+      "raw_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+      "lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+    },
+    "ci/run-runtime-contract-tests.py": {
+      "blob": "88396fa78d73ba091e91992d4d51263063a95aa7",
+      "raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+      "lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+    },
+    "ci/runtime-contract-test-matrix.json": {
+      "blob": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+      "raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+      "lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+    },
+    "ci/diagnose-runtime-router-gate.py": {
+      "blob": "a3abf6dadbd4241f5c573b7616cc62999680ccdb",
+      "raw_sha256": "b451c91ee3d100b3abc6bc6dd300a86ef01b1fdf858e506629423b918053131c",
+      "lf_sha256": "b451c91ee3d100b3abc6bc6dd300a86ef01b1fdf858e506629423b918053131c"
+    },
+    "spikes/rpf-82/rev-2/classification-ledger.json": {
+      "blob": "51fefc01b4c4d3b465f7b7584b8384e1b9994c78",
+      "raw_sha256": "21609e8fbadbfce0363d04bb3144c1f9cc61559cb961b32ab9bff3c3ec2dc0a0",
+      "lf_sha256": "7b15618b3c93d188a7b2a03ceae0bb53a57975c71f6a20bc14d91d7e7ec669fe"
+    },
+    "AGENTS.md": {
+      "blob": "30ae70de50ffa48a89679cac5e74cf9fbb4af179",
+      "raw_sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c",
+      "lf_sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c"
+    }
+  },
+  "create_only": [
+    "spikes/rpf-89/rev-3/README.md",
+    "spikes/rpf-89/rev-3/RESULT.md",
+    "spikes/rpf-89/rev-3/preflight-diagnostic.json",
+    "spikes/rpf-89/rev-3/performance-attribution.json",
+    "spikes/rpf-89/rev-3/verification-diagnostic.json",
+    "spikes/rpf-89/rev-3/counterexamples.json",
+    "spikes/rpf-89/rev-3/decision.json",
+    "spikes/rpf-89/rev-3/coverage-provenance.json",
+    "spikes/rpf-89/rev-3/source-identity-ledger.json",
+    "spikes/rpf-89/rev-3/pre-repair-sources/release-gate.yml"
+  ],
+  "owner_nonce": "3df7eb7450f84619959cb9a50dc59c0b",
+  "checks": {
+    "repository": "PASS",
+    "main_head_upstream": "PASS",
+    "tracked_index_clean": "PASS",
+    "https_remote": "PASS",
+    "11_pins": "PASS",
+    "3_modify_paths": "PASS",
+    "10_create_only_paths": "PASS",
+    "ignore_reparse_casefold": "PASS",
+    "acl": "PASS",
+    "worktree": "PASS",
+    "workflow_effects": "PASS",
+    "python_sqlite_yaml_bash": "PASS"
+  },
+  "acl_checks": [
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "2bc8b96d74dec597c3a9eae4d993b45c0cd785c226d560ce6bf4e1bb4c6ff2e6"
+    },
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "2bc8b96d74dec597c3a9eae4d993b45c0cd785c226d560ce6bf4e1bb4c6ff2e6"
+    },
+    {
+      "exit": 0,
+      "sha256": "2bc8b96d74dec597c3a9eae4d993b45c0cd785c226d560ce6bf4e1bb4c6ff2e6"
+    },
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    }
+  ],
+  "python": "3.14.6",
+  "sqlite": "3.50.4",
+  "utc": "2026-11-04T16:53:49.486367+00:00",
+  "monotonic_ns": 41783917270800,
+  "checks_count": 12,
+  "modify_paths_count": 3,
+  "create_only_paths_count": 10,
+  "local_resource_permissions": {
+    "provider": 0,
+    "sdk": 0,
+    "key_lookup": 0,
+    "business_http": 0,
+    "business_write": 0,
+    "java": 0,
+    "docker": 0,
+    "production_db": 0
+  },
+  "push_effect": "One normal main push triggers existing canonical workflow; no release/deploy"
+}

@@ -1,0 +1,364 @@
+{
+  "schema": "rpf89-rev3-verification-v1",
+  "status_at_seal": "PARTIAL",
+  "path": "A_ACTIVATED",
+  "gates": {
+    "G0": {
+      "status": "PASS"
+    },
+    "A01": {
+      "status": "PASS"
+    },
+    "A02": {
+      "status": "PASS"
+    },
+    "A03": {
+      "status": "PASS"
+    },
+    "A04": {
+      "status": "PASS"
+    },
+    "A05": {
+      "status": "PASS"
+    },
+    "A06": {
+      "status": "NOT_RUN",
+      "reason": "Frozen workflow delta PASS; hosted same-Run postcheck and actual old enforce NOT_RUN_AT_SEAL"
+    },
+    "A08": {
+      "status": "PASS"
+    },
+    "A11": {
+      "status": "PASS"
+    },
+    "A07": {
+      "status": "NOT_RUN",
+      "reason": "Local synthetic read-only proof PASS; hosted same-Run native admission NOT_RUN_AT_SEAL"
+    },
+    "A09": {
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN_AT_SEAL; final Git/hosted receipts in chat, no amend"
+    },
+    "A10": {
+      "status": "NOT_RUN",
+      "reason": "NOT_RUN_AT_SEAL; final Git/hosted receipts in chat, no amend"
+    }
+  },
+  "formal": {
+    "pid": 3872,
+    "start_ns": 42233293217000,
+    "end_ns": 42260971362400,
+    "seconds": 27.6781454,
+    "exit": 0,
+    "timeout": false,
+    "stop_reason": null,
+    "truncated": false,
+    "stdout_bytes": 5235,
+    "stdout_sha256": "f24e053def6fb1f57972c771b3f4dc3f0f958e21335f9b1f7b3e47a0673ecc64",
+    "owner_peak_bytes": 11994851,
+    "drain_joined": true,
+    "child_exited": true,
+    "counts": {
+      "START": 38,
+      "PASS": 38,
+      "FAIL": 0,
+      "ERROR": 0,
+      "SKIP": 0,
+      "STOP": 38
+    },
+    "tests": [
+      {
+        "id": "CheckpointAdmission.test_18_atomic_mapping_negative_controls",
+        "seconds": 0.8506676
+      },
+      {
+        "id": "CheckpointAdmission.test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+        "seconds": 6.1617926
+      },
+      {
+        "id": "CheckpointAdmission.test_baseline_invalid_is_not_fallback_success",
+        "seconds": 0.082167
+      },
+      {
+        "id": "CheckpointAdmission.test_batch_protocol_rejects_truncated_and_extra_bytes",
+        "seconds": 0.0048782
+      },
+      {
+        "id": "CheckpointAdmission.test_batch_source_equivalence_and_drift_no_cross_call_cache",
+        "seconds": 0.2772599
+      },
+      {
+        "id": "CheckpointAdmission.test_checkpoint_rejects_wrong_identity_source_time_and_pid",
+        "seconds": 0.3516573
+      },
+      {
+        "id": "CheckpointAdmission.test_cli_synthetic_assess_enforce_and_overwrite",
+        "seconds": 2.6630867
+      },
+      {
+        "id": "CheckpointAdmission.test_context_identity_and_old_path_rejected",
+        "seconds": 0.1511063
+      },
+      {
+        "id": "CheckpointAdmission.test_hardlink_is_rejected_without_external_target_probe",
+        "seconds": 0.0082747
+      },
+      {
+        "id": "CheckpointAdmission.test_integrated_public_verifier_and_reanchored_listing_reject",
+        "seconds": 3.3003162
+      },
+      {
+        "id": "CheckpointAdmission.test_legacy_host_dispatch_checks_actual_exit_not_pass_text",
+        "seconds": 0.073422
+      },
+      {
+        "id": "CheckpointAdmission.test_manifest_extra_file_and_journal_false_start_reanchored",
+        "seconds": 0.4115482
+      },
+      {
+        "id": "CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+        "seconds": 1.2014873
+      },
+      {
+        "id": "CheckpointAdmission.test_missing_private_evidence_atomically_keeps_534",
+        "seconds": 0.8034973
+      },
+      {
+        "id": "CheckpointAdmission.test_output_noncanonical_extra_fields_and_exclusive",
+        "seconds": 0.067875
+      },
+      {
+        "id": "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+        "seconds": 2.2265331
+      },
+      {
+        "id": "CheckpointAdmission.test_pinned_neighbor_strict_functions_without_runtime",
+        "seconds": 0.1405119
+      },
+      {
+        "id": "CheckpointAdmission.test_reader_escapes_reparse_and_oversize_rejected",
+        "seconds": 0.0096223
+      },
+      {
+        "id": "CheckpointAdmission.test_readonly_sqlite_uri_admission_precedes_native_connect",
+        "seconds": 0.0037351
+      },
+      {
+        "id": "CheckpointAdmission.test_reanchored_unknown_wal_write_and_external_manifest_reject",
+        "seconds": 0.0660247
+      },
+      {
+        "id": "CheckpointAdmission.test_source_and_public_and_database_tampering",
+        "seconds": 0.4083908
+      },
+      {
+        "id": "CheckpointAdmission.test_stamp_legacy_invalid_does_not_create_receipt",
+        "seconds": 0.0674646
+      },
+      {
+        "id": "CheckpointAdmission.test_stamp_outcome_and_existing_file_fail_before_revalidation",
+        "seconds": 0.0745313
+      },
+      {
+        "id": "CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+        "seconds": 2.0351263
+      },
+      {
+        "id": "CheckpointAdmission.test_workflow_head_identity_never_bypassed_by_synthetic",
+        "seconds": 0.1077918
+      },
+      {
+        "id": "CheckpointAdmission.test_workflow_only_authorized_delta_and_two_live_barriers",
+        "seconds": 0.1126819
+      },
+      {
+        "id": "Preconditions.test_actual_cli_fail_closed",
+        "seconds": 0.3018392
+      },
+      {
+        "id": "Preconditions.test_both_admission_commands_refuse_before_any_receipt_io",
+        "seconds": 0.0081012
+      },
+      {
+        "id": "Preconditions.test_fake_hosted_env_cannot_enable_assessment",
+        "seconds": 0.0065765
+      },
+      {
+        "id": "Preconditions.test_json_duplicate_and_nonfinite",
+        "seconds": 0.0076921
+      },
+      {
+        "id": "Preconditions.test_legacy_workflow_unchanged_and_live_enforce_kept",
+        "seconds": 0.3086346
+      },
+      {
+        "id": "Preconditions.test_missing_clock_is_observed_not_inferred",
+        "seconds": 1.931594
+      },
+      {
+        "id": "Preconditions.test_no_derived_counts_or_release_claim",
+        "seconds": 1.4524364
+      },
+      {
+        "id": "Preconditions.test_runtime_not_imported",
+        "seconds": 0.0034901
+      },
+      {
+        "id": "Preconditions.test_schema_change_is_not_silently_accepted",
+        "seconds": 0.0205357
+      },
+      {
+        "id": "Preconditions.test_source_drift_rejects",
+        "seconds": 0.0036688
+      },
+      {
+        "id": "Preconditions.test_source_pins_and_inventory",
+        "seconds": 1.3202089
+      },
+      {
+        "id": "Preconditions.test_unidentifiable_schedules",
+        "seconds": 0.0034257
+      }
+    ],
+    "source_unchanged": true,
+    "suite_end": {
+      "kind": "SUITE_END",
+      "time_ns": 42260755481500,
+      "pid": 3872,
+      "tests": 38,
+      "success": true,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "independent_synthetic_readback": {
+    "status": "PASS",
+    "kind": "INDEPENDENT_STDLIB_READBACK_OF_FRESH_SYNTHETIC_CONTROL",
+    "counts": {
+      "PASS": 711,
+      "SKIP": 5,
+      "UNAVAILABLE": 516
+    },
+    "old_admitted": 5,
+    "new_admitted": 18,
+    "clock_pid_binding": true,
+    "cli_exits": [
+      0,
+      1,
+      2
+    ],
+    "databases": [
+      {
+        "sha256": "e05fb6dfc749eb1a0dd2b5a28fc307ae5e174acc2a470fa6bfda01b2abde23e2",
+        "uri_mode": "ro",
+        "query_only": true,
+        "refund_amount_minor": 2500,
+        "order_status": "REFUNDED"
+      },
+      {
+        "sha256": "3c76bbe72123070f37ab818e4bcbf3272315e3784dc6d2f38439d4d30d087389",
+        "uri_mode": "ro",
+        "query_only": true,
+        "refund_amount_minor": 2500,
+        "order_status": "REFUNDED"
+      }
+    ],
+    "source_unchanged": true,
+    "formal_tests": {
+      "START": 38,
+      "PASS": 38,
+      "FAIL": 0,
+      "ERROR": 0,
+      "SKIP": 0,
+      "STOP": 38
+    },
+    "live_or_issuer_claim": false
+  },
+  "original_35_ids": [
+    "CheckpointAdmission.test_18_atomic_mapping_negative_controls",
+    "CheckpointAdmission.test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+    "CheckpointAdmission.test_baseline_invalid_is_not_fallback_success",
+    "CheckpointAdmission.test_checkpoint_rejects_wrong_identity_source_time_and_pid",
+    "CheckpointAdmission.test_cli_synthetic_assess_enforce_and_overwrite",
+    "CheckpointAdmission.test_context_identity_and_old_path_rejected",
+    "CheckpointAdmission.test_hardlink_is_rejected_without_external_target_probe",
+    "CheckpointAdmission.test_integrated_public_verifier_and_reanchored_listing_reject",
+    "CheckpointAdmission.test_legacy_host_dispatch_checks_actual_exit_not_pass_text",
+    "CheckpointAdmission.test_manifest_extra_file_and_journal_false_start_reanchored",
+    "CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+    "CheckpointAdmission.test_missing_private_evidence_atomically_keeps_534",
+    "CheckpointAdmission.test_output_noncanonical_extra_fields_and_exclusive",
+    "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+    "CheckpointAdmission.test_pinned_neighbor_strict_functions_without_runtime",
+    "CheckpointAdmission.test_reader_escapes_reparse_and_oversize_rejected",
+    "CheckpointAdmission.test_readonly_sqlite_uri_admission_precedes_native_connect",
+    "CheckpointAdmission.test_reanchored_unknown_wal_write_and_external_manifest_reject",
+    "CheckpointAdmission.test_source_and_public_and_database_tampering",
+    "CheckpointAdmission.test_stamp_legacy_invalid_does_not_create_receipt",
+    "CheckpointAdmission.test_stamp_outcome_and_existing_file_fail_before_revalidation",
+    "CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+    "CheckpointAdmission.test_workflow_only_authorized_delta_and_two_live_barriers",
+    "Preconditions.test_actual_cli_fail_closed",
+    "Preconditions.test_both_admission_commands_refuse_before_any_receipt_io",
+    "Preconditions.test_fake_hosted_env_cannot_enable_assessment",
+    "Preconditions.test_json_duplicate_and_nonfinite",
+    "Preconditions.test_legacy_workflow_unchanged_and_live_enforce_kept",
+    "Preconditions.test_missing_clock_is_observed_not_inferred",
+    "Preconditions.test_no_derived_counts_or_release_claim",
+    "Preconditions.test_runtime_not_imported",
+    "Preconditions.test_schema_change_is_not_silently_accepted",
+    "Preconditions.test_source_drift_rejects",
+    "Preconditions.test_source_pins_and_inventory",
+    "Preconditions.test_unidentifiable_schedules"
+  ],
+  "all_38_ids": [
+    "CheckpointAdmission.test_18_atomic_mapping_negative_controls",
+    "CheckpointAdmission.test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+    "CheckpointAdmission.test_baseline_invalid_is_not_fallback_success",
+    "CheckpointAdmission.test_batch_protocol_rejects_truncated_and_extra_bytes",
+    "CheckpointAdmission.test_batch_source_equivalence_and_drift_no_cross_call_cache",
+    "CheckpointAdmission.test_checkpoint_rejects_wrong_identity_source_time_and_pid",
+    "CheckpointAdmission.test_cli_synthetic_assess_enforce_and_overwrite",
+    "CheckpointAdmission.test_context_identity_and_old_path_rejected",
+    "CheckpointAdmission.test_hardlink_is_rejected_without_external_target_probe",
+    "CheckpointAdmission.test_integrated_public_verifier_and_reanchored_listing_reject",
+    "CheckpointAdmission.test_legacy_host_dispatch_checks_actual_exit_not_pass_text",
+    "CheckpointAdmission.test_manifest_extra_file_and_journal_false_start_reanchored",
+    "CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+    "CheckpointAdmission.test_missing_private_evidence_atomically_keeps_534",
+    "CheckpointAdmission.test_output_noncanonical_extra_fields_and_exclusive",
+    "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+    "CheckpointAdmission.test_pinned_neighbor_strict_functions_without_runtime",
+    "CheckpointAdmission.test_reader_escapes_reparse_and_oversize_rejected",
+    "CheckpointAdmission.test_readonly_sqlite_uri_admission_precedes_native_connect",
+    "CheckpointAdmission.test_reanchored_unknown_wal_write_and_external_manifest_reject",
+    "CheckpointAdmission.test_source_and_public_and_database_tampering",
+    "CheckpointAdmission.test_stamp_legacy_invalid_does_not_create_receipt",
+    "CheckpointAdmission.test_stamp_outcome_and_existing_file_fail_before_revalidation",
+    "CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+    "CheckpointAdmission.test_workflow_head_identity_never_bypassed_by_synthetic",
+    "CheckpointAdmission.test_workflow_only_authorized_delta_and_two_live_barriers",
+    "Preconditions.test_actual_cli_fail_closed",
+    "Preconditions.test_both_admission_commands_refuse_before_any_receipt_io",
+    "Preconditions.test_fake_hosted_env_cannot_enable_assessment",
+    "Preconditions.test_json_duplicate_and_nonfinite",
+    "Preconditions.test_legacy_workflow_unchanged_and_live_enforce_kept",
+    "Preconditions.test_missing_clock_is_observed_not_inferred",
+    "Preconditions.test_no_derived_counts_or_release_claim",
+    "Preconditions.test_runtime_not_imported",
+    "Preconditions.test_schema_change_is_not_silently_accepted",
+    "Preconditions.test_source_drift_rejects",
+    "Preconditions.test_source_pins_and_inventory",
+    "Preconditions.test_unidentifiable_schedules"
+  ],
+  "original_assertion_ast_preserved": true,
+  "final_suite_runs": 1,
+  "timeouts": 0,
+  "truncations": 0,
+  "disk_limit_bytes": 67108864,
+  "stdout_limit_bytes": 2097152,
+  "formal_deadline_seconds": 300,
+  "focused_launches_used": 4,
+  "frozen_workflow_activated_only_after_PASS": true
+}

@@ -1,0 +1,167 @@
+{
+  "schema": "rpf89-rev3-source-identity-v1",
+  "base": "1b949b60ff6b52a911b7ebcdd8b05a23311a5ba9",
+  "historical_pins": {
+    ".github/workflows/release-gate.yml": {
+      "blob": "bbfe6151c54405a0f1aecd7bcfc9796e8308c1a3",
+      "raw_sha256": "d3ec762ec737e9b5da60ae18a741286eef3735d96f5bf2e49cb2b2576319905d",
+      "lf_sha256": "d3ec762ec737e9b5da60ae18a741286eef3735d96f5bf2e49cb2b2576319905d"
+    },
+    "ci/reconcile-rpf88-required-coverage.py": {
+      "blob": "7215a31b351a56568dfefb5a27dfe49a973fed8b",
+      "raw_sha256": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3",
+      "lf_sha256": "6bbe1c7035f07ea7b8ad90b26a2347ad9c4c6ad51146324ca1ab88acce4b2cd3"
+    },
+    "ci/test_reconcile_rpf88_required_coverage.py": {
+      "blob": "7ec0591ef3cf31797e88ef0f51b726db4116d256",
+      "raw_sha256": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2",
+      "lf_sha256": "247aec0e65fe098805601d93feb10b3d057f9e0abad7c0cab4ea157b2eafb7f2"
+    },
+    "ci/reconcile-rpf86-required-coverage.py": {
+      "blob": "1d8d502e0a8db08e56763272565386dc246469b0",
+      "raw_sha256": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d",
+      "lf_sha256": "f61c653b4d361963b48bfd7f9f42a376cf16e3fbe2733e9ddc1fada1b3818c8d"
+    },
+    "ci/run-rpf88-r72-owner-scope.py": {
+      "blob": "6ca463addf0b861dfe1be854ea305d5f5b369c9c",
+      "raw_sha256": "49edbeec6613ed1d07f3dda11064db4f4cc63a33879036640b10bdc996401117",
+      "lf_sha256": "49edbeec6613ed1d07f3dda11064db4f4cc63a33879036640b10bdc996401117"
+    },
+    "ci/verify-runtime-coverage-handoff.py": {
+      "blob": "0e22b02048497b21d698dfe6cd958a437583c94d",
+      "raw_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d",
+      "lf_sha256": "5516ea2a5eef6923cd1cff5169bc59c3476492a3b7c6590bc00c93bee329a55d"
+    },
+    "ci/run-runtime-contract-tests.py": {
+      "blob": "88396fa78d73ba091e91992d4d51263063a95aa7",
+      "raw_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98",
+      "lf_sha256": "7f5bd953d1df00a5a4b262396936551441edee1787bb2d5fa9202ca932057e98"
+    },
+    "ci/runtime-contract-test-matrix.json": {
+      "blob": "ed827c3dc354c18c9d4b7bc63384805e50e97785",
+      "raw_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+      "lf_sha256": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b"
+    },
+    "ci/diagnose-runtime-router-gate.py": {
+      "blob": "a3abf6dadbd4241f5c573b7616cc62999680ccdb",
+      "raw_sha256": "b451c91ee3d100b3abc6bc6dd300a86ef01b1fdf858e506629423b918053131c",
+      "lf_sha256": "b451c91ee3d100b3abc6bc6dd300a86ef01b1fdf858e506629423b918053131c"
+    },
+    "spikes/rpf-82/rev-2/classification-ledger.json": {
+      "blob": "51fefc01b4c4d3b465f7b7584b8384e1b9994c78",
+      "raw_sha256": "21609e8fbadbfce0363d04bb3144c1f9cc61559cb961b32ab9bff3c3ec2dc0a0",
+      "lf_sha256": "7b15618b3c93d188a7b2a03ceae0bb53a57975c71f6a20bc14d91d7e7ec669fe"
+    },
+    "AGENTS.md": {
+      "blob": "30ae70de50ffa48a89679cac5e74cf9fbb4af179",
+      "raw_sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c",
+      "lf_sha256": "def4c6781ca5fae830d3dafe12f8b2f72a75fd9fc35fc3a9b4d4a2d1a685c00c"
+    }
+  },
+  "implementation": [
+    {
+      "path": "ci/reconcile-rpf88-required-coverage.py",
+      "raw_sha256": "5281801f4a3cb3ece8e4cc5e6e75ad2d5553f2d0a9bf99b0889c79baa8e58a6e",
+      "lf_sha256": "5281801f4a3cb3ece8e4cc5e6e75ad2d5553f2d0a9bf99b0889c79baa8e58a6e",
+      "git_clean_blob": "dc8577461ef55b40a6e080a5d895058112f94108",
+      "bytes": 33331
+    },
+    {
+      "path": "ci/test_reconcile_rpf88_required_coverage.py",
+      "raw_sha256": "be0edd7997b95e9acf482be53520dbf3afd5dd568c97e5199ab1557e75d07665",
+      "lf_sha256": "be0edd7997b95e9acf482be53520dbf3afd5dd568c97e5199ab1557e75d07665",
+      "git_clean_blob": "f9b7da629aa4df8180f98b2ff8b170b73282d437",
+      "bytes": 31490
+    },
+    {
+      "path": ".github/workflows/release-gate.yml",
+      "raw_sha256": "3dfb696dc3066bff62e5f1cad4382bf6342ae45b8db9b6c0b10144cca5ac05f0",
+      "lf_sha256": "3dfb696dc3066bff62e5f1cad4382bf6342ae45b8db9b6c0b10144cca5ac05f0",
+      "git_clean_blob": "f56b5849e81618be114dd90567c8a3f1c9a65594",
+      "bytes": 10427
+    }
+  ],
+  "freeze_utc": "2026-11-04T17:00:40.863115+00:00",
+  "candidate_workflow_raw_sha256": "3dfb696dc3066bff62e5f1cad4382bf6342ae45b8db9b6c0b10144cca5ac05f0",
+  "owner_nonce": "3df7eb7450f84619959cb9a50dc59c0b",
+  "wrapper_input_hashes": {
+    "profile.py": "37ad2745f2876233c9d39dd7aa2a85d639756eeb6fdd1dc8a812d3f3e8241764",
+    "profile-after.py": "be16639c546b5f4a577a0e4d76c7c47e0d92cc9097c865fd1980dd09a2953ee5",
+    "formal.py": "f6c8210ff54a663884b68ad2a483e677560af34ce2c1cdc3c3c690568c6db116",
+    "static-validation.json": "e11129b8e84997f4aea276451406362022d00cd70c51b10447cee5b5f137ae3b",
+    "before-1-receipt.json": "5cfb8ec6483fb04b8f257f813512750325fe00dbb1c9dbaf201dba5e9fa21edc",
+    "before-2-receipt.json": "51976d7547d032b7e5d5957111ad32b604c4e0bf03102ed595e2fcf456be3ad8",
+    "after-1-receipt.json": "154dc9447deb16bd737c03a19887d9f80e08c66caedfd9d6874abbc507fae010",
+    "after-2-receipt.json": "581a24a233e23f7822a486b470719bed36b10aebd57300d9b80067badc1a0741"
+  },
+  "public_fixture_inputs": {
+    "spikes/rpf-53/rev-6/config-live-evidence.json": "f5e46947ae2a2583db51727e85c4f9e3d6c9d6499a1b24833dfffe1799438b43",
+    "spikes/rpf-68/rev-3/probe.py": "1823de87e7c814c106d205bc431d25a10ed6bd6bf2fb0b6d82989d9b1983fdab",
+    "runtime/runproof_runtime/effectwitness/pge_r68_budget.py": "5797c584ee099a3777073b5733762a2cf034b8fd17f7bffb82a8db902823ecf3",
+    "runtime/runproof_runtime/effectwitness/pge_r68_driver.py": "013b95b1041eec855cdc6b9d485ef15ff3e73af4e95bac3363da73024777ccd0",
+    "runtime/runproof_runtime/effectwitness/pge_r68_session.py": "083a59a07be60d6bb16ea48aba11c484c4a57ce763d6fb0329c8cc82c1096d74",
+    "runtime/runproof_runtime/effectwitness/pge_r68_verify.py": "430578f210db791381bfc2a0952a8cd7ce46d3d0b2f57ce3ce06285c7e489b56",
+    "runtime/runproof_runtime/effectwitness/contracts.py": "4dfe578ca7dda68ca5642d1882586dfee80d235a6edb1dfb41674fbbd65a2761",
+    "runtime/runproof_runtime/models.py": "f5b9a2e1dc17ed8f923f721c52401f44ae814726e70cc5434596f7b9c1bc55b3",
+    "runtime/runproof_runtime/effectwitness/config_live_verify.py": "5a4501dd22cd736f20a0ac56e0d71281e1fec667cd128687806c69f5a46a208a",
+    "runtime/runproof_runtime/effectwitness/config_live_contracts.py": "b121ff3006bb8d8008697e7c33b41e19fffd2e6ed5ceb033f0c53c4e5c98dd15",
+    "runtime/runproof_runtime/effectwitness/config_live_runtime.py": "c2c8b8eac56d1e1cf56bd32823b4813fc771083711c57efb99901d5378e181f8",
+    "runtime/runproof_runtime/effectwitness/effect_oracle.py": "cb6f1fab4a7c05bf2c448b7728d35bdf5cf663d39a56513564bc020c9f56a834",
+    "runtime/runproof_runtime/effectwitness/pge_r68_explorer.py": "450713c5c0dd9745121cc85f24bf9fcad7f4b78147b702174b1f091629205767",
+    "runtime/runproof_runtime/effectwitness/pge_r68_context.py": "ece2dabb7c0fb10d3fdd9557027632d67c1a8151d68eeeb3f8aeffd8c1a5144a",
+    "runtime/runproof_runtime/effectwitness/pge_r68_contracts.py": "94f4155b170967f36bc606cedb06affc43b03c7a19cd83e1f1b265229c143891",
+    "runtime/runproof_runtime/effectwitness/config_experiment_verify.py": "54c4a3a6f642bdb7f9597a03618819ec89e74dc1399f4d7ef2bf5a8c93f08198",
+    "runtime/runproof_runtime/effectwitness/config_experiment_contracts.py": "c21ca2e231ecb73d0f587cae02f9cb1b955099508f0ddbd3d7808b0f5d213f04",
+    "runtime/runproof_runtime/effectwitness/pge_r68_config_port.py": "5a8be2163a3d37108b7cb121015c54339e305db5e3deef589ce6de3b9f34df4e",
+    "runtime/runproof_runtime/effectwitness/pge_r68_order_port.py": "7a62b7dd91ef21a94da8536611ddc0e2179b1bb146514535dcb07dcbc431f117",
+    "runtime/runproof_runtime/effectwitness/orders.py": "83358139c849cc2444827df6e74f183b55e03e39b8bdafde5f3356d2a0298f1e",
+    "spikes/rpf-72/probe.py": "ca07c68f7ef3bda0067b2efc6a166d16de8fe5072b858bf2cca24e69d49bf361",
+    "runtime/runproof_runtime/effectwitness/pge_r72_sdk_contract.py": "11d2fd961e9f899a628c85fb07ffeded01f9475967f72da786c3c1942dd01129",
+    "runtime/runproof_runtime/effectwitness/pge_r72_budget_policy.py": "3b27a38e7b6de4846849cc4e118ab335c2575a8789277e159ca8e8a7fcdaec18",
+    "runtime/runproof_runtime/effectwitness/pge_r72_contracts.py": "83812205a8740f738452a3c69e2b43ffb598a1b8cc0d623d5f03b7a2aa036c0e",
+    "spikes/rpf-71/probe.py": "dc939d846e73257746e4298b699af330af1a3e40ce0f4dcaf81bc0ee0bc07644",
+    "spikes/rpf-70/probe.py": "d34843910ec38db125e701733498ab318c6675f9fc72b54487725ddf3e7b6311",
+    "runtime/runproof_runtime/effectwitness/pge_r70_ports.py": "efd959eb73114817a0da1dc30a812c18b06ff177966c4968303a8c1ea89c2577",
+    "runtime/runproof_runtime/effectwitness/pge_r70_capability.py": "3482e9c9b6f9b3bedeb7eb284021b161414b6eccfb8486c8b8d9cd95b2b6f39b",
+    "runtime/runproof_runtime/effectwitness/pge_r70_owner_source.py": "7ec770a2ed0e024e07460967ae9a6bd7b0dbf440b22a7c5761d668670cad5941",
+    "runtime/runproof_runtime/effectwitness/pge_r70_contracts.py": "8aeb4b759f8451ada7f7a517bbe3504be89d2c5b0689af1269f3fb733979961c",
+    "spikes/rpf-55/probe.py": "0d9d8fc2781ea7cd8cccb8cc26043738339d6fb22fb8febf1a7400bb81eae3e6",
+    "runtime/runproof_runtime/effectwitness/config_experiment_adapter.py": "643db90835705b414bf3db3c4ca5bded37a2e4a774d793b81bd9661673ba14b4",
+    "spikes/rpf-53/probe.py": "34fc184a09eb489576d6e8f954a13a0d956808f690f1099f55762692f6f006e6",
+    "runtime/tests/test_effectwitness_pge_r71.py": "3798f0897b49d7e26ca8127adc995a3a484de9a0c9220efdeba0610c7f062203",
+    "runtime/runproof_runtime/effectwitness/pge_r71_ports.py": "f12e7a6c3cf6794d6093c7da9f8dafd7042a7baaf834ab7e2b7a3d2d6e65e34c",
+    "runtime/runproof_runtime/effectwitness/pge_r71_budget_ledger.py": "571b10907f1de2f0261519dcf4f3ae8605306563f2b8041899b5d96650e89b3b",
+    "runtime/runproof_runtime/effectwitness/pge_r71_budget_policy.py": "8b3a86604b2ffcc381dee04944d24b3148e36da88c059fe745ea4813ef33ef9e",
+    "runtime/runproof_runtime/effectwitness/pge_r71_contracts.py": "b83fea268ded9ca640d44c23324aaa0c03e38e4356a7c9e9ad97356dcacf145a",
+    "runtime/runproof_runtime/effectwitness/pge_r71_owner_source.py": "4ecf3de3c2d12edd64fcc907bd004fbe6b32052ab27c6f28aa665533e683af02",
+    "runtime/runproof_runtime/effectwitness/pge_r71_capability.py": "403cfa72a10d3590ee386aa9b5d3008db50d7ebb13c441dafe4f8f578e9d9b9a",
+    "runtime/tests/test_effectwitness_pge_r70.py": "26f3dbec9bfe12d6f4e02ba8c9c484d0a20358e67aab5c96d954432513c9a1c6",
+    "runtime/runproof_runtime/effectwitness/pge_r70_verify.py": "679724b1a35937fed5e3353e0a7b53a5bf06dec13a834c95b953a679cd5a322a",
+    "runtime/tests/test_effectwitness_pge_r68.py": "b0d8f688bcf33fbe0d39a1e4baa3f5b9eb1158e725745ea1adc8939cf121958c",
+    "runtime/runproof_runtime/effectwitness/pge_r67_order_child.py": "72d2cfa9ac53b790b7bdd5ccbb0d8024198372fe43723becfa6d7bbd7a044529",
+    "runtime/runproof_runtime/effectwitness/pge_r66_sdk_child_v5.py": "1fdb05919a8e6ec5a4f9effdecac43949f564afc77f25ff3d112af2756f270ad",
+    "runtime/runproof_runtime/effectwitness/pge_r68_sdk_child.py": "947b3a2a198508fe6fbb900df385962b4928773aa91bdd237ef064d1731170af",
+    "runtime/runproof_runtime/effectwitness/pge_r70_migration.py": "f27e11c905f60591768b25831cc9885181c48713db1fd7607fe6ba02a7f3f9e4",
+    "runtime/runproof_runtime/effectwitness/pge_r70_session.py": "ee4c761855d9235e0568f83d03c9655c00e31062ef1b1b7986a41d914c543827",
+    "runtime/runproof_runtime/effectwitness/pge_r71_migration.py": "e0d58262455d9e80f089999edd5c2372849f0ec4908b30b844200c96d0e12039",
+    "runtime/runproof_runtime/effectwitness/pge_r71_verify.py": "a0938374ef5d0e4c642de93cd7f0e07511bc0f2a68c52a5ecc1b8301e9b420e7",
+    "runtime/runproof_runtime/effectwitness/pge_r71_session.py": "87f07dc3089ed4e0e9365f4666ff37dad98a6247a4b268606af2a5bc1f43efa9",
+    "runtime/runproof_runtime/effectwitness/pge_r72_migration.py": "b5c5063f796ff3f308d5708e07f000d8baa094cc5b57e656a81f61d91c67030c",
+    "runtime/runproof_runtime/effectwitness/pge_r72_verify.py": "79024efb6686c85489c1957a819fa6a409b23c36cb3e976888c52526bef96420",
+    "runtime/runproof_runtime/effectwitness/pge_r72_capability.py": "8f93cae0a15f699a924ba8521a0d1e460fc0a3edb487178547eee97b253c4641",
+    "runtime/runproof_runtime/effectwitness/pge_r72_owner_source.py": "7a220a3bc56a913b20a45c716f8715160d00b2c602473e76c9d6d5a823c45d69",
+    "runtime/runproof_runtime/effectwitness/pge_r72_session.py": "8aa43b864dff8358931bf3c6dd5ed0bae6f97575123b72d4558918bfa98e69bf",
+    "runtime/runproof_runtime/effectwitness/pge_r72_ports.py": "4ec3bbcf39fce8ed34b99bf6b98b3416c90c56a9bdeacc091486c12884ff92bd",
+    "runtime/runproof_runtime/effectwitness/pge_r72_budget_ledger.py": "b58c3e3e0afd10c27a1e43a167058335c136339a2dcb42c5135327309495eba9",
+    "runtime/tests/test_effectwitness_pge_r72.py": "d607258ff9cb6bed509d795eed06c8fc06551b7feb86be78557ba39906f539b9",
+    "runtime/__init__.py": "c6e0c83d22491539f41a81edc96d7db4d834ee80fa266e70b6acb2ea36243778",
+    "runtime/tests/__init__.py": "9bdd237c2661d4ea0decc14c6cc221785d9d2150336ae50dcef64de5fa73218f",
+    "runtime/runproof_runtime/__init__.py": "aa545c76886ce9c02d3d7f04f2f27a1cf797a5b1e8e7845f0879328206a12757",
+    "runtime/runproof_runtime/effectwitness/__init__.py": "7c1b13051e78e9c839c8545fcaab4fe14ffce627232ddfd48cb590516484f4c5",
+    "ci/runtime-contract-test-matrix.json": "6cebea668a48894277fc65dece2e27c4349610bd9a92c080947ef62c6fcc7a4b",
+    "spikes/rpf-87/coverage-provenance.json": "1ad823a38ccb4cd2ce4d30f822a319c742adba58372eba15dcfa6ef3909b4c79"
+  },
+  "workflow_delta": "Only 4 new RPF89 steps and id:rpf87_assess; removing them gives RPF90 Base exactly",
+  "checks_not_cached_between_assessments": true,
+  "self_sha_not_claimed": true
+}

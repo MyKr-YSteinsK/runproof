@@ -1,4 +1,4 @@
-"""RPF89 rev-2: same-job RPF87 post-completion checkpoint and read-only
+"""RPF89 rev-3: same-job RPF87 post-completion checkpoint and read-only
 R72 coverage admission. Original legacy enforce is re-executed; residual required
 coverage always blocks release. Local synthetic controls never claim hosted proof.
 The diagnose command only describes the original RPF87 native-finish schema.
@@ -22,14 +22,14 @@ import subprocess
 import sys
 
 ROOT=Path(__file__).resolve().parents[1]
-BASE='7e12a7b6b2315977b975ec42672cbf101c37bf19'
+BASE='1b949b60ff6b52a911b7ebcdd8b05a23311a5ba9'
 PINS={
  'ci/reconcile-rpf86-required-coverage.py':'1d8d502e0a8db08e56763272565386dc246469b0',
  'ci/run-rpf88-r72-owner-scope.py':'6ca463addf0b861dfe1be854ea305d5f5b369c9c',
  'ci/verify-runtime-coverage-handoff.py':'0e22b02048497b21d698dfe6cd958a437583c94d',
  'ci/run-runtime-contract-tests.py':'88396fa78d73ba091e91992d4d51263063a95aa7',
  'ci/runtime-contract-test-matrix.json':'ed827c3dc354c18c9d4b7bc63384805e50e97785',
- '.github/workflows/release-gate.yml':'0cfc1a8ec53899eb6e9fe6aee46396ffa8af506b'}
+ '.github/workflows/release-gate.yml':'bbfe6151c54405a0f1aecd7bcfc9796e8308c1a3'}
 class Invalid(ValueError):pass
 def need(ok,code):
     if not ok:raise Invalid(code)
@@ -46,9 +46,32 @@ def git(*args):
     need(p.returncode==0,'GIT_SOURCE');return p.stdout
 def pinned(path,pin):
     raw=(ROOT/path).read_bytes();old=git('cat-file','blob',pin)
-    if path=='.github/workflows/release-gate.yml':return workflow_source(raw,old)
+    if path=='.github/workflows/release-gate.yml':
+        need(raw.replace(b'\r\n',b'\n')==git('cat-file','blob','HEAD:'+path).replace(b'\r\n',b'\n'),'WORKFLOW_HEAD')
+        return workflow_source(raw,old)
     need(git('rev-parse','HEAD:'+path).decode().strip()==pin and raw.replace(b'\r\n',b'\n')==old.replace(b'\r\n',b'\n'),'PIN_DRIFT')
     return raw
+def pinned_many(pins):
+    """One bounded batch, no cache: validate every HEAD pin and source byte anew."""
+    items=list(pins.items());need(0<len(items)<=64,'PIN_BATCH_COUNT')
+    for path,pin in items:
+        need(type(path) is str and not Path(path).is_absolute() and '..' not in Path(path).parts
+             and re.fullmatch(r'[A-Za-z0-9_./-]+',path) and re.fullmatch('[a-f0-9]{40}',pin),'PIN_BATCH_SCOPE')
+    observed=git('rev-parse',*['HEAD:'+path for path,_ in items]).decode().splitlines()
+    need(observed==[pin for _,pin in items],'PIN_DRIFT')
+    proc=subprocess.run(['git','cat-file','--batch'],cwd=ROOT,
+                        input=('\n'.join(pin for _,pin in items)+'\n').encode(),
+                        capture_output=True,timeout=15)
+    need(proc.returncode==0 and len(proc.stdout)<=16*1024*1024,'PIN_BATCH_GIT')
+    stream=io.BytesIO(proc.stdout)
+    for path,pin in items:
+        header=stream.readline(128).decode().rstrip('\n').split(' ')
+        need(len(header)==3 and header[:2]==[pin,'blob'] and header[2].isdigit(),'PIN_BATCH_HEADER')
+        size=int(header[2]);need(size<=8*1024*1024,'PIN_BATCH_SIZE')
+        old=stream.read(size);need(len(old)==size and stream.read(1)==b'\n','PIN_BATCH_BYTES')
+        target=ROOT/path;nonlink(target);raw=target.read_bytes()
+        need(raw.replace(b'\r\n',b'\n')==old.replace(b'\r\n',b'\n'),'PIN_DRIFT')
+    need(stream.read(1)==b'','PIN_BATCH_TRAILING')
 def return_fields(raw,function):
     tree=ast.parse(raw);fn=next(x for x in tree.body if isinstance(x,ast.FunctionDef) and x.name==function)
     last=next(x for x in reversed(fn.body) if isinstance(x,ast.Return))
@@ -121,21 +144,22 @@ def write_exclusive(p,v):
     with p.open('xb') as f:f.write(b);f.flush();os.fsync(f.fileno())
 def workflow_source(raw,base):
     """Current authorized delta and HEAD identity; Base remains a reference."""
-    need(raw.replace(b'\r\n',b'\n')==git('cat-file','blob','HEAD:.github/workflows/release-gate.yml').replace(b'\r\n',b'\n') or os.environ.get('GITHUB_ACTIONS')!='true','WORKFLOW_HEAD')
+    # Pure candidate-delta validation. pinned() checks actual HEAD/worktree
+    # identity unconditionally, including local synthetic invocations.
     s=raw.decode().replace('\r\n','\n');old=base.decode().replace('\r\n','\n')
     if s==old:return raw  # pre-activation / B path
     for name in ('Record verified RPF-87 post-completion boundary','Reconcile admitted RPF-88 R72 required methods','Enforce RPF-89 derived required coverage','Upload RPF-89 derived required coverage'):
         pattern=r'      - name: '+re.escape(name)+r'\n.*?(?=      - name: |\Z)'
         s,count=re.subn(pattern,'',s,flags=re.S);need(count==1,'WORKFLOW_DELTA_STEP')
+    need(s.count('        id: rpf87_assess\n')==1,'WORKFLOW_ASSESS_ID')
     s=s.replace('        id: rpf87_assess\n','')
-    s=s.replace('            ci-results/rpf89-coverage-${{ github.run_id }}-${{ github.run_attempt }}.json\n','')
     need(s==old,'WORKFLOW_UNAUTHORIZED_DELTA');return raw
 def load_pinned(path):
     raw=pinned(path,PINS[path]);m=types.ModuleType('r89_'+Path(path).stem.replace('-','_'));m.__file__=str(ROOT/path)
     exec(compile(raw,str(ROOT/path),'exec'),m.__dict__);return m
 def local_owner():
     p=Path(os.environ.get('RPF89_OWNER',''))
-    need(p.is_absolute() and p.parent==ROOT/'.local/rpf-89-rev2' and re.fullmatch('[a-f0-9]{32}',p.name),'LOCAL_OWNER')
+    need(p.is_absolute() and p.parent==ROOT/'.local/rpf-89-rev3' and re.fullmatch('[a-f0-9]{32}',p.name),'LOCAL_OWNER')
     nonlink(p);return p
 class Context:
     def __init__(self,run,attempt,commit,synthetic=False,root=None):
@@ -249,7 +273,7 @@ def readonly_connect(allowed,database,**kw):
     return sqlite3.connect(database,uri=True)
 def pilot_revalidate(c,reader,base,s):
     root=c.r88;m=load_pinned(R88);source=m.identity()
-    for path,pin in m.PINS.items():pinned(path,pin['blob'])
+    pinned_many({path:pin['blob'] for path,pin in m.PINS.items()})
     result=reader.json(root/'result.json',root,'pilot_result');public=reader.json(root/'public-result.json',root,'pilot_public')
     fields(result,('schema status error source native_receipt verify_receipt states source_unchanged guard_denied_count native_report_sha256 verification_sha256 resources').split())
     need(result['schema']=='rpf88-result-v1' and result['status']=='PASS' and result['error'] is None and result['source']==source and result['states']==dict.fromkeys(m.IDS,'PASS') and result['source_unchanged'] is True and type(result['guard_denied_count']) is int and result['guard_denied_count']==0 and result['resources']==m.RESOURCES and all(type(x) is int for x in result['resources'].values()),'PILOT_RESULT')

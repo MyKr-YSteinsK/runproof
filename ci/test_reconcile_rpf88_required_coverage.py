@@ -1,4 +1,4 @@
-"""RPF89 rev-2 controls; original Runtime test methods are never executed.
+"""RPF89 rev-3 controls; original Runtime test methods are never executed.
 The twelve rev-1 rejection/schema controls remain alongside physical fixtures.
 """
 import ast
@@ -196,7 +196,9 @@ class CheckpointAdmission(unittest.TestCase):
         with patch.dict(os.environ,{'GITHUB_ACTIONS':'true'}),self.assertRaises(r.Invalid):r.Context('1','1',self.commit,True,self.root/'case')
         with self.assertRaises(r.Invalid):r.Context('local','1',self.commit,True,r.ROOT/'.local/rpf-old/forbidden')
     def test_workflow_only_authorized_delta_and_two_live_barriers(self):
-        raw=(r.ROOT/'.github/workflows/release-gate.yml').read_bytes();base=r.git('cat-file','blob',r.PINS['.github/workflows/release-gate.yml']);r.workflow_source(raw,base)
+        # Validate the frozen candidate before activating the tracked workflow.
+        # All original delta/order/argv assertions below remain unchanged.
+        raw=(self.owner/'candidate-workflow.yml').read_bytes();base=r.git('cat-file','blob',r.PINS['.github/workflows/release-gate.yml']);r.workflow_source(raw,base)
         with self.assertRaises(r.Invalid):r.workflow_source(raw.replace(b'timeout-minutes: 35',b'timeout-minutes: 90'),base)
         text=raw.decode();names=['Reconcile admitted RPF-86 required methods','Record verified RPF-87 post-completion boundary','Run RPF-88 R72 fresh-owner cohort pilot','Reconcile admitted RPF-88 R72 required methods','Enforce all required Runtime coverage','Enforce RPF-89 derived required coverage']
         self.assertEqual([text.index(n) for n in names],sorted(text.index(n) for n in names))
@@ -299,5 +301,28 @@ class CheckpointAdmission(unittest.TestCase):
     def test_hardlink_is_rejected_without_external_target_probe(self):
         folder=self.root/uuid.uuid4().hex;folder.mkdir();p=folder/'owned-file';raw_write(p,b'controlled');link=folder/'hardlink';os.link(p,link)
         with self.assertRaises(r.Invalid):r.Reader().read(link,folder,'link')
+    def test_batch_source_equivalence_and_drift_no_cross_call_cache(self):
+        pins={path:pin['blob'] for path,pin in self.p.PINS.items()}
+        with patch.object(r,'git',wraps=r.git) as observed:
+            r.pinned_many(pins)
+            self.assertEqual(observed.call_count,1)
+        # A previous success must never hide a later changed HEAD or file.
+        with patch.object(r,'git',return_value=b'bad'),self.assertRaises(r.Invalid):r.pinned_many(pins)
+        real=Path.read_bytes
+        first=next(iter(pins))
+        def changed(p):return b'changed source' if p==r.ROOT/first else real(p)
+        with patch.object(Path,'read_bytes',changed),self.assertRaises(r.Invalid):r.pinned_many(pins)
+        with self.assertRaises(r.Invalid):r.pinned_many({'../outside':'a'*40})
+    def test_batch_protocol_rejects_truncated_and_extra_bytes(self):
+        path=r.R88;pin=r.PINS[path]
+        for raw in (b'',b'bad header\n',(pin+' blob 2\n').encode()+b'x',
+                    (pin+' blob 0\n\nEXTRA').encode()):
+            fake=type('Receipt',(),{'returncode':0,'stdout':raw})
+            with patch.object(r,'git',return_value=(pin+'\n').encode()),patch.object(r.subprocess,'run',return_value=fake),self.assertRaises(r.Invalid):r.pinned_many({path:pin})
+    def test_workflow_head_identity_never_bypassed_by_synthetic(self):
+        real=r.git
+        def changed(*args):
+            return b'changed workflow' if args==('cat-file','blob','HEAD:.github/workflows/release-gate.yml') else real(*args)
+        with patch.object(r,'git',side_effect=changed),self.assertRaises(r.Invalid):r.pinned('.github/workflows/release-gate.yml',r.PINS['.github/workflows/release-gate.yml'])
 
 if __name__=='__main__':unittest.main(verbosity=2)

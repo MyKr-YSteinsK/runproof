@@ -1,0 +1,370 @@
+{
+  "schema": "rpf89-rev3-performance-attribution-v1",
+  "source_base": "1b949b60ff6b52a911b7ebcdd8b05a23311a5ba9",
+  "platform": {
+    "os": "nt",
+    "python": "3.14.6",
+    "sqlite": "3.50.4"
+  },
+  "instrumentation": "Frozen wrapper around named phases; START/END inclusive wall times; original assertions unchanged; prepatch local_owner scope substitution only",
+  "focused_launches": 4,
+  "focused_total_seconds": 13.1136841,
+  "observations": [
+    {
+      "label": "BEFORE_PATCH_OBSERVED",
+      "test_id": "CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+      "pid": 31576,
+      "start_ns": 41857151280800,
+      "end_ns": 41858318416600,
+      "seconds": 1.1671358,
+      "exit": 1,
+      "timeout": false,
+      "truncated": false,
+      "stdout_bytes": 2625,
+      "stdout_sha256": "b7e60c58317bbea444fb8f1ad92d3a905580dbcecc73acc0a1ab00bc39211ce0",
+      "phase_inclusive": {
+        "subprocess_run": {
+          "calls": 10,
+          "seconds": 0.4698947
+        },
+        "git": {
+          "calls": 10,
+          "seconds": 0.47170689999999993
+        },
+        "pinned": {
+          "calls": 4,
+          "seconds": 0.37385359999999995
+        },
+        "load_pinned": {
+          "calls": 3,
+          "seconds": 0.327024
+        },
+        "r88_identity": {
+          "calls": 1,
+          "seconds": 0.3783727
+        },
+        "local_baseline": {
+          "calls": 1,
+          "seconds": 0.0123252
+        },
+        "legacy_revalidate": {
+          "calls": 1,
+          "seconds": 0.0222182
+        },
+        "assess_value": {
+          "calls": 1,
+          "seconds": 0.3114582
+        }
+      },
+      "last_event": {
+        "kind": "DONE",
+        "time_ns": 41858303500400,
+        "pid": 31576,
+        "tests": 1,
+        "success": false
+      },
+      "scope_substitution_only": true,
+      "source_blob": "7215a31b351a56568dfefb5a27dfe49a973fed8b"
+    },
+    {
+      "label": "BEFORE_PATCH_OBSERVED",
+      "test_id": "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+      "pid": 5056,
+      "start_ns": 41858329353000,
+      "end_ns": 41866316612800,
+      "seconds": 7.9872598,
+      "exit": 1,
+      "timeout": false,
+      "truncated": false,
+      "stdout_bytes": 2577,
+      "stdout_sha256": "ce829b3b07fedc37e0b54b6263c21ae01bfddcb292623db433eeb520ac3140da",
+      "phase_inclusive": {
+        "subprocess_run": {
+          "calls": 145,
+          "seconds": 7.246950299999998
+        },
+        "git": {
+          "calls": 143,
+          "seconds": 7.145557000000003
+        },
+        "pinned": {
+          "calls": 69,
+          "seconds": 6.907145699999997
+        },
+        "load_pinned": {
+          "calls": 4,
+          "seconds": 0.4320812
+        },
+        "r88_identity": {
+          "calls": 2,
+          "seconds": 0.031095199999999996
+        },
+        "local_baseline": {
+          "calls": 1,
+          "seconds": 0.0027539
+        },
+        "legacy_revalidate": {
+          "calls": 2,
+          "seconds": 0.0322924
+        },
+        "stamp": {
+          "calls": 1,
+          "seconds": 0.0225485
+        },
+        "fixture": {
+          "calls": 1,
+          "seconds": 0.4164955
+        },
+        "manifest_read": {
+          "calls": 1,
+          "seconds": 0.017401
+        },
+        "pilot_revalidate": {
+          "calls": 1,
+          "seconds": 6.6402813
+        },
+        "assess_value": {
+          "calls": 1,
+          "seconds": 6.953607
+        }
+      },
+      "last_event": {
+        "kind": "DONE",
+        "time_ns": 41866297802000,
+        "pid": 5056,
+        "tests": 1,
+        "success": false
+      },
+      "scope_substitution_only": true,
+      "source_blob": "7215a31b351a56568dfefb5a27dfe49a973fed8b"
+    },
+    {
+      "label": "AFTER_PATCH_OBSERVED",
+      "test_id": "CheckpointAdmission.test_missing_checkpoint_and_missing_native_reject",
+      "pid": 29860,
+      "start_ns": 42016019498700,
+      "end_ns": 42017369492200,
+      "seconds": 1.3499935,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "stdout_bytes": 241,
+      "stdout_sha256": "04a6efbaac0527ba6cb97dcca3122897c6b51401ea0fcdc69b34447334dab384",
+      "phase_inclusive": {
+        "subprocess_run": {
+          "calls": 20,
+          "seconds": 0.9418155
+        },
+        "git": {
+          "calls": 19,
+          "seconds": 0.889933
+        },
+        "pinned": {
+          "calls": 8,
+          "seconds": 0.7211809999999998
+        },
+        "load_pinned": {
+          "calls": 6,
+          "seconds": 0.613173
+        },
+        "r88_identity": {
+          "calls": 2,
+          "seconds": 0.0302937
+        },
+        "local_baseline": {
+          "calls": 1,
+          "seconds": 0.0029273
+        },
+        "legacy_revalidate": {
+          "calls": 3,
+          "seconds": 0.022839
+        },
+        "assess_value": {
+          "calls": 2,
+          "seconds": 0.8932471
+        },
+        "stamp": {
+          "calls": 1,
+          "seconds": 0.0072495
+        },
+        "pinned_many": {
+          "calls": 1,
+          "seconds": 0.1494563
+        },
+        "pilot_revalidate": {
+          "calls": 1,
+          "seconds": 0.2569583
+        }
+      },
+      "last_event": {
+        "kind": "DONE",
+        "time_ns": 42017353892400,
+        "pid": 29860,
+        "tests": 1,
+        "success": true
+      },
+      "assessor_sha256": "5281801f4a3cb3ece8e4cc5e6e75ad2d5553f2d0a9bf99b0889c79baa8e58a6e"
+    },
+    {
+      "label": "AFTER_PATCH_OBSERVED",
+      "test_id": "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+      "pid": 8152,
+      "start_ns": 42017382759500,
+      "end_ns": 42019992054500,
+      "seconds": 2.609295,
+      "exit": 0,
+      "timeout": false,
+      "truncated": false,
+      "stdout_bytes": 241,
+      "stdout_sha256": "48efcd834802589ea9cba222fa3c906968bc8474d615da68559672c4e6541d1d",
+      "phase_inclusive": {
+        "subprocess_run": {
+          "calls": 31,
+          "seconds": 1.574698
+        },
+        "git": {
+          "calls": 27,
+          "seconds": 1.3496016
+        },
+        "pinned": {
+          "calls": 9,
+          "seconds": 0.8865262
+        },
+        "load_pinned": {
+          "calls": 7,
+          "seconds": 0.7493814
+        },
+        "r88_identity": {
+          "calls": 3,
+          "seconds": 0.0454301
+        },
+        "local_baseline": {
+          "calls": 1,
+          "seconds": 0.0025696
+        },
+        "legacy_revalidate": {
+          "calls": 3,
+          "seconds": 0.0331802
+        },
+        "stamp": {
+          "calls": 1,
+          "seconds": 0.0128042
+        },
+        "fixture": {
+          "calls": 1,
+          "seconds": 0.3464983
+        },
+        "pinned_many": {
+          "calls": 2,
+          "seconds": 0.31644490000000003
+        },
+        "manifest_read": {
+          "calls": 2,
+          "seconds": 0.0324542
+        },
+        "pilot_revalidate": {
+          "calls": 2,
+          "seconds": 0.7780585
+        },
+        "assess_value": {
+          "calls": 2,
+          "seconds": 1.4668771999999999
+        }
+      },
+      "last_event": {
+        "kind": "DONE",
+        "time_ns": 42019959993800,
+        "pid": 8152,
+        "tests": 1,
+        "success": true
+      },
+      "assessor_sha256": "5281801f4a3cb3ece8e4cc5e6e75ad2d5553f2d0a9bf99b0889c79baa8e58a6e"
+    }
+  ],
+  "hypotheses": {
+    "H1": {
+      "status": "REFUTED",
+      "scope": "Dominant cost in measured fixture-heavy prepatch failure path only",
+      "evidence": "fixture 0.416s vs git 7.146s; no universal claim"
+    },
+    "H2": {
+      "status": "SUPPORTED",
+      "scope": "Current measured hotspot; not proof of historical 300s root cause",
+      "evidence": "143 Git subprocesses, 7.146s inclusive of 7.987s; after bulk verification 31 total subprocesses / 2.609s and two rejection branches complete"
+    },
+    "H3": {
+      "status": "UNKNOWN",
+      "evidence": "Missing-checkpoint prepatch run stopped at stale workflow pin; afterpatch both assertions complete in 1.350s"
+    },
+    "H4": {
+      "status": "UNKNOWN",
+      "evidence": "No timeout/hang in four current runs; historical stuck handle cause not reproduced"
+    }
+  },
+  "historical_timeout_root_cause": "UNAVAILABLE; expensive serial Git checks supported as current contributor only",
+  "before_patch_exit_reason": "Both exit1 unittest ERROR from WORKFLOW_DELTA_STEP, because historical pin predates RPF90; not successful equal-outcome benchmarks",
+  "after_patch_exit_reason": "Both original methods PASS/exit0 after scope, baseline and batching changes",
+  "not_observed": [
+    "Separated SQLite native read duration",
+    "Separated stdout drain/cleanup duration",
+    "OS CPU/IO attribution",
+    "Historical process stack",
+    "Statistical p95 / cross-environment speedup"
+  ],
+  "formal_after_patch": {
+    "pid": 3872,
+    "start_ns": 42233293217000,
+    "end_ns": 42260971362400,
+    "seconds": 27.6781454,
+    "exit": 0,
+    "timeout": false,
+    "stop_reason": null,
+    "truncated": false,
+    "stdout_bytes": 5235,
+    "stdout_sha256": "f24e053def6fb1f57972c771b3f4dc3f0f958e21335f9b1f7b3e47a0673ecc64",
+    "owner_peak_bytes": 11994851,
+    "drain_joined": true,
+    "child_exited": true,
+    "counts": {
+      "START": 38,
+      "PASS": 38,
+      "FAIL": 0,
+      "ERROR": 0,
+      "SKIP": 0,
+      "STOP": 38
+    },
+    "source_unchanged": true,
+    "suite_end": {
+      "kind": "SUITE_END",
+      "time_ns": 42260755481500,
+      "pid": 3872,
+      "tests": 38,
+      "success": true,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "longest_formal_tests": [
+    {
+      "id": "CheckpointAdmission.test_actual_enforce_rejects_noncanonical_and_extra_derived_fields",
+      "seconds": 6.1617926
+    },
+    {
+      "id": "CheckpointAdmission.test_integrated_public_verifier_and_reanchored_listing_reject",
+      "seconds": 3.3003162
+    },
+    {
+      "id": "CheckpointAdmission.test_cli_synthetic_assess_enforce_and_overwrite",
+      "seconds": 2.6630867
+    },
+    {
+      "id": "CheckpointAdmission.test_physical_database_copy_and_corruption_reject",
+      "seconds": 2.2265331
+    },
+    {
+      "id": "CheckpointAdmission.test_synthetic_full_positive_and_no_release",
+      "seconds": 2.0351263
+    }
+  ]
+}

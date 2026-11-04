@@ -1,0 +1,64 @@
+{
+  "schema": "rpf89-rev3-coverage-provenance-v1",
+  "historical_accepted_counts": {
+    "PASS": 693,
+    "SKIP": 5,
+    "UNAVAILABLE": 534
+  },
+  "historical_router_counts": {
+    "PASS": 688,
+    "SKIP": 5,
+    "UNAVAILABLE": 539
+  },
+  "local_synthetic_counts": {
+    "PASS": 711,
+    "SKIP": 5,
+    "UNAVAILABLE": 516
+  },
+  "local_synthetic_kind": "LOCAL_SYNTHETIC_CONTROL_ONLY",
+  "old_five": [
+    "test_effectwitness_pge_dual.DualTests.test_four_paths",
+    "test_effectwitness_pge_dual.DualTests.test_twenty_one_reanchored_attacks",
+    "test_effectwitness_pge_dual.DualTests.test_unknown_usage_and_restart",
+    "test_effectwitness_pge_dual.DualTests.test_scope_lock_budget_and_invalid_selection",
+    "test_effectwitness_pge_dual.DualTests.test_unknown_mutation_stops_writes_but_allows_readback"
+  ],
+  "new_eighteen": [
+    "test_effectwitness_pge_r72.BudgetTests.test_immutable_policy_strict_identity",
+    "test_effectwitness_pge_r72.BudgetTests.test_native_direct_reserve_denied_before_wal_write",
+    "test_effectwitness_pge_r72.BudgetTests.test_native_direct_settle_and_append_denied",
+    "test_effectwitness_pge_r72.BudgetTests.test_no_operation_no_sqlite_setup",
+    "test_effectwitness_pge_r72.BudgetTests.test_session_reserve_settle_native_parity",
+    "test_effectwitness_pge_r72.BudgetTests.test_duplicate_settlement_is_not_reclaimed",
+    "test_effectwitness_pge_r72.BudgetTests.test_resource_limit_session_once",
+    "test_effectwitness_pge_r72.BudgetTests.test_unknown_refund_stops_new_writes",
+    "test_effectwitness_pge_r72.BudgetTests.test_unsettled_refund_stops_second_write",
+    "test_effectwitness_pge_r72.BudgetTests.test_crash_check_before_reserve",
+    "test_effectwitness_pge_r72.BudgetTests.test_crash_native_reserve_before_confirmation",
+    "test_effectwitness_pge_r72.BudgetTests.test_valid_owner_missing_policy_does_not_enter_port",
+    "test_effectwitness_pge_r72.BudgetTests.test_wrong_policy_does_not_enter_port",
+    "test_effectwitness_pge_r72.BudgetTests.test_component_eleven_slots_permanent_native_caps",
+    "test_effectwitness_pge_r72.BudgetTests.test_component_rejects_slot_and_price_forgery",
+    "test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_normal_gate_and_policy",
+    "test_effectwitness_pge_r72.BudgetTests.test_real_sqlite_unknown_readonly_gate_and_policy",
+    "test_effectwitness_pge_r72.BudgetTests.test_boolean_round_and_unknown_parameter_rejected"
+  ],
+  "total_required": 1232,
+  "dedicated_missing_local_model": 394,
+  "formal_new_hosted_admissions_at_seal": 0,
+  "hosted_target": {
+    "counts": {
+      "PASS": 711,
+      "SKIP": 5,
+      "UNAVAILABLE": 516
+    },
+    "old_barrier_exit": 1,
+    "new_barrier_exit": 1,
+    "status": "NOT_RUN_AT_SEAL"
+  },
+  "kernel_sandbox": false,
+  "independent_issuer": false,
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false
+}
