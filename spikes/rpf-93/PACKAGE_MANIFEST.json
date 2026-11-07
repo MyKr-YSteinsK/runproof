@@ -1,0 +1,44 @@
+{
+  "schema": "rpf93-package-manifest-v1",
+  "base": "0dee6283f9a1c3a54edd79f78aabee784d562648",
+  "official_template": "UNAVAILABLE",
+  "template_conformity": "UNAVAILABLE",
+  "files": [
+    {
+      "name": "RunProof-EffectWitness-Proposal.pptx",
+      "bytes": 412436,
+      "sha256": "a7ec9f9796d79ef71c50775e92ac26e803e6af671565f832f8a351093fdcfab6",
+      "slides": 10,
+      "macro_free": true,
+      "external_relationships": false,
+      "notes": 10
+    },
+    {
+      "name": "RunProof-EffectWitness-Proposal.zip",
+      "bytes": 400883,
+      "sha256": "e50a53b2e1f3ba0970044466f25038085466065a4c2205663d4742903ccee5c4",
+      "members": [
+        {
+          "name": "RunProof-EffectWitness-Proposal.pptx",
+          "sha256": "a7ec9f9796d79ef71c50775e92ac26e803e6af671565f832f8a351093fdcfab6"
+        }
+      ],
+      "extract_hash_match": true,
+      "under_500_mib": true
+    }
+  ],
+  "zip_members": [
+    {
+      "name": "RunProof-EffectWitness-Proposal.pptx",
+      "sha256": "a7ec9f9796d79ef71c50775e92ac26e803e6af671565f832f8a351093fdcfab6"
+    }
+  ],
+  "screenshot": {
+    "path": "spikes/rpf-61/assets/live-completed-browser.png",
+    "source_commit": "0dee6283f9a1c3a54edd79f78aabee784d562648",
+    "origin_session": "rpf60-session-ff259b8d1bef494b",
+    "label": "RECORDED"
+  },
+  "submission": "NOT_RUN",
+  "self_hash": "NOT_INCLUDED"
+}
