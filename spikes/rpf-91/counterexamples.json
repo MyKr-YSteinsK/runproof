@@ -1,0 +1,18 @@
+{
+  "schema": "rpf91-counterexamples-v1",
+  "controls": [
+    {
+      "id": "RPF89_BASELINE_WORKFLOW",
+      "actual": "PASS",
+      "observation": "Original activated workflow accepted by current RPF89 workflow_source"
+    },
+    {
+      "id": "RPF91_TWO_STEP_DELTA",
+      "actual": "PASS",
+      "observation": "Real RPF89 workflow_source rejected candidate with WORKFLOW_UNAUTHORIZED_DELTA",
+      "forensic_test_exit": 0
+    }
+  ],
+  "required_guard_and_native_controls": "NOT_RUN",
+  "note": "The candidate is generated in memory; no tracked workflow or business evidence was changed."
+}

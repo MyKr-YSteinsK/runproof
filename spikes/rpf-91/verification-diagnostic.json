@@ -1,0 +1,33 @@
+{
+  "schema": "rpf91-verification-v1",
+  "status": "PARTIAL",
+  "path": "B_UNACTIVATED",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_APPLICABLE",
+    "A07": "NOT_RUN",
+    "A08": "NOT_RUN",
+    "A09": "NOT_RUN",
+    "A10": "PASS"
+  },
+  "a08_a09": "NOT_RUN_AT_SEAL",
+  "forensic_control": {
+    "status": "PASS",
+    "exit": 0,
+    "tests": 1,
+    "seconds": 0.3970028000185266,
+    "log_sha256": "3389a771cab411a2cc16de8eed64f8272138606746b0ceab26a77491084ade5c",
+    "source_frozen_unchanged": true
+  },
+  "native_pilot": "NOT_RUN",
+  "old_coverage_unchanged": true,
+  "sealed_before_push": true,
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false
+}

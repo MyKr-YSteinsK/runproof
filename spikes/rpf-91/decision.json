@@ -1,0 +1,12 @@
+{
+  "schema": "rpf91-decision-v1",
+  "status": "PARTIAL",
+  "path": "B_UNACTIVATED",
+  "reason": "RPF89 workflow_source rejects both additional RPF91 steps with WORKFLOW_UNAUTHORIZED_DELTA; its source is outside modify whitelist",
+  "native_pilot": "NOT_RUN",
+  "admissions": 0,
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "architect_acceptance_not_claimed": true
+}

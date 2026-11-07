@@ -1,0 +1,61 @@
+{
+  "plan": "RPF-91/rev-2",
+  "base": "3fb0294c5087eee8fa0d0196fe610048bc023585",
+  "status": "PASS",
+  "utc": "2026-11-07T12:04:38.534066+00:00",
+  "monotonic_ns": 206823454846200,
+  "owner_nonce": "9fc6d79c2b2b437280c902e5416cfca8",
+  "source_path_count": 100,
+  "closure_sources": 84,
+  "absent_candidates": [
+    "runtime/runproof_runtime/effectwitness.py"
+  ],
+  "additional_existing_dependencies": {},
+  "create_only_paths": [
+    "ci/run-rpf91-multigen-owner-cohort.py",
+    "ci/test_run_rpf91_multigen_owner_cohort.py",
+    "spikes/rpf-91/README.md",
+    "spikes/rpf-91/RESULT.md",
+    "spikes/rpf-91/preflight-diagnostic.json",
+    "spikes/rpf-91/verification-diagnostic.json",
+    "spikes/rpf-91/cohort-inventory.json",
+    "spikes/rpf-91/counterexamples.json",
+    "spikes/rpf-91/decision.json",
+    "spikes/rpf-91/source-identity-ledger.json",
+    "spikes/rpf-91/pre-repair-sources/release-gate.yml"
+  ],
+  "workflow_blob": "f56b5849e81618be114dd90567c8a3f1c9a65594",
+  "workflow_raw_sha256": "3dfb696dc3066bff62e5f1cad4382bf6342ae45b8db9b6c0b10144cca5ac05f0",
+  "acl_checks": [
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe"
+    },
+    {
+      "exit": 0,
+      "sha256": "2bc8b96d74dec597c3a9eae4d993b45c0cd785c226d560ce6bf4e1bb4c6ff2e6"
+    }
+  ],
+  "checks": {
+    "head_upstream_remote": "PASS",
+    "scoped_clean": "PASS",
+    "100_sources": "PASS",
+    "dynamic_closure": "PASS",
+    "create_only": "PASS",
+    "ignore_reparse": "PASS",
+    "acl": "PASS",
+    "workflow": "PASS"
+  }
+}
