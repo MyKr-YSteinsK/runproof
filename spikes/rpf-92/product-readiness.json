@@ -1,0 +1,47 @@
+{
+  "schema": "rpf92-product-readiness-v1",
+  "base": "d9e985d41249a72be06167dccd19bccb8d17892f",
+  "paths": [
+    {
+      "path": "/effectwitness/recorded",
+      "source": "RECORDED",
+      "status": "PASS",
+      "evidence": "Actual desktop browser; tracked summary pins and offline verifier; no external issuer"
+    },
+    {
+      "path": "/effectwitness",
+      "source": "LOCAL_SIMULATION",
+      "status": "NOT_RUN",
+      "reason": "Historical default owner; no new business run; browser offline state and disabled button observed"
+    },
+    {
+      "path": "/effectwitness/cross-domain",
+      "source": "FIXTURE_SCRIPTED",
+      "status": "NOT_RUN",
+      "reason": "No fresh isolated Gateway; browser shows order deterministic and config scripted fixture"
+    },
+    {
+      "path": "/effectwitness/explorations",
+      "source": "LIVE_LOCAL",
+      "status": "NOT_RUN",
+      "reason": "Provider calls not authorized"
+    },
+    {
+      "path": "/overview",
+      "source": "API_BACKED",
+      "status": "UNAVAILABLE",
+      "reason": "Docker Linux engine unavailable; no task-owned Golden Demo was started"
+    }
+  ],
+  "witness": {
+    "order": "VERIFIED_ANCHORED",
+    "ops": "VERIFIED_ANCHORED",
+    "issuer_authenticity": "NOT_ESTABLISHED",
+    "tampered": "REJECTED_FILE_SHA256_MISMATCH"
+  },
+  "browser": "PASS_DESKTOP_RECORDED_AND_OFFLINE",
+  "known_ux_gap": "Recorded page labels UTC (+00:00) timestamps as Beijing time; RecordedPage.tsx is read-only in this Plan",
+  "recorded_not_new_reproduction": true,
+  "fees": 0,
+  "release_authorized": false
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "rpf92-decision-v1",
+  "status": "PARTIAL",
+  "golden_demo": "BLOCKED_ENVIRONMENT",
+  "local_lab": "NOT_RUN_OWNER_CONTRACT",
+  "recorded": "PASS",
+  "router_cause": "UNAVAILABLE",
+  "competition_submission": "NOT_AUTHORIZED_NOT_PERFORMED",
+  "release_eligible": false,
+  "release_executed": false,
+  "deployment_authorized": false,
+  "stage_advanced": false,
+  "delivery_scope_gap": "Competition smoke/stop launchers were not created: original Maven build can write control-plane/target and resolve downloads; task-only offline build destination is not established."
+}

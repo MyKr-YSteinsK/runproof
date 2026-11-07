@@ -1,0 +1,77 @@
+{
+  "schema": "rpf92-ci-attribution-v1",
+  "source_run": "42371085659",
+  "source_commit": "d9e985d41249a72be06167dccd19bccb8d17892f",
+  "artifact_id": 13574230397,
+  "artifact_zip_sha256": "60d8b287c92dc2d39ef72476bb60efb0a19ab22d0eaf4f28a168d53aa6bf1b76",
+  "redacted_json_sha256": "a0689946a2c3890012a376f4a375e2e08a10847345febc73d4415a4a9cb0a168",
+  "methods": [
+    {
+      "id": "test_contracts.ContractTests.test_evidence_writer_is_immutable_and_does_not_create_verified_semantics",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_control_plane_client.ControlPlaneClientTests.test_manifest_preserves_bytes_and_keeps_trajectory_out_of_summary",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_control_plane_client.ControlPlaneClientTests.test_manifest_rejects_identity_path_traversal_before_writing",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_durable_worker.DurableWorkerAuthorityTests.test_job_paths_are_limited_to_explicit_worker_roots",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_java_details_resolve_launcher_home_and_direct_jdk_executable",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_readiness_rechecks_listener_identity_after_health_get",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_readiness_rejects_process_exit_and_non_up_health",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_readiness_requires_owned_pid_and_real_health_up",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_tcp_success_with_unowned_pid_sleeps_and_never_calls_health",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_incident.IncidentContractTests.test_generic_promotion_workflow_dispatches_incident_profiles",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_incident.IncidentContractTests.test_incident_suite_evaluation_comparison_and_quality_decision",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    },
+    {
+      "id": "test_quality.QualityContractTests.test_immutable_writer_refuses_silent_overwrite",
+      "classification": "UNAVAILABLE",
+      "direct_temporary_directory_in_ast": true
+    }
+  ],
+  "module_count": 6,
+  "execution_exit": 1,
+  "timeout": false,
+  "truncated": false,
+  "hypothesis": "TemporaryDirectory interaction with Guard may be relevant, but child TMP/TEMP/TMPDIR are assigned to owned folder; no exception was retained and no cause is established.",
+  "focused_router_execution": "NOT_RUN_OWNER_CONTRACT",
+  "next_experiment": "A separately authorized Router output-root contract for this fresh owner, then one bounded module-filter execution retaining redacted exception classes."
+}

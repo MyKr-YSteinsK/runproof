@@ -1,0 +1,52 @@
+{
+  "plan": "RPF-92/rev-1",
+  "base": "d9e985d41249a72be06167dccd19bccb8d17892f",
+  "status": "PASS",
+  "utc": "2026-11-07T12:54:59.883532+00:00",
+  "monotonic_ns": 209844804614400,
+  "owner_nonce": "de3e93f125774017809853b6704b81d4",
+  "modify_pins": {
+    "web/src/features/effectwitness/LabPage.tsx": "5b595dbd2dbe70dd14bd5e86da94e082849e6015",
+    "web/src/features/effectwitness/LivePage.tsx": "24620dd9f400ac0a850cb738a174bb51783b24ac",
+    "web/src/features/effectwitness/CrossDomainPage.tsx": "6b4c16bcc8974bfdf9e16af516dad9d871ce231c",
+    "web/src/features/effectwitness/lab.css": "4266c7693a1fcfe65d1c9f0f7f882670030c980d",
+    "web/src/features/effectwitness/copy.ts": "2551ca799cedcaa35f2552940344a47e46f29cd1",
+    "web/src/features/effectwitness/crossDomainCopy.ts": "b5184951bae5ffeb2cb1b7c5de3c163cef593882",
+    "web/src/components/AppShell.tsx": "8894089a23b866c1e4887269b295cbd538ba32c5",
+    "web/src/features/effectwitness/lab.test.tsx": "b6eb721e094ef5b268d78829cc089721661580be",
+    "web/src/features/effectwitness/live.test.tsx": "13e03095562deb63f206ceb5f63d87d16a711284",
+    "web/src/features/effectwitness/crossDomainApi.test.ts": "1c983f02265565226876d409a8e7d2c9e4c2eda7",
+    "web/src/features/effectwitness/labProxy.test.ts": "a14658e743878a3cea8addff28f4092bedd6e165"
+  },
+  "create_only": [
+    "demo/competition-smoke.ps1",
+    "demo/competition-stop.ps1",
+    "ci/diagnose-rpf92-portable-errors.py",
+    "spikes/rpf-92/README.md",
+    "spikes/rpf-92/RESULT.md",
+    "spikes/rpf-92/preflight-diagnostic.json",
+    "spikes/rpf-92/product-readiness.json",
+    "spikes/rpf-92/ci-error-attribution.json",
+    "spikes/rpf-92/counterexamples.json",
+    "spikes/rpf-92/decision.json",
+    "spikes/rpf-92/verification-diagnostic.json"
+  ],
+  "acl_exit": 0,
+  "acl_sha256": "f28533bec34a023f55825dff41f0aacad36368b56b785faf8274b7c9cc08dabe",
+  "checks": {
+    "root_main_head_upstream": "PASS",
+    "tracked_clean": "PASS",
+    "remote_tls": "PASS",
+    "11_modify_pins": "PASS",
+    "11_create_only": "PASS",
+    "reparse_ignore": "PASS",
+    "acl": "PASS",
+    "canonical_workflow": "PASS"
+  },
+  "ports_and_docker_ownership": "NOT_RUN_PENDING_RESOURCE_PREFLIGHT",
+  "repo_visibility_observed": "public",
+  "plan_visibility_claim": "Private",
+  "docker_daemon": "UNAVAILABLE",
+  "docker_image": "UNAVAILABLE",
+  "existing_resources_mutated": false
+}

@@ -1,0 +1,65 @@
+{
+  "schema": "rpf92-verification-v1",
+  "status": "PARTIAL",
+  "gates": {
+    "G0": "PASS_LOCAL_PATHS_RESOURCE_IDENTITY_NOT_RUN",
+    "A01": "PASS_WITH_OWNER_RESTRICTION",
+    "A02": "PARTIAL",
+    "A03": "PASS",
+    "A04": "PARTIAL",
+    "A05": "PARTIAL",
+    "A06": "NOT_RUN_AT_SEAL",
+    "A07": "PARTIAL"
+  },
+  "npm": {
+    "npm-test": {
+      "name": "npm-test",
+      "exit": 0,
+      "timeout": false,
+      "seconds": 3.4972058,
+      "log_bytes": 2852,
+      "log_sha256": "7b262c1d5da3151458c44ca671898e7525f0b6a192d5840c66ad6b85a75fb8cf"
+    },
+    "typecheck": {
+      "name": "typecheck",
+      "exit": 0,
+      "timeout": false,
+      "seconds": 5.790199,
+      "log_bytes": 44,
+      "log_sha256": "c5a4f7a90f1bebfdf404f30c09795759476bb47cf5f203a46f02f2f3b4b71f7c"
+    },
+    "build": {
+      "name": "build",
+      "exit": 0,
+      "timeout": false,
+      "seconds": 8.9366299,
+      "log_bytes": 1307,
+      "log_sha256": "8c7393324a1ce6465cd9ba2c7d2ac5e6eb12711e3ca57ec504eb81ce6973184a"
+    }
+  },
+  "npm_test_count": 64,
+  "npm_test_files": 16,
+  "witness_exits": [
+    0,
+    0,
+    0,
+    3
+  ],
+  "diagnostic_cases": {
+    "valid": 0,
+    "wrong_scope": 2
+  },
+  "browser": "DESKTOP_RECORDED_LAB_CROSS_DOMAIN",
+  "golden_demo_start": "NOT_RUN_DOCKER_DAEMON_UNAVAILABLE",
+  "gateway_live": "NOT_RUN_OWNER_CONTRACT",
+  "no_web_code_changed": true,
+  "freeze_order_note": {
+    "diagnostic_raw_sha256": "9d37ee3fd87a94aa582f4a0727004a8ae70e0818e4e9e633c95a3a03dd39714c",
+    "base": "d9e985d41249a72be06167dccd19bccb8d17892f",
+    "web_candidate": "UNCHANGED_BASE",
+    "web_freeze_precedes_forensic_python_creation": true,
+    "npm_passes_reused_for_unchanged_web_only": true
+  },
+  "real_device_verification": "NOT_RUN",
+  "push_ci": "NOT_RUN_AT_SEAL"
+}

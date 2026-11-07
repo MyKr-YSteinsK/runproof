@@ -1,0 +1,23 @@
+{
+  "schema": "rpf92-counterexamples-v1",
+  "checks": [
+    {
+      "id": "witness_tamper",
+      "status": "PASS",
+      "exit": 3,
+      "reason": "FILE_SHA256_MISMATCH"
+    },
+    {
+      "id": "diagnostic_wrong_scope",
+      "status": "PASS",
+      "exit": 2
+    },
+    {
+      "id": "router_original_errors",
+      "status": "UNAVAILABLE",
+      "reason": "Original exception details absent"
+    }
+  ],
+  "browser_api_outage": "PASS_NO_SAMPLE_FALLBACK_AND_START_DISABLED",
+  "history_verifier": "PASS_NOT_EXTERNAL_ISSUER"
+}
