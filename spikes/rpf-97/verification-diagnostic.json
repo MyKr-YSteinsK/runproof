@@ -1,0 +1,10 @@
+{
+  "base": "ef1a92b911e7ff6f414d7a357a6ec562530ec1c0",
+  "checks": [
+    {"name":"public documentation contract", "command":"verified CPython -B ci/verify-public-docs.py", "exit":0, "observed":"PUBLIC_DOCS_PASS files=18 pairs=7"},
+    {"name":"prior decisions raw byte prefix", "exit":0, "observed":"D-001 through D-028 original 46267 bytes preserved before D-029"},
+    {"name":"git diff --check", "exit":0, "observed":"no whitespace errors; Git emitted line-ending warnings"},
+    {"name":"historical deletion", "observed":"none"},
+    {"name":"runtime and physical experiments", "status":"NOT_RUN"}
+  ]
+}

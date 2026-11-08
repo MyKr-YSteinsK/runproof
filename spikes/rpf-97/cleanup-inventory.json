@@ -1,0 +1,12 @@
+{
+  "scope": "tracked path metadata and limited references; no deletion",
+  "items": [
+    {"path":"AGENTS.md","category":"ACTIVE","evidence":"canonical execution entry updated in this task","recommendation":"retain as current policy","delete_authorized":false},
+    {"path":"docs/effectwitness-migration/2026-10-29-rpf79/00-START_HERE.md","category":"HISTORICAL_EVIDENCE","evidence":"tracked dated migration navigation; not current policy","recommendation":"preserve","delete_authorized":false},
+    {"path":"runtime/runproof_runtime/effectwitness/pge_r81_barrier.py","category":"CANDIDATE_DEAD_CODE","evidence":"versioned historical implementation; full import reachability not established","recommendation":"REVIEW_REQUIRED; do not infer safe deletion","delete_authorized":false},
+    {"path":"spikes/rpf-81/RESULT.md","category":"HISTORICAL_EVIDENCE","evidence":"tracked historical result documents bounded prior experiment","recommendation":"preserve","delete_authorized":false},
+    {"path":"spikes/rpf-89/rev-3/source-identity-ledger.json","category":"HISTORICAL_EVIDENCE","evidence":"historical source identity ledger; no byte identity or usage revalidation in this task","recommendation":"REVIEW_REQUIRED; preserve","delete_authorized":false},
+    {"path":".local/ and generated cache outputs","category":"GENERATED_DISPOSABLE","evidence":"project convention identifies local runtime outputs; individual contents not inspected","recommendation":"REVIEW_REQUIRED; no deletion of unknown outputs","delete_authorized":false},
+    {"path":"RPF-96 untracked work","category":"USER_OWNED_PROTECTED","evidence":"local work reported by user; not inspected for this governance task","recommendation":"preserve","delete_authorized":false}
+  ]
+}

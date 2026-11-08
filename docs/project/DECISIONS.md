@@ -495,3 +495,28 @@ RPF-31 的 SeaweedFS `4.47` 选择证据证明了标准 S3-compatible conditiona
 出现独立生产/费用授权、多方并发、污染隔离需要，或新的执行边界使 main 上直接实施风险不可控时，以明确范围重新评估分支/worktree；不从本决定推导任何真实 Provider、旧任务恢复或部署许可。
 ### Supersedes
 - 仅替代常规研发按任务默认隔离分支/worktree的工作模式；D-001～D-027 的原文和安全/产品语义保持不变。
+
+
+## D-029｜基于风险分层的工程交付与历史证据分治
+
+- Status: `Accepted`
+- Date: 2026-11-08
+
+### Decision
+用户明确要求对 RunProof 项目执行约束整体审查、精简与历史冗余治理。延续 D-028 main-first：默认普通源码开发与文档变更只需明确目标路径、保护未提交内容、相关聚焦验证和 scoped Git 交付；已有任务授权内的正常修复、诊断、局部重复测试无需逐次审批。G0 按操作风险分级，不再把正式冻结的 Witness 实验检查机械应用到普通开发，也不把旧预算/不可取得的历史证明设为**所有**代码工作的全局前置条件。
+
+权限分四类：A 只读与文档、B 普通代码实现、C 有界受控本地物理副作用、D 真实外部费用/生产/secret/发布/不可逆删除。仅相应危险操作适用 C/D 的 owner、预算、持久回执、恢复与正式证据门禁；风险操作被阻断时，其余独立安全工作继续进行、可以提交已完成成果，阻断部分如实 `NOT_RUN` / `UNAVAILABLE` / `PARTIAL`。旧 UNKNOWN/WAL 不能因不方便而清理或重置，未获得证明的额度不允许物理发送。
+
+历史研发资料按 Active / Historical Evidence / Generated Disposable / Candidate Dead Code / User-owned Protected 分类；旧 Evidence、Witness、Source Map、私有 WAL/receipt 和受保护用户目录原则上保留。只有经引用/依赖核对、拥有者与用途明确、列出具体路径并取得适用授权，才能删除真正无用的资产。过时文档从 active 导航移除或标注 Historical，不等于重写其历史证据。Canonical Release Gate 与日常开发的 focused checks 分工清晰，失败不得被隐藏、删测或伪装 PASS。
+
+### Why
+RPF-96 的反复 `BLOCKED` 显示：旧物理预算起点 `UNVERIFIED` 本应只阻断新的 socket 发送，却被扩展为阻止离线源码开发与 Git 交付。与此同时，历史迁移快照、长 Plan 模板、固定证据冻结步骤与 main-first 实施流程并存，导致规范冲突和维护成本。持续研发需要保持安全不变量，同时将历史审计强度限定于真正可产生副作用或要求正式证明的场景。
+
+### Consequences
+根 `AGENTS.md` 是执行分层的唯一 live 入口；`docs/project/CURRENT_STATE.md` 记录当前实现与风险，不再停留在 RPF-82。RPF-96 旧现场与 Python 意外安装事件仍保留，原任务 owner 不因本决定得到新发送额度。CI 的现有 12 ERROR 和高 UNAVAILABLE 是真实待修债务，不禁止独立普通开发的 scoped commit，但阻止把 Release Gate 称 PASS。真实模型、用户/云/生产权限、发布与赛事提交仍需明确授权。
+
+### Reconsider when
+新增外部开发人员、受保护 evidence 的存储治理/retention、实际团队并发、系统级生产授权或自动部署造成风险边界变化时，重新评估各 Lane 的权限与审计强度。业务 UNKNOWN 对账、安全零新预约、独立 Verifier/Release Authority 等安全事实不随治理分层而降级。
+
+### Supersedes
+- 细化并替代将统一重型 G0/每任务独立 owner/双阶段证据冻结要求套用于普通开发的旧工作流程；不撤销 D-001～D-028 的既有产品、安全、可追溯与 Release Decision 语义。旧 RPF Plan 作为历史执行记录保留，不再自动授权或约束其他任务。
