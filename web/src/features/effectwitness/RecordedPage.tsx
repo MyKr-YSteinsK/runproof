@@ -8,7 +8,7 @@ import "./lab.css";
 const copy = {
   "zh-CN": {
     badge: "RECORDED · 已提交研究摘要", title: "EffectWitness｜证据驱动的受控实验", subtitle: "回看已记录的两轮选择与独立业务核验。此页面仅读取已提交文件，不会启动实验。",
-    link: "返回受控实验室", source: "证据来源", sourceBranch: "源分支", commit: "源提交", session: "会话", created: "北京时间",
+    link: "返回受控实验室", source: "证据来源", sourceBranch: "源分支", commit: "源提交", session: "会话", created: "UTC 时间",
     requests: "模型请求", requestInfo: "DeepSeek HTTP 200 × 2", trials: "新鲜受控试验", trialInfo: "每轮一个订单试验", tokens: "已报告 tokens", tokensInfo: "来自已提交摘要", cost: "费用估算上界", costInfo: "历史估算；本轮无新费用", timeline: "反馈验证与后续选择（按记录顺序）", outcomes: "独立业务效果",
     round: "轮次", before: "变更前", after: "变更后", normal: "第一轮：模型选择 normal；无计划故障。", feedback: "第一轮反馈经独立 Authority / Oracle 验证。",
     input: "第二轮请求输入已包含相同反馈 hash。", lost: "第二轮：模型选择 response-lost；故障触发。", reconciled: "独立读回后调和唯一提交收据。", ended: "该已记录会话结束。",
@@ -23,7 +23,7 @@ const copy = {
   },
   "en-US": {
     badge: "RECORDED · committed research summary", title: "EffectWitness | Evidence-driven controlled experiments", subtitle: "Review two recorded choices and independent business verification. This page reads committed files and never starts an experiment.",
-    link: "Back to the controlled lab", source: "Evidence source", sourceBranch: "Source branch", commit: "Source commit", session: "Session", created: "UTC+08 time",
+    link: "Back to the controlled lab", source: "Evidence source", sourceBranch: "Source branch", commit: "Source commit", session: "Session", created: "UTC time",
     requests: "Model requests", requestInfo: "DeepSeek HTTP 200 × 2", trials: "Fresh controlled trials", trialInfo: "One order trial per round", tokens: "Reported tokens", tokensInfo: "From the committed summary", cost: "Estimated cost ceiling", costInfo: "Historical estimate; no new spend", timeline: "Validated feedback before next choice", outcomes: "Independent business effects",
     round: "Round", before: "Before", after: "After", normal: "Round 1: model selected normal; no fault was planned.", feedback: "Round 1 feedback was validated by the independent Authority / Oracle.",
     input: "The second request input contains the same feedback hash.", lost: "Round 2: model selected response-lost; the fault triggered.", reconciled: "The unique committed receipt was reconciled from an independent readback.", ended: "The recorded session ended.",

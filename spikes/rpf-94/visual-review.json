@@ -1,0 +1,32 @@
+{
+  "schema": "rpf94-visual-review-v1",
+  "browser": "Microsoft Edge 157.0.4341.42 headless / Windows",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "screenshot": ".local/rpf-94-product-workbench/<owner>/workbench-1440.png",
+      "horizontal_page_overflow": false,
+      "review": "INSPECTED"
+    },
+    {
+      "width": 1120,
+      "height": 900,
+      "screenshot": ".local/rpf-94-product-workbench/<owner>/workbench-1120.png",
+      "horizontal_page_overflow": false,
+      "review": "AUTOMATED_GEOMETRY; INITIAL_VISUAL_INSPECTED"
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "screenshot": ".local/rpf-94-product-workbench/<owner>/workbench-768.png",
+      "horizontal_page_overflow": false,
+      "review": "INSPECTED"
+    }
+  ],
+  "notes": "Dark section heading contrast repaired; 768 retains existing wide sidebar and long stacked page. Screenshot is not a real-device test.",
+  "real_device": "NOT_RUN",
+  "keyboard": "NOT_RUN",
+  "source_failure_browser": "PASS controlled corrupted module: UNAVAILABLE and source hidden",
+  "language": "PASS switch preserves URL and source identity; recorded event deep link observed"
+}

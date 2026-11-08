@@ -80,6 +80,7 @@ import { CrossDomainPage } from "./features/effectwitness/CrossDomainPage";
 import { LabPage } from "./features/effectwitness/LabPage";
 import { LivePage } from "./features/effectwitness/LivePage";
 import { RecordedPage } from "./features/effectwitness/RecordedPage";
+import { WorkbenchPage } from "./features/effectwitness/WorkbenchPage";
 
 const EVENT_META: Record<string, { label: string; marker: string; description: string }> = {
   environment_provisioned: { label: "Environment provisioned", marker: "ENV", description: "A fresh controlled environment was created." },
@@ -1783,6 +1784,7 @@ export default function App() {
     : {};
   const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
   if (labRoute && location.pathname.startsWith("/effectwitness/cross-domain")) return <CrossDomainPage path={location.pathname} search={location.search} />;
+  if (location.pathname === "/effectwitness/workbench") return <WorkbenchPage search={location.search} />;
   if (labRoute) return location.pathname === "/effectwitness/recorded"
     ? <RecordedPage path={location.pathname} search={location.search} />
     : location.pathname.startsWith("/effectwitness/explorations")

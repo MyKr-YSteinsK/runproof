@@ -1,0 +1,49 @@
+{
+  "schema": "rpf94-verification-v1",
+  "base": "3f38cbe3bfa0b36447b08fad4477ab09fd3428d4",
+  "g0": "PASS",
+  "tests": {
+    "npm_test": {
+      "exit": 0,
+      "files": 18,
+      "tests": 68
+    },
+    "typecheck": {
+      "exit": 0
+    },
+    "build": {
+      "exit": 0,
+      "warning": "bundle >500 kB"
+    }
+  },
+  "browser": {
+    "engine": "Edge 157.0.4341.42 headless Windows",
+    "viewport_widths": [
+      1440,
+      1120,
+      768
+    ],
+    "recorded_source": "PASS",
+    "order_ops_separation": "PASS",
+    "zero_workbench_api_requests": "PASS",
+    "locale_route_identity": "PASS",
+    "recorded_event_link": "PASS",
+    "four_existing_entry_routes": "PASS",
+    "corrupted_source_fail_closed": "PASS",
+    "mock_gateway_unavailable": "GETs intercepted; no real gateway"
+  },
+  "negative_controls": {
+    "source_byte_tamper": "PASS",
+    "missing_source": "PASS",
+    "unissued_witness_download": "PASS existing lab test",
+    "gateway_offline": "PASS existing lab API test and browser interception",
+    "quota_disabled": "NOT_RUN",
+    "unknown_blind_retry": "NOT_RUN",
+    "all_result_categories": "NOT_RUN"
+  },
+  "provider_sdk_gateway_business_writes": "NOT_RUN",
+  "post_requests_from_workbench": 0,
+  "keyboard": "NOT_RUN",
+  "real_device": "NOT_RUN",
+  "a08": "NOT_RUN_AT_SEAL"
+}

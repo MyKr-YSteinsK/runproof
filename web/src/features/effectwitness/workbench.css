@@ -1,0 +1,46 @@
+.ew-workbench { max-width: 1460px; margin: 0 auto; color: #1a303d; }
+.ew-workbench section { margin: 30px 0; }
+.ew-workbench h1 { margin: 8px 0 10px; font-size: clamp(30px, 3vw, 43px); line-height: 1.12; letter-spacing: -.025em; }
+.ew-workbench h2 { margin: 0 0 14px; font-size: 18px; }
+.ew-workbench > section > h2 { color: #d5e8e5; }
+.ew-workbench > .wb-witness > h2 { color: #1a303d; }
+.ew-workbench h3 { margin: 10px 0; font-size: 16px; }
+.ew-workbench p { line-height: 1.55; }
+.ew-workbench a { color: #075f69; font-weight: 650; }
+.ew-workbench a:focus-visible { outline: 3px solid #d38b33; outline-offset: 4px; }
+.wb-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; padding: 28px 30px; background: #eaf3f1; border: 1px solid #cbdeda; border-radius: 12px; }
+.wb-header p { max-width: 700px; margin: 0; color: #4b656b; }
+.wb-eyebrow, .wb-tag { font-size: 11px; font-weight: 750; letter-spacing: .09em; color: #346d70; }
+.wb-badge { flex: none; padding: 7px 10px; border: 1px solid #84aaa1; border-radius: 4px; font-size: 11px; font-weight: 750; }
+.wb-domain { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.wb-domain a { text-decoration: none; }
+.wb-domain span { display: grid; gap: 5px; padding: 16px 18px; border: 1px solid #c9d7d6; border-radius: 8px; background: #fff; color: #213b43; }
+.wb-domain span[aria-current] { border: 2px solid #167079; background: #edf7f5; padding: 15px 17px; }
+.wb-domain small { font-weight: 400; color: #526c72; }
+.wb-contracts { display: grid; grid-template-columns: 1fr 1fr 1.25fr; gap: 12px; margin-top: 12px; }
+.wb-contracts p { margin: 0; padding: 13px; background: #f5f8f8; border-left: 3px solid #a0b9b6; font-size: 13px; }
+.wb-contracts b { display: block; margin-bottom: 5px; font-size: 11px; letter-spacing: .04em; }
+.wb-modes { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.wb-modes article, .wb-investigation article, .wb-witness { padding: 17px; border: 1px solid #d3dfde; background: #fff; border-radius: 8px; min-width: 0; }
+.wb-modes p { min-height: 42px; font-size: 13px; color: #52686d; }
+.wb-note { font-size: 13px; color: #586e73; }
+.ew-workbench > section > .wb-note { color: #a8c0bf; }
+.wb-source { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 12px 15px; background: #eff5f4; font-size: 12px; }
+.wb-source code, .wb-witness code, .wb-trial dd { overflow-wrap: anywhere; }
+.wb-investigation { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.wb-events { padding: 0; margin: 0; list-style: none; }
+.wb-events li { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid #e5edeb; }
+.wb-events li > span { color: #6b8886; font-variant-numeric: tabular-nums; }
+.wb-events li div { display: grid; gap: 4px; min-width: 0; overflow-wrap: anywhere; }
+.wb-events small { color: #667c80; }
+.wb-events a { font-size: 12px; }
+.wb-trial { padding: 6px 0 12px; border-top: 1px solid #e5edeb; font-size: 13px; }
+.wb-trial h4 { margin: 8px 0; }
+.wb-trial p { margin: 5px 0; }
+.wb-trial dl { margin: 10px 0; }
+.wb-trial dl div { padding: 6px 0; border-top: 1px solid #edf1f0; }
+.wb-trial dt { font-weight: 700; }
+.wb-trial dd { margin: 3px 0 0; }
+.wb-alert { border-left: 4px solid #a83c35; background: #fff0ed; padding: 14px; }
+@media (max-width: 1120px) { .wb-modes { grid-template-columns: repeat(2, 1fr); } .wb-contracts { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .wb-header, .wb-investigation { display: block; } .wb-badge { display: inline-block; margin-top: 14px; } .wb-investigation article + article { margin-top: 12px; } .wb-domain, .wb-modes { grid-template-columns: 1fr; } }
