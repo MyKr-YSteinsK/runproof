@@ -292,6 +292,42 @@ def envelope(run_id, attempt, commit, kind):
                 deployment_authorized=False, coverage_promoted=False, authority='NO_RELEASE/NO_DEPLOY')
 
 
+def exception_signatures(ledger, root):
+    """Project only fixed exception classes from receipt-bound unittest output."""
+    allowed = {'PermissionError', 'FileNotFoundError', 'OSError', 'ValueError',
+               'TypeError', 'RuntimeError', 'AssertionError', 'ImportError',
+               'ModuleNotFoundError', 'NotADirectoryError', 'IsADirectoryError'}
+    output = []
+    for module in ledger['modules']:
+        targets = [r['id'] for r in module['rows'] if r['route'] == 'PORTABLE' and r['actual'] == 'ERROR']
+        if not targets:
+            continue
+        if len(module['invocations']) != 2:
+            output.extend({'id': tid, 'status': 'UNAVAILABLE'} for tid in targets)
+            continue
+        receipt = module['invocations'][1]
+        path = root / (Path(module['path']).stem + '-execution') / 'output.log'
+        try:
+            raw = bounded_read(path, 2 * 1024 * 1024)
+            need(len(raw) == receipt['bytes'] and sha(raw) == receipt['stdout_sha256']
+                 and not receipt['truncated'], 'LOG_BINDING')
+            text = raw.decode('utf-8', errors='replace')
+            for tid in targets:
+                prefix, method = tid.rsplit('.', 1)
+                header = 'ERROR: ' + method + ' (' + prefix + ')'
+                sections = text.split(header)
+                if len(sections) != 2:
+                    output.append({'id': tid, 'status': 'UNAVAILABLE'})
+                    continue
+                section = sections[1].split('\n======================================================================', 1)[0]
+                found = re.findall(r'(?m)^(' + '|'.join(sorted(allowed)) + r')(?::|\s*$)', section)
+                output.append({'id': tid, 'status': 'MATCHED', 'exception': found[-1]} if len(found) == 1
+                              else {'id': tid, 'status': 'UNAVAILABLE'})
+        except (Invalid, OSError, ValueError, TypeError, KeyError):
+            output.extend({'id': tid, 'status': 'UNAVAILABLE'} for tid in targets)
+    return output
+
+
 def identity(args, env):
     need(re.fullmatch('[0-9]+', args.run_id or '') is not None
          and re.fullmatch('[1-9][0-9]*', args.attempt or '') is not None
@@ -340,7 +376,9 @@ def capture(args, env=None):
         out['source_blobs'] = dict(PINS)
         raw = bounded_read(ledger, INPUT_LIMIT)
         out['ledger_sha256'] = sha(raw)
-        out.update(project(strict(raw), ctx))
+        ledger_data = strict(raw)
+        out.update(project(ledger_data, ctx))
+        out['portable_exception_signatures'] = exception_signatures(ledger_data, ledger.parent)
         encoded = encode(out)
     except FileNotFoundError:
         code = 2

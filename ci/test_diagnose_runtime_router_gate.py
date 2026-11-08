@@ -17,6 +17,40 @@ d = importlib.util.module_from_spec(SPEC)
 SPEC.loader.exec_module(d)
 
 
+class ExceptionSignatureControls(unittest.TestCase):
+    def sample(self, raw):
+        tid = 'test_x.C.test_one'
+        receipt = {'bytes': len(raw), 'stdout_sha256': d.sha(raw), 'truncated': False}
+        module = {'path': 'runtime/tests/test_x.py', 'rows': [{'id': tid, 'route': 'PORTABLE', 'actual': 'ERROR'}], 'invocations': [{}, receipt]}
+        return {'modules': [module]}, receipt
+
+    def test_bound_log_redacts_message(self):
+        raw = b'ERROR: test_one (test_x.C)\nTraceback\nPermissionError: secret value\n'
+        ledger, _ = self.sample(raw)
+        with patch.object(d, 'bounded_read', return_value=raw):
+            result = d.exception_signatures(ledger, Path('/synthetic'))
+        self.assertEqual(result, [{'id': 'test_x.C.test_one', 'status': 'MATCHED', 'exception': 'PermissionError'}])
+        self.assertNotIn('secret', str(result))
+
+    def test_mismatch_duplicate_and_oversize_fail_closed(self):
+        raw = b'ERROR: test_one (test_x.C)\nPermissionError: hidden\n'
+        for reason in ('hash', 'duplicate', 'oversize'):
+            ledger, receipt = self.sample(raw)
+            with self.subTest(reason=reason):
+                candidate = raw
+                if reason == 'hash': receipt['stdout_sha256'] = '0' * 64
+                if reason == 'duplicate':
+                    candidate = raw + raw
+                    receipt.update(bytes=len(candidate), stdout_sha256=d.sha(candidate))
+                with patch.object(d, 'bounded_read', side_effect=OSError() if reason == 'oversize' else None, return_value=candidate):
+                    result = d.exception_signatures(ledger, Path('/synthetic'))
+                self.assertEqual(result, [{'id': 'test_x.C.test_one', 'status': 'UNAVAILABLE'}])
+
+    def test_alias_path_rejected_before_read(self):
+        with self.assertRaises(d.Invalid):
+            d.safe_path(str(d.ROOT / 'ci-results' / '..' / 'outside'))
+
+
 def settle(v):
     rows = [r for m in v['modules'] for r in m['rows']]
     v['counts'] = dict(Counter(r['actual'] for r in rows))
