@@ -1,0 +1,93 @@
+{
+  "schema": "rpf98-error-diagnostic-v1",
+  "source_run": 42487919054,
+  "source_commit": "24bb4f0db62f9d7b5b714007c0b76e32d58b1274",
+  "details_status": "UNAVAILABLE",
+  "errors": [
+    {
+      "module": "runtime/tests/test_contracts.py",
+      "method_id": "test_contracts.ContractTests.test_evidence_writer_is_immutable_and_does_not_create_verified_semantics",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_control_plane_client.py",
+      "method_id": "test_control_plane_client.ControlPlaneClientTests.test_manifest_preserves_bytes_and_keeps_trajectory_out_of_summary",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_control_plane_client.py",
+      "method_id": "test_control_plane_client.ControlPlaneClientTests.test_manifest_rejects_identity_path_traversal_before_writing",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_durable_worker.py",
+      "method_id": "test_durable_worker.DurableWorkerAuthorityTests.test_job_paths_are_limited_to_explicit_worker_roots",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_effectwitness_config_http.py",
+      "method_id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_java_details_resolve_launcher_home_and_direct_jdk_executable",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_effectwitness_config_http.py",
+      "method_id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_readiness_rechecks_listener_identity_after_health_get",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_effectwitness_config_http.py",
+      "method_id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_readiness_rejects_process_exit_and_non_up_health",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_effectwitness_config_http.py",
+      "method_id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_readiness_requires_owned_pid_and_real_health_up",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_effectwitness_config_http.py",
+      "method_id": "test_effectwitness_config_http.ConfigHttpReadinessTests.test_tcp_success_with_unowned_pid_sleeps_and_never_calls_health",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_incident.py",
+      "method_id": "test_incident.IncidentContractTests.test_generic_promotion_workflow_dispatches_incident_profiles",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_incident.py",
+      "method_id": "test_incident.IncidentContractTests.test_incident_suite_evaluation_comparison_and_quality_decision",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    },
+    {
+      "module": "runtime/tests/test_quality.py",
+      "method_id": "test_quality.QualityContractTests.test_immutable_writer_refuses_silent_overwrite",
+      "exception": "UNAVAILABLE",
+      "stage": "UNAVAILABLE",
+      "root_cause": "UNRESOLVED"
+    }
+  ],
+  "synthetic_guard_observation": "relative os.remove event was denied; synthetic dir_fd did not establish a real descriptor or hosted cause"
+}

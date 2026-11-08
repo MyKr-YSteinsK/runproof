@@ -1,0 +1,25 @@
+{
+  "checks": [
+    {
+      "modules": 6,
+      "error_ids": 12,
+      "name": "hosted redacted artifact",
+      "status": "PASS"
+    },
+    {
+      "status": "UNAVAILABLE",
+      "name": "hosted error details"
+    },
+    {
+      "observed": "PermissionError RPF82_WRITE_SCOPE",
+      "name": "synthetic audit event",
+      "real_descriptor": false,
+      "status": "PASS"
+    },
+    {
+      "status": "NOT_RUN",
+      "name": "six-module portable reexecution"
+    }
+  ],
+  "physical_loopback": "NOT_RUN"
+}
