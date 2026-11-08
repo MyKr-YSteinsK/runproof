@@ -9,6 +9,7 @@ import tempfile
 import unittest
 import uuid
 import subprocess
+import sys
 import time
 import hashlib
 

@@ -15,3 +15,5 @@ Run 42496064999 的 12 项 ERROR 对应的异常签名均为 UNAVAILABLE；不�
 | A04 | NOT_RUN | 本机仅非 Linux 聚焦测试运行，目标 12 项未复验。 |
 | A05 | NOT_RUN | 封存时 Git 和 CI 尚未完成。 |
 | A06 | PASS | 未运行 Provider、旧 owner、真实业务写，未改原测试或 Matrix。 |
+
+首次 hosted Run 42497088103 在新增 Linux 测试中因测试文件缺少 `sys` 导入而失败；Router 未启动，12 项结果 NOT_RUN。已补充导入，后续 Run 另行核实。
