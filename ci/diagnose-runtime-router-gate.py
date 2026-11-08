@@ -15,9 +15,9 @@ import sys
 
 ROOT = Path(__file__).absolute().parents[1]
 PINS = {
-    'ci/run-runtime-contract-tests.py': '88396fa78d73ba091e91992d4d51263063a95aa7',
+    'ci/run-runtime-contract-tests.py': 'ccf8d56b32aedb9ea7e5b5f3a4d4f07ae8b9ce51',
     'ci/runtime-contract-test-matrix.json': 'ed827c3dc354c18c9d4b7bc63384805e50e97785',
-    'ci/verify-runtime-coverage-handoff.py': '0e22b02048497b21d698dfe6cd958a437583c94d',
+    'ci/verify-runtime-coverage-handoff.py': '80e0220af74711cde4f91cfbd3c6102fe52b13c2',
     'spikes/rpf-82/rev-2/classification-ledger.json': '51fefc01b4c4d3b465f7b7584b8384e1b9994c78',
 }
 ROUTES = {'PORTABLE', 'WINDOWS_NATIVE', 'DEDICATED_RUNNER',

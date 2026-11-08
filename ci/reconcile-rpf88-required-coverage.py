@@ -24,12 +24,12 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 BASE='1b949b60ff6b52a911b7ebcdd8b05a23311a5ba9'
 PINS={
- 'ci/reconcile-rpf86-required-coverage.py':'1d8d502e0a8db08e56763272565386dc246469b0',
+ 'ci/reconcile-rpf86-required-coverage.py':'42f8d9a488005f6f04810a1b13c0102408181ed8',
  'ci/run-rpf88-r72-owner-scope.py':'6ca463addf0b861dfe1be854ea305d5f5b369c9c',
- 'ci/verify-runtime-coverage-handoff.py':'0e22b02048497b21d698dfe6cd958a437583c94d',
- 'ci/run-runtime-contract-tests.py':'88396fa78d73ba091e91992d4d51263063a95aa7',
+ 'ci/verify-runtime-coverage-handoff.py':'80e0220af74711cde4f91cfbd3c6102fe52b13c2',
+ 'ci/run-runtime-contract-tests.py':'ccf8d56b32aedb9ea7e5b5f3a4d4f07ae8b9ce51',
  'ci/runtime-contract-test-matrix.json':'ed827c3dc354c18c9d4b7bc63384805e50e97785',
- '.github/workflows/release-gate.yml':'bbfe6151c54405a0f1aecd7bcfc9796e8308c1a3'}
+ '.github/workflows/release-gate.yml':'17a59fa930214d14c80a1f6dbba70ecdbf4a8de1'}
 class Invalid(ValueError):pass
 def need(ok,code):
     if not ok:raise Invalid(code)

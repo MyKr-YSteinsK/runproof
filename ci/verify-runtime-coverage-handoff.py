@@ -25,7 +25,7 @@ MATRIX = ROOT / 'ci/runtime-contract-test-matrix.json'
 BASELINE = ROOT / 'spikes/rpf-82/rev-2/classification-ledger.json'
 MAX_JSON = 8 * 1024 * 1024
 MAX_LOG = 2 * 1024 * 1024
-RUNNER_BLOB = '88396fa78d73ba091e91992d4d51263063a95aa7'
+RUNNER_BLOB = 'ccf8d56b32aedb9ea7e5b5f3a4d4f07ae8b9ce51'
 MATRIX_BLOB = 'ed827c3dc354c18c9d4b7bc63384805e50e97785'
 
 

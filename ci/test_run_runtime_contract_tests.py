@@ -17,6 +17,35 @@ r=importlib.util.module_from_spec(spec)
 spec.loader.exec_module(r)
 
 
+class DirFdSafetyTests(unittest.TestCase):
+    @unittest.skipUnless(os.name == 'posix' and Path('/proc/self/fd').is_dir(), 'requires Linux procfs and directory fd')
+    def test_real_dirfd_owner_and_escape(self):
+        root = r.OWNER / ('rpf98-rev3-' + uuid.uuid4().hex)
+        child = root / 'child'; outside = root / 'outside'
+        child.mkdir(parents=True); outside.mkdir()
+        sentinel = outside / 'sentinel'; sentinel.write_bytes(b'unchanged')
+        (child / 'file').write_bytes(b'ok'); (child / 'nested').mkdir()
+        (child / 'escape').symlink_to(outside, target_is_directory=True)
+        code = '''import importlib.util,os,sys,pathlib,tempfile
+s=importlib.util.spec_from_file_location("r",sys.argv[1]);r=importlib.util.module_from_spec(s);s.loader.exec_module(r)
+child=pathlib.Path(sys.argv[2]);outside=pathlib.Path(sys.argv[3])
+fd=os.open(child,os.O_RDONLY);bad=os.open(outside,os.O_RDONLY)
+r.guard(child)
+os.unlink("file",dir_fd=fd);os.rmdir("nested",dir_fd=fd)
+with tempfile.TemporaryDirectory(dir=child) as t:
+ pathlib.Path(t,"inner").write_bytes(b"x")
+for name,descriptor in [("sentinel",bad),("../outside/sentinel",fd),("escape/sentinel",fd),("x",999999)]:
+ try: os.unlink(name,dir_fd=descriptor)
+ except PermissionError: pass
+ else: raise AssertionError("escape accepted")
+os.close(fd);os.close(bad)
+'''
+        process = subprocess.run([sys.executable, '-B', '-c', code, str(r.SELF), str(child), str(outside)],
+                                 cwd=r.ROOT, env=r.child_environment(child), capture_output=True, timeout=30)
+        self.assertEqual(process.returncode, 0, process.stderr.decode(errors='replace'))
+        self.assertEqual(sentinel.read_bytes(), b'unchanged')
+
+
 class RouterTests(unittest.TestCase):
     def setUp(self):
         self.matrix=r.strict(r.MATRIX.read_bytes())

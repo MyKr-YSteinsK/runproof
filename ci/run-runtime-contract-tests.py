@@ -16,6 +16,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import sys
 import threading
@@ -334,6 +335,26 @@ def guard(folder):
                              or isinstance(flags, int) and flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT)))
         elif event in {'os.listdir', 'os.scandir'}:
             check(args[0])
+        elif event in {'os.remove', 'os.rmdir'} and len(args) > 1 and args[1] != -1 and not os.path.isabs(os.fsdecode(args[0])):
+            # Linux audit supplies a real dir_fd. Fail closed if its identity
+            # cannot be established; never treat an integer as an owner path.
+            try:
+                raw, fd = os.fsdecode(args[0]), args[1]
+                if os.name != 'posix' or type(fd) is not int or '..' in Path(raw).parts:
+                    raise ValueError('invalid descriptor or path')
+                st = os.fstat(fd)
+                if not stat.S_ISDIR(st.st_mode):
+                    raise ValueError('not directory')
+                parent = Path(os.readlink('/proc/self/fd/' + str(fd)))
+                if not parent.is_absolute() or not parent.is_relative_to(folder):
+                    raise ValueError('outside owner')
+                check(parent, True)
+                current = parent.stat()
+                if (st.st_dev, st.st_ino) != (current.st_dev, current.st_ino):
+                    raise ValueError('descriptor identity changed')
+                check(parent / raw, True)
+            except (OSError, ValueError, TypeError):
+                raise PermissionError('RPF82_WRITE_SCOPE') from None
         elif event in {'os.mkdir', 'os.remove', 'os.rmdir', 'os.chmod', 'os.utime', 'os.truncate'}:
             check(args[0], True)
         elif event in {'os.rename', 'os.link', 'os.symlink'}:

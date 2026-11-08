@@ -95,6 +95,7 @@ jobs:
             runtime.tests.test_effectwitness_config_live.ConfigLiveContractsTests.test_denied_file_diagnostic_keeps_only_a_bounded_safe_basename \
             runtime.tests.test_effectwitness_config_target.ConfigTargetVerifierBoundaryTests.test_sdk_child_guard_allows_reads_from_resolved_base_python_runtime
           python -B -m unittest -v ci.test_rpf83_ci_preconditions
+          python -B -m unittest -v ci.test_run_runtime_contract_tests.DirFdSafetyTests
 
       - name: Run repository contract checks
         env:

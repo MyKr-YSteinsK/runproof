@@ -23,9 +23,9 @@ import types
 ROOT=Path(__file__).resolve().parents[1]
 SELF=Path(__file__).resolve()
 BASE='26e9bddafd29c5fea4ea604871429b019e35d264'
-PINS={'ci/run-runtime-contract-tests.py':'88396fa78d73ba091e91992d4d51263063a95aa7',
+PINS={'ci/run-runtime-contract-tests.py':'ccf8d56b32aedb9ea7e5b5f3a4d4f07ae8b9ce51',
       'ci/runtime-contract-test-matrix.json':'ed827c3dc354c18c9d4b7bc63384805e50e97785',
-      'ci/verify-runtime-coverage-handoff.py':'0e22b02048497b21d698dfe6cd958a437583c94d',
+      'ci/verify-runtime-coverage-handoff.py':'80e0220af74711cde4f91cfbd3c6102fe52b13c2',
       'ci/run-rpf86-owner-admission.py':'482f14ebc463f623d5de62d38043f88fbce43cb0',
       'runtime/tests/test_effectwitness_pge_dual.py':'f98fb2da033dc62a0d5f785c06b837990912caf6'}
 MAX_JSON=8*1024*1024
