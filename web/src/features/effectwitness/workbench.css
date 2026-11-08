@@ -44,3 +44,5 @@
 .wb-alert { border-left: 4px solid #a83c35; background: #fff0ed; padding: 14px; }
 @media (max-width: 1120px) { .wb-modes { grid-template-columns: repeat(2, 1fr); } .wb-contracts { grid-template-columns: 1fr; } }
 @media (max-width: 768px) { .wb-header, .wb-investigation { display: block; } .wb-badge { display: inline-block; margin-top: 14px; } .wb-investigation article + article { margin-top: 12px; } .wb-domain, .wb-modes { grid-template-columns: 1fr; } }
+@media (min-width: 701px) and (max-width: 900px) { .app-frame:has(.ew-workbench) .rail { flex-basis: 200px; min-width: 200px; } }
+.wb-events li[aria-current="step"] { border-left: 3px solid #167079; padding-left: 9px; background: #edf7f5; }

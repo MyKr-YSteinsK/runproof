@@ -1,0 +1,21 @@
+{
+  "schema": "rpf95-verification-v1",
+  "base": "0b775937f55427a2f5d56fbf24abae03fcb48d8f",
+  "python_tests": {
+    "count": 5,
+    "status": "PASS"
+  },
+  "npm_tests": {
+    "count": 69,
+    "status": "PASS"
+  },
+  "build_and_typecheck": "PASS",
+  "stdio": "PASS",
+  "full_jiuwen_manager": "NOT_RUN",
+  "source_tamper_combinations": "PARTIAL",
+  "raw_duplicate_and_oversize": "REJECTED",
+  "unissued_witness_and_unknown_outcome": "NOT_RUN",
+  "early_env_autoload": "UNVERIFIED",
+  "port_precheck": "NOT_RECORDED",
+  "git_ci": "NOT_RUN_AT_SEAL"
+}

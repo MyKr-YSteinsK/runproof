@@ -1,0 +1,29 @@
+{
+  "browser": "Microsoft Edge 157 headless Windows",
+  "viewports": [
+    {
+      "width": 1440,
+      "height": 900,
+      "screenshot": ".local/rpf-95-jiuwenswarm/<owner>/screen-1440.png",
+      "no_horizontal_overflow": true,
+      "event_enter_return": "PASS"
+    },
+    {
+      "width": 1120,
+      "height": 900,
+      "screenshot": ".local/rpf-95-jiuwenswarm/<owner>/screen-1120.png",
+      "no_horizontal_overflow": true,
+      "event_enter_return": "PASS"
+    },
+    {
+      "width": 768,
+      "height": 900,
+      "screenshot": ".local/rpf-95-jiuwenswarm/<owner>/screen-768.png",
+      "no_horizontal_overflow": true,
+      "event_enter_return": "PASS"
+    }
+  ],
+  "manual_visual_review": "PASS for screenshots, narrow rail still compact",
+  "focus": "event focus and Enter tested; full Tab order NOT_RUN",
+  "real_device": "NOT_RUN"
+}

@@ -31,4 +31,9 @@ describe("Recorded EffectWitness evidence view", () => {
     expect(html).not.toContain("startLive(");
     expect(html).not.toContain("Start one paid PGE session");
   });
+
+  it("offers a workbench return that preserves the recorded event", () => {
+    const html = renderToStaticMarkup(<I18nProvider><RecordedPage path="/effectwitness/recorded" search="?from=workbench&domain=order&event=pge-event-14" /></I18nProvider>);
+    expect(html).toContain("/effectwitness/workbench?domain=order&amp;event=pge-event-14");
+  });
 });

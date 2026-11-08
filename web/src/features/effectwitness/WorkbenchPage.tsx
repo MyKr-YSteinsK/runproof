@@ -50,6 +50,12 @@ function display(value: unknown): string {
   return typeof value === "object" ? JSON.stringify(value) : String(value);
 }
 
+function recordedFlag(fault: unknown, key: string, yes: string, no: string, missing: string): string {
+  if (!fault || typeof fault !== "object") return missing;
+  const value = (fault as Record<string, unknown>)[key];
+  return value === true ? yes : value === false ? no : missing;
+}
+
 export function WorkbenchPage({ search }: { search: string }) {
   const { locale } = useI18n();
   const c = copy[locale];
@@ -79,10 +85,11 @@ export function WorkbenchPage({ search }: { search: string }) {
       {state.status === "CHECKING" && <p role="status">{c.checking}</p>}
       {state.status === "UNAVAILABLE" && <p className="wb-alert" role="alert">{c.unavailable}</p>}
       {state.evidence && projection && <>
+        {domain === "order" && new URLSearchParams(search).get("event") && !projection.events.some((event) => event.event_id === new URLSearchParams(search).get("event")) && <p className="wb-alert" role="alert">{locale === "zh-CN" ? "该事件不在已验证来源中。" : "This event is not present in the verified source."}</p>}
         <div className="wb-source"><span>{projection.kind}</span><span>{c.source}: <code>{state.evidence.manifest.source_commit}</code></span>{domain === "order" && <span>{c.session}: <code>{state.evidence.report.session_id}</code></span>}</div>
         {domain === "ops" ? <p className="wb-note">{c.opsOnly}</p> : <div className="wb-investigation">
-          <article><h3>{c.select}</h3><ol className="wb-events">{projection.events.map((event) => <li key={event.event_id}><span>{String(event.seq).padStart(2, "0")}</span><div><strong>{event.type}</strong><small>{event.observed_at} · UTC</small><Link href={`/effectwitness/recorded?event=${encodeURIComponent(event.event_id)}`}>{c.inspect} →</Link></div></li>)}</ol></article>
-          <article><h3>{c.facts}</h3>{projection.trials.map((trial) => <div className="wb-trial" key={trial.round}><h4>{c.round} {trial.round} · {trial.candidate_id}</h4><p>{c.outcome}: <strong>{trial.effect.contract_outcome}</strong></p><p>{c.fault}: {c.planned}: {c.notRecorded} · {c.triggered}: {trial.fault.triggered ? c.yes : c.no} · {c.observed}: {c.notRecorded} · {c.exposed}: {c.notRecorded}</p><dl>{Object.entries(trial.effect.state_diff).map(([key, diff]) => <div key={key}><dt>{key}</dt><dd>{c.before}: {display(diff.before)} → {c.after}: {display(diff.after)}</dd></div>)}</dl></div>)}<p className="wb-note">{c.states}</p></article>
+          <article><h3>{c.select}</h3><ol className="wb-events">{projection.events.map((event) => <li key={event.event_id} aria-current={new URLSearchParams(search).get("event") === event.event_id ? "step" : undefined}><span>{String(event.seq).padStart(2, "0")}</span><div><strong>{event.type}</strong><small>{event.observed_at} · UTC</small><Link href={`/effectwitness/recorded?from=workbench&domain=order&event=${encodeURIComponent(event.event_id)}`}>{c.inspect} →</Link></div></li>)}</ol></article>
+          <article><h3>{c.facts}</h3>{projection.trials.map((trial) => <div className="wb-trial" key={trial.round}><h4>{c.round} {trial.round} · {trial.candidate_id}</h4><p>{c.outcome}: <strong>{trial.effect.contract_outcome}</strong></p><p>{c.fault}: {c.planned}: {recordedFlag(trial.fault, "planned", c.yes, c.no, c.notRecorded)} · {c.triggered}: {recordedFlag(trial.fault, "triggered", c.yes, c.no, c.notRecorded)} · {c.observed}: {recordedFlag(trial.fault, "observed", c.yes, c.no, c.notRecorded)} · {c.exposed}: {c.notRecorded}</p><dl>{Object.entries(trial.effect.state_diff).map(([key, diff]) => <div key={key}><dt>{key}</dt><dd>{c.before}: {display(diff.before)} → {c.after}: {display(diff.after)}</dd></div>)}</dl></div>)}<p className="wb-note">{c.states}</p></article>
         </div>}
       </>}
     </section>

@@ -1,0 +1,294 @@
+{
+  "schema": "rpf95-integration-v1",
+  "upstream_sha": "6c6434e8ed7ae5cc7df00d16d9f4e39dc26bfb71",
+  "source_dependencies": {
+    "agent-core": "f3f8f576164cc405c046e43079c8ad00ee17f0c4",
+    "agent-gateway": "cff3b1b9c2dd02bf29e0cb331dec12be989bc656",
+    "agent-protocol": "cbbadde9101db6e3d75e4ef2b9bdb6029fd92088"
+  },
+  "package_versions": [
+    {
+      "name": "agent-gateway",
+      "version": "0.0.1"
+    },
+    {
+      "name": "aiofiles",
+      "version": "25.1.0"
+    },
+    {
+      "name": "aiohappyeyeballs",
+      "version": "2.7.1"
+    },
+    {
+      "name": "aiohttp",
+      "version": "3.14.5"
+    },
+    {
+      "name": "aiosignal",
+      "version": "1.4.0"
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.16.0"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "cacheout",
+      "version": "0.17.0"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.23"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2"
+    },
+    {
+      "name": "click",
+      "version": "8.5.1"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2"
+    },
+    {
+      "name": "filelock",
+      "version": "3.32.7"
+    },
+    {
+      "name": "frozenlist",
+      "version": "1.8.0"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "name": "httpcore2",
+      "version": "2.16.0"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "httpx-sse",
+      "version": "0.4.3"
+    },
+    {
+      "name": "httpx2",
+      "version": "2.16.0"
+    },
+    {
+      "name": "idna",
+      "version": "3.20"
+    },
+    {
+      "name": "jiter",
+      "version": "0.19.0"
+    },
+    {
+      "name": "json_repair",
+      "version": "0.59.10"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0"
+    },
+    {
+      "name": "jsonschema-path",
+      "version": "0.5.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "loguru",
+      "version": "0.7.3"
+    },
+    {
+      "name": "mcp",
+      "version": "1.30.0"
+    },
+    {
+      "name": "multidict",
+      "version": "7.2.1"
+    },
+    {
+      "name": "oauthlib",
+      "version": "4.0.1"
+    },
+    {
+      "name": "openai",
+      "version": "3.46.0"
+    },
+    {
+      "name": "openjiuwen",
+      "version": "0.1.20"
+    },
+    {
+      "name": "openjiuwen-protocol",
+      "version": "0.1.0"
+    },
+    {
+      "name": "pathable",
+      "version": "0.6.0"
+    },
+    {
+      "name": "pip",
+      "version": "25.0.1"
+    },
+    {
+      "name": "portalocker",
+      "version": "3.2.0"
+    },
+    {
+      "name": "propcache",
+      "version": "0.5.4"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.12"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.3"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.50.4"
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.16.2"
+    },
+    {
+      "name": "PyJWT",
+      "version": "2.15.1"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "4.0.0"
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.4"
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.33"
+    },
+    {
+      "name": "pywin32",
+      "version": "312"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.9.1"
+    },
+    {
+      "name": "ruamel.yaml",
+      "version": "0.19.1"
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1"
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.7.0"
+    },
+    {
+      "name": "starlette",
+      "version": "0.52.1"
+    },
+    {
+      "name": "tenacity",
+      "version": "9.2.1"
+    },
+    {
+      "name": "truststore",
+      "version": "0.10.5"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.5"
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0"
+    },
+    {
+      "name": "win32_setctime",
+      "version": "1.2.1"
+    },
+    {
+      "name": "workswarm",
+      "version": "0.2.8"
+    },
+    {
+      "name": "yarl",
+      "version": "1.25.1"
+    }
+  ],
+  "install": "editable --no-deps; incomplete dependency graph",
+  "mcp_sdk": "1.30.0",
+  "tools": [
+    "get_capabilities",
+    "inspect_recorded_experiment",
+    "verify_witness"
+  ],
+  "stdio": "PASS bounded tests",
+  "jiuwen_config_plus_core_client": "PASS actual one call to rpf44-ops-sample; VERIFIED_ANCHORED",
+  "jiuwen_full_manager": "NOT_RUN",
+  "issuer_authenticity": "NOT_ESTABLISHED",
+  "call_id": "NOT_RECORDED",
+  "early_env_autoload": "UNVERIFIED",
+  "provider": "NOT_RUN",
+  "business_write": "NOT_RUN"
+}

@@ -75,9 +75,11 @@ export function RecordedPage({ path, search }: { path: string; search: string })
 
   const params = useMemo(() => new URLSearchParams(search), [search]);
   const selectedEventId = params.get("event");
+  const fromWorkbench = params.get("from") === "workbench" && params.get("domain") === "order";
+  const returnToWorkbench = `/effectwitness/workbench?domain=order${selectedEventId ? `&event=${encodeURIComponent(selectedEventId)}` : ""}`;
   const selectedEvent = evidence?.report.feedback_link_events.find((event) => event.event_id === selectedEventId);
   const goToEvent = (event: RecordedEvent) => {
-    const target = `${path}?event=${encodeURIComponent(event.event_id)}`;
+    const target = `${path}?${fromWorkbench ? "from=workbench&domain=order&" : ""}event=${encodeURIComponent(event.event_id)}`;
     navigate(target);
   };
   if (!validPath) return <AppShell recorded><section className="ew-lab ew-recorded"><div className="ew-recorded-error" role="alert">INVALID_RECORDED_ROUTE</div></section></AppShell>;
@@ -88,6 +90,7 @@ export function RecordedPage({ path, search }: { path: string; search: string })
       <h1>{c.title}</h1>
       <p>{c.subtitle}</p>
       <p><a href="/effectwitness" onClick={(event) => { event.preventDefault(); navigate("/effectwitness"); }}>{c.link}</a></p>
+      {fromWorkbench && <p><a href={returnToWorkbench} onClick={(event) => { event.preventDefault(); navigate(returnToWorkbench); }}>{locale === "zh-CN" ? "返回工作台" : "Return to workbench"}</a></p>}
     </header>
     {status === "CHECKING" && <p className="ew-recorded-status" role="status" aria-live="polite">{c.checking}</p>}
     {(status === "UNAVAILABLE" || !evidence) && status !== "CHECKING" && <div className="ew-recorded-error" role="alert"><strong>UNAVAILABLE / INCONCLUSIVE</strong><p>{c.unavailable}</p></div>}
