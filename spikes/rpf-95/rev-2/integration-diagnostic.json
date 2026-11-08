@@ -1,0 +1,578 @@
+{
+  "schema": "rpf95-rev2-integration-v1",
+  "base": "77ec22ae878afe41b6b33fbee9cc4be7b6764862",
+  "jiuwenswarm_commit": "6c6434e8ed7ae5cc7df00d16d9f4e39dc26bfb71",
+  "agent_core_commit": "f3f8f576164cc405c046e43079c8ad00ee17f0c4",
+  "agent_gateway_commit": "cff3b1b9c2dd02bf29e0cb331dec12be989bc656",
+  "agent_protocol_commit": "cbbadde9101db6e3d75e4ef2b9bdb6029fd92088",
+  "sources": {
+    "jiuwenswarm/common/mcp_config.py": "5e0c47c079e98ee595971501fcda6342d5cf1707",
+    "jiuwenswarm/server/runtime/agent_adapter/interface_deep.py": "d4b4e2885b7faccd258059e390639ad3b5d1c993",
+    "openjiuwen/core/runner/resources_manager/resource_manager.py": "63ad635d79974893a53aafcfb813cca3dfc88bdb",
+    "openjiuwen/core/runner/resources_manager/tool_manager.py": "6d5f09cee1f89b1ec41bd788e54cc1b3abeb9fdf",
+    "openjiuwen/core/foundation/tool/mcp/base.py": "da5b38ad17720d513642b0e08c31a42456c9e39c"
+  },
+  "manager_receipt": {
+    "manager": "WORKSWARM_MANAGER_REGISTERED",
+    "dispatch": "JIUWEN_TOOL_INVOKED",
+    "tools": [
+      "get_capabilities",
+      "inspect_recorded_experiment",
+      "verify_witness"
+    ],
+    "tool_ids": {
+      "get_capabilities": "mcp_jiuwenswarm_runproof_readonly_8b0b1d5a769bfdbd.runproof-readonly.get_capabilities",
+      "inspect_recorded_experiment": "mcp_jiuwenswarm_runproof_readonly_8b0b1d5a769bfdbd.runproof-readonly.inspect_recorded_experiment",
+      "verify_witness": "mcp_jiuwenswarm_runproof_readonly_8b0b1d5a769bfdbd.runproof-readonly.verify_witness"
+    },
+    "schemas": {
+      "get_capabilities": {
+        "properties": {},
+        "title": "get_capabilitiesArguments",
+        "type": "object"
+      },
+      "inspect_recorded_experiment": {
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id"
+        ],
+        "title": "inspect_recorded_experimentArguments",
+        "type": "object"
+      },
+      "verify_witness": {
+        "properties": {
+          "source_id": {
+            "title": "Source Id",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id"
+        ],
+        "title": "verify_witnessArguments",
+        "type": "object"
+      }
+    },
+    "source_id": "rpf44-ops-sample",
+    "source_commit": "69dfe3079f5778cf6e569e82cf8382e4e3ec04a8",
+    "bound_sha256": "21b5ded6bdf2a6c602d8016317756b67884351fbffcef60bedbe30fa3f4f8873",
+    "verification_status": "VERIFIED_ANCHORED",
+    "issuer_authenticity": "NOT_ESTABLISHED",
+    "evidence_gaps": [
+      "NO_ISSUER_SIGNATURE",
+      "NO_SHARED_RPF46_SESSION"
+    ],
+    "summary_source_id": "rpf46-summary",
+    "summary_feedback_sha256": "5cc9789a5034104ee1627e2afc9919dc77dce39d6026b20cb690ec9873714912",
+    "request_id": "NOT_EXPOSED"
+  },
+  "manager_exit": 0,
+  "dependency_closure": "PARTIAL",
+  "pip_check_exit": 1,
+  "pip_check_diagnostics": [
+    "agent-gateway 0.0.1 requires aiosqlite, which is not installed.",
+    "agent-gateway 0.0.1 requires croniter, which is not installed.",
+    "agent-gateway 0.0.1 requires dingtalk-stream, which is not installed.",
+    "agent-gateway 0.0.1 requires discord-py, which is not installed.",
+    "agent-gateway 0.0.1 requires imageio-ffmpeg, which is not installed.",
+    "agent-gateway 0.0.1 requires lark-oapi, which is not installed.",
+    "agent-gateway 0.0.1 requires minio, which is not installed.",
+    "agent-gateway 0.0.1 requires openjiuwen-runtime-foundation, which is not installed.",
+    "agent-gateway 0.0.1 requires opentelemetry-exporter-otlp-proto-grpc, which is not installed.",
+    "agent-gateway 0.0.1 requires opentelemetry-exporter-otlp-proto-http, which is not installed.",
+    "agent-gateway 0.0.1 requires psutil, which is not installed.",
+    "agent-gateway 0.0.1 requires python-telegram-bot, which is not installed.",
+    "agent-gateway 0.0.1 requires slack-bolt, which is not installed.",
+    "agent-gateway 0.0.1 requires websockets, which is not installed.",
+    "agent-gateway 0.0.1 requires wecom-aibot-sdk, which is not installed.",
+    "openjiuwen 0.1.20 requires agentdescent, which is not installed.",
+    "openjiuwen 0.1.20 requires anthropic, which is not installed.",
+    "openjiuwen 0.1.20 requires docx2txt, which is not installed.",
+    "openjiuwen 0.1.20 requires fastmcp, which is not installed.",
+    "openjiuwen 0.1.20 requires gitcode-api, which is not installed.",
+    "openjiuwen 0.1.20 requires intelli-router, which is not installed.",
+    "openjiuwen 0.1.20 requires matplotlib, which is not installed.",
+    "openjiuwen 0.1.20 requires mermaid-py, which is not installed.",
+    "openjiuwen 0.1.20 requires openpyxl, which is not installed.",
+    "openjiuwen 0.1.20 requires opentelemetry-instrumentation-aiohttp-client, which is not installed.",
+    "openjiuwen 0.1.20 requires opentelemetry-instrumentation-fastapi, which is not installed.",
+    "openjiuwen 0.1.20 requires opentelemetry-instrumentation-httpx, which is not installed.",
+    "openjiuwen 0.1.20 requires opentelemetry-instrumentation-requests, which is not installed.",
+    "openjiuwen 0.1.20 requires pyoxigraph, which is not installed.",
+    "openjiuwen 0.1.20 requires trafilatura, which is not installed.",
+    "openjiuwen 0.1.20 requires transformers, which is not installed.",
+    "workswarm 0.2.8 requires a2ui-agent-sdk, which is not installed.",
+    "workswarm 0.2.8 requires a4p, which is not installed.",
+    "workswarm 0.2.8 requires aiosqlite, which is not installed.",
+    "workswarm 0.2.8 requires anthropic, which is not installed.",
+    "workswarm 0.2.8 requires asyncpg, which is not installed.",
+    "workswarm 0.2.8 requires chromadb, which is not installed.",
+    "workswarm 0.2.8 requires croniter, which is not installed.",
+    "workswarm 0.2.8 requires dingtalk-stream, which is not installed.",
+    "workswarm 0.2.8 requires discord-py, which is not installed.",
+    "workswarm 0.2.8 requires faiss-cpu, which is not installed.",
+    "workswarm 0.2.8 requires fastmcp, which is not installed.",
+    "workswarm 0.2.8 requires gitcode-api, which is not installed.",
+    "workswarm 0.2.8 requires gitcode-cli, which is not installed.",
+    "workswarm 0.2.8 requires google-adk, which is not installed.",
+    "workswarm 0.2.8 requires google-api-core, which is not installed.",
+    "workswarm 0.2.8 requires google-genai, which is not installed.",
+    "workswarm 0.2.8 requires imageio-ffmpeg, which is not installed.",
+    "workswarm 0.2.8 requires jiuwenmemory, which is not installed.",
+    "workswarm 0.2.8 requires lark-oapi, which is not installed.",
+    "workswarm 0.2.8 requires minio, which is not installed.",
+    "workswarm 0.2.8 requires mutagen, which is not installed.",
+    "workswarm 0.2.8 requires openjiuwen-runtime-foundation, which is not installed.",
+    "workswarm 0.2.8 requires opentelemetry-exporter-otlp-proto-grpc, which is not installed.",
+    "workswarm 0.2.8 requires opentelemetry-exporter-otlp-proto-http, which is not installed.",
+    "workswarm 0.2.8 requires pgvector, which is not installed.",
+    "workswarm 0.2.8 requires playwright, which is not installed.",
+    "workswarm 0.2.8 requires prompt-toolkit, which is not installed.",
+    "workswarm 0.2.8 requires psutil, which is not installed.",
+    "workswarm 0.2.8 requires python-socks, which is not installed.",
+    "workswarm 0.2.8 requires python-telegram-bot, which is not installed.",
+    "workswarm 0.2.8 requires skillnet-ai, which is not installed.",
+    "workswarm 0.2.8 requires slack-bolt, which is not installed.",
+    "workswarm 0.2.8 requires sqlite-vec, which is not installed.",
+    "workswarm 0.2.8 requires tree-sitter, which is not installed.",
+    "workswarm 0.2.8 requires tree-sitter-bash, which is not installed.",
+    "workswarm 0.2.8 requires uv, which is not installed.",
+    "workswarm 0.2.8 requires websockets, which is not installed.",
+    "workswarm 0.2.8 requires wecom-aibot-sdk, which is not installed.",
+    "agent-gateway 0.0.1 has requirement opentelemetry-api<1.42,>=1.28.0, but you have opentelemetry-api 1.45.2.",
+    "agent-gateway 0.0.1 has requirement opentelemetry-sdk<1.42,>=1.28.0, but you have opentelemetry-sdk 1.45.2.",
+    "workswarm 0.2.8 has requirement opentelemetry-api<1.42,>=1.28.0, but you have opentelemetry-api 1.45.2.",
+    "workswarm 0.2.8 has requirement opentelemetry-sdk<1.42,>=1.28.0, but you have opentelemetry-sdk 1.45.2.",
+    "workswarm 0.2.8 has requirement protobuf<7,>=5.29.5, but you have protobuf 7.36.2."
+  ],
+  "installed_versions": [
+    {
+      "name": "agent-gateway",
+      "version": "0.0.1"
+    },
+    {
+      "name": "aiofiles",
+      "version": "25.1.0"
+    },
+    {
+      "name": "aiohappyeyeballs",
+      "version": "2.7.1"
+    },
+    {
+      "name": "aiohttp",
+      "version": "3.14.5"
+    },
+    {
+      "name": "aiosignal",
+      "version": "1.4.0"
+    },
+    {
+      "name": "alembic",
+      "version": "1.20.1"
+    },
+    {
+      "name": "annotated-doc",
+      "version": "0.0.5"
+    },
+    {
+      "name": "annotated-types",
+      "version": "0.8.0"
+    },
+    {
+      "name": "anyio",
+      "version": "4.16.0"
+    },
+    {
+      "name": "attrs",
+      "version": "26.1.0"
+    },
+    {
+      "name": "beautifulsoup4",
+      "version": "4.15.0"
+    },
+    {
+      "name": "cacheout",
+      "version": "0.17.0"
+    },
+    {
+      "name": "cachetools",
+      "version": "8.0.0"
+    },
+    {
+      "name": "certifi",
+      "version": "2026.10.23"
+    },
+    {
+      "name": "cffi",
+      "version": "2.1.1"
+    },
+    {
+      "name": "charset-normalizer",
+      "version": "3.5.2"
+    },
+    {
+      "name": "click",
+      "version": "8.5.1"
+    },
+    {
+      "name": "colorama",
+      "version": "0.4.6"
+    },
+    {
+      "name": "cryptography",
+      "version": "50.0.2"
+    },
+    {
+      "name": "dashscope",
+      "version": "2.0.4"
+    },
+    {
+      "name": "distro",
+      "version": "1.9.0"
+    },
+    {
+      "name": "fastapi",
+      "version": "0.162.2"
+    },
+    {
+      "name": "filelock",
+      "version": "3.32.7"
+    },
+    {
+      "name": "frozenlist",
+      "version": "1.8.0"
+    },
+    {
+      "name": "greenlet",
+      "version": "3.5.6"
+    },
+    {
+      "name": "grpcio",
+      "version": "1.85.1"
+    },
+    {
+      "name": "h11",
+      "version": "0.16.0"
+    },
+    {
+      "name": "httpcore",
+      "version": "1.0.9"
+    },
+    {
+      "name": "httpx",
+      "version": "0.28.1"
+    },
+    {
+      "name": "httpx-sse",
+      "version": "0.4.3"
+    },
+    {
+      "name": "idna",
+      "version": "3.20"
+    },
+    {
+      "name": "jiter",
+      "version": "0.19.0"
+    },
+    {
+      "name": "json_repair",
+      "version": "0.59.10"
+    },
+    {
+      "name": "jsonschema",
+      "version": "4.26.0"
+    },
+    {
+      "name": "jsonschema-path",
+      "version": "0.5.0"
+    },
+    {
+      "name": "jsonschema-specifications",
+      "version": "2025.9.1"
+    },
+    {
+      "name": "loguru",
+      "version": "0.7.3"
+    },
+    {
+      "name": "lxml",
+      "version": "6.1.3"
+    },
+    {
+      "name": "Mako",
+      "version": "1.4.3"
+    },
+    {
+      "name": "markdown-it-py",
+      "version": "4.2.0"
+    },
+    {
+      "name": "MarkupSafe",
+      "version": "3.0.4"
+    },
+    {
+      "name": "mcp",
+      "version": "1.30.0"
+    },
+    {
+      "name": "mdurl",
+      "version": "0.1.2"
+    },
+    {
+      "name": "multidict",
+      "version": "7.2.1"
+    },
+    {
+      "name": "numpy",
+      "version": "2.5.4"
+    },
+    {
+      "name": "oauthlib",
+      "version": "4.0.1"
+    },
+    {
+      "name": "openai",
+      "version": "2.54.0"
+    },
+    {
+      "name": "openjiuwen",
+      "version": "0.1.20"
+    },
+    {
+      "name": "openjiuwen-protocol",
+      "version": "0.1.0"
+    },
+    {
+      "name": "opentelemetry-api",
+      "version": "1.45.2"
+    },
+    {
+      "name": "opentelemetry-sdk",
+      "version": "1.45.2"
+    },
+    {
+      "name": "opentelemetry-semantic-conventions",
+      "version": "0.66b2"
+    },
+    {
+      "name": "orjson",
+      "version": "3.13.0"
+    },
+    {
+      "name": "pandas",
+      "version": "3.1.1"
+    },
+    {
+      "name": "pathable",
+      "version": "0.6.0"
+    },
+    {
+      "name": "pdfminer.six",
+      "version": "20260107"
+    },
+    {
+      "name": "pdfplumber",
+      "version": "0.11.10"
+    },
+    {
+      "name": "pillow",
+      "version": "12.3.0"
+    },
+    {
+      "name": "pip",
+      "version": "25.0.1"
+    },
+    {
+      "name": "portalocker",
+      "version": "3.2.0"
+    },
+    {
+      "name": "propcache",
+      "version": "0.5.4"
+    },
+    {
+      "name": "protobuf",
+      "version": "7.36.2"
+    },
+    {
+      "name": "pycparser",
+      "version": "3.12"
+    },
+    {
+      "name": "pycryptodome",
+      "version": "4.4.0"
+    },
+    {
+      "name": "pydantic",
+      "version": "2.14.3"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.50.4"
+    },
+    {
+      "name": "pydantic-settings",
+      "version": "2.16.2"
+    },
+    {
+      "name": "Pygments",
+      "version": "2.21.0"
+    },
+    {
+      "name": "PyJWT",
+      "version": "2.15.1"
+    },
+    {
+      "name": "pymilvus",
+      "version": "2.6.9"
+    },
+    {
+      "name": "pypdfium2",
+      "version": "5.15.1"
+    },
+    {
+      "name": "pysbd",
+      "version": "0.3.4"
+    },
+    {
+      "name": "python-dateutil",
+      "version": "4.0.0"
+    },
+    {
+      "name": "python-docx",
+      "version": "1.2.0"
+    },
+    {
+      "name": "python-dotenv",
+      "version": "1.2.4"
+    },
+    {
+      "name": "python-multipart",
+      "version": "0.0.33"
+    },
+    {
+      "name": "pywin32",
+      "version": "312"
+    },
+    {
+      "name": "PyYAML",
+      "version": "6.0.3"
+    },
+    {
+      "name": "referencing",
+      "version": "0.37.0"
+    },
+    {
+      "name": "regex",
+      "version": "2026.11.7"
+    },
+    {
+      "name": "requests",
+      "version": "2.34.2"
+    },
+    {
+      "name": "rich",
+      "version": "15.0.0"
+    },
+    {
+      "name": "rpds-py",
+      "version": "2026.9.1"
+    },
+    {
+      "name": "ruamel.yaml",
+      "version": "0.19.1"
+    },
+    {
+      "name": "setuptools",
+      "version": "84.2.1"
+    },
+    {
+      "name": "shellingham",
+      "version": "1.5.4"
+    },
+    {
+      "name": "sniffio",
+      "version": "1.3.1"
+    },
+    {
+      "name": "soupsieve",
+      "version": "4.0.1"
+    },
+    {
+      "name": "SQLAlchemy",
+      "version": "2.1.8"
+    },
+    {
+      "name": "sqlmodel",
+      "version": "0.0.48"
+    },
+    {
+      "name": "sse-starlette",
+      "version": "3.7.0"
+    },
+    {
+      "name": "starlette",
+      "version": "0.52.1"
+    },
+    {
+      "name": "tenacity",
+      "version": "9.2.1"
+    },
+    {
+      "name": "tiktoken",
+      "version": "0.12.0"
+    },
+    {
+      "name": "tqdm",
+      "version": "4.70.1"
+    },
+    {
+      "name": "typer",
+      "version": "0.28.0"
+    },
+    {
+      "name": "typing_extensions",
+      "version": "4.16.0"
+    },
+    {
+      "name": "typing-inspection",
+      "version": "0.4.5"
+    },
+    {
+      "name": "tzdata",
+      "version": "2026.6"
+    },
+    {
+      "name": "urllib3",
+      "version": "2.8.0"
+    },
+    {
+      "name": "uvicorn",
+      "version": "0.54.0"
+    },
+    {
+      "name": "websocket-client",
+      "version": "1.9.2"
+    },
+    {
+      "name": "win32_setctime",
+      "version": "1.2.1"
+    },
+    {
+      "name": "workswarm",
+      "version": "0.2.8"
+    },
+    {
+      "name": "yarl",
+      "version": "1.25.1"
+    }
+  ],
+  "versions_source": "owner venv pip list; editable fixed Git checkouts",
+  "provider_requests": "NOT_RUN",
+  "business_write": "NOT_RUN"
+}

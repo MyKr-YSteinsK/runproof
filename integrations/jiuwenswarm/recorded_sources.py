@@ -45,6 +45,10 @@ def verified_sources():
                 if path.is_symlink() or getattr(info, "st_file_attributes", 0) & 0x400:
                     raise SourceError("SOURCE_UNAVAILABLE")
         env = {"SYSTEMROOT": os.environ.get("SYSTEMROOT", "C:\\Windows"), "PATH": os.environ.get("PATH", ""), "PYTHONDONTWRITEBYTECODE": "1"}
+        # Preserve only explicitly supplied isolation paths; do not copy credentials.
+        for key in ("HOME", "USERPROFILE", "APPDATA", "LOCALAPPDATA", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "UV_CACHE_DIR", "PIP_CACHE_DIR", "TEMP", "TMP"):
+            if key in os.environ:
+                env[key] = os.environ[key]
         process = subprocess.run([sys.executable, "-B", str(ROOT / "spikes/rpf-47/verify_evidence.py"), "--root", str(ROOT)], cwd=ROOT, env=env, stdin=subprocess.DEVNULL, capture_output=True, timeout=20, check=False)
         if process.returncode != 0:
             raise SourceError("SOURCE_TAMPERED")

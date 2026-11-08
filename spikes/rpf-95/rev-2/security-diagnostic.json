@@ -1,0 +1,26 @@
+{
+  "schema": "rpf95-rev2-security-v1",
+  "rev1_repo_env_autoload": "UNVERIFIED; neither retrospective access nor leak established",
+  "current_owner_cwd_guard": "PASS",
+  "env_guard": "PASS missing and external HOME rejected",
+  "synthetic_wrong_cwd_env_sentinel": "PASS",
+  "source_verifier_child": "allowlist isolation paths propagated",
+  "allowed_env_names": [
+    "HOME",
+    "USERPROFILE",
+    "APPDATA",
+    "LOCALAPPDATA",
+    "XDG_CONFIG_HOME",
+    "XDG_CACHE_HOME",
+    "UV_CACHE_DIR",
+    "PIP_CACHE_DIR",
+    "TEMP",
+    "TMP",
+    "JIUWENSWARM_HOME",
+    "JIUWENSWARM_CONFIG_DIR",
+    "JIUWENSWARM_DATA_DIR"
+  ],
+  "stdio_negative_controls": "PASS bounded cases; not exhaustive",
+  "system_level_file_or_network_audit": "NOT_RUN",
+  "issuer_authenticity": "NOT_ESTABLISHED"
+}

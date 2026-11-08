@@ -1,0 +1,21 @@
+{
+  "schema": "rpf95-rev2-verification-v1",
+  "base": "77ec22ae878afe41b6b33fbee9cc4be7b6764862",
+  "python_unittest": {
+    "exit": 0,
+    "tests": 7
+  },
+  "npm_test": {
+    "exit": 0,
+    "tests": 69
+  },
+  "typecheck_exit": 0,
+  "build_exit": 0,
+  "manager_native_exit": 0,
+  "pip_check_exit": 1,
+  "dependency_closure": "PARTIAL",
+  "manager_call": "PASS bounded subset",
+  "agent_llm": "NOT_RUN",
+  "system_network_trace": "NOT_RUN",
+  "git_ci": "NOT_RUN_AT_SEAL"
+}

@@ -13,6 +13,10 @@ from integrations.jiuwenswarm import recorded_sources as sources
 owner = Path.cwd().resolve()
 if owner.parent != (sources.ROOT / ".local/rpf-95-jiuwenswarm").resolve() or not re.fullmatch(r"[0-9a-f]{32}", owner.name):
     raise RuntimeError("TASK_OWNER_CWD_REQUIRED")
+for key in ("HOME", "USERPROFILE", "APPDATA", "LOCALAPPDATA", "XDG_CONFIG_HOME", "XDG_CACHE_HOME", "UV_CACHE_DIR", "PIP_CACHE_DIR", "TEMP", "TMP"):
+    value = os.environ.get(key)
+    if not value or not Path(value).is_absolute() or not Path(value).resolve().is_relative_to(owner):
+        raise RuntimeError("TASK_OWNER_ENV_REQUIRED:" + key)
 class ReadOnlyMCP(FastMCP):
     async def run_stdio_async(self):
         async with stdio_server(stdin=BoundedInput()) as (read, write):
