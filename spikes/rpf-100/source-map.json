@@ -1,0 +1,20 @@
+{
+  "schema": "rpf100-source-map-v1",
+  "hash": "SHA256_LF",
+  "files": {
+    "runtime/runproof_runtime/effectwitness/product_local_contracts.py": "06c778e9fdd7ecdb739ade94a711cf4c017dc7000283d8128b69d7404e61b66c",
+    "runtime/runproof_runtime/effectwitness/product_local_ports.py": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52",
+    "runtime/runproof_runtime/effectwitness/product_local_session.py": "2113e158cc5e329d34a54c539ed6621aa7978321dd4360278b934e5ff5405c78",
+    "runtime/runproof_runtime/effectwitness/product_local_gateway.py": "d068cbe1ed561f6f66649c9902cfa24a94414e2cc063a50d396cc534f14d9683",
+    "runtime/runproof_runtime/effectwitness/product_local_verify.py": "c7a5e92717a0f05df69e4529d52bdc9f746493bfda4a38c464c9c0e1b7dd0ecd",
+    "ci/test_rpf100_product.py": "7e42c19fd226189be66f13b00210118ab0d78fcd3b4d3ad06760803f671ab32b",
+    "web/src/features/effectwitness/ProductLocalPage.tsx": "e47533e5347bfb8a1b00339eb3ff40254d6ba0d57d84edba1287a7df989d4eee",
+    "web/src/features/effectwitness/productLocalApi.ts": "689a68eeb791414ace7d992998eda567c8b1872630d39f4804d9adbe031af2c2",
+    "web/src/features/effectwitness/productLocalPage.test.tsx": "bcb332aea7162284171ff4f7e8ab3339cc104a3624215e181782d8a5f5b402e9",
+    "web/src/features/effectwitness/product-local.css": "6eb7a9561d78c08c7a72e6f5ad1e0929182a788f6e8e27fe46d457507769912d",
+    "demo/start-effectwitness-product.ps1": "6bfff648b594a1da621779aa6b6456377b2701e2c1a696577833ed8078084553",
+    "demo/stop-effectwitness-product.ps1": "416d6695f002c43f01092476d0f945bea98dbaa3ac0f21d91093af0f8db4c82c",
+    ".github/workflows/rpf-100-product.yml": "7273a0d2801625d4de832ec687ce0881888aceb83ca5d4e9099dfed513267692"
+  },
+  "fixture": "fixed fictional order 2500 minor and release-v1 to release-v2; no external input"
+}

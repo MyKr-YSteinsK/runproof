@@ -56,6 +56,8 @@ Open <http://127.0.0.1:4173/overview>. The five-to-ten-minute walkthrough is doc
 
 ## EffectWitness recorded workbench
 
+The optional Windows local profile opens `/effectwitness/live-local` for a new fictional SQLite session. A deterministic rule policy selects the configuration round from independently verified order feedback, with zero Provider reservations. [Local product guide](docs/EFFECTWITNESS_LOCAL_PRODUCT.md)
+
 The recorded EffectWitness workbench is available on `main` at `/effectwitness/workbench`. The Node.js-only static package walks through order/refund research and a separate historical operations Witness. Its recorded mode requires no Provider credentials or business backend. See the [delivery guide](docs/EFFECTWITNESS_DELIVERY.md) for build, package and offline evidence verification.
 
 ## Evidence-backed boundary

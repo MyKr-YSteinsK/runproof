@@ -74,6 +74,9 @@ export function WorkbenchPage({ search, restrictedRoute = false }: { search: str
   const projection = state.evidence ? evidenceForDomain(state.evidence, domain) : null;
   const modes = [
     { name: c.recorded, detail: c.recDetail, badge: "RECORDED", href: "/effectwitness/recorded" },
+    ...(!offline ? [{ name: locale === "zh-CN" ? "全新本地受控会话" : "New Local Controlled",
+      detail: locale === "zh-CN" ? "RPF-100 · 确定性策略 · 双域 SQLite · Provider 0" : "RPF-100 · rule policy · dual-domain SQLite · Provider 0",
+      badge: "LOCAL PRODUCT", href: "/effectwitness/live-local" }] : []),
     { name: c.local, detail: c.localDetail, badge: "LOCAL CONTROLLED", href: "/effectwitness" },
     { name: c.live, detail: c.liveDetail, badge: "LIVE PROVIDER", href: "/effectwitness/explorations" },
     { name: c.cross, detail: c.crossDetail, badge: "REVIEWED / LIVE", href: "/effectwitness/cross-domain" },

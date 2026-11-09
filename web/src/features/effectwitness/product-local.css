@@ -1,0 +1,13 @@
+.product-local { max-width: 1120px; margin: auto; min-width: 0; overflow-wrap: anywhere; }
+.product-local header, .product-local section { background: #eff6f4; color: #17353a; border-radius: 12px; padding: clamp(14px, 3vw, 26px); margin-bottom: 16px; }
+.product-local h1 { font-size: clamp(25px, 4vw, 42px); margin: 0 0 12px; }
+.product-local a { color: #07636b; font-weight: 650; }
+.product-local a[aria-current] { background: #cce5e0; }
+.product-local :focus-visible { outline: 3px solid #ab620c; outline-offset: 3px; }
+.product-local button { padding: 9px 12px; border: 1px solid #34777b; border-radius: 6px; background: #fff; color: #17353a; }
+.product-local button:disabled { opacity: .55; }
+.product-local pre { white-space: pre-wrap; overflow-wrap: anywhere; background: #fff; border-radius: 5px; padding: 10px; }
+.product-actions, .product-rounds { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
+.product-rounds article { flex: 1 1 300px; min-width: 0; padding: 10px; border: 1px solid #a3c5bc; border-radius: 6px; }
+.product-local [role="alert"] { border-left: 4px solid #a33d29; padding-left: 10px; }
+@media (min-width: 701px) and (max-width: 900px) { .app-frame:has(.product-local) .rail { flex-basis: 190px; min-width: 190px; } }

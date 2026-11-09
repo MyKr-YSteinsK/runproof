@@ -1,0 +1,14 @@
+{
+  "phase": "BEFORE_PUSH",
+  "gates": {
+    "A01": {"status":"PASS","evidence":"RESULT.md; browser session with SQLite Order and Ops readbacks"},
+    "A02": {"status":"PASS","evidence":"ci/test_rpf100_product.py; frozen candidates and feedback digest"},
+    "A03": {"status":"PASS","evidence":"ci/test_rpf100_product.py; duplicate, identity rejection, crash, checkpoint failure"},
+    "A04": {"status":"PASS","evidence":"RESULT.md; isolated CLI and tamper controls"},
+    "A05": {"status":"PASS","evidence":"start/stop/restart and budget readback; PID reuse not induced"},
+    "A06": {"status":"PASS","evidence":"Edge 157 browser, real API and download; isolated Recorded rebuild"},
+    "A07": {"status":"NOT_RUN","evidence":"local checks PASS; hosted product verification follows push"},
+    "A08": {"status":"PASS","evidence":"RESULT.md; local rule policy only, external Issuer unestablished"},
+    "A09": {"status":"NOT_RUN","evidence":"delivery receipts follow push"}
+  }
+}

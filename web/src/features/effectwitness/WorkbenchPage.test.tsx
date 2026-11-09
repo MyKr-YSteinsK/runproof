@@ -12,6 +12,7 @@ describe("read-only workbench", () => {
       expect(html).toContain("UNAVAILABLE");
       expect(html).not.toContain('href="/effectwitness/explorations"');
       expect(html).not.toContain('href="/effectwitness/cross-domain"');
+      expect(html).not.toContain('href="/effectwitness/live-local"');
     } finally { vi.unstubAllEnvs(); }
   });
   it("offers all existing destinations without issuing a request during rendering", () => {
@@ -19,6 +20,7 @@ describe("read-only workbench", () => {
     const html = renderToStaticMarkup(<I18nProvider><WorkbenchPage search="?domain=ops" /></I18nProvider>);
     for (const path of ["/effectwitness/recorded", "/effectwitness/explorations", "/effectwitness/cross-domain", "/effectwitness"]) expect(html).toContain(`href="${path}"`);
     expect(html).toContain("READ ONLY");
+    expect(html).toContain('href="/effectwitness/live-local"');
     expect(html).not.toContain("<form");
     expect(fetch).not.toHaveBeenCalled();
     fetch.mockRestore();

@@ -56,6 +56,8 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 
 ## EffectWitness 记录型工作台
 
+可选的 Windows 本地配置通过 `/effectwitness/live-local` 创建虚构 SQLite 会话。确定性策略根据独立核验的订单反馈选择配置实验，Provider 预约为零。[本地产品指南](docs/EFFECTWITNESS_LOCAL_PRODUCT.zh-CN.md)
+
 `main` 的 `/effectwitness/workbench` 提供记录型工作台。静态包仅需 Node.js，分别展示订单退款研究与独立的历史运维 Witness。记录模式无需 Provider 凭据或业务后端。构建、打包与离线证据复核见[交付指南](docs/EFFECTWITNESS_DELIVERY.zh-CN.md)。
 
 ## 有证据支持的边界

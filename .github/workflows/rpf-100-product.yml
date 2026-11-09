@@ -1,0 +1,32 @@
+name: RPF-100 Local Product
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rpf-100-product.yml'
+      - 'runtime/runproof_runtime/effectwitness/product_local_*.py'
+      - 'ci/test_rpf100_product.py'
+      - 'web/**'
+      - 'vite.config.ts'
+      - 'package*.json'
+      - 'demo/*effectwitness-product.ps1'
+permissions:
+  contents: read
+jobs:
+  product:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: python -B -m unittest -v ci.test_rpf100_product
+      - run: npm ci
+      - run: npm test
+      - run: npm run typecheck
+      - run: npm run build -- --outDir .local/rpf-100-product/ci-build
+      - run: python -B ci/verify-public-docs.py
