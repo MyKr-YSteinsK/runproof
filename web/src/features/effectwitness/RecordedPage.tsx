@@ -75,11 +75,12 @@ export function RecordedPage({ path, search }: { path: string; search: string })
 
   const params = useMemo(() => new URLSearchParams(search), [search]);
   const selectedEventId = params.get("event");
-  const fromWorkbench = params.get("from") === "workbench" && params.get("domain") === "order";
-  const returnToWorkbench = `/effectwitness/workbench?domain=order${selectedEventId ? `&event=${encodeURIComponent(selectedEventId)}` : ""}`;
+  const fromWorkbench = params.get("from") === "workbench";
+  const returnDomain = params.get("domain") === "ops" ? "ops" : "order";
+  const returnToWorkbench = `/effectwitness/workbench?domain=${returnDomain}${returnDomain === "order" && selectedEventId ? `&event=${encodeURIComponent(selectedEventId)}` : ""}`;
   const selectedEvent = evidence?.report.feedback_link_events.find((event) => event.event_id === selectedEventId);
   const goToEvent = (event: RecordedEvent) => {
-    const target = `${path}?${fromWorkbench ? "from=workbench&domain=order&" : ""}event=${encodeURIComponent(event.event_id)}`;
+    const target = `${path}?${fromWorkbench ? `from=workbench&domain=${returnDomain}&` : ""}event=${encodeURIComponent(event.event_id)}`;
     navigate(target);
   };
   if (!validPath) return <AppShell recorded><section className="ew-lab ew-recorded"><div className="ew-recorded-error" role="alert">INVALID_RECORDED_ROUTE</div></section></AppShell>;

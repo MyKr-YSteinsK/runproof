@@ -1783,6 +1783,12 @@ export default function App() {
     ? canonicalRouteState.selection
     : {};
   const { run, failureCase, regression, evaluation, comparison, statisticalEvaluation, statisticalComparison, releaseDecision, agent, cluster, bisect } = selected;
+  if (import.meta.env.VITE_RPF_RECORDED_DELIVERY === "1") {
+    if (location.pathname === "/") return <WorkbenchPage search={location.search} />;
+    if (labRoute && !["/effectwitness/workbench", "/effectwitness/recorded"].includes(location.pathname)) {
+      return <WorkbenchPage search={location.search} restrictedRoute />;
+    }
+  }
   if (labRoute && location.pathname.startsWith("/effectwitness/cross-domain")) return <CrossDomainPage path={location.pathname} search={location.search} />;
   if (location.pathname === "/effectwitness/workbench") return <WorkbenchPage search={location.search} />;
   if (labRoute) return location.pathname === "/effectwitness/recorded"

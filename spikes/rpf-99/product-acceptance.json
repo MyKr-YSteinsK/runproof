@@ -1,0 +1,14 @@
+{
+  "scope": "RECORDED_NO_PROVIDER_NO_LOCAL_BUSINESS_WRITE",
+  "phase": "PRE_COMMIT",
+  "gates": {
+    "A01": {"status":"NOT_RUN","evidence":"Browser verification follows committed build"},
+    "A02": {"status":"PASS","evidence":"Original manifest and two pinned verifier invocations; wrong SHA rejected"},
+    "A03": {"status":"NOT_RUN","evidence":"Final package follows commit"},
+    "A04": {"status":"PASS","evidence":"Node native tests include actual loopback and bundle tamper negatives"},
+    "A05": {"status":"NOT_RUN","evidence":"Frontend and Node tests passed; final build and browser pending"},
+    "A06": {"status":"NOT_RUN","evidence":"Bilingual walkthrough authored; package run pending"},
+    "A07": {"status":"NOT_RUN","evidence":"Push and hosted CI follow commit"},
+    "A08": {"status":"NOT_RUN","evidence":"Candidate status requires final bundle verification"}
+  }
+}

@@ -46,3 +46,6 @@
 @media (max-width: 768px) { .wb-header, .wb-investigation { display: block; } .wb-badge { display: inline-block; margin-top: 14px; } .wb-investigation article + article { margin-top: 12px; } .wb-domain, .wb-modes { grid-template-columns: 1fr; } }
 @media (min-width: 701px) and (max-width: 900px) { .app-frame:has(.ew-workbench) .rail { flex-basis: 200px; min-width: 200px; } }
 .wb-events li[aria-current="step"] { border-left: 3px solid #167079; padding-left: 9px; background: #edf7f5; }
+.wb-steps { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.wb-steps a { display: block; padding: 9px 13px; border-radius: 6px; background: #eaf3f1; }
+.wb-source > span { min-width: 0; }

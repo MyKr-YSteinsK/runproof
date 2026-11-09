@@ -1,0 +1,14 @@
+{
+  "base":"7549018655c3a2b9421c3f0be5b39101f5840111",
+  "node":"v24.16.0",
+  "checks":[
+    {"command":"npm test","exit":0,"passed":70},
+    {"command":"node --test demo/effectwitness-preview.test.cjs","exit":0,"passed":2},
+    {"command":"python -B spikes/rpf-47/verify_evidence.py --root .","exit":0},
+    {"command":"witness_verify with fixed order and ops SHA","exits":[0,0]},
+    {"command":"witness_verify with incorrect order SHA","exit":3,"reason":"FILE_SHA256_MISMATCH"},
+    {"command":"python -B ci/verify-public-docs.py","exit":0}
+  ],
+  "provider_requests":0,
+  "local_business_writes":0
+}
