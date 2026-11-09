@@ -38,6 +38,30 @@ def allowed(value, values):
     return value if type(value) is str and value in values else None
 
 
+FILE_TARGETS = ("OPENSSL_CONFIG", "SYSTEM_ZONEINFO", "SYSTEM_TIMEZONE", "OS_RELEASE", "NULL_DEVICE",
+                "SYSTEM_MIME", "PROC", "VENV_CONFIG", "SYSTEM_CA", "OUTSIDE_ROOTS")
+AUDIT_TARGETS = {
+    "OPEN_READ_ROOT_DENIED": FILE_TARGETS, "OPEN_WRITE_ROOT_DENIED": FILE_TARGETS,
+    "OPEN_DOTENV_DENIED": ("DOTENV",), "SOCKET_CONNECT_DENIED": ("NETWORK",),
+    "DNS_DENIED": ("NETWORK",), "SUBPROCESS_DENIED": ("PROCESS",), "OTHER_DENIED": ("NETWORK",),
+}
+SDK_ERROR_DETAIL = {"origin", "audit_code", "target"}
+
+
+def validate_sdk_error(row):
+    fields = {"status", "stage", "error_type"}
+    check(type(row) is dict and set(row) in (fields, fields | SDK_ERROR_DETAIL)
+          and row["status"] == "SDK_ERROR" and allowed(row["stage"], STAGES)
+          and (row["error_type"] is None or allowed(row["error_type"], ERRORS)), "SDK_ERROR_SCHEMA")
+    if "origin" in row:
+        origin, code, target = (row[k] for k in ("origin", "audit_code", "target"))
+        check((origin == "EXCEPTION" and code is None and target is None)
+              or (origin == "AUDIT_HOOK" and row["error_type"] == "PermissionError"
+                  and type(code) is str and allowed(target, AUDIT_TARGETS.get(code, ()))),
+              "SDK_ERROR_DETAIL")
+    return row
+
+
 def source_sha():
     return sha(canonical(identity()))
 
@@ -49,10 +73,11 @@ def context(folder, case):
 def validate_public(raw):
     check(len(raw) <= MAX_BYTES, "DIAGNOSTIC_LIMIT")
     row = strict(raw)
-    check(type(row) is dict and set(row) == {
+    fields = {
         "schema", "source_sha256", "phase", "case", "sdk_spawn_attempted", "sdk_exit", "sdk_stage",
         "sdk_error_type", "host_failure_code", "missing_evidence_types", "final_classification", *COUNTS,
-    }, "DIAGNOSTIC_FIELDS")
+    }
+    check(type(row) is dict and set(row) in (fields, fields | {"sdk_error_detail"}), "DIAGNOSTIC_FIELDS")
     check(row["schema"] == SCHEMA and type(row["source_sha256"]) is str
           and re.fullmatch(r"[0-9a-f]{64}", row["source_sha256"])
           and row["phase"] in ("RECEIVER", "SDK", "ORACLE", "TERMINAL") and row["case"] in CASES
@@ -63,6 +88,12 @@ def validate_public(raw):
     exit_code = row["sdk_exit"]
     check(exit_code is None or type(exit_code) is int and -255 <= exit_code <= 0xFFFFFFFF,
           "DIAGNOSTIC_EXIT")
+    if "sdk_error_detail" in row:
+        detail = row["sdk_error_detail"]
+        check(type(detail) is dict and set(detail) == SDK_ERROR_DETAIL
+              and row["sdk_spawn_attempted"] and exit_code not in (None, 0), "SDK_ERROR_DETAIL")
+        validate_sdk_error({"status": "SDK_ERROR", "stage": row["sdk_stage"],
+                            "error_type": row["sdk_error_type"], **detail})
     budget = BUDGET[row["case"]]
     limits = {"sdk_post_count": 2, **dict.fromkeys(WAL_COUNTS, budget), "receiver_receipt_count": budget,
               "received_bytes": budget * LIMIT, "tool_callback_count": 1}
@@ -93,7 +124,10 @@ def child_report(raw, case):
     row = strict(raw)
     check(type(row) is dict, "SDK_OUTPUT_INVALID")
     if row.get("status") == "SDK_ERROR":
-        check("error_type" in row, "SDK_OUTPUT_INVALID")
+        if SDK_ERROR_DETAIL.intersection(row):
+            validate_sdk_error(row)
+        else:
+            check("error_type" in row, "SDK_OUTPUT_INVALID")
         return allowed(row.get("stage"), STAGES), allowed(row["error_type"], ERRORS), None
     expected = {"call_id": CALL, "value": tool_value(case)}
     callbacks = row.get("tool_callbacks")
@@ -155,6 +189,10 @@ def collect(folder, case, *, phase, attempted, timed_out=False, host_code=None, 
         try:
             stage, error, callbacks = child_report(output, case)
             row.update(sdk_stage=stage, sdk_error_type=error, tool_callback_count=callbacks)
+            if stage and row["sdk_exit"]:
+                decoded = strict(output)
+                if "origin" in decoded:
+                    row["sdk_error_detail"] = {key: decoded[key] for key in SDK_ERROR_DETAIL}
             output_valid = True
         except READ_ERRORS:
             pass

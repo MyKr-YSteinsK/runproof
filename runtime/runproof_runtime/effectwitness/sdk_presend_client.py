@@ -8,7 +8,36 @@ from pathlib import Path
 import sys
 
 from .sdk_presend_contracts import CALL, MODEL, PINS, PROMPT, STOP, TOOL, canonical, check, sha, strict
-from .sdk_presend_diagnostic import ERRORS, allowed
+from .sdk_presend_diagnostic import ERRORS, allowed, validate_sdk_error
+
+
+class AuditDenied(PermissionError):
+    def __init__(self, code, target):
+        super().__init__(code)
+        self.code = code
+        self.target = target
+
+
+def target_category(path):
+    if path in (Path("/etc/ssl/openssl.cnf"), Path("/usr/lib/ssl/openssl.cnf")):
+        return "OPENSSL_CONFIG"
+    if path.is_relative_to(Path("/usr/share/zoneinfo")):
+        return "SYSTEM_ZONEINFO"
+    if path in (Path("/etc/localtime"), Path("/etc/timezone")):
+        return "SYSTEM_TIMEZONE"
+    if path in (Path("/etc/os-release"), Path("/usr/lib/os-release")):
+        return "OS_RELEASE"
+    if path == Path("/dev/null"):
+        return "NULL_DEVICE"
+    if path == Path("/etc/mime.types"):
+        return "SYSTEM_MIME"
+    if path.is_relative_to(Path("/proc")):
+        return "PROC"
+    if path.name == "pyvenv.cfg":
+        return "VENV_CONFIG"
+    if path.is_relative_to(Path("/etc/ssl")):
+        return "SYSTEM_CA"
+    return "OUTSIDE_ROOTS"
 
 
 def guard(port, folder, site):
@@ -16,24 +45,40 @@ def guard(port, folder, site):
 
     def audit(event, args):
         if event == "socket.connect":
-            endpoint = args[1]
-            if endpoint != ("127.0.0.1", port):
-                raise PermissionError("SDK_CONNECT_SCOPE")
+            if port is None or args[1] != ("127.0.0.1", port):
+                raise AuditDenied("SOCKET_CONNECT_DENIED", "NETWORK")
         elif event == "socket.getaddrinfo":
-            if args[0] not in ("127.0.0.1", b"127.0.0.1") or str(args[1]) != str(port):
-                raise PermissionError("SDK_DNS_SCOPE")
-        elif event in {"socket.gethostbyname", "socket.gethostbyaddr", "socket.bind",
-                       "socket.sendto", "subprocess.Popen", "os.system", "os.exec", "os.posix_spawn"}:
-            raise PermissionError("SDK_EXTERNAL_SCOPE")
+            if port is None or args[0] not in ("127.0.0.1", b"127.0.0.1") or str(args[1]) != str(port):
+                raise AuditDenied("DNS_DENIED", "NETWORK")
+        elif event in {"socket.gethostbyname", "socket.gethostbyname_ex", "socket.gethostbyaddr", "socket.getnameinfo"}:
+            raise AuditDenied("DNS_DENIED", "NETWORK")
+        elif event in {"subprocess.Popen", "os.system", "os.exec", "os.posix_spawn", "os.fork", "os.forkpty"}:
+            raise AuditDenied("SUBPROCESS_DENIED", "PROCESS")
+        elif event in {"socket.bind", "socket.sendto", "socket.sendmsg"}:
+            raise AuditDenied("OTHER_DENIED", "NETWORK")
         elif event == "open" and not isinstance(args[0], int):
-            path = Path(os.fsdecode(args[0])).resolve()
+            requested = Path(os.fsdecode(args[0]))
+            path = requested.resolve()
             flags = args[2] if type(args[2]) is int else 0
             write = bool(flags & (os.O_WRONLY | os.O_RDWR | os.O_CREAT | os.O_TRUNC | os.O_APPEND))
-            allowed = (folder,) if write else roots
-            if path.name == ".env" or path.name.startswith(".env.") or not any(path.is_relative_to(root) for root in allowed):
-                raise PermissionError("SDK_FILE_SCOPE")
+            if any(p.name.casefold() == ".env" or p.name.casefold().startswith(".env.")
+                   for p in (requested, path)):
+                raise AuditDenied("OPEN_DOTENV_DENIED", "DOTENV")
+            if not any(path.is_relative_to(root) for root in ((folder,) if write else roots)):
+                raise AuditDenied("OPEN_WRITE_ROOT_DENIED" if write else "OPEN_READ_ROOT_DENIED",
+                                  target_category(path))
 
     sys.addaudithook(audit)
+
+
+def error_report(exc, stage):
+    row = {"status": "SDK_ERROR", "stage": stage, "error_type": allowed(type(exc).__name__, ERRORS)}
+    if type(exc) is AuditDenied:
+        row.update(error_type="PermissionError", origin="AUDIT_HOOK", audit_code=exc.code, target=exc.target)
+    else:
+        row.update(origin="EXCEPTION", audit_code=None, target=None)
+    validate_sdk_error(row)
+    return row
 
 
 def package_identity(site, agent, openai):
@@ -49,7 +94,7 @@ def package_identity(site, agent, openai):
     return evidence
 
 
-async def execute(port, token, case, site, progress):
+def sdk_imports(progress):
     progress["stage"] = "SDK_IMPORT"
     import httpx2
     from openai import AsyncOpenAI
@@ -59,6 +104,38 @@ async def execute(port, token, case, site, progress):
     from pydantic_ai.providers.openai import OpenAIProvider
     from pydantic_ai.usage import UsageLimits
 
+    return httpx2, AsyncOpenAI, Agent, RunContext, ModelHTTPError, OpenAIChatModel, OpenAIProvider, UsageLimits
+
+
+def bind_imports(site, folder):
+    check(sys.flags.isolated and sys.flags.no_site and sys.dont_write_bytecode, "SDK_ISOLATION")
+    check(Path.cwd() == folder and site.is_dir() and str(site) not in sys.path, "SDK_BINDING")
+    sys.path.insert(0, str(site))
+
+
+def import_control(site_arg):
+    """Import the physical client's exact dependency set with network admission disabled."""
+    progress = {"stage": "CONFIG"}
+    try:
+        site = Path(site_arg).resolve()
+        folder = Path.cwd()
+        bind_imports(site, folder)
+        guard(None, folder, site)
+        _, openai, agent, *_ = sdk_imports(progress)
+        progress["stage"] = "SDK_INIT"
+        row = {"status": "IMPORT_ONLY_PASS", "stage": progress["stage"],
+               "packages": package_identity(site, agent, openai)}
+        code = 0
+    except Exception as exc:
+        row = error_report(exc, progress["stage"])
+        code = 1
+    print(json.dumps(row, sort_keys=True), flush=True)
+    return code
+
+
+async def execute(port, token, case, site, progress):
+    (httpx2, AsyncOpenAI, Agent, RunContext, ModelHTTPError,
+     OpenAIChatModel, OpenAIProvider, UsageLimits) = sdk_imports(progress)
     progress["stage"] = "SDK_INIT"
     evidence = package_identity(site, Agent, AsyncOpenAI)
     calls = []
@@ -104,21 +181,20 @@ def main():
     progress = {"stage": "CONFIG"}
     try:
         config = strict(sys.stdin.buffer.read(4097))
-        check(set(config) == {"port", "token", "case", "site", "folder"} and sys.flags.isolated
-              and sys.flags.no_site and sys.dont_write_bytecode, "SDK_ISOLATION")
+        check(type(config) is dict and set(config) == {"port", "token", "case", "site", "folder"}
+              and type(config["token"]) is str and bool(config["token"])
+              and config["case"] in ("NORMAL", "UNKNOWN"), "SDK_CONFIG")
         site = Path(config["site"]).resolve()
         folder = Path(config["folder"]).resolve()
         port = config["port"]
-        check(type(port) is int and 0 < port < 65536 and Path.cwd() == folder and site.is_dir(), "SDK_BINDING")
-        check(not any(str(site) == item for item in sys.path), "SDK_PATH_ALREADY_ADDED")
-        sys.path.insert(0, str(site))
+        check(type(port) is int and 0 < port < 65536, "SDK_BINDING")
+        bind_imports(site, folder)
         guard(port, folder, site)
         report = asyncio.run(asyncio.wait_for(execute(port, config["token"], config["case"], site, progress), 40))
         print(json.dumps(report, sort_keys=True), flush=True)
         return 0
     except Exception as exc:
-        print(json.dumps({"status": "SDK_ERROR", "stage": progress["stage"],
-                          "error_type": allowed(type(exc).__name__, ERRORS)}), flush=True)
+        print(json.dumps(error_report(exc, progress["stage"]), sort_keys=True), flush=True)
         return 1
 
 

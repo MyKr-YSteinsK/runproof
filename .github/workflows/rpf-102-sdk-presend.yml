@@ -8,6 +8,7 @@ on:
       - 'ci/test_rpf102_sdk_presend.py'
       - 'ci/rpf102_rev3_capsule.py'
       - 'ci/test_rpf102_rev3_capsule.py'
+      - 'ci/test_rpf102_rev6_sdk_import.py'
       - 'ci/rpf102-sdk-requirements.txt'
 permissions:
   contents: read
@@ -26,8 +27,23 @@ jobs:
           set -euo pipefail
           test ! -e .local && test ! -L .local || exit 1
           echo 'RPF102_CHECKOUT_LOCAL_ABSENT'
-          python -B -m unittest -v ci.test_rpf102_rev3_capsule.FreshCheckoutBootstrapTests
-      - run: python -B -m unittest -v ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule
+          python -B -m ci.test_rpf102_rev6_sdk_import ci.test_rpf102_rev3_capsule.FreshCheckoutBootstrapTests
+      - run: python -B -m ci.test_rpf102_rev6_sdk_import ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule
       - run: python -B ci/verify-public-docs.py
+      - name: SDK_IMPORT_ONLY_NO_PHYSICAL
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$(mktemp -d "$PWD/.local/rpf-102-rev6-import/ci-XXXXXXXX")"
+          mkdir "$root/tmp"
+          export TMPDIR="$root/tmp"
+          python -I -B -m venv "$root/venv"
+          py="$root/venv/bin/python"
+          if ! timeout 150s "$py" -I -B -m pip --isolated --disable-pip-version-check install --only-binary=:all: --no-input --no-cache-dir --index-url https://pypi.org/simple -r ci/rpf102-sdk-requirements.txt >"$root/install.log" 2>&1; then
+            echo 'SDK_IMPORT_ONLY_INSTALL_UNAVAILABLE'
+            exit 1
+          fi
+          "$py" -I -B -m pip --isolated --disable-pip-version-check check >"$root/pip-check.log" 2>&1
+          RPF102_IMPORT_ONLY=1 "$py" -B -m unittest -v ci.test_rpf102_rev6_sdk_import
       - name: Record offline-only scope
         run: echo '::notice::SDK_PHYSICAL_NOT_RUN_BY_PLAN'
