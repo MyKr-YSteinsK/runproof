@@ -20,6 +20,8 @@ RPF-102 定义了由真实 SDK、本机 Host 和独立回环 Receiver 组成的�
 
 每个已启动场景使用独立文件。诊断不可用时命令以非零退出，stdout 为空。手动工作流在失败后也会校验证据包，仅上传通过校验的内容。回执只含白名单字段，缺少计数证据时使用 `null`。SDK 日志、环境原件、握手凭据和未获准的字节保留在 owner 内。
 
+自动 Ubuntu 工作流还会在临时虚拟环境中用固定版本的 SDK 执行 `SDK_IMPORT_ONLY_NO_PHYSICAL`，检查隔离导入、包源码和 RECORD 的哈希。审计钩子拒绝时只输出固定的操作码与目标类别，库内异常使用独立的来源标签。Linux 下，SDK 仅在 `SDK_IMPORT` 阶段获准只读访问确切路径 `/etc/mime.types`。物理 NORMAL 和 UNKNOWN 仍须单独审批和取证。
+
 独立 Oracle 用于检查完整的场景证据：
 
 ```text

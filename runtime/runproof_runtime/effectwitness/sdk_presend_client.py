@@ -10,6 +10,8 @@ import sys
 from .sdk_presend_contracts import CALL, MODEL, PINS, PROMPT, STOP, TOOL, canonical, check, sha, strict
 from .sdk_presend_diagnostic import ERRORS, allowed, validate_sdk_error
 
+SYSTEM_MIME = Path("/etc/mime.types")
+
 
 class AuditDenied(PermissionError):
     def __init__(self, code, target):
@@ -29,7 +31,7 @@ def target_category(path):
         return "OS_RELEASE"
     if path == Path("/dev/null"):
         return "NULL_DEVICE"
-    if path == Path("/etc/mime.types"):
+    if path == SYSTEM_MIME:
         return "SYSTEM_MIME"
     if path.is_relative_to(Path("/proc")):
         return "PROC"
@@ -40,7 +42,7 @@ def target_category(path):
     return "OUTSIDE_ROOTS"
 
 
-def guard(port, folder, site):
+def guard(port, folder, site, progress):
     roots = (folder, site, Path(sys.base_prefix).resolve())
 
     def audit(event, args):
@@ -64,6 +66,11 @@ def guard(port, folder, site):
             if any(p.name.casefold() == ".env" or p.name.casefold().startswith(".env.")
                    for p in (requested, path)):
                 raise AuditDenied("OPEN_DOTENV_DENIED", "DOTENV")
+            # The pinned Linux import loads the system MIME registry. Admit the
+            # exact file during import only, including neither aliases nor writes.
+            if (sys.platform == "linux" and progress["stage"] == "SDK_IMPORT" and not write
+                    and requested == path == SYSTEM_MIME):
+                return
             if not any(path.is_relative_to(root) for root in ((folder,) if write else roots)):
                 raise AuditDenied("OPEN_WRITE_ROOT_DENIED" if write else "OPEN_READ_ROOT_DENIED",
                                   target_category(path))
@@ -120,7 +127,7 @@ def import_control(site_arg):
         site = Path(site_arg).resolve()
         folder = Path.cwd()
         bind_imports(site, folder)
-        guard(None, folder, site)
+        guard(None, folder, site, progress)
         _, openai, agent, *_ = sdk_imports(progress)
         progress["stage"] = "SDK_INIT"
         row = {"status": "IMPORT_ONLY_PASS", "stage": progress["stage"],
@@ -189,7 +196,7 @@ def main():
         port = config["port"]
         check(type(port) is int and 0 < port < 65536, "SDK_BINDING")
         bind_imports(site, folder)
-        guard(port, folder, site)
+        guard(port, folder, site, progress)
         report = asyncio.run(asyncio.wait_for(execute(port, config["token"], config["case"], site, progress), 40))
         print(json.dumps(report, sort_keys=True), flush=True)
         return 0

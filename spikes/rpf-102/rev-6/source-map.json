@@ -1,0 +1,100 @@
+{
+  "schema": "rpf102-rev6-source-map-v1",
+  "base": "4a39e23712e8f2c8e74c1733e26c115ab3893440",
+  "files": {
+    ".github/workflows/rpf-102-sdk-presend.yml": {
+      "base_git_blob": "985ab001cca5bdb58082bf48403a3f72d5a869ed",
+      "candidate_git_blob": "960569845877e935982effc4328139edc8e82df2",
+      "raw_sha256": "e2d2bf55489dc894e1d25396813934e7c78645a47f44c79dbb696bac2f5300c1",
+      "lf_sha256": "e2d2bf55489dc894e1d25396813934e7c78645a47f44c79dbb696bac2f5300c1"
+    },
+    ".github/workflows/rpf-102-sdk-manual-conformance.yml": {
+      "base_git_blob": "d5dac43e3032b3293c804dbd26f578b00230090e",
+      "candidate_git_blob": "d5dac43e3032b3293c804dbd26f578b00230090e",
+      "raw_sha256": "61b5b2aac71f937ecdf03613e252a76534cfa919f293bfb2e5f743f51f27a361",
+      "lf_sha256": "61b5b2aac71f937ecdf03613e252a76534cfa919f293bfb2e5f743f51f27a361"
+    },
+    "ci/test_rpf102_rev6_sdk_import.py": {
+      "base_git_blob": null,
+      "candidate_git_blob": "f3a2345185e4031bcee0d628a6a9c5790d6514f6",
+      "raw_sha256": "d974e3270d1fdee13b0e3f3be989fa739f6b5fc6b66ce6b1d7c377a0712cb9f7",
+      "lf_sha256": "d974e3270d1fdee13b0e3f3be989fa739f6b5fc6b66ce6b1d7c377a0712cb9f7"
+    },
+    "ci/rpf102-sdk-requirements.txt": {
+      "base_git_blob": "7951e69b082119bf39c015010db093aaf6297d0a",
+      "candidate_git_blob": "7951e69b082119bf39c015010db093aaf6297d0a",
+      "raw_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15",
+      "lf_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15"
+    },
+    "ci/test_rpf102_sdk_presend.py": {
+      "base_git_blob": "6c617319bf2becc7027b6e0b6f1d0b6cad1b9c87",
+      "candidate_git_blob": "6c617319bf2becc7027b6e0b6f1d0b6cad1b9c87",
+      "raw_sha256": "bea616d94b1549d0e700b9c9db0fb4c14a021d3f009eb8609fc082c6f71fc4cd",
+      "lf_sha256": "bea616d94b1549d0e700b9c9db0fb4c14a021d3f009eb8609fc082c6f71fc4cd"
+    },
+    "ci/test_rpf102_rev3_capsule.py": {
+      "base_git_blob": "55e8b949cd06146ff1198ac3549bc5498130eb8c",
+      "candidate_git_blob": "55e8b949cd06146ff1198ac3549bc5498130eb8c",
+      "raw_sha256": "4fe7070a10ed23c99fe38d1ebd96a4adc41ade44b13f172e4b8b73721614e85a",
+      "lf_sha256": "4fe7070a10ed23c99fe38d1ebd96a4adc41ade44b13f172e4b8b73721614e85a"
+    },
+    "ci/rpf102_rev3_capsule.py": {
+      "base_git_blob": "bb19584a74877393c9d06f1015c27d11b6458945",
+      "candidate_git_blob": "bb19584a74877393c9d06f1015c27d11b6458945",
+      "raw_sha256": "11d05335f4947c47710c480f80716443f1e52ae5c6e1e273c77a90726cc49ad0",
+      "lf_sha256": "11d05335f4947c47710c480f80716443f1e52ae5c6e1e273c77a90726cc49ad0"
+    },
+    "docs/EFFECTWITNESS_SDK_PRESEND.md": {
+      "base_git_blob": "104472fd27bb8b4214fe86cd469cfa01e4db7025",
+      "candidate_git_blob": "74dc641c51b973c1cd11892b6c296bbf47ef440d",
+      "raw_sha256": "6337d9c32ab5faffd61b31df159e1c5c691d94060e0a50eaa23b0ff9b22f86e4",
+      "lf_sha256": "6337d9c32ab5faffd61b31df159e1c5c691d94060e0a50eaa23b0ff9b22f86e4"
+    },
+    "docs/EFFECTWITNESS_SDK_PRESEND.zh-CN.md": {
+      "base_git_blob": "2cc4d5ae53a59d1bf98ce391274ad0e8981c25ae",
+      "candidate_git_blob": "bc7cfd190eee77071bbd6c1803ae567e70a4d6f2",
+      "raw_sha256": "1c618c47fdeba1a2cac34b3d13e1a234a13f6eff0b1cbf9ce8959b5b17d18483",
+      "lf_sha256": "1c618c47fdeba1a2cac34b3d13e1a234a13f6eff0b1cbf9ce8959b5b17d18483"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_client.py": {
+      "base_git_blob": "a55215bce8bf71bd479d0b83b82ba8e68e98419e",
+      "candidate_git_blob": "60ce23569cac01f9d23a70483950bd69dd74a33b",
+      "raw_sha256": "2a35312bf797d30940d5b6c495428b1ca347d368a680d3b09bba1376ff6bd626",
+      "lf_sha256": "2a35312bf797d30940d5b6c495428b1ca347d368a680d3b09bba1376ff6bd626"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py": {
+      "base_git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "candidate_git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "raw_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "lf_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_diagnostic.py": {
+      "base_git_blob": "712ed601c52f4d78e69daf76689c762f0a92d87a",
+      "candidate_git_blob": "d21c9ce2f74bbb6fcbe5ad98117560ceb9070a3a",
+      "raw_sha256": "121e885a6d981886ff37af9e017ed33adf1c93fae17a5f128d47226095a205be",
+      "lf_sha256": "121e885a6d981886ff37af9e017ed33adf1c93fae17a5f128d47226095a205be"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_host.py": {
+      "base_git_blob": "cf68630c55215eb0ad6c24952bb0b670c93f3bf3",
+      "candidate_git_blob": "cf68630c55215eb0ad6c24952bb0b670c93f3bf3",
+      "raw_sha256": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846",
+      "lf_sha256": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_oracle.py": {
+      "base_git_blob": "9ab77f31cc21401289d8c7fb459cdedd8c8562a9",
+      "candidate_git_blob": "9ab77f31cc21401289d8c7fb459cdedd8c8562a9",
+      "raw_sha256": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b",
+      "lf_sha256": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_probe.py": {
+      "base_git_blob": "451aa89446b17718cc50006f94187ebc490c546f",
+      "candidate_git_blob": "451aa89446b17718cc50006f94187ebc490c546f",
+      "raw_sha256": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad",
+      "lf_sha256": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad"
+    }
+  },
+  "pins": {
+    "pydantic-ai-slim": "2.57.0",
+    "openai": "3.35.1"
+  }
+}

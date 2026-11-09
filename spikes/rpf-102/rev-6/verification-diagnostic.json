@@ -1,0 +1,50 @@
+{
+  "schema": "rpf102-rev6-diagnostic-v1",
+  "base": "4a39e23712e8f2c8e74c1733e26c115ab3893440",
+  "historical": {
+    "run": 42622067475,
+    "job": 129176478268,
+    "artifact": 13677846213,
+    "manifest_sha256": "8c1e2d46aa83b09c5f2bd8aa1a018b05480081dace4a4dbb479bae852206053b",
+    "audit_origin": "UNKNOWN",
+    "stage": "SDK_IMPORT",
+    "error_type": "PermissionError",
+    "sdk_post_count": 0,
+    "reservations": null,
+    "forwards": null,
+    "receiver_bytes": null,
+    "normal": "FAILURE_DIAGNOSTIC",
+    "unknown": "NOT_RUN"
+  },
+  "reproduction": {
+    "source": "e187966c5dc192bab174141454f5717fe0b839f7",
+    "run": 42626110185,
+    "job": 129190211090,
+    "origin": "AUDIT_HOOK",
+    "stage": "SDK_IMPORT",
+    "audit_code": "OPEN_READ_ROOT_DENIED",
+    "target": "SYSTEM_MIME",
+    "symlink_control": "PASS",
+    "prior_tests_passed": 31,
+    "pinned_import": "FAIL"
+  },
+  "local": {
+    "python": "3.14.7",
+    "prior_passed": 28,
+    "prior_skipped": 3,
+    "new_passed": 2,
+    "pinned_import": "NOT_RUN",
+    "symlink_control": "UNAVAILABLE"
+  },
+  "resources": {
+    "formal_dispatches": 0,
+    "sdk_model_requests": 0,
+    "external_provider_requests": 0,
+    "credential_probes": 0,
+    "business_writes": 0,
+    "reservations": null,
+    "forwards": null,
+    "receiver_bytes": null
+  },
+  "candidate_hosted": "NOT_RUN_AT_SEAL"
+}

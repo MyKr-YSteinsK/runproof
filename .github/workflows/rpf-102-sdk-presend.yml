@@ -39,11 +39,11 @@ jobs:
           export TMPDIR="$root/tmp"
           python -I -B -m venv "$root/venv"
           py="$root/venv/bin/python"
-          if ! timeout 150s "$py" -I -B -m pip --isolated --disable-pip-version-check install --only-binary=:all: --no-input --no-cache-dir --index-url https://pypi.org/simple -r ci/rpf102-sdk-requirements.txt >"$root/install.log" 2>&1; then
+          if ! timeout 150s "$py" -I -B -m pip --isolated --disable-pip-version-check install --only-binary=:all: --no-input --no-cache-dir --index-url https://pypi.org/simple --report "$root/install.json" -r ci/rpf102-sdk-requirements.txt >"$root/install.log" 2>&1; then
             echo 'SDK_IMPORT_ONLY_INSTALL_UNAVAILABLE'
             exit 1
           fi
           "$py" -I -B -m pip --isolated --disable-pip-version-check check >"$root/pip-check.log" 2>&1
-          RPF102_IMPORT_ONLY=1 "$py" -B -m unittest -v ci.test_rpf102_rev6_sdk_import
+          RPF102_IMPORT_ONLY=1 RPF102_PIP_REPORT="$root/install.json" "$py" -B -m unittest -v ci.test_rpf102_rev6_sdk_import
       - name: Record offline-only scope
         run: echo '::notice::SDK_PHYSICAL_NOT_RUN_BY_PLAN'

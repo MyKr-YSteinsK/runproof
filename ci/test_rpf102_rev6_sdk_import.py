@@ -10,6 +10,7 @@ import sysconfig
 import tempfile
 import unittest
 from unittest.mock import patch
+from urllib.parse import urlsplit
 
 from ci.rpf102_rev3_capsule import ensure_directory
 from runtime.runproof_runtime.effectwitness import sdk_presend_client as client
@@ -24,7 +25,8 @@ CLIENT = client.__name__
 def denial_controls(site_arg):
     folder = Path.cwd()
     site = Path(site_arg)
-    client.guard(None, folder, site)
+    progress = {"stage": "SDK_IMPORT"}
+    client.guard(None, folder, site, progress)
 
     def denied(operation, code, target):
         try:
@@ -43,6 +45,13 @@ def denial_controls(site_arg):
     denied(lambda: sys.audit("socket.connect", None, ("127.0.0.1", 443)), "SOCKET_CONNECT_DENIED", "NETWORK")
     denied(lambda: sys.audit("socket.getaddrinfo", "example.invalid", 443, 0, 0, 0), "DNS_DENIED", "NETWORK")
     denied(lambda: sys.audit("subprocess.Popen", sys.executable, [], None, None), "SUBPROCESS_DENIED", "PROCESS")
+    if sys.platform == "linux" and client.SYSTEM_MIME.resolve() == client.SYSTEM_MIME:
+        mime = str(client.SYSTEM_MIME)
+        sys.audit("open", mime, "r", os.O_RDONLY)
+        denied(lambda: sys.audit("open", mime, "w", os.O_WRONLY), "OPEN_WRITE_ROOT_DENIED", "SYSTEM_MIME")
+        progress["stage"] = "SDK_INIT"
+        denied(lambda: sys.audit("open", mime, "r", os.O_RDONLY), "OPEN_READ_ROOT_DENIED", "SYSTEM_MIME")
+        progress["stage"] = "SDK_IMPORT"
     link = folder / "escape"
     linked = link.is_symlink()
     if linked:
@@ -121,6 +130,24 @@ class ImportAuditTests(unittest.TestCase):
         site = Path(sysconfig.get_path("purelib")).resolve()
         self.assertNotEqual(sys.prefix, sys.base_prefix)
         self.assertTrue(site.is_relative_to(ROOT))
+        try:
+            install = strict(Path(os.environ["RPF102_PIP_REPORT"]).read_bytes())
+            pins = {}
+            for item in install["install"]:
+                name = re.sub(r"[-_.]+", "-", item["metadata"]["name"]).lower()
+                download = item["download_info"]
+                url = urlsplit(download["url"])
+                digest = download["archive_info"]["hashes"]["sha256"]
+                if (url.scheme != "https" or url.netloc != "files.pythonhosted.org"
+                        or not url.path.endswith(".whl") or not re.fullmatch(r"[a-f0-9]{64}", digest)):
+                    raise ValueError("SDK_WHEEL_SOURCE")
+                if name in PINS:
+                    if name in pins or item["metadata"]["version"] != PINS[name]:
+                        raise ValueError("SDK_WHEEL_IDENTITY")
+                    pins[name] = digest
+        except (OSError, ValueError, TypeError, KeyError, AttributeError):
+            self.fail("SDK_IMPORT_ONLY_WHEEL_PROVENANCE_INVALID")
+        self.assertTrue(set(pins) == set(PINS), "SDK_IMPORT_ONLY_WHEEL_PINS_MISSING")
         code, row = self.run_control(CLIENT, "import_control", [str(site)], self.folder)
         if code != 0:
             try:
@@ -139,7 +166,7 @@ class ImportAuditTests(unittest.TestCase):
             self.assertTrue(package["version"] == version)
             for key in ("source_sha256", "record_sha256"):
                 self.assertTrue(type(package[key]) is str and re.fullmatch(r"[a-f0-9]{64}", package[key]))
-        print("SDK_IMPORT_ONLY_NO_PHYSICAL " + canonical(row).decode())
+        print("SDK_IMPORT_ONLY_NO_PHYSICAL " + canonical({**row, "wheel_sha256": pins}).decode())
 
 
 def prior_suite(names):

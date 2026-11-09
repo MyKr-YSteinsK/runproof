@@ -1,0 +1,18 @@
+{
+  "schema": "rpf102-rev6-acceptance-v1",
+  "base": "4a39e23712e8f2c8e74c1733e26c115ab3893440",
+  "status_at_seal": "PARTIAL",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS_OBSERVED_IN_PINNED_UBUNTU",
+    "A02": "NOT_RUN_AT_SEAL",
+    "A03": "LOCAL_PASS_HOSTED_CANDIDATE_NOT_RUN_AT_SEAL",
+    "A04": "HOSTED_CANDIDATE_NOT_RUN_AT_SEAL",
+    "A05": "PASS",
+    "A06": "NOT_RUN_AT_SEAL",
+    "A07": "NOT_RUN"
+  },
+  "release_eligible": false,
+  "campaign_attempts_consumed": 1,
+  "campaign_attempts_remaining": 3
+}

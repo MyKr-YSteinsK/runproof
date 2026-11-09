@@ -20,6 +20,8 @@ After a future approved run, read its public diagnostic and validate it before u
 
 Use a separate file for each started case. An unavailable diagnostic leaves stdout empty and exits nonzero. The manual workflow checks the capsule before upload, even when the experiment fails. The diagnostic contains allowlisted fields and explicit `null` counts when evidence is missing. The capsule publishes only admitted evidence and keeps SDK stdout logs, environment files, handshake credentials and unapproved bytes in the owner.
 
+The automatic Ubuntu workflow also runs `SDK_IMPORT_ONLY_NO_PHYSICAL` with the pinned SDKs in a disposable venv. It checks the isolated imports and the package source and RECORD hashes. An audit refusal reports a fixed operation code and logical target category. A library exception has a separate origin and carries no audit target. On Linux, SDK imports can read the exact `/etc/mime.types` file during `SDK_IMPORT`. Physical NORMAL and UNKNOWN still require their own approval and evidence.
+
 Use the independent Oracle to check complete case evidence:
 
 ```text

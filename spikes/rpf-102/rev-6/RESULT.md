@@ -1,0 +1,13 @@
+# RPF-102 rev-6 result at seal
+
+Status at seal: PARTIAL. The repaired commit's hosted result and remote readback are NOT_RUN_AT_SEAL.
+
+Historical manual Run [42622067475](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42622067475), attempt 1, ran on `4a39e23712e8f2c8e74c1733e26c115ab3893440`. Owner bootstrap, pinned installation and pip check passed. NORMAL's SDK child exited 1 at SDK_IMPORT with PermissionError and zero observed SDK posts. Reservations, forwards and receiver bytes were unestablished and remain null. Its capsule (artifact 13677846213, manifest SHA-256 `8c1e2d46aa83b09c5f2bd8aa1a018b05480081dace4a4dbb479bae852206053b`) records NORMAL=FAILURE_DIAGNOSTIC and UNKNOWN=NOT_RUN. The historical diagnostic did not identify the event.
+
+[Ubuntu diagnostic Run 42626110185](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42626110185) at `e187966c5dc192bab174141454f5717fe0b839f7` reproduced the import failure with pinned pydantic-ai-slim 2.57.0 and openai 3.35.1. The audit exception reported SDK_IMPORT, OPEN_READ_ROOT_DENIED and SYSTEM_MIME. SYSTEM_MIME maps to the resolved path `/etc/mime.types`. That is an observation from the matching import reproduction. Attribution for the original historical run stays UNKNOWN.
+
+The candidate permits only the exact, non-aliased MIME file read on Linux during SDK_IMPORT. The import-only hook denies every audited connect and DNS request. Negative controls cover disallowed file reads and writes, dotenv names, link escape, network and subprocess events, invalid input and sanitized output. The separate exception-origin field distinguishes an ordinary library PermissionError. No exception messages or raw denied paths are published. The control tests Python audit events and is not a kernel sandbox.
+
+Windows CPython 3.14.7 ran the two prior suites with 28 passed and 3 platform skips, and the new suite with 2 passed and the hosted pinned test skipped. Windows symlink creation was unavailable. The initial Ubuntu run passed all 31 prior tests, docs and the new deny/schema controls, and failed only the pinned import as intended for diagnosis. The final candidate repeats the Ubuntu controls and checks the installed wheel, package source and RECORD identities. The commands are listed in README and the automatic workflow.
+
+Rev-6 dispatched no physical experiments. SDK model calls, external Provider traffic, credential probes, fees and business writes were zero. Rev-6 physical measurements are NOT_RUN/null. The earlier manual Run consumed one campaign attempt, leaving at most 3 of 4. Real NORMAL and UNKNOWN after repair remain NOT_RUN and require Architect review and a new operator-approved run. Canonical coverage is tracked independently.
