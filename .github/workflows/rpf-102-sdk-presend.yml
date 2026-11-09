@@ -20,6 +20,13 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Fresh-checkout owner bootstrap smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e .local && test ! -L .local || exit 1
+          echo 'RPF102_CHECKOUT_LOCAL_ABSENT'
+          python -B -m unittest -v ci.test_rpf102_rev3_capsule.FreshCheckoutBootstrapTests
       - run: python -B -m unittest -v ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule
       - run: python -B ci/verify-public-docs.py
       - name: Record offline-only scope

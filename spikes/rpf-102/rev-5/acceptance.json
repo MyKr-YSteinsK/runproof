@@ -1,0 +1,93 @@
+{
+  "schema": "rpf102-rev5-acceptance-v1",
+  "base": "a88c5ac9da148101dee7d76cd299df0bd3f79eae",
+  "gates": {
+    "G0": {
+      "status": "PASS",
+      "local_head": "a88c5ac9da148101dee7d76cd299df0bd3f79eae",
+      "origin_main": "a88c5ac9da148101dee7d76cd299df0bd3f79eae",
+      "branch": "main",
+      "authorized_tracked_paths_clean_before_edit": true,
+      "create_only_report_paths_unoccupied": true,
+      "rev5_task_root_unoccupied_before_test": true,
+      "path_ancestors_reparse": false,
+      "scope_deviation": "initial global git status emitted a protected top-level untracked marker; no content read was performed; later checks were path-scoped",
+      "remote_push_scope": "ordinary_main_push; offline_RPF102_and_existing_canonical_workflows",
+      "recovery": "SCOPED_PREFLIGHT_PASS; prior deviation preserved; task-owned candidate carried forward"
+    },
+    "A01": {
+      "status": "PASS",
+      "root_cause": "checked_path(ROOT, missing=True) rejected the missing .local ancestor in a fresh checkout before owner creation",
+      "evidence_run_id": 42610790558,
+      "failure_step": "Preflight and bind new owner",
+      "failure_output": "CAPSULE_UNAVAILABLE",
+      "sdk_or_physical_steps_started": false,
+      "baseline_reproduction": "EXIT_3_NO_LOCAL",
+      "candidate_reproduction": "EXIT_0_LEDGER_MATCH"
+    },
+    "A02": {
+      "status": "PARTIAL",
+      "local_tests": {
+        "run": 31,
+        "passed": 28,
+        "skipped": 3
+      },
+      "passed_controls": [
+        "missing .local fresh-checkout-shape positive control through admit CLI and ledger readback",
+        "safe existing ROOT accepts a second distinct owner",
+        "duplicate owner and preexisting ledger fail closed without byte changes",
+        "regular-file parent fails closed without replacement"
+      ],
+      "local_unavailable": [
+        "two symlink/reparse controls: Windows symlink creation denied",
+        "POSIX permission control: Windows platform is not applicable"
+      ],
+      "hosted_linux_controls": "NOT_RUN_AT_SEAL"
+    },
+    "A03": {
+      "status": "NOT_RUN",
+      "required_order": "fresh-checkout smoke before offline suite",
+      "offline_suite_and_public_docs_hosted": "NOT_RUN_AT_SEAL"
+    },
+    "A04": {
+      "status": "PASS_STATIC_AND_LOCAL_TEST",
+      "manual_workflow_modified": false,
+      "sha_run_attempt_environment_normal_unknown_and_artifact_controls_preserved": true,
+      "provider_and_business_limits_changed": false
+    },
+    "A05": {
+      "status": "PASS_REPORTS_PHYSICAL_NOT_RUN",
+      "sdk_normal": "NOT_RUN",
+      "sdk_unknown": "NOT_RUN",
+      "physical_capsule": "NOT_RUN"
+    },
+    "A06": {
+      "status": "NOT_RUN_AT_SEAL"
+    }
+  },
+  "resources_at_seal": {
+    "formal_dispatches_consumed": 0,
+    "formal_dispatches_remaining": 4,
+    "sdk_installs": 0,
+    "sdk_children": 0,
+    "provider_requests": 0,
+    "provider_tokens": 0,
+    "provider_fees": 0,
+    "key_lookups": 0,
+    "sdk_posts": null,
+    "tool_callbacks": null,
+    "forwards": null,
+    "receivers": null,
+    "received_bytes": null,
+    "real_business_writes": 0,
+    "java_runs": 0,
+    "docker_runs": 0
+  },
+  "physical_environment_readback": {
+    "required_reviewer_count": 1,
+    "prevent_self_review": false,
+    "rev5_manual_dispatch": "NOT_RUN"
+  },
+  "release_eligible": false,
+  "status_at_seal": "PARTIAL"
+}

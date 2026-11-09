@@ -1,0 +1,65 @@
+{
+  "schema": "rpf102-rev5-verification-diagnostic-v1",
+  "base": "a88c5ac9da148101dee7d76cd299df0bd3f79eae",
+  "environment": {
+    "os": "Windows",
+    "python": "3.14.7",
+    "yaml_parser": "UNAVAILABLE",
+    "py_compile": "PASS",
+    "diff_check": "PASS"
+  },
+  "prior_failure": {
+    "run_id": 42610790558,
+    "run_attempt": 1,
+    "job_id": 129138389219,
+    "steps": {
+      "operator_admission_sha_run_attempt": "PASS",
+      "checkout": "PASS",
+      "setup_python_3_12": "PASS",
+      "owner_preflight": "FAIL",
+      "owner_preflight_output": "CAPSULE_UNAVAILABLE",
+      "sdk_install": "NOT_RUN",
+      "physical": "NOT_RUN",
+      "normal": "NOT_RUN",
+      "unknown": "NOT_RUN",
+      "receiver_and_artifact": "NOT_RUN"
+    }
+  },
+  "local_tests": {
+    "command": "python -B -m unittest -v ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule",
+    "tests_run": 31,
+    "passed": 28,
+    "skipped": 3,
+    "skip_reasons": [
+      "SYMLINK_UNAVAILABLE on this Windows user context (two controls)",
+      "FILESYSTEM_PERMISSION_CONTROL_UNAVAILABLE on Windows"
+    ],
+    "fresh_checkout_shape": "PASS; .local missing in an isolated task-owned checkout shape; actual admit CLI; exclusive ledger readback"
+  },
+  "source_changes": [
+    ".github/workflows/rpf-102-sdk-presend.yml",
+    "ci/rpf102_rev3_capsule.py",
+    "ci/test_rpf102_rev3_capsule.py"
+  ],
+  "protected_or_historical_data": {
+    "old_rpf102_owners_or_wal_touched": false,
+    "historical_failure_evidence_changed": false,
+    "protected_directory_traversal_or_content_read": false,
+    "initial_global_status_scope_deviation": "Initial global Git status emitted a protected top-level marker. No content was read; subsequent status checks were path-scoped. The earlier G0 attempt was not certified.",
+    "recovery_g0": "PASS_SCOPED"
+  },
+  "external_effects": {
+    "provider": 0,
+    "sdk_install": 0,
+    "sdk_child": 0,
+    "localhost_listener_or_send": 0,
+    "key_probe": 0,
+    "business_write": 0,
+    "formal_manual_dispatch": 0
+  },
+  "commit": "NOT_RUN_AT_SEAL",
+  "push": "NOT_RUN_AT_SEAL",
+  "hosted_after_local_verification": "NOT_RUN_AT_SEAL",
+  "release_eligible": false,
+  "baseline_reproduction": "BASELINE_EXIT_3_NO_LOCAL; CANDIDATE_EXIT_0_LEDGER_MATCH"
+}

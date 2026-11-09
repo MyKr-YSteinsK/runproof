@@ -1,5 +1,5 @@
 """SYNTHETIC_TEST_ONLY controls for capsule contents and manual admission."""
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 import io
 import os
 import re
@@ -20,6 +20,8 @@ SOURCE = "a" * 40
 RUN = 12345678
 OWNER = "1" * 32
 WORKFLOW = ROOT.parents[1] / ".github" / "workflows" / "rpf-102-sdk-manual-conformance.yml"
+REPO = ROOT.parents[1]
+REV5_TEST_ROOT = REPO / ".local" / "rpf-102-rev5-bootstrap"
 DIAGNOSTIC = "runtime.runproof_runtime.effectwitness.sdk_presend_diagnostic"
 
 
@@ -32,10 +34,11 @@ def collect_fixture(folder, case, **facts):
 
 class CapsuleTests(unittest.TestCase):
     def setUp(self):
-        root = capsule.checked_path(ROOT.parent / "rpf-102-rev3-offline", directory=True, missing=True)
-        root.mkdir(exist_ok=True)
-        self.site = root / uuid4().hex
+        capsule.ensure_directory(REV5_TEST_ROOT.parent)
+        capsule.ensure_directory(REV5_TEST_ROOT)
+        self.site = REV5_TEST_ROOT / uuid4().hex
         self.site.mkdir()
+        self.addCleanup(shutil.rmtree, self.site)
         self.owner = self.site / OWNER
         self.owner.mkdir()
         self.output = self.site / "published"
@@ -227,6 +230,20 @@ class CapsuleTests(unittest.TestCase):
         self.assertLess(workflow.index("capsule verify --folder"), workflow.index("actions/upload-artifact"))
         self.assertIn("capsule verify --require-complete", workflow)
 
+    def test_offline_fresh_checkout_smoke_precedes_existing_suite(self):
+        workflow = (REPO / ".github" / "workflows" / "rpf-102-sdk-presend.yml").read_text(encoding="utf-8")
+        smoke = "Fresh-checkout owner bootstrap smoke"
+        suite = "ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule"
+        trigger = workflow.split("\npermissions:")[0]
+        self.assertIn("\non:\n  push:\n", trigger)
+        self.assertNotIn("workflow_dispatch", trigger)
+        self.assertLess(workflow.index(smoke), workflow.index(suite))
+        self.assertIn(
+            "ci.test_rpf102_rev3_capsule.FreshCheckoutBootstrapTests",
+            workflow[workflow.index(smoke):workflow.index(suite)],
+        )
+        self.assertNotIn("pip install", workflow[workflow.index(smoke):workflow.index(suite)])
+
     def test_probe_stops_before_unknown_when_normal_capsule_is_unavailable(self):
         owner = self.site / "probe-fixture"
         owner.mkdir()
@@ -248,3 +265,138 @@ class CapsuleTests(unittest.TestCase):
                 probe.run(owner, accept_case=reject)
         self.assertEqual(run_case.call_count, 1)
         self.assertFalse((owner / "UNKNOWN").exists())
+
+
+class FreshCheckoutBootstrapTests(unittest.TestCase):
+    def test_admit_cli_bootstraps_missing_local_parent(self):
+        local = REPO / ".local"
+        if not local.exists() and not local.is_symlink():
+            # The hosted smoke runs this branch before any test creates .local.
+            root = REV5_TEST_ROOT
+            keep_owner = True
+        else:
+            # Repeated local/full-suite execution uses a fresh nested checkout shape,
+            # still confined below this run's unique rev-5 test directory.
+            capsule.ensure_directory(local)
+            capsule.ensure_directory(REV5_TEST_ROOT)
+            task = REV5_TEST_ROOT / uuid4().hex
+            task.mkdir()
+            self.addCleanup(shutil.rmtree, task)
+            checkout = task / "checkout"
+            checkout.mkdir()
+            root = checkout / ".local" / "rpf-102-rev5-bootstrap"
+            keep_owner = False
+
+        self.assertFalse(root.parent.exists())
+        owner = uuid4().hex
+        stderr = io.StringIO()
+        with patch.object(capsule, "ROOT", root), patch(
+            "sys.argv", ["rpf102_rev3_capsule", "admit", "--owner", owner,
+                         "--expected-sha", SOURCE, "--run-id", str(RUN)]
+        ), redirect_stderr(stderr):
+            result = capsule.main()
+        self.assertEqual(result, 0, stderr.getvalue())
+        owner_dir = capsule.checked_path(root / owner, directory=True)
+        expected = canonical(capsule.ledger(owner, SOURCE, RUN))
+        self.assertEqual(capsule.read(owner_dir / capsule.LEDGER), expected)
+        self.assertTrue(root.parent.is_dir())
+        self.assertFalse(root.parent.is_symlink())
+        if keep_owner:
+            self.assertEqual(owner_dir.parent, REV5_TEST_ROOT)
+        print("RPF102_FRESH_CHECKOUT_OWNER_BOOTSTRAP_PASS; SDK_PHYSICAL_NOT_RUN")
+
+
+class OwnerAdmissionTests(unittest.TestCase):
+    def setUp(self):
+        capsule.ensure_directory(REV5_TEST_ROOT.parent)
+        capsule.ensure_directory(REV5_TEST_ROOT)
+        self.site = REV5_TEST_ROOT / uuid4().hex
+        self.site.mkdir()
+        self.addCleanup(shutil.rmtree, self.site)
+
+    def admit(self, root, owner=OWNER):
+        stderr = io.StringIO()
+        with patch.object(capsule, "ROOT", root), patch(
+            "sys.argv", ["rpf102_rev3_capsule", "admit", "--owner", owner,
+                         "--expected-sha", SOURCE, "--run-id", str(RUN)]
+        ), redirect_stderr(stderr):
+            result = capsule.main()
+        return result, stderr.getvalue()
+
+    def test_safe_existing_root_accepts_distinct_owner_but_duplicate_is_immutable(self):
+        root = self.site / "rpf-102-sdk-presend"
+        first, _ = self.admit(root, OWNER)
+        first_ledger = capsule.read(root / OWNER / capsule.LEDGER)
+        second_owner = "2" * 32
+        second, _ = self.admit(root, second_owner)
+        second_ledger = capsule.read(root / second_owner / capsule.LEDGER)
+        duplicate, _ = self.admit(root, OWNER)
+        self.assertEqual((first, second, duplicate), (0, 0, 3))
+        self.assertEqual(capsule.read(root / OWNER / capsule.LEDGER), first_ledger)
+        self.assertEqual(second_ledger, canonical(capsule.ledger(second_owner, SOURCE, RUN)))
+
+    def test_occupied_owner_and_existing_ledger_are_never_overwritten(self):
+        root = self.site / "rpf-102-sdk-presend"
+        root.mkdir()
+        occupied = root / OWNER
+        occupied.mkdir()
+        ledger = occupied / capsule.LEDGER
+        sentinel = b"preserve-existing-ledger\n"
+        ledger.write_bytes(sentinel)
+        empty_owner = root / ("2" * 32)
+        empty_owner.mkdir()
+        existing, _ = self.admit(root, OWNER)
+        empty, _ = self.admit(root, "2" * 32)
+        self.assertEqual((existing, empty), (3, 3))
+        self.assertEqual(ledger.read_bytes(), sentinel)
+        self.assertFalse((empty_owner / capsule.LEDGER).exists())
+
+    def test_regular_file_parent_fails_closed_without_replacement(self):
+        parent = self.site / "not-a-directory"
+        sentinel = b"parent-file-is-preserved"
+        parent.write_bytes(sentinel)
+        result, stderr = self.admit(parent / "rpf-102-sdk-presend")
+        self.assertEqual(result, 3)
+        self.assertIn("CAPSULE_UNAVAILABLE", stderr)
+        self.assertIn("CAPSULE_FAILURE_CLASS=CAPSULE_DIRECTORY", stderr)
+        self.assertNotIn(str(parent), stderr)
+        self.assertEqual(parent.read_bytes(), sentinel)
+
+    def test_reparse_parent_fails_closed_without_writing_through_target(self):
+        target = self.site / "real-parent"
+        target.mkdir()
+        link = self.site / "reparse-parent"
+        try:
+            link.symlink_to(target, target_is_directory=True)
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f"SYMLINK_UNAVAILABLE:{type(exc).__name__}")
+        result, stderr = self.admit(link / "rpf-102-sdk-presend")
+        self.assertEqual(result, 3)
+        self.assertIn("CAPSULE_FAILURE_CLASS=CAPSULE_LINK", stderr)
+        self.assertEqual(list(target.iterdir()), [])
+
+    def test_reparse_root_fails_closed_without_writing_through_target(self):
+        target = self.site / "real-root"
+        target.mkdir()
+        link = self.site / "reparse-root"
+        try:
+            link.symlink_to(target, target_is_directory=True)
+        except (OSError, NotImplementedError) as exc:
+            self.skipTest(f"SYMLINK_UNAVAILABLE:{type(exc).__name__}")
+        result, stderr = self.admit(link)
+        self.assertEqual(result, 3)
+        self.assertIn("CAPSULE_FAILURE_CLASS=CAPSULE_LINK", stderr)
+        self.assertEqual(list(target.iterdir()), [])
+
+    def test_nonwritable_parent_fails_closed_when_posix_permissions_are_enforced(self):
+        if os.name != "posix" or os.geteuid() == 0:
+            self.skipTest("FILESYSTEM_PERMISSION_CONTROL_UNAVAILABLE")
+        parent = self.site / "read-only-parent"
+        parent.mkdir()
+        os.chmod(parent, 0o555)
+        try:
+            result, _ = self.admit(parent / "rpf-102-sdk-presend")
+            self.assertEqual(result, 3)
+            self.assertFalse((parent / "rpf-102-sdk-presend").exists())
+        finally:
+            os.chmod(parent, 0o755)

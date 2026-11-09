@@ -8,7 +8,7 @@ import stat
 import sys
 
 from runtime.runproof_runtime.effectwitness.sdk_presend_contracts import (
-    CASES, LIMIT, PINS, ROOT, STOP, canonical, check, sha, strict, sync_dir, validate_request,
+    CASES, LIMIT, PINS, ROOT, STOP, Denied, canonical, check, sha, strict, sync_dir, validate_request,
 )
 from runtime.runproof_runtime.effectwitness.sdk_presend_diagnostic import (
     CONTEXT, REPORT, context, source_sha, validate_public,
@@ -51,6 +51,39 @@ def checked_path(path, *, directory=False, missing=False):
         else:
             check(stat.S_ISREG(info.st_mode) and info.st_nlink == 1, "CAPSULE_FILE")
     return path
+
+
+def ensure_directory(path):
+    """Create one trusted directory level without accepting unsafe ancestors."""
+    path = Path(os.path.abspath(path))
+    parent = checked_path(path.parent, directory=True)
+    try:
+        checked_path(path, directory=True)
+    except FileNotFoundError:
+        # Only the final component may be absent; every ancestor was just checked.
+        path.mkdir()
+        sync_dir(parent)
+    return checked_path(path, directory=True)
+
+
+def failure_class(error):
+    """Return a bounded diagnostic token without exposing paths or exception text."""
+    if isinstance(error, PermissionError):
+        return "PERMISSION_DENIED"
+    if isinstance(error, FileExistsError):
+        return "PATH_OCCUPIED"
+    if isinstance(error, FileNotFoundError):
+        return "PATH_MISSING"
+    if isinstance(error, NotADirectoryError):
+        return "PATH_NOT_DIRECTORY"
+    if isinstance(error, Denied):
+        code = str(error)
+        return code if re.fullmatch(r"[A-Z][A-Z0-9_]{0,63}", code) else "POLICY_DENIED"
+    if isinstance(error, ValueError):
+        return "INVALID_DATA"
+    if isinstance(error, OSError):
+        return "FILESYSTEM_ERROR"
+    return "UNAVAILABLE"
 
 
 def read(path, limit=8192):
@@ -390,8 +423,11 @@ def main():
         check(args.folder is None and args.expected_manifest_sha256 is None and not args.require_complete,
               "CAPSULE_OPTIONS")
         if args.mode == "admit":
-            checked_path(ROOT, directory=True, missing=True).mkdir(exist_ok=True)
-            checked_path(owner, directory=True, missing=True).mkdir()
+            ensure_directory(ROOT.parent)
+            ensure_directory(ROOT)
+            owner.mkdir()
+            sync_dir(ROOT)
+            checked_path(owner, directory=True)
             create(owner / LEDGER, canonical(admission))
         elif args.mode == "environment":
             check(read(owner / LEDGER) == canonical(admission), "CAPSULE_ADMISSION_BINDING")
@@ -412,8 +448,9 @@ def main():
             checked_path(CAPSULE_ROOT, directory=True, missing=True).mkdir(exist_ok=True)
             print(json.dumps(build(owner, CAPSULE_ROOT / args.owner, args.expected_sha, args.run_id), sort_keys=True))
         return 0
-    except READ_ERRORS:
+    except READ_ERRORS as exc:
         print("CAPSULE_UNAVAILABLE", file=sys.stderr)
+        print(f"CAPSULE_FAILURE_CLASS={failure_class(exc)}", file=sys.stderr)
         return 3
 
 
