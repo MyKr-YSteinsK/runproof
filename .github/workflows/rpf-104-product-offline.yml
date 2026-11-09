@@ -1,0 +1,35 @@
+name: RPF-104 Product Offline
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rpf-104-product-*.yml'
+      - 'runtime/runproof_runtime/effectwitness/product_sdk_*.py'
+      - 'ci/test_rpf104_product_sdk*.py'
+      - 'spikes/rpf-104/**'
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Offline only with disposable SQLite fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          git check-ignore -q -- .local/rpf-104/owner
+          mkdir .local
+          mkdir .local/rpf-104
+          RPF104_TEST_OWNER="$(python -I -B -c 'from uuid import uuid4; print(uuid4().hex)')"
+          mkdir ".local/rpf-104/$RPF104_TEST_OWNER"
+          export RPF104_TEST_OWNER
+          python -B -m unittest -v ci.test_rpf104_product_sdk ci.test_rpf104_product_sdk_control
+          echo 'RPF104_OFFLINE_NO_SDK_OR_TRANSPORT'
+      - run: python -B ci/verify-public-docs.py

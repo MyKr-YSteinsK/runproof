@@ -1,0 +1,104 @@
+name: RPF-104 Product Manual Physical
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: Operator approved full source commit SHA
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: rpf104-product-physical
+  cancel-in-progress: false
+jobs:
+  physical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: rpf-104-physical
+      deployment: false
+    env:
+      EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+      RPF104_APPROVED_SOURCE_SHA: ${{ vars.RPF104_APPROVED_SOURCE_SHA }}
+      RPF104_APPROVED_RUN_ID: ${{ vars.RPF104_APPROVED_RUN_ID }}
+    steps:
+      - name: Validate single attempt and operator binding
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/main
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          [[ "$EXPECTED_SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$EXPECTED_SOURCE_SHA" = "$GITHUB_SHA"
+          test "$RPF104_APPROVED_SOURCE_SHA" = "$GITHUB_SHA"
+          test "$RPF104_APPROVED_RUN_ID" = "$GITHUB_RUN_ID"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" \
+            | jq -e 'any(.[]; .state == "approved" and any(.environments[]; .name == "rpf-104-physical"))' >/dev/null
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Bind a new owner before package installation
+        id: admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git check-ignore -q -- .local/rpf-104/owner
+          mkdir .local
+          mkdir .local/rpf-104
+          owner="$(python -I -B -c 'from uuid import uuid4; print(uuid4().hex)')"
+          python -B -m runtime.runproof_runtime.effectwitness.product_sdk_probe admit "$GITHUB_SHA" "$GITHUB_RUN_ID" "$owner"
+          printf 'owner=%s\n' "$owner" >> "$GITHUB_OUTPUT"
+      - name: Run NORMAL then UNKNOWN with pinned SDKs
+        env:
+          OWNER: ${{ steps.admission.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$PWD/.local/rpf-104/$OWNER"
+          mkdir "$root/tmp"
+          export TMPDIR="$root/tmp"
+          python -I -B -m venv "$root/venv"
+          py="$root/venv/bin/python"
+          timeout 150s "$py" -I -B -m pip --isolated --disable-pip-version-check install --no-input --no-cache-dir --only-binary=:all: --index-url https://pypi.org/simple --report "$root/install.json" -r ci/rpf102-sdk-requirements.txt >"$root/install.log" 2>&1
+          "$py" -I -B -m pip --isolated --disable-pip-version-check check >"$root/pip-check.log" 2>&1
+          timeout 180s "$py" -B -m runtime.runproof_runtime.effectwitness.product_sdk_probe physical "$GITHUB_SHA" "$GITHUB_RUN_ID" "$OWNER"
+      - name: Export and recheck bounded public projection
+        id: capsule
+        if: always() && steps.admission.outputs.owner != ''
+        env:
+          OWNER: ${{ steps.admission.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          module=runtime.runproof_runtime.effectwitness.product_sdk_capsule
+          zip=".local/rpf-104/$OWNER/public.zip"
+          python -B -m "$module" export "$GITHUB_SHA" "$GITHUB_RUN_ID" "$OWNER"
+          python -B -m "$module" verify "$GITHUB_SHA" "$GITHUB_RUN_ID" "$OWNER" --zip "$zip"
+          printf 'ready=true\n' >> "$GITHUB_OUTPUT"
+      - name: Upload only verified public file
+        if: always() && steps.capsule.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf104-public-${{ github.run_id }}
+          path: .local/rpf-104/${{ steps.admission.outputs.owner }}/public.zip
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - name: Require both cases for success
+        if: always() && steps.capsule.outputs.ready == 'true'
+        env:
+          OWNER: ${{ steps.admission.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m runtime.runproof_runtime.effectwitness.product_sdk_capsule verify "$GITHUB_SHA" "$GITHUB_RUN_ID" "$OWNER" --zip ".local/rpf-104/$OWNER/public.zip" --require-complete

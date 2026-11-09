@@ -1,0 +1,54 @@
+{
+  "schema": "rpf104-verification-v1",
+  "base": "06d0c3ff6449ad237b24df510ca7f4460cd2781e",
+  "local": {
+    "python": "3.14.7",
+    "tests_passed": 22,
+    "tests_skipped": 1,
+    "new_passed": 14,
+    "historical_passed": 8,
+    "sqlite_fixture": "NOT_RUN_FRESH_TEST_ROOT_MISSING",
+    "python_compile": "PASS",
+    "bash_blocks_passed": 6
+  },
+  "historical_archive": {
+    "run_id": 42631302508,
+    "zip_sha256": "a730b4dd390704ea9503e6de3d7842b6352a5b48b37c41f3acbe389a2633fd19",
+    "verification": "CONTENT_CHECKED_LOCAL"
+  },
+  "observed_resources": {
+    "physical_runs": 0,
+    "sdk_children": 0,
+    "receivers": 0,
+    "listeners": 0,
+    "business_transactions": 0,
+    "external_provider_requests": 0,
+    "provider_fees": 0,
+    "credential_probes": 0
+  },
+  "formal_cases": {
+    "NORMAL": {
+      "sdk_posts": null,
+      "business_writes": null,
+      "receiver_bytes": null,
+      "forwards": null,
+      "artifact": null,
+      "verification": "NOT_RUN"
+    },
+    "UNKNOWN": {
+      "sdk_posts": null,
+      "business_writes": null,
+      "receiver_bytes": null,
+      "forwards": null,
+      "artifact": null,
+      "verification": "NOT_RUN"
+    }
+  },
+  "post_unknown_formal": {
+    "reservations": null,
+    "sends": null,
+    "writes": null
+  },
+  "physical_environment": "HTTP_404",
+  "push_and_hosted_ci": "NOT_RUN_AT_SEAL"
+}

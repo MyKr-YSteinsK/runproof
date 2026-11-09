@@ -1,0 +1,210 @@
+{
+  "schema": "rpf104-source-map-v1",
+  "base": "06d0c3ff6449ad237b24df510ca7f4460cd2781e",
+  "files": {
+    "runtime/runproof_runtime/effectwitness/effect_oracle.py": {
+      "git_blob": "3d1322472b1621f4061db4331914dc4e36b23fa0",
+      "raw_sha256": "cb6f1fab4a7c05bf2c448b7728d35bdf5cf663d39a56513564bc020c9f56a834",
+      "base_git_blob": "3d1322472b1621f4061db4331914dc4e36b23fa0",
+      "lf_sha256": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+    },
+    "runtime/runproof_runtime/effectwitness/ops_oracle.py": {
+      "git_blob": "633677ab7a290134da1700b43d140e56dd2b3ee7",
+      "raw_sha256": "d660e6959daa615c031f84bbb08a05c2e3a4b61bd236f0beee8b86563e3b122f",
+      "base_git_blob": "633677ab7a290134da1700b43d140e56dd2b3ee7",
+      "lf_sha256": "90a5328168be38cce869203d1e365b16ed999d79533dac5a01172d8b9eb895fa"
+    },
+    "runtime/runproof_runtime/effectwitness/product_local_ports.py": {
+      "git_blob": "adbf26be169b6fb9730f998096341db580f45c14",
+      "raw_sha256": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52",
+      "base_git_blob": "adbf26be169b6fb9730f998096341db580f45c14",
+      "lf_sha256": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52"
+    },
+    "runtime/runproof_runtime/effectwitness/product_local_contracts.py": {
+      "git_blob": "ee433bd735c2fca0338a7bd50283f9db12db9358",
+      "raw_sha256": "06c778e9fdd7ecdb739ade94a711cf4c017dc7000283d8128b69d7404e61b66c",
+      "base_git_blob": "ee433bd735c2fca0338a7bd50283f9db12db9358",
+      "lf_sha256": "06c778e9fdd7ecdb739ade94a711cf4c017dc7000283d8128b69d7404e61b66c"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py": {
+      "git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "raw_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "base_git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "lf_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_client.py": {
+      "git_blob": "60ce23569cac01f9d23a70483950bd69dd74a33b",
+      "raw_sha256": "2a35312bf797d30940d5b6c495428b1ca347d368a680d3b09bba1376ff6bd626",
+      "base_git_blob": "60ce23569cac01f9d23a70483950bd69dd74a33b",
+      "lf_sha256": "2a35312bf797d30940d5b6c495428b1ca347d368a680d3b09bba1376ff6bd626"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_diagnostic.py": {
+      "git_blob": "d21c9ce2f74bbb6fcbe5ad98117560ceb9070a3a",
+      "raw_sha256": "121e885a6d981886ff37af9e017ed33adf1c93fae17a5f128d47226095a205be",
+      "base_git_blob": "d21c9ce2f74bbb6fcbe5ad98117560ceb9070a3a",
+      "lf_sha256": "121e885a6d981886ff37af9e017ed33adf1c93fae17a5f128d47226095a205be"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_oracle.py": {
+      "git_blob": "9ab77f31cc21401289d8c7fb459cdedd8c8562a9",
+      "raw_sha256": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b",
+      "base_git_blob": "9ab77f31cc21401289d8c7fb459cdedd8c8562a9",
+      "lf_sha256": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_host.py": {
+      "git_blob": "cf68630c55215eb0ad6c24952bb0b670c93f3bf3",
+      "raw_sha256": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846",
+      "base_git_blob": "cf68630c55215eb0ad6c24952bb0b670c93f3bf3",
+      "lf_sha256": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_probe.py": {
+      "git_blob": "451aa89446b17718cc50006f94187ebc490c546f",
+      "raw_sha256": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad",
+      "base_git_blob": "451aa89446b17718cc50006f94187ebc490c546f",
+      "lf_sha256": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad"
+    },
+    "ci/rpf102-sdk-requirements.txt": {
+      "git_blob": "7951e69b082119bf39c015010db093aaf6297d0a",
+      "raw_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15",
+      "base_git_blob": "7951e69b082119bf39c015010db093aaf6297d0a",
+      "lf_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15"
+    },
+    "ci/rpf103_verify_archive.py": {
+      "git_blob": "fa62bb918937a736c86380dbb0ac9e68ea289117",
+      "raw_sha256": "7c2a04634d6de3fc655d43aee43deab644c6fd6ec6bb079b36770efd74212da2",
+      "base_git_blob": "fa62bb918937a736c86380dbb0ac9e68ea289117",
+      "lf_sha256": "7c2a04634d6de3fc655d43aee43deab644c6fd6ec6bb079b36770efd74212da2"
+    },
+    "ci/test_rpf103_verify_archive.py": {
+      "git_blob": "90f2238ed00aff63f5c9c7c6caa248dfdf6e7d6e",
+      "raw_sha256": "d32b7b66b1929d6679308262adc4c01615e468e024838da4f0a5f29e9503126e",
+      "base_git_blob": "90f2238ed00aff63f5c9c7c6caa248dfdf6e7d6e",
+      "lf_sha256": "d32b7b66b1929d6679308262adc4c01615e468e024838da4f0a5f29e9503126e"
+    },
+    "ci/rpf102_rev3_capsule.py": {
+      "git_blob": "bb19584a74877393c9d06f1015c27d11b6458945",
+      "raw_sha256": "11d05335f4947c47710c480f80716443f1e52ae5c6e1e273c77a90726cc49ad0",
+      "base_git_blob": "bb19584a74877393c9d06f1015c27d11b6458945",
+      "lf_sha256": "11d05335f4947c47710c480f80716443f1e52ae5c6e1e273c77a90726cc49ad0"
+    },
+    "spikes/rpf-103/evidence/rpf102-run-42631302508-public.zip": {
+      "git_blob": "63fb54aac51cf2ac1b36cb9b2cd0694c5af76eeb",
+      "raw_sha256": "a730b4dd390704ea9503e6de3d7842b6352a5b48b37c41f3acbe389a2633fd19",
+      "base_git_blob": "63fb54aac51cf2ac1b36cb9b2cd0694c5af76eeb"
+    },
+    ".github/workflows/release-gate.yml": {
+      "git_blob": "17a59fa930214d14c80a1f6dbba70ecdbf4a8de1",
+      "raw_sha256": "0e356a8b3249d13a3ba0a097159606388613d79837ed136c889b1c2f6626bafe",
+      "base_git_blob": "17a59fa930214d14c80a1f6dbba70ecdbf4a8de1",
+      "lf_sha256": "0e356a8b3249d13a3ba0a097159606388613d79837ed136c889b1c2f6626bafe"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_contracts.py": {
+      "git_blob": "393f2ff1926c2f46b29987bc5ed6eda168b16c58",
+      "raw_sha256": "99f1a3f9849877f4cbbce7e32642982572dc2775f18855bd656089e0170e9d89",
+      "base_git_blob": null,
+      "lf_sha256": "99f1a3f9849877f4cbbce7e32642982572dc2775f18855bd656089e0170e9d89"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_target.py": {
+      "git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39",
+      "raw_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e",
+      "base_git_blob": null,
+      "lf_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_host.py": {
+      "git_blob": "ffd4fd85757d255bc4abb2337c03b2827faec017",
+      "raw_sha256": "8a162ee97ddd82c803cf9d2b226966ad2839a445c0483158402f8d28715d8e24",
+      "base_git_blob": null,
+      "lf_sha256": "8a162ee97ddd82c803cf9d2b226966ad2839a445c0483158402f8d28715d8e24"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_client.py": {
+      "git_blob": "e7cf429b05c1bedf2fca4dcfd73935a09ebd902b",
+      "raw_sha256": "3eb9c00e6d159e3d9658d65c83cea89baeaa9001845d0f0311b6b253b13ec611",
+      "base_git_blob": null,
+      "lf_sha256": "3eb9c00e6d159e3d9658d65c83cea89baeaa9001845d0f0311b6b253b13ec611"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_probe.py": {
+      "git_blob": "0309b1e35efba6e64b0019d1099f6952f020dd6b",
+      "raw_sha256": "326563405072ba22644e99e162a3371c1895ec7b88991b705b41989df072f0ac",
+      "base_git_blob": null,
+      "lf_sha256": "326563405072ba22644e99e162a3371c1895ec7b88991b705b41989df072f0ac"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_oracle.py": {
+      "git_blob": "53fa63969c8db8f5a60b5b42302fb1daa1915631",
+      "raw_sha256": "783c8982398fa967bf8c2c1e413fb528411664a7ef68373d64fbe724d7338cf3",
+      "base_git_blob": null,
+      "lf_sha256": "783c8982398fa967bf8c2c1e413fb528411664a7ef68373d64fbe724d7338cf3"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_capsule.py": {
+      "git_blob": "b2de1337043daa26330bf92bb46c5dbef370ad09",
+      "raw_sha256": "5182098e7ff48bf11a168570cfa825aa848e1a72a10ee5b07725bd3d454ea012",
+      "base_git_blob": null,
+      "lf_sha256": "5182098e7ff48bf11a168570cfa825aa848e1a72a10ee5b07725bd3d454ea012"
+    },
+    "ci/test_rpf104_product_sdk.py": {
+      "git_blob": "95b40587bcd3b82c55e2c48f84e9968426941c78",
+      "raw_sha256": "b345c6ea4005a010fcaab1da8dcd3e743537ae3bd97db2dd178582194f71f1ee",
+      "base_git_blob": null,
+      "lf_sha256": "b345c6ea4005a010fcaab1da8dcd3e743537ae3bd97db2dd178582194f71f1ee"
+    },
+    "ci/test_rpf104_product_sdk_control.py": {
+      "git_blob": "6a6ed6942f7f61cbbba8288b769abfca518285a0",
+      "raw_sha256": "cf275934fad2262763f7e11821f8019eb95833d42d4ac499925ccdde3070b0b7",
+      "base_git_blob": null,
+      "lf_sha256": "cf275934fad2262763f7e11821f8019eb95833d42d4ac499925ccdde3070b0b7"
+    },
+    ".github/workflows/rpf-104-product-offline.yml": {
+      "git_blob": "284b4535667e0e4746b1a196009161ac9a858c1e",
+      "raw_sha256": "a19a292f011507c94f705c52d2f9bd26a3c470f663b85a4125c562373cdb4c24",
+      "base_git_blob": null,
+      "lf_sha256": "a19a292f011507c94f705c52d2f9bd26a3c470f663b85a4125c562373cdb4c24"
+    },
+    ".github/workflows/rpf-104-product-manual.yml": {
+      "git_blob": "d1b7a07a6f4f63ce71823232e393c6e5ee439e66",
+      "raw_sha256": "cfb1eea467f4e90f115d5e8f155ceedbbd61d0acfed8fc4f67859260f5667fc7",
+      "base_git_blob": null,
+      "lf_sha256": "cfb1eea467f4e90f115d5e8f155ceedbbd61d0acfed8fc4f67859260f5667fc7"
+    },
+    "spikes/rpf-104/README.md": {
+      "git_blob": "7c3c7888b2a0370c495f103bb20d11e738c8e2e1",
+      "raw_sha256": "c389cf14574b4373400cb8543e67f1e217d9817a33ec41a0579c08585c24742b",
+      "base_git_blob": null,
+      "lf_sha256": "c389cf14574b4373400cb8543e67f1e217d9817a33ec41a0579c08585c24742b"
+    },
+    "spikes/rpf-104/RESULT.md": {
+      "git_blob": "b9307ec04f7634ec8f28fb5d8f2cf4d6d558fb6c",
+      "raw_sha256": "c4d598f285f39f8526517a666a60a3768fd40a75c345893f1013956af4e15c15",
+      "base_git_blob": null,
+      "lf_sha256": "c4d598f285f39f8526517a666a60a3768fd40a75c345893f1013956af4e15c15"
+    },
+    "spikes/rpf-104/acceptance.json": {
+      "git_blob": "0be7b097b041fde891e51badc2c58155ec7a4b27",
+      "raw_sha256": "5a928b7fe886144c8f46359268c44ff52c809b335334281b8ec4087c8a44a4ae",
+      "base_git_blob": null,
+      "lf_sha256": "5a928b7fe886144c8f46359268c44ff52c809b335334281b8ec4087c8a44a4ae"
+    },
+    "spikes/rpf-104/verification-diagnostic.json": {
+      "git_blob": "8f54a29a4833885d44e643d2650e760a21e66c46",
+      "raw_sha256": "3821a18da82ffe2cfb2b03c45be66db035e3da3df6c9e4c8723dd2e98132ac9f",
+      "base_git_blob": null,
+      "lf_sha256": "3821a18da82ffe2cfb2b03c45be66db035e3da3df6c9e4c8723dd2e98132ac9f"
+    }
+  },
+  "physical_source_set": {
+    "product_sdk_contracts": "99f1a3f9849877f4cbbce7e32642982572dc2775f18855bd656089e0170e9d89",
+    "product_sdk_target": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e",
+    "product_sdk_host": "8a162ee97ddd82c803cf9d2b226966ad2839a445c0483158402f8d28715d8e24",
+    "product_sdk_client": "3eb9c00e6d159e3d9658d65c83cea89baeaa9001845d0f0311b6b253b13ec611",
+    "product_sdk_probe": "326563405072ba22644e99e162a3371c1895ec7b88991b705b41989df072f0ac",
+    "product_sdk_oracle": "783c8982398fa967bf8c2c1e413fb528411664a7ef68373d64fbe724d7338cf3",
+    "product_sdk_capsule": "5182098e7ff48bf11a168570cfa825aa848e1a72a10ee5b07725bd3d454ea012",
+    "effect_oracle": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+    "ops_oracle": "90a5328168be38cce869203d1e365b16ed999d79533dac5a01172d8b9eb895fa",
+    "product_local_ports": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52",
+    "product_local_contracts": "06c778e9fdd7ecdb739ade94a711cf4c017dc7000283d8128b69d7404e61b66c",
+    "sdk_presend_contracts": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+    "sdk_presend_client": "2a35312bf797d30940d5b6c495428b1ca347d368a680d3b09bba1376ff6bd626",
+    "sdk_presend_diagnostic": "121e885a6d981886ff37af9e017ed33adf1c93fae17a5f128d47226095a205be",
+    "sdk_presend_oracle": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b",
+    "sdk_presend_host": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846",
+    "sdk_presend_probe": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad"
+  }
+}

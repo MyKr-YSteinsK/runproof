@@ -1,0 +1,29 @@
+{
+  "schema": "rpf104-acceptance-v1",
+  "base": "06d0c3ff6449ad237b24df510ca7f4460cd2781e",
+  "status_at_seal": "PARTIAL",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "PASS",
+    "A07": "NOT_RUN",
+    "A08": "NOT_RUN",
+    "A09": "NOT_RUN"
+  },
+  "scope": {
+    "A03": "formal transactions not run; hosted SQLite fixture pending at seal",
+    "A04": "synthetic barrier controls pass; physical not run",
+    "A06": "offline Oracle only; physical not run",
+    "A07": "offline schema controls pass; artifact not run",
+    "A08": "local compile and tests pass; hosted and Git not run at seal",
+    "A09": "environment lookup 404"
+  },
+  "release_eligible": false,
+  "TASK_COMPLETE": "PHYSICAL_ACCEPTANCE_PENDING",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_DECISION",
+  "STAGE_ADVANCED": "ARCHITECT_DECISION"
+}
