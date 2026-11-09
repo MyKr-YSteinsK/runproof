@@ -1,6 +1,6 @@
 # Local SDK pre-send conformance
 
-RPF-102 runs a real installed SDK against a local Host and an independent loopback receiver. The Host returns scripted completion and tool-call responses. The SDK sends the next completion after the tool returns, while the Host separately counts inbound requests, durable reservations, physical forwards, and received bytes.
+RPF-102 defines a conformance experiment with a local Host, a real SDK, and an independent loopback Receiver. The Host serves scripted completions and tracks inbound requests, durable reservations, physical forwards, and received bytes separately. The first formal NORMAL attempt failed. UNKNOWN still awaits execution.
 
 Run the local no-SDK controls with a verified interpreter from the repository root:
 
@@ -9,9 +9,18 @@ Run the local no-SDK controls with a verified interpreter from the repository ro
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <32-hex-owner> --preflight
 ```
 
-The dedicated Ubuntu workflow is the authorized installation route. It uses an isolated venv, exact direct pins, a wheel-only PyPI installation, and records pip check and the resolved package versions. The physical runner admits only that task-owned SDK environment. Each formal owner accepts one NORMAL and one UNKNOWN case.
+The automatic Ubuntu workflow runs offline tests and documentation checks and records `SDK_PHYSICAL_NOT_RUN_BY_PLAN`. Any future formal attempt requires separate approval for its commit, isolated runner, and physical budget.
 
-After an admitted run, inspect the owner without executing the SDK:
+After a future approved run, read its public diagnostic and validate it before upload:
+
+```text
+<python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <new-owner> --diagnostic NORMAL > diagnostic.json
+<python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_diagnostic < diagnostic.json
+```
+
+Use a separate file for each started case. An unavailable diagnostic leaves stdout empty and exits nonzero. In a future approved CI job, make collection run after failure with `always()` and allow upload only for JSON that passes validation. The envelope contains allowlisted fields and explicit `null` counts when evidence is missing. Keep the underlying WAL, stdout, requests, and Receiver bytes private.
+
+Use the independent Oracle to check complete case evidence:
 
 ```text
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_oracle <owner> NORMAL

@@ -164,11 +164,11 @@ def transfer(journal, ticket, raw, ready):
           and launch["nonce"] == ready["nonce"] and launch["exe_sha256"] == ready["exe_sha256"]
           and type(ready["port"]) is int and 0 < ready["port"] < 65536
           and not safe(journal.folder / "receiver-exit.json").exists(), "RECEIVER_IDENTITY")
+    journal.begin(ticket, raw)
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
         sock.settimeout(4)
         sock.connect(("127.0.0.1", ready["port"]))
         check(hmac.compare_digest(read_exact(sock, 64), ready["nonce"].encode("ascii")), "RECEIVER_NONCE")
-        journal.begin(ticket, raw)
         journal.append("SEND_ENTRY", ticket)
         start = time.monotonic_ns()
         sock.sendall(struct.pack("!I", len(raw)) + raw)
@@ -205,13 +205,16 @@ class Session:
             number = self.posts + 1
             validate_request(raw, number, self.journal.case)
             check(number == 1 or self.called, "TOOL_RETURN_REQUIRED")
-            self.posts = number
             exclusive(self.journal.folder / f"sdk-post-{number}.raw", raw)
             self.journal.append("SDK_POST_RECEIVED", {"number": number, "sha256": sha(raw), "bytes": len(raw)})
+            self.posts = number
             try:
                 ticket = self.journal.reserve(sha(raw))
             except Denied as exc:
-                check(self.journal.case == "UNKNOWN" and number == 2 and str(exc) == "UNKNOWN_OR_PERSISTENCE_UNCERTAIN",
+                check(self.journal.case == "UNKNOWN" and number == 2
+                      and str(exc) == "UNKNOWN_OR_PERSISTENCE_UNCERTAIN"
+                      and any(row["kind"] == "UNKNOWN_OBSERVED" and row["body"] == {"call_id": CALL}
+                              for row in self.journal.rows()),
                       "UNEXPECTED_ADMISSION_FAILURE")
                 self.journal.append("DENY", {"number": number, "reason": "UNKNOWN_DURABLE"})
                 return 409, {"error": {"message": "UNKNOWN_DURABLE", "type": "local_admission_denied",
@@ -244,7 +247,13 @@ def http_server(session, token):
                 check(len(body) == size, "TRUNCATED_HTTP")
                 code, result = session.handle(self.path, body)
             except (OSError, ValueError, KeyError, TypeError, AttributeError, RecursionError) as exc:
-                session.failure = str(exc) if type(exc) is Denied else type(exc).__name__
+                if session.failure is None:
+                    if type(exc) is Denied:
+                        session.failure = str(exc)
+                    elif isinstance(exc, (ValueError, KeyError, TypeError, AttributeError, RecursionError)):
+                        session.failure = type(exc).__name__
+                    else:
+                        session.failure = "HOST_IO_FAILURE"
                 session.journal.poison = True
                 code, result = 400, {"error": {"message": "LOCAL_GUARD_REJECTED", "type": "guard_error"}}
             raw = canonical(result)

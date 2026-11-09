@@ -13,9 +13,12 @@ import sysconfig
 import threading
 import time
 
-from .sdk_presend_contracts import (BUDGET, CASES, LIMIT, PINS, ROOT, REPO, bounded, canonical,
+from .sdk_presend_contracts import (BUDGET, CASES, LIMIT, PINS, REPO, Denied, bounded, canonical,
                                    check, exclusive, identity, owner_path, safe, sha, strict)
+from .sdk_presend_diagnostic import (CONTEXT, REPORT, MAX_BYTES, READ_ERRORS, child_report, collect,
+                                     context, inspect_diagnostic)
 from .sdk_presend_host import Journal, Session, http_server, read_exact
+from .sdk_presend_oracle import inspect_case
 
 
 def executable_hash():
@@ -87,9 +90,8 @@ def finish(process, timeout):
         return process.wait(timeout=5)
 
 
-def run_case(owner, case):
+def run_case(owner, case, facts):
     folder = safe(owner / case)
-    folder.mkdir(exist_ok=False)
     nonce = secrets.token_hex(32)
     receiver_start = time.monotonic_ns()
     receiver = launch(folder, __name__ if __name__ != "__main__" else
@@ -106,8 +108,9 @@ def run_case(owner, case):
                 break
             except (FileNotFoundError, ValueError):
                 time.sleep(.02)
-        check(ready is not None and ready["pid"] == receiver.pid and ready["nonce"] == nonce
-              and ready["exe_sha256"] == executable_hash(), "RECEIVER_READY")
+        check(ready is not None, "RECEIVER_ABSENT")
+        check(type(ready) is dict and ready.get("pid") == receiver.pid and ready.get("nonce") == nonce
+              and ready.get("exe_sha256") == executable_hash(), "RECEIVER_RECEIPT_MISMATCH")
         with Journal(folder, case).open(create=True) as journal:
             session = Session(journal, ready)
             token = "rpf102-dummy-" + secrets.token_hex(32)
@@ -119,6 +122,7 @@ def run_case(owner, case):
                 thread.start()
                 sdk = None
                 try:
+                    facts.update(phase="SDK", attempted=True)
                     sdk_start = time.monotonic_ns()
                     sdk = launch(folder, "runtime.runproof_runtime.effectwitness.sdk_presend_client",
                                  "main", [], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
@@ -129,52 +133,59 @@ def run_case(owner, case):
                     try:
                         raw, _ = sdk.communicate(config, timeout=45)
                     except subprocess.TimeoutExpired:
+                        facts["timed_out"] = True
                         sdk.kill()
                         raw, _ = sdk.communicate(timeout=5)
-                    check(len(raw) <= 8192, "SDK_OUTPUT_LIMIT")
-                    exclusive(folder / "sdk-output.json", raw)
                     exclusive(folder / "sdk-exit.json", canonical({"pid": sdk.pid, "exit": sdk.returncode,
                               "exit_ns": time.monotonic_ns(), "stdout_sha256": sha(raw)}))
-                    if sdk.returncode or session.failure or session.posts != 2:
-                        try:
-                            report = strict(raw)
-                        except (ValueError, RecursionError):
-                            report = None
-                        if type(report) is not dict:
-                            report = {}
-                        kinds = [row["kind"] for row in journal.rows()]
-                        print(json.dumps({"case": case, "status": "SDK_FAILED",
-                                          "sdk_exit": sdk.returncode,
-                                          "host_reason": session.failure, "sdk_error": report.get("error_type"),
-                                          "stage": report.get("stage"), "accepted_posts": session.posts,
-                                          "provider_tickets": kinds.count("PROVIDER_RESERVE"),
-                                          "send_entries": kinds.count("SEND_ENTRY")}), flush=True)
-                        check(False, "SDK_EXECUTION_FAILED")
-                    journal.append("SDK_TERMINAL", {"sha256": sha(raw), "exit": sdk.returncode})
+                    if len(raw) <= MAX_BYTES:
+                        exclusive(folder / "sdk-output.json", raw)
                 finally:
                     if sdk is not None and sdk.poll() is None:
                         sdk.kill()
                         sdk.wait(timeout=5)
                     server.shutdown()
                     thread.join(timeout=6)
+                    facts["host_code"] = session.failure
                     check(not thread.is_alive(), "HOST_THREAD_ACTIVE")
+                check(not facts.get("timed_out") and sdk.returncode == 0 and session.failure is None
+                      and session.posts == 2, "CASE_INCOMPLETE")
+                check(child_report(raw, case)[2] == 1, "SDK_OUTPUT_INVALID")
+                journal.append("SDK_TERMINAL", {"sha256": sha(raw), "exit": sdk.returncode})
     finally:
         code = finish(receiver, 8)
         exclusive(folder / "receiver-exit.json", canonical({"pid": receiver.pid, "exit": code,
                   "exit_ns": time.monotonic_ns(), "exe_sha256": executable_hash()}))
-    check(code == 0, "RECEIVER_EXIT")
+    check(code == 0, "RECEIVER_ABSENT")
 
 
 def run(owner):
     admitted = preflight(owner)
     check(admitted["status"] == "SDK_ADMITTED" and not admitted["formal_occupied"], "SDK_ADMISSION")
     exclusive(owner / "formal.json", canonical({"cases": CASES, "max_sends": 3, "max_bytes": 3 * LIMIT}))
-    from .sdk_presend_oracle import inspect_case
     results = []
     for case in CASES:
-        run_case(owner, case)
-        results.append(inspect_case(owner.name, case))
-        print(json.dumps(results[-1], sort_keys=True), flush=True)
+        folder = safe(owner / case)
+        folder.mkdir(exist_ok=False)
+        exclusive(folder / CONTEXT, canonical(context(folder, case)))
+        facts = {"phase": "RECEIVER", "attempted": False}
+        try:
+            run_case(owner, case, facts)
+            facts["phase"] = "ORACLE"
+            results.append(inspect_case(owner.name, case))
+        except READ_ERRORS as exc:
+            if facts["phase"] == "ORACLE":
+                facts["outcome"] = "ORACLE_REJECTED"
+            elif type(exc) is Denied and str(exc) in ("RECEIVER_ABSENT", "RECEIVER_RECEIPT_MISMATCH"):
+                facts["outcome"] = str(exc)
+            raise
+        else:
+            facts.update(phase="TERMINAL",
+                         outcome="NORMAL_VERIFIED" if case == "NORMAL" else "UNKNOWN_EXPECTED_DENIAL")
+        finally:
+            report = canonical(collect(folder, case, **facts))
+            exclusive(folder / REPORT, report)
+            print(report.decode("ascii"), flush=True)
     return results
 
 
@@ -185,6 +196,7 @@ def main():
     options.add_argument("--preflight", action="store_true")
     options.add_argument("--run", action="store_true")
     options.add_argument("--inspect", choices=CASES)
+    options.add_argument("--diagnostic", choices=CASES)
     args = parser.parse_args()
     try:
         owner = owner_path(args.owner)
@@ -192,12 +204,17 @@ def main():
             print(json.dumps(preflight(owner), sort_keys=True))
         elif args.run:
             run(owner)
+        elif args.diagnostic:
+            print(canonical(inspect_diagnostic(safe(owner / args.diagnostic), args.diagnostic)).decode("ascii"))
         else:
-            from .sdk_presend_oracle import inspect_case
             print(json.dumps(inspect_case(owner.name, args.inspect), sort_keys=True))
         return 0
-    except (OSError, ValueError, KeyError, TypeError, AttributeError, RecursionError) as exc:
-        print(json.dumps({"status": "REJECTED", "reason": str(exc) if type(exc).__name__ == "Denied" else type(exc).__name__}))
+    except READ_ERRORS:
+        if args.diagnostic:
+            # Stdout stays empty so it cannot be mistaken for an uploadable envelope.
+            print("EVIDENCE_UNAVAILABLE", file=sys.stderr)
+        else:
+            print(json.dumps({"status": "REJECTED", "reason": "RUN_REJECTED" if args.run else "CHECK_FAILED"}))
         return 3
 
 

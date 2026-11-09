@@ -32,6 +32,30 @@ def digest(value):
     return isinstance(value, str) and re.fullmatch(r"[a-f0-9]{64}", value) is not None
 
 
+def receiver_identity(owner, case, ready, launch, done):
+    check(set(ready) == {"owner", "case", "host", "port", "pid", "exe_sha256", "nonce", "ready_ns"}
+          and ready["case"] == case and ready["owner"] == owner and ready["host"] == "127.0.0.1"
+          and type(ready["port"]) is int and 0 < ready["port"] < 65536
+          and digest(ready["exe_sha256"]) and ready["exe_sha256"] == launch["exe_sha256"] == done["exe_sha256"]
+          and all(type(p) is int for p in (launch["pid"], ready["pid"], done["pid"]))
+          and ready["pid"] > 0 and launch["pid"] == ready["pid"] == done["pid"]
+          and digest(ready["nonce"]) and ready["nonce"] == launch["nonce"]
+          and type(done["exit"]) is int
+          and all(type(t) is int for t in (launch["start_ns"], ready["ready_ns"], done["exit_ns"]))
+          and 0 < launch["start_ns"] <= ready["ready_ns"] <= done["exit_ns"], "RECEIVER_LAUNCH")
+    return ready, launch, done
+
+
+def receiver_payload(owner, case, ready, done, index, raw, receipt):
+    check(0 < len(raw) <= LIMIT and all(type(receipt.get(k)) is int for k in ("index", "pid", "bytes"))
+          and receipt == {
+        "index": index, "owner": owner, "case": case, "pid": ready["pid"], "nonce": ready["nonce"],
+        "bytes": len(raw), "sha256": sha(raw), "received_ns": receipt["received_ns"],
+    } and type(receipt["received_ns"]) is int and ready["ready_ns"] <= receipt["received_ns"] <= done["exit_ns"],
+          "RECEIVER_BYTES")
+    return len(raw)
+
+
 def verify(owner, case, files, expected=None):
     check(case in CASES and re.fullmatch(r"[a-f0-9]{32}", owner), "CASE_IDENTITY")
     anchor = sha(canonical({name: sha(data) for name, data in files.items()}))
@@ -43,9 +67,9 @@ def verify(owner, case, files, expected=None):
     output = strict(files["sdk-output.json"])
     done = strict(files["sdk-exit.json"])
     host = launch["host"]
-    ready = strict(files["receiver-ready.json"])
-    receiver = strict(files["receiver-launch.json"])
-    receiver_done = strict(files["receiver-exit.json"])
+    ready, _, receiver_done = receiver_identity(owner, case, strict(files["receiver-ready.json"]),
+                                                strict(files["receiver-launch.json"]),
+                                                strict(files["receiver-exit.json"]))
     exe = launch["exe_sha256"]
     check(digest(exe) and type(host["pid"]) is int and type(ready["pid"]) is int
           and type(output["pid"]) is int and min(host["pid"], ready["pid"], output["pid"]) > 0
@@ -55,13 +79,8 @@ def verify(owner, case, files, expected=None):
           and launch["network"] == "HOST_LOOPBACK_ONLY" and launch["pid"] == output["pid"] == done["pid"]
           and output["exe_sha256"] == exe and done["exit"] == 0 and launch["start_ns"] <= done["exit_ns"]
           and done["stdout_sha256"] == sha(files["sdk-output.json"]), "SDK_PROCESS_BINDING")
-    check(set(ready) == {"owner", "case", "host", "port", "pid", "exe_sha256", "nonce", "ready_ns"}
-          and ready["case"] == case and ready["owner"] == owner and ready["host"] == "127.0.0.1"
-          and type(ready["port"]) is int and 0 < ready["port"] < 65536 and ready["port"] != host["port"]
-          and ready["exe_sha256"] == exe and receiver["exe_sha256"] == exe == receiver_done["exe_sha256"]
-          and receiver["pid"] == ready["pid"] == receiver_done["pid"] and receiver_done["exit"] == 0
-          and digest(ready["nonce"]) and ready["nonce"] == receiver["nonce"]
-          and receiver["start_ns"] <= ready["ready_ns"] <= launch["start_ns"], "RECEIVER_LAUNCH")
+    check(ready["port"] != host["port"] and ready["exe_sha256"] == exe and receiver_done["exit"] == 0
+          and ready["ready_ns"] <= launch["start_ns"], "RECEIVER_LAUNCH")
     packages = output["packages"]
     check(set(packages) == set(PINS), "SDK_PACKAGE_SET")
     for name, version in PINS.items():
@@ -95,10 +114,8 @@ def verify(owner, case, files, expected=None):
         receiver_raw = files[f"receiver-{i}.raw"]
         receipt = strict(files[f"receiver-{i}.json"])
         sender = strict(files[f"sender-{i}.json"])
-        check(receiver_raw == raw and receipt == {
-            "index": i, "owner": owner, "case": case, "pid": ready["pid"], "nonce": ready["nonce"],
-            "bytes": len(raw), "sha256": sha(raw), "received_ns": receipt["received_ns"],
-        }, "RECEIVER_BYTES")
+        check(receiver_raw == raw, "RECEIVER_BYTES")
+        receiver_payload(owner, case, ready, receiver_done, i, receiver_raw, receipt)
         core = {"number": i, "domain": "order", "role": "TARGET", "request_sha256": sha(raw)}
         ticket = {**core, "id": sha(canonical({"ready": rows[0]["sha256"], "ticket": core}))}
         check(sender == {"pid": host["pid"], "ticket": ticket, "nonce": ready["nonce"],
@@ -139,7 +156,7 @@ def inspect_case(owner, case, expected=None):
     folder = safe(owner_path(owner) / case)
     check(not safe(folder / "active").exists(), "PERSISTENCE_UNCERTAIN")
     names = member_names(case)
-    allowed = set(names) | {"writer.lock"}
+    allowed = set(names) | {"writer.lock", "diagnostic-context.json", "diagnostic.json"}
     check({entry.name for entry in folder.iterdir()} <= allowed, "UNEXPECTED_CASE_MEMBER")
     files = {name: bounded(folder / name, 131072 if name == "wal.jsonl" else LIMIT) for name in names}
     return verify(owner, case, files, expected)

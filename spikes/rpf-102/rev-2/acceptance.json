@@ -1,0 +1,17 @@
+{
+  "schema": "rpf102-rev2-acceptance-v1",
+  "base": "0138fedd5e90bae7a7d53f140b363e84341a310e",
+  "gates": {
+    "G0": {"status": "PASS", "scope": "BOUND_BASE_AND_PATHS"},
+    "A01": {"status": "PASS", "scope": "OFFLINE_FAILURE_CLASSIFICATION"},
+    "A02": {"status": "PASS", "scope": "PUBLIC_ENVELOPE_AND_REDACTION_CONTROLS"},
+    "A03": {"status": "PASS", "scope": "TAGGED_SOURCE_AND_SYNTHETIC_CONTRACT_ONLY"},
+    "A04": {"status": "PASS", "scope": "OFFLINE_DURABILITY_AND_REANCHORED_ORACLE_CONTROLS"},
+    "A05": {"status": "PASS", "scope": "AUTOMATIC_WORKFLOW_OFFLINE_ONLY"},
+    "A06": {"status": "PASS", "scope": "LOCAL_FOCUSED_TESTS_AND_STATIC_CHECKS"},
+    "A07": {"status": "NOT_APPLICABLE", "scope": "FORMAL_PHYSICAL_RUN_OUTSIDE_REV2"},
+    "A08": {"status": "NOT_RUN", "scope": "REMOTE_RECEIPTS_NOT_RUN_AT_SEAL"}
+  },
+  "rev1_formal": {"NORMAL": "FAIL", "UNKNOWN": "NOT_RUN", "root_cause": "UNDETERMINED"},
+  "release_eligible": false
+}

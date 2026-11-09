@@ -1,6 +1,6 @@
 # 本地 SDK 预发送验收
 
-RPF-102 让实际安装的 SDK 连接本机 Host，由独立回环接收进程保存转发字节。Host 返回脚本化 completion 与工具调用，SDK 在工具回注后发起后续 completion。入站请求、持久预约、物理转发和接收字节分别计数。
+RPF-102 定义了由真实 SDK、本机 Host 和独立回环 Receiver 组成的一致性实验。Host 提供脚本化 completion，并分别统计入站请求、持久预约、物理转发和接收字节。首次正式 NORMAL 失败，UNKNOWN 尚待执行。
 
 在仓库根使用已核实的解释器运行无 SDK 负控：
 
@@ -9,9 +9,18 @@ RPF-102 让实际安装的 SDK 连接本机 Host，由独立回环接收进程�
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <32位十六进制owner> --preflight
 ```
 
-独立 Ubuntu 工作流提供获授权的安装路径。它在隔离 venv 从 PyPI 安装固定直接版本的 wheel，并记录 pip check 与实际依赖版本。正式运行仅接纳该任务自有 SDK 环境。每个正式 owner 只接纳一组 NORMAL 与 UNKNOWN。
+自动 Ubuntu 工作流只运行离线测试和文档检查，并记录 `SDK_PHYSICAL_NOT_RUN_BY_PLAN`。将来的正式运行须单独批准固定提交、隔离 runner 和物理额度。
 
-准入运行后可以脱离 SDK 离线检查：
+将来获准运行后，可以离线读取公开诊断并在上传前校验：
+
+```text
+<python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <新owner> --diagnostic NORMAL > diagnostic.json
+<python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_diagnostic < diagnostic.json
+```
+
+每个已启动场景使用独立文件。诊断不可用时命令以非零退出，stdout 为空。未来获准的 CI 可用 `always()` 在失败后收集诊断，仅上传通过校验的 JSON。回执只含白名单字段，缺少计数证据时使用 `null`。WAL、stdout、请求原文与 Receiver 字节保留在私有范围。
+
+独立 Oracle 用于检查完整的场景证据：
 
 ```text
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_oracle <owner> NORMAL

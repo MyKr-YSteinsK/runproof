@@ -1,0 +1,39 @@
+{
+  "schema": "rpf102-rev2-verification-v1",
+  "history": {
+    "formal_sha": "5e58bf0023d8a4271a478b6f11573d120abebafb",
+    "formal_run": 42580171633,
+    "artifact_count": 0,
+    "sdk_admission": "SDK_ADMITTED",
+    "normal": "SDK_EXECUTION_FAILED",
+    "unknown": "NOT_RUN",
+    "root_cause": "UNDETERMINED",
+    "sdk_exit": null,
+    "provider_reserve_count": null,
+    "send_entry_count": null,
+    "received_bytes": null,
+    "rev1_final_sha": "0138fedd5e90bae7a7d53f140b363e84341a310e",
+    "rev1_offline_run": 42580627909,
+    "rev1_canonical_run": 42580628001
+  },
+  "local": {
+    "python": "3.14.7",
+    "test_kind": "OFFLINE_ONLY",
+    "tests_passed": 12,
+    "python_files_compiled": 7,
+    "public_docs": {"files": 18, "pairs": 7},
+    "automatic_workflow": "SDK_PHYSICAL_NOT_RUN_BY_PLAN"
+  },
+  "rev2_resources": {
+    "stdlib_exit_control_children": 4,
+    "formal_runs": 0,
+    "sdk_children": 0,
+    "receiver_children": 0,
+    "listeners": 0,
+    "application_forwards": 0,
+    "external_provider_calls": 0,
+    "business_writes": 0,
+    "sdk_installs": 0
+  },
+  "hosted": "NOT_RUN_AT_SEAL"
+}

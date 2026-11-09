@@ -8,6 +8,7 @@ from pathlib import Path
 import sys
 
 from .sdk_presend_contracts import CALL, MODEL, PINS, PROMPT, STOP, TOOL, canonical, check, sha, strict
+from .sdk_presend_diagnostic import ERRORS, allowed
 
 
 def guard(port, folder, site):
@@ -48,7 +49,8 @@ def package_identity(site, agent, openai):
     return evidence
 
 
-async def execute(port, token, case, site):
+async def execute(port, token, case, site, progress):
+    progress["stage"] = "SDK_IMPORT"
     import httpx2
     from openai import AsyncOpenAI
     from pydantic_ai import Agent, RunContext
@@ -57,6 +59,7 @@ async def execute(port, token, case, site):
     from pydantic_ai.providers.openai import OpenAIProvider
     from pydantic_ai.usage import UsageLimits
 
+    progress["stage"] = "SDK_INIT"
     evidence = package_identity(site, Agent, AsyncOpenAI)
     calls = []
     host = f"http://127.0.0.1:{port}"
@@ -65,19 +68,23 @@ async def execute(port, token, case, site):
 
         async def inspect_local(ctx: RunContext[None]) -> dict:
             """Read the result of the fixed fictional conformance tool."""
+            progress["stage"] = "SDK_TOOL_CALLBACK"
             check(ctx.tool_call_id == CALL and not calls, "SDK_TOOL_ID")
             result = await http.post(host + "/tool", content=canonical({"call_id": CALL, "name": TOOL}),
                                      headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"})
             result.raise_for_status()
             value = result.json()
             calls.append({"call_id": CALL, "value": value})
+            progress["stage"] = "SDK_RUN"
             return value
 
         agent = Agent(OpenAIChatModel(MODEL, provider=OpenAIProvider(openai_client=client)),
                       tools=[inspect_local], retries=0,
                       model_settings={"max_tokens": 128, "parallel_tool_calls": False})
         try:
+            progress["stage"] = "SDK_RUN"
             result = await agent.run(PROMPT, usage_limits=UsageLimits(request_limit=2, tool_calls_limit=1))
+            progress["stage"] = "SDK_REPORT"
             check(case == "NORMAL" and result.output == STOP, "SDK_TERMINAL_OUTPUT")
             terminal = {"status": "COMPLETED", "output_sha256": sha(STOP.encode()),
                         "sdk_reported_requests": result.usage.requests, "sdk_reported_tool_calls": result.usage.tool_calls,
@@ -86,6 +93,7 @@ async def execute(port, token, case, site):
                         "usage_kind": "SYNTHETIC_LOCAL_MODEL_RESPONSE"}
         except ModelHTTPError as exc:
             check(case == "UNKNOWN" and exc.status_code == 409, "SDK_UNEXPECTED_HTTP_STATUS")
+            progress["stage"] = "SDK_REPORT"
             terminal = {"status": "DENIED_AFTER_UNKNOWN", "error_type": type(exc).__name__,
                         "http_status": exc.status_code, "usage_kind": "UNAVAILABLE"}
     return {"pid": os.getpid(), "exe_sha256": sha(Path(sys.executable).read_bytes()), "packages": evidence,
@@ -93,7 +101,7 @@ async def execute(port, token, case, site):
 
 
 def main():
-    stage = "CONFIG"
+    progress = {"stage": "CONFIG"}
     try:
         config = strict(sys.stdin.buffer.read(4097))
         check(set(config) == {"port", "token", "case", "site", "folder"} and sys.flags.isolated
@@ -105,12 +113,12 @@ def main():
         check(not any(str(site) == item for item in sys.path), "SDK_PATH_ALREADY_ADDED")
         sys.path.insert(0, str(site))
         guard(port, folder, site)
-        stage = "SDK_EXECUTION"
-        report = asyncio.run(asyncio.wait_for(execute(port, config["token"], config["case"], site), 40))
+        report = asyncio.run(asyncio.wait_for(execute(port, config["token"], config["case"], site, progress), 40))
         print(json.dumps(report, sort_keys=True), flush=True)
         return 0
     except Exception as exc:
-        print(json.dumps({"status": "SDK_ERROR", "stage": stage, "error_type": type(exc).__name__}), flush=True)
+        print(json.dumps({"status": "SDK_ERROR", "stage": progress["stage"],
+                          "error_type": allowed(type(exc).__name__, ERRORS)}), flush=True)
         return 1
 
 
