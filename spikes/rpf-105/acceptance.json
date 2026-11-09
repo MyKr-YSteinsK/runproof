@@ -1,0 +1,20 @@
+{
+  "schema": "rpf105-acceptance-v1",
+  "base": "4f52e9595d55f1ea6a683f7ad7f1f814db452d04",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS_BYTE_IDENTICAL",
+    "A02": "PASS_PUBLIC_PROJECTION",
+    "A03": "PASS_SCOPED_SCAN",
+    "A04": "PASS",
+    "A05": "PASS_HISTORICAL_AND_SYNTHETIC",
+    "A06": "PASS_SYNTHETIC",
+    "A07": "PASS_LOCAL",
+    "A08": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_RUN"
+  },
+  "TASK_COMPLETE": "DELIVERY_PENDING_AT_SEAL",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_DECISION",
+  "STAGE_ADVANCED": "ARCHITECT_DECISION",
+  "release_eligible": false
+}

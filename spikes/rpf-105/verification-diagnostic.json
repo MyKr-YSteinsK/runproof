@@ -1,0 +1,613 @@
+{
+  "schema": "rpf105-verification-v1",
+  "historical_evidence": {
+    "run_id": "42647430199",
+    "artifact_id": 13687917824,
+    "source_git_sha": "4f52e9595d55f1ea6a683f7ad7f1f814db452d04",
+    "owner": "7529d60e439b4ff3abb332b41022d387",
+    "outer_bytes": 11072,
+    "outer_sha256": "c917ce175f1fb56c4ee768ab1aee184e2d710cdba65fa0390d10d79807bd67b3",
+    "inner_bytes": 11050,
+    "inner_sha256": "763d9d5faec3a2fbee5322df80c8e2256d4edeba4ba9b0a1345d6146313e960b",
+    "manifest_sha256": "8288f4b301ca3feefbe7472be93133b074de7320975c2db7060d3b2fd8356052",
+    "cases": {
+      "NORMAL": {
+        "wal_rows": 36,
+        "wal_tip_sha256": "b372e5e090475d80737b8deeaab4064e4eb66576c7b6ef3574d6baa3235568bd",
+        "post_unknown": null,
+        "sdk_posts": 3,
+        "tool_callbacks": 2,
+        "business_writes": 2,
+        "forwards": 3,
+        "receiver_bytes": 2854,
+        "verification": "PUBLIC_PROJECTION_CHECKED"
+      },
+      "UNKNOWN": {
+        "wal_rows": 28,
+        "wal_tip_sha256": "e21bbfef21cdcc3f3afa401ea3f7ac84206492d30f85d2847ad6d8e670691060",
+        "post_unknown": {
+          "PROVIDER_RESERVE": 0,
+          "SEND_BEGIN": 0,
+          "SEND_ENTRY": 0,
+          "WRITE_COMMIT": 0,
+          "WRITE_INTENT": 0
+        },
+        "sdk_posts": 2,
+        "tool_callbacks": 1,
+        "business_writes": 1,
+        "forwards": 1,
+        "receiver_bytes": 582,
+        "verification": "PUBLIC_PROJECTION_CHECKED"
+      }
+    },
+    "issuer": "NOT_ESTABLISHED",
+    "provider_kind": "SCRIPTED_LOCAL",
+    "real_explorer": "NOT_RUN",
+    "external_provider_requests": 0
+  },
+  "github": {
+    "job_id": 129264384616,
+    "run_attempt": 1,
+    "approval_environment": "rpf-104-physical",
+    "conclusion": "success",
+    "expires_at": "2026-11-23T15:44:29Z",
+    "oracle_require_complete": "PASS"
+  },
+  "scope": {
+    "archive_scan": "PASS_STRUCTURE_AND_PATTERN",
+    "private_receiver_originals": "NOT_AVAILABLE",
+    "independent_physical_reproduction": "NOT_RUN"
+  },
+  "tests": {
+    "python": "3.14.7",
+    "new_pass": 15,
+    "rpf103_pass": 8,
+    "public_docs": "PASS_18_FILES_7_PAIRS",
+    "python_compile": "PASS",
+    "workflow_static": "PASS"
+  },
+  "replay": {
+    "schema": "rpf105-selection-replay-v1",
+    "evidence_origin": "SYNTHETIC_SELECTION_TEST",
+    "explorer_kind": "FIXTURE",
+    "actual_tool_calls": 0,
+    "physical_runs": 0,
+    "real_explorer": "NOT_RUN",
+    "traces": [
+      {
+        "scenario": "INITIAL_FROZEN_SEED",
+        "remaining_budget": {
+          "cases": 2,
+          "writes": 3,
+          "forwards": 4
+        },
+        "feedback_quality": "NO_PREVIOUS_ROUND",
+        "feedback_anchor": null,
+        "fixture": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "d96ad718cb150a51a31abbb3491b99b62165b839ffc11df4f49be75565e26a61",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "contract_sha256": "f4a2713d2d5c9742432425b78ea972ea053972ac17b325318a1e3ca5b3ee5026",
+            "status": "ACCEPT",
+            "reason": "INITIAL_FROZEN_SEED",
+            "requested_debit": {
+              "cases": 1,
+              "writes": 2,
+              "forwards": 3
+            },
+            "next_permission": "FIXTURE_ONLY",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "c48be2c77ef448e316e4e1a352f9929d3b3a0fb1c028186aa56724acb156c396"
+          }
+        },
+        "fixed_order": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "d96ad718cb150a51a31abbb3491b99b62165b839ffc11df4f49be75565e26a61",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "contract_sha256": "f4a2713d2d5c9742432425b78ea972ea053972ac17b325318a1e3ca5b3ee5026",
+            "status": "ACCEPT",
+            "reason": "INITIAL_FROZEN_SEED",
+            "requested_debit": {
+              "cases": 1,
+              "writes": 2,
+              "forwards": 3
+            },
+            "next_permission": "FIXTURE_ONLY",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "c48be2c77ef448e316e4e1a352f9929d3b3a0fb1c028186aa56724acb156c396"
+          }
+        },
+        "candidate_filter": {
+          "rpf104/NORMAL": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "d96ad718cb150a51a31abbb3491b99b62165b839ffc11df4f49be75565e26a61",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "contract_sha256": "f4a2713d2d5c9742432425b78ea972ea053972ac17b325318a1e3ca5b3ee5026",
+            "status": "ACCEPT",
+            "reason": "INITIAL_FROZEN_SEED",
+            "requested_debit": {
+              "cases": 1,
+              "writes": 2,
+              "forwards": 3
+            },
+            "next_permission": "FIXTURE_ONLY",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "c48be2c77ef448e316e4e1a352f9929d3b3a0fb1c028186aa56724acb156c396"
+          },
+          "rpf104/UNKNOWN": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "564a8f7e6bb361fb2d4481812e2a5070cf687aed66a8c99319c5274cf9e87b4d",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "REJECT",
+            "reason": "FROZEN_SEED_REQUIRED",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "498dd8ff946d6b1b6a7a54d6138c0247d8dd87dae00d6b498c73e04c54cd0888"
+          },
+          "STOP": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "925158769db5fd6971f2abc39d6591ddcd03bcf618131de3e34d865f40844fc1",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "f6a9882eac635350b683b3604d1f1611419d69c3e569c4e916b03fa3794037d6",
+            "feedback_sha256": null,
+            "candidate_id": "STOP",
+            "candidate_sha256": "b62f43f0b7bddc4b93641d34c9cf678ebeaa62f514a67c06d9676d8722d318f1",
+            "contract_sha256": null,
+            "status": "MUST_STOP",
+            "reason": "EXPLORER_STOP",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "46cf5f2e55c6d455f03df793841036887a560bed4cee93734ee1b6c8fc5ba0b6"
+          }
+        },
+        "actual_execution": "NOT_RUN"
+      },
+      {
+        "scenario": "MISSING_CONTINUATION_FEEDBACK",
+        "remaining_budget": {
+          "cases": 1,
+          "writes": 1,
+          "forwards": 1
+        },
+        "feedback_quality": "MISSING",
+        "feedback_anchor": null,
+        "fixture": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "35edbd52be5bf81391b4d48d7f9e642df9e3961cbd378cdf653989829e2eabf8",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "MUST_STOP",
+            "reason": "MISSING_CONTINUATION_FEEDBACK",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "529c6b1fc8d0c6e1e02f612bfa622a68c8dcaef3a05336ebd360915976f83736"
+          }
+        },
+        "fixed_order": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "35edbd52be5bf81391b4d48d7f9e642df9e3961cbd378cdf653989829e2eabf8",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "MUST_STOP",
+            "reason": "MISSING_CONTINUATION_FEEDBACK",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "529c6b1fc8d0c6e1e02f612bfa622a68c8dcaef3a05336ebd360915976f83736"
+          }
+        },
+        "candidate_filter": {
+          "rpf104/NORMAL": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "e4b3471b4232526cfb2fb6bd99b4887e54b2531c59c576479664ecc17d7350e8",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "contract_sha256": "f4a2713d2d5c9742432425b78ea972ea053972ac17b325318a1e3ca5b3ee5026",
+            "status": "REJECT",
+            "reason": "CONTINUATION_SCOPE",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "7ea3ef4c483bfa47543331abc8c59d4145047b94fa90db134098f6040e5e5248"
+          },
+          "rpf104/UNKNOWN": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "35edbd52be5bf81391b4d48d7f9e642df9e3961cbd378cdf653989829e2eabf8",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "MUST_STOP",
+            "reason": "MISSING_CONTINUATION_FEEDBACK",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "529c6b1fc8d0c6e1e02f612bfa622a68c8dcaef3a05336ebd360915976f83736"
+          },
+          "STOP": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "fddd1cb2f09c248646036e415b8f6f949d2ee7a10f563408f0330484776fd3dc",
+            "feedback_sha256": null,
+            "candidate_id": "STOP",
+            "candidate_sha256": "b62f43f0b7bddc4b93641d34c9cf678ebeaa62f514a67c06d9676d8722d318f1",
+            "contract_sha256": null,
+            "status": "MUST_STOP",
+            "reason": "EXPLORER_STOP",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "f3d51b336e554c512740f60dbdb976fbfd8d315b737ebed3fe3682f9801e16ef"
+          }
+        },
+        "actual_execution": "NOT_RUN"
+      },
+      {
+        "scenario": "VERIFIED_NORMAL",
+        "remaining_budget": {
+          "cases": 1,
+          "writes": 1,
+          "forwards": 1
+        },
+        "feedback_quality": "VERIFIED_SHAPE_FIXTURE",
+        "feedback_anchor": "4d6ac5316f11834ab4fa72c73a4be3bf83c56b844a2157d049bae5f08c290499",
+        "fixture": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "35edbd52be5bf81391b4d48d7f9e642df9e3961cbd378cdf653989829e2eabf8",
+            "feedback_sha256": "4d6ac5316f11834ab4fa72c73a4be3bf83c56b844a2157d049bae5f08c290499",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "ACCEPT",
+            "reason": "VERIFIED_CONTINUATION",
+            "requested_debit": {
+              "cases": 1,
+              "writes": 1,
+              "forwards": 1
+            },
+            "next_permission": "FIXTURE_ONLY",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "25a88ca612a4be97ed3fc2acd7b7e7efa4468b46017aa57c9eaf0de6ca7af8bf"
+          }
+        },
+        "fixed_order": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "35edbd52be5bf81391b4d48d7f9e642df9e3961cbd378cdf653989829e2eabf8",
+            "feedback_sha256": "4d6ac5316f11834ab4fa72c73a4be3bf83c56b844a2157d049bae5f08c290499",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "ACCEPT",
+            "reason": "VERIFIED_CONTINUATION",
+            "requested_debit": {
+              "cases": 1,
+              "writes": 1,
+              "forwards": 1
+            },
+            "next_permission": "FIXTURE_ONLY",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "25a88ca612a4be97ed3fc2acd7b7e7efa4468b46017aa57c9eaf0de6ca7af8bf"
+          }
+        },
+        "candidate_filter": {
+          "rpf104/NORMAL": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "e4b3471b4232526cfb2fb6bd99b4887e54b2531c59c576479664ecc17d7350e8",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "contract_sha256": "f4a2713d2d5c9742432425b78ea972ea053972ac17b325318a1e3ca5b3ee5026",
+            "status": "REJECT",
+            "reason": "CONTINUATION_SCOPE",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "7ea3ef4c483bfa47543331abc8c59d4145047b94fa90db134098f6040e5e5248"
+          },
+          "rpf104/UNKNOWN": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "35edbd52be5bf81391b4d48d7f9e642df9e3961cbd378cdf653989829e2eabf8",
+            "feedback_sha256": "4d6ac5316f11834ab4fa72c73a4be3bf83c56b844a2157d049bae5f08c290499",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "ACCEPT",
+            "reason": "VERIFIED_CONTINUATION",
+            "requested_debit": {
+              "cases": 1,
+              "writes": 1,
+              "forwards": 1
+            },
+            "next_permission": "FIXTURE_ONLY",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "25a88ca612a4be97ed3fc2acd7b7e7efa4468b46017aa57c9eaf0de6ca7af8bf"
+          },
+          "STOP": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "6c4f8aa066f628edd2260b8b2ae2fcc77559c393836c578ff35065bd05b8930c",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "fddd1cb2f09c248646036e415b8f6f949d2ee7a10f563408f0330484776fd3dc",
+            "feedback_sha256": null,
+            "candidate_id": "STOP",
+            "candidate_sha256": "b62f43f0b7bddc4b93641d34c9cf678ebeaa62f514a67c06d9676d8722d318f1",
+            "contract_sha256": null,
+            "status": "MUST_STOP",
+            "reason": "EXPLORER_STOP",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "f3d51b336e554c512740f60dbdb976fbfd8d315b737ebed3fe3682f9801e16ef"
+          }
+        },
+        "actual_execution": "NOT_RUN"
+      },
+      {
+        "scenario": "UNKNOWN_LATCHED",
+        "remaining_budget": {
+          "cases": 1,
+          "writes": 1,
+          "forwards": 1
+        },
+        "feedback_quality": "VERIFIED_SHAPE_FIXTURE",
+        "feedback_anchor": "4d6ac5316f11834ab4fa72c73a4be3bf83c56b844a2157d049bae5f08c290499",
+        "fixture": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "STOP",
+            "candidate_sha256": "b62f43f0b7bddc4b93641d34c9cf678ebeaa62f514a67c06d9676d8722d318f1",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "6499d701327cc59373ecbfd7331f1c1ade5a497186cebf3d8f036bbd4282afe4",
+            "feedback_sha256": null,
+            "candidate_id": "STOP",
+            "candidate_sha256": "b62f43f0b7bddc4b93641d34c9cf678ebeaa62f514a67c06d9676d8722d318f1",
+            "contract_sha256": null,
+            "status": "MUST_STOP",
+            "reason": "UNKNOWN_OR_RECONCILIATION_LATCH",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "b13f4cf51f3f60445b7e878b1c9cd228a5fe5c5f02a765f2752e438785ee4b09"
+          }
+        },
+        "fixed_order": {
+          "proposal": {
+            "schema": "rpf105-proposal-v1",
+            "proposal_id": "55555555555555555555555555555555",
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674"
+          },
+          "admission": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "4d62baa6caf91a8bb532fa2480f251b01067bee209e2a7d902b9db59a1ee8b70",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "MUST_STOP",
+            "reason": "UNKNOWN_OR_RECONCILIATION_LATCH",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "1130ff00adf52681a3d54c0cd6d8cb3f1f03aa5fe2ea89837840ec6c84fd47fd"
+          }
+        },
+        "candidate_filter": {
+          "rpf104/NORMAL": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "00edea2669897e0b83f274cb813917065a9052c38a540ba6fa0d14d0d9de40a8",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/NORMAL",
+            "candidate_sha256": "aaf7b98d474654e04b2941bdccfb1a9f66ea8c0b9b78e2280bac05c87cbf1b3e",
+            "contract_sha256": "f4a2713d2d5c9742432425b78ea972ea053972ac17b325318a1e3ca5b3ee5026",
+            "status": "MUST_STOP",
+            "reason": "UNKNOWN_OR_RECONCILIATION_LATCH",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "69b2f8fbf150c64ce826e04316eb03cafe5942796008158903392c862761d802"
+          },
+          "rpf104/UNKNOWN": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "4d62baa6caf91a8bb532fa2480f251b01067bee209e2a7d902b9db59a1ee8b70",
+            "feedback_sha256": null,
+            "candidate_id": "rpf104/UNKNOWN",
+            "candidate_sha256": "bbb9df8a8f8dedf5d0c4e3c1b076ba0d9d855770cd4daeb2497699ea41bbcc29",
+            "contract_sha256": "b92f1a3c2aecddcebdc91fd0c9bb8ce5b2586bcc320c779aa40379095d21d25c",
+            "status": "MUST_STOP",
+            "reason": "UNKNOWN_OR_RECONCILIATION_LATCH",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "1130ff00adf52681a3d54c0cd6d8cb3f1f03aa5fe2ea89837840ec6c84fd47fd"
+          },
+          "STOP": {
+            "schema": "rpf105-admission-v1",
+            "ledger_sha256": "50374fc2df0c9250ec2155c7fdae022321c482fdb65a682187c0394360509674",
+            "catalog_sha256": "c5e26d4e9b01454bbded201f1dc492f6f6d9706c064ef91fca60b1e0dd49a088",
+            "proposal_sha256": "6499d701327cc59373ecbfd7331f1c1ade5a497186cebf3d8f036bbd4282afe4",
+            "feedback_sha256": null,
+            "candidate_id": "STOP",
+            "candidate_sha256": "b62f43f0b7bddc4b93641d34c9cf678ebeaa62f514a67c06d9676d8722d318f1",
+            "contract_sha256": null,
+            "status": "MUST_STOP",
+            "reason": "UNKNOWN_OR_RECONCILIATION_LATCH",
+            "requested_debit": {
+              "cases": 0,
+              "writes": 0,
+              "forwards": 0
+            },
+            "next_permission": "NONE",
+            "effect_execution": "NOT_RUN",
+            "decision_sha256": "b13f4cf51f3f60445b7e878b1c9cd228a5fe5c5f02a765f2752e438785ee4b09"
+          }
+        },
+        "actual_execution": "NOT_RUN"
+      }
+    ]
+  },
+  "resources": {
+    "physical_runs": 0,
+    "sdk_children": 0,
+    "receivers": 0,
+    "provider_calls": 0,
+    "credential_probes": 0,
+    "business_writes": 0,
+    "actual_tool_calls": 0,
+    "provider_fees": 0
+  }
+}

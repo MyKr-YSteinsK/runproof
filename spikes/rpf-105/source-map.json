@@ -1,0 +1,155 @@
+{
+  "schema": "rpf105-source-map-v1",
+  "base": "4f52e9595d55f1ea6a683f7ad7f1f814db452d04",
+  "files": {
+    "ci/rpf103_verify_archive.py": {
+      "git_blob": "fa62bb918937a736c86380dbb0ac9e68ea289117",
+      "raw_sha256": "7c2a04634d6de3fc655d43aee43deab644c6fd6ec6bb079b36770efd74212da2",
+      "base_git_blob": "fa62bb918937a736c86380dbb0ac9e68ea289117",
+      "lf_sha256": "7c2a04634d6de3fc655d43aee43deab644c6fd6ec6bb079b36770efd74212da2"
+    },
+    "ci/test_rpf103_verify_archive.py": {
+      "git_blob": "90f2238ed00aff63f5c9c7c6caa248dfdf6e7d6e",
+      "raw_sha256": "d32b7b66b1929d6679308262adc4c01615e468e024838da4f0a5f29e9503126e",
+      "base_git_blob": "90f2238ed00aff63f5c9c7c6caa248dfdf6e7d6e",
+      "lf_sha256": "d32b7b66b1929d6679308262adc4c01615e468e024838da4f0a5f29e9503126e"
+    },
+    "ci/verify-public-docs.py": {
+      "git_blob": "233783cb7f56130940395a02d24aa80ede408147",
+      "raw_sha256": "d91315962cb686efe8a3b7197589a31d9f2359ec08d3acf27b06d7e3a796ee0c",
+      "base_git_blob": "233783cb7f56130940395a02d24aa80ede408147",
+      "lf_sha256": "d91315962cb686efe8a3b7197589a31d9f2359ec08d3acf27b06d7e3a796ee0c"
+    },
+    ".github/workflows/rpf-104-product-manual.yml": {
+      "git_blob": "d1b7a07a6f4f63ce71823232e393c6e5ee439e66",
+      "raw_sha256": "cfb1eea467f4e90f115d5e8f155ceedbbd61d0acfed8fc4f67859260f5667fc7",
+      "base_git_blob": "d1b7a07a6f4f63ce71823232e393c6e5ee439e66",
+      "lf_sha256": "cfb1eea467f4e90f115d5e8f155ceedbbd61d0acfed8fc4f67859260f5667fc7"
+    },
+    ".github/workflows/rpf-104-product-offline.yml": {
+      "git_blob": "284b4535667e0e4746b1a196009161ac9a858c1e",
+      "raw_sha256": "a19a292f011507c94f705c52d2f9bd26a3c470f663b85a4125c562373cdb4c24",
+      "base_git_blob": "284b4535667e0e4746b1a196009161ac9a858c1e",
+      "lf_sha256": "a19a292f011507c94f705c52d2f9bd26a3c470f663b85a4125c562373cdb4c24"
+    },
+    "spikes/rpf-104/source-map.json": {
+      "git_blob": "f1de2c41e89d49350d783e2235e4fe4047c76c3d",
+      "raw_sha256": "864bdb09a42da74395650831146c0b1453fcee905559cc2e3458f95944fd14d3",
+      "base_git_blob": "f1de2c41e89d49350d783e2235e4fe4047c76c3d",
+      "lf_sha256": "864bdb09a42da74395650831146c0b1453fcee905559cc2e3458f95944fd14d3"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_contracts.py": {
+      "git_blob": "393f2ff1926c2f46b29987bc5ed6eda168b16c58",
+      "raw_sha256": "99f1a3f9849877f4cbbce7e32642982572dc2775f18855bd656089e0170e9d89",
+      "base_git_blob": "393f2ff1926c2f46b29987bc5ed6eda168b16c58",
+      "lf_sha256": "99f1a3f9849877f4cbbce7e32642982572dc2775f18855bd656089e0170e9d89"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_capsule.py": {
+      "git_blob": "b2de1337043daa26330bf92bb46c5dbef370ad09",
+      "raw_sha256": "5182098e7ff48bf11a168570cfa825aa848e1a72a10ee5b07725bd3d454ea012",
+      "base_git_blob": "b2de1337043daa26330bf92bb46c5dbef370ad09",
+      "lf_sha256": "5182098e7ff48bf11a168570cfa825aa848e1a72a10ee5b07725bd3d454ea012"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_oracle.py": {
+      "git_blob": "53fa63969c8db8f5a60b5b42302fb1daa1915631",
+      "raw_sha256": "783c8982398fa967bf8c2c1e413fb528411664a7ef68373d64fbe724d7338cf3",
+      "base_git_blob": "53fa63969c8db8f5a60b5b42302fb1daa1915631",
+      "lf_sha256": "783c8982398fa967bf8c2c1e413fb528411664a7ef68373d64fbe724d7338cf3"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_host.py": {
+      "git_blob": "ffd4fd85757d255bc4abb2337c03b2827faec017",
+      "raw_sha256": "8a162ee97ddd82c803cf9d2b226966ad2839a445c0483158402f8d28715d8e24",
+      "base_git_blob": "ffd4fd85757d255bc4abb2337c03b2827faec017",
+      "lf_sha256": "8a162ee97ddd82c803cf9d2b226966ad2839a445c0483158402f8d28715d8e24"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_probe.py": {
+      "git_blob": "0309b1e35efba6e64b0019d1099f6952f020dd6b",
+      "raw_sha256": "326563405072ba22644e99e162a3371c1895ec7b88991b705b41989df072f0ac",
+      "base_git_blob": "0309b1e35efba6e64b0019d1099f6952f020dd6b",
+      "lf_sha256": "326563405072ba22644e99e162a3371c1895ec7b88991b705b41989df072f0ac"
+    },
+    "runtime/runproof_runtime/effectwitness/product_sdk_target.py": {
+      "git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39",
+      "raw_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e",
+      "base_git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39",
+      "lf_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py": {
+      "git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "raw_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "base_git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "lf_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e"
+    },
+    "ci/rpf105_verify_archive.py": {
+      "git_blob": "df36d2e9653fb0e397650e90587efc42f412a709",
+      "raw_sha256": "b3fae35f63e79fbeca136cabae7eacfe0e7e3dc55eddaea6369386ac499afe55",
+      "base_git_blob": null,
+      "lf_sha256": "b3fae35f63e79fbeca136cabae7eacfe0e7e3dc55eddaea6369386ac499afe55"
+    },
+    "ci/test_rpf105_verify_archive.py": {
+      "git_blob": "f9fe86b6a20ee30b004970ef84df194919e40291",
+      "raw_sha256": "c51fb56d864f926c312a1e931ebbc6893e5d259a5c6c7a0f7a85f52ebfc5bbb4",
+      "base_git_blob": null,
+      "lf_sha256": "c51fb56d864f926c312a1e931ebbc6893e5d259a5c6c7a0f7a85f52ebfc5bbb4"
+    },
+    "ci/test_rpf105_explorer_admission.py": {
+      "git_blob": "b8bb4242f104d93d5f923f7cfa5600b97a038baf",
+      "raw_sha256": "a764d7ba93a30b63b5976456607e8befb9c7001700c642c31c1c929c3c6d79af",
+      "base_git_blob": null,
+      "lf_sha256": "a764d7ba93a30b63b5976456607e8befb9c7001700c642c31c1c929c3c6d79af"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r105_contracts.py": {
+      "git_blob": "eb20b3b9906325f9850b9867b0f9cf3fdd360881",
+      "raw_sha256": "c588500d5abff3a3eb6bdca9c96c8265ec1e26b0a6cddc0d4f64ebe6dc7c0de5",
+      "base_git_blob": null,
+      "lf_sha256": "c588500d5abff3a3eb6bdca9c96c8265ec1e26b0a6cddc0d4f64ebe6dc7c0de5"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r105_gate.py": {
+      "git_blob": "744f94c8c04d6b2fe2ae3c70bdc05d00e19dab55",
+      "raw_sha256": "29b5edd10d2933d919e8d55a702aa87fd4fc85725c7002ece2b2c44b77f70f98",
+      "base_git_blob": null,
+      "lf_sha256": "29b5edd10d2933d919e8d55a702aa87fd4fc85725c7002ece2b2c44b77f70f98"
+    },
+    "runtime/runproof_runtime/effectwitness/pge_r105_replay.py": {
+      "git_blob": "09a113cecfac7cd29ec0371dd3dcce84d476ccd6",
+      "raw_sha256": "222f4272a0d85d234a881491577c05d1e35068adf92eab34876d706e741eea49",
+      "base_git_blob": null,
+      "lf_sha256": "222f4272a0d85d234a881491577c05d1e35068adf92eab34876d706e741eea49"
+    },
+    ".github/workflows/rpf-105-offline.yml": {
+      "git_blob": "3ad451c67098959e3eae77d198a4cae5273ee1b0",
+      "raw_sha256": "6331d49f061e1a71429e1807692cd8a6dc75e6159d31ebcd0d6eaa9a048e05d0",
+      "base_git_blob": null,
+      "lf_sha256": "6331d49f061e1a71429e1807692cd8a6dc75e6159d31ebcd0d6eaa9a048e05d0"
+    },
+    "spikes/rpf-105/README.md": {
+      "git_blob": "b0ee5f42a1eafeccb43b77f8a09a5f26357812b7",
+      "raw_sha256": "393f02307cd42e061832de7e308716e40bb76cf40f3d2ff2cd2661314c26bfc2",
+      "base_git_blob": null,
+      "lf_sha256": "393f02307cd42e061832de7e308716e40bb76cf40f3d2ff2cd2661314c26bfc2"
+    },
+    "spikes/rpf-105/RESULT.md": {
+      "git_blob": "1fdbfcb947461831b4545be422b0505ffcf695ba",
+      "raw_sha256": "05b33828dbdb91e78e242f45458c7e1d40c336ff03eb182461d8443462f289a8",
+      "base_git_blob": null,
+      "lf_sha256": "05b33828dbdb91e78e242f45458c7e1d40c336ff03eb182461d8443462f289a8"
+    },
+    "spikes/rpf-105/acceptance.json": {
+      "git_blob": "339648100346f80a9c49ad6bbda802cf6c61975d",
+      "raw_sha256": "d391e6052cc4e61b2271d90aa0fe7d4402cae34846e9f6289e2cd526d188fc8e",
+      "base_git_blob": null,
+      "lf_sha256": "d391e6052cc4e61b2271d90aa0fe7d4402cae34846e9f6289e2cd526d188fc8e"
+    },
+    "spikes/rpf-105/verification-diagnostic.json": {
+      "git_blob": "883be394582fd11703195300ec5b9dcde0ae7b0a",
+      "raw_sha256": "245b93c34e5e8443c877df08275453d32e3b388477f634fb630ebbaccac5a4a2",
+      "base_git_blob": null,
+      "lf_sha256": "245b93c34e5e8443c877df08275453d32e3b388477f634fb630ebbaccac5a4a2"
+    },
+    "spikes/rpf-105/evidence/rpf104-run-42647430199-actions.zip": {
+      "git_blob": "a0f4175634f377b5145ce8606ee8bd53795d16f2",
+      "raw_sha256": "c917ce175f1fb56c4ee768ab1aee184e2d710cdba65fa0390d10d79807bd67b3",
+      "base_git_blob": null
+    }
+  }
+}
