@@ -11,7 +11,7 @@
     "web/src/features/effectwitness/ProductLocalPage.tsx": "e47533e5347bfb8a1b00339eb3ff40254d6ba0d57d84edba1287a7df989d4eee",
     "web/src/features/effectwitness/productLocalApi.ts": "689a68eeb791414ace7d992998eda567c8b1872630d39f4804d9adbe031af2c2",
     "web/src/features/effectwitness/productLocalPage.test.tsx": "bcb332aea7162284171ff4f7e8ab3339cc104a3624215e181782d8a5f5b402e9",
-    "web/src/features/effectwitness/product-local.css": "6eb7a9561d78c08c7a72e6f5ad1e0929182a788f6e8e27fe46d457507769912d",
+    "web/src/features/effectwitness/product-local.css": "e3bb2bd6288f0caee66878e4e58a58ce69a25322dd8095f9b1c1d6aeea3f2109",
     "demo/start-effectwitness-product.ps1": "6bfff648b594a1da621779aa6b6456377b2701e2c1a696577833ed8078084553",
     "demo/stop-effectwitness-product.ps1": "416d6695f002c43f01092476d0f945bea98dbaa3ac0f21d91093af0f8db4c82c",
     ".github/workflows/rpf-100-product.yml": "7273a0d2801625d4de832ec687ce0881888aceb83ca5d4e9099dfed513267692"

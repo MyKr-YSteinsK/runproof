@@ -10,4 +10,6 @@
 .product-actions, .product-rounds { display: flex; flex-wrap: wrap; gap: 12px; margin: 12px 0; }
 .product-rounds article { flex: 1 1 300px; min-width: 0; padding: 10px; border: 1px solid #a3c5bc; border-radius: 6px; }
 .product-local [role="alert"] { border-left: 4px solid #a33d29; padding-left: 10px; }
+.app-frame:has(.product-local) .topbar-revision,
+.app-frame:has(.product-local) .primary-nav a[href="/effectwitness/cross-domain"] { display: none; }
 @media (min-width: 701px) and (max-width: 900px) { .app-frame:has(.product-local) .rail { flex-basis: 190px; min-width: 190px; } }
