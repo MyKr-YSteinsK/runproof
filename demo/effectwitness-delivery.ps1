@@ -12,7 +12,7 @@ param(
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path -Parent $PSScriptRoot
 $outputRoot = Join-Path $repo '.local/rpf-99-product-delivery'
-if (!$NodeExe) { $NodeExe = (Get-Command node.exe -CommandType Application -ErrorAction Stop).Source }
+if (!$NodeExe) { $NodeExe = (Get-Command node.exe -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source }
 if (![IO.Path]::IsPathRooted($NodeExe)) { throw 'Provide an absolute Node executable path.' }
 $nodeFile = Get-Item -LiteralPath $NodeExe
 if ($nodeFile.Name -ne 'node.exe' -or $nodeFile.PSIsContainer -or
@@ -40,7 +40,7 @@ function Assert-RunRoot([string]$Value) {
 
 if ($Action -eq 'Build') {
     if ($RunRoot -or $BundleRoot) { throw 'Build creates a fresh run directory.' }
-    $git = (Get-Command git -CommandType Application -ErrorAction Stop).Source
+    $git = (Get-Command git -CommandType Application -ErrorAction Stop | Select-Object -First 1).Source
     $commit = & $git -C $repo rev-parse HEAD
     if ($LASTEXITCODE -ne 0 -or $commit -notmatch '^[a-f0-9]{40}$') { throw 'Git commit unavailable.' }
     $buildInputs = @('web','public','index.html','vite.config.ts','tsconfig.json','package.json','package-lock.json',
