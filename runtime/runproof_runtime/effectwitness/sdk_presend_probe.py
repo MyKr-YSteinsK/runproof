@@ -43,7 +43,8 @@ def launch(folder, module, call, args, *, stdout=subprocess.DEVNULL, stdin=subpr
     env = {key: os.environ[key] for key in ("SYSTEMROOT", "WINDIR") if key in os.environ}
     env.update(HOME=str(folder), TEMP=str(folder), TMP=str(folder), TMPDIR=str(folder),
                OTEL_SDK_DISABLED="true", LOGFIRE_SEND_TO_LOGFIRE="false")
-    program = f"import sys; sys.path.insert(0, sys.argv.pop(1)); from {module} import {call}; {call}(*sys.argv[1:])"
+    program = (f"import sys; sys.path.insert(0, sys.argv.pop(1)); from {module} import {call}; "
+               f"raise SystemExit({call}(*sys.argv[1:]))")
     return subprocess.Popen([sys.executable, "-I", "-S", "-B", "-c", program, str(REPO), *args],
                             cwd=folder, env=env, stdout=stdout, stdin=stdin, stderr=subprocess.DEVNULL)
 
@@ -134,12 +135,21 @@ def run_case(owner, case):
                     exclusive(folder / "sdk-output.json", raw)
                     exclusive(folder / "sdk-exit.json", canonical({"pid": sdk.pid, "exit": sdk.returncode,
                               "exit_ns": time.monotonic_ns(), "stdout_sha256": sha(raw)}))
-                    report = strict(raw)
-                    if sdk.returncode or session.failure:
+                    if sdk.returncode or session.failure or session.posts != 2:
+                        try:
+                            report = strict(raw)
+                        except (ValueError, RecursionError):
+                            report = None
+                        if type(report) is not dict:
+                            report = {}
+                        kinds = [row["kind"] for row in journal.rows()]
                         print(json.dumps({"case": case, "status": "SDK_FAILED",
+                                          "sdk_exit": sdk.returncode,
                                           "host_reason": session.failure, "sdk_error": report.get("error_type"),
-                                          "stage": report.get("stage"), "accepted_posts": session.posts}), flush=True)
-                    check(not sdk.returncode and session.failure is None and session.posts == 2, "SDK_EXECUTION_FAILED")
+                                          "stage": report.get("stage"), "accepted_posts": session.posts,
+                                          "provider_tickets": kinds.count("PROVIDER_RESERVE"),
+                                          "send_entries": kinds.count("SEND_ENTRY")}), flush=True)
+                        check(False, "SDK_EXECUTION_FAILED")
                     journal.append("SDK_TERMINAL", {"sha256": sha(raw), "exit": sdk.returncode})
                 finally:
                     if sdk is not None and sdk.poll() is None:

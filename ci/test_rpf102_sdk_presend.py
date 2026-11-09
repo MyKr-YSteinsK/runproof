@@ -10,6 +10,7 @@ from runtime.runproof_runtime.effectwitness.sdk_presend_contracts import (
 )
 from runtime.runproof_runtime.effectwitness.sdk_presend_host import Journal, Session
 from runtime.runproof_runtime.effectwitness.sdk_presend_oracle import verify
+from runtime.runproof_runtime.effectwitness.sdk_presend_probe import finish, launch
 
 
 def request(case, number):
@@ -96,6 +97,13 @@ def fresh(case):
 
 
 class Controls(unittest.TestCase):
+    def test_isolated_entry_point_propagates_exit_status(self):
+        with fresh("NORMAL") as folder:
+            for argument, expected in (("", 0), ("error", 1)):
+                with self.subTest(expected=expected):
+                    child = launch(folder, "operator", "truth", [argument])
+                    self.assertEqual(finish(child, 5), expected)
+
     def test_valid_requests_and_binding_rejection(self):
         for case in ("NORMAL", "UNKNOWN"):
             for i in (1, 2):
