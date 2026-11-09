@@ -14,6 +14,7 @@
 - RPF-40～81：EffectWitness 两域、三合同、Explorer/Target/Authority/Witness、Provider/预算/故障探索相关研究组件及历史报告已纳入 main。各切片正式接受边界仍以固定提交、当次报告及 Architect 裁定为准；历史源码存在不代表当前产品安全可用。
 - RPF-78：历史 rev-1 A08 失败仍须保留，后续更正不回填旧源/结果。RPF-80 是合成投影和独立只读 Oracle；RPF-81/rev-1 有 localhost 物理证据但正常恢复因果混杂，均不是旧 RPF-74 原生修复。
 - RPF-94：EffectWitness 只读 Workbench、订单/运维历史来源与 Witness 限制展示已并入 main，任务 PARTIAL；无新 Gateway/Provider 运行。历史来源不是同一双域新会话。
+- RPF-99：记录型 EffectWitness 工作台提供三步引导及可独立解压的 Node.js 静态包。Windows 本地验收覆盖回环只读预览、双域历史证据、语言与事件深链、原 Witness 离线校验。工作台区分订单研究与独立运维样本。真实 Explorer、跨域 Authority、Issuer 和发布资格仍需各自的验收。[交付指南](../EFFECTWITNESS_DELIVERY.zh-CN.md)
 - RPF-95/rev-1：只读 MCP stdio、历史锚验证与 Workbench 事件往返已交付。早期 repo-root 启动可能触发 FastMCP `.env` 自动读取，是否读取及有无外传未获证明，保持 `UNVERIFIED`。
 - RPF-95/rev-2：固定版 JiuwenSwarm `probe_mcp_live_connection` 经 `Runner.resource_mgr` 注册 3 个只读 MCP 工具，注册后的 `MCPTool.invoke` 实际调用运维 Witness 和历史摘要；部分能力获得有界 Architect 接受。依赖以 `--no-deps` 子集部署，`pip check` exit 1，完整依赖闭包/Agent LLM/系统级文件网络审计尚未完成；`VERIFIED_ANCHORED` 不证明第三方 Issuer。
 - RPF-96/rev-1～3：截至本快照，Codex 本地回报 RPF-96 仍为未完成/未交付的离线原型：rev-3 聚焦测试 6/6，两次通过；尚缺完整 durable budget/recovery/receiver/独立 Oracle，物理发送未执行，未形成 commit/push。上述数据尚无远端证据，必须标记 `LOCAL_REPORTED_NOT_REMOTE_VERIFIED`。曾由 Windows Python Install Manager 意外安装 Python 3.15.2；owner 外影响仍未核实。旧发送额度 `UNVERIFIED`，原 owner 物理发送保持禁止。
@@ -21,7 +22,7 @@
 ## Active risk and release state
 
 - **RPF-74 原生 UNKNOWN 缺口未修**：Config `UNKNOWN_OUTCOME` WAL seq199 后仍 `provider RESERVE` seq205/233；Order seq427 后仍 seq433/461。相关原业务/Provider 执行路径不得因 RPF-80/81/95/96 代码存在而自动复活。UNKNOWN 后先确定性只读对账，不盲重试写；物理零新预约仍需独立验证。
-- 最新已核对 hosted Canonical Release Gate：[Run 42459651864](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42459651864) `FAILED`：Router `676 PASS / 12 ERROR / 5 SKIP / 539 UNAVAILABLE`；coverage handoff 因 invalid input 拒绝。12 ERROR 的具体根因没有充分确认；RPF-95/rev-2 提交未触发新 CI。CI 失败不能伪报 PASS，也不自动阻断与旧故障无关的 ordinary governance/product changes。
+- RPF-98 修复后的已核对 hosted Canonical Release Gate 为 [Run 42497172434](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42497172434)。Router 为 `688 PASS / 0 ERROR / 5 SKIP / 539 UNAVAILABLE`。覆盖门禁仍分别缺 534 和 516 项，整体为 `FAILED`。RPF-99 对应 Run 以最终交付回执为准。
 - 高优先级产品差距：真实受限 Explorer 的跨轮选择、受控 Target 双域真实作用、独立 Authority/Oracle 的新会话事实、Verified Feedback 输入因果链、有界且可离线验证 Witness、可信 Issuer 边界与人类 Desktop Web 实时工作流。只读 MCP 接入与历史 Witness 不能替代这些目标。
 - `ELIGIBLE` 不代表部署；历史 hash/source identity 不代表独立第三方 Issuer；模型不能执掌业务真值或 Release Authority。R-01～R-10、MUST/SHOULD/NON-GOAL、D-COMP 目标的批准原义持续有效。
 

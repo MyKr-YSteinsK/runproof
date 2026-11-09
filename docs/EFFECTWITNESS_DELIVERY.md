@@ -19,7 +19,7 @@ If a saved event cannot be located, open the workbench at `?domain=order` and se
 
 ## Build and check from a checkout
 
-Use the existing Node/npm dependencies in a clean checkout of the build inputs. In PowerShell from the repository root:
+Use the existing Node/npm dependencies in a clean checkout of the build inputs, with no Vite environment files. In PowerShell from the repository root:
 
 ```powershell
 .\demo\effectwitness-delivery.ps1 Build

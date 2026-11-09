@@ -45,9 +45,13 @@ if ($Action -eq 'Build') {
     if ($LASTEXITCODE -ne 0 -or $commit -notmatch '^[a-f0-9]{40}$') { throw 'Git commit unavailable.' }
     $buildInputs = @('web','public','index.html','vite.config.ts','tsconfig.json','package.json','package-lock.json',
         'spikes/rpf-43','spikes/rpf-44','spikes/rpf-46','spikes/rpf-47',
-        'demo/effectwitness-preview.cjs','docs/EFFECTWITNESS_DELIVERY.md','docs/EFFECTWITNESS_DELIVERY.zh-CN.md')
+        'demo/effectwitness-delivery.ps1','demo/effectwitness-preview.cjs',
+        'docs/EFFECTWITNESS_DELIVERY.md','docs/EFFECTWITNESS_DELIVERY.zh-CN.md')
     $changes = & $git -C $repo status --porcelain --untracked-files=all -- @buildInputs
     if ($LASTEXITCODE -ne 0 -or $changes) { throw 'Commit the scoped bundle inputs before building.' }
+    foreach ($name in @('.env','.env.local','.env.production','.env.production.local')) {
+        if (Test-Path -LiteralPath (Join-Path $repo $name)) { throw 'Build the recorded bundle from a checkout without Vite environment files.' }
+    }
     foreach ($dir in @((Join-Path $repo '.local'), $outputRoot)) {
         if (!(Test-Path -LiteralPath $dir)) { New-Item -ItemType Directory -Path $dir | Out-Null }
         $item = Get-Item -LiteralPath $dir
@@ -68,12 +72,18 @@ if ($Action -eq 'Build') {
     $previousData = $env:VITE_CONTROL_PLANE_DATA_SOURCE
     $previousApi = $env:VITE_CONTROL_PLANE_API_URL
     $previousCache = $env:npm_config_cache
+    $previousOffline = $env:npm_config_offline
+    $previousNotifier = $env:npm_config_update_notifier
+    $previousLabOutput = $env:RPF_EW_LAB_TASK_OUTPUT
     $previousPath = $env:Path
     try {
         $env:VITE_RPF_RECORDED_DELIVERY = '1'
         $env:VITE_CONTROL_PLANE_DATA_SOURCE = 'fixture'
         $env:VITE_CONTROL_PLANE_API_URL = '/api/v1'
         $env:npm_config_cache = Join-Path $run 'npm-cache'
+        $env:npm_config_offline = 'true'
+        $env:npm_config_update_notifier = 'false'
+        $env:RPF_EW_LAB_TASK_OUTPUT = '0'
         $env:Path = $nodeFile.DirectoryName + [IO.Path]::PathSeparator + $previousPath
         Push-Location $repo
         try { Invoke-Checked $npm @('run','build','--','--configLoader','runner','--outDir',(Join-Path $bundle 'site')) }
@@ -83,6 +93,9 @@ if ($Action -eq 'Build') {
         $env:VITE_CONTROL_PLANE_DATA_SOURCE = $previousData
         $env:VITE_CONTROL_PLANE_API_URL = $previousApi
         $env:npm_config_cache = $previousCache
+        $env:npm_config_offline = $previousOffline
+        $env:npm_config_update_notifier = $previousNotifier
+        $env:RPF_EW_LAB_TASK_OUTPUT = $previousLabOutput
         $env:Path = $previousPath
     }
     Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'effectwitness-preview.cjs') -Destination $bundle

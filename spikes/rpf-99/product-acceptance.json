@@ -1,13 +1,13 @@
 {
   "scope": "RECORDED_NO_PROVIDER_NO_LOCAL_BUSINESS_WRITE",
-  "phase": "PRE_COMMIT",
+  "phase": "BEFORE_FINAL_COMMIT_REBUILD",
   "gates": {
-    "A01": {"status":"NOT_RUN","evidence":"Browser verification follows committed build"},
+    "A01": {"status":"PASS","evidence":"Edge both domains, selected event, locale switch, refresh, back and overview"},
     "A02": {"status":"PASS","evidence":"Original manifest and two pinned verifier invocations; wrong SHA rejected"},
-    "A03": {"status":"NOT_RUN","evidence":"Final package follows commit"},
+    "A03": {"status":"PASS","evidence":"Prior committed build packaged and independently extracted; final commit rebuild required"},
     "A04": {"status":"PASS","evidence":"Node native tests include actual loopback and bundle tamper negatives"},
-    "A05": {"status":"NOT_RUN","evidence":"Frontend and Node tests passed; final build and browser pending"},
-    "A06": {"status":"NOT_RUN","evidence":"Bilingual walkthrough authored; package run pending"},
+    "A05": {"status":"PASS","evidence":"Frontend, build, Node tests and Edge at 1440, 1024 and 768"},
+    "A06": {"status":"PASS","evidence":"Bilingual walkthrough with packaged entry and tested route flow"},
     "A07": {"status":"NOT_RUN","evidence":"Push and hosted CI follow commit"},
     "A08": {"status":"NOT_RUN","evidence":"Candidate status requires final bundle verification"}
   }

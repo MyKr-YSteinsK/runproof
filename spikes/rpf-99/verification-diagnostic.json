@@ -3,6 +3,9 @@
   "node":"v24.16.0",
   "checks":[
     {"command":"npm test","exit":0,"passed":70},
+    {"command":"npm run typecheck","exit":0},
+    {"command":"effectwitness-delivery.ps1 Build, Package, independent Expand-Archive, Verify","exit":0},
+    {"command":"Edge headless browser QA against independent extraction","exit":0,"browser":"157.0.4341.42","widths":[1440,1024,768],"domains":["order","ops"],"checks":["geometry","Tab and Enter","locale","refresh and return","overview","live unavailable"]},
     {"command":"node --test demo/effectwitness-preview.test.cjs","exit":0,"passed":2},
     {"command":"python -B spikes/rpf-47/verify_evidence.py --root .","exit":0},
     {"command":"witness_verify with fixed order and ops SHA","exits":[0,0]},

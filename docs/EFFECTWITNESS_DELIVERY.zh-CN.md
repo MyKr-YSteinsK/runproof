@@ -19,7 +19,7 @@ node .\effectwitness-preview.cjs
 
 ## 从仓库构建并核查
 
-使用现有 Node/npm 和锁文件依赖，确保构建相关源码对应已提交版本。在仓库根目录的 PowerShell 中执行：
+使用现有 Node/npm 和锁文件依赖，在没有 Vite 环境文件的 checkout 中构建已提交版本。在仓库根目录的 PowerShell 中执行：
 
 ```powershell
 .\demo\effectwitness-delivery.ps1 Build
