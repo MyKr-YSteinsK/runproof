@@ -5,11 +5,11 @@ RPF-102 定义了由真实 SDK、本机 Host 和独立回环 Receiver 组成的�
 在仓库根使用已核实的解释器运行无 SDK 负控：
 
 ```text
-<python> -B -m unittest -v ci.test_rpf102_sdk_presend
+<python> -B -m unittest -v ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <32位十六进制owner> --preflight
 ```
 
-自动 Ubuntu 工作流只运行离线测试和文档检查，并记录 `SDK_PHYSICAL_NOT_RUN_BY_PLAN`。正式运行须单独批准冻结提交、隔离 runner 和物理额度。手动工作流在创建 owner 前核对已批准 SHA、指定 GitHub Run ID 和首次运行。NORMAL 通过独立 Oracle 与公开证据检查后，才会开始 UNKNOWN。见 [rev-3 操作与复核指南](../spikes/rpf-102/rev-3/README.md)。
+自动 Ubuntu 工作流运行两套离线测试和文档检查，并记录 `SDK_PHYSICAL_NOT_RUN_BY_PLAN`。触发正式运行前，须核实冻结提交的两套测试均已通过，并现场确认 GitHub 的 `rpf-102-physical` 环境已启用必需审阅者和禁止自批准。正式运行须批准冻结提交、隔离 runner 和物理额度。手动工作流在创建 owner 前核对已批准 SHA、指定 GitHub Run ID 和首次运行。NORMAL 通过独立 Oracle 与公开证据检查后，才会开始 UNKNOWN。见 [rev-3 操作与复核指南](../spikes/rpf-102/rev-3/README.md)。
 
 将来获准运行后，可以离线读取公开诊断并在上传前校验：
 

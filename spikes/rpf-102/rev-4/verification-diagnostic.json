@@ -1,0 +1,57 @@
+{
+  "schema": "rpf102-rev4-verification-v1",
+  "base": "647a1a4fcb7964ec70a8206e4f6923da4f4dca94",
+  "local": {
+    "platform": "Windows",
+    "python": "3.14.7",
+    "base_tests_passed": 23,
+    "candidate_tests_passed": 23,
+    "docs": "PASS"
+  },
+  "github": {
+    "manual_workflow_id": 411890128,
+    "workflow_state": "active",
+    "manual_dispatch_count": 0,
+    "environment": "rpf-102-physical",
+    "environment_get_http_status": 404,
+    "environment_list_total": 0,
+    "required_reviewers": "UNAVAILABLE",
+    "prevent_self_review": "UNAVAILABLE",
+    "base_offline_run": 42592963467,
+    "base_offline_tests_passed": 12,
+    "base_canonical_run": 42592963453,
+    "candidate_ci": "NOT_RUN_AT_SEAL"
+  },
+  "campaign": {
+    "status": "PHYSICAL_G0_BLOCKED",
+    "dispatch_limit": 4,
+    "dispatches_consumed": 0,
+    "dispatches_remaining": 4,
+    "runs": [],
+    "normal": "NOT_RUN",
+    "unknown": "NOT_RUN",
+    "oracle": "NOT_RUN",
+    "artifact_id": null,
+    "manifest_sha256": null,
+    "sdk_post_count": null,
+    "provider_reserve_count": null,
+    "send_entry_count": null,
+    "received_bytes": null,
+    "sdk_installs": 0,
+    "sdk_children_started": 0,
+    "receivers_started": 0,
+    "application_sends_executed": 0,
+    "external_provider_requests": 0,
+    "external_provider_tokens": 0,
+    "external_provider_cost": 0,
+    "real_business_writes": 0
+  },
+  "history": {
+    "run": 42580171633,
+    "sha": "5e58bf0023d8a4271a478b6f11573d120abebafb",
+    "normal": "FAIL_CONSUMED",
+    "unknown": "NOT_RUN",
+    "artifact_count": 0,
+    "root_cause": "UNDETERMINED"
+  }
+}

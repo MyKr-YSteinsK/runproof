@@ -1,0 +1,16 @@
+{
+  "schema": "rpf102-rev4-acceptance-v1",
+  "base": "647a1a4fcb7964ec70a8206e4f6923da4f4dca94",
+  "status_at_seal": "PARTIAL",
+  "gates": {
+    "G0": {"status": "FAIL", "offline": "PASS", "physical": "REQUIRED_ENVIRONMENT_MISSING"},
+    "A01": {"status": "PASS", "scope": "BASE_AND_CANDIDATE_LOCAL_23_PLUS_DOCS", "hosted_candidate": "NOT_RUN_AT_SEAL"},
+    "A02": {"status": "FAIL", "scope": "REQUIRED_ENVIRONMENT_MISSING"},
+    "A03": {"status": "NOT_RUN", "scope": "FORMAL_NORMAL"},
+    "A04": {"status": "NOT_RUN", "scope": "FORMAL_UNKNOWN"},
+    "A05": {"status": "NOT_RUN", "scope": "PHYSICAL_ARTIFACT_AND_ORACLE"},
+    "A06": {"status": "NOT_RUN", "scope": "PHYSICAL_CAMPAIGN", "dispatches_consumed": 0, "dispatches_remaining": 4},
+    "A07": {"status": "NOT_RUN", "scope": "PUSH_BLOB_AND_HOSTED_CI_NOT_RUN_AT_SEAL"}
+  },
+  "release_eligible": false
+}

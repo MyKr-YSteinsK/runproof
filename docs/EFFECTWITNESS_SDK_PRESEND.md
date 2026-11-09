@@ -5,11 +5,11 @@ RPF-102 defines a conformance experiment with a local Host, a real SDK, and an i
 Run the local no-SDK controls with a verified interpreter from the repository root:
 
 ```text
-<python> -B -m unittest -v ci.test_rpf102_sdk_presend
+<python> -B -m unittest -v ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <32-hex-owner> --preflight
 ```
 
-The automatic Ubuntu workflow runs offline tests and documentation checks and records `SDK_PHYSICAL_NOT_RUN_BY_PLAN`. A formal attempt requires separate approval for its frozen commit, isolated runner, and physical budget. The manual workflow checks the approved source SHA, the exact GitHub run ID, and attempt 1 before it creates the owner. It verifies NORMAL with the independent Oracle and checks that its evidence can be published before starting UNKNOWN. See the [rev-3 operator and verifier guide](../spikes/rpf-102/rev-3/README.md).
+The automatic Ubuntu workflow runs both offline suites, checks the documentation, and records `SDK_PHYSICAL_NOT_RUN_BY_PLAN`. Before dispatch, verify both suites passed on the frozen commit and confirm that GitHub actually enforces required reviewers and prevents self-approval for `rpf-102-physical`. A formal attempt requires approval for its frozen commit, isolated runner, and physical budget. The manual workflow checks the approved source SHA, the exact GitHub run ID, and attempt 1 before it creates the owner. It verifies NORMAL with the independent Oracle and checks that its evidence can be published before starting UNKNOWN. See the [rev-3 operator and verifier guide](../spikes/rpf-102/rev-3/README.md).
 
 After a future approved run, read its public diagnostic and validate it before upload:
 

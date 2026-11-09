@@ -6,6 +6,8 @@ on:
       - '.github/workflows/rpf-102-sdk-presend.yml'
       - 'runtime/runproof_runtime/effectwitness/sdk_presend_*.py'
       - 'ci/test_rpf102_sdk_presend.py'
+      - 'ci/rpf102_rev3_capsule.py'
+      - 'ci/test_rpf102_rev3_capsule.py'
       - 'ci/rpf102-sdk-requirements.txt'
 permissions:
   contents: read
@@ -18,7 +20,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - run: python -B -m unittest -v ci.test_rpf102_sdk_presend
+      - run: python -B -m unittest -v ci.test_rpf102_sdk_presend ci.test_rpf102_rev3_capsule
       - run: python -B ci/verify-public-docs.py
       - name: Record offline-only scope
         run: echo '::notice::SDK_PHYSICAL_NOT_RUN_BY_PLAN'
