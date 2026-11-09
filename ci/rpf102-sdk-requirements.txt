@@ -1,0 +1,2 @@
+pydantic-ai-slim==2.57.0
+openai==3.35.1

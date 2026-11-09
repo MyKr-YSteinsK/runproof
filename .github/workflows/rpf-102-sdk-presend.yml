@@ -1,0 +1,51 @@
+name: RPF-102 SDK Pre-send
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rpf-102-sdk-presend.yml'
+      - 'runtime/runproof_runtime/effectwitness/sdk_presend_*.py'
+      - 'ci/test_rpf102_sdk_presend.py'
+      - 'ci/rpf102-sdk-requirements.txt'
+permissions:
+  contents: read
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -B -m unittest -v ci.test_rpf102_sdk_presend
+      - run: python -B ci/verify-public-docs.py
+      - name: Admit pinned SDK in a new venv
+        id: sdk
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="$(python -I -B -c 'import uuid; print(uuid.uuid4().hex)')"
+          dir="$PWD/.local/rpf-102-sdk-presend/$owner"
+          mkdir "$dir"
+          python -I -B -m venv "$dir/venv"
+          py="$dir/venv/bin/python"
+          if ! "$py" -m pip --isolated --disable-pip-version-check install --only-binary=:all: --no-input --no-cache-dir --index-url https://pypi.org/simple --report "$dir/install-report.json" -r ci/rpf102-sdk-requirements.txt; then
+            echo 'SDK_UNAVAILABLE: PINNED_WHEEL_INSTALL_FAILED'
+            exit 1
+          fi
+          "$py" -m pip --isolated --disable-pip-version-check check
+          "$py" -m pip --isolated --disable-pip-version-check list --format=json | tee "$dir/installed-versions.json"
+          "$py" -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner "$owner" --preflight
+          printf 'owner=%s\npython=%s\n' "$owner" "$py" >> "$GITHUB_OUTPUT"
+      - name: Run admitted SDK NORMAL and UNKNOWN
+        env:
+          RPF102_OWNER: ${{ steps.sdk.outputs.owner }}
+          RPF102_PYTHON: ${{ steps.sdk.outputs.python }}
+        run: timeout 180 "$RPF102_PYTHON" -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner "$RPF102_OWNER" --run
+      - name: Verify independent SDK receipt envelopes
+        env:
+          RPF102_OWNER: ${{ steps.sdk.outputs.owner }}
+        run: |
+          python -B -m runtime.runproof_runtime.effectwitness.sdk_presend_oracle "$RPF102_OWNER" NORMAL
+          python -B -m runtime.runproof_runtime.effectwitness.sdk_presend_oracle "$RPF102_OWNER" UNKNOWN

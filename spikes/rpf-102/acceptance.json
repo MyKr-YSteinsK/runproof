@@ -1,0 +1,14 @@
+{
+  "phase": "BEFORE_PUSH",
+  "gates": {
+    "G0": {"status":"PASS","evidence":"verified base and scoped create-only targets"},
+    "A01": {"status":"NOT_RUN","evidence":"local SDK unavailable; hosted source provenance pending"},
+    "A02": {"status":"PASS","evidence":"durable WAL, lock, recovery and injected persistence tests"},
+    "A03": {"status":"NOT_RUN","evidence":"hosted NORMAL pending"},
+    "A04": {"status":"NOT_RUN","evidence":"hosted UNKNOWN pending"},
+    "A05": {"status":"PASS","evidence":"isolated-file recovery and pure serial contention controls"},
+    "A06": {"status":"PASS","evidence":"independent verifier rejects reanchored and cross-case synthetic evidence; real case validation pending"},
+    "A07": {"status":"NOT_RUN","evidence":"local zero physical sends; hosted formal limits configured"},
+    "A08": {"status":"NOT_RUN","evidence":"remote receipts follow seal"}
+  }
+}

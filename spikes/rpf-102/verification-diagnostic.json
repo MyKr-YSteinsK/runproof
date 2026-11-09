@@ -1,0 +1,11 @@
+{
+  "platform":"Windows",
+  "interpreter":"CPython 3.14.7",
+  "checks":[
+    {"command":"python -B -m unittest -v ci.test_rpf102_sdk_presend","tests":5,"exit":0},
+    {"command":"python -B ci/verify-public-docs.py","exit":0},
+    {"command":"sdk_presend_probe --preflight","status":"SDK_UNAVAILABLE","exit":0}
+  ],
+  "local":{"sdk_calls":0,"application_forwards":0,"provider_requests":0},
+  "hosted":"NOT_RUN_AT_SEAL"
+}

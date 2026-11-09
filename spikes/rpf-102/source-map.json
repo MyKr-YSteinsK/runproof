@@ -1,0 +1,37 @@
+{
+  "schema": "rpf102-source-map-v1",
+  "files": {
+    "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py": {
+      "raw_sha256": "c3ae014b9015038e404a569844781c3b7a1304fbec1091d65168c1854fc14ff9",
+      "lf_sha256": "c3ae014b9015038e404a569844781c3b7a1304fbec1091d65168c1854fc14ff9"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_host.py": {
+      "raw_sha256": "fada6ff334b18bd2c99fb328686ab3c7fdeffc015ff336d9886bf7866299bb0f",
+      "lf_sha256": "fada6ff334b18bd2c99fb328686ab3c7fdeffc015ff336d9886bf7866299bb0f"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_client.py": {
+      "raw_sha256": "01aa4dbf4fe056cef86706e1a2af83ab8753063fe125af9a52e42324823b46eb",
+      "lf_sha256": "01aa4dbf4fe056cef86706e1a2af83ab8753063fe125af9a52e42324823b46eb"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_oracle.py": {
+      "raw_sha256": "3f5f2d5a1fcc8155032440e9799f2f893df7a7b56fab285985a713604a108675",
+      "lf_sha256": "3f5f2d5a1fcc8155032440e9799f2f893df7a7b56fab285985a713604a108675"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_probe.py": {
+      "raw_sha256": "2eb3f789bb66c125d6b245df4558ae36c1de9243a08c84411b28186c1c8a7957",
+      "lf_sha256": "2eb3f789bb66c125d6b245df4558ae36c1de9243a08c84411b28186c1c8a7957"
+    },
+    "ci/test_rpf102_sdk_presend.py": {
+      "raw_sha256": "8f57aba22035445f620c661cf11d3e029c6d646cf7524961f69ce5a82251ac0d",
+      "lf_sha256": "8f57aba22035445f620c661cf11d3e029c6d646cf7524961f69ce5a82251ac0d"
+    },
+    "ci/rpf102-sdk-requirements.txt": {
+      "raw_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15",
+      "lf_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15"
+    },
+    ".github/workflows/rpf-102-sdk-presend.yml": {
+      "raw_sha256": "dc965b9ee8caf981657df00e6778bc48418ed74a598383bc660b2aa54ba3a6cd",
+      "lf_sha256": "dc965b9ee8caf981657df00e6778bc48418ed74a598383bc660b2aa54ba3a6cd"
+    }
+  }
+}
