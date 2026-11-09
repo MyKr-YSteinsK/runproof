@@ -1,0 +1,33 @@
+{
+  "schema": "rpf102-rev3-verification-v1",
+  "platform": "Windows",
+  "python": "3.14.7",
+  "local": {
+    "existing_tests_passed": 12,
+    "capsule_tests_passed": 11,
+    "public_docs_status": "PASS",
+    "workflow_trigger": "WORKFLOW_DISPATCH_ONLY",
+    "case_fixture_kind": "SYNTHETIC_TEST_ONLY",
+    "failure_export": "DIAGNOSTIC_VALID_REQUIRE_COMPLETE_EXIT_1",
+    "unknown_after_unpublishable_normal": "NOT_RUN"
+  },
+  "phase_b": {
+    "status": "PHYSICAL_NOT_AUTHORIZED",
+    "manual_run_id": null,
+    "artifact_id": null,
+    "normal": "NOT_RUN",
+    "unknown": "NOT_RUN",
+    "sdk_stage": null,
+    "physical_oracle": "NOT_RUN",
+    "receiver_bytes": null,
+    "formal_runs": 0,
+    "sdk_installs": 0,
+    "sdk_children": 0,
+    "receiver_children": 0,
+    "application_sends": 0,
+    "external_provider_calls": 0,
+    "real_business_writes": 0,
+    "provider_cost": 0
+  },
+  "hosted": "NOT_RUN_AT_SEAL"
+}

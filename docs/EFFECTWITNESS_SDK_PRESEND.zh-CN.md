@@ -9,7 +9,7 @@ RPF-102 定义了由真实 SDK、本机 Host 和独立回环 Receiver 组成的�
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <32位十六进制owner> --preflight
 ```
 
-自动 Ubuntu 工作流只运行离线测试和文档检查，并记录 `SDK_PHYSICAL_NOT_RUN_BY_PLAN`。将来的正式运行须单独批准固定提交、隔离 runner 和物理额度。
+自动 Ubuntu 工作流只运行离线测试和文档检查，并记录 `SDK_PHYSICAL_NOT_RUN_BY_PLAN`。正式运行须单独批准冻结提交、隔离 runner 和物理额度。手动工作流在创建 owner 前核对已批准 SHA、指定 GitHub Run ID 和首次运行。NORMAL 通过独立 Oracle 与公开证据检查后，才会开始 UNKNOWN。见 [rev-3 操作与复核指南](../spikes/rpf-102/rev-3/README.md)。
 
 将来获准运行后，可以离线读取公开诊断并在上传前校验：
 
@@ -18,7 +18,7 @@ RPF-102 定义了由真实 SDK、本机 Host 和独立回环 Receiver 组成的�
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_diagnostic < diagnostic.json
 ```
 
-每个已启动场景使用独立文件。诊断不可用时命令以非零退出，stdout 为空。未来获准的 CI 可用 `always()` 在失败后收集诊断，仅上传通过校验的 JSON。回执只含白名单字段，缺少计数证据时使用 `null`。WAL、stdout、请求原文与 Receiver 字节保留在私有范围。
+每个已启动场景使用独立文件。诊断不可用时命令以非零退出，stdout 为空。手动工作流在失败后也会校验证据包，仅上传通过校验的内容。回执只含白名单字段，缺少计数证据时使用 `null`。SDK 日志、环境原件、握手凭据和未获准的字节保留在 owner 内。
 
 独立 Oracle 用于检查完整的场景证据：
 

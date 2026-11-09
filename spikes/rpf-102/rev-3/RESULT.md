@@ -1,0 +1,11 @@
+# RPF-102 rev-3 Phase A
+
+The local and remote Base was `833d138e5ae5c7e5e62d5745e77bce938e37bbc2`. The offline candidate passed local verification at seal. Push, blob readback, and hosted CI receipts were `NOT_RUN_AT_SEAL`. Phase B remained `PHYSICAL_NOT_AUTHORIZED`.
+
+The manual-only workflow requires an operator-recorded frozen SHA and exact GitHub run ID and rejects reruns. It binds a create-only ledger before SDK installation. The physical program stops before UNKNOWN unless NORMAL passes the independent Oracle and admits a publishable capsule. The `always()` steps validate the staged file set before upload and retain the experiment's failure status. The existing automatic SDK workflow remains offline.
+
+The exporter and verifier are stdlib-only. They bind the admitted owner, source identity, case, manifest, and individual bytes. Fully admitted request and Receiver payloads are byte-exact. Public copies of receipts containing handshake nonces use a one-way substitution with separate original and published hashes. Invalid, missing, or unpublishable case members yield a diagnostic-only case or an unavailable result. Extracted public evidence can be checked using the existing Oracle for the admitted case semantics.
+
+Windows CPython 3.14.7 passed 23 tests, comprising 12 existing controls and 11 new capsule and workflow controls. The new controls exercised isolated extraction, preservation of failure diagnostics, stop-before-UNKNOWN, malformed and truncated requests, duplicate keys, secret-like text, wrong source or run, hardlink, extra member, path escape, swapped Receiver evidence and a reanchored reservation after UNKNOWN. All fixture cases are synthetic. No rev-3 formal case ran, and SDK installation, SDK children, receivers, application sends, external Provider requests, and real business writes were all zero.
+
+The first formal NORMAL failure on `5e58bf0023d8a4271a478b6f11573d120abebafb` remains `UNDETERMINED`. The historical run did not publish an artifact. The manual runner, real SDK compatibility, and formal evidence upload await approved execution at the frozen Phase A SHA. [Historical run](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42580171633)

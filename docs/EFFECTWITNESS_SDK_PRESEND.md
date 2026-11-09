@@ -9,7 +9,7 @@ Run the local no-SDK controls with a verified interpreter from the repository ro
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_probe --owner <32-hex-owner> --preflight
 ```
 
-The automatic Ubuntu workflow runs offline tests and documentation checks and records `SDK_PHYSICAL_NOT_RUN_BY_PLAN`. Any future formal attempt requires separate approval for its commit, isolated runner, and physical budget.
+The automatic Ubuntu workflow runs offline tests and documentation checks and records `SDK_PHYSICAL_NOT_RUN_BY_PLAN`. A formal attempt requires separate approval for its frozen commit, isolated runner, and physical budget. The manual workflow checks the approved source SHA, the exact GitHub run ID, and attempt 1 before it creates the owner. It verifies NORMAL with the independent Oracle and checks that its evidence can be published before starting UNKNOWN. See the [rev-3 operator and verifier guide](../spikes/rpf-102/rev-3/README.md).
 
 After a future approved run, read its public diagnostic and validate it before upload:
 
@@ -18,7 +18,7 @@ After a future approved run, read its public diagnostic and validate it before u
 <python> -B -m runtime.runproof_runtime.effectwitness.sdk_presend_diagnostic < diagnostic.json
 ```
 
-Use a separate file for each started case. An unavailable diagnostic leaves stdout empty and exits nonzero. In a future approved CI job, make collection run after failure with `always()` and allow upload only for JSON that passes validation. The envelope contains allowlisted fields and explicit `null` counts when evidence is missing. Keep the underlying WAL, stdout, requests, and Receiver bytes private.
+Use a separate file for each started case. An unavailable diagnostic leaves stdout empty and exits nonzero. The manual workflow checks the capsule before upload, even when the experiment fails. The diagnostic contains allowlisted fields and explicit `null` counts when evidence is missing. The capsule publishes only admitted evidence and keeps SDK stdout logs, environment files, handshake credentials and unapproved bytes in the owner.
 
 Use the independent Oracle to check complete case evidence:
 

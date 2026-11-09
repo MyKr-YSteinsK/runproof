@@ -1,0 +1,103 @@
+name: RPF-102 Manual SDK Conformance
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: Separately approved full source commit SHA
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rpf102-manual-sdk
+  cancel-in-progress: false
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: rpf-102-physical
+      deployment: false
+    env:
+      EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+    steps:
+      - name: Validate one-time operator admission
+        env:
+          APPROVED_SOURCE_SHA: ${{ vars.RPF102_APPROVED_SOURCE_SHA }}
+          APPROVED_RUN_ID: ${{ vars.RPF102_APPROVED_RUN_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/main
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          [[ "$EXPECTED_SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$EXPECTED_SOURCE_SHA" = "$GITHUB_SHA"
+          test "$APPROVED_SOURCE_SHA" = "$GITHUB_SHA"
+          test "$APPROVED_RUN_ID" = "$GITHUB_RUN_ID"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Preflight and bind new owner
+        id: preflight
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE_SHA"
+          owner="$(python -I -B -c 'from uuid import uuid4; print(uuid4().hex)')"
+          python -B -m ci.rpf102_rev3_capsule admit --owner "$owner" --expected-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
+          printf 'owner=%s\n' "$owner" >> "$GITHUB_OUTPUT"
+      - name: Physical run with pinned isolated SDK
+        env:
+          OWNER: ${{ steps.preflight.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$PWD/.local/rpf-102-sdk-presend/$OWNER"
+          mkdir "$root/tmp"
+          export TMPDIR="$root/tmp"
+          python -I -B -m venv "$root/venv"
+          py="$root/venv/bin/python"
+          timeout 150 "$py" -I -B -m pip --isolated --disable-pip-version-check install --only-binary=:all: --no-input --no-cache-dir --index-url https://pypi.org/simple --report "$root/install-report.json" -r ci/rpf102-sdk-requirements.txt
+          "$py" -I -B -m pip --isolated --disable-pip-version-check check
+          "$py" -B -m ci.rpf102_rev3_capsule environment --owner "$OWNER" --expected-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
+          timeout 180 "$py" -B -m ci.rpf102_rev3_capsule physical --owner "$OWNER" --expected-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
+      - name: Export and independently verify public capsule
+        id: capsule
+        if: always() && steps.preflight.outputs.owner != ''
+        env:
+          OWNER: ${{ steps.preflight.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          trap 'echo "::error::CAPSULE_UNAVAILABLE"' ERR
+          python -B -m ci.rpf102_rev3_capsule export --owner "$OWNER" --expected-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
+          python -B -m ci.rpf102_rev3_capsule verify --folder ".local/rpf-102-rev3-capsule/$OWNER" --owner "$OWNER" --expected-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"
+          echo 'ready=true' >> "$GITHUB_OUTPUT"
+      - name: Record unavailable preflight evidence
+        if: always() && steps.preflight.outputs.owner == ''
+        run: echo '::notice::CAPSULE_UNAVAILABLE_NO_ADMITTED_OWNER'
+      - name: Upload only validated public capsule
+        if: always() && steps.capsule.outputs.ready == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: rpf102-rev3-public-${{ github.run_id }}
+          path: .local/rpf-102-rev3-capsule/${{ steps.preflight.outputs.owner }}/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - name: Require verified NORMAL and UNKNOWN for success
+        if: always() && steps.capsule.outputs.ready == 'true'
+        env:
+          OWNER: ${{ steps.preflight.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m ci.rpf102_rev3_capsule verify --require-complete --folder ".local/rpf-102-rev3-capsule/$OWNER" --owner "$OWNER" --expected-sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID"

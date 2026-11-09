@@ -159,7 +159,7 @@ def run_case(owner, case, facts):
     check(code == 0, "RECEIVER_ABSENT")
 
 
-def run(owner):
+def run(owner, *, accept_case=None):
     admitted = preflight(owner)
     check(admitted["status"] == "SDK_ADMITTED" and not admitted["formal_occupied"], "SDK_ADMISSION")
     exclusive(owner / "formal.json", canonical({"cases": CASES, "max_sends": 3, "max_bytes": 3 * LIMIT}))
@@ -186,6 +186,8 @@ def run(owner):
             report = canonical(collect(folder, case, **facts))
             exclusive(folder / REPORT, report)
             print(report.decode("ascii"), flush=True)
+        if accept_case is not None:
+            accept_case(folder, case)
     return results
 
 

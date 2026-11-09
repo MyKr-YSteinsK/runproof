@@ -1,0 +1,18 @@
+{
+  "schema": "rpf102-rev3-acceptance-v1",
+  "base": "833d138e5ae5c7e5e62d5745e77bce938e37bbc2",
+  "gates": {
+    "G0": {"status": "PASS", "scope": "ACTUAL_BASE_SCOPE_AND_CREATE_ONLY"},
+    "A01": {"status": "PASS", "scope": "OFFLINE_SOURCE_AND_MANUAL_ONLY_TRIGGER"},
+    "A02": {"status": "PASS", "scope": "SYNTHETIC_CAPSULE_ORACLE_AND_FAILURE_CONTROLS"},
+    "A03": {"status": "PASS", "scope": "LOCAL_OFFLINE_AND_DOCS"},
+    "A04": {"status": "NOT_RUN", "scope": "REMOTE_READBACK_NOT_RUN_AT_SEAL"},
+    "A05": {"status": "NOT_RUN", "scope": "PHYSICAL_NOT_AUTHORIZED"},
+    "A06": {"status": "NOT_RUN", "scope": "NORMAL"},
+    "A07": {"status": "NOT_RUN", "scope": "UNKNOWN"},
+    "A08": {"status": "NOT_RUN", "scope": "PHYSICAL_ARTIFACT_AND_ORACLE"},
+    "A09": {"status": "NOT_RUN", "scope": "CANONICAL_NOT_RUN_AT_SEAL"},
+    "A10": {"status": "NOT_RUN", "scope": "GIT_AND_HOSTED_RECEIPTS_NOT_RUN_AT_SEAL"}
+  },
+  "release_eligible": false
+}

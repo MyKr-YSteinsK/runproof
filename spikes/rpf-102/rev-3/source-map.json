@@ -1,0 +1,76 @@
+{
+  "schema": "rpf102-rev3-source-map-v1",
+  "base": "833d138e5ae5c7e5e62d5745e77bce938e37bbc2",
+  "files": {
+    "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py": {
+      "git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "raw_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "lf_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_client.py": {
+      "git_blob": "a55215bce8bf71bd479d0b83b82ba8e68e98419e",
+      "raw_sha256": "76741d14fd531c49c40260ba74453f81eb53b99fd8022c3d56dfd760fcfc566c",
+      "lf_sha256": "76741d14fd531c49c40260ba74453f81eb53b99fd8022c3d56dfd760fcfc566c"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_host.py": {
+      "git_blob": "cf68630c55215eb0ad6c24952bb0b670c93f3bf3",
+      "raw_sha256": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846",
+      "lf_sha256": "820ec4edf08f957dbe81188531059338651ce23a6962be7a1f2b51bff0b4c846"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_oracle.py": {
+      "git_blob": "9ab77f31cc21401289d8c7fb459cdedd8c8562a9",
+      "raw_sha256": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b",
+      "lf_sha256": "15812a59a46a729c91ff31103254c74057a1a188c76d942d80d5fe395701a05b"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_probe.py": {
+      "git_blob": "451aa89446b17718cc50006f94187ebc490c546f",
+      "raw_sha256": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad",
+      "lf_sha256": "026ce57cf8f609a8a5593e1d53114a02bae4d06e6fe1c358a4ab44cba457fdad"
+    },
+    "runtime/runproof_runtime/effectwitness/sdk_presend_diagnostic.py": {
+      "git_blob": "712ed601c52f4d78e69daf76689c762f0a92d87a",
+      "raw_sha256": "76e2553e4747c891c64db35f6cab2341e2f2a8ddf6fba8035947a5b6d739c863",
+      "lf_sha256": "76e2553e4747c891c64db35f6cab2341e2f2a8ddf6fba8035947a5b6d739c863"
+    },
+    "ci/test_rpf102_sdk_presend.py": {
+      "git_blob": "6c617319bf2becc7027b6e0b6f1d0b6cad1b9c87",
+      "raw_sha256": "bea616d94b1549d0e700b9c9db0fb4c14a021d3f009eb8609fc082c6f71fc4cd",
+      "lf_sha256": "bea616d94b1549d0e700b9c9db0fb4c14a021d3f009eb8609fc082c6f71fc4cd"
+    },
+    "docs/EFFECTWITNESS_SDK_PRESEND.md": {
+      "git_blob": "8c4ca2e45aa3f203774b73ca2ddb569427fc6535",
+      "raw_sha256": "bd1cdf8acab5522dc2bf2ea00dceddcc8fc30394ab07edab44f00d318a2d91b6",
+      "lf_sha256": "bd1cdf8acab5522dc2bf2ea00dceddcc8fc30394ab07edab44f00d318a2d91b6"
+    },
+    "docs/EFFECTWITNESS_SDK_PRESEND.zh-CN.md": {
+      "git_blob": "a1a0e9957809d879e4709081785558343927e25d",
+      "raw_sha256": "12bf3546369786fd1d348bd1ce17b121fa35637769413a33e506cb691e51c275",
+      "lf_sha256": "12bf3546369786fd1d348bd1ce17b121fa35637769413a33e506cb691e51c275"
+    },
+    ".github/workflows/rpf-102-sdk-manual-conformance.yml": {
+      "git_blob": "d5dac43e3032b3293c804dbd26f578b00230090e",
+      "raw_sha256": "61b5b2aac71f937ecdf03613e252a76534cfa919f293bfb2e5f743f51f27a361",
+      "lf_sha256": "61b5b2aac71f937ecdf03613e252a76534cfa919f293bfb2e5f743f51f27a361"
+    },
+    "ci/rpf102_rev3_capsule.py": {
+      "git_blob": "226e6d3772f2d1b048d69f841af6bad22d0e1687",
+      "raw_sha256": "51113233e033b2bfdd5b1ff8f0673d4933f732fab8e2128c72c37c9f1b7ac101",
+      "lf_sha256": "51113233e033b2bfdd5b1ff8f0673d4933f732fab8e2128c72c37c9f1b7ac101"
+    },
+    "ci/test_rpf102_rev3_capsule.py": {
+      "git_blob": "ae42c7dfb03f0bd7bd855234330262fc689b0862",
+      "raw_sha256": "8adc3ad1aea45869b1ed72dc03f008ad06a13b2e152566467ee9b94aed3ae54e",
+      "lf_sha256": "8adc3ad1aea45869b1ed72dc03f008ad06a13b2e152566467ee9b94aed3ae54e"
+    },
+    "ci/rpf102-sdk-requirements.txt": {
+      "git_blob": "7951e69b082119bf39c015010db093aaf6297d0a",
+      "raw_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15",
+      "lf_sha256": "b2d6bde2adc469bd515d3736e0bcb35877fcd1c474b3efa7dd35bfdf57e68b15"
+    },
+    ".github/workflows/rpf-102-sdk-presend.yml": {
+      "git_blob": "285910804db1ced87d5d0c3161cc1606029bc5db",
+      "raw_sha256": "64692e896cf9008fc5614d713c5d7b46439f9394c009260d057ce6f7f327d44a",
+      "lf_sha256": "64692e896cf9008fc5614d713c5d7b46439f9394c009260d057ce6f7f327d44a"
+    }
+  }
+}
