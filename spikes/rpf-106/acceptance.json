@@ -1,0 +1,52 @@
+{
+  "schema": "rpf106-acceptance-v1",
+  "task": "RPF-106/rev-1",
+  "status": "PARTIAL",
+  "status_scope": "Sealed before Git delivery and hosted verification",
+  "base": "7be3fe057df5ce2e45af81180c8983c9647fc975",
+  "branch": "main",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06": "PASS",
+    "A07": "PASS",
+    "A08_LOCAL": "PASS",
+    "A08_HOSTED": "NOT_RUN_AT_SEAL",
+    "A09": "NOT_RUN_AT_SEAL",
+    "A10": "NOT_RUN"
+  },
+  "local": {
+    "tests": {
+      "new": {
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      "historical_pure": {
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "public_docs": "PASS",
+    "owners": 12,
+    "observed_business_transactions": 19,
+    "oracle_pinned_transactions": 15,
+    "comparison_transactions": 4,
+    "post_unknown_effect_events": 0
+  },
+  "authority": {
+    "sdk": "NOT_RUN",
+    "receiver": "NOT_RUN",
+    "transport": "NOT_RUN",
+    "provider": "NOT_RUN",
+    "real_explorer": "NOT_RUN",
+    "release_eligible": false,
+    "evidence_accepted": "PENDING_ARCHITECT",
+    "stage_advanced": "PENDING_ARCHITECT"
+  }
+}

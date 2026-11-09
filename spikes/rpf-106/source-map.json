@@ -1,0 +1,199 @@
+{
+  "schema": "rpf106-source-map-v1",
+  "base": "7be3fe057df5ce2e45af81180c8983c9647fc975",
+  "new_path_count": 15,
+  "files": [
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_contracts.py",
+      "kind": "NEW",
+      "git_blob": "5568c3130a4cf473a8bf396f9ec4acacbf1a2b7d",
+      "raw_sha256": "0796efa6b5073538fa4f14b8f24d758e3ee5ba3d92e2cb8139a4c5589e9920f1",
+      "lf_sha256": "0796efa6b5073538fa4f14b8f24d758e3ee5ba3d92e2cb8139a4c5589e9920f1",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_ledger.py",
+      "kind": "NEW",
+      "git_blob": "fc84becd4993bcdd1c2d676bb7f43f5baf9d7794",
+      "raw_sha256": "484e9d97f3638a20e82204bfd385a95a5a5d02e6cda1b39caf40d96f481cee90",
+      "lf_sha256": "484e9d97f3638a20e82204bfd385a95a5a5d02e6cda1b39caf40d96f481cee90",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_authority.py",
+      "kind": "NEW",
+      "git_blob": "21facbdcb1879dc98b7c35baff9d95e9f8d0a268",
+      "raw_sha256": "3601fb0e83269efa3623d9a372d8b7c2ba2a92ee05b2f9e5e637d7bdc8be34cc",
+      "lf_sha256": "3601fb0e83269efa3623d9a372d8b7c2ba2a92ee05b2f9e5e637d7bdc8be34cc",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_targets.py",
+      "kind": "NEW",
+      "git_blob": "28f8a4b5bec1e48d7dcb9c2859ed30c7a0be25ea",
+      "raw_sha256": "fef873c39b26af5eac50f173dc0c0c69c44a7c5f416bb629917ebec49a37a769",
+      "lf_sha256": "fef873c39b26af5eac50f173dc0c0c69c44a7c5f416bb629917ebec49a37a769",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_controller.py",
+      "kind": "NEW",
+      "git_blob": "45f4eab54a4e78e7b07c0b98078def1eb12d26ed",
+      "raw_sha256": "9e25585a9b20ccf43ef2bd75feaf31d4ffea1865392840e5e50366dff89b565e",
+      "lf_sha256": "9e25585a9b20ccf43ef2bd75feaf31d4ffea1865392840e5e50366dff89b565e",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_oracle.py",
+      "kind": "NEW",
+      "git_blob": "83e316576e2b75480b32e4c4d54901c58e9393ca",
+      "raw_sha256": "ca6f89604a75ec953e96df1a73af8274688cb520cb8e1bec7bd58ede024f6959",
+      "lf_sha256": "ca6f89604a75ec953e96df1a73af8274688cb520cb8e1bec7bd58ede024f6959",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_replay.py",
+      "kind": "NEW",
+      "git_blob": "df2db1ba202650ea50ff55d4099532ad0e6b1f66",
+      "raw_sha256": "d3bdc116e3d62b4c0a87c458ea292dbbdd00dab1a8b3d3cf4fe2596d449a9a0d",
+      "lf_sha256": "d3bdc116e3d62b4c0a87c458ea292dbbdd00dab1a8b3d3cf4fe2596d449a9a0d",
+      "base_git_blob": null
+    },
+    {
+      "path": "ci/test_rpf106_controller.py",
+      "kind": "NEW",
+      "git_blob": "8eb880c72104fa2d8ccbe6dcb45d74e659b72e8c",
+      "raw_sha256": "57f81fd29946cf72a2a48256674be0f279fee493c3374788584f6bed2267a0a8",
+      "lf_sha256": "57f81fd29946cf72a2a48256674be0f279fee493c3374788584f6bed2267a0a8",
+      "base_git_blob": null
+    },
+    {
+      "path": "ci/test_rpf106_candidates.py",
+      "kind": "NEW",
+      "git_blob": "dd29eb40899ef203d10a98647fdabffcf25f9696",
+      "raw_sha256": "ca8c068b558baf10353f4fbaa280abe8ea8bc003999ad094ac1738839920d89f",
+      "lf_sha256": "ca8c068b558baf10353f4fbaa280abe8ea8bc003999ad094ac1738839920d89f",
+      "base_git_blob": null
+    },
+    {
+      "path": ".github/workflows/rpf-106-offline.yml",
+      "kind": "NEW",
+      "git_blob": "fa164ed2e78a3e9cd4d7e77b99440e0319ed527a",
+      "raw_sha256": "375de60fc9b8c736abc74df003f7c8ac84abbbd3575b6c492602a90fa6ab0cf2",
+      "lf_sha256": "375de60fc9b8c736abc74df003f7c8ac84abbbd3575b6c492602a90fa6ab0cf2",
+      "base_git_blob": null
+    },
+    {
+      "path": "spikes/rpf-106/README.md",
+      "kind": "NEW",
+      "git_blob": "8aa5f839124cf431314e53ca1e601eefd568d53e",
+      "raw_sha256": "08935b4673fbaa7d399b6ed05316c9ef8c9f2540e5fa852d6273542715fcd068",
+      "lf_sha256": "08935b4673fbaa7d399b6ed05316c9ef8c9f2540e5fa852d6273542715fcd068",
+      "base_git_blob": null
+    },
+    {
+      "path": "spikes/rpf-106/RESULT.md",
+      "kind": "NEW",
+      "git_blob": "7a4f11ba1f213cab6905e84293e032d72a88326f",
+      "raw_sha256": "4a48aa65b03aa896e3281cefeb5b5fe6b7351977f21eb2bcf6becc9fcd23adcf",
+      "lf_sha256": "4a48aa65b03aa896e3281cefeb5b5fe6b7351977f21eb2bcf6becc9fcd23adcf",
+      "base_git_blob": null
+    },
+    {
+      "path": "spikes/rpf-106/acceptance.json",
+      "kind": "NEW",
+      "git_blob": "8e25138cae6ba409c211d51ff439d80cb07fe3c2",
+      "raw_sha256": "77a29975e9a4eef78f0abb41bc583ffeb3c5be4ec477802476d610b32e558faf",
+      "lf_sha256": "77a29975e9a4eef78f0abb41bc583ffeb3c5be4ec477802476d610b32e558faf",
+      "base_git_blob": null
+    },
+    {
+      "path": "spikes/rpf-106/verification-diagnostic.json",
+      "kind": "NEW",
+      "git_blob": "97c00135862ed09ff5f295649f23d56daad74081",
+      "raw_sha256": "6ced80028bdcb87620ce0311240fce1368b58f0a1b92f5bf8a9955eeebeb94e6",
+      "lf_sha256": "6ced80028bdcb87620ce0311240fce1368b58f0a1b92f5bf8a9955eeebeb94e6",
+      "base_git_blob": null
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py",
+      "kind": "RUNTIME_DEPENDENCY",
+      "git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "raw_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "lf_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "base_git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/product_sdk_target.py",
+      "kind": "RUNTIME_DEPENDENCY",
+      "git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39",
+      "raw_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e",
+      "lf_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e",
+      "base_git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/product_local_ports.py",
+      "kind": "RUNTIME_DEPENDENCY",
+      "git_blob": "adbf26be169b6fb9730f998096341db580f45c14",
+      "raw_sha256": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52",
+      "lf_sha256": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52",
+      "base_git_blob": "adbf26be169b6fb9730f998096341db580f45c14"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/product_local_contracts.py",
+      "kind": "RUNTIME_DEPENDENCY",
+      "git_blob": "ee433bd735c2fca0338a7bd50283f9db12db9358",
+      "raw_sha256": "06c778e9fdd7ecdb739ade94a711cf4c017dc7000283d8128b69d7404e61b66c",
+      "lf_sha256": "06c778e9fdd7ecdb739ade94a711cf4c017dc7000283d8128b69d7404e61b66c",
+      "base_git_blob": "ee433bd735c2fca0338a7bd50283f9db12db9358"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/effect_oracle.py",
+      "kind": "RUNTIME_DEPENDENCY",
+      "git_blob": "3d1322472b1621f4061db4331914dc4e36b23fa0",
+      "raw_sha256": "cb6f1fab4a7c05bf2c448b7728d35bdf5cf663d39a56513564bc020c9f56a834",
+      "lf_sha256": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c",
+      "base_git_blob": "3d1322472b1621f4061db4331914dc4e36b23fa0"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/ops_oracle.py",
+      "kind": "RUNTIME_DEPENDENCY",
+      "git_blob": "633677ab7a290134da1700b43d140e56dd2b3ee7",
+      "raw_sha256": "d660e6959daa615c031f84bbb08a05c2e3a4b61bd236f0beee8b86563e3b122f",
+      "lf_sha256": "90a5328168be38cce869203d1e365b16ed999d79533dac5a01172d8b9eb895fa",
+      "base_git_blob": "633677ab7a290134da1700b43d140e56dd2b3ee7"
+    },
+    {
+      "path": "ci/test_rpf105_explorer_admission.py",
+      "kind": "VERIFICATION_DEPENDENCY",
+      "git_blob": "b8bb4242f104d93d5f923f7cfa5600b97a038baf",
+      "raw_sha256": "a764d7ba93a30b63b5976456607e8befb9c7001700c642c31c1c929c3c6d79af",
+      "lf_sha256": "a764d7ba93a30b63b5976456607e8befb9c7001700c642c31c1c929c3c6d79af",
+      "base_git_blob": "b8bb4242f104d93d5f923f7cfa5600b97a038baf"
+    },
+    {
+      "path": "ci/verify-public-docs.py",
+      "kind": "VERIFICATION_DEPENDENCY",
+      "git_blob": "233783cb7f56130940395a02d24aa80ede408147",
+      "raw_sha256": "d91315962cb686efe8a3b7197589a31d9f2359ec08d3acf27b06d7e3a796ee0c",
+      "lf_sha256": "d91315962cb686efe8a3b7197589a31d9f2359ec08d3acf27b06d7e3a796ee0c",
+      "base_git_blob": "233783cb7f56130940395a02d24aa80ede408147"
+    },
+    {
+      "path": ".gitignore",
+      "kind": "VERIFICATION_DEPENDENCY",
+      "git_blob": "af8755c8c64dd941399381e6399406c0e8606ceb",
+      "raw_sha256": "0522e40e0a528ccb1227f5d7503e7e6a876b12b6dc9c75d9f86163cc150eff6f",
+      "lf_sha256": "0522e40e0a528ccb1227f5d7503e7e6a876b12b6dc9c75d9f86163cc150eff6f",
+      "base_git_blob": "af8755c8c64dd941399381e6399406c0e8606ceb"
+    }
+  ],
+  "self_identity": {
+    "path": "spikes/rpf-106/source-map.json",
+    "kind": "NEW",
+    "git_blob": null,
+    "raw_sha256": null,
+    "lf_sha256": null,
+    "verification": "Read the sealed manifest blob and hash its bytes from the delivered Git tree. A manifest cannot contain its own final digest."
+  }
+}

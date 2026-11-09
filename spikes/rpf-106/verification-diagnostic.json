@@ -1,0 +1,385 @@
+{
+  "schema": "rpf106-diagnostic-v1",
+  "base": "7be3fe057df5ce2e45af81180c8983c9647fc975",
+  "preflight": {
+    "repo": "MyKr-YSteinsK/runproof",
+    "branch": "main",
+    "upstream": "origin/main",
+    "head": "7be3fe057df5ce2e45af81180c8983c9647fc975",
+    "ls_remote_main": "7be3fe057df5ce2e45af81180c8983c9647fc975",
+    "index": "EMPTY",
+    "scoped_status": "CLEAN",
+    "create_only_vacant": 15,
+    "ignore_rule": "/.local/",
+    "owner_parents": "NON_REPARSE",
+    "push_triggers": [
+      "RPF-106 Trusted Controller Offline",
+      "Canonical Release Gate"
+    ]
+  },
+  "runs": [
+    {
+      "policy": "FIXTURE",
+      "selected": "rpf106/ops-response-loss",
+      "scope": {
+        "origin": "LOCAL",
+        "owner": "3eb1cc86119648c39d7194bc2270b76d",
+        "run_id": "09a88e275c64476eb27e66f316a642d2",
+        "source_git_sha": "7be3fe057df5ce2e45af81180c8983c9647fc975"
+      },
+      "eligible": [
+        "rpf106/order-response-loss",
+        "rpf106/ops-response-loss"
+      ],
+      "shared_view": {
+        "eligible": [
+          "rpf106/order-response-loss",
+          "rpf106/ops-response-loss"
+        ],
+        "remaining": {
+          "case_slots": 1,
+          "send_slots": 1,
+          "write_slots": 1
+        },
+        "seed": {
+          "domain": "order",
+          "fault": {
+            "agent_exposed": false,
+            "observed": false,
+            "planned": false,
+            "triggered": false
+          },
+          "outcome": "CONTRACT_SATISFIED_IN_RUN"
+        }
+      },
+      "remaining": {
+        "case_slots": 0,
+        "send_slots": 0,
+        "write_slots": 0
+      },
+      "claimed": [
+        "rpf106/order-normal",
+        "rpf106/ops-response-loss"
+      ],
+      "wal_sha256": "bbfc4db6bf3256398328fdc62a9223e615cbc3a928456cf0e939028e4bfbf6d4",
+      "verified_transactions": 2,
+      "post_unknown_effect_events": 0,
+      "reconciliation": "COMMITTED",
+      "durable_events": [
+        "RUN_OPEN",
+        "CLAIMED",
+        "AUTHORITY_BEFORE",
+        "WRITE_INTENT",
+        "WRITE_COMMIT",
+        "AUTHORITY_AFTER",
+        "VERIFIED",
+        "CLAIMED",
+        "AUTHORITY_BEFORE",
+        "WRITE_INTENT",
+        "WRITE_COMMIT",
+        "UNKNOWN",
+        "AUTHORITY_AFTER",
+        "VERIFIED",
+        "STOPPED"
+      ],
+      "fault": {
+        "agent_exposed": false,
+        "observed": true,
+        "planned": true,
+        "triggered": true
+      },
+      "feedback": "26153d9921ca7d1be4fa1ff53cad41cec7a1fcd7b4f41efe0937432c11a51f31",
+      "admissions": {
+        "rpf106/ops-response-loss": {
+          "status": "ACCEPT",
+          "view_sha256": "df7b282ff41c37719fcd783a3d70e40765c321f51d7029f8715a8bd279d9bbdc",
+          "feedback_sha256": "26153d9921ca7d1be4fa1ff53cad41cec7a1fcd7b4f41efe0937432c11a51f31",
+          "requested_debit": {
+            "case_slots": 1,
+            "send_slots": 1,
+            "write_slots": 1
+          }
+        },
+        "rpf106/order-response-loss": {
+          "status": "ACCEPT",
+          "view_sha256": "df7b282ff41c37719fcd783a3d70e40765c321f51d7029f8715a8bd279d9bbdc",
+          "feedback_sha256": "26153d9921ca7d1be4fa1ff53cad41cec7a1fcd7b4f41efe0937432c11a51f31",
+          "requested_debit": {
+            "case_slots": 1,
+            "send_slots": 1,
+            "write_slots": 1
+          }
+        }
+      },
+      "authority_snapshot": {
+        "config": {
+          "config_id": "rpf106-config",
+          "dependency": "READY",
+          "effect_count": 1,
+          "operation_id": "d7f57cf4a2e661fc37edf6d73fd4cf82e5b86eb3ea948b45b11e8ae8e1dd7c7d",
+          "release": "release-v2",
+          "revision": 1
+        },
+        "receipts": [
+          {
+            "config_id": "rpf106-config",
+            "effect_count": 1,
+            "operation_id": "d7f57cf4a2e661fc37edf6d73fd4cf82e5b86eb3ea948b45b11e8ae8e1dd7c7d",
+            "receipt_id": "receipt-b1ffc6074f84ccb0ec7881f8",
+            "release": "release-v2",
+            "revision": 1,
+            "status": "APPLIED"
+          }
+        ]
+      }
+    },
+    {
+      "policy": "FIXED_ORDER",
+      "selected": "rpf106/order-response-loss",
+      "scope": {
+        "origin": "LOCAL",
+        "owner": "7e60846b3add461897931e610bef34f3",
+        "run_id": "5cb3256d40a64822a2e508bd955f1c63",
+        "source_git_sha": "7be3fe057df5ce2e45af81180c8983c9647fc975"
+      },
+      "eligible": [
+        "rpf106/order-response-loss",
+        "rpf106/ops-response-loss"
+      ],
+      "shared_view": {
+        "eligible": [
+          "rpf106/order-response-loss",
+          "rpf106/ops-response-loss"
+        ],
+        "remaining": {
+          "case_slots": 1,
+          "send_slots": 1,
+          "write_slots": 1
+        },
+        "seed": {
+          "domain": "order",
+          "fault": {
+            "agent_exposed": false,
+            "observed": false,
+            "planned": false,
+            "triggered": false
+          },
+          "outcome": "CONTRACT_SATISFIED_IN_RUN"
+        }
+      },
+      "remaining": {
+        "case_slots": 0,
+        "send_slots": 0,
+        "write_slots": 0
+      },
+      "claimed": [
+        "rpf106/order-normal",
+        "rpf106/order-response-loss"
+      ],
+      "wal_sha256": "c2a6558fa054f42fed5eb613833f420a3e1fec9853e15ebd762c59002410d36f",
+      "verified_transactions": 2,
+      "post_unknown_effect_events": 0,
+      "reconciliation": "COMMITTED",
+      "durable_events": [
+        "RUN_OPEN",
+        "CLAIMED",
+        "AUTHORITY_BEFORE",
+        "WRITE_INTENT",
+        "WRITE_COMMIT",
+        "AUTHORITY_AFTER",
+        "VERIFIED",
+        "CLAIMED",
+        "AUTHORITY_BEFORE",
+        "WRITE_INTENT",
+        "WRITE_COMMIT",
+        "UNKNOWN",
+        "AUTHORITY_AFTER",
+        "VERIFIED",
+        "STOPPED"
+      ],
+      "fault": {
+        "agent_exposed": false,
+        "observed": true,
+        "planned": true,
+        "triggered": true
+      },
+      "feedback": "edf691fa2586afaf32b5023f03fa25a9c2273037e26a85b9f228977821d842d6",
+      "admissions": {
+        "rpf106/ops-response-loss": {
+          "status": "ACCEPT",
+          "view_sha256": "36ce005f127c7903fd8992277002bae4a8fcdb87f6779d11f039614bc470055b",
+          "feedback_sha256": "edf691fa2586afaf32b5023f03fa25a9c2273037e26a85b9f228977821d842d6",
+          "requested_debit": {
+            "case_slots": 1,
+            "send_slots": 1,
+            "write_slots": 1
+          }
+        },
+        "rpf106/order-response-loss": {
+          "status": "ACCEPT",
+          "view_sha256": "36ce005f127c7903fd8992277002bae4a8fcdb87f6779d11f039614bc470055b",
+          "feedback_sha256": "edf691fa2586afaf32b5023f03fa25a9c2273037e26a85b9f228977821d842d6",
+          "requested_debit": {
+            "case_slots": 1,
+            "send_slots": 1,
+            "write_slots": 1
+          }
+        }
+      },
+      "authority_snapshot": {
+        "order": {
+          "currency": "CNY",
+          "order_id": "rpf106-order",
+          "paid_minor": 2500,
+          "refunded_minor": 2500,
+          "revision": 1,
+          "status": "REFUNDED"
+        },
+        "receipts": [
+          {
+            "amount_minor": 2500,
+            "committed_revision": 1,
+            "currency": "CNY",
+            "operation_id": "ebd3330c0d048136e35b05d3bc0def506e8c9e4cc968e1de0a379fcf9c3edd8e",
+            "order_id": "rpf106-order",
+            "receipt_id": "receipt-2e612648120d14c8238a4520",
+            "status": "COMMITTED"
+          }
+        ]
+      }
+    }
+  ],
+  "controls": [
+    {
+      "control": "WRITE_INTENT",
+      "durable_latch": false,
+      "execution": "INCONCLUSIVE",
+      "observed_transactions": 1,
+      "owner": "769e06b234374e329eff85a589197c41",
+      "phase": "PREPARED",
+      "reconciliation": "NOT_COMMITTED",
+      "verified_transactions": 1,
+      "wal_sha256": "5f5eac759ede9bde9d1c714d02b828a9feaa4b0b8432a75555249a62d46f25ad"
+    },
+    {
+      "control": "AFTER_SQLITE_COMMIT",
+      "durable_latch": false,
+      "execution": "INCONCLUSIVE",
+      "observed_transactions": 2,
+      "owner": "d5637f71a27f48de8fcd042a21567dda",
+      "phase": "INTENT",
+      "reconciliation": "COMMITTED",
+      "verified_transactions": 1,
+      "wal_sha256": "95488fca7e6595faed7272a703e624679f3322a41d5f23cc15f0ae0d11935f34"
+    },
+    {
+      "control": "UNKNOWN",
+      "durable_latch": false,
+      "execution": "INCONCLUSIVE",
+      "observed_transactions": 2,
+      "owner": "5370c10ef9744b01826806bf947fd524",
+      "phase": "COMMITTED",
+      "reconciliation": "COMMITTED",
+      "verified_transactions": 1,
+      "wal_sha256": "f31a5ae233bbcc621afff3c91811d076e8735621a1e1b4a658b323861a1fa3f7"
+    },
+    {
+      "control": "AUTHORITY_AFTER",
+      "durable_latch": true,
+      "execution": "INCONCLUSIVE",
+      "observed_transactions": 2,
+      "owner": "9ac14c650f804136bed75dd586b75b99",
+      "phase": "UNKNOWN",
+      "reconciliation": "COMMITTED",
+      "verified_transactions": 1,
+      "wal_sha256": "b512506300a60e6d2838ae1ac9f24e1673de28c4cd71839add9ad64d098ff0c6"
+    },
+    {
+      "control": "ORACLE_VERDICT",
+      "durable_latch": true,
+      "execution": "INCONCLUSIVE",
+      "observed_transactions": 2,
+      "owner": "b71af56fcac6424e90e67196f1676d17",
+      "phase": "READ_BACK",
+      "reconciliation": "COMMITTED",
+      "verified_transactions": 1,
+      "wal_sha256": "c23db4aa8c947be547c2472732f0ac481da1593ff9ecd93e0e7cd91251fff786"
+    },
+    {
+      "control": "forgery_and_stop",
+      "foreign_owner": "c77fea16def346d69296f3f39c36a314",
+      "owner": "7d54464285d14d09a4222d47e7b0bb93",
+      "rejection_reasons": [
+        "DECISION_CHANGED",
+        "PROPOSAL_SCHEMA",
+        "PROPOSAL_SCHEMA",
+        "CANDIDATE_ANCHOR",
+        "STALE_REVISION",
+        "STALE_REVISION"
+      ],
+      "verified_transactions": 1,
+      "wal_sha256": "524cb66092b731a960cba44aec274b163da55af13b3523ddbe65f6dd8d8f6c7a"
+    },
+    {
+      "control": "reanchored_and_torn_wal",
+      "owner": "d0013a6c3c80410eaea82635e3a6d664",
+      "verified_transactions": 2,
+      "wal_sha256": "20abfd93a9eda081db66941c8e4e393b6a2f799eb9067b0a974e3d83d4b5688c"
+    },
+    {
+      "claimed": [
+        "rpf106/order-normal",
+        "rpf106/ops-response-loss"
+      ],
+      "control": "same_revision_race",
+      "outcomes": [
+        "NOT_RUN",
+        "VERIFIED"
+      ],
+      "owner": "3a2c04c91d624a678ad997f53dc48cdd",
+      "verified_transactions": 2,
+      "wal_sha256": "770e3e52c469f7be9a228c47098a4e85eafebb3802f53129c793610f95f54bfc"
+    },
+    {
+      "control": "one_use_permit_and_missing_authority",
+      "missing_authority": "UNAVAILABLE",
+      "owner": "1bdcdc2a60d6497290710c480f58cf85",
+      "verified_transactions": 1,
+      "wal_sha256": "d34d578bca6b866281456e93eeab341a0b60ecbb056199c84093e486b2efbc76"
+    }
+  ],
+  "actual_missing_database": "UNAVAILABLE",
+  "independent_readback": {
+    "pid": 23584,
+    "owners": 12,
+    "verified": 15,
+    "observed": 19,
+    "preserved": true,
+    "exit_code": 0,
+    "elapsed_seconds": 0.474,
+    "timed_out": false,
+    "mode": "SQLITE_RO_QUERY_ONLY",
+    "interpreter_version": "3.14.7",
+    "interpreter": "CPython 3.14.7"
+  },
+  "resource": {
+    "official_focused_owners": 12,
+    "initialized_databases": 20,
+    "observed_business_transactions": 19,
+    "oracle_pinned_transactions": 15,
+    "previous_focused_debug_owners": 11,
+    "previous_focused_debug_business_transactions": 18,
+    "controlled_readback_processes": 1,
+    "external_provider_requests": 0,
+    "physical_sends": 0,
+    "keys_probed": 0,
+    "usage": "NOT_RUN",
+    "fees": "NOT_RUN"
+  },
+  "boundaries": [
+    "Failure points injected in the controller. SQLite COMMIT and subsequent readback were physical local operations.",
+    "Loss models a withheld local result. No transport fault or agent exposure.",
+    "Rechained negative inputs were generated in memory. No original WAL was modified.",
+    "Readback used the current checkout and does not establish a third-party issuer."
+  ]
+}
