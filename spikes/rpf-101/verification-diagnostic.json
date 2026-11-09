@@ -1,0 +1,15 @@
+{
+  "platform":"Windows",
+  "interpreter":"CPython 3.14.7",
+  "budget":{"cases":8,"max_cases":12,"application_sends":2,"max_application_sends":8,"received_bytes":84,"receiver_processes":4,"recovery_processes":2,"max_simultaneous_children":2},
+  "checks":[
+    {"command":"python -B -m unittest -v ci.test_rpf101_provider_barrier","exit":0,"tests":2,"seconds":14.783},
+    {"command":"provider_receipt_verify ready-restart --expected-sha256 <local evidence digest>","exit":0,"anchor":"2fd822466a17b18501e195931f6727e918baf434b75b6f37622cc63a7a78e816"},
+    {"command":"provider_receipt_verify unknown-restart --expected-sha256 <invalid digest>","exit":3,"reason":"ANCHOR_MISMATCH"},
+    {"command":"probe-rpf101-provider-barrier.py --inspect unknown-first","exit":0,"received_bytes":0},
+    {"command":"provider_sdk_probe.py with -I -B","exit":0,"status":"SDK_UNAVAILABLE"}
+  ],
+  "provider_requests":0,
+  "sdk_calls":0,
+  "business_writes":0
+}

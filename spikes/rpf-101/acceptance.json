@@ -1,0 +1,14 @@
+{
+  "phase": "BEFORE_PUSH",
+  "gates": {
+    "A01": {"status":"PASS","evidence":"fresh owner, scoped paths, source-map.json"},
+    "A02": {"status":"PASS","evidence":"unknown-empty, unknown-restart; four domain/role combinations"},
+    "A03": {"status":"PASS","evidence":"two 42-byte independent receiver receipts and two zero-byte controls"},
+    "A04": {"status":"PASS","evidence":"real fresh processes, ordered lock races, injected write/flush and torn WAL"},
+    "A05": {"status":"PASS","evidence":"independent CLI and reanchored semantic attacks"},
+    "A06": {"status":"UNAVAILABLE","evidence":"no admitted SDK in isolated interpreter"},
+    "A07": {"status":"NOT_RUN","evidence":"local tests PASS; hosted follows push"},
+    "A08": {"status":"PASS","evidence":"bounded task-owned loopback; process exits observed"},
+    "A09": {"status":"NOT_RUN","evidence":"push follows seal"}
+  }
+}

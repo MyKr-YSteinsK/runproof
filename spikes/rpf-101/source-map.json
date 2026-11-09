@@ -1,0 +1,33 @@
+{
+  "schema": "rpf101-source-map-v1",
+  "files": {
+    "runtime/runproof_runtime/effectwitness/provider_barrier.py": {
+      "raw_sha256": "b76b30196b598b634ebc5fafc76e759ec904c1f8d74f4a32159feaf2abc4a529",
+      "lf_sha256": "b76b30196b598b634ebc5fafc76e759ec904c1f8d74f4a32159feaf2abc4a529"
+    },
+    "runtime/runproof_runtime/effectwitness/provider_transport.py": {
+      "raw_sha256": "61cb403947dc622c80d9795b699c24a842dbb7ae9f903cb9fe400d9ce60b52a9",
+      "lf_sha256": "61cb403947dc622c80d9795b699c24a842dbb7ae9f903cb9fe400d9ce60b52a9"
+    },
+    "runtime/runproof_runtime/effectwitness/provider_receipt_verify.py": {
+      "raw_sha256": "bd323cda0c5e17deba0a1ec800f108f029593fc183c83e13daa9d5dd28477f30",
+      "lf_sha256": "bd323cda0c5e17deba0a1ec800f108f029593fc183c83e13daa9d5dd28477f30"
+    },
+    "runtime/runproof_runtime/effectwitness/provider_sdk_probe.py": {
+      "raw_sha256": "9705e38cbe95ec4dff0af710501f5d2528313e38a79cf93ba769b716b493e982",
+      "lf_sha256": "9705e38cbe95ec4dff0af710501f5d2528313e38a79cf93ba769b716b493e982"
+    },
+    "ci/test_rpf101_provider_barrier.py": {
+      "raw_sha256": "72e64f0d38e758c6fc82a62191da5a4b283cc1173b4ecfe6cff143d6c9cac040",
+      "lf_sha256": "72e64f0d38e758c6fc82a62191da5a4b283cc1173b4ecfe6cff143d6c9cac040"
+    },
+    "demo/probe-rpf101-provider-barrier.py": {
+      "raw_sha256": "4ed7d0bb602f5cb444fac35496853faea8a0e2046d4cc6de72051d1771926195",
+      "lf_sha256": "4ed7d0bb602f5cb444fac35496853faea8a0e2046d4cc6de72051d1771926195"
+    },
+    ".github/workflows/rpf-101-provider-barrier.yml": {
+      "raw_sha256": "08f61a0bcc7d7da4b703567c1735358b280cf48f6b1d1dfeb85f6b31fdb6005d",
+      "lf_sha256": "08f61a0bcc7d7da4b703567c1735358b280cf48f6b1d1dfeb85f6b31fdb6005d"
+    }
+  }
+}

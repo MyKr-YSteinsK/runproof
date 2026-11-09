@@ -1,0 +1,23 @@
+name: RPF-101 Provider Barrier
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/rpf-101-provider-barrier.yml'
+      - 'runtime/runproof_runtime/effectwitness/provider_*.py'
+      - 'ci/test_rpf101_provider_barrier.py'
+      - 'demo/probe-rpf101-provider-barrier.py'
+permissions:
+  contents: read
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: mkdir -p .local
+      - run: python -B -m unittest -v ci.test_rpf101_provider_barrier
+      - run: python -B -m runtime.runproof_runtime.effectwitness.provider_receipt_verify ready-restart
