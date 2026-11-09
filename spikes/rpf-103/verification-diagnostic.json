@@ -1,0 +1,123 @@
+{
+  "schema": "rpf103-verification-diagnostic-v1",
+  "historical_evidence": {
+    "run_id": 42631302508,
+    "artifact_id": 13681255432,
+    "owner": "0c4a3cd80f534a0eb72fa2d430d1a6ee",
+    "source_git_sha": "cb181bcced89384cc1f2f9a3e7ec43d0456af34b",
+    "manifest_sha256": "a88c0c61e4a5cf85207338030d42a949351796e7876e3a1857b57b538b8dae9b",
+    "indexed_members": 32,
+    "zip_members": 33,
+    "nonce_projected_members": 10,
+    "cases": {
+      "NORMAL": {
+        "status": "CONTENT_CHECKED_LOCAL",
+        "case": "NORMAL",
+        "anchor": "c4cb91bed84d940da12e4523c27938cd7a1c5a59e3fb4fbaecbb6b86a498b9c7",
+        "sdk_posts": 2,
+        "tool_callbacks": 1,
+        "provider_tickets": 2,
+        "send_entries": 2,
+        "received_bytes": 1092,
+        "post_unknown_reserves": 0,
+        "post_unknown_send_entries": 0,
+        "response_ids": [
+          "chatcmpl-rpf102-normal-1",
+          "chatcmpl-rpf102-normal-2"
+        ],
+        "sdk_terminal": "COMPLETED",
+        "packages": {
+          "openai": {
+            "record_sha256": "05760488d8c34e057b76e6da8cfa6084b58a15ea9f0f3fe7a1ba1c9ece89c4d1",
+            "source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "version": "3.35.1"
+          },
+          "pydantic-ai-slim": {
+            "record_sha256": "e518d9067d4e8d31101e4d63620b705711c4c05d525c40a89100b966486421e3",
+            "source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        },
+        "python_exe_sha256": "b41931ede07c48874a96d435155f3c1691cc5bf6e0d1104370c28ad8eb3f8532",
+        "provider_requests": 0,
+        "issuer": "NOT_ESTABLISHED",
+        "receiver_receipts": 2,
+        "send_begins": 2,
+        "wal_events": 16,
+        "wal_tip_sha256": "2317b947e8bb2afce81b31d1c6ea3bb14ff439078a594cf4c289830befd1175e",
+        "unknown_seq": null
+      },
+      "UNKNOWN": {
+        "status": "CONTENT_CHECKED_LOCAL",
+        "case": "UNKNOWN",
+        "anchor": "140aa48dd5c877785945dc197df39ebf3de163b6ad4cbc3135186a168818f4a6",
+        "sdk_posts": 2,
+        "tool_callbacks": 1,
+        "provider_tickets": 1,
+        "send_entries": 1,
+        "received_bytes": 421,
+        "post_unknown_reserves": 0,
+        "post_unknown_send_entries": 0,
+        "response_ids": [
+          "chatcmpl-rpf102-unknown-1"
+        ],
+        "sdk_terminal": "DENIED_AFTER_UNKNOWN",
+        "packages": {
+          "openai": {
+            "record_sha256": "05760488d8c34e057b76e6da8cfa6084b58a15ea9f0f3fe7a1ba1c9ece89c4d1",
+            "source_sha256": "8f4fdba5193967d09ca79bc4504e79bd8c20ba4bd8f09c2df3817501540a39db",
+            "version": "3.35.1"
+          },
+          "pydantic-ai-slim": {
+            "record_sha256": "e518d9067d4e8d31101e4d63620b705711c4c05d525c40a89100b966486421e3",
+            "source_sha256": "70863339252f37faf8a0f30bb3503210e99725f5721a2932f3c14bcc359b57fa",
+            "version": "2.57.0"
+          }
+        },
+        "python_exe_sha256": "b41931ede07c48874a96d435155f3c1691cc5bf6e0d1104370c28ad8eb3f8532",
+        "provider_requests": 0,
+        "issuer": "NOT_ESTABLISHED",
+        "receiver_receipts": 1,
+        "send_begins": 1,
+        "wal_events": 13,
+        "wal_tip_sha256": "a976619bd5403b143cfa0ac1fdae5a4cf56c20cbbfac732926554a176b7735d2",
+        "unknown_seq": 8
+      }
+    },
+    "zip_sha256": "a730b4dd390704ea9503e6de3d7842b6352a5b48b37c41f3acbe389a2633fd19",
+    "zip_bytes": 17235
+  },
+  "historical_git_blob": "63fb54aac51cf2ac1b36cb9b2cd0694c5af76eeb",
+  "github": {
+    "job_id": 129208002929,
+    "run_attempt": 1,
+    "event": "workflow_dispatch",
+    "conclusion": "success",
+    "approval_environment": "rpf-102-physical",
+    "expires_at": "2026-11-23T14:06:34Z",
+    "oracle_require_complete": "PASS"
+  },
+  "privacy": {
+    "structure_and_sensitive_patterns": "PASS",
+    "raw_private_nonce_recheck": "NOT_AVAILABLE",
+    "archive_byte_identical": true
+  },
+  "tests": {
+    "new_archive_pass": 8,
+    "rpf102_in_memory_pass": 3,
+    "rpf100_owner_scope_pass": 1,
+    "rpf100_missing_authority_stop": "PASS",
+    "rpf100_business_and_http": "NOT_RUN",
+    "public_docs": "PASS_18_FILES_7_PAIRS"
+  },
+  "resources": {
+    "new_physical_runs": 0,
+    "sdk_children": 0,
+    "listeners": 0,
+    "receivers": 0,
+    "sqlite_writes": 0,
+    "provider_calls": 0,
+    "credential_reads": 0,
+    "external_business_writes": 0
+  }
+}

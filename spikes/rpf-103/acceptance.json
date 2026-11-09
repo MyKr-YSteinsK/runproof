@@ -1,0 +1,24 @@
+{
+  "schema": "rpf103-acceptance-v1",
+  "base": "cb181bcced89384cc1f2f9a3e7ec43d0456af34b",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS_BYTE_IDENTICAL",
+    "A04": "PASS_BOUNDARY_ADAPTER_RECOMMENDATION",
+    "A05": "PASS_SCOPED",
+    "A06": "NOT_RUN_AT_SEAL"
+  },
+  "product_reference_boundary": {
+    "evidence_origin": "RPF102_LOCAL_CONFORMANCE",
+    "provider_kind": "SCRIPTED_LOCAL",
+    "product_effect": "NOT_ESTABLISHED",
+    "same_run_as_rpf100": false,
+    "adapter": "RECOMMENDATION"
+  },
+  "release_eligible": false,
+  "TASK_COMPLETE": "PENDING_DELIVERY_AT_SEAL",
+  "EVIDENCE_ACCEPTED": "ARCHITECT_DECISION",
+  "STAGE_ADVANCED": "ARCHITECT_DECISION"
+}
