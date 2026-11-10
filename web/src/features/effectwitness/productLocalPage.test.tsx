@@ -56,4 +56,7 @@ it("renders the session facts and preserves event and session query context", ()
   const en = renderToStaticMarkup(<SessionEvidence session={session} search={search} label={text => text} witness="UNAVAILABLE" />);
   expect(en).toContain("Matches session round");
   expect(en).toContain("Write replay prohibited");
+  expect(en).toContain("Order tool result");
+  expect(en).toContain("Authority readback");
+  expect(en).toContain("RULE POLICY");
 });

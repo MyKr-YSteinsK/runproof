@@ -40,6 +40,9 @@ const eventNames: Record<string, [string, string]> = {
   AUTHORITY_AFTER: ["Authority read after write", "Authority 写后读回"], VERIFIED: ["Oracle verified", "Oracle 已验证"],
   FEEDBACK_VALIDATED: ["Feedback verified", "反馈已验证"], AUTHORITY_FEEDBACK_VALIDATED: ["Feedback verified", "反馈已验证"],
   SELECTION: ["Policy selected experiment", "策略选择实验"], STOPPED: ["Further writes stopped", "后续写入停止"],
+  CONTRACTS_FROZEN: ["Contracts frozen", "合同已冻结"], RUNNING: ["Session started", "会话已启动"],
+  UNKNOWN_OBSERVED: ["Response outcome unknown", "响应结果未知"], FEEDBACK_FROZEN: ["Feedback frozen", "反馈已冻结"],
+  WRITE_RETURNED: ["Write returned", "写入已返回"], COMPLETED: ["Session completed", "会话完成"],
 };
 
 function raw(value: unknown) {
@@ -92,6 +95,7 @@ export function SessionEvidence({ session, search, label, witness }: {
   const candidate = session.candidates.find(item => item.sha256 === selection?.selected_candidate_contract_sha256);
   const feedback = selection?.input_feedback_sha256;
   const linked = feedback ? session.rounds.find(round => round.feedback_sha256 === feedback) : undefined;
+  const order = session.rounds.find(round => round.domain === "order");
   const unavailable = label("UNAVAILABLE", "未取得");
   return <>
     <nav className="pl-steps" aria-label={label("Session evidence sections", "会话证据导航")}>
@@ -100,7 +104,7 @@ export function SessionEvidence({ session, search, label, witness }: {
     </nav>
     <section className="pl-panel" aria-labelledby="local-session">
       <div className="pl-section-head"><div><span className="pl-caption">02 / {label("SESSION EVIDENCE", "会话证据")}</span><h2 id="local-session">{label("Timeline & verified feedback", "探索时间线与已验证反馈")}</h2></div><strong className="pl-badge">{session.status}</strong></div>
-      <p className="pl-session-id">{label("Session", "会话")} <code>{session.session_id}</code> · Provider {session.provider_reservations}</p>
+      <p className="pl-session-id">{label("Session", "会话")} <code>{session.session_id}</code> · LOCAL CONTROLLED · RULE POLICY · Provider {session.provider_reservations}</p>
       {session.status === "RECONCILE_REQUIRED" && <p className="pl-warning" role="alert">{label("Write replay prohibited. Readback or human review is required.", "禁止重放写入。需只读对账或人工审查。")}</p>}
       <div className="pl-evidence-grid">
         <div><h3>{label("Durable timeline", "持久时间线")}</h3>
@@ -114,6 +118,10 @@ export function SessionEvidence({ session, search, label, witness }: {
           })}</ol> : <p>{unavailable}</p>}
         </div>
         <article className="pl-decision"><h3>{label("Policy decision", "策略决策")}</h3>
+          {order && <dl className="pl-fact-pair">
+            <div><dt>{label("Order tool result", "订单工具结果")}</dt><dd>{order.tool_status || unavailable}</dd></div>
+            <div><dt>{label("Authority readback", "Authority 只读对账")}</dt><dd>{order.authority || unavailable}</dd></div>
+          </dl>}
           {selection ? <><strong>{selection.decision}</strong><p>{selection.reason}</p>
             <dl className="pl-fact-pair"><div><dt>{label("Verified feedback input", "已验证反馈输入")}</dt><dd>{linked ? label("Matches session round", "与会话轮次匹配") : unavailable}</dd></div>
               <div><dt>{label("Selected contract", "所选合同")}</dt><dd>{candidate?.candidate ?? unavailable}</dd></div></dl>
@@ -132,6 +140,7 @@ export function SessionEvidence({ session, search, label, witness }: {
     </section>
     <section className="pl-panel pl-witness" aria-labelledby="local-witness"><span className="pl-caption">04 / {label("VERIFY OFFLINE", "离线复核")}</span>
       <h2 id="local-witness">{label("Session Witness", "会话 Witness")}</h2>
+      <p className="pl-session-id"><code>{session.session_id}</code> · LOCAL CONTROLLED · RULE POLICY · Provider {session.provider_reservations}</p>
       <p>{label("The download checks the returned bytes against their advertised SHA-256. Verify offline with a separately trusted digest.", "下载时校验响应字节与声明的 SHA-256。离线复核需要另行可信的摘要。")}</p>
       {witness}
       <p className="pl-muted">{label("External Issuer and release eligibility are unestablished.", "外部签发者身份与发布资格未建立。")}</p>
@@ -247,7 +256,7 @@ export function ProductLocalPage({ search }: { search: string }) {
       <h1>{label("From effect to verified feedback", "从实际效果到已验证反馈")}</h1>
       <p>{label("A deterministic policy explores fictional order and configuration targets. SQLite effects are read back independently. Paid Real Explorer is disabled.", "确定性策略探索虚构订单与配置目标，SQLite 效果由独立读回验证。付费真实 Explorer 已禁用。")}</p>
       <a href="/effectwitness/workbench">{label("← Recorded evidence workbench", "← 返回已记录证据工作台")}</a></div>
-      <div className="pl-hero-mode"><span className="pl-caption">{label("EXECUTION MODE", "运行模式")}</span><strong>LOCAL CONTROLLED</strong><span>Provider 0</span></div>
+      <div className="pl-hero-mode"><span className="pl-caption">{label("EXECUTION MODE", "运行模式")}</span><strong>LOCAL CONTROLLED</strong><span>RULE POLICY · Provider 0</span></div>
     </header>
     <section className="pl-panel" aria-labelledby="local-start">
       <div className="pl-section-head"><div><span className="pl-caption">01 / {label("FROZEN TASK", "冻结任务")}</span>

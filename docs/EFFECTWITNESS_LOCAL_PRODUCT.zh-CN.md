@@ -25,3 +25,19 @@ python -B -m runtime.runproof_runtime.effectwitness.product_local_verify <witnes
 ```
 
 停止后保留任务 owner 内的 ledger 与业务数据库。重启加载原状态，中断会话进入只读对账或人工审查。4174 的静态预览使用独立的记录型交付入口。[记录型交付指南](EFFECTWITNESS_DELIVERY.zh-CN.md)
+
+## 比赛单会话入口
+
+在 Windows PowerShell 7.2+ 中使用同一套已安装的 CPython、Node 和 Vite 依赖。
+
+```powershell
+.\demo\start-effectwitness-competition.ps1 -PythonExe <绝对-python.exe-路径> -NodeExe <绝对-node.exe-路径>
+```
+
+启动器分配新 owner，输出 URL 和停止用的 nonce。沿用上面的浏览器确认、只读核对和 Witness 下载流程。比赛入口只接纳一个新请求，额度用尽后仍可只读查看该会话。
+
+```powershell
+.\demo\stop-effectwitness-competition.ps1 -Nonce <启动器返回的nonce>
+```
+
+停止器按 PID、可执行文件与启动时刻核对进程身份，保留账本和本地数据库。[实测结果](../spikes/rpf-112/RESULT.md) · [比赛截图与来源](../spikes/rpf-112/PPT_ASSETS.md)
