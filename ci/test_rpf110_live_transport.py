@@ -12,7 +12,7 @@ from runtime.runproof_runtime.effectwitness import pge_r106_contracts as inner
 from runtime.runproof_runtime.effectwitness import pge_r110_live_contracts as c
 from runtime.runproof_runtime.effectwitness import pge_r110_live_provider as provider, pge_r110_live_transport as wire
 from runtime.runproof_runtime.effectwitness.pge_r110_live_session import Session
-from runtime.runproof_runtime.effectwitness.sdk_presend_contracts import canonical, sha, strict
+from runtime.runproof_runtime.effectwitness.sdk_presend_contracts import Denied, canonical, sha, strict
 
 LOCAL = os.environ.get("RPF110_LOCAL_SQLITE") == "1"
 SOURCE = os.environ.get("RPF110_SOURCE_SHA", c.BASE)
@@ -29,9 +29,9 @@ def body(choice):
 
 
 @contextmanager
-def stub(choice=inner.OPS, *, code=200, partial=False, header=None):
+def stub(choice=inner.OPS, *, code=200, partial=False, header=None, reply=None):
     received = []
-    raw = canonical(body(choice))
+    raw = canonical(body(choice)) if reply is None else reply
 
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, *_):
@@ -63,6 +63,67 @@ def stub(choice=inner.OPS, *, code=200, partial=False, header=None):
 
 
 class ParserTests(unittest.TestCase):
+    def parse_response(self, raw, status=200):
+        receipt = {"status": status, "header_request_id": "UNAVAILABLE",
+                   "response_size": len(raw), "response_sha256": sha(raw)}
+        return provider.parse(raw, receipt, {"kind": c.STUB, "approval": None})
+
+    def test_nonstreaming_tool_uses_dynamic_ids_and_observed_usage(self):
+        response = body(inner.OPS)
+        response["id"] = "chatcmpl-dynamic-83"
+        response["choices"][0]["message"]["tool_calls"][0]["id"] = "dynamic-tool-72"
+        selected = self.parse_response(canonical(response))
+        self.assertEqual(selected["response_id"], "chatcmpl-dynamic-83")
+        self.assertEqual(selected["tool_call_id"], "dynamic-tool-72")
+        self.assertEqual(selected["arguments"], {"candidate_id": inner.OPS})
+        self.assertEqual(selected["usage"], {"prompt_tokens": 100, "completion_tokens": 18, "total_tokens": 118})
+
+    def test_field_diagnostics_distinguish_each_layer_and_delta(self):
+        marker = "synthetic_private_field"
+        for layer, field in (("TOOL_CALL", "id"), ("TOOL_FUNCTION", "name"), ("TOOL_ARGUMENT", "candidate_id")):
+            for delta in ("EXTRA", "MISSING", "MIXED"):
+                with self.subTest(layer=layer, delta=delta):
+                    response = body(inner.OPS)
+                    call = response["choices"][0]["message"]["tool_calls"][0]
+                    function = call["function"]
+                    arguments = strict(function["arguments"].encode())
+                    target = {"TOOL_CALL": call, "TOOL_FUNCTION": function, "TOOL_ARGUMENT": arguments}[layer]
+                    if delta != "EXTRA":
+                        del target[field]
+                    if delta != "MISSING":
+                        target[marker] = "synthetic_private_value"
+                    function["arguments"] = canonical(arguments).decode()
+                    with self.assertRaises(Denied) as raised:
+                        self.parse_response(canonical(response))
+                    reason = str(raised.exception)
+                    self.assertEqual(reason, f"{layer}_FIELDS_{delta}")
+                    self.assertRegex(reason, r"^[A-Z_]{3,60}$")
+                    self.assertNotIn(marker, reason)
+
+    def test_nonstreaming_index_and_non_json_stay_separate_from_fields(self):
+        response = body(inner.OPS)
+        choice = response["choices"][0]
+        call = choice["message"]["tool_calls"][0]
+        call["index"] = 0
+        with self.assertRaisesRegex(Denied, "^TOOL_CALL_FIELDS_EXTRA$"):
+            self.parse_response(canonical(response))
+        del call["index"]
+        call["function"]["arguments"] = "{bad"
+        with self.assertRaisesRegex(Denied, "^TOOL_ARGUMENT_JSON$"):
+            self.parse_response(canonical(response))
+        with self.assertRaisesRegex(Denied, "^RESPONSE_JSON$"):
+            self.parse_response(b"{bad")
+        choice["finish_reason"] = "synthetic_invalid_reason"
+        with self.assertRaisesRegex(Denied, "^FINISH_REASON$"):
+            self.parse_response(canonical(response))
+        choice["finish_reason"] = "tool_calls"
+        choice["message"]["tool_calls"] = [call, call]
+        with self.assertRaisesRegex(Denied, "^TOOL_COUNT$"):
+            self.parse_response(canonical(response))
+        for status in (400, 403, 429):
+            with self.subTest(status=status), self.assertRaisesRegex(Denied, "^HTTP_STATUS$"):
+                self.parse_response(canonical(response), status)
+
     def test_native_factory_is_fixed_and_uses_system_tls_validation(self):
         with patch("http.client.HTTPSConnection") as connection:
             wire._native_connection(2)
@@ -110,6 +171,50 @@ class ParserTests(unittest.TestCase):
 
 @unittest.skipUnless(LOCAL, "Requires admitted RPF-110 fresh SQLite and loopback")
 class TransportTests(unittest.TestCase):
+    def test_extra_business_field_stops_after_loopback_receipt(self):
+        response = body(inner.OPS)
+        function = response["choices"][0]["message"]["tool_calls"][0]["function"]
+        function["arguments"] = canonical({"candidate_id": inner.OPS, "extra_parameter": "fixture"}).decode()
+        with Session(SOURCE, c.STUB) as session, stub(reply=canonical(response)) as (port, seen):
+            before = session.host.ledger.path.read_bytes()
+            with self.assertRaisesRegex(Denied, "^TOOL_ARGUMENT_FIELDS_EXTRA$"):
+                session.run(port=port)
+            self.assertEqual(seen, [(c.PATH, c.request(session.contract), False)])
+            self.assertEqual(session.edge.phase, "UNCERTAIN")
+            self.assertIsNone(session.reserve(c.request(session.contract)))
+            self.assertEqual(session.host.ledger.path.read_bytes(), before)
+            events = [event["kind"] for event in session.edge.journal.events]
+            self.assertIn("STUB_RESPONSE", events)
+            self.assertNotIn("TOOL_SELECTION", events)
+            self.assertNotIn("SEND_ENTRY", events)
+
+    def test_rechained_loopback_response_cannot_expand_arguments(self):
+        from ci.test_rpf110_live_witness import rechain
+        from runtime.runproof_runtime.effectwitness import pge_r110_live_verify as verify
+        from runtime.runproof_runtime.effectwitness.pge_r107_host import application
+        from runtime.runproof_runtime.effectwitness.pge_r108_verify import bytes_for, presend_rows
+        from runtime.runproof_runtime.effectwitness.pge_r110_live_witness import build
+
+        with Session(SOURCE, c.STUB) as session, stub() as (port, _):
+            session.run(port=port)
+            valid, _ = build(session)
+        bundle = strict(valid)
+        response = strict(bytes_for(bundle["stub_response"], c.RESPONSE_CAP))
+        function = response["choices"][0]["message"]["tool_calls"][0]["function"]
+        function["arguments"] = canonical({"candidate_id": inner.OPS, "extra_parameter": "fixture"}).decode()
+        raw = canonical(response)
+        bundle["stub_response"] = application(raw)
+        events = presend_rows(bytes_for(bundle["presend_wal"], verify.TRACE_LIMIT))
+        receipt = next(row["body"] for row in events if row["kind"] == "STUB_RESPONSE")
+        receipt.update(response_size=len(raw), response_sha256=sha(raw))
+        selection = next(row["body"] for row in events if row["kind"] == "TOOL_SELECTION")
+        selection["response_sha256"] = sha(raw)
+        next(row["body"] for row in events if row["kind"] == "UNKNOWN")["selection_sha256"] = inner.digest(selection)
+        bundle["presend_wal"] = rechain(events)
+        tampered = canonical(bundle)
+        with self.assertRaisesRegex(Denied, "^TOOL_ARGUMENT_FIELDS_EXTRA$"):
+            verify.verify(tampered, SOURCE, sha(tampered))
+
     def test_loopback_posts_frozen_bytes_once_and_observes_optional_header(self):
         with Session(SOURCE, c.STUB) as session, stub(header="stub-header:1") as (port, seen):
             self.assertEqual(session.run(port=port), inner.OPS)

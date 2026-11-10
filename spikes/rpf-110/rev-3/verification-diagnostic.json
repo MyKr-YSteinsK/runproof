@@ -1,0 +1,82 @@
+{
+  "schema": "rpf110-rev3-diagnostic-v1",
+  "base": "7953e9aafc1aa48b073e4d96b049120fc49223b5",
+  "historical": {
+    "run": 42789183082,
+    "job": 129737943130,
+    "attempt": 1,
+    "event": "workflow_dispatch",
+    "source": "7953e9aafc1aa48b073e4d96b049120fc49223b5",
+    "conclusion": "failure",
+    "live_exit": 3,
+    "artifact_id": 13751197164,
+    "artifact_bytes": 976,
+    "artifact_sha256": "11adaf92fb11374a78a2f3a5382f0f857aaecca13315efc3002c49c18245d779",
+    "expires_at": "2026-11-24T09:19:48Z",
+    "artifact_members": [
+      "status.json",
+      "failure-summary.json"
+    ],
+    "reason": "FIELDS",
+    "status": "INCONCLUSIVE",
+    "presend_event_projection": [
+      "OPEN",
+      "HOST_REQUEST_READY",
+      "PROVIDER_RESERVE",
+      "SEND_INTENT",
+      "SEND_ENTRY",
+      "HTTP_RESPONSE",
+      "UNCERTAIN"
+    ],
+    "wal_digest_from_summary": "39d3ddbdc38303c7a3050d8d6c07d44d71b065fa0119ed948ecd26e2ff199ab2",
+    "original_wal": "UNAVAILABLE",
+    "original_http_response": "UNAVAILABLE",
+    "exact_failed_layer": "UNAVAILABLE",
+    "provider_requests": "UNKNOWN",
+    "provider_request_id": "UNAVAILABLE",
+    "usage": "UNKNOWN",
+    "fees": "UNKNOWN",
+    "comparison": "NOT_GENERATED"
+  },
+  "code_findings": {
+    "reachable_candidates": [
+      "TOOL_CALL_FIELDS",
+      "TOOL_FUNCTION_FIELDS",
+      "TOOL_ARGUMENT_FIELDS"
+    ],
+    "shape_deltas": [
+      "EXTRA",
+      "MISSING",
+      "MIXED"
+    ],
+    "allowed_field_change": false,
+    "nonstreaming_call_fields": [
+      "id",
+      "type",
+      "function"
+    ],
+    "nonstreaming_function_fields": [
+      "name",
+      "arguments"
+    ],
+    "business_argument_fields": [
+      "candidate_id"
+    ],
+    "streaming_index_rejected": true,
+    "reason_schema": "[A-Z_]{3,60}",
+    "raw_model_diagnostics": false
+  },
+  "verification": {
+    "local_python": "CPython 3.14.7",
+    "local_tests": 30,
+    "failed": 0,
+    "skipped": 0,
+    "public_docs": "PASS",
+    "loopback_extra_parameter": "DENIED_AFTER_STUB_RESPONSE_WITH_UNCHANGED_BUSINESS_WAL",
+    "reanchored_witness": "DENIED",
+    "hosted_python": "3.12",
+    "hosted_at_seal": "NOT_RUN"
+  },
+  "provider_new_requests": 0,
+  "live_retest": "NOT_RUN"
+}

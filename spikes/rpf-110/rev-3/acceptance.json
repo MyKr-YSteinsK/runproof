@@ -1,0 +1,21 @@
+{
+  "schema": "rpf110-rev3-acceptance-v1",
+  "task": "RPF-110/rev-3",
+  "status": "PARTIAL",
+  "base": "7953e9aafc1aa48b073e4d96b049120fc49223b5",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03_LOCAL": "PASS",
+    "A03_HOSTED": "NOT_RUN",
+    "GIT": "NOT_RUN"
+  },
+  "sealed_before_push": true,
+  "PROVIDER_NEW_REQUESTS": 0,
+  "LIVE_RETEST": "NOT_RUN",
+  "EVIDENCE_ACCEPTED": "PENDING_ARCHITECT",
+  "historical_fields_layer": "UNAVAILABLE",
+  "historical_usage": "UNKNOWN",
+  "historical_fees": "UNKNOWN"
+}

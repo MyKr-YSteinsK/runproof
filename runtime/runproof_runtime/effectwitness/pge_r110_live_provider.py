@@ -3,10 +3,27 @@ import re
 
 from . import pge_r110_live_contracts as c
 from .pge_r106_contracts import exact, hex_id
-from .sdk_presend_contracts import canonical, check, sha, strict
+from .sdk_presend_contracts import Denied, canonical, check, sha, strict
 
 ID = re.compile(r"[A-Za-z0-9_.:-]{1,128}")
 SECRET_ID = re.compile(r"(?i)^sk[-_][A-Za-z0-9_-]{12,}")
+
+
+def _json(raw, code):
+    try:
+        return strict(raw.encode() if type(raw) is str else raw)
+    except (ValueError, RecursionError):
+        raise Denied(code) from None
+
+
+def _tool_fields(value, layer, required):
+    check(type(value) is dict, layer + "_TYPE")
+    missing = required - value.keys()
+    extra = value.keys() - required
+    check(not (missing and extra), layer + "_FIELDS_MIXED")
+    check(not missing, layer + "_FIELDS_MISSING")
+    check(not extra, layer + "_FIELDS_EXTRA")
+    return value
 
 
 def identity(value, code, mode, optional=False):
@@ -56,7 +73,7 @@ def parse(raw, receipt, contract):
     check(receipt["status"] == 200, "HTTP_STATUS")
     check(type(raw) is bytes and 0 < len(raw) <= c.RESPONSE_CAP
           and len(raw) == receipt["response_size"] and sha(raw) == receipt["response_sha256"], "RESPONSE_BYTES")
-    row = strict(raw)
+    row = _json(raw, "RESPONSE_JSON")
     check(type(row) is dict and row.get("object") == "chat.completion" and row.get("model") == c.MODEL,
           "PROVIDER_MODEL")
     mode = contract["kind"]
@@ -66,6 +83,8 @@ def parse(raw, receipt, contract):
     choice = choices[0]
     check(type(choice.get("index")) is int and choice["index"] == 0, "CHOICE_INDEX")
     reason = choice.get("finish_reason")
+    check(type(reason) is str and reason in ("stop", "length", "content_filter", "tool_calls",
+                                           "insufficient_system_resource", "aborted"), "FINISH_REASON")
     check(reason != "content_filter", "MODEL_REFUSAL")
     check(reason != "length", "MODEL_TRUNCATED")
     check(reason not in ("aborted", "insufficient_system_resource"), "PROVIDER_TERMINAL_ERROR")
@@ -75,13 +94,14 @@ def parse(raw, receipt, contract):
           and msg.get("reasoning_content") in (None, "") and msg.get("refusal") in (None, ""), "MODEL_MESSAGE")
     calls = msg.get("tool_calls")
     check(type(calls) is list and len(calls) == 1, "TOOL_COUNT")
-    call = exact(calls[0], "id", "type", "function")
+    call = _tool_fields(calls[0], "TOOL_CALL", {"id", "type", "function"})
     check(call["type"] == "function", "TOOL_TYPE")
     call_id = identity(call["id"], "TOOL_ID", mode)
-    function = exact(call["function"], "name", "arguments")
-    check(function["name"] == c.TOOL and type(function["arguments"]) is str, "TOOL_NAME")
-    args = exact(strict(function["arguments"].encode()), "candidate_id")
-    check(args["candidate_id"] in c.CHOICES, "CANDIDATE")
+    function = _tool_fields(call["function"], "TOOL_FUNCTION", {"name", "arguments"})
+    check(function["name"] == c.TOOL, "TOOL_NAME")
+    check(type(function["arguments"]) is str, "TOOL_ARGUMENT_ENCODING_TYPE")
+    args = _tool_fields(_json(function["arguments"], "TOOL_ARGUMENT_JSON"), "TOOL_ARGUMENT", {"candidate_id"})
+    check(type(args["candidate_id"]) is str and args["candidate_id"] in c.CHOICES, "CANDIDATE")
     usage, estimate = usage_facts(row.get("usage"), contract)
     return {"kind": mode, "response_id": response_id, "tool_call_id": call_id,
             "request_id": receipt["header_request_id"], "response_sha256": receipt["response_sha256"],
