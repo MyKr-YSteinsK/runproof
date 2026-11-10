@@ -14,8 +14,10 @@ if ($python.Name -ne 'python.exe' -or $python.PSIsContainer -or
 }
 $arguments = @((Resolve-Path -LiteralPath $Witness).Path)
 if ($ExpectedSha256) { $arguments += @('--expected-sha256', $ExpectedSha256) }
+$manifest = Get-Content -Raw -LiteralPath (Join-Path $PSScriptRoot 'bundle-manifest.json') | ConvertFrom-Json
+$verifier = if ($manifest.schema -eq 'runproof-competition-complete/v1') { 'competition_agent_verify' } else { 'product_local_verify' }
 Push-Location -LiteralPath $PSScriptRoot
 try {
-    & $python.FullName -E -B -m runtime.runproof_runtime.effectwitness.product_local_verify @arguments
+    & $python.FullName -E -B -m ("runtime.runproof_runtime.effectwitness." + $verifier) @arguments
     exit $LASTEXITCODE
 } finally { Pop-Location }

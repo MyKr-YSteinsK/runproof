@@ -41,6 +41,12 @@ function Start-ServiceProcess([string]$Exe, [string[]]$Arguments) {
 }
 
 Confirm-Path $root
+$manifestPath = Join-Path $root 'bundle-manifest.json'
+Confirm-Path $manifestPath
+$manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+$agent = $manifest.schema -eq 'runproof-competition-complete/v1'
+$gatewayModule = if ($agent) { 'competition_agent_gateway' } else { 'rpf112_competition_gateway' }
+$page = if ($agent) { 'agent' } else { 'live-local' }
 $PythonExe = Get-Binary $PythonExe 'python.exe'
 $NodeExe = Get-Binary $NodeExe 'node.exe'
 & $PythonExe -I -B -c 'import sys, sqlite3; assert sys.version_info >= (3,11)'
@@ -59,7 +65,7 @@ $processes = @()
 $records = @()
 try {
     foreach ($service in @(
-        @{ exe = $PythonExe; args = @('-E','-B','-m','runtime.runproof_runtime.effectwitness.rpf112_competition_gateway','--nonce',$nonce) },
+        @{ exe = $PythonExe; args = @('-E','-B','-m',("runtime.runproof_runtime.effectwitness." + $gatewayModule),'--nonce',$nonce) },
         @{ exe = $NodeExe; args = @((Join-Path $root 'competition-server.cjs')) }
     )) {
         $process = Start-ServiceProcess $service.exe $service.args
@@ -81,7 +87,7 @@ do {
     $gateway = Get-NetTCPConnection -State Listen -LocalAddress 127.0.0.1 -LocalPort 8780 -ErrorAction SilentlyContinue
     $web = Get-NetTCPConnection -State Listen -LocalAddress 127.0.0.1 -LocalPort 4187 -ErrorAction SilentlyContinue
     if ($gateway.OwningProcess -eq $processes[0].Id -and $web.OwningProcess -eq $processes[1].Id) {
-        Write-Output "http://127.0.0.1:4187/effectwitness/live-local"
+        Write-Output "http://127.0.0.1:4187/effectwitness/$page"
         Write-Output "Nonce=$nonce"
         return
     }

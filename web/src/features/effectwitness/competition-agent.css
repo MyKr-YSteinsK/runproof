@@ -1,0 +1,29 @@
+.competition-agent{color:#122939;max-width:1450px;margin:auto;min-width:0;overflow-wrap:anywhere}
+.competition-agent h1,.competition-agent h2,.competition-agent h3,.competition-agent p{margin:0 0 12px}
+.competition-agent button,.competition-agent summary,.competition-agent a{cursor:pointer}
+.competition-agent button:disabled{cursor:default;opacity:.58}
+.competition-agent :focus-visible{outline:3px solid #a04b00;outline-offset:2px}
+.ca-hero,.ca-panel{padding:clamp(14px,2vw,27px);border-radius:12px;margin-bottom:14px}
+.ca-hero{background:#112c3b;color:#eefcff;display:flex;gap:22px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.ca-hero span,.ca-hero code{display:block;color:#9ee7df;font-size:.86em}
+.ca-hero h1{font-size:clamp(24px,3.2vw,44px);margin-top:8px}
+.ca-panel{background:#f7fbfc;border:1px solid #ccdedf;min-width:0}
+.ca-panel button{border:1px solid #23736f;border-radius:6px;background:#dff4f1;color:#103d42;padding:7px 10px;font:inherit}
+.ca-panel details{padding:7px 9px;background:#eaf4f5;border-radius:6px;margin-top:6px;min-width:0}
+.ca-panel pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow:auto}
+.ca-actions,.ca-panel nav{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.ca-panel nav a{color:#0c6763;text-decoration:underline}
+.ca-contracts,.ca-columns{display:grid;gap:10px;grid-template-columns:repeat(3,minmax(0,1fr))}
+.ca-columns{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.ca-columns>div{min-width:0}
+.ca-events{list-style:none;padding:0;margin:0;display:grid;gap:4px}
+.ca-events button{width:100%;display:flex;gap:8px;align-items:baseline;text-align:left;font-size:.85em}
+.ca-events button span{margin-left:auto;text-align:right}
+.ca-events button[data-kind=UNKNOWN_OBSERVED]{background:#ffedce}
+.ca-events button[data-kind=EXECUTION_STOPPED]{background:#ffe0e0}
+.ca-events button[aria-current=step]{border:2px solid #11665f}
+.ca-effect{margin-bottom:9px;border-top:1px solid #bfd4d7;padding-top:8px}
+.ca-effect dl{display:flex;flex-wrap:wrap;gap:6px 18px;margin:4px 0 8px}
+.ca-effect dd{margin:0;font-weight:650}
+@media(max-width:950px){.ca-columns{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:580px){.ca-contracts{grid-template-columns:minmax(0,1fr)}}

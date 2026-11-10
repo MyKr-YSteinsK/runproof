@@ -7,7 +7,10 @@ const { createHash } = require("node:crypto");
 
 const origin = "http://127.0.0.1:4187";
 const prefix = "/effectwitness-product-api";
-const pages = new Set(["/", "/effectwitness/workbench", "/effectwitness/recorded", "/effectwitness/live-local"]);
+const pages = new Set(["/", "/effectwitness/workbench", "/effectwitness/recorded", "/effectwitness/live-local",
+  "/effectwitness/agent", "/overview", "/agents", "/runs", "/evaluations", "/failures", "/regressions",
+  "/release-decisions", "/failure-intelligence", "/statistical-evaluations", "/statistical-comparisons", "/comparisons"]);
+const fixtureDetails = /^\/(?:agents|runs|evaluations|failures|regressions|release-decisions|comparisons)\/[A-Za-z0-9_.-]{1,128}$/;
 const asset = /^assets\/[A-Za-z0-9_-]+\.(?:js|css|svg|png|webp|jpg|woff2)$/;
 const types = {
   html: "text/html; charset=utf-8", js: "text/javascript; charset=utf-8", css: "text/css; charset=utf-8",
@@ -139,8 +142,9 @@ function createServer(site, token) {
     }
 
     if (!get || transfer || (length !== undefined && length !== "0")) return error(res, 405, "METHOD_REJECTED");
-    const name = pages.has(route) ? "index.html" : route.slice(1);
-    if (!pages.has(route) && !asset.test(name)) return error(res, 404, "NOT_FOUND");
+    const page = pages.has(route) || fixtureDetails.test(route);
+    const name = page ? "index.html" : route.slice(1);
+    if (!page && !asset.test(name)) return error(res, 404, "NOT_FOUND");
     const bytes = site.get(name);
     if (!bytes) return error(res, 404, "NOT_FOUND");
     return reply(res, 200, bytes, { "Content-Type": types[name.split(".").at(-1)] });

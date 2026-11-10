@@ -127,6 +127,9 @@ export function WorkbenchPage({ search, restrictedRoute = false }: { search: str
     : ["Agent action", "Controlled effect", "Independent readback", "Witness verification"];
   const modes = [
     { name: c.recorded, detail: c.recDetail, badge: "RECORDED", href: "/effectwitness/recorded" },
+    ...(!offline ? [{ name: zh ? "离线参考 Agent" : "Offline reference Agent",
+      detail: zh ? "提议、核验与反馈驱动的本地实验" : "Local experiments with proposals, verification and feedback",
+      badge: "REFERENCE AGENT", href: "/effectwitness/agent" }] : []),
     ...(!offline ? [{ name: locale === "zh-CN" ? "全新本地受控会话" : "New Local Controlled",
       detail: locale === "zh-CN" ? "RPF-100 · 确定性策略 · 双域 SQLite · Provider 0" : "RPF-100 · rule policy · dual-domain SQLite · Provider 0",
       badge: "LOCAL PRODUCT", href: "/effectwitness/live-local" }] : []),
