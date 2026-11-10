@@ -66,7 +66,7 @@ fs.mkdirSync(stage);  // Existing output is never overwritten.
 const deliverables = path.join(owner, "deliverables");
 if (complete) {
   fs.mkdirSync(path.join(stage, "app"));
-  fs.mkdirSync(deliverables);
+  checkedDirectory(deliverables);
 }
 run(process.execPath, ["node_modules/typescript/bin/tsc", "--noEmit"], { env, stdio: "inherit" });
 run(process.execPath, ["--input-type=module", "-e",
@@ -143,7 +143,9 @@ if (complete) {
     const bytes = frozenBytes(name).toString();
     for (const [, relative] of bytes.matchAll(/(?:from\s+|import\s*)["'](\.[^"']+\.json)(?:\?raw)?["']/g)) {
       const input = path.posix.normalize(path.posix.join(path.posix.dirname(name), relative));
-      if (input.startsWith("runtime/reviewed-")) fixtureCopies.set(input, "source/" + input);
+      if (input.startsWith("runtime/reviewed-") || input === "demo/rpf-19-golden-demo-v1.json") {
+        fixtureCopies.set(input, "source/" + input);
+      }
       else if (/^spikes\/rpf-(?:43|44|46|47)\/[A-Za-z0-9_.-]+\.json$/.test(input)) {
         fixtureCopies.set(input, "source/build-inputs/" + input.split("/").slice(1).join("-"));
       } else if (!input.startsWith("web/src/")) throw Error("UNREVIEWED_WEB_INPUT: " + input);
