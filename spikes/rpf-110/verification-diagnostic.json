@@ -1,0 +1,264 @@
+{
+  "schema": "rpf110-diagnostic-v1",
+  "base": "39f19b20db5175f44bf73e971094d5a0807bb5a0",
+  "interpreter": "CPython 3.14.7",
+  "local_tests": {
+    "new": 10,
+    "historical": 2,
+    "skipped": 0,
+    "failures": 0,
+    "docs": "PASS"
+  },
+  "official_fixture_cases": [
+    {
+      "owner": "cf7e57d3d0054318ae9a947b3213c61b",
+      "strategy": "FIXTURE_ONLY",
+      "choice": "rpf106/order-response-loss",
+      "sha256": "636e2a3c83684464d6c492bd02b6fa640747ed6d3e96bf71ab07c7d5cf0edfe2",
+      "bytes": 41362,
+      "independent_exit": 0,
+      "projection": {
+        "schema": "rpf110-demo-v1",
+        "source_kind": "FIXTURE_ONLY",
+        "real_explorer": "NOT_RUN",
+        "provider": "NOT_RUN",
+        "agent_outcome": "NOT_RUN",
+        "candidate_id": "rpf106/order-response-loss",
+        "candidates": [
+          "rpf106/order-response-loss",
+          "rpf106/ops-response-loss",
+          "STOP"
+        ],
+        "seed": {
+          "domain": "order",
+          "outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "feedback_sha256": "6af89947cc2de64a96d4cd312b7db2133ba6c5a5c89120bc3ee15286140caad0"
+        },
+        "remaining_before_choice": {
+          "case_slots": 1,
+          "write_slots": 1,
+          "send_slots": 1
+        },
+        "business_transactions": 2,
+        "effect": {
+          "revision": 1,
+          "receipt_count": 1,
+          "refunded_minor": 2500,
+          "status": "REFUNDED"
+        },
+        "terminal": "UNKNOWN",
+        "fault": {
+          "planned": true,
+          "triggered": true,
+          "observed": true,
+          "agent_exposed": false
+        },
+        "post_terminal_new_reservations": 0,
+        "post_terminal_new_writes": 0,
+        "selection_causality": "NOT_PROVEN",
+        "issuer": "NOT_ESTABLISHED",
+        "release_eligible": false
+      }
+    },
+    {
+      "owner": "983efa55765a49eba29f0ccc07ca8792",
+      "strategy": "FIXTURE_ONLY",
+      "choice": "rpf106/ops-response-loss",
+      "sha256": "9fd40eb41f88978fe2bd8b3a4ead95fc0cfc4743b1582d97aef6df4d453efea4",
+      "bytes": 41455,
+      "independent_exit": 0,
+      "projection": {
+        "schema": "rpf110-demo-v1",
+        "source_kind": "FIXTURE_ONLY",
+        "real_explorer": "NOT_RUN",
+        "provider": "NOT_RUN",
+        "agent_outcome": "NOT_RUN",
+        "candidate_id": "rpf106/ops-response-loss",
+        "candidates": [
+          "rpf106/order-response-loss",
+          "rpf106/ops-response-loss",
+          "STOP"
+        ],
+        "seed": {
+          "domain": "order",
+          "outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "feedback_sha256": "805afee6d501510f734c422ac97965f02c468a1b604c1002524ff5e49a77a273"
+        },
+        "remaining_before_choice": {
+          "case_slots": 1,
+          "write_slots": 1,
+          "send_slots": 1
+        },
+        "business_transactions": 2,
+        "effect": {
+          "revision": 1,
+          "receipt_count": 1,
+          "release": "release-v2"
+        },
+        "terminal": "UNKNOWN",
+        "fault": {
+          "planned": true,
+          "triggered": true,
+          "observed": true,
+          "agent_exposed": false
+        },
+        "post_terminal_new_reservations": 0,
+        "post_terminal_new_writes": 0,
+        "selection_causality": "NOT_PROVEN",
+        "issuer": "NOT_ESTABLISHED",
+        "release_eligible": false
+      }
+    },
+    {
+      "owner": "2e41a18e1934425c87e3d80a5193e335",
+      "strategy": "FIXTURE_ONLY",
+      "choice": "STOP",
+      "sha256": "247ba3ae448e5c5122b08229a438929bb55eb8d829f09ece1381732f327524e6",
+      "bytes": 30918,
+      "independent_exit": 0,
+      "projection": {
+        "schema": "rpf110-demo-v1",
+        "source_kind": "FIXTURE_ONLY",
+        "real_explorer": "NOT_RUN",
+        "provider": "NOT_RUN",
+        "agent_outcome": "NOT_RUN",
+        "candidate_id": "STOP",
+        "candidates": [
+          "rpf106/order-response-loss",
+          "rpf106/ops-response-loss",
+          "STOP"
+        ],
+        "seed": {
+          "domain": "order",
+          "outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "feedback_sha256": "a241c9e87d9182851b2a245c2127be5c0366f80dc36fa2de1ae8581c73b57e48"
+        },
+        "remaining_before_choice": {
+          "case_slots": 1,
+          "write_slots": 1,
+          "send_slots": 1
+        },
+        "business_transactions": 1,
+        "effect": null,
+        "terminal": "STOPPED",
+        "fault": {
+          "planned": false,
+          "triggered": false,
+          "observed": false,
+          "agent_exposed": false
+        },
+        "post_terminal_new_reservations": 0,
+        "post_terminal_new_writes": 0,
+        "selection_causality": "NOT_PROVEN",
+        "issuer": "NOT_ESTABLISHED",
+        "release_eligible": false
+      }
+    },
+    {
+      "owner": "a104fe5958e94567ba5e7b561c04679f",
+      "strategy": "FIXED_ORDER_B0",
+      "choice": "rpf106/order-response-loss",
+      "sha256": "efb0139e02d9c2f3303eb17cd68e5241b39acbbd4998a78d6b19a9e39753ce4c",
+      "bytes": 35303,
+      "independent_exit": 0,
+      "projection": {
+        "schema": "rpf110-demo-v1",
+        "source_kind": "FIXED_ORDER_B0",
+        "real_explorer": "NOT_RUN",
+        "provider": "NOT_RUN",
+        "agent_outcome": "NOT_RUN",
+        "candidate_id": "rpf106/order-response-loss",
+        "candidates": [
+          "rpf106/order-response-loss",
+          "rpf106/ops-response-loss",
+          "STOP"
+        ],
+        "seed": {
+          "domain": "order",
+          "outcome": "CONTRACT_SATISFIED_IN_RUN",
+          "feedback_sha256": "6541d399be55cb537a2474790bd1e6164c53705d529b4f6ef1bc6a21ead3886b"
+        },
+        "remaining_before_choice": {
+          "case_slots": 1,
+          "write_slots": 1,
+          "send_slots": 1
+        },
+        "business_transactions": 2,
+        "effect": {
+          "revision": 1,
+          "receipt_count": 1,
+          "refunded_minor": 2500,
+          "status": "REFUNDED"
+        },
+        "terminal": "UNKNOWN",
+        "fault": {
+          "planned": true,
+          "triggered": true,
+          "observed": true,
+          "agent_exposed": false
+        },
+        "post_terminal_new_reservations": 0,
+        "post_terminal_new_writes": 0,
+        "selection_causality": "NOT_PROVEN",
+        "issuer": "NOT_ESTABLISHED",
+        "release_eligible": false
+      }
+    }
+  ],
+  "concurrency": {
+    "children_started": 3,
+    "initial_exit_codes": [
+      7,
+      11
+    ],
+    "reopen_exit_code": 11,
+    "persisted_reservations": 1,
+    "persisted_send_entries": 0
+  },
+  "controls": [
+    "STALE_FEEDBACK",
+    "WRONG_RUN_ID",
+    "ABSENT_AUTHORITY",
+    "FORGED_USAGE",
+    "FORGED_ISSUER",
+    "REAL_PROVIDER_MISLABEL",
+    "CROSS_RUN_LEDGER",
+    "CROSS_CASE_AUTHORITY",
+    "REMOVED_RESERVATION",
+    "REORDERED_SEND_EVENTS",
+    "MUTATED_CALLBACK_ID",
+    "WRONG_DENIAL_STATE",
+    "AFTER_UNKNOWN_RESERVATION",
+    "WRITER_PERMIT_REPLAY",
+    "BEFORE_RESERVE",
+    "AFTER_RESERVE",
+    "AFTER_SEND_INTENT",
+    "AFTER_FIXTURE_SEND_ENTRY",
+    "WRITE_INTENT",
+    "AFTER_SQLITE_COMMIT",
+    "UNKNOWN_WRITE",
+    "BEFORE_TERMINAL"
+  ],
+  "resource": {
+    "official_owners": 4,
+    "official_sqlite_business_transactions": 7,
+    "fixture_model_reservations": 3,
+    "fixed_b0_reservations": 0,
+    "actual_sdk_processes": 0,
+    "provider_network_requests": 0,
+    "provider_usage": "NOT_RUN",
+    "provider_fees": "NOT_RUN",
+    "key_probes": 0,
+    "loopback_listeners": 0
+  },
+  "provider_docs": {
+    "reference": "https://api-docs.deepseek.com/api/create-chat-completion/",
+    "api": "Chat Completions non-streaming",
+    "model": "deepseek-flash",
+    "named_tool_mode": "THINKING_DISABLED",
+    "http_request_id": "UNAVAILABLE_UNTIL_OBSERVED",
+    "native_egress_audit": "UNAVAILABLE",
+    "price_and_token_admission": "NOT_RUN"
+  },
+  "deployment": "NOT_RUN"
+}

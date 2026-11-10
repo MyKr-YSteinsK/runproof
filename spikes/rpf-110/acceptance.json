@@ -1,0 +1,29 @@
+{
+  "schema": "rpf110-acceptance-v1",
+  "task": "RPF-110/rev-1",
+  "status": "PARTIAL",
+  "base": "39f19b20db5175f44bf73e971094d5a0807bb5a0",
+  "phase_a": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06": "PASS",
+    "A07": "NOT_RUN"
+  },
+  "phase_b": {
+    "G0": "NOT_RUN",
+    "A01": "NOT_RUN",
+    "A02": "NOT_RUN",
+    "A03": "NOT_RUN",
+    "A04": "NOT_RUN",
+    "A05": "NOT_RUN",
+    "A06": "NOT_RUN",
+    "A07": "NOT_RUN"
+  },
+  "phase_b_admission": "UNAVAILABLE",
+  "evidence_acceptance": "PENDING_ARCHITECT",
+  "release_eligible": false
+}

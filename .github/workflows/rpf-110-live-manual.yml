@@ -1,0 +1,47 @@
+name: RPF-110 Live Admission (Phase B Locked)
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: Full independently approved main SHA
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: rpf110-live
+  cancel-in-progress: false
+jobs:
+  live-admission:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    environment:
+      name: rpf-110-live
+      deployment: false
+    env:
+      EXPECTED_SOURCE: ${{ inputs.expected_source_sha }}
+      APPROVED_SOURCE: ${{ vars.RPF110_APPROVED_SOURCE_SHA }}
+      APPROVED_RUN: ${{ vars.RPF110_APPROVED_RUN_ID }}
+    steps:
+      - name: Check first attempt and human approval binding
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = MyKr-YSteinsK/runproof
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/main
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          [[ "$EXPECTED_SOURCE" =~ ^[0-9a-f]{40}$ ]]
+          test "$EXPECTED_SOURCE" = "$GITHUB_SHA"
+          test "$APPROVED_SOURCE" = "$GITHUB_SHA"
+          test "$APPROVED_RUN" = "$GITHUB_RUN_ID"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" \
+            | jq -e 'any(.[]; .state == "approved" and any(.environments[]; .name == "rpf-110-live"))' >/dev/null
+      - name: Keep native sending blocked pending Phase B contract
+        shell: bash
+        run: |
+          echo "PHASE_B_NOT_RUN: physical send audit, credential contract and usage budget are unbound"
+          exit 1

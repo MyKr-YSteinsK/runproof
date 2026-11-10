@@ -1,0 +1,45 @@
+name: RPF-110 Competition Closure Offline
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_contracts.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_presend.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_provider.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_explorer.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_session.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_oracle.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_witness.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_verify.py'
+      - 'ci/test_rpf110_contracts.py'
+      - 'ci/test_rpf110_presend.py'
+      - 'ci/test_rpf110_explorer.py'
+      - 'ci/test_rpf110_witness.py'
+      - '.github/workflows/rpf-110-offline.yml'
+      - '.github/workflows/rpf-110-live-manual.yml'
+      - 'spikes/rpf-110/README.md'
+      - 'spikes/rpf-110/RESULT.md'
+      - 'spikes/rpf-110/acceptance.json'
+      - 'spikes/rpf-110/verification-diagnostic.json'
+      - 'spikes/rpf-110/source-map.json'
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Provider-0 SQLite, child arbitration and portable witness
+        env:
+          RPF110_LOCAL_SQLITE: '1'
+          RPF110_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          git check-ignore -q -- .local/rpf-110/probe
+          python -B -m unittest -v ci.test_rpf110_contracts ci.test_rpf110_presend ci.test_rpf110_explorer ci.test_rpf110_witness ci.test_rpf106_candidates.CandidateTests.test_frozen_registry_and_seed_only ci.test_rpf108_provider_boundary.CandidateTests
+      - run: python -B ci/verify-public-docs.py
