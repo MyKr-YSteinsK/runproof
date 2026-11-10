@@ -1,0 +1,35 @@
+{
+  "schema": "rpf107-acceptance-v1",
+  "task": "RPF-107/rev-1",
+  "status": "PARTIAL",
+  "scope": "Provider-0 source and offline verification",
+  "base": "611e05d8d3f4cd3d99a6c704c35d2981368b2612",
+  "branch": "main",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "NOT_RUN",
+    "A03": "PASS_OFFLINE_FIXTURE",
+    "A04": "PARTIAL",
+    "A05": "PARTIAL",
+    "A06": "PARTIAL",
+    "A07_LOCAL": "PASS",
+    "A07_HOSTED": "NOT_RUN_AT_SEAL",
+    "A08_LOCAL": "NOT_RUN",
+    "A08_HOSTED": "NOT_RUN",
+    "A09": "NOT_RUN_AT_SEAL",
+    "A10": "NOT_RUN"
+  },
+  "resources": {
+    "formal_sdk_children": 0,
+    "formal_loopback_servers": 0,
+    "formal_business_transactions": 0,
+    "external_provider_requests": 0,
+    "provider_usage": "NOT_RUN",
+    "provider_fees": "NOT_RUN",
+    "keys_probed": 0
+  },
+  "release_eligible": false,
+  "evidence_accepted": "PENDING_ARCHITECT",
+  "stage_advanced": "PENDING_ARCHITECT"
+}

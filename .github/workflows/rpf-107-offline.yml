@@ -1,0 +1,46 @@
+name: RPF-107 Explorer Host Bridge Offline
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_contracts.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_sdk_client.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_model_loopback.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_host.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_session.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_oracle.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r107_capsule.py'
+      - 'ci/test_rpf107_contracts.py'
+      - 'ci/test_rpf107_host.py'
+      - 'ci/test_rpf107_oracle.py'
+      - '.github/workflows/rpf-107-offline.yml'
+      - '.github/workflows/rpf-107-manual.yml'
+      - 'spikes/rpf-107/README.md'
+      - 'spikes/rpf-107/RESULT.md'
+      - 'spikes/rpf-107/acceptance.json'
+      - 'spikes/rpf-107/verification-diagnostic.json'
+      - 'spikes/rpf-107/source-map.json'
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Direct Host fixtures and historical controller regression
+        env:
+          RPF107_LOCAL_SQLITE: '1'
+          RPF107_SOURCE_SHA: ${{ github.sha }}
+          RPF106_LOCAL_SQLITE: '1'
+          RPF106_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          git check-ignore -q -- .local/rpf-106/probe
+          git check-ignore -q -- .local/rpf-107/probe
+          python -B -m unittest -v ci.test_rpf107_contracts ci.test_rpf107_host ci.test_rpf107_oracle ci.test_rpf106_candidates ci.test_rpf106_controller
+      - run: python -B ci/verify-public-docs.py

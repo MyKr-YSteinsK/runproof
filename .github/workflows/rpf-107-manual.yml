@@ -1,0 +1,89 @@
+name: RPF-107 Explorer Host Bridge Manual
+on:
+  workflow_dispatch:
+    inputs:
+      expected_source_sha:
+        description: Full approved RPF-107 source SHA
+        type: string
+        required: true
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: rpf107-physical
+  cancel-in-progress: false
+jobs:
+  physical:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment:
+      name: rpf-107-physical
+      deployment: false
+    env:
+      EXPECTED_SOURCE_SHA: ${{ inputs.expected_source_sha }}
+      RPF107_APPROVED_SOURCE_SHA: ${{ vars.RPF107_APPROVED_SOURCE_SHA }}
+      RPF107_APPROVED_RUN_ID: ${{ vars.RPF107_APPROVED_RUN_ID }}
+    steps:
+      - name: Confirm approval for the exact source and first attempt
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = MyKr-YSteinsK/runproof
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/main
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          [[ "$EXPECTED_SOURCE_SHA" =~ ^[0-9a-f]{40}$ ]]
+          test "$EXPECTED_SOURCE_SHA" = "$GITHUB_SHA"
+          test "$RPF107_APPROVED_SOURCE_SHA" = "$GITHUB_SHA"
+          test "$RPF107_APPROVED_RUN_ID" = "$GITHUB_RUN_ID"
+          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" \
+            | jq -e 'any(.[]; .state == "approved" and any(.environments[]; .name == "rpf-107-physical"))' >/dev/null
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Admit a fresh owner
+        id: admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          owner="$(python -I -B -c 'from uuid import uuid4; print(uuid4().hex)')"
+          python -B -m runtime.runproof_runtime.effectwitness.pge_r107_session admit "$GITHUB_SHA" "$GITHUB_RUN_ID" "$owner"
+          printf 'owner=%s\n' "$owner" >> "$GITHUB_OUTPUT"
+      - name: Install pinned SDKs and execute the two bounded cases
+        env:
+          OWNER: ${{ steps.admission.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          root="$PWD/.local/rpf-107/$OWNER"
+          mkdir "$root/tmp"
+          export TMPDIR="$root/tmp" PIP_CONFIG_FILE=/dev/null
+          timeout 25s python -I -B -m venv "$root/venv"
+          py="$root/venv/bin/python"
+          timeout 150s "$py" -I -B -m pip --isolated --disable-pip-version-check install \
+            --no-input --no-cache-dir --only-binary=:all: --index-url https://pypi.org/simple \
+            --report "$root/install.json" -r ci/rpf102-sdk-requirements.txt >"$root/install.log" 2>&1
+          timeout 20s "$py" -I -B -m pip --isolated --disable-pip-version-check check >"$root/pip-check.log" 2>&1
+          timeout 125s "$py" -B -m runtime.runproof_runtime.effectwitness.pge_r107_session physical \
+            "$GITHUB_SHA" "$GITHUB_RUN_ID" "$OWNER"
+      - name: Independently verify and export only the public projection
+        env:
+          OWNER: ${{ steps.admission.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout 30s python -B -m runtime.runproof_runtime.effectwitness.pge_r107_capsule \
+            "$GITHUB_SHA" "$GITHUB_RUN_ID" "$OWNER"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpf107-public-${{ github.run_id }}
+          path: .local/rpf-107/${{ steps.admission.outputs.owner }}/public.zip
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,78 @@
+{
+  "schema": "rpf107-verification-diagnostic-v1",
+  "base": "611e05d8d3f4cd3d99a6c704c35d2981368b2612",
+  "preflight": {
+    "repo": "MyKr-YSteinsK/runproof",
+    "branch": "main",
+    "upstream": "origin/main",
+    "remote_main": "611e05d8d3f4cd3d99a6c704c35d2981368b2612",
+    "empty_create_only_targets": 17,
+    "index": "EMPTY",
+    "scoped_status": "CLEAN",
+    "ignore_rule": "/.local/",
+    "new_physical_workflow_trigger": "WORKFLOW_DISPATCH_ONLY",
+    "existing_matching_workflow": "Canonical Release Gate"
+  },
+  "local": {
+    "python": "CPython 3.14.7",
+    "installed_fixed_packages": {},
+    "pins": {
+      "pydantic-ai-slim": "2.57.0",
+      "openai": "3.35.1"
+    },
+    "new_tests": 11,
+    "rpf106_regression": 7,
+    "failures": 0,
+    "skips": 0,
+    "docs": "PASS",
+    "protocol": "SYNTHETIC_REQUEST_BYTES_TO_HOST_METHOD",
+    "sqlite": "REAL_FRESH_OWNER",
+    "sdk_protocol": "NOT_RUN",
+    "localhost": "NOT_RUN"
+  },
+  "controls": {
+    "selection": [
+      "ENUM_ONLY",
+      "STALE_FEEDBACK",
+      "FOREIGN_OWNER",
+      "NO_AUTHORITY",
+      "FORGED_ACCEPT",
+      "WRONG_CALL_ID",
+      "TOOL_FIELD_INJECTION",
+      "CONCURRENT_CALLBACK",
+      "EXPLICIT_STOP"
+    ],
+    "durability": [
+      "WRITE_INTENT",
+      "AFTER_SQLITE_COMMIT",
+      "UNKNOWN",
+      "POST_UNKNOWN_MODEL_DENIAL",
+      "POST_UNKNOWN_CROSS_DOMAIN_TOOL_DENIAL"
+    ],
+    "evidence": [
+      "RECHAINED_PROTOCOL_BYTES",
+      "RECHAINED_DECISION",
+      "TORN_TRACE",
+      "MISSING_SDK_RECEIPT",
+      "MISSING_ZIP_MEMBER",
+      "ALTERED_ZIP_BYTES",
+      "FAKE_ISSUER"
+    ],
+    "network_guard": "DIRECT_AUDIT_EVENT_CONTROL_NO_SOCKET_OR_DNS"
+  },
+  "physical": {
+    "local": {
+      "status": "NOT_RUN",
+      "reason": "Pinned SDKs missing in verified interpreter; no admitted offline task-owned installation"
+    },
+    "hosted": {
+      "status": "NOT_RUN",
+      "reason": "No approved manual dispatch"
+    },
+    "public_zip": "NOT_GENERATED",
+    "external_provider_requests": 0,
+    "keys_probed": 0,
+    "provider_usage": "NOT_RUN",
+    "provider_fees": "NOT_RUN"
+  }
+}
