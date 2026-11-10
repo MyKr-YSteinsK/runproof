@@ -41,8 +41,10 @@ const copy = {
   },
 } as const;
 
-function Link({ href, children }: { href: string; children: React.ReactNode }) {
-  return <a href={href} onClick={(event) => { event.preventDefault(); navigate(href); }}>{children}</a>;
+function Link({ href, current, children }: { href: string; current?: boolean; children: React.ReactNode }) {
+  return <a href={href} aria-current={current ? "true" : undefined} onClick={event => {
+    if (!event.metaKey && !event.ctrlKey && !event.shiftKey && !event.altKey) { event.preventDefault(); navigate(href); }
+  }}>{children}</a>;
 }
 
 function display(value: unknown): string {
@@ -56,6 +58,55 @@ function recordedFlag(fault: unknown, key: string, yes: string, no: string, miss
   return value === true ? yes : value === false ? no : missing;
 }
 
+type EvidenceState = { status: "CHECKING" | "UNAVAILABLE" } | { status: "VERIFIED"; evidence: RecordedEvidence };
+
+export function WorkbenchEvidence({ state, search }: { state: EvidenceState; search: string }) {
+  const { locale } = useI18n();
+  const c = copy[locale];
+  const domain = domainFromSearch(search);
+  const selected = new URLSearchParams(search).get("event");
+  const evidence = state.status === "VERIFIED" ? state.evidence : null;
+  const projection = evidence ? evidenceForDomain(evidence, domain) : null;
+  return <>
+    <section className="wb-panel" aria-labelledby="wb-trace"><div className="wb-section-head"><h2 id="wb-trace">{c.trace}</h2>
+      {projection && <span className="wb-tag">{projection.kind}</span>}</div>
+      {state.status === "CHECKING" && <p role="status">{c.checking}</p>}
+      {state.status === "UNAVAILABLE" && <p className="wb-alert" role="alert">{c.unavailable}</p>}
+      {evidence && projection && <>
+        {domain === "order" && selected && !projection.events.some(event => event.event_id === selected) &&
+          <p className="wb-alert" role="alert">{locale === "zh-CN" ? "该事件不在已验证来源中。" : "This event is not present in the verified source."}</p>}
+        {domain === "ops" ? <p className="wb-note">{c.opsOnly}</p> : <div className="wb-investigation">
+          <article><h3>{c.select}</h3>
+            <div className="wb-selection">{evidence.report.selections.map(selection => <div key={selection.round}>
+              <span>{c.round} {selection.round}</span><strong>{selection.candidate_id}</strong>
+              {selection.input_feedback_hash && <span>{locale === "zh-CN" ? "输入绑定上一轮已验证反馈" : "Input bound to prior verified feedback"}</span>}
+            </div>)}</div>
+            <ol className="wb-events">{projection.events.map(event => <li key={event.event_id} aria-current={selected === event.event_id ? "step" : undefined}>
+              <span>{String(event.seq).padStart(2, "0")}</span><div><strong>{event.type}</strong><small>{event.observed_at} · UTC</small>
+                <Link href={`/effectwitness/recorded?from=workbench&domain=order&event=${encodeURIComponent(event.event_id)}`}>{c.inspect} →</Link></div></li>)}</ol>
+          </article>
+          <article><h3>{c.facts}</h3>{projection.trials.map(trial => <div className="wb-trial" key={trial.round}>
+            <h4>{c.round} {trial.round} · {trial.candidate_id}</h4><p>{c.outcome}: <strong>{trial.effect.contract_outcome}</strong></p>
+            <p>{c.fault}: {c.planned}: {recordedFlag(trial.fault, "planned", c.yes, c.no, c.notRecorded)} · {c.triggered}: {recordedFlag(trial.fault, "triggered", c.yes, c.no, c.notRecorded)} · {c.observed}: {recordedFlag(trial.fault, "observed", c.yes, c.no, c.notRecorded)} · {c.exposed}: {c.notRecorded}</p>
+            <dl>{Object.entries(trial.effect.state_diff).map(([key, diff]) => <div key={key}><dt>{key}</dt><dd>{c.before}: {display(diff.before)} → {c.after}: {display(diff.after)}</dd></div>)}</dl>
+          </div>)}<p className="wb-note">{c.states}</p></article>
+        </div>}
+        <details className="wb-source"><summary>{c.source}</summary><div><span>Commit <code>{evidence.manifest.source_commit}</code></span>
+          {domain === "order" && <><span>{c.session} <code>{evidence.report.session_id}</code></span>
+            {evidence.report.selections.filter(item => item.input_feedback_hash).map(item => <span key={item.round}>
+              {c.round} {item.round} · SHA-256 <code>{item.input_feedback_hash}</code></span>)}</>}</div></details>
+      </>}
+    </section>
+    <section className="wb-panel wb-witness" aria-labelledby="wb-witness"><h2 id="wb-witness">{c.limits}</h2>
+      {projection ? <><strong>{c.witness} · {projection.witness.schema_version}</strong>
+        <p>{c.outcome}: <strong>{projection.witness.claims.contract_outcome}</strong></p>
+        <p>{c.separate}</p><p>{c.issuer}</p>
+        <Link href={`/effectwitness/recorded?from=workbench&domain=${domain}`}>{c.detail} →</Link></>
+        : <p>{state.status === "CHECKING" ? c.checking : c.unavailable}</p>}
+    </section>
+  </>;
+}
+
 export function WorkbenchPage({ search, restrictedRoute = false }: { search: string; restrictedRoute?: boolean }) {
   const { locale } = useI18n();
   const c = copy[locale];
@@ -64,14 +115,16 @@ export function WorkbenchPage({ search, restrictedRoute = false }: { search: str
   const offlineLabel = locale === "zh-CN"
     ? "静态演示只提供已记录证据。受控 Lab 和实时 Provider 入口在此包中不可用。"
     : "This static package presents recorded evidence. Controlled Lab and Live Provider are unavailable here.";
-  const [state, setState] = useState<{ status: "CHECKING" | "VERIFIED" | "UNAVAILABLE"; evidence?: RecordedEvidence }>({ status: "CHECKING" });
+  const [state, setState] = useState<EvidenceState>({ status: "CHECKING" });
   useEffect(() => {
     let active = true;
     loadWorkbenchEvidence().then((evidence) => { if (active) setState({ status: "VERIFIED", evidence }); })
       .catch(() => { if (active) setState({ status: "UNAVAILABLE" }); });
     return () => { active = false; };
   }, []);
-  const projection = state.evidence ? evidenceForDomain(state.evidence, domain) : null;
+  const zh = locale === "zh-CN";
+  const chain = zh ? ["Agent 行动", "受控业务效果", "独立读回", "Witness 复核"]
+    : ["Agent action", "Controlled effect", "Independent readback", "Witness verification"];
   const modes = [
     { name: c.recorded, detail: c.recDetail, badge: "RECORDED", href: "/effectwitness/recorded" },
     ...(!offline ? [{ name: locale === "zh-CN" ? "全新本地受控会话" : "New Local Controlled",
@@ -82,30 +135,27 @@ export function WorkbenchPage({ search, restrictedRoute = false }: { search: str
     { name: c.cross, detail: c.crossDetail, badge: "REVIEWED / LIVE", href: "/effectwitness/cross-domain" },
   ];
   return <AppShell recorded><div className="ew-workbench">
-    <header className="wb-header"><div><span className="wb-eyebrow">{c.eyebrow}</span><h1>{c.title}</h1><p>{offline ? offlineLabel : c.intro}</p></div><span className="wb-badge">RECORDED · READ ONLY</span></header>
+    <header className="wb-header"><div><span className="wb-eyebrow">{c.eyebrow}</span><h1>{c.title}</h1>
+      <p>{offline ? offlineLabel : c.intro}</p><span className="wb-badge">RECORDED · READ ONLY</span></div>
+      <div className="wb-chain"><span className="wb-eyebrow">{zh ? "核验方法" : "VERIFICATION METHOD"}</span>
+        <ol>{chain.map((step, index) => <li key={step}><span>{String(index + 1).padStart(2, "0")}</span>{step}</li>)}</ol></div></header>
     {restrictedRoute && <p className="wb-alert" role="status">UNAVAILABLE · {offlineLabel} <Link href={workbenchHref(search, domain)}>{locale === "zh-CN" ? "返回工作台" : "Return to workbench"}</Link></p>}
     <nav className="wb-steps" aria-label={locale === "zh-CN" ? "演示步骤" : "Walkthrough steps"}>
       <a href="#wb-scenario">{c.scenario}</a><a href="#wb-trace">{c.trace}</a><a href="#wb-witness">{c.limits}</a>
     </nav>
-    <section aria-labelledby="wb-scenario"><h2 id="wb-scenario">{c.scenario}</h2>
-      <div className="wb-domain" role="group" aria-label={c.scenario}>{(["order", "ops"] as Domain[]).map((item) => <Link key={item} href={workbenchHref(search, item)}><span aria-current={domain === item ? "true" : undefined}><strong>{item === "order" ? c.order : c.ops}</strong><small>{item === "order" ? c.orderDesc : c.opsDesc}</small></span></Link>)}</div>
+    <section className="wb-panel wb-capabilities" aria-labelledby="wb-modes"><h2 id="wb-modes">{c.modes}</h2>
+      <div className="wb-modes">{modes.map(mode => <article key={mode.badge}><span className="wb-tag">{mode.badge}</span><h3>{mode.name}</h3>
+        <p>{mode.detail}</p>{offline && mode.badge !== "RECORDED" ? <strong>UNAVAILABLE</strong> :
+          <Link href={mode.href}>{mode.badge === "LIVE PROVIDER" ? (zh ? "查看授权入口" : "Review admission") : c.open} →</Link>}</article>)}</div>
+      <p className="wb-note">{offline ? offlineLabel : c.availability}</p></section>
+    <section className="wb-panel" aria-labelledby="wb-scenario"><h2 id="wb-scenario">{c.scenario}</h2>
+      <div className="wb-domain" role="group" aria-label={c.scenario}>{(["order", "ops"] as Domain[]).map(item =>
+        <Link key={item} href={workbenchHref(search, item)} current={domain === item}>
+          <span className="wb-tag">{item === "order" ? "RECORDED RESEARCH" : "SEPARATE SAMPLE"}</span>
+          <strong>{item === "order" ? c.order : c.ops}</strong><small>{item === "order" ? c.orderDesc : c.opsDesc}</small>
+        </Link>)}</div>
       <div className="wb-contracts"><p><b>{c.expected}</b>{domain === "order" ? c.orderExpected : c.opsExpected}</p><p><b>{c.forbidden}</b>{domain === "order" ? c.orderForbidden : c.opsForbidden}</p><p><b>{c.unknown}</b>{c.unknownText}</p></div>
     </section>
-    <section aria-labelledby="wb-trace"><h2 id="wb-trace">{c.trace}</h2>
-      {state.status === "CHECKING" && <p role="status">{c.checking}</p>}
-      {state.status === "UNAVAILABLE" && <p className="wb-alert" role="alert">{c.unavailable}</p>}
-      {state.evidence && projection && <>
-        {domain === "order" && new URLSearchParams(search).get("event") && !projection.events.some((event) => event.event_id === new URLSearchParams(search).get("event")) && <p className="wb-alert" role="alert">{locale === "zh-CN" ? "该事件不在已验证来源中。" : "This event is not present in the verified source."}</p>}
-        <div className="wb-source"><span>{projection.kind}</span><span>{c.source}: <code>{state.evidence.manifest.source_commit}</code></span>{domain === "order" && <span>{c.session}: <code>{state.evidence.report.session_id}</code></span>}</div>
-        {domain === "ops" ? <p className="wb-note">{c.opsOnly}</p> : <div className="wb-investigation">
-          <article><h3>{c.select}</h3><ol className="wb-events">{projection.events.map((event) => <li key={event.event_id} aria-current={new URLSearchParams(search).get("event") === event.event_id ? "step" : undefined}><span>{String(event.seq).padStart(2, "0")}</span><div><strong>{event.type}</strong><small>{event.observed_at} · UTC</small><Link href={`/effectwitness/recorded?from=workbench&domain=order&event=${encodeURIComponent(event.event_id)}`}>{c.inspect} →</Link></div></li>)}</ol></article>
-          <article><h3>{c.facts}</h3>{projection.trials.map((trial) => <div className="wb-trial" key={trial.round}><h4>{c.round} {trial.round} · {trial.candidate_id}</h4><p>{c.outcome}: <strong>{trial.effect.contract_outcome}</strong></p><p>{c.fault}: {c.planned}: {recordedFlag(trial.fault, "planned", c.yes, c.no, c.notRecorded)} · {c.triggered}: {recordedFlag(trial.fault, "triggered", c.yes, c.no, c.notRecorded)} · {c.observed}: {recordedFlag(trial.fault, "observed", c.yes, c.no, c.notRecorded)} · {c.exposed}: {c.notRecorded}</p><dl>{Object.entries(trial.effect.state_diff).map(([key, diff]) => <div key={key}><dt>{key}</dt><dd>{c.before}: {display(diff.before)} → {c.after}: {display(diff.after)}</dd></div>)}</dl></div>)}<p className="wb-note">{c.states}</p></article>
-        </div>}
-      </>}
-    </section>
-    <section className="wb-witness" aria-labelledby="wb-witness"><h2 id="wb-witness">{c.limits}</h2>
-      {projection ? <><strong>{c.witness} · {projection.witness.schema_version}</strong><p>{c.separate} {c.issuer}</p><Link href={`/effectwitness/recorded?from=workbench&domain=${domain}`}>{c.detail} →</Link></> : <p>{state.status === "CHECKING" ? c.checking : c.unavailable}</p>}
-    </section>
-    <section aria-labelledby="wb-modes"><h2 id="wb-modes">{c.modes}</h2><div className="wb-modes">{modes.map((mode) => <article key={mode.badge}><span className="wb-tag">{mode.badge}</span><h3>{mode.name}</h3><p>{mode.detail}</p>{offline && mode.badge !== "RECORDED" ? <strong>UNAVAILABLE</strong> : <Link href={mode.href}>{c.open} →</Link>}</article>)}</div><p className="wb-note">{offline ? offlineLabel : c.availability}</p></section>
+    <WorkbenchEvidence state={state} search={search} />
   </div></AppShell>;
 }
