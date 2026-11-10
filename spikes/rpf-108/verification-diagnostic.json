@@ -1,0 +1,87 @@
+{
+  "schema": "rpf108-diagnostic-v1",
+  "base": "be485bdefd359578c4f050fb222d5edb08b16974",
+  "local": {
+    "python": "CPython 3.14.7",
+    "tests_passed": 15,
+    "tests_skipped": 0,
+    "public_docs": "PASS",
+    "artifact_verify": "PASS",
+    "fixture_verifier_processes": 4,
+    "live_provider_requests": 0,
+    "usage": "NOT_RUN",
+    "fees": "NOT_RUN"
+  },
+  "archive": {
+    "artifact": 13738564981,
+    "run": 42764310121,
+    "job": 129657070405,
+    "expires_at": "2026-11-24T05:48:11Z",
+    "actions_zip_size": 4492,
+    "actions_zip_sha256": "67de0b59a2336a9ad577fedd74e99b0d4f800a48ba0f7a855e7730beb74be7fb",
+    "public_zip_size": 13872,
+    "public_zip_sha256": "84de3ad53911b428d28a4544761904dabf124f85a03c6364a61a406edab70a25",
+    "public_json_size": 13516,
+    "public_json_sha256": "fa967d921ebaf1233110155c23eba9f7081c4a4d42ecaf0222685c91ab2a57c4",
+    "kind": "PUBLIC_PROJECTION_VERIFIED",
+    "issuer": "NOT_ESTABLISHED"
+  },
+  "fixture_cases": [
+    {
+      "owner": "39ceb146376b4fb5a7eac6e3047ce40a",
+      "strategy": "SIMULATED_EXPLORER",
+      "choice": "rpf106/order-response-loss",
+      "bytes": 39739,
+      "sha256": "e8dc7b4c477e2fc31f175bd8f9cf8a1c300c88e2567ac571154447d3deecb2d7",
+      "transactions": 2,
+      "independent_exit": 0
+    },
+    {
+      "owner": "876a719dbf954875b4cd0a833b2095f8",
+      "strategy": "SIMULATED_EXPLORER",
+      "choice": "rpf106/ops-response-loss",
+      "bytes": 39841,
+      "sha256": "8524c9b9e5bacc8c68b1528f6586ff8da923310e95fb54e18446669107df9f2c",
+      "transactions": 2,
+      "independent_exit": 0
+    },
+    {
+      "owner": "b418db81147f4c6e90f9d647034ee649",
+      "strategy": "SIMULATED_EXPLORER",
+      "choice": "STOP",
+      "bytes": 29288,
+      "sha256": "3465b07dc5fb385997904517132f39c99bab608a620184dbbf0083620e2ca149",
+      "transactions": 1,
+      "independent_exit": 0
+    },
+    {
+      "owner": "7700a381d0c04abbbc601191ef12d42e",
+      "strategy": "FIXED_ORDER_B0",
+      "choice": "rpf106/order-response-loss",
+      "bytes": 39731,
+      "sha256": "f5e66850b0671e05a391e8806340c921a52c33bf09c5d64ac5209ff371a9b2a0",
+      "transactions": 2,
+      "independent_exit": 0
+    }
+  ],
+  "negative_controls": [
+    "REPACKED_ARCHIVE",
+    "ARCHIVE_TRAVERSAL_MEMBER",
+    "STALE_CROSS_OWNER_OR_MISSING_FEEDBACK",
+    "CONTENDED_ONE_USE_RESERVATION",
+    "PRE_SEND_CRASH_WINDOWS",
+    "SQLITE_COMMIT_AND_UNKNOWN_WINDOWS",
+    "EXCLUSIVE_REOPEN",
+    "DYNAMIC_CALL_BINDING",
+    "REFUSAL_ERROR_OR_TIMEOUT",
+    "RECHAINED_PRESEND_EVENTS",
+    "CROSS_CASE_AUTHORITY",
+    "MISSING_AUTHORITY",
+    "FORGED_USAGE_ISSUER_SOURCE"
+  ],
+  "boundaries": [
+    "Faults are injected control-flow interruptions, not actual process loss or power loss.",
+    "Portable verification replays original structured snapshots and WAL bytes, not SQLite page files or historical runner state.",
+    "The next live Provider contract and native egress receipt remain unverified."
+  ]
+}

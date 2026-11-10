@@ -1,0 +1,44 @@
+name: RPF-108 Portable Witness Offline
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'runtime/runproof_runtime/effectwitness/pge_r108_contracts.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r108_provider_boundary.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r108_controller_adapter.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r108_candidate.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r108_verify.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r108_replay.py'
+      - 'ci/rpf108_verify_archive.py'
+      - 'ci/test_rpf108_archive.py'
+      - 'ci/test_rpf108_provider_boundary.py'
+      - 'ci/test_rpf108_capsule.py'
+      - '.github/workflows/rpf-108-offline.yml'
+      - 'spikes/rpf-108/README.md'
+      - 'spikes/rpf-108/RESULT.md'
+      - 'spikes/rpf-108/acceptance.json'
+      - 'spikes/rpf-108/verification-diagnostic.json'
+      - 'spikes/rpf-108/source-map.json'
+      - 'spikes/rpf-108/evidence/rpf107-run-42764310121-actions.zip'
+permissions:
+  contents: read
+jobs:
+  offline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Archive, disposable SQLite and fixture-only protocol
+        env:
+          RPF108_LOCAL_SQLITE: '1'
+          RPF108_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          git check-ignore -q -- .local/rpf-108/probe
+          python -B -m ci.rpf108_verify_archive
+          python -B -m unittest -v ci.test_rpf108_archive ci.test_rpf108_provider_boundary ci.test_rpf108_capsule ci.test_rpf107_contracts ci.test_rpf106_candidates.CandidateTests.test_frozen_registry_and_seed_only
+      - run: python -B ci/verify-public-docs.py

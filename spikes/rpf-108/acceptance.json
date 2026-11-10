@@ -1,0 +1,23 @@
+{
+  "schema": "rpf108-acceptance-v1",
+  "task": "RPF-108/rev-1",
+  "status": "PARTIAL",
+  "scope": "Sealed before hosted CI and Git readback",
+  "base": "be485bdefd359578c4f050fb222d5edb08b16974",
+  "gates": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05_LOCAL": "PASS",
+    "A05_HOSTED": "NOT_RUN",
+    "A06": "NOT_RUN"
+  },
+  "evidence": {
+    "historical": "PUBLIC_PROJECTION_VERIFIED",
+    "new": "FIXTURE_PORTABLE_REPLAY",
+    "issuer": "NOT_ESTABLISHED"
+  },
+  "release_eligible": false
+}
