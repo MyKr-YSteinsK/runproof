@@ -1,0 +1,21 @@
+{
+  "schema": "rpf110-rev2-acceptance-v1",
+  "task": "RPF-110/rev-2",
+  "status": "PARTIAL",
+  "base": "225dcebe3c51b0fb2c85dafef0842efaff223ad5",
+  "phase_b0": {
+    "G0": "PASS",
+    "A01": "PASS",
+    "A02": "PASS",
+    "A03": "PASS",
+    "A04": "PASS",
+    "A05": "PASS",
+    "A06_LOCAL": "PASS",
+    "A06_HOSTED": "NOT_RUN",
+    "A07": "NOT_RUN"
+  },
+  "phase_b1": "NOT_RUN",
+  "phase_b1_authorization": "NOT_AUTHORIZED",
+  "evidence_accepted": "PENDING_ARCHITECT",
+  "release_eligible": false
+}

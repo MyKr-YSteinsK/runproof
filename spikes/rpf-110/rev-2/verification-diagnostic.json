@@ -1,0 +1,98 @@
+{
+  "schema": "rpf110-rev2-diagnostic-v1",
+  "base": "225dcebe3c51b0fb2c85dafef0842efaff223ad5",
+  "preflight": {
+    "root": "runproof",
+    "branch": "main",
+    "upstream": "origin/main",
+    "clean_scoped_paths": true,
+    "create_only_vacant": 16,
+    "modified_workflows": 2,
+    "old_offline_blob": "90d6a5f60a2c0c0df78d737e6cca77b062318430",
+    "old_manual_blob": "7efe3de9dfe7ab7f7a7bcd8e2dd3dde67ca9cec6",
+    "ignore_rule": "/.local/"
+  },
+  "local": {
+    "python": "CPython 3.14.7",
+    "new_tests": 13,
+    "rev1_and_regressions": 12,
+    "failed": 0,
+    "skipped": 0,
+    "public_docs": "PASS",
+    "standalone": {
+      "cases": [
+        {
+          "owner": "6a78b7c527c84a70b4a04caf200e0a42",
+          "kind": "LOCAL_STUB",
+          "choice": "rpf106/order-response-loss",
+          "bytes": 40921,
+          "sha256": "dcf14f9e62ab268e5b81b6f2453d25beb5141c8d3062ff51b0b536797038d3ed",
+          "independent_exit": 0,
+          "posts": 1,
+          "transactions": 2
+        },
+        {
+          "owner": "3b08ba87e3ee49649dce93ae14d2c685",
+          "kind": "LOCAL_STUB",
+          "choice": "rpf106/ops-response-loss",
+          "bytes": 41019,
+          "sha256": "2c1c2519122d14aa39a551e1d52b9deb750dc5940c6bb6e4ac2771602ca528af",
+          "independent_exit": 0,
+          "posts": 1,
+          "transactions": 2
+        },
+        {
+          "owner": "4c7733b0da5e463d8601003c661d2938",
+          "kind": "LOCAL_STUB",
+          "choice": "STOP",
+          "bytes": 30518,
+          "sha256": "676a0d9943f98c303085d898d3641c2f2a46f722e8c1ed83c108af55b1936094",
+          "independent_exit": 0,
+          "posts": 1,
+          "transactions": 1
+        },
+        {
+          "owner": "0d82beb4b0064e7c9119d5e5846d5de3",
+          "kind": "FIXED_ORDER_B0",
+          "choice": "rpf106/order-response-loss",
+          "bytes": 35849,
+          "sha256": "377c2654ae140b69f803e97e89068089e8239f972f5d3c745e95a891547e0e2d",
+          "independent_exit": 0,
+          "posts": 0,
+          "transactions": 2
+        }
+      ],
+      "comparison_sha256": "89b24baa62f34e9c68a17d55df12b224671109a9cef8db6a071a87e0efebdadf",
+      "comparison_verified": true
+    }
+  },
+  "controls": [
+    "EXCLUSIVE_OWNER_PROCESS_RACE",
+    "ABRUPT_EXIT_BEFORE_AND_AFTER_RESERVE_INTENT_STUB_ENTRY",
+    "WRONG_VIEW_OR_PERMIT",
+    "PROVIDER_SHAPE_AND_USAGE",
+    "DNS_TLS_TIMEOUT_INJECTIONS",
+    "FIXED_TLS_CONTEXT_WITHOUT_CONNECT",
+    "REDIRECT_AND_TRUNCATED_LOOPBACK",
+    "DUPLICATE_HTTP_RECEIPT",
+    "SQLITE_WRITE_INTENT_COMMIT_AND_UNKNOWN_WINDOWS",
+    "RECHAINED_WAL_ID_USAGE_AND_AUTHORITY",
+    "FIXED_BASELINE_SCOPE"
+  ],
+  "phase_b1": {
+    "status": "NOT_RUN",
+    "provider_requests": 0,
+    "actual_https_tls": "NOT_RUN",
+    "provider_usage": "NOT_RUN",
+    "provider_fees": "NOT_RUN",
+    "key_probes": 0,
+    "dispatch": "NOT_RUN",
+    "sdk": "NOT_RUN"
+  },
+  "limitations": [
+    "B0 uses actual loopback HTTP with no credential or external Provider.",
+    "B0 crash controls use STUB_SEND_ENTRY, with no socket access inside the child tests.",
+    "Budget uses operator-supplied approved estimates; it cannot certify the Provider invoice or tokenizer.",
+    "The portable native schema verifies redacted projection, business and send semantics; the Provider raw reply is not publicly authenticated."
+  ]
+}

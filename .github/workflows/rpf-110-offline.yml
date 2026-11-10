@@ -22,6 +22,22 @@ on:
       - 'spikes/rpf-110/acceptance.json'
       - 'spikes/rpf-110/verification-diagnostic.json'
       - 'spikes/rpf-110/source-map.json'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_contracts.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_presend.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_transport.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_provider.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_session.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_witness.py'
+      - 'runtime/runproof_runtime/effectwitness/pge_r110_live_verify.py'
+      - 'ci/test_rpf110_live_contracts.py'
+      - 'ci/test_rpf110_live_transport.py'
+      - 'ci/test_rpf110_live_presend.py'
+      - 'ci/test_rpf110_live_witness.py'
+      - 'spikes/rpf-110/rev-2/README.md'
+      - 'spikes/rpf-110/rev-2/RESULT.md'
+      - 'spikes/rpf-110/rev-2/acceptance.json'
+      - 'spikes/rpf-110/rev-2/verification-diagnostic.json'
+      - 'spikes/rpf-110/rev-2/source-map.json'
 permissions:
   contents: read
 jobs:
@@ -42,4 +58,11 @@ jobs:
         run: |
           git check-ignore -q -- .local/rpf-110/probe
           python -B -m unittest -v ci.test_rpf110_contracts ci.test_rpf110_presend ci.test_rpf110_explorer ci.test_rpf110_witness ci.test_rpf106_candidates.CandidateTests.test_frozen_registry_and_seed_only ci.test_rpf108_provider_boundary.CandidateTests
+      - name: Native-boundary controls against loopback only
+        env:
+          RPF110_LOCAL_SQLITE: '1'
+          RPF110_SOURCE_SHA: ${{ github.sha }}
+        run: |
+          git check-ignore -q -- .local/rpf-110/probe
+          python -B -m unittest -v ci.test_rpf110_live_contracts ci.test_rpf110_live_presend ci.test_rpf110_live_transport ci.test_rpf110_live_witness
       - run: python -B ci/verify-public-docs.py

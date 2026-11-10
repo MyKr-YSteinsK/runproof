@@ -1,4 +1,4 @@
-name: RPF-110 Live Admission (Phase B Locked)
+name: RPF-110 Live Explorer (Approved Phase B1 Only)
 on:
   workflow_dispatch:
     inputs:
@@ -15,7 +15,7 @@ concurrency:
 jobs:
   live-admission:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 6
     environment:
       name: rpf-110-live
       deployment: false
@@ -23,8 +23,10 @@ jobs:
       EXPECTED_SOURCE: ${{ inputs.expected_source_sha }}
       APPROVED_SOURCE: ${{ vars.RPF110_APPROVED_SOURCE_SHA }}
       APPROVED_RUN: ${{ vars.RPF110_APPROVED_RUN_ID }}
+      RPF110_APPROVED_BUDGET_SHA256: ${{ vars.RPF110_APPROVED_BUDGET_SHA256 }}
     steps:
       - name: Check first attempt and human approval binding
+        id: review
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
@@ -38,10 +40,70 @@ jobs:
           test "$EXPECTED_SOURCE" = "$GITHUB_SHA"
           test "$APPROVED_SOURCE" = "$GITHUB_SHA"
           test "$APPROVED_RUN" = "$GITHUB_RUN_ID"
-          gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" \
-            | jq -e 'any(.[]; .state == "approved" and any(.environments[]; .name == "rpf-110-live"))' >/dev/null
-      - name: Keep native sending blocked pending Phase B contract
+          test "$(gh api "repos/$GITHUB_REPOSITORY/git/ref/heads/main" --jq .object.sha)" = "$GITHUB_SHA"
+          reviewer="$(gh api "repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/approvals" \
+            | jq -er --arg actor "$GITHUB_ACTOR" '[.[] | select(.state == "approved" and any(.environments[]; .name == "rpf-110-live")) | .user.login | select(type == "string")] | sort_by(. == $actor) | first')"
+          [[ "$reviewer" =~ ^[A-Za-z0-9-]{1,39}$ ]]
+          printf 'reviewer=%s\n' "$reviewer" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Freeze budget, source and exclusive run owner before credential injection
+        id: preflight
+        env:
+          LIVE_REVIEWER: ${{ steps.review.outputs.reviewer }}
+          RPF110_APPROVED_BUDGET_JSON: ${{ vars.RPF110_APPROVED_BUDGET_JSON }}
         shell: bash
         run: |
-          echo "PHASE_B_NOT_RUN: physical send audit, credential contract and usage budget are unbound"
-          exit 1
+          set -euo pipefail
+          owner="$(python -B -m runtime.runproof_runtime.effectwitness.pge_r110_live_session preflight)"
+          [[ "$owner" =~ ^[0-9a-f]{32}$ ]]
+          printf 'owner=%s\n' "$owner" >> "$GITHUB_OUTPUT"
+      - name: Execute the sole approved Explorer POST and isolated B0
+        env:
+          LIVE_OWNER: ${{ steps.preflight.outputs.owner }}
+          RPF110_DEEPSEEK_API_KEY: ${{ secrets.RPF110_DEEPSEEK_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          timeout --kill-after=3s 65s python -B -m runtime.runproof_runtime.effectwitness.pge_r110_live_session live --owner "$LIVE_OWNER"
+      - name: Verify the bounded redacted comparison in a new process
+        env:
+          LIVE_OWNER: ${{ steps.preflight.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          bundle=".local/rpf-110/$LIVE_OWNER/comparison.json"
+          digest="$(sha256sum "$bundle" | cut -d ' ' -f1)"
+          python -B -m runtime.runproof_runtime.effectwitness.pge_r110_live_verify "$bundle" "$GITHUB_SHA" "$digest" --comparison >/dev/null
+          printf 'comparison_sha256=%s\n' "$digest"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpf110-live-public-${{ github.run_id }}
+          path: .local/rpf-110/${{ steps.preflight.outputs.owner }}/comparison.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14
+      - name: Preserve only sanitized failure metadata
+        id: failure-summary
+        if: failure() && steps.preflight.outputs.owner != ''
+        env:
+          LIVE_OWNER: ${{ steps.preflight.outputs.owner }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -B -m runtime.runproof_runtime.effectwitness.pge_r110_live_session failure-summary --owner "$LIVE_OWNER"
+      - uses: actions/upload-artifact@v4
+        if: failure() && steps.failure-summary.outcome == 'success'
+        with:
+          name: rpf110-live-failure-${{ github.run_id }}
+          path: |
+            .local/rpf-110/${{ steps.preflight.outputs.owner }}/failure-summary.json
+            .local/rpf-110/${{ steps.preflight.outputs.owner }}/status.json
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 14

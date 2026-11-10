@@ -1,0 +1,372 @@
+{
+  "schema": "rpf110-rev2-source-map-v1",
+  "base": "225dcebe3c51b0fb2c85dafef0842efaff223ad5",
+  "files": [
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_contracts.py",
+      "kind": "NEW",
+      "git_blob": "76b968050c4899e48b9a000769d16979079fd6ea",
+      "base_git_blob": null,
+      "raw_sha256": "2e2a5febd485ac0298157cc2f8938274623e032be920ebb1cfb3f7a7d8c0dfa2",
+      "lf_sha256": "2e2a5febd485ac0298157cc2f8938274623e032be920ebb1cfb3f7a7d8c0dfa2"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_presend.py",
+      "kind": "NEW",
+      "git_blob": "15b40e0e392d90213180cd864edd859f242b32db",
+      "base_git_blob": null,
+      "raw_sha256": "c3b22b1406d2b21cdee0e6b4bf81e27889565373b5a535396ad01f4acb621027",
+      "lf_sha256": "c3b22b1406d2b21cdee0e6b4bf81e27889565373b5a535396ad01f4acb621027"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_transport.py",
+      "kind": "NEW",
+      "git_blob": "5fa849a548db8a405b2763b3d0915cee6deef0fe",
+      "base_git_blob": null,
+      "raw_sha256": "9fb96fad0d5e73c4d3e07f4801742d3cdffe91f076e5bf466e5c102ad6a9cb15",
+      "lf_sha256": "9fb96fad0d5e73c4d3e07f4801742d3cdffe91f076e5bf466e5c102ad6a9cb15"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_provider.py",
+      "kind": "NEW",
+      "git_blob": "e5ef57845bb19236beb0e5c304dd0633afe14d8a",
+      "base_git_blob": null,
+      "raw_sha256": "6d550a1033923a23da75125d7a6f9509a32f064f066afaa217a5deb3906e403a",
+      "lf_sha256": "6d550a1033923a23da75125d7a6f9509a32f064f066afaa217a5deb3906e403a"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_session.py",
+      "kind": "NEW",
+      "git_blob": "c64dd98c8d146d76259543f7e7155f5999c258f9",
+      "base_git_blob": null,
+      "raw_sha256": "53cee8bdad5d9bc28816f348b3b7dc2f17e7d33b12475f3bdb599964c888bcd1",
+      "lf_sha256": "53cee8bdad5d9bc28816f348b3b7dc2f17e7d33b12475f3bdb599964c888bcd1"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_witness.py",
+      "kind": "NEW",
+      "git_blob": "4132ba083e2919c305d890ae3d023e97e6a951b0",
+      "base_git_blob": null,
+      "raw_sha256": "e5d415b08b7192f79d27a664ce105b3d8c26bcac8db971e213edcef87ae442c7",
+      "lf_sha256": "e5d415b08b7192f79d27a664ce105b3d8c26bcac8db971e213edcef87ae442c7"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_live_verify.py",
+      "kind": "NEW",
+      "git_blob": "37cc8207c7be8b36c5d8ac4bf07d7b7126818fb3",
+      "base_git_blob": null,
+      "raw_sha256": "97ea0f0367ecf993cd2629834e4917e1d195d9e8c1172015f00e8fba1bae1280",
+      "lf_sha256": "97ea0f0367ecf993cd2629834e4917e1d195d9e8c1172015f00e8fba1bae1280"
+    },
+    {
+      "path": "ci/test_rpf110_live_contracts.py",
+      "kind": "NEW",
+      "git_blob": "61c96f1cdabd73a2e373bd692473849ccd5f558f",
+      "base_git_blob": null,
+      "raw_sha256": "a9142837e9974d499f76009d8afa7653228c125a8626b4af88a9b68539fbb68b",
+      "lf_sha256": "a9142837e9974d499f76009d8afa7653228c125a8626b4af88a9b68539fbb68b"
+    },
+    {
+      "path": "ci/test_rpf110_live_transport.py",
+      "kind": "NEW",
+      "git_blob": "b17ef756c54a00be6651e7ac030eccb0c76f6236",
+      "base_git_blob": null,
+      "raw_sha256": "3d083199b188daf63c0d61be60e02ae0839e9801a859271a58df54267f5202d1",
+      "lf_sha256": "3d083199b188daf63c0d61be60e02ae0839e9801a859271a58df54267f5202d1"
+    },
+    {
+      "path": "ci/test_rpf110_live_presend.py",
+      "kind": "NEW",
+      "git_blob": "fc7ac147a561b1358ed9ec2e21cb03bd6afbed61",
+      "base_git_blob": null,
+      "raw_sha256": "c9e53b9fac774ea022faee7fecdbfee5182579c1d360ed7aa416e9929634df3e",
+      "lf_sha256": "c9e53b9fac774ea022faee7fecdbfee5182579c1d360ed7aa416e9929634df3e"
+    },
+    {
+      "path": "ci/test_rpf110_live_witness.py",
+      "kind": "NEW",
+      "git_blob": "7e8705a28d0b4912e9261e2d3e5efd5b453ef134",
+      "base_git_blob": null,
+      "raw_sha256": "414716ff10fe37bfc48f56f5437b610bdee72442374d1a720951347d95c5db7d",
+      "lf_sha256": "414716ff10fe37bfc48f56f5437b610bdee72442374d1a720951347d95c5db7d"
+    },
+    {
+      "path": "spikes/rpf-110/rev-2/README.md",
+      "kind": "NEW",
+      "git_blob": "7a857811a6e9bc5066d68aa3eb7a30a5d4b38577",
+      "base_git_blob": null,
+      "raw_sha256": "b6da825f078ee2ad1785b8660d15bb0f81fb886b316787536abef900fcfcfbc2",
+      "lf_sha256": "b6da825f078ee2ad1785b8660d15bb0f81fb886b316787536abef900fcfcfbc2"
+    },
+    {
+      "path": "spikes/rpf-110/rev-2/RESULT.md",
+      "kind": "NEW",
+      "git_blob": "573892a80fe04152e324246453a0ad0b87b7e853",
+      "base_git_blob": null,
+      "raw_sha256": "9e732481ff174537f657b46ba6e43ea2a94143ca8235b1fba8dc570a58337d8d",
+      "lf_sha256": "9e732481ff174537f657b46ba6e43ea2a94143ca8235b1fba8dc570a58337d8d"
+    },
+    {
+      "path": "spikes/rpf-110/rev-2/acceptance.json",
+      "kind": "NEW",
+      "git_blob": "7757013e75f6e87e27de295863ddf94d989cc45e",
+      "base_git_blob": null,
+      "raw_sha256": "9f488507a56d049f4ec81d9d278ec937248d9d1013f72a70f85ff8e8be85e658",
+      "lf_sha256": "9f488507a56d049f4ec81d9d278ec937248d9d1013f72a70f85ff8e8be85e658"
+    },
+    {
+      "path": "spikes/rpf-110/rev-2/verification-diagnostic.json",
+      "kind": "NEW",
+      "git_blob": "93a70092c03b843b2e65656c478bb159a3f18cfe",
+      "base_git_blob": null,
+      "raw_sha256": "48429f0f5f51b4b41a2252615ad548b0e0405f0837dd16b95b1cbd6fe609c684",
+      "lf_sha256": "48429f0f5f51b4b41a2252615ad548b0e0405f0837dd16b95b1cbd6fe609c684"
+    },
+    {
+      "path": ".github/workflows/rpf-110-offline.yml",
+      "kind": "MODIFIED",
+      "git_blob": "b06bde934583ddceafba7fe00db65ebccbbef3db",
+      "base_git_blob": "90d6a5f60a2c0c0df78d737e6cca77b062318430",
+      "raw_sha256": "aba2fe80f39a710f8e6eb365428fd59b806b89a31b91de946b79df9e7e80a4f0",
+      "lf_sha256": "aba2fe80f39a710f8e6eb365428fd59b806b89a31b91de946b79df9e7e80a4f0"
+    },
+    {
+      "path": ".github/workflows/rpf-110-live-manual.yml",
+      "kind": "MODIFIED",
+      "git_blob": "600e733b714094121e291ca30ab93813fa5c5dc8",
+      "base_git_blob": "7efe3de9dfe7ab7f7a7bcd8e2dd3dde67ca9cec6",
+      "raw_sha256": "8b23efe49f732d9d750181c80cf919f05be0d0055e97f1cc9bb26c5b0ecf0e6e",
+      "lf_sha256": "8b23efe49f732d9d750181c80cf919f05be0d0055e97f1cc9bb26c5b0ecf0e6e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_contracts.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "ed6eff52de2ae6a85281a520d367f3d4bc7b256d",
+      "base_git_blob": "ed6eff52de2ae6a85281a520d367f3d4bc7b256d",
+      "raw_sha256": "4fe88974bd26ae7bf5c66e0bfa4be66afabe26319e8da04281f23c7a8ce90045",
+      "lf_sha256": "4fe88974bd26ae7bf5c66e0bfa4be66afabe26319e8da04281f23c7a8ce90045"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_presend.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "79a7d7c78596de221ade031c9b1fd94b3ae0d472",
+      "base_git_blob": "79a7d7c78596de221ade031c9b1fd94b3ae0d472",
+      "raw_sha256": "f3b1590333ae447ada177460f27c1359edf6ec0132b566ed6ee817838d1626f5",
+      "lf_sha256": "f3b1590333ae447ada177460f27c1359edf6ec0132b566ed6ee817838d1626f5"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_provider.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "2a9f30375440aa0274acbdec6b9e79a6ce28937e",
+      "base_git_blob": "2a9f30375440aa0274acbdec6b9e79a6ce28937e",
+      "raw_sha256": "63130297783e17d195db20020f3987ae40e0cf8bd6c2117dff48c8d2a981fcfc",
+      "lf_sha256": "63130297783e17d195db20020f3987ae40e0cf8bd6c2117dff48c8d2a981fcfc"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_explorer.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "32e70aebd46db9bbc39cb83975bf06cc0ecf16e5",
+      "base_git_blob": "32e70aebd46db9bbc39cb83975bf06cc0ecf16e5",
+      "raw_sha256": "febb4c0b9d1e64587fd3ef91e44e0bd5d9ad259c8ae87f12ac5eb562b09bc62e",
+      "lf_sha256": "febb4c0b9d1e64587fd3ef91e44e0bd5d9ad259c8ae87f12ac5eb562b09bc62e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_session.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "e16c8210c74f9accf514aad26e4ab84dc9e8273b",
+      "base_git_blob": "e16c8210c74f9accf514aad26e4ab84dc9e8273b",
+      "raw_sha256": "26422d35a7cb5253035adc895e0b5148b72b11517213d3bc785c9e5b86d86053",
+      "lf_sha256": "26422d35a7cb5253035adc895e0b5148b72b11517213d3bc785c9e5b86d86053"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_oracle.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "970c7ebf62bfea9c3dd2d7522f821d44346f0982",
+      "base_git_blob": "970c7ebf62bfea9c3dd2d7522f821d44346f0982",
+      "raw_sha256": "e701e91b58d88a24280b78baada10a7a8ac3edd172f67679aa7fadf171a29bde",
+      "lf_sha256": "e701e91b58d88a24280b78baada10a7a8ac3edd172f67679aa7fadf171a29bde"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_witness.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "79417d7239862bf4b4eeaac8136841aecbabff96",
+      "base_git_blob": "79417d7239862bf4b4eeaac8136841aecbabff96",
+      "raw_sha256": "eb3d3fc33996b1814e628ed469a1f4799b12dc5c95dcfa472a599e3ab4af678e",
+      "lf_sha256": "eb3d3fc33996b1814e628ed469a1f4799b12dc5c95dcfa472a599e3ab4af678e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r110_verify.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "91524b6f2d805fa0552882edd830ef7db8e43026",
+      "base_git_blob": "91524b6f2d805fa0552882edd830ef7db8e43026",
+      "raw_sha256": "1a3b99919a281fcfb37cf981faf918e88ea76e530008fb6b87931bdd18ae871c",
+      "lf_sha256": "1a3b99919a281fcfb37cf981faf918e88ea76e530008fb6b87931bdd18ae871c"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_contracts.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "5568c3130a4cf473a8bf396f9ec4acacbf1a2b7d",
+      "base_git_blob": "5568c3130a4cf473a8bf396f9ec4acacbf1a2b7d",
+      "raw_sha256": "0796efa6b5073538fa4f14b8f24d758e3ee5ba3d92e2cb8139a4c5589e9920f1",
+      "lf_sha256": "0796efa6b5073538fa4f14b8f24d758e3ee5ba3d92e2cb8139a4c5589e9920f1"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_ledger.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "fc84becd4993bcdd1c2d676bb7f43f5baf9d7794",
+      "base_git_blob": "fc84becd4993bcdd1c2d676bb7f43f5baf9d7794",
+      "raw_sha256": "484e9d97f3638a20e82204bfd385a95a5a5d02e6cda1b39caf40d96f481cee90",
+      "lf_sha256": "484e9d97f3638a20e82204bfd385a95a5a5d02e6cda1b39caf40d96f481cee90"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_targets.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "28f8a4b5bec1e48d7dcb9c2859ed30c7a0be25ea",
+      "base_git_blob": "28f8a4b5bec1e48d7dcb9c2859ed30c7a0be25ea",
+      "raw_sha256": "fef873c39b26af5eac50f173dc0c0c69c44a7c5f416bb629917ebec49a37a769",
+      "lf_sha256": "fef873c39b26af5eac50f173dc0c0c69c44a7c5f416bb629917ebec49a37a769"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r106_oracle.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "83e316576e2b75480b32e4c4d54901c58e9393ca",
+      "base_git_blob": "83e316576e2b75480b32e4c4d54901c58e9393ca",
+      "raw_sha256": "ca6f89604a75ec953e96df1a73af8274688cb520cb8e1bec7bd58ede024f6959",
+      "lf_sha256": "ca6f89604a75ec953e96df1a73af8274688cb520cb8e1bec7bd58ede024f6959"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r107_contracts.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "04f9e6d1058b356c5e33a51fb6721730ad04ca05",
+      "base_git_blob": "04f9e6d1058b356c5e33a51fb6721730ad04ca05",
+      "raw_sha256": "420b2a1f10f718b44c3d2014ceeb2348f8596fcaefa4db6d9b324eb79cb69524",
+      "lf_sha256": "420b2a1f10f718b44c3d2014ceeb2348f8596fcaefa4db6d9b324eb79cb69524"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r107_host.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "b82395b4be3b99c8ce28520037a91b75fe4882df",
+      "base_git_blob": "b82395b4be3b99c8ce28520037a91b75fe4882df",
+      "raw_sha256": "dc1001215a15000a60ad104fffe6ef5d97b461e4adf1959db0a2dcc0c444fdaf",
+      "lf_sha256": "dc1001215a15000a60ad104fffe6ef5d97b461e4adf1959db0a2dcc0c444fdaf"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r108_controller_adapter.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "2d530481b66ff32753b439e0d87d83b916297f06",
+      "base_git_blob": "2d530481b66ff32753b439e0d87d83b916297f06",
+      "raw_sha256": "fe60471c505d861b1aa10e80d8a8b8eab6786e440e80bf51e761da8760c8c195",
+      "lf_sha256": "fe60471c505d861b1aa10e80d8a8b8eab6786e440e80bf51e761da8760c8c195"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/pge_r108_verify.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "0ff0e999baa76a0156c70dc2aacd0123e542e222",
+      "base_git_blob": "0ff0e999baa76a0156c70dc2aacd0123e542e222",
+      "raw_sha256": "fab93ec9d49d84bfb70d2e741f2c16da3a9caebc9a9e13f7243ed2a7e166711c",
+      "lf_sha256": "fab93ec9d49d84bfb70d2e741f2c16da3a9caebc9a9e13f7243ed2a7e166711c"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/product_local_ports.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "adbf26be169b6fb9730f998096341db580f45c14",
+      "base_git_blob": "adbf26be169b6fb9730f998096341db580f45c14",
+      "raw_sha256": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52",
+      "lf_sha256": "cedab6d202e80d0899b336c09d2511ba9ea52c83dc89f45a6ba396df9e970a52"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/product_sdk_target.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39",
+      "base_git_blob": "2ef9fd34c95d2588932fceef63cd19debd874a39",
+      "raw_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e",
+      "lf_sha256": "45f5aff00b618793fcbbfc41230a8a8d2ff00bab67a5fb3643c131e5e011f83e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/sdk_presend_contracts.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "base_git_blob": "ed45e712e4bf25a74b62022592a4d7816bdc3f61",
+      "raw_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e",
+      "lf_sha256": "427b0abc9ef9d5926c408832412fd1bf57c2b9a68fad8a39ede7aba483fe3c3e"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/effect_oracle.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "3d1322472b1621f4061db4331914dc4e36b23fa0",
+      "base_git_blob": "3d1322472b1621f4061db4331914dc4e36b23fa0",
+      "raw_sha256": "cb6f1fab4a7c05bf2c448b7728d35bdf5cf663d39a56513564bc020c9f56a834",
+      "lf_sha256": "066f789e9b0044378ef896bd065df7b788ef27398163bac4acb63e898bd9c73c"
+    },
+    {
+      "path": "runtime/runproof_runtime/effectwitness/ops_oracle.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "633677ab7a290134da1700b43d140e56dd2b3ee7",
+      "base_git_blob": "633677ab7a290134da1700b43d140e56dd2b3ee7",
+      "raw_sha256": "d660e6959daa615c031f84bbb08a05c2e3a4b61bd236f0beee8b86563e3b122f",
+      "lf_sha256": "90a5328168be38cce869203d1e365b16ed999d79533dac5a01172d8b9eb895fa"
+    },
+    {
+      "path": "ci/verify-public-docs.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "233783cb7f56130940395a02d24aa80ede408147",
+      "base_git_blob": "233783cb7f56130940395a02d24aa80ede408147",
+      "raw_sha256": "d91315962cb686efe8a3b7197589a31d9f2359ec08d3acf27b06d7e3a796ee0c",
+      "lf_sha256": "d91315962cb686efe8a3b7197589a31d9f2359ec08d3acf27b06d7e3a796ee0c"
+    },
+    {
+      "path": "ci/test_rpf110_contracts.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "52acdc893cb11c21d6da829a4973fb894ee5b5ba",
+      "base_git_blob": "52acdc893cb11c21d6da829a4973fb894ee5b5ba",
+      "raw_sha256": "286da578e25c3ce98dacae63e034ee52de3d398e2d2dc6231743b0bb9cf84c3a",
+      "lf_sha256": "286da578e25c3ce98dacae63e034ee52de3d398e2d2dc6231743b0bb9cf84c3a"
+    },
+    {
+      "path": "ci/test_rpf110_presend.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "cddfdb4e7a2b7587ccdd46bd649ce6d2bfb2ecc0",
+      "base_git_blob": "cddfdb4e7a2b7587ccdd46bd649ce6d2bfb2ecc0",
+      "raw_sha256": "137130b6c2bad7a267ecdc3646a0a5b45c9e0707ace5ce69d6680fef8b8021c7",
+      "lf_sha256": "137130b6c2bad7a267ecdc3646a0a5b45c9e0707ace5ce69d6680fef8b8021c7"
+    },
+    {
+      "path": "ci/test_rpf110_explorer.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "5a01dd5c7ccb3a416a8cbfed99b2ec21a33641e7",
+      "base_git_blob": "5a01dd5c7ccb3a416a8cbfed99b2ec21a33641e7",
+      "raw_sha256": "2be0338039214fe80b96bef9f23ac6796d41fd0c59816d06bd327a008b4bad64",
+      "lf_sha256": "2be0338039214fe80b96bef9f23ac6796d41fd0c59816d06bd327a008b4bad64"
+    },
+    {
+      "path": "ci/test_rpf110_witness.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "99f5d626511e81dedb54f0f07c13161214970f58",
+      "base_git_blob": "99f5d626511e81dedb54f0f07c13161214970f58",
+      "raw_sha256": "226ae15dc2140c369369ca33593b44ab32e467ec07b5d48466d10732a95c1a75",
+      "lf_sha256": "226ae15dc2140c369369ca33593b44ab32e467ec07b5d48466d10732a95c1a75"
+    },
+    {
+      "path": "ci/test_rpf106_candidates.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "dd29eb40899ef203d10a98647fdabffcf25f9696",
+      "base_git_blob": "dd29eb40899ef203d10a98647fdabffcf25f9696",
+      "raw_sha256": "ca8c068b558baf10353f4fbaa280abe8ea8bc003999ad094ac1738839920d89f",
+      "lf_sha256": "ca8c068b558baf10353f4fbaa280abe8ea8bc003999ad094ac1738839920d89f"
+    },
+    {
+      "path": "ci/test_rpf108_provider_boundary.py",
+      "kind": "DEPENDENCY",
+      "git_blob": "9d0b5cc7e204e6e17085a48c2ed2329ced740bbe",
+      "base_git_blob": "9d0b5cc7e204e6e17085a48c2ed2329ced740bbe",
+      "raw_sha256": "9c66ef7b90a7a3c991e2a90dee25f632d60c1c5ede9fc4403b974d5304a2b5d4",
+      "lf_sha256": "9c66ef7b90a7a3c991e2a90dee25f632d60c1c5ede9fc4403b974d5304a2b5d4"
+    }
+  ],
+  "self_identity": {
+    "path": "spikes/rpf-110/rev-2/source-map.json",
+    "git_blob": null,
+    "raw_sha256": null,
+    "verification": "Read back final manifest bytes from Git."
+  }
+}
