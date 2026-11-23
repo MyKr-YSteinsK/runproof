@@ -1,4 +1,4 @@
-import { productApi } from "./productLocalApi";
+import { productApi, requestLocalProduct } from "./productLocalApi";
 
 export const agentMode = "OFFLINE_REFERENCE_AGENT";
 export type AgentCapability = {
@@ -22,19 +22,18 @@ export type AgentSession = {
   rounds: { domain: string; before: Snapshot; after: Snapshot; tool_status: string; fault: Record<string, boolean>;
     outcome: { contract_outcome: string }; feedback: { sha256: string } }[];
 };
-async function get<T>(route: string, body?: object): Promise<T> {
-  const response = await fetch("/effectwitness-product-api" + route, {
-    cache: "no-store", signal: AbortSignal.timeout(12000),
-    ...(body ? { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) } : {}),
-  });
-  if (!response.ok) throw Error("GATEWAY_" + response.status);
-  return response.json() as Promise<T>;
+async function requestAgentJson<T>(route: string, init?: RequestInit): Promise<T> {
+  const response = await requestLocalProduct(route, init);
+  return response.json();
 }
 export const agentApi = {
-  capability: () => get<AgentCapability>("/capability"),
-  session: (id: string) => get<AgentSession>("/session/" + encodeURIComponent(id)),
-  request: (id: string) => get<AgentSession>("/request/" + encodeURIComponent(id)),
-  start: (id: string) => get<AgentSession>("/session", { mode: agentMode, request_id: id }),
+  capability: () => requestAgentJson<AgentCapability>("/capability"),
+  session: (id: string) => requestAgentJson<AgentSession>("/session/" + encodeURIComponent(id)),
+  request: (id: string) => requestAgentJson<AgentSession>("/request/" + encodeURIComponent(id)),
+  start: (id: string) => requestAgentJson<AgentSession>("/session", {
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ mode: agentMode, request_id: id }),
+  }),
   witness: productApi.witness,
 };
 export function mayStart(cap: AgentCapability | null, pending: boolean) {

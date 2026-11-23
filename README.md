@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-RunProof is an **Agent Reliability & Release Engineering Platform**. It turns Agent behavior, state transitions, failures, and release evidence into inspectable engineering assets instead of treating an evaluation score as the whole product.
+RunProof is an **Agent Reliability & Release Engineering Platform** for stateful tool use. It helps engineers answer what changed after an Agent action, verify that change against independent evidence, and turn failures into reproducible tests.
 
 ## What it is
 
@@ -46,7 +46,7 @@ Release Decision (decision-only)
 
 ## Golden Demo
 
-The local Golden Demo is the shortest way to inspect the product surface. It uses reviewed evidence, a formal Control Plane, PostgreSQL canonical metadata, an immutable local artifact store, and a durable worker. It does not require a Provider credential or a cloud account and does not call a real Production system.
+The local Golden Demo covers the platform path from a stateful run to investigation and a release decision. It uses reviewed evidence, a formal Control Plane, PostgreSQL canonical metadata, an immutable local artifact store, and a durable worker. Run it locally with no Provider or cloud account.
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
@@ -54,7 +54,9 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 
 Open <http://127.0.0.1:4173/overview>. The five-to-ten-minute walkthrough is documented in [docs/DEMO.md](docs/DEMO.md) and [docs/DEMO.zh-CN.md](docs/DEMO.zh-CN.md).
 
-## EffectWitness recorded workbench
+## EffectWitness walkthroughs
+
+The RPF-114 offline reference Agent demonstrated a local refund followed by a configuration change. Its Controller admitted each action, a read-only Authority checked the state after response loss, and the downloaded Witness matched the ledger readback. The run used a deterministic Agent and zero Provider requests. [Acceptance results](spikes/rpf-114/RESULT.md) · [Package entry](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
 The optional Windows local profile opens `/effectwitness/live-local` for a new fictional SQLite session. A deterministic rule policy selects the configuration round from independently verified order feedback, with zero Provider reservations. [Local product guide](docs/EFFECTWITNESS_LOCAL_PRODUCT.md)
 
@@ -71,6 +73,8 @@ The recorded EffectWitness workbench is available on `main` at `/effectwitness/w
 - Controlled stateful simulation, failure reproduction, Regression promotion, Failure Intelligence, and statistical trial semantics.
 - A hosted GitHub Actions Release Gate that records canonical evidence and a decision read-back.
 - A Windows local Golden Demo lifecycle with explicit child ownership and fail-closed cleanup checks.
+
+The latest checked Canonical Release Gate for the maintenance baseline failed its required coverage checks. [Current state](docs/project/CURRENT_STATE.md)
 
 ### Not claimed or authorized
 
@@ -118,7 +122,8 @@ The last command creates a fresh local canonical gate when its Docker/Java/Pytho
 - [runtime/README.md](runtime/README.md): Python runtime, evidence, evaluation, and worker entry points.
 - [web/README.md](web/README.md): Web read model and presentation implementation.
 - [demo/](demo/): Golden Demo profile, seed, lifecycle, and verifier.
-- [spikes/](spikes/): disposable investigations and historical contract probes; they are not production claims.
+- [spikes/](spikes/): historical evidence and selected runnable contract probes. [Archive index](docs/history/MAINTENANCE_ARCHIVE.md)
 - [docs/project/](docs/project/): canonical product brief, decisions, and current state.
+- [Project handover](docs/项目源文件/00-START_HERE.md): onboarding for maintainers and the GPT Project, including the runbook and proposals awaiting review.
 
 The current lifecycle is `Stabilization`. Product versioning, deployment, and release status are reported only by the canonical project state and verified delivery evidence.

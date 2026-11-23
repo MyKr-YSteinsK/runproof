@@ -348,13 +348,17 @@ class ControlPlaneClient:
             "runproof.control-plane.http",
             {"http.method": method, "http.route": _route_template(path)},
         ):
-            return self._request_raw(method, path, payload)
+            body = None
+            if payload is not None:
+                body = json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+            return self._request_json_response(method, path, body, content_type="application/json")
 
-    def _request_raw(self, method: str, path: str, payload: dict[str, Any] | None = None) -> dict[str, Any]:
-        body = None if payload is None else json.dumps(payload, ensure_ascii=False, separators=(",", ":")).encode("utf-8")
+    def _request_json_response(
+        self, method: str, path: str, body: bytes | None, *, content_type: str
+    ) -> dict[str, Any]:
         headers = {
             "Accept": "application/json",
-            "Content-Type": "application/json",
+            "Content-Type": content_type,
             "Authorization": f"Bearer {self.token}",
             "X-Request-Id": f"rpf-client-{uuid.uuid4()}",
         }
@@ -383,43 +387,13 @@ class ControlPlaneClient:
             raise ControlPlaneClientError("Control Plane returned a non-object JSON response", status=status, code="INVALID_API_RESPONSE")
         return document
 
-    def _request_bytes(self, method: str, path: str, content: bytes) -> dict[str, Any]:
-        headers = {
-            "Accept": "application/json",
-            "Content-Type": "application/octet-stream",
-            "Authorization": f"Bearer {self.token}",
-            "X-Request-Id": f"rpf-client-{uuid.uuid4()}",
-        }
-        get_observability().inject(headers)
-        request = Request(
-            f"{self.base_url}{path}",
-            data=content,
-            method=method,
-            headers=headers,
-        )
-        try:
-            with self._opener(request, timeout=self.timeout) as response:
-                raw = response.read()
-                status = getattr(response, "status", 200)
-        except HTTPError as error:
-            raw = error.read()
-            status = error.code
-            self._raise_api_error(status, raw, error.headers.get("X-Request-Id") if error.headers else None)
-        except (URLError, TimeoutError, OSError) as error:
-            raise TransportUncertainError() from error
-        try:
-            document = json.loads(raw.decode("utf-8")) if raw else {}
-        except (UnicodeDecodeError, json.JSONDecodeError) as error:
-            raise ControlPlaneClientError("Control Plane returned invalid JSON", status=status, code="INVALID_API_RESPONSE") from error
-        if not isinstance(document, dict):
-            raise ControlPlaneClientError("Control Plane returned a non-object JSON response", status=status, code="INVALID_API_RESPONSE")
-        return document
-
     @staticmethod
     def _raise_api_error(status: int, raw: bytes, correlation_id: str | None) -> None:
         try:
             document = json.loads(raw.decode("utf-8")) if raw else {}
         except (UnicodeDecodeError, json.JSONDecodeError):
+            document = {}
+        if not isinstance(document, dict):
             document = {}
         code = document.get("error") if isinstance(document.get("error"), str) else "CONTROL_PLANE_HTTP_ERROR"
         retriable = bool(document.get("retriable")) or status in {408, 429, 500, 502, 503, 504}
@@ -433,8 +407,8 @@ class ControlPlaneClient:
             status=status,
             code=code,
             retriable=retriable,
-            evidence_valid=document.get("evidence_valid") if isinstance(document, dict) else None,
-            correlation_id=correlation_id or (document.get("correlation_id") if isinstance(document, dict) else None),
+            evidence_valid=document.get("evidence_valid"),
+            correlation_id=correlation_id or document.get("correlation_id"),
         )
 
     def ingest(self, manifest: dict[str, Any]) -> dict[str, Any]:
@@ -589,7 +563,10 @@ class ControlPlaneClient:
             "runproof.control-plane.artifact-upload",
             {"http.method": "POST", "http.route": "/artifact-bytes"},
         ):
-            return self._request_bytes("POST", f"/artifact-bytes?artifact_key={quote(artifact_key, safe='')}", content)
+            return self._request_json_response(
+                "POST", f"/artifact-bytes?artifact_key={quote(artifact_key, safe='')}", content,
+                content_type="application/octet-stream",
+            )
 
     def ingest_with_reconcile(self, manifest: dict[str, Any]) -> dict[str, Any]:
         try:

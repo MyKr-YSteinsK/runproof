@@ -11,6 +11,10 @@
 # Disposable probe outputs (reviewed evidence is curated separately)
 /.local/
 
+# Local relocation area for user-managed cleanup. Track only its instructions.
+/docs/delete/*
+!/docs/delete/README.md
+
 # Python runtime caches
 __pycache__/
 *.py[cod]

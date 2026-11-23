@@ -10,6 +10,12 @@
 - Primary platforms: Desktop Web Control Plane 是 portfolio-critical Primary human surface；CLI / Programmatic API / CI 是 automation surfaces。
 - v1 reference: Production Change Agent，覆盖发布/Canary/Rollback、配置/Feature Flag 变更与状态迁移/维护；首个且默认真实 LLM Provider 为 DeepSeek。
 
+## 维护目标（2026-11-23）
+
+RunProof 作为 Agent 工程作品，优先展示工具调用、状态反馈、独立验证与失败恢复。展示的链路也应服务真实工程判断，例如让维护者复现一项配置变更、核对工具副作用，并决定是否需要重试、回滚或转人工。
+
+作品主线、`config-center` 联动、竞赛切片的长期去向与架构改造须经用户评审。[升级评审](../项目源文件/UPGRADE_REVIEW.md) 保存候选及验收定义。
+
 ## Core user loop
 
 Candidate Agent Version → Evaluation Suite → Controlled Stateful Environment / Normal、Failure、Safety Scenarios → Trajectory + Environment Transition / Evidence → deterministic verification → Outcome / Failure Investigation → Reproduce / Validate / Promote Regression → Baseline vs Candidate → Quality Policy → Release Gate。
@@ -81,6 +87,6 @@ Failure reproduction、focused rerun 与持续 Regression 是核心工作流；C
 
 ## Context ownership and update rule
 
-本文件是跨任务合同摘要，不替代完整 Requirements/Architecture/UX。完整 Bootstrap 上下文由 Architect 持有；每份 Plan 提取当前任务相关 MUST、Acceptance 和 UX invariant，不要求执行器依赖不可读取的外部材料。摘要遗漏不构成已确认需求被废除；具体取舍以有效决定及其适用范围判断。
+本文件是跨任务合同摘要。运行、状态和决定由仓库源文件维护，GPT Project 从 [项目接管入口](../项目源文件/00-START_HERE.md) 同步。每份正式 Plan 提取当前任务相关 MUST、Acceptance 和 UX invariant。原竞赛批准的 R-01～R-10、D-COMP、MUST/SHOULD/NON-GOAL 及其完整措辞见 [RPF-79 存档](../history/MAINTENANCE_ARCHIVE.md#rpf-79-迁移包)。核对决定的适用范围及后续修订。
 
 仅在稳定产品意图、v1 边界、跨任务不变量或 canonical UX 实质变化时更新。不得写入当前任务、生命周期、实现进度或运行/交付快照。

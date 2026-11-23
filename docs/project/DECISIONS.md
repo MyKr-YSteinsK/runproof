@@ -520,3 +520,22 @@ RPF-96 的反复 `BLOCKED` 显示：旧物理预算起点 `UNVERIFIED` 本应只
 
 ### Supersedes
 - 细化并替代将统一重型 G0/每任务独立 owner/双阶段证据冻结要求套用于普通开发的旧工作流程；不撤销 D-001～D-028 的既有产品、安全、可追溯与 Release Decision 语义。旧 RPF Plan 作为历史执行记录保留，不再自动授权或约束其他任务。
+
+---
+
+## D-030｜以作品价值和可恢复维护为接管目标
+
+- Status: `Accepted`
+- Date: 2026-11-23
+
+### Decision
+
+用户指定 RunProof 的后续工作应服务 Agent 工程求职，并能解决实际问题。本次按工程项目孵化器的旧项目升级模式接管。根 `AGENTS.md` 保持短入口，既有 `docs/project/` 维护产品、决定与状态，`docs/项目源文件/` 提供可直接上传的 GPT Project 源与共享运行档案。普通开发可走 Codex Native，复杂产品取舍可先由 GPT Project Main 评审。
+
+### Consequences
+
+本轮接管、可逆归档和兼容性重构已获授权。产品收敛、重写架构、真实 Provider、外部联动写入及历史实现退役各自需要决定。RPF-79 的旧启动、交接和工程规程进入历史，完整文件身份见 [归档索引](../history/MAINTENANCE_ARCHIVE.md)。继续沿用 D-029 的风险分层、已有编号和可靠性边界。
+
+### Reconsider when
+
+用户确认 [升级评审](../项目源文件/UPGRADE_REVIEW.md) 中的主线与迁移条件后，在新决定中记录明确批准的取舍及影响。

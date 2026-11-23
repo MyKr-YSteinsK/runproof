@@ -18,22 +18,22 @@ export type Session = {
   limits: unknown; cleanup: string;
 };
 
-async function request(path: string, init?: RequestInit) {
+export async function requestLocalProduct(path: string, init?: RequestInit) {
   const response = await fetch(base + path, { ...init, cache: "no-store", signal: AbortSignal.timeout(12000) });
   if (!response.ok) throw new Error(`GATEWAY_${response.status}`);
   return response;
 }
 
 export const productApi = {
-  capability: async (): Promise<Capability> => (await request("/capability")).json(),
-  session: async (id: string): Promise<Session> => (await request("/session/" + encodeURIComponent(id))).json(),
-  readRequest: async (id: string): Promise<Session> => (await request("/request/" + encodeURIComponent(id))).json(),
-  create: async (id: string): Promise<Session> => (await request("/session", {
+  capability: async (): Promise<Capability> => (await requestLocalProduct("/capability")).json(),
+  session: async (id: string): Promise<Session> => (await requestLocalProduct("/session/" + encodeURIComponent(id))).json(),
+  readRequest: async (id: string): Promise<Session> => (await requestLocalProduct("/request/" + encodeURIComponent(id))).json(),
+  create: async (id: string): Promise<Session> => (await requestLocalProduct("/session", {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mode, request_id: id }),
   })).json(),
   witness: async (id: string) => {
-    const response = await request("/witness/" + encodeURIComponent(id));
+    const response = await requestLocalProduct("/witness/" + encodeURIComponent(id));
     const length = Number(response.headers.get("Content-Length"));
     if (!Number.isInteger(length) || length < 1 || length > 65536) throw new Error("WITNESS_SIZE");
     const bytes = await response.arrayBuffer();

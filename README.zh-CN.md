@@ -2,7 +2,7 @@
 
 [English](README.md) | [简体中文](README.zh-CN.md)
 
-RunProof 是一个 **Agent Reliability & Release Engineering Platform**。它把 Agent 行为、状态迁移、失败和发布证据变成可调查的工程资产，而不是把一次评测分数当作产品全部。
+RunProof 是一个面向有状态工具调用的 **Agent Reliability & Release Engineering Platform**。它帮助工程师查清 Agent 动作产生了什么变化，通过独立证据核验业务状态，并把失败变成可复跑的测试。
 
 ## 它是什么
 
@@ -46,7 +46,7 @@ Release Decision（只读决策）
 
 ## Golden Demo
 
-本地 Golden Demo 是查看产品面的最短路径。它使用 reviewed evidence、正式 Control Plane、PostgreSQL canonical metadata、不可变本地 artifact store 和 durable worker。不需要 Provider credential 或云账号，也不会连接真实 Production 系统。
+本地 Golden Demo 展示从有状态 Run、调查到发布判定的平台链路。它使用 reviewed evidence、正式 Control Plane、PostgreSQL canonical metadata、不可变本地 artifact store 和 durable worker。可在本地运行，无需 Provider 或云账号。
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
@@ -54,7 +54,9 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 
 打开 <http://127.0.0.1:4173/overview>。五到十分钟的完整路径见 [docs/DEMO.zh-CN.md](docs/DEMO.zh-CN.md) 和 [docs/DEMO.md](docs/DEMO.md)。
 
-## EffectWitness 记录型工作台
+## EffectWitness 演示
+
+RPF-114 离线参考 Agent 在本地演示了先退款、后变更配置。Controller 逐次判断动作能否执行。响应丢失后，独立只读 Authority 查询业务状态，下载的 Witness 与独立账本读回一致。该运行使用确定性 Agent，Provider 请求为零。[验收结果](spikes/rpf-114/RESULT.md) · [工程包入口](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
 可选的 Windows 本地配置通过 `/effectwitness/live-local` 创建虚构 SQLite 会话。确定性策略根据独立核验的订单反馈选择配置实验，Provider 预约为零。[本地产品指南](docs/EFFECTWITNESS_LOCAL_PRODUCT.zh-CN.md)
 
@@ -71,6 +73,8 @@ powershell -ExecutionPolicy Bypass -File demo/start-demo.ps1
 - 有状态 Controlled Simulation、失败复现、Regression 晋升、Failure Intelligence 与统计 trial 语义。
 - 能记录 canonical evidence 并回读决策的 hosted GitHub Actions Release Gate。
 - 带有显式子进程 ownership 和 fail-closed 清理检查的 Windows 本地 Golden Demo 生命周期。
+
+已核实的接管基线 Canonical Release Gate 在必需覆盖率检查失败。[当前状态](docs/project/CURRENT_STATE.md)
 
 ### 未声明或未授权
 
@@ -118,7 +122,8 @@ python ci/run_release_gate.py
 - [runtime/README.md](runtime/README.md)：Python runtime、evidence、evaluation 和 worker 入口。
 - [web/README.md](web/README.md)：Web read model 与 presentation 实现。
 - [demo/](demo/)：Golden Demo profile、seed、生命周期和 verifier。
-- [spikes/](spikes/)：disposable 调查与历史合同 probe，不是 Production 声明。
+- [spikes/](spikes/) 保存历史证据和部分可运行的契约探针。[归档索引](docs/history/MAINTENANCE_ARCHIVE.md)
 - [docs/project/](docs/project/)：canonical product brief、decisions 和 current state。
+- [项目接管入口](docs/项目源文件/00-START_HERE.md) 提供维护者和 GPT Project 的上下文、运行手册与待确认方案。
 
 当前生命周期为 `Stabilization`。产品版本、部署与 release 状态只由 canonical project state 和已验证的交付证据报告。

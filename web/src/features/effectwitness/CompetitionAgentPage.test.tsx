@@ -1,5 +1,8 @@
-import { describe, expect, it } from "vitest";
-import { agentMode, mayStart, type AgentCapability } from "./competitionAgentApi";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { agentApi, agentMode, mayStart, type AgentCapability } from "./competitionAgentApi";
+import { mode, productApi } from "./productLocalApi";
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe("reference Agent admission", () => {
   const fresh: AgentCapability = {
@@ -16,4 +19,32 @@ describe("reference Agent admission", () => {
     expect(mayStart({ ...fresh, blocked: true }, false)).toBe(false);
     expect(mayStart({ ...fresh, provider_reservations: 1 }, false)).toBe(false);
   });
+});
+
+it("sends one request per session start and preserves each local profile's mode", async () => {
+  const fetch = vi.fn()
+    .mockResolvedValueOnce(new Response('{"session_id":"agent"}'))
+    .mockResolvedValueOnce(new Response('{"session_id":"rule-policy"}'))
+    .mockResolvedValueOnce(new Response(null, { status: 503 }));
+  vi.stubGlobal("fetch", fetch);
+
+  await expect(agentApi.start("agent-request")).resolves.toMatchObject({ session_id: "agent" });
+  await expect(productApi.create("rule-request")).resolves.toMatchObject({ session_id: "rule-policy" });
+  await expect(agentApi.request("agent/request")).rejects.toThrow("GATEWAY_503");
+
+  expect(fetch.mock.calls).toEqual([
+    ["/effectwitness-product-api/session", expect.objectContaining({
+      method: "POST", cache: "no-store", signal: expect.any(AbortSignal),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode: agentMode, request_id: "agent-request" }),
+    })],
+    ["/effectwitness-product-api/session", expect.objectContaining({
+      method: "POST", cache: "no-store", signal: expect.any(AbortSignal),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode, request_id: "rule-request" }),
+    })],
+    ["/effectwitness-product-api/request/agent%2Frequest", expect.objectContaining({
+      cache: "no-store", signal: expect.any(AbortSignal),
+    })],
+  ]);
 });
