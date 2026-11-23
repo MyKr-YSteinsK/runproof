@@ -18,7 +18,7 @@
 ```powershell
 npm test
 npm run build
-python -B -m unittest -v runtime.tests.test_control_plane_client runtime.tests.test_durable_worker
+python -B -m unittest -v ci.test_control_plane_client_transport runtime.tests.test_control_plane_client runtime.tests.test_durable_worker
 python -B ci/verify-public-docs.py
 python -B runtime/verify-reviewed-artifacts.py
 python -B demo/verify-golden-demo.py --root . --json
@@ -46,3 +46,5 @@ mvn -q -B test package -f control-plane/pom.xml
 ## CI 和交付
 
 普通授权交付沿用 `main` 及 scoped commit/push。检查 GitHub 身份和目标远端，核对推送可能触发的工作流，推送后读回 SHA、关键文件和运行状态。Canonical Gate 是发行证据，失败时保留状态与 required coverage。旧手动 Provider 或 conformance workflow 有独立授权和预算，任何一轮的旧配置不自动续用。
+
+Runtime Router 按 `ci/runtime-contract-test-matrix.json` 检验 `runtime/tests/test_*.py` 的清单及 LF SHA-256，coverage handoff 也绑定整个 matrix。`SOURCE_DRIFT` 表示输入身份校验失败，可能在 Router 生成账本前终止。接管新增的 HTTP transport 负控在 `ci/test_control_plane_client_transport.py` 聚焦执行，已有封存测试与覆盖条件仍可独立核验。

@@ -16,7 +16,8 @@
 - **RPF-74 原生 UNKNOWN 缺口仍有反证。** Config `UNKNOWN_OUTCOME` WAL seq199 后仍 `provider RESERVE` seq205/233，Order seq427 后仍 seq433/461。RPF-80/81/95/96 与后续受限路径的实验范围各自独立。旧现场送出额度 `UNVERIFIED`。[维护归档](../history/MAINTENANCE_ARCHIVE.md)
 - **Canonical Release Gate 处于 FAILED。** 截至接管前最近一次已核实的 [Run 42839529972](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42839529972) 在 required Runtime coverage 与 RPF-89 derived required coverage 失败。较早的 [RPF-98 Run 42497172434](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42497172434) 记录 `688 PASS / 0 ERROR / 5 SKIP / 539 UNAVAILABLE`。这是不同 SHA 的历史数据。以新提交自己的运行和归因更新状态。
 - **本机存在未交付研究工作。** `RPF-74/rev-4` 与 `RPF-96` 相关原型在接管时未跟踪，未纳入接管提交。RPF-96 仍以 `LOCAL_REPORTED_NOT_REMOTE_VERIFIED` 记录。旧 Python Install Manager 意外安装事件的 owner 外影响未核实。普通开发使用已核实解释器。[运行与恢复](../项目源文件/RUNBOOK.md)
-- **本次聚焦验证。** Web 77 项、TypeScript 与生产构建通过，保留现有大 chunk 提示。Python Control Plane client/durable worker 7 项、reviewed artifacts 与 Golden Demo profile 静态检查通过。Maven 离线测试 16 项和 Java 打包通过。物理演示、真实 Provider 和外部发布本轮未运行。
+- **本次聚焦验证。** Web 77 项、TypeScript 与生产构建通过，保留现有大 chunk 提示。Python Control Plane client、HTTP transport 和 durable worker 共 8 项，reviewed artifacts 与 Golden Demo profile 静态检查通过。Maven 离线测试 16 项和 Java 打包通过。物理演示、真实 Provider 和外部发布本轮未运行。
+- **接管 CI 输入恢复。** 首次接管提交的 [Local Product](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45161449323) 通过。[Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45161449251) 因编辑了固定 SHA 的 Runtime 测试文件而在账本前报 `SOURCE_DRIFT`。后续提交恢复原测试字节，将 HTTP 回归放入聚焦套件。原 required coverage 和验证器沿用各自固定身份。
 
 ## 维护入口
 
