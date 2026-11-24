@@ -69,6 +69,8 @@ npm run build -- --outDir .local/rpf-115/web-dist
 
 面试复查可从 [README](../../README.zh-CN.md) 启动，先沿成功会话看两域收据，再按上表提交后中断的 nonce 只读重开，从订单实物回查第二个库的缺失。将诊断导出与独立摘要交给 CLI；改用错误的固定摘要可重现 REJECTED、退出 3。正式结果以候选源码取证。最后文档提交的远端 SHA、产品 CI checkout 和 Canonical Gate 由交付回执记录。原基线的两个 required coverage 步骤分别剩 534、516；此前 Source Drift 已修复。新产品回归不会补记为冻结覆盖。[基线 Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45161996447)
 
+首轮托管回归在 Golden Demo 的历史源码身份检查处失败。Hosted checkout 只取了当前提交，本地完整历史通过。产品 workflow 现在获取完整历史，保留 Golden Demo 原验证规则。后续托管修正仅涉及 CI 取源与本文，工程包和运行源码仍绑定上述实现提交。[首次产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45387408337)
+
 ### 本地证据索引
 
 - `.local/rpf-115/formal-126c021/{WRITE_INTENT,UNKNOWN_OBSERVED}/` 保存各自的 report.json、receipt.json、子进程 PID 和停止后的全部文件摘要。终止 PID 为 5364、9996。回归子进程仅在指明事件落盘后通知父进程终止。
