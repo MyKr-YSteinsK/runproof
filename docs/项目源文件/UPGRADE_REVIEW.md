@@ -6,7 +6,7 @@
 
 RPF-115 授权了持久状态保护、只读重开、本地 Agent 调查页、首屏按需加载、产品回归及工程包准入。对应证据见 [RESULT](../../spikes/rpf-115/RESULT.md)。跨仓联动暂缓。下列改造保留为候选：
 
-1. 先用相同受控状态为两种离线策略建立成对回归，分别统计正确操作、重复效果、停止和证据不足。基线与候选均保留 operation 身份和每域收据。是否增加模型预算另行决定。
+1. RPF-117 已在本地以固定合成场景建立两种确定性策略的成对回归。后续是否加入真实模型及其试验预算仍待评审。[本地对照](../../spikes/rpf-117/RESULT.md)
 2. 按 Canonical Router 的 required 缺口逐项分类。可用隔离 fixture 重建的情形先通过等价输入、故障时点和门禁结果比对，再提交覆盖迁移方案。旧 spike 的 reader 依赖与被引用样本逐项确认后讨论退役。
 3. `runtime/runproof_runtime/cli.py` 直接依赖 `evaluation.py`。先借 `runtime/tests/test_evaluation.py` 固定 CLI 输出、成员和聚合契约，再拆执行编排。统计估计与质量判定单独用 `test_statistical.py` 的边界样本对照。Java 的 `ControlPlaneController` 与 `DurableExecutionController` 分别承担读模型和持久任务入口；先固定 HTTP 与事务合同再切分，待出现真实跨进程需求后评审存储迁移。
 4. Web 当前将历史 corpus 留在按需加载的 canonical 页面。下一次优化用历史深链的网络清单确定应拆的页面组，分别核对 fixture 与 API 模式；离线主路径已经有同条件实测基线。

@@ -22,6 +22,18 @@ Open the printed URL and save the nonce. Confirm the run once. Follow the order 
 
 The optional anchor must come from an independent trusted channel. Without it the CLI checks internal content. In investigation v2, an unknown trigger or observation means the durable fault evidence is missing. The SQLite receipt is checked separately. Use the original source version to verify older artifacts and the same stop command when finished. [Engineering package](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
+### Compare local decision policies
+
+From the repository root, run the six-scenario suite or select one case. Each scenario creates a fresh SQLite owner for each policy. Use new output directories for each run.
+
+```powershell
+& $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation run .local/rpf-117/comparison
+& $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation verify .local/rpf-117/comparison
+& $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation run .local/rpf-117/altered --case ALTERED_VALUE_KEEP_DIGEST
+```
+
+In the altered-feedback case, the reference policy stops and the sequence control proposes a configuration change that the Controller rejects. Check the separate columns for the agent decision, host safety and business receipts. The repository CLI uses deterministic policies and zero Provider calls. [Runbook](docs/项目源文件/RUNBOOK.md) · [Observed comparison](spikes/rpf-117/RESULT.md)
+
 ## What it is
 
 RunProof connects a Candidate Agent Version to a stateful evaluation, the observed trajectory and environment state, deterministic evidence, failure investigation, regression history, statistical reliability, and a decision-only Quality Gate.

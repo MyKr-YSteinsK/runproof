@@ -22,6 +22,18 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 
 可选的 `$anchor` 应来自独立可信渠道。省略该参数时 CLI 只复核内容。调查报告 v2 中，触发或观察为未知表示缺少持久化故障证据。SQLite 收据可单独核验。旧文件请用匹配的原源码版本复核。调查结束后使用相同的停止命令。[工程包说明](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
+### 比较本地决策策略
+
+在仓库根运行六组场景，或指定一组。每组为两种策略分别创建新的 SQLite owner。每次运行使用新的输出目录。
+
+```powershell
+& $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation run .local/rpf-117/comparison
+& $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation verify .local/rpf-117/comparison
+& $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation run .local/rpf-117/altered --case ALTERED_VALUE_KEEP_DIGEST
+```
+
+反馈内容被改动时，参考策略停手，顺序型对照仍提出配置变更，随后由 Controller 拒绝。表格分别给出策略决策、宿主安全性和业务收据。仓库 CLI 使用确定性策略，Provider 调用为零。[运行手册](docs/项目源文件/RUNBOOK.md) · [实测对照](spikes/rpf-117/RESULT.md)
+
 ## 它是什么
 
 RunProof 将 Candidate Agent Version 连接到有状态评测、可观察轨迹与环境状态、确定性证据、失败调查、回归历史、统计可靠性以及只读的 Quality Gate 决策。

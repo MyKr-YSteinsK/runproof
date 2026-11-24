@@ -26,6 +26,21 @@
 
 CLI 返回 `CONTENT_CHECKED_LOCAL` 表示通过内容复核，`VERIFIED_ANCHORED` 还表示与提供的独立摘要一致。诊断同时给出业务读回和任务完成状态。成功任务使用 Witness 复核，外部签发者为 `NOT_ESTABLISHED`。CLI 退出 3 时输出具体拒绝原因。旧诊断 v1 返回 `INVESTIGATION_LEGACY_SCHEMA`，与当前源码不匹配的 v2 返回 `INVESTIGATION_SOURCE_MISMATCH`。保留旧字节并用匹配原 source map 的工程包或源码验证。v1 的无锚内容检查存在本轮记录的语义缺口。
 
+## 本地策略对照
+
+在仓库根使用已核对的 `$py`。全量评测尝试 12 个新的合成会话，聚焦命令在一个场景下为两种策略各创建一个会话。运行目录应为 `.local/rpf-117/` 下的新路径。
+
+```powershell
+$evaluation = 'runtime.runproof_runtime.effectwitness.policy_evaluation'
+& $py -B -m $evaluation run .local/rpf-117/comparison
+& $py -B -m $evaluation verify .local/rpf-117/comparison
+& $py -B -m $evaluation run .local/rpf-117/altered --case ALTERED_VALUE_KEEP_DIGEST
+```
+
+用 `comparison.json` 与 `cases/<场景>--<策略>/` 找到 owner nonce、持久 request、session、operation、原诊断及成功 Witness。可带原 nonce 用现有 `-Reopen` 入口查看某一格。评测 CLI 随仓库源码提供。演示工程包提供单会话 Runtime 与 verifier。
+
+`verify` 以只读连接重新读取目标和台账，核对冻结场景、实际策略选择、底层报告与计数。退出 0 表示已复核的比较满足宿主安全合同。负对照的 Agent FAIL 仍计入表格。退出 2 表示测得安全失败或证据不足，退出 3 表示输入或证据集无法复核。无独立可信锚的复核状态为 `CONTENT_CHECKED_LOCAL`，签发者为 `NOT_ESTABLISHED`。保留台账、版本与导出文件以便重开。[RPF-117 实测](../../spikes/rpf-117/RESULT.md)
+
 ## 快速校验
 
 按修改选取，在仓库根运行。`python` 表示已核对的解释器。在当前 Windows 终端可用 `& $runproofPython` 调用其确切路径。

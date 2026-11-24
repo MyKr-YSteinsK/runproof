@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-25 · RPF-117 rev-1
+
+本地 Controller 与诊断校验共享反馈准入规则，第二步须绑定 Agent 实际看到的完整已核验反馈。仓库 CLI 以六个冻结场景比较参考策略和顺序型负对照，并用只读 SQLite 重新计算任务完成、Agent 第二步判断和宿主安全。运行、场景和策略选择绑定到持久 request，共用现有 Witness 和诊断 verifier。[策略对照与回归](../../spikes/rpf-117/RESULT.md)
+
 ## 2026-11-24 · RPF-116 rev-1
 
 本地 Reference Agent 的调查报告 v2 核对已落盘的工具意图、Controller 决定、执行时的 Authority 读回和反馈。提交后故障事件尚未落盘时，退款可由收据确认，故障触发和观察状态仍为未知。合法的停止和中断记录可复核；历史报告使用对应源码的校验工具。[RPF-116 实测与工程包](../../spikes/rpf-116/RESULT.md)
@@ -22,7 +26,7 @@
 ## 安全、CI 与本地现场
 
 - **RPF-74 原生 UNKNOWN 缺口仍有反证。** Config `UNKNOWN_OUTCOME` WAL seq199 后仍 `provider RESERVE` seq205/233，Order seq427 后仍 seq433/461。RPF-80/81/95/96 与后续受限路径的实验范围各自独立。旧现场送出额度 `UNVERIFIED`。[维护归档](../history/MAINTENANCE_ARCHIVE.md)
-- **当前 CI。** RPF-116 将诊断回归接入产品 CI。本地同组回归通过 Python 36 项、Node 1 项、Web 78 项与构建。按提交 SHA 核对两条托管运行。[产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/workflows/rpf-100-product.yml) · [Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/workflows/release-gate.yml)
+- **当前 CI。** 产品 CI 包含诊断、恢复与本地策略对照回归。RPF-117 的审查基线 `9277800945f1365affad6126206dfa8d2de13502` 通过产品测试与 Canonical 仓库合同检查。Canonical required coverage 两步分别缺 534、516，发行受阻。[基线产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45425185086) · [基线 Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45425184986)
 - **CI 基线（2026-11-24）。** RPF-116 的审查基线 `93f2151cdeadec8e106603ad54b882f5b383f82b` 上，产品 CI 通过。Canonical 的仓库合同检查通过，两步 required coverage 仍缺 534 和 516，发行受阻。较早的记录见 [接管前 Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42839529972) 与 [RPF-98](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42497172434)。[基线产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45387631184) · [基线 Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45387780159)
 - **本机存在未交付研究工作。** `RPF-74/rev-4` 与 `RPF-96` 相关原型在接管时未跟踪，未纳入接管提交。RPF-96 仍以 `LOCAL_REPORTED_NOT_REMOTE_VERIFIED` 记录。旧 Python Install Manager 意外安装事件的 owner 外影响未核实。普通开发使用已核实解释器。[运行与恢复](../项目源文件/RUNBOOK.md)
 - **2026-11-23 接管时的聚焦验证。** Web 77 项、TypeScript 和生产构建通过，构建有大 chunk 提示。Python Control Plane client、HTTP transport 和 durable worker 共 8 项，reviewed artifacts 与 Golden Demo profile 静态检查通过。Maven 离线测试 16 项和 Java 打包通过。
