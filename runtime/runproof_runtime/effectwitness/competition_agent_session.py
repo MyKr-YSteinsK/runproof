@@ -55,6 +55,8 @@ class ControllerGate:
 
     def admit(self, proposal, observed, trusted, candidates):
         step = observed["step"]
+        if type(step) is not int or step not in (1, 2):
+            return "INTENT_REJECTED"
         domain = "order" if step == 1 else "ops"
         candidate = candidates[step - 1]
         if self.unknown:
@@ -64,9 +66,12 @@ class ControllerGate:
         if step == 2 and (self.spent != {"order"} or not attestation_matches(
                 trusted, candidates[0], observed["session_id"], observed["source_sha256"])):
             return "VERIFIED_FEEDBACK_REQUIRED"
+        if step == 2 and canonical(observed.get("feedback")) != canonical(trusted):
+            return "FEEDBACK_INPUT_BINDING"
         expected = tool_intent(candidate, step, digest(observed), trusted["sha256"] if trusted else None)
         if (not isinstance(proposal, dict) or canonical(proposal) != canonical(expected)
-                or domain not in observed["available"] or candidate["execution"]["target"] != "OWNED_SQLITE"):
+                or expected["tool"] not in observed["tool_allowlist"] or domain not in observed["available"]
+                or candidate["execution"]["target"] != "OWNED_SQLITE"):
             return "INTENT_REJECTED"
         self.spent.add(domain)
         return "APPROVED"

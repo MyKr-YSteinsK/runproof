@@ -183,10 +183,10 @@ def _check_trace(record):
             if set(decision) != {"verdict", "step"} or type(decision["step"]) is not int or decision["step"] != step:
                 raise ValueError("GATE_DECISION_BINDING")
             approved = decision["verdict"] == "APPROVED"
-            if approved and step == 2 and canonical(view) != canonical(trusted):
-                raise ValueError("FEEDBACK_INPUT_BINDING")
             verdict = gate.admit(proposal, observed, trusted, record["candidates"]) if proposal is not None else "MUST_STOP"
             if decision["verdict"] != verdict:
+                if approved and verdict == "FEEDBACK_INPUT_BINDING":
+                    raise ValueError(verdict)
                 raise ValueError("APPROVED_INTENT_CONTRACT" if approved else "GATE_DECISION_BINDING")
             if verdict != "APPROVED":
                 expected_stop = ("controller", verdict, "STOPPED")
