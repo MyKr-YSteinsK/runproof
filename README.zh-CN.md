@@ -32,7 +32,9 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 & $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation run .local/rpf-117/altered --case ALTERED_VALUE_KEEP_DIGEST
 ```
 
-反馈内容被改动时，参考策略停手，顺序型对照仍提出配置变更，随后由 Controller 拒绝。表格分别给出策略决策、宿主安全性和业务收据。仓库 CLI 使用确定性策略，Provider 调用为零。[运行手册](docs/项目源文件/RUNBOOK.md) · [实测对照](spikes/rpf-117/RESULT.md)
+反馈内容被改动时，参考策略停手，顺序型对照仍提出配置变更，随后由 Controller 拒绝。默认对照使用确定性策略，Provider 调用为零。[运行手册](docs/项目源文件/RUNBOOK.md) · [实测对照](spikes/rpf-117/RESULT.md)
+
+用 `--fixture-model` 对照参考策略和预编写的 Chat Completions 回复。复核只读保存的回复和 SQLite 记录，全程无需发送请求或执行工具。报告给出两步决策、业务收据和宿主安全结果。实测覆盖合成回复，Provider 调用为零。[运行命令与实测](spikes/rpf-118/RESULT.md)
 
 ## 它是什么
 

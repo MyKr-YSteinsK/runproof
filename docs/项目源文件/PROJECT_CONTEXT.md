@@ -1,6 +1,6 @@
 # RunProof 项目上下文
 
-**版本** 2026-11-25 RPF-117，审查基线 `9277800945f1365affad6126206dfa8d2de13502`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
+**版本** 2026-11-25 RPF-118，审查基线 `3bca8f66889992c2b1a128b8a83c43f8c88386af`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
 
 ## 目标与已确认范围
 
@@ -16,6 +16,8 @@ RunProof 让 Agent 工程师可以重现、解释并验证工具失败和业务�
 仓库与完整工程包提供离线 Reference Agent 的新建和只读重开入口。独立核验的 SQLite 订单收据支撑第二轮工具意图。中断时用原 nonce、request 或 session 追溯写入。诊断 v2 核对原事件语义，并将本次业务读回与原执行读回分开。当写入意图已保存、故障事件缺失，触发与观察为未知。无锚复核通过表示内容自洽。任务完成依靠成功 Witness，签发者身份另需可信来源。日常回归覆盖 transport、两种本地产品、Agent、诊断、工程包协议与 Web。[运行手册](RUNBOOK.md) · [RPF-116 实测](../../spikes/rpf-116/RESULT.md)
 
 RPF-117 用同一组本地场景检验两种确定性策略。完整反馈才可获准进入第二步。坏反馈的错误提议及宿主拦截分别计量，未到达第二步的记录进入宿主覆盖，不进入 Agent 第二步判断分母。评测用只读复核关联实际策略选择、原报告和 SQLite 收据。[复跑与边界](../../spikes/rpf-117/RESULT.md)
+
+RPF-118 的仓库 CLI 允许预编写的模型格式回复经过同一 Controller 和 Authority。回复、确定性解析和业务效果分别可查。只读复核使用保存的回复和原台账。两步都报告 Agent 判断，缺失或异常回复不计入决策质量。实测限合成回复与合成 SQLite 目标，真实 Provider 请求为零。[模拟回复对照与真实试验候选](../../spikes/rpf-118/RESULT.md)
 
 ## 竞赛历史的适用范围
 

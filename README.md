@@ -32,7 +32,9 @@ From the repository root, run the six-scenario suite or select one case. Each sc
 & $py -B -m runtime.runproof_runtime.effectwitness.policy_evaluation run .local/rpf-117/altered --case ALTERED_VALUE_KEEP_DIGEST
 ```
 
-In the altered-feedback case, the reference policy stops and the sequence control proposes a configuration change that the Controller rejects. Check the separate columns for the agent decision, host safety and business receipts. The repository CLI uses deterministic policies and zero Provider calls. [Runbook](docs/项目源文件/RUNBOOK.md) · [Observed comparison](spikes/rpf-117/RESULT.md)
+In the altered-feedback case, the reference policy stops and the sequence control proposes a configuration change that the Controller rejects. The default comparison uses deterministic policies and zero Provider calls. [Runbook](docs/项目源文件/RUNBOOK.md) · [Observed comparison](spikes/rpf-117/RESULT.md)
+
+Use `--fixture-model` to compare the reference policy with authored Chat Completions replies. Verification reads the saved replies and SQLite records without sending a request or executing a tool. The report tracks both decisions, business receipts and host safety. The results cover synthetic replies with zero Provider calls. [Run commands and results](spikes/rpf-118/RESULT.md)
 
 ## What it is
 

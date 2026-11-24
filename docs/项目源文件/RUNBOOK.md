@@ -41,6 +41,17 @@ $evaluation = 'runtime.runproof_runtime.effectwitness.policy_evaluation'
 
 `verify` 以只读连接重新读取目标和台账，核对冻结场景、实际策略选择、底层报告与计数。退出 0 表示已复核的比较满足宿主安全合同。负对照的 Agent FAIL 仍计入表格。退出 2 表示测得安全失败或证据不足，退出 3 表示输入或证据集无法复核。无独立可信锚的复核状态为 `CONTENT_CHECKED_LOCAL`，签发者为 `NOT_ESTABLISHED`。保留台账、版本与导出文件以便重开。[RPF-117 实测](../../spikes/rpf-117/RESULT.md)
 
+### 模拟模型回复
+
+使用 `--fixture-model` 运行参考与合成回复对照。选用 `.local/rpf-118/` 内的新目录。加 `--case ALTERED_VALUE_KEEP_DIGEST` 可只跑反馈内容被改动的场景。
+
+```powershell
+& $py -B -m $evaluation run .local/rpf-118/comparison --fixture-model
+& $py -B -m $evaluation verify .local/rpf-118/comparison
+```
+
+用该格的 `selection.json` 取得 owner nonce，到 `.local/rpf-100-product/competition-rpf114-<nonce>/fixture-exchanges/` 查每步尝试与回复。核对同格 `result.json` 的两步评分、`investigation.json` 的原事件和只读收据，以及成功时的 `witness.json`。回复丢失、超时、未完成的尝试保留未知状态。复核重新解析已保存回复，无模型请求和业务工具重放。比较 v1 与 v2 使用各自产出时的源码身份。工程包的入口仍为离线单会话。[RPF-118 实测](../../spikes/rpf-118/RESULT.md)
+
 ## 快速校验
 
 按修改选取，在仓库根运行。`python` 表示已核对的解释器。在当前 Windows 终端可用 `& $runproofPython` 调用其确切路径。
