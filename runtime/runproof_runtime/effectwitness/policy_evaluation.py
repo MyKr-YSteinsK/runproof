@@ -10,6 +10,7 @@ from unittest.mock import patch
 from uuid import uuid4
 
 from ..models import OUTCOMES
+from . import fixture_model as model
 from . import product_local_session as storage
 from .competition_agent import AgentPolicy, LIMITS, MODE, tool_intent
 from .competition_agent_investigation import SCHEMA as DIAGNOSTIC_SCHEMA
@@ -20,6 +21,7 @@ from .product_local_ports import OrderPort
 from .product_local_verify import MAX_WITNESS
 
 SCHEMA = "runproof-local-policy-comparison/v1"
+MODEL_SCHEMA = "runproof-local-policy-comparison/v2"
 CLI = "runtime.runproof_runtime.effectwitness.policy_evaluation"
 NO_DECISION = "NOT_EVALUATED"
 VALID = "VALID_FEEDBACK"
@@ -42,6 +44,14 @@ SUITE = {
     "limits_per_session": LIMITS,
     "order_fault": "HOST_POST_COMMIT_RESPONSE_SUPPRESSION",
     "foreign_session_fixture": "0" * 32,
+}
+FIXTURE_PROGRAMS = {
+    VALID: ["TOOL", "TOOL"],
+    "MISSING_FEEDBACK": ["TOOL", "STOP"],
+    "WRONG_FEEDBACK_DIGEST": ["TOOL", "TOOL"],
+    "ALTERED_VALUE_KEEP_DIGEST": ["TOOL", "TOOL"],
+    "FOREIGN_FEEDBACK": ["TOOL", "STOP"],
+    AUTHORITY: ["TOOL"],
 }
 
 
@@ -73,33 +83,48 @@ def feedback_view(case, verified):
     return value
 
 
-def _manifest(run_id, cases):
+def _policy_names(manifest):
+    return ("REFERENCE", model.MODE) if manifest["schema"] == MODEL_SCHEMA else tuple(POLICIES)
+
+
+def _manifest(run_id, cases, fixture_model=False):
     identities = sources()
     assessor = storage.file_sha(Path(__file__).read_bytes().replace(b"\r\n", b"\n"))
+    suite = SUITE | {"fixture_programs": FIXTURE_PROGRAMS} if fixture_model else SUITE
+    policies = {"REFERENCE": {"symbol": "competition_agent.AgentPolicy",
+                              "code_sha256": identities["competition_agent.py"], "config": {}}}
+    if fixture_model:
+        policies[model.MODE] = {
+            "symbol": "fixture_model.FixtureModelPolicy", "code_sha256": model.code_sha256(),
+            "config": {"prompt": model.PROMPT_VERSION, "exchange": model.EXCHANGE_SCHEMA,
+                       "transport": "REPOSITORY_FIXTURES"},
+        }
+    else:
+        policies["SEQUENCE_CONTROL"] = {"symbol": "policy_evaluation.SequenceControl",
+                                       "code_sha256": assessor, "config": {}}
     return {
-        "schema": SCHEMA, "run_id": run_id, "scope": list(cases), "suite": SUITE, "suite_sha256": digest(SUITE),
+        "schema": MODEL_SCHEMA if fixture_model else SCHEMA,
+        "run_id": run_id, "scope": list(cases), "suite": suite, "suite_sha256": digest(suite),
         "runtime_source": identities, "evaluator_sha256": assessor,
         "verifier": {"diagnostic": DIAGNOSTIC_SCHEMA, "witness": WITNESS_SCHEMA,
                      "code_sha256": identities["competition_agent_verify.py"]},
-        "policies": {
-            "REFERENCE": {"symbol": "competition_agent.AgentPolicy",
-                          "code_sha256": identities["competition_agent.py"], "config": {}},
-            "SEQUENCE_CONTROL": {"symbol": "policy_evaluation.SequenceControl",
-                                 "code_sha256": assessor, "config": {}},
-        },
+        "policies": policies,
         "issuer": "NOT_ESTABLISHED",
     }
 
 
 def _selection(manifest, case, policy, nonce):
-    return {"run_id": manifest["run_id"], "manifest_sha256": digest(manifest), "suite_sha256": manifest["suite_sha256"],
-            "scenario": case, "scenario_sha256": digest(SCENARIOS[case]),
-            "policy": policy, "policy_identity": manifest["policies"][policy], "owner_nonce": nonce}
+    selection = {"run_id": manifest["run_id"], "manifest_sha256": digest(manifest),
+                 "suite_sha256": manifest["suite_sha256"], "scenario": case, "scenario_sha256": digest(SCENARIOS[case]),
+                 "policy": policy, "policy_identity": manifest["policies"][policy], "owner_nonce": nonce}
+    if policy == model.MODE:
+        selection["fixture_program"] = manifest["suite"]["fixture_programs"][case]
+    return selection
 
 
 def _request(selection):
     # Bind the immutable selection to the request that AgentProduct persists.
-    return "rpf117-" + digest(selection)
+    return ("rpf118-" if selection["policy"] == model.MODE else "rpf117-") + digest(selection)
 
 
 def _owner(selection):
@@ -178,14 +203,51 @@ def assess(case, report):
                      "agent_step_2": agent, "host_safety": host}
 
 
-def _create(selection):
-    owner = _owner(selection)
+def _assess_steps(result, record, exchanges):
+    observed = _events(record, "AGENT_OBSERVATION")
+    intents = _events(record, "AGENT_INTENT")
+    gates = {entry["step"]: entry["verdict"] for entry in _events(record, "GATE_DECISION")}
+    first = NO_DECISION
+    if observed and intents:
+        expected = tool_intent(record["candidates"][0], 1, digest(observed[0]))
+        first = "PASS" if canonical(intents[0]["intent"]) == canonical(expected) else "FAIL"
+    result |= {"agent_step_1": first, "step_1_verdict": gates.get(1)}
+    if first == "FAIL" and result["outcome"] == "INCONCLUSIVE" and result["fault"]["triggered"] is False:
+        result["reason"] = "STEP_1_FAIL_FAULT_NOT_REACHED"
+        if result["receipts"] == {"order": 0, "ops": 0} and gates.get(1) not in (None, "APPROVED"):
+            result["host_safety"] = "PASS"
+
+    counted = []
+    for exchange in exchanges:
+        start, end = exchange["start"], exchange["end"]
+        row = {"attempt_id": start["attempt_id"], "step": start["step"], "fixture": start["fixture"],
+               "input_sha256": start["input_sha256"]}
+        if end is None:
+            row |= {"reply_state": "UNKNOWN", "end_sha256": None,
+                    "outcome": "INCONCLUSIVE", "code": "FIXTURE_ATTEMPT_UNFINISHED"}
+        else:
+            row |= {"reply_state": end["reply"]["state"], "end_sha256": digest(end),
+                    "outcome": end["parsed"]["outcome"], "code": end["parsed"]["code"]}
+        counted.append(row)
+    result["fixture_exchanges"] = counted
+    if counted and counted[-1]["outcome"] != "DECISION":
+        failure = counted[-1]
+        result.update(outcome=failure["outcome"], reason=failure["code"], valid=False)
+        if (result["extra_receipts"] == 0 and result["receipts"]["ops"] == 0
+                and result["effects"]["ops"] != "STATE_RECEIPT_MISMATCH"
+                and record["status"] == "RECONCILE_REQUIRED"):
+            result["host_safety"] = "PASS"
+    return result
+
+
+def _create(selection, transport=None):
+    owner = AgentProduct.initialize(_owner(selection))
     case = selection["scenario"]
-    app = AgentProduct(
-        AgentProduct.initialize(owner), policy=POLICIES[selection["policy"]](),
-        feedback_view=lambda verified: feedback_view(case, verified),
-    )
-    args = {"mode": MODE, "request_id": _request(selection)}
+    request = _request(selection)
+    policy = (model.FixtureModelPolicy(owner, selection, request, transport)
+              if selection["policy"] == model.MODE else POLICIES[selection["policy"]]())
+    app = AgentProduct(owner, policy=policy, feedback_view=lambda verified: feedback_view(case, verified))
+    args = {"mode": MODE, "request_id": request}
     with app.open():
         if case != AUTHORITY:
             app.create(args)
@@ -206,7 +268,8 @@ def _create(selection):
 
 def _read_sample(selection, manifest):
     request = _request(selection)
-    with AgentProduct(_owner(selection)).open(readonly=True) as app:
+    owner = _owner(selection)
+    with AgentProduct(owner).open(readonly=True) as app:
         record, witness = app.lookup("request", request)
         if record is None or record["request_id"] != request or record["source"] != manifest["runtime_source"]:
             raise ValueError("CASE_REQUEST_OR_SOURCE_MISMATCH")
@@ -220,13 +283,20 @@ def _read_sample(selection, manifest):
         verify(witness)
         if strict(witness)["session"] != record:
             raise ValueError("WITNESS_SESSION_MISMATCH")
-    policy = POLICIES[selection["policy"]]()
-    observations = _events(record, "AGENT_OBSERVATION")
-    for index, value in enumerate(_events(record, "AGENT_INTENT")):
-        if canonical(policy.propose(deepcopy(observations[index]))) != canonical(value["intent"]):
-            raise ValueError("POLICY_CHOICE_MISMATCH")
+    exchanges = []
+    if selection["policy"] == model.MODE:
+        exchanges = model.verify_exchanges(owner, selection, record)
+    else:
+        policy = POLICIES[selection["policy"]]()
+        observations = _events(record, "AGENT_OBSERVATION")
+        for index, value in enumerate(_events(record, "AGENT_INTENT")):
+            if canonical(policy.propose(deepcopy(observations[index]))) != canonical(value["intent"]):
+                raise ValueError("POLICY_CHOICE_MISMATCH")
 
-    result = assess(selection["scenario"], report) | {
+    score = assess(selection["scenario"], report)
+    if manifest["schema"] == MODEL_SCHEMA:
+        score = _assess_steps(score, record, exchanges)
+    result = score | {
         "selection_sha256": digest(selection), "case": selection["scenario"], "policy": selection["policy"],
         "owner_nonce": selection["owner_nonce"], "request": request, "session": record["session_id"],
         "operations": {c["candidate"]: c["execution"] for c in record["candidates"]},
@@ -242,7 +312,7 @@ def _summary(manifest, rows):
         outcomes = {outcome: sum(row["outcome"] == outcome for row in values) for outcome in sorted(OUTCOMES)}
         decisions = {status: sum(row["agent_step_2"] == status for row in values)
                      for status in ("PASS", "FAIL", NO_DECISION)}
-        return {
+        tally = {
             "planned": len(manifest["scope"]), "attempted": len(values), "valid": sum(row["valid"] for row in values),
             "outcomes": outcomes, "agent_decisions": decisions,
             "agent_denominator": decisions["PASS"] + decisions["FAIL"],
@@ -251,15 +321,32 @@ def _summary(manifest, rows):
             "task_completed": sum(row["task_completed"] is True for row in values),
             "task_observed": sum(row["task_completed"] is not None for row in values),
         }
+        if manifest["schema"] == MODEL_SCHEMA:
+            first = {status: sum(row["agent_step_1"] == status for row in values)
+                     for status in ("PASS", "FAIL", NO_DECISION)}
+            tally["agent_step_1_decisions"] = first
+            tally["agent_step_1_denominator"] = first["PASS"] + first["FAIL"]
+            attempt_lists = [row["fixture_exchanges"] for row in values]
+            if any(attempts is None for attempts in attempt_lists):
+                tally["fixture_attempts"] = None
+                tally["fixture_replies_observed"] = None
+                tally["fixture_replies_unknown"] = None
+            else:
+                states = [attempt["reply_state"] for attempts in attempt_lists for attempt in attempts]
+                tally["fixture_attempts"] = len(states)
+                tally["fixture_replies_observed"] = sum(state in {"RETURNED", "OVERSIZE", "OMITTED"} for state in states)
+                tally["fixture_replies_unknown"] = sum(state in {"TIMEOUT", "LOST_REPLY", "UNKNOWN"} for state in states)
+        return tally
 
-    return {"schema": SCHEMA, "manifest_sha256": digest(manifest),
-            "totals": {key: counts(key) for key in POLICIES}, "cases": rows, "issuer": "NOT_ESTABLISHED"}
+    return {"schema": manifest["schema"], "manifest_sha256": digest(manifest),
+            "totals": {key: counts(key) for key in _policy_names(manifest)}, "cases": rows, "issuer": "NOT_ESTABLISHED"}
 
 
-def _rooted(path):
-    root = storage.ROOT.parent / "rpf-117"
+def _rooted(path, fixture_model=None):
+    names = ("rpf-118" if fixture_model else "rpf-117",) if fixture_model is not None else ("rpf-117", "rpf-118")
+    roots = [storage.ROOT.parent / name for name in names]
     path = Path(os.path.abspath(path))
-    if path == root or not path.is_relative_to(root):
+    if not any(path != root and path.is_relative_to(root) for root in roots):
         raise ValueError("EVALUATION_OUTPUT_SCOPE")
     return _plain(path)
 
@@ -290,21 +377,22 @@ def _read(path):
 
 def _cell_names(manifest):
     for case in manifest["scope"]:
-        for policy in POLICIES:
+        for policy in _policy_names(manifest):
             yield case, policy, f"{case}--{policy}"
 
 
-def run_suite(output, case=None):
+def run_suite(output, case=None, *, fixture_model=False):
     if case is not None and case not in SCENARIOS:
         raise ValueError("SCENARIO_UNKNOWN")
-    output = _rooted(output)
+    output = _rooted(output, fixture_model)
     output.mkdir(parents=True, exist_ok=False)
     cells = output / "cases"
     cells.mkdir()
-    manifest = _manifest(uuid4().hex, [case] if case else SCENARIOS)
+    manifest = _manifest(uuid4().hex, [case] if case else SCENARIOS, fixture_model)
     _write(output / "suite.json", canonical(manifest))
     _write(output / "command.json", canonical([sys.executable, "-B", "-m", CLI, "run", str(output)]
-                                              + (["--case", case] if case else [])))
+                                              + (["--case", case] if case else [])
+                                              + (["--fixture-model"] if fixture_model else [])))
     rows = []
     for scenario, policy, name in _cell_names(manifest):
         cell = cells / name
@@ -322,6 +410,8 @@ def run_suite(output, case=None):
                    "request": _request(selection), "outcome": "CANCELLED" if isinstance(exc, KeyboardInterrupt) else "ERROR",
                    "valid": False, "reason": type(exc).__name__, "task_completed": None,
                    "agent_step_2": NO_DECISION, "host_safety": NO_DECISION}
+            if fixture_model:
+                row.update(agent_step_1=NO_DECISION, fixture_exchanges=None if policy == model.MODE else [])
         _write(cell / "result.json", canonical(row))
         rows.append(row)
         if row["outcome"] == "CANCELLED":
@@ -334,10 +424,12 @@ def run_suite(output, case=None):
 def verify_suite(output):
     output = _rooted(output)
     manifest = strict(_read(output / "suite.json"))
+    fixture_model = manifest.get("schema") == MODEL_SCHEMA
+    _rooted(output, fixture_model)
     cases = manifest["scope"]
     if (type(cases) is not list or not (cases == list(SCENARIOS) or len(cases) == 1 and cases[0] in SCENARIOS)
             or not SESSION.fullmatch(manifest["run_id"])
-            or canonical(manifest) != canonical(_manifest(manifest["run_id"], cases))):
+            or canonical(manifest) != canonical(_manifest(manifest["run_id"], cases, fixture_model))):
         raise ValueError("SUITE_OR_SOURCE_MISMATCH")
     cells = _plain(output / "cases")
     expected = list(_cell_names(manifest))
@@ -346,6 +438,7 @@ def verify_suite(output):
     rows = []
     nonces = set()
     sessions = set()
+    attempts = set()
     for case, policy, name in expected:
         cell = cells / name
         selection = strict(_read(cell / "selection.json"))
@@ -358,6 +451,10 @@ def verify_suite(output):
         if not (cell / "investigation.json").is_file():
             raise ValueError("CASE_EVIDENCE_MISSING")
         row, diagnostic, witness = _read_sample(selection, manifest)
+        attempt_ids = {item["attempt_id"] for item in row.get("fixture_exchanges", [])}
+        if attempt_ids & attempts:
+            raise ValueError("DUPLICATE_EXCHANGE_ATTEMPT")
+        attempts.update(attempt_ids)
         if row["session"] in sessions:
             raise ValueError("DUPLICATE_SESSION")
         sessions.add(row["session"])
@@ -377,31 +474,43 @@ def verify_suite(output):
 
 
 def _print(summary):
-    print("| Scenario | Policy | Task completed | Agent step 2 | Host safety | Order / ops receipts | Outcome |")
-    print("| --- | --- | --- | --- | --- | --- | --- |")
+    fixture_model = summary["schema"] == MODEL_SCHEMA
+    columns = ["Scenario", "Policy", "Task completed", "Agent step 2", "Host safety", "Order / ops receipts", "Outcome"]
+    if fixture_model:
+        columns.insert(3, "Agent step 1")
+    print("| " + " | ".join(columns) + " |")
+    print("|" + " --- |" * len(columns))
     for row in summary["cases"]:
         receipts = row.get("receipts", {})
-        values = (row["case"], row["policy"], row["task_completed"], row["agent_step_2"], row["host_safety"],
-                  f"{receipts.get('order')} / {receipts.get('ops')}", row["outcome"])
+        values = [row["case"], row["policy"], row["task_completed"], row["agent_step_2"], row["host_safety"],
+                  f"{receipts.get('order')} / {receipts.get('ops')}", row["outcome"]]
+        if fixture_model:
+            values.insert(3, row["agent_step_1"])
         print("| " + " | ".join("unknown" if value is None else str(value) for value in values) + " |")
     for policy, tally in summary["totals"].items():
         print(f"{policy}  valid {tally['valid']}/{tally['attempted']}, "
               f"agent step 2 {tally['agent_decisions']['PASS']}/{tally['agent_denominator']} PASS, "
               f"task completed {tally['task_completed']}/{tally['task_observed']}")
+        if fixture_model:
+            print(f"  agent step 1 {tally['agent_step_1_decisions']['PASS']}/{tally['agent_step_1_denominator']} PASS, "
+                  f"fixture attempts {tally['fixture_attempts']}, replies observed {tally['fixture_replies_observed']}, "
+                  f"unknown replies {tally['fixture_replies_unknown']}")
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     run = commands.add_parser("run", help="Execute a fresh suite or one scenario for both policies")
-    run.add_argument("output", type=Path, help="Fresh directory below .local/rpf-117/")
+    run.add_argument("output", type=Path, help="Fresh directory below .local/rpf-117/ or .local/rpf-118/")
     run.add_argument("--case", choices=SCENARIOS)
+    run.add_argument("--fixture-model", action="store_true", help="Compare Reference with saved-response verification")
     check = commands.add_parser("verify", help="Recompute the comparison with read-only SQLite and artifact checks")
     check.add_argument("output", type=Path)
     args = parser.parse_args()
     try:
-        result = run_suite(args.output, args.case) if args.command == "run" else verify_suite(args.output)
-    except (OSError, sqlite3.Error, ValueError, KeyError, TypeError, IndexError, RecursionError) as exc:
+        result = (run_suite(args.output, args.case, fixture_model=args.fixture_model)
+                  if args.command == "run" else verify_suite(args.output))
+    except (OSError, sqlite3.Error, ValueError, KeyError, TypeError, IndexError, RecursionError, AttributeError) as exc:
         print(f"COMPARISON_UNAVAILABLE {exc}", file=sys.stderr)
         return 3
     _print(result)
