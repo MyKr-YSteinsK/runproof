@@ -20,7 +20,7 @@ Open the printed URL and save the nonce. Confirm the run once. Follow the order 
 & $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor
 ```
 
-The optional anchor must come from an independent trusted channel. Without it the CLI checks internal content. Use the same stop command when finished. [Engineering package](demo/competition-bundle/README-COMPLETE.zh-CN.md)
+The optional anchor must come from an independent trusted channel. Without it the CLI checks internal content. In investigation v2, an unknown trigger or observation means the durable fault evidence is missing. The SQLite receipt is checked separately. Use the original source version to verify older artifacts and the same stop command when finished. [Engineering package](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
 ## What it is
 

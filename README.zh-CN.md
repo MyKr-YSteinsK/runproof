@@ -20,7 +20,7 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 & $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor
 ```
 
-可选的 `$anchor` 应来自独立可信渠道。省略该参数时 CLI 只复核内容。调查结束后使用相同的停止命令。[工程包说明](demo/competition-bundle/README-COMPLETE.zh-CN.md)
+可选的 `$anchor` 应来自独立可信渠道。省略该参数时 CLI 只复核内容。调查报告 v2 中，触发或观察为未知表示缺少持久化故障证据。SQLite 收据可单独核验。旧文件请用匹配的原源码版本复核。调查结束后使用相同的停止命令。[工程包说明](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
 ## 它是什么
 

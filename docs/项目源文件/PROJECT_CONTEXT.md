@@ -1,6 +1,6 @@
 # RunProof 项目上下文
 
-**版本** 2026-11-24 RPF-115，本轮审查基线 `df81b1b8b6e8807dfde598446ed5d05cab9fe3b3`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
+**版本** 2026-11-24 RPF-116，审查基线 `93f2151cdeadec8e106603ad54b882f5b383f82b`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
 
 ## 目标与已确认范围
 
@@ -13,7 +13,7 @@ RunProof 让 Agent 工程师可以重现、解释并验证工具失败和业务�
 
 ## 当前可演示闭环
 
-仓库与完整工程包提供同一离线 Reference Agent 的新建和只读重开入口。真实 SQLite 订单收据经独立读取后成为第二轮工具意图的输入。子进程中断时用原 nonce、request 或 session 追溯已经消耗的写入，取回提交前观察、读回及缺口；自动续跑仍待独立决定。日常回归覆盖 transport、两种本地产品、Agent、工程包协议与 Web。已知覆盖缺口继续约束 Canonical Gate。[运行手册](RUNBOOK.md) · [本轮实测](../../spikes/rpf-115/RESULT.md)
+仓库与完整工程包提供离线 Reference Agent 的新建和只读重开入口。独立核验的 SQLite 订单收据支撑第二轮工具意图。中断时用原 nonce、request 或 session 追溯写入。诊断 v2 核对原事件语义，并将本次业务读回与原执行读回分开。当写入意图已保存、故障事件缺失，触发与观察为未知。无锚复核通过表示内容自洽。任务完成依靠成功 Witness，签发者身份另需可信来源。日常回归覆盖 transport、两种本地产品、Agent、诊断、工程包协议与 Web。[运行手册](RUNBOOK.md) · [RPF-116 实测](../../spikes/rpf-116/RESULT.md)
 
 ## 竞赛历史的适用范围
 

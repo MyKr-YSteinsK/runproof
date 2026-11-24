@@ -18,7 +18,13 @@
 1. 新 owner 页面先查询 capability，用户勾选并启动后产生 request 和 session。记录两者及 owner nonce。第二轮意图里的 `input_feedback_sha256` 可回查第一轮独立效果验证。
 2. 若浏览器超时，刷新原地址，或停止后按原 nonce 只读打开 `/effectwitness/agent?session=<id>&event=<seq>`。已知 request 也能从同源的 `/effectwitness-product-api/request/<id>` 读回。已有 owner 无法初始化或记录不匹配时保留目录调查。
 3. 页面调查按原 environment 和 operation 重开目标 SQLite，展示收据与证据缺口。中断可能保留原 `RUNNING`；调查报告将后续动作列为人工处理。完成时下载 Witness，其余状态下载调查报告。用 `& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor` 验证，独立锚从先前保存的可信渠道取得。历史 Witness 使用记录创建时的 verifier。
-4. 本轮中断回归为 `& $py -B -m unittest -v ci.test_rpf115_recovery`，通过受控子进程检查点验证每域上限。对应的源码、模式、样本来源与验收见 [RPF-115](../../spikes/rpf-115/RESULT.md)。
+4. 持久预约及中断回归运行 `& $py -B -m unittest -v ci.test_rpf115_recovery ci.test_rpf116_investigation`。RPF-116 的检查点包含进入 `ResponseLost` 分支以后、写入 `UNKNOWN_OBSERVED` 以前的位置。[运行证据与复现](../../spikes/rpf-116/RESULT.md)
+
+### 调查报告 v2
+
+报告 `runproof-agent-investigation/v2` 保留原执行读回及新连接读取的当前事实。故障的 `planned` 和 `agent_exposed` 是布尔值。已记录 `UNKNOWN_OBSERVED` 时，`triggered` 与 `observed` 为 `true`。订单写入意图已落盘但该事件缺失时，两项为 JSON `null`，页面显示未知，报告标明 `FAULT_EVENT_NOT_PERSISTED`。订单在写入意图前停止或场景未计划故障时，两项为 `false`。收据用于单独核对业务效果。
+
+CLI 返回 `CONTENT_CHECKED_LOCAL` 表示通过内容复核，`VERIFIED_ANCHORED` 还表示与提供的独立摘要一致。诊断同时给出业务读回和任务完成状态。成功任务使用 Witness 复核，外部签发者为 `NOT_ESTABLISHED`。CLI 退出 3 时输出具体拒绝原因。旧诊断 v1 返回 `INVESTIGATION_LEGACY_SCHEMA`，与当前源码不匹配的 v2 返回 `INVESTIGATION_SOURCE_MISMATCH`。保留旧字节并用匹配原 source map 的工程包或源码验证。v1 的无锚内容检查存在本轮记录的语义缺口。
 
 ## 快速校验
 
