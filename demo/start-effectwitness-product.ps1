@@ -39,13 +39,11 @@ if (Get-NetTCPConnection -State Listen -LocalPort 4187,8780 -ErrorAction Silentl
 foreach ($dir in @($repo,(Join-Path $repo '.local'),$root,$owner)) { Confirm-Directory $dir }
 if (!(Test-Path -LiteralPath $root)) { New-Item -ItemType Directory -Path $root | Out-Null }
 if (!(Test-Path -LiteralPath $owner)) {
-    New-Item -ItemType Directory -Path $owner | Out-Null
-    New-Item -ItemType File -Path (Join-Path $owner 'rpf100-owner-v1') | Out-Null
-} else {
-    $marker = Get-Item -LiteralPath (Join-Path $owner 'rpf100-owner-v1')
-    if ($marker.PSIsContainer -or ($marker.Attributes -band [IO.FileAttributes]::ReparsePoint)) {
-        throw 'Owner marker must be a regular file.'
-    }
+    Push-Location $repo
+    try {
+        & $PythonExe -B -c 'import sys; from runtime.runproof_runtime.effectwitness.product_local_session import Product; Product.initialize(sys.argv[1])' $owner
+        if ($LASTEXITCODE) { throw 'Owner initialization failed.' }
+    } finally { Pop-Location }
 }
 $activePath = Join-Path $owner 'active.json'
 $claim = [IO.File]::Open($activePath, [IO.FileMode]::CreateNew, [IO.FileAccess]::Write, [IO.FileShare]::None)

@@ -4,12 +4,21 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/rpf-100-product.yml'
-      - 'runtime/runproof_runtime/effectwitness/product_local_*.py'
-      - 'ci/test_rpf100_product.py'
+      - 'runtime/**'
+      - 'ci/**'
+      - 'demo/**'
       - 'web/**'
+      - 'spikes/rpf-115/**'
+      - 'spikes/rpf-4[3467]/*.json'
+      - 'docs/**'
+      - 'README*.md'
+      - 'AGENTS.md'
+      - 'index.html'
+      - 'tsconfig.json'
       - 'vite.config.ts'
       - 'package*.json'
-      - 'demo/*effectwitness-product.ps1'
+      - 'control-plane/**'
+      - 'integrations/jiuwenswarm/**'
 permissions:
   contents: read
 jobs:
@@ -24,9 +33,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - run: python -B -m unittest -v ci.test_rpf100_product
+      - run: >-
+          python -B -m unittest -v ci.test_control_plane_client_transport runtime.tests.test_control_plane_client
+          runtime.tests.test_durable_worker ci.test_rpf100_product ci.test_rpf112_competition
+          ci.test_rpf114_competition_agent ci.test_rpf113_competition_bundle ci.test_rpf114_competition_bundle
+          ci.test_rpf115_recovery
+      - run: node --test ci/test_rpf113_competition_server.mjs
       - run: npm ci
       - run: npm test
-      - run: npm run typecheck
       - run: npm run build -- --outDir .local/rpf-100-product/ci-build
       - run: python -B ci/verify-public-docs.py
+      - run: python -B runtime/verify-reviewed-artifacts.py
+      - run: python -B demo/verify-golden-demo.py --root . --json

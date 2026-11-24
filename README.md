@@ -4,6 +4,24 @@
 
 RunProof is an **Agent Reliability & Release Engineering Platform** for stateful tool use. It helps engineers answer what changed after an Agent action, verify that change against independent evidence, and turn failures into reproducible tests.
 
+## Run the local Reference Agent
+
+On Windows, install PowerShell 7.2+, Node 22+ and CPython 3.11+ with SQLite. In a fresh checkout run `npm ci` once. Set `$py` and `$node` to the absolute paths of the installed python.exe and node.exe. From the repository root start the experiment with one command.
+
+```powershell
+.\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node
+```
+
+Open the printed URL and save the nonce. Confirm the run once. Follow the order intent, lost local tool return, independent SQLite receipt and the verified feedback consumed by the configuration step. The offline rule policy uses synthetic business state and zero Provider calls. Download the Witness or investigation report. To investigate after stopping, reopen the same owner in read-only mode.
+
+```powershell
+.\demo\competition-bundle\stop.ps1 -Nonce $nonce
+.\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node -Reopen $nonce
+& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor
+```
+
+The optional anchor must come from an independent trusted channel. Without it the CLI checks internal content. Use the same stop command when finished. [Engineering package](demo/competition-bundle/README-COMPLETE.zh-CN.md)
+
 ## What it is
 
 RunProof connects a Candidate Agent Version to a stateful evaluation, the observed trajectory and environment state, deterministic evidence, failure investigation, regression history, statistical reliability, and a decision-only Quality Gate.

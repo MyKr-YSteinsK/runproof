@@ -16,4 +16,10 @@
 
     .\stop.ps1 -Nonce <nonce>
 
+保留 nonce。停止后可用同一运行的只读入口重新打开页面，刷新或下载不会执行工具：
+
+    .\start.ps1 -PythonExe <绝对路径> -NodeExe <绝对路径> -Reopen <nonce>
+
+中断时下载调查报告，用同一个 verify-witness.ps1 复核。报告列出已落盘的写前观察、当前 SQLite 收据和仍然缺失的证据。只读打开保留原始运行状态。旧版 Witness 使用其源码版本的 verifier。
+
 默认运行使用本机受控 SQLite 与离线参考 Agent，每域一次业务写入，Provider 预约为 0。可在界面查看 RunProof 已审阅的平台样本。工程源目录包含 Java Control Plane、DeepSeek Provider 和 JiuwenSwarm MCP 接入，重建步骤见 ARCHITECTURE.md。

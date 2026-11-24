@@ -58,20 +58,23 @@ def server_for(product, token, port=8780):
                 if self.path == PREFIX + "/capability":
                     self.reply(200, product.capability())
                     return
-                match = re.fullmatch(re.escape(PREFIX) + r"/(session|request|witness)/([a-zA-Z0-9_-]+)", self.path)
+                match = re.fullmatch(re.escape(PREFIX) + r"/(session|request|witness|investigation)/([a-zA-Z0-9_-]+)", self.path)
                 if match:
                     kind, identity = match.groups()
                     valid = REQUEST if kind == "request" else SESSION
                     if valid.fullmatch(identity):
                         data, witness = product.lookup("request" if kind == "request" else "id", identity)
+                        if kind == "investigation" and data and hasattr(product, "investigate"):
+                            self.send_bytes(200, canonical(product.investigate(data)), witness=True)
+                            return
                         if kind == "witness" and witness and len(witness) <= MAX_WITNESS:
                             self.send_bytes(200, witness, witness=True)
                             return
-                        if kind != "witness" and data is not None:
+                        if kind in {"session", "request"} and data is not None:
                             self.reply(200, data)
                             return
                 self.reply(404, {"error": "NOT_FOUND"})
-            except (OSError, sqlite3.Error, ValueError):
+            except (OSError, sqlite3.Error, ValueError, KeyError, TypeError):
                 self.reply(503, {"error": "READBACK_UNAVAILABLE"})
 
         def do_POST(self):
@@ -116,10 +119,13 @@ def server_for(product, token, port=8780):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--owner", type=Path, required=True)
+    parser.add_argument("--initialize", action="store_true")
     args = parser.parse_args()
     owner = safe_path(args.owner)
-    if owner != ROOT / "live" or not safe_path(owner / "rpf100-owner-v1").is_file():
+    if owner != ROOT / "live":
         raise SystemExit("LIVE_OWNER_REQUIRED")
+    if args.initialize:
+        Product.initialize(owner)
     with Product(owner).open() as product:
         with server_for(product, os.environ.get("RPF100_GATEWAY_TOKEN")) as server:
             print("RPF100_GATEWAY_READY", flush=True)

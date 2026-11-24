@@ -24,7 +24,7 @@ class AgentTests(unittest.TestCase):
         self.scope.start()
         self.addCleanup(self.scope.stop)
         self.owner = self.root / "owner"
-        self.owner.mkdir()
+        AgentProduct.initialize(self.owner)
 
     def run_session(self, **kwargs):
         with AgentProduct(self.owner, **kwargs).open() as app:

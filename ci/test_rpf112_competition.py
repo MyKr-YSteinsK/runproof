@@ -46,7 +46,7 @@ class CompetitionTests(unittest.TestCase):
 
     def test_budget_duplicate_and_cross_source_witness(self):
         owner = safe_path(ROOT / "tests" / f"rpf112-{uuid4().hex}")
-        owner.mkdir(parents=True, exist_ok=False)
+        CompetitionProduct.initialize(owner)
         request = {"mode": MODE, "request_id": "competition-test"}
         with CompetitionProduct(owner).open() as product:
             self.assertEqual(product.capability()["remaining"], 1)

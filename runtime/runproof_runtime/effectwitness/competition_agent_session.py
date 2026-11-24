@@ -1,5 +1,5 @@
 """Durable single-session controller for the offline Agent."""
-from contextlib import closing, contextmanager
+from datetime import datetime, timezone
 from copy import deepcopy
 from hashlib import sha256
 from pathlib import Path
@@ -9,11 +9,11 @@ from uuid import uuid4
 from .competition_agent import AgentPolicy, INVARIANTS, LIMITS, MODE, PROFILE, TOOLS, attestation_matches, tool_intent
 from .product_local_contracts import REQUEST, SUCCESS, canonical, digest, fault_flags, feedback, frozen, outcome, source_identity, strict
 from .product_local_ports import OpsPort, OrderPort
-from .product_local_session import Conflict, Product, safe_path, writer_lock
+from .product_local_session import Conflict, Product, ResponseLost, safe_path
 
-SCHEMA = "runproof-competition-agent-witness/v1"
+SCHEMA = "runproof-competition-agent-witness/v2"
 SOURCES = ("competition_agent.py", "competition_agent_session.py", "competition_agent_gateway.py",
-           "competition_agent_verify.py")
+           "competition_agent_verify.py", "competition_agent_investigation.py")
 
 
 def sources():
@@ -39,7 +39,7 @@ def observation(record, step, trusted):
 def readback(contract, before, after, record):
     domain = contract["candidate"]
     result = outcome(contract, before, after)
-    flags = fault_flags(domain)
+    flags = fault_flags(domain) | {"agent_exposed": False}
     value = feedback(contract, result, flags, before, after) | {
         "session_id": record["session_id"], "source_sha256": digest(record["source"]),
     }
@@ -79,34 +79,42 @@ class AgentProduct(Product):
         self.policy = policy or AgentPolicy()
         self.feedback_view = feedback_view or (lambda value: value)
 
-    @contextmanager
-    def open(self):
-        with writer_lock(self.owner / "writer.lock"):
-            with closing(self.connect()) as db, db:
-                db.execute("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, request TEXT UNIQUE, "
-                           "payload BLOB NOT NULL, witness BLOB)")
-                for ident, raw in db.execute("SELECT id,payload FROM sessions WHERE witness IS NULL").fetchall():
-                    record = strict(raw)
-                    if record["status"] == "RUNNING":
-                        record["status"] = "RECONCILE_REQUIRED"
-                        append(record, "EXECUTION_STOPPED", "controller", {"reason": "INTERRUPTED_NO_REPLAY"})
-                        db.execute("UPDATE sessions SET payload=? WHERE id=?", (canonical(record), ident))
-            yield self
+    family = "reference-agent"
+    mode = MODE
+
+    def interrupted(self, record):
+        previous = record["status"]
+        record["status"] = "RECONCILE_REQUIRED"
+        append(record, "EXECUTION_STOPPED", "controller", {"reason": "INTERRUPTED_NO_REPLAY",
+               "previous": previous, "at": datetime.now(timezone.utc).isoformat(), "source": "writer-open"})
 
     def capability(self):
         result = super().capability()
-        return result | {"mode": MODE, "remaining": int(result["latest"] is None),
+        version = SCHEMA
+        if self.readonly and result["latest"]:
+            record, witness = self.lookup("id", result["latest"])
+            version = strict(witness)["schema"] if witness else ("Historical source" if record["source"] != self.source else SCHEMA)
+        return result | {"mode": MODE, "remaining": int(result["remaining"] > 0 and result["latest"] is None),
+                         "owner": self.owner.name, "readonly": self.readonly, "version": version,
                          "profile": PROFILE, "tools": list(TOOLS.values())}
+
+    def investigate(self, record):
+        from .competition_agent_investigation import investigate
+        return investigate(self.owner, record)
 
     def emit(self, record, kind, origin, data):
         append(record, kind, origin, data)
         self.save(record)
 
     def create(self, body):
-        if (type(body) is not dict or set(body) != {"mode", "request_id"} or body["mode"] != MODE
+        if (type(body) is not dict or set(body) not in ({"mode", "request_id"}, {"mode", "request_id", "owner_id"}) or body["mode"] != MODE
                 or not isinstance(body["request_id"], str) or not REQUEST.fullmatch(body["request_id"])):
             raise ValueError("INVALID_REQUEST")
         with self.guard:
+            if not self.writable:
+                raise Conflict("READ_ONLY_OWNER")
+            if "owner_id" in body and body["owner_id"] != self.capability()["instance"]:
+                raise Conflict("OWNER_CHANGED")
             existing, _ = self.lookup("request", body["request_id"])
             if existing:
                 return existing
@@ -116,9 +124,10 @@ class AgentProduct(Product):
             record = {"session_id": ident, "mode": MODE, "profile": PROFILE, "status": "RUNNING",
                       "source": self.source, "limits": LIMITS, "provider_reservations": 0,
                       "candidates": frozen(ident), "rounds": [], "events": [], "invariants": list(INVARIANTS)}
-            append(record, "CONTRACTS_FROZEN", "controller", {"source_sha256": digest(self.source)})
-            with closing(self.connect()) as db, db:
-                db.execute("INSERT INTO sessions VALUES (?,?,?,NULL)", (ident, body["request_id"], canonical(record)))
+            record.update(owner_id=self.capability()["instance"], request_id=body["request_id"])
+            append(record, "CONTRACTS_FROZEN", "controller", {
+                "source_sha256": digest(self.source), "owner_id": record["owner_id"], "request_id": record["request_id"]})
+            self.reserve(record, body["request_id"])
             try:
                 self.run_agent(record)
             except (OSError, sqlite3.Error, ValueError, TypeError):
@@ -148,9 +157,12 @@ class AgentProduct(Product):
                 return
             port = (OrderPort if domain == "order" else OpsPort)(safe_path(folder / (domain + ".sqlite")), contract)
             before = port.read()
-            self.emit(record, "WRITE_INTENT", "controller", {"action_id": proposed["action_id"], "contract_sha256": contract["sha256"]})
-            port.write_once()
-            if domain == "order":
+            self.emit(record, "WRITE_INTENT", "controller", {"action_id": proposed["action_id"], "contract_sha256": contract["sha256"], "before": before})
+            try:
+                port.write_once()
+                if domain == "order":
+                    raise ResponseLost  # Suppress this committed local tool return at the host boundary.
+            except ResponseLost:
                 gate.unknown = True
                 self.emit(record, "UNKNOWN_OBSERVED", "tool", {"action_id": proposed["action_id"], "status": "UNKNOWN_OUTCOME"})
             else:

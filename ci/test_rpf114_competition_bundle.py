@@ -5,6 +5,7 @@ import json
 from pathlib import Path, PurePosixPath
 import re
 import stat
+import tempfile
 import unittest
 from zipfile import ZipFile
 
@@ -26,6 +27,8 @@ REQUIRED = EXACT | {
     "app/runtime/runproof_runtime/effectwitness/competition_agent.py",
     "app/runtime/runproof_runtime/effectwitness/competition_agent_session.py",
     "app/runtime/runproof_runtime/effectwitness/competition_agent_verify.py",
+    "app/runtime/runproof_runtime/effectwitness/competition_agent_investigation.py",
+    "source/web/src/CanonicalApp.tsx",
     "source/runtime/runproof_runtime/agent.py",
     "source/runtime/runproof_runtime/deepseek_provider.py",
     "source/runtime/runproof_runtime/effectwitness/pge_r110_live_provider.py",
@@ -68,6 +71,9 @@ def verify_extract(archive, target):
     manifest = json.loads(files["bundle-manifest.json"])
     if manifest["schema"] != "runproof-competition-complete/v1" or not re.fullmatch("[0-9a-f]{40}", manifest["source_commit"]):
         raise ValueError("MANIFEST_SCHEMA")
+    if (manifest.get("mode") != ["OFFLINE_REFERENCE_AGENT", "RULE_POLICY", "PROVIDER_0"]
+            or manifest.get("issuer") != "NOT_ESTABLISHED" or manifest.get("release_eligible") is not False):
+        raise ValueError("MANIFEST_BOUNDARY")
     declared = sorted((v["path"], v["bytes"], v["sha256"]) for v in manifest["members"])
     actual = sorted((n, len(v), digest(v)) for n, v in files.items() if n != "bundle-manifest.json")
     if declared != actual:
@@ -75,6 +81,11 @@ def verify_extract(archive, target):
     app = json.loads(files["app/bundle-manifest.json"])
     if app["source_commit"] != manifest["source_commit"]:
         raise ValueError("APP_SOURCE")
+    expected_site = sorted((n.removeprefix("app/"), len(v), digest(v))
+                           for n, v in files.items() if n.startswith("app/site/"))
+    if (app.get("schema") != manifest["schema"] or
+            sorted((v["path"], v["bytes"], v["sha256"]) for v in app["members"]) != expected_site):
+        raise ValueError("APP_SITE_MANIFEST")
     for n, data in files.items():
         if n.startswith("app/runtime/") and data != files["source/" + n.removeprefix("app/")]:
             raise ValueError("SOURCE_RUNTIME_MISMATCH")
@@ -93,6 +104,42 @@ def verify_extract(archive, target):
 
 
 class AdmissionTests(unittest.TestCase):
+    def test_rehashed_archives_retain_semantic_boundary(self):
+        files = dict.fromkeys(REQUIRED - {"bundle-manifest.json"}, b"fixture")
+        for name in list(files):
+            if name.startswith("app/runtime/"):
+                files["source/" + name[4:]] = files[name]
+        source = "1" * 40
+        schema = "runproof-competition-complete/v1"
+        entry = lambda name, raw: {"path": name, "bytes": len(raw), "sha256": digest(raw)}
+        files["app/bundle-manifest.json"] = json.dumps({
+            "schema": schema, "source_commit": source,
+            "members": [entry("site/index.html", files["app/site/index.html"])]}).encode()
+        manifest = {"schema": schema, "source_commit": source, "issuer": "NOT_ESTABLISHED",
+                    "release_eligible": False, "mode": ["OFFLINE_REFERENCE_AGENT", "RULE_POLICY", "PROVIDER_0"],
+                    "members": [entry(n,v) for n,v in files.items()]}
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            for field, changes in (("mode", [None, "OFFLINE_REFERENCE_AGENT", ["LIVE"]]),
+                                   ("issuer", [None, 1, "EXTERNAL"]), ("release_eligible", [None, 0, True])):
+                for value in changes:
+                    with self.subTest(field=field, value=value):
+                        altered = manifest.copy()
+                        if value is None:
+                            del altered[field]
+                        else:
+                            altered[field] = value
+                        archive = root / "candidate.zip"
+                        with ZipFile(archive, "w") as z:
+                            from zipfile import ZipInfo
+                            for name, raw in (files | {"bundle-manifest.json": json.dumps(altered).encode()}).items():
+                                info = ZipInfo(name)
+                                info.external_attr = (stat.S_IFREG | 0o644) << 16
+                                z.writestr(info, raw)
+                        Path(str(archive) + ".sha256").write_text(digest(archive.read_bytes()) + "  " + archive.name)
+                        with self.assertRaisesRegex(ValueError, "^MANIFEST_BOUNDARY$"):
+                            verify_extract(archive, root / "extract")
+
     def test_archive_escape_link_and_executable_refused(self):
         for name in ("../x", "app/site/../start.ps1", ".local/ledger", "app/site/assets/a.js.map",
                      "source/spikes/rpf-1/run.json", "source/runtime/.env", "app/site/assets/x.exe"):

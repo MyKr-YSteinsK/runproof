@@ -7,10 +7,13 @@ from .ops_oracle import initial_state, expected_receipt
 
 
 class DomainPort:
-    def __init__(self, path, contract):
+    def __init__(self, path, contract, *, readonly=False):
         self.path, self.contract = path, contract
         self.effect = contract["effect"]
         self.environment = contract["execution"]["environment_id"]
+        self.readonly = readonly
+        if readonly:
+            return
         # Exclusive filesystem creation prevents reusing a prior domain database.
         with path.open("xb"):
             pass
@@ -28,11 +31,21 @@ class DomainPort:
             db.execute("BEGIN")
             if db.execute("SELECT environment FROM identity").fetchall() != [(self.environment,)]:
                 raise ValueError("AUTHORITY_IDENTITY_MISMATCH")
-            row = db.execute("SELECT payload FROM state WHERE id=1").fetchone()
-            receipts = [strict(raw) for (raw,) in db.execute("SELECT payload FROM receipts ORDER BY operation")]
-            return {self.key: strict(row[0]), "receipts": receipts}
+            rows = db.execute("SELECT id,payload FROM state").fetchall()
+            if len(rows) != 1 or rows[0][0] != 1:
+                raise ValueError("AUTHORITY_STATE")
+            row = rows[0][1]
+            receipts = []
+            for operation, raw in db.execute("SELECT operation,payload FROM receipts ORDER BY operation"):
+                receipt = strict(raw)
+                if operation != self.effect["operation_id"] or receipt["operation_id"] != operation:
+                    raise ValueError("AUTHORITY_OPERATION")
+                receipts.append(receipt)
+            return {self.key: strict(row), "receipts": receipts}
 
     def write_once(self):
+        if self.readonly:
+            raise ValueError("READ_ONLY_AUTHORITY")
         operation = self.effect["operation_id"]
         with closing(sqlite3.connect(self.path.as_uri() + "?mode=rw", uri=True)) as db, db:
             db.execute("PRAGMA synchronous=FULL")

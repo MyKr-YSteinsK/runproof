@@ -4,6 +4,24 @@
 
 RunProof 是一个面向有状态工具调用的 **Agent Reliability & Release Engineering Platform**。它帮助工程师查清 Agent 动作产生了什么变化，通过独立证据核验业务状态，并把失败变成可复跑的测试。
 
+## 运行本地 Reference Agent
+
+Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首次检出后运行一次 `npm ci`。将 `$py` 和 `$node` 分别设为已安装的 python.exe 和 node.exe 的绝对路径。日常在仓库根目录运行一条命令。
+
+```powershell
+.\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node
+```
+
+打开启动器给出的地址，保留 nonce。勾选确认并运行一次。沿时间线查看退款意图、被抑制的本地工具返回、独立 SQLite 收据，以及第二步配置变更所依赖的反馈。规则策略只操作虚构业务状态，Provider 调用为零。可下载 Witness 或调查报告。停机后使用原 nonce 只读重开。
+
+```powershell
+.\demo\competition-bundle\stop.ps1 -Nonce $nonce
+.\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node -Reopen $nonce
+& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor
+```
+
+可选的 `$anchor` 应来自独立可信渠道。省略该参数时 CLI 只复核内容。调查结束后使用相同的停止命令。[工程包说明](demo/competition-bundle/README-COMPLETE.zh-CN.md)
+
 ## 它是什么
 
 RunProof 将 Candidate Agent Version 连接到有状态评测、可观察轨迹与环境状态、确定性证据、失败调查、回归历史、统计可靠性以及只读的 Quality Gate 决策。

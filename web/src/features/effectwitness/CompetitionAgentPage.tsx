@@ -1,10 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AppShell } from "../../components/AppShell";
 import { useI18n } from "../../i18n";
 import { agentApi, agentMode, mayStart, type AgentCapability, type AgentEvent, type AgentSession } from "./competitionAgentApi";
 import "./competition-agent.css";
 
 const pendingKey = "runproof-competition-agent-pending";
+const transient = new Map<string, string>();
+function pendingRequest(owner: string, value?: string | null) {
+  const key = pendingKey + ":" + owner;
+  if (value === null) transient.delete(key);
+  else if (value !== undefined) transient.set(key, value);
+  try {
+    if (value === null) localStorage.removeItem(key);
+    else if (value !== undefined) localStorage.setItem(key, value);
+    return transient.get(key) ?? localStorage.getItem(key);
+  } catch { return transient.get(key) ?? null; }
+}
 const route = "/effectwitness/agent";
 const eventLabels: Record<string, [string, string]> = {
   CONTRACTS_FROZEN: ["合同冻结", "Contracts frozen"],
@@ -44,31 +55,46 @@ export function CompetitionAgentPage({ search }: { search: string }) {
   const [anchor, setAnchor] = useState("");
   const [selected, setSelected] = useState(() => Number(params.get("event")) || 0);
   const [refresh, setRefresh] = useState(0);
+  const generation = useRef(0);
+  const submitting = useRef(false);
+  const [report, setReport] = useState<{ next: string; domains: {domain: string; effect: string; gaps: string[]}[] } | null>(null);
   useEffect(() => {
-    let live = true;
+    const epoch = ++generation.current;
+    const current = () => generation.current === epoch;
+    setCap(null); setSession(null); setAnchor(""); setReport(null); setConfirmation(false);
+    setSelected(Number(new URLSearchParams(window.location.search).get("event")) || 0);
     async function read() {
       try {
-        const key = localStorage.getItem(pendingKey);
-        if (live) setPending(Boolean(key));
         const value = await agentApi.capability();
         if (value.mode !== agentMode || value.provider_reservations !== 0) throw Error("MODE_UNAVAILABLE");
+        const key = value.instance && pendingRequest(value.instance);
         const id = requested || value.latest;
-        const data = key ? await agentApi.request(key) : id ? await agentApi.session(id) : null;
-        if (data && (data.mode !== agentMode || (!key && data.session_id !== id))) throw Error("SESSION_IDENTITY");
-        if (!live) return;
-        if (key && data?.status === "COMPLETED") localStorage.removeItem(pendingKey);
-        setPending(Boolean(localStorage.getItem(pendingKey)));
-        setSession(data);
-        setCap(value);
-        setNotice("");
-      } catch {
-        if (live) { setCap(null); setNotice("READBACK_UNAVAILABLE"); }
+        const data = id ? await agentApi.session(id) : key ? await agentApi.request(key) : null;
+        if (data && (data.mode !== agentMode || (id && data.session_id !== id)
+            || (value.instance && data.owner_id !== value.instance)
+            || (!id && key && data.request_id !== key))) throw Error("SESSION_IDENTITY");
+        if (!current()) return;
+        if (key && value.instance && data?.request_id === key) pendingRequest(value.instance, null);
+        setPending(!!(value.instance && pendingRequest(value.instance)));
+        setSession(data); setCap(value); setNotice("");
+        if (data) {
+          const file = await agentApi.investigation(data.session_id);
+          const result = JSON.parse(new TextDecoder().decode(file.bytes));
+          if (result.session.session_id !== data.session_id || result.session.owner_id !== data.owner_id) throw Error("SESSION_IDENTITY");
+          if (current()) setReport(result.summary);
+        }
+      } catch (error) {
+        if (current()) { setCap(null); setNotice(error instanceof Error && error.message === "GATEWAY_404" ? "IDENTITY_NOT_FOUND" : "READBACK_UNAVAILABLE"); }
       }
     }
     void read();
-    return () => { live = false; };
-  }, [requested, refresh]);
+    return () => { generation.current++; };
+  }, [requested, search, refresh]);
 
+  useEffect(() => {
+    if (session && selected) document.querySelector<HTMLButtonElement>(
+      '.ca-events button[aria-current="step"]')?.focus({ preventScroll: true });
+  }, [session?.session_id, selected]);
   const startAllowed = mayStart(cap, pending) && !busy && !notice && !session && !requested;
   function bookmark(id: string, event?: number) {
     const next = new URLSearchParams({ session: id });
@@ -76,49 +102,53 @@ export function CompetitionAgentPage({ search }: { search: string }) {
     history.replaceState(history.state, "", route + "?" + next.toString());
   }
   async function start() {
-    if (!startAllowed || !confirmation) return;
+    if (!startAllowed || !confirmation || !cap?.instance || submitting.current) return;
+    submitting.current = true;
+    const epoch = generation.current;
     try {
-      if (localStorage.getItem(pendingKey)) { setPending(true); return; }
+      const fresh = await agentApi.capability();
+      if (epoch !== generation.current) return;
+      if (fresh.instance !== cap.instance || !mayStart(fresh, !!pendingRequest(cap.instance))) throw Error("OWNER_CHANGED");
       const id = crypto.randomUUID();
-      localStorage.setItem(pendingKey, id);
-      setPending(true);
-      setBusy(true);
-      const data = await agentApi.start(id);
-      if (data.mode !== agentMode) throw Error("MODE_UNAVAILABLE");
-      if (data.status === "COMPLETED") localStorage.removeItem(pendingKey);
-      setPending(data.status !== "COMPLETED");
-      setSession(data);
-      setCap(null);
+      pendingRequest(cap.instance, id);
+      setPending(true); setBusy(true);
+      const data = await agentApi.start(id, cap.instance);
+      if (epoch !== generation.current) return;
+      if (data.mode !== agentMode || data.request_id !== id || data.owner_id !== cap.instance) throw Error("SESSION_IDENTITY");
+      pendingRequest(cap.instance, null);
       bookmark(data.session_id);
       setRefresh(x => x + 1);
     } catch {
-      setCap(null);
-      setNotice("RECONCILE_REQUIRED");
-    } finally { setBusy(false); setConfirmation(false); }
+      if (epoch === generation.current) {setCap(null); setNotice("RECONCILE_REQUIRED");}
+    } finally { submitting.current = false; setBusy(false); setConfirmation(false); }
   }
   async function download() {
-    if (session?.status !== "COMPLETED" || !cap) return;
+    if (!session || !cap) return;
+    const epoch = generation.current;
     try {
-      const file = await agentApi.witness(session.session_id);
+      const file = await (session.status === "COMPLETED" ? agentApi.witness : agentApi.investigation)(session.session_id);
+      const result = JSON.parse(new TextDecoder().decode(file.bytes));
+      if (epoch !== generation.current) return;
+      if (result.session.session_id !== session.session_id || result.session.owner_id !== session.owner_id) throw Error("SESSION_IDENTITY");
       const url = URL.createObjectURL(new Blob([file.bytes], { type: "application/json" }));
       const link = document.createElement("a");
       link.href = url;
-      link.download = "effectwitness-agent-witness.json";
+      link.download = session.session_id + (session.status === "COMPLETED" ? "-witness.json" : "-investigation.json");
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
       setAnchor(file.hash);
-    } catch { setNotice("WITNESS_UNAVAILABLE"); }
+    } catch { if (epoch === generation.current) setNotice("EXPORT_UNAVAILABLE"); }
   }
 
   const focus = session?.events.find(item => item.seq === selected);
   const next = session?.events.find(item => item.kind === "AGENT_INTENT" && item.data.intent?.candidate_id === "ops");
-  return <AppShell lab><div className="competition-agent">
+  return <AppShell lab version={cap?.version ?? "Reference Agent"}><div className="competition-agent">
     <header className="ca-hero">
       <div><span>RunProof / Agent Reliability / EffectWitness</span>
         <h1>{l("Agent 行动与效果见证", "Agent actions and verified effects")}</h1>
         <p>{l("看 Agent 提议什么、Controller 批准什么，以及业务实际改变了什么。", "Inspect the Agent proposal, Controller approval and actual business effect.")}</p></div>
       <div><strong>{l("离线参考 Agent", "Offline reference Agent")}</strong><code>{cap?.profile ?? "effectwitness-reference/1"}</code>
-        <span>SQLite · RULE POLICY · PROVIDER 0</span></div>
+        <span>SQLite · RULE POLICY · PROVIDER 0</span><code>{cap?.owner}</code></div>
     </header>
     <section className="ca-panel" aria-labelledby="ca-start">
       <h2 id="ca-start">{l("受控双域实验", "Controlled dual-domain experiment")}</h2>
@@ -166,8 +196,11 @@ export function CompetitionAgentPage({ search }: { search: string }) {
               <details><summary>{l("故障四态与收据详情", "Fault flags and receipt details")}</summary><pre>{JSON.stringify({ fault: round.fault, receipts: round.after.receipts, feedback: round.feedback }, null, 2)}</pre></details>
             </article>;
           })}
-          <h3>Witness Certificate</h3>
-          <button type="button" disabled={session.status !== "COMPLETED" || !cap} onClick={download}>{l("下载 Agent Witness", "Download Agent Witness")}</button>
+          {report && <section><h3>{l("本次独立只读调查", "Independent read-only investigation")}</h3>
+            {report.domains.map(d => <p key={d.domain}>{d.domain} · {d.effect} {d.gaps.join(" · ")}</p>)}
+            <p>{report.next}</p></section>}
+          <h3>{session.status === "COMPLETED" ? "Witness" : l("诊断报告", "Investigation report")}</h3>
+          <button type="button" disabled={!cap} onClick={download}>{session.status === "COMPLETED" ? l("下载 Agent Witness", "Download Agent Witness") : l("下载调查报告", "Download investigation")}</button>
           {anchor && <p role="status">SHA-256 <code>{anchor}</code></p>}
           <details><summary>{l("源码身份", "Source identity")}</summary><pre>{JSON.stringify(session.source, null, 2)}</pre></details>
         </div>

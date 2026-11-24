@@ -8,7 +8,7 @@ import stat
 import threading
 from uuid import uuid4
 
-from .product_local_contracts import (BOUNDARY, LIMITS, MODE, REQUEST, SCHEMA, SUCCESS, canonical,
+from .product_local_contracts import (BOUNDARY, LIMITS, MODE, REQUEST, SESSION, SCHEMA, SUCCESS, canonical,
                                       decide, digest, fault_flags, feedback, frozen, outcome,
                                       source_identity, strict)
 from .product_local_ports import OrderPort, OpsPort
@@ -65,49 +65,146 @@ class Product:
         if self.owner == ROOT or not self.owner.is_dir():
             raise ValueError("OWNER_REQUIRED")
         self.ledger = safe_path(self.owner / "ledger.sqlite")
-        self.guard = threading.Lock()
+        self.guard = threading.RLock()
+        self.readonly = False
+        self.writable = False
         self.reject_order_authority = reject_order_authority
         self.source = source_identity()
 
-    def connect(self):
-        db = sqlite3.connect(safe_path(self.ledger))
+    family = "local-product"
+    mode = MODE
+    schema = "CREATE TABLE sessions (id TEXT PRIMARY KEY, request TEXT UNIQUE, payload BLOB NOT NULL, witness BLOB)"
+
+    @classmethod
+    def initialize(cls, owner):
+        owner = safe_path(owner)
+        if owner == ROOT:
+            raise ValueError("OWNER_REQUIRED")
+        owner.mkdir(parents=True, exist_ok=False)
+        product = cls(owner)
+        identity = {"format": 1, "owner": owner.name, "instance": uuid4().hex,
+                    "family": cls.family, "source": product.source}
+        with writer_lock(owner / "writer.lock"):
+            with closing(sqlite3.connect(product.ledger)) as db, db:
+                db.execute("PRAGMA synchronous=FULL")
+                db.execute("BEGIN IMMEDIATE")
+                db.execute(cls.schema)
+                db.execute("CREATE TABLE identity (binding BLOB NOT NULL)")
+                db.execute("INSERT INTO identity VALUES (?)", (canonical(identity),))
+            # Published last. Interruption retains the directory and cannot authorize reinitialization.
+            product.write_marker("owner.json", identity)
+        return owner
+
+    def write_marker(self, name, data):
+        with safe_path(self.owner / name).open("xb") as handle:
+            handle.write(canonical(data))
+            handle.flush()
+            os.fsync(handle.fileno())
+
+    def connect(self, *, write=False):
+        if write and not self.writable:
+            raise Conflict("READ_ONLY_OWNER")
+        for suffix in ("-journal", "-wal", "-shm"):
+            safe_path(str(self.ledger) + suffix)
+        uri = safe_path(self.ledger).as_uri() + ("?mode=rw" if write else "?mode=ro")
+        db = sqlite3.connect(uri, uri=True)
         try:
-            db.execute("PRAGMA synchronous=FULL")
-        except sqlite3.Error:
+            if not write:
+                db.execute("PRAGMA query_only=ON")
+            db.execute("BEGIN IMMEDIATE" if write else "BEGIN")
+            schema = db.execute("SELECT sql FROM sqlite_master WHERE name='sessions'").fetchone()
+            if schema != (self.schema,):
+                raise sqlite3.DatabaseError("LEDGER_SCHEMA")
+            marker = safe_path(self.owner / "owner.json")
+            existing = db.execute("SELECT name FROM sqlite_master WHERE name='identity'").fetchone()
+            rows = db.execute("SELECT id, request, payload FROM sessions ORDER BY rowid").fetchall()
+            if existing or marker.exists():
+                identity = strict(marker.read_bytes())
+                if (db.execute("SELECT binding FROM identity").fetchall() != [(canonical(identity),)]
+                        or identity.get("owner") != self.owner.name or identity.get("family") != self.family
+                        or identity.get("format") != 1 or not SESSION.fullmatch(identity["instance"])
+                        or (write and identity["source"] != self.source)):
+                    raise sqlite3.DatabaseError("OWNER_BINDING")
+                for index, (ident, request, _) in enumerate(rows):
+                    expected = {"instance": identity["instance"], "id": ident, "request": request}
+                    if strict(safe_path(self.owner / f"reservation-{index}").read_bytes()) != expected:
+                        raise sqlite3.DatabaseError("RESERVATION_BINDING")
+                if len(list(self.owner.glob("reservation-*"))) != len(rows):
+                    raise sqlite3.DatabaseError("RESERVATION_COUNT")
+            elif not self.readonly or not rows or list(self.owner.glob("reservation-*")):
+                raise sqlite3.DatabaseError("OWNER_BINDING_MISSING")
+            for ident, request, raw in rows:
+                record = strict(raw)
+                if (not SESSION.fullmatch(ident) or not REQUEST.fullmatch(request)
+                        or record["session_id"] != ident or record["mode"] != self.mode
+                        or record["candidates"] != frozen(ident)
+                        or (existing and record["source"] != identity["source"])
+                        or (existing and (record.get("request_id"), record.get("owner_id"))
+                            != (request,identity["instance"]))):
+                    raise sqlite3.DatabaseError("SESSION_BINDING")
+            return db
+        except (ValueError, TypeError, KeyError, AttributeError) as exc:
+            db.close()
+            raise sqlite3.DatabaseError("LEDGER_CONTENT") from exc
+        except Exception:
             db.close()
             raise
-        return db
+
+    def reserve(self, record, request):
+        with closing(self.connect(write=True)) as db, db:
+            identity = strict(db.execute("SELECT binding FROM identity").fetchone()[0])
+            index = db.execute("SELECT count(*) FROM sessions").fetchone()[0]
+            record.update(request_id=request, owner_id=identity["instance"])
+            self.write_marker(f"reservation-{index}", {"instance": identity["instance"],
+                                                       "id": record["session_id"], "request": request})
+            db.execute("INSERT INTO sessions VALUES (?,?,?,NULL)",
+                       (record["session_id"], request, canonical(record)))
+
+    def interrupted(self, record):
+        record["status"] = "RECONCILE_REQUIRED"
+        add_event(record, "INTERRUPTED_NO_REPLAY")
 
     @contextmanager
-    def open(self):
-        with writer_lock(self.owner / "writer.lock"):
-            with closing(self.connect()) as db, db:
-                db.execute("CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, request TEXT UNIQUE, "
-                           "payload BLOB NOT NULL, witness BLOB)")
-                for ident, raw in db.execute("SELECT id,payload FROM sessions WHERE witness IS NULL").fetchall():
-                    data = strict(raw)
-                    if data["status"] in {"ACCEPTED", "RUNNING"}:
-                        data["status"] = "RECONCILE_REQUIRED"
-                        add_event(data, "INTERRUPTED_NO_REPLAY")
-                        db.execute("UPDATE sessions SET payload=? WHERE id=?", (canonical(data), ident))
+    def open(self, *, readonly=False):
+        self.readonly = readonly
+        if readonly:
+            with closing(self.connect()):
+                pass
             yield self
+            return
+        if not safe_path(self.owner / "writer.lock").is_file():
+            raise sqlite3.DatabaseError("OWNER_INCOMPLETE")
+        with writer_lock(self.owner / "writer.lock"):
+            self.writable = True
+            try:
+                with closing(self.connect(write=True)) as db, db:
+                    for ident, raw in db.execute("SELECT id,payload FROM sessions WHERE witness IS NULL").fetchall():
+                        record = strict(raw)
+                        if record["status"] in {"ACCEPTED", "RUNNING"}:
+                            self.interrupted(record)
+                            db.execute("UPDATE sessions SET payload=? WHERE id=?", (canonical(record), ident))
+                yield self
+            finally:
+                self.writable = False
 
     def capability(self):
-        with closing(self.connect()) as db:
+        with self.guard, closing(self.connect()) as db:
+            identity_row = db.execute("SELECT name FROM sqlite_master WHERE name='identity'").fetchone()
+            instance = strict(db.execute("SELECT binding FROM identity").fetchone()[0])["instance"] if identity_row else None
             records = [strict(row[0]) for row in db.execute("SELECT payload FROM sessions ORDER BY rowid")]
-        return {"mode": MODE, "remaining": max(0, LIMITS["sessions"] - len(records)),
+        return {"mode": MODE, "instance": instance, "remaining": 0 if self.readonly else max(0, LIMITS["sessions"] - len(records)),
                 "blocked": any(row["status"] != "COMPLETED" for row in records),
                 "provider_reservations": 0, "latest": records[-1]["session_id"] if records else None}
 
     def lookup(self, field, identity):
         if field not in {"id", "request"}:
             raise ValueError("LOOKUP_SCOPE")
-        with closing(self.connect()) as db:
+        with self.guard, closing(self.connect()) as db:
             row = db.execute(f"SELECT payload,witness FROM sessions WHERE {field}=?", (identity,)).fetchone()
         return (strict(row[0]), row[1]) if row else (None, None)
 
     def save(self, record, witness=None):
-        with closing(self.connect()) as db, db:
+        with closing(self.connect(write=True)) as db, db:
             db.execute("UPDATE sessions SET payload=?,witness=? WHERE id=?",
                        (canonical(record), witness, record["session_id"]))
 
@@ -121,6 +218,8 @@ class Product:
                 or not REQUEST.fullmatch(body["request_id"])):
             raise ValueError("INVALID_REQUEST")
         with self.guard:
+            if not self.writable:
+                raise Conflict("READ_ONLY_OWNER")
             request = body["request_id"]
             existing, _ = self.lookup("request", request)
             if existing:
@@ -134,8 +233,7 @@ class Product:
                       "candidates": frozen(ident), "rounds": [], "events": [], "selection": None,
                       "storage_owner": "TASK_OWNED", "cleanup": "RETAINED_FOR_READBACK"}
             add_event(record, "CONTRACTS_FROZEN")
-            with closing(self.connect()) as db, db:
-                db.execute("INSERT INTO sessions VALUES (?,?,?,NULL)", (ident, request, canonical(record)))
+            self.reserve(record, request)
             try:
                 record["status"] = "RUNNING"
                 self.event(record, "RUNNING")

@@ -20,7 +20,7 @@ from runtime.runproof_runtime.effectwitness.product_local_verify import verify
 class ProductTests(unittest.TestCase):
     def owner(self):
         owner = safe_path(ROOT / "tests" / uuid4().hex)
-        owner.mkdir(parents=True, exist_ok=False)
+        Product.initialize(owner)
         return owner
 
     def test_real_commits_reconcile_idempotency_and_offline_witness(self):

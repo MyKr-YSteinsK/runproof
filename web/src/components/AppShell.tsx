@@ -1,15 +1,4 @@
 import type { ReactNode } from "react";
-import {
-  reviewedAgents,
-  reviewedEvaluationComparison,
-  reviewedEvaluations,
-  reviewedFailureCases,
-  reviewedFailureClusters,
-  reviewedRegressions,
-  reviewedReleaseDecisions,
-  reviewedRuns,
-} from "../data/artifacts";
-import { reviewedStatisticalEvaluations } from "../data/statistical";
 import { DATA_SOURCE_MODE } from "../app/dataSource";
 import { navigate } from "../app/navigation";
 import { useI18n } from "../i18n";
@@ -17,6 +6,7 @@ import { LocaleSwitcher } from "./LocaleSwitcher";
 
 export interface AppShellProps {
   children: ReactNode;
+  version?: string;
   detail?: boolean;
   overview?: boolean;
   agent?: boolean;
@@ -32,15 +22,14 @@ export interface AppShellProps {
   recorded?: boolean;
 }
 
-export const AppShell = ({ children, detail = false, overview = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false, lab = false, recorded = false }: AppShellProps) => {
+export const AppShell = ({ children, version, detail = false, overview = false, agent = false, failure = false, regression = false, evaluation = false, comparison = false, statistical = false, release = false, execution = false, intelligence = false, lab = false, recorded = false }: AppShellProps) => {
   const { t, locale } = useI18n();
   const offline = import.meta.env.VITE_RPF_RECORDED_DELIVERY === "1";
   const labLabel = locale === "zh-CN" ? "EffectWitness 工作台" : "EffectWitness Workbench";
   const recordedLabel = locale === "zh-CN" ? "已记录证据" : "Recorded evidence";
   const inEffectWitness = lab || recorded;
   const dataSourceLabel = recorded ? "RECORDED · TRACKED SOURCES" : lab ? "LOCAL SIMULATION GATEWAY" : DATA_SOURCE_MODE === "api" ? t("common.controlPlaneApi") : t("common.reviewedFixtureCorpus");
-  const readModelCount = (count: number): number | string => DATA_SOURCE_MODE === "api" ? "API" : count;
-  const comparisonHref = DATA_SOURCE_MODE === "api" ? "/comparisons" : `/comparisons/${encodeURIComponent(reviewedEvaluationComparison.comparison.comparisonId)}`;
+  const comparisonHref = "/comparisons";
   const topContext = recorded ? recordedLabel : lab ? labLabel : overview ? t("nav.top.goldenDemo")
     : execution ? (detail ? t("nav.top.durableDetail") : t("nav.top.durableList"))
       : intelligence ? (detail ? t("nav.top.failureIntelligenceDetail") : t("nav.top.failureIntelligence"))
@@ -66,26 +55,26 @@ export const AppShell = ({ children, detail = false, overview = false, agent = f
         </div>
         <nav className="primary-nav" aria-label={t("nav.primary")}>
           <a className={overview ? "active" : ""} href="/overview" onClick={(event) => { event.preventDefault(); navigate("/overview"); }}><span className="nav-glyph">⌂</span><span>{t("nav.overview")}</span><span className="nav-count">RPF-19</span></a>
-          {!offline && <><a className={agent ? "active" : ""} href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}><span className="nav-glyph">◇</span><span>{t("nav.agents")}</span><span className="nav-count">{readModelCount(reviewedAgents.length)}</span></a>
-          <a className={!inEffectWitness && !overview && !detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}><span className="nav-glyph">▤</span><span>{t("nav.runEvidence")}</span><span className="nav-count">{readModelCount(reviewedRuns.length)}</span></a>
-          <a className={failure ? "active" : ""} href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}><span className="nav-glyph">!</span><span>{t("nav.failureCases")}</span><span className="nav-count">{readModelCount(reviewedFailureCases.length)}</span></a>
-          <a className={intelligence ? "active" : ""} href="/failure-intelligence" onClick={(event) => { event.preventDefault(); navigate("/failure-intelligence"); }}><span className="nav-glyph">⌁</span><span>{t("nav.failureIntelligence")}</span><span className="nav-count">{readModelCount(reviewedFailureClusters.length)}</span></a>
-          <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}><span className="nav-glyph">↗</span><span>{t("nav.regressions")}</span><span className="nav-count">{readModelCount(reviewedRegressions.length)}</span></a>
-          <a className={evaluation ? "active" : ""} href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}><span className="nav-glyph">◎</span><span>{t("nav.evaluations")}</span><span className="nav-count">{readModelCount(reviewedEvaluations.length)}</span></a>
-          <a className={statistical ? "active" : ""} href="/statistical-evaluations" onClick={(event) => { event.preventDefault(); navigate("/statistical-evaluations"); }}><span className="nav-glyph">∿</span><span>{t("nav.statistical")}</span><span className="nav-count">{readModelCount(reviewedStatisticalEvaluations.length)}</span></a>
-          <a className={comparison ? "active" : ""} href={comparisonHref} onClick={(event) => { event.preventDefault(); navigate(comparisonHref); }}><span className="nav-glyph">⇄</span><span>{t("nav.comparisons")}</span><span className="nav-count">{readModelCount(2)}</span></a>
-          <a className={release ? "active" : ""} href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}><span className="nav-glyph">✓</span><span>{t("nav.releaseDecisions")}</span><span className="nav-count">{readModelCount(reviewedReleaseDecisions.length)}</span></a>
+          {!offline && <><a className={agent ? "active" : ""} href="/agents" onClick={(event) => { event.preventDefault(); navigate("/agents"); }}><span className="nav-glyph">◇</span><span>{t("nav.agents")}</span></a>
+          <a className={!inEffectWitness && !overview && !detail && !agent && !failure && !regression && !evaluation && !comparison && !statistical && !release && !execution && !intelligence ? "active" : ""} href="/runs" onClick={(event) => { event.preventDefault(); navigate("/runs"); }}><span className="nav-glyph">▤</span><span>{t("nav.runEvidence")}</span></a>
+          <a className={failure ? "active" : ""} href="/failures" onClick={(event) => { event.preventDefault(); navigate("/failures"); }}><span className="nav-glyph">!</span><span>{t("nav.failureCases")}</span></a>
+          <a className={intelligence ? "active" : ""} href="/failure-intelligence" onClick={(event) => { event.preventDefault(); navigate("/failure-intelligence"); }}><span className="nav-glyph">⌁</span><span>{t("nav.failureIntelligence")}</span></a>
+          <a className={regression ? "active" : ""} href="/regressions" onClick={(event) => { event.preventDefault(); navigate("/regressions"); }}><span className="nav-glyph">↗</span><span>{t("nav.regressions")}</span></a>
+          <a className={evaluation ? "active" : ""} href="/evaluations" onClick={(event) => { event.preventDefault(); navigate("/evaluations"); }}><span className="nav-glyph">◎</span><span>{t("nav.evaluations")}</span></a>
+          <a className={statistical ? "active" : ""} href="/statistical-evaluations" onClick={(event) => { event.preventDefault(); navigate("/statistical-evaluations"); }}><span className="nav-glyph">∿</span><span>{t("nav.statistical")}</span></a>
+          <a className={comparison ? "active" : ""} href={comparisonHref} onClick={(event) => { event.preventDefault(); navigate(comparisonHref); }}><span className="nav-glyph">⇄</span><span>{t("nav.comparisons")}</span></a>
+          <a className={release ? "active" : ""} href="/release-decisions" onClick={(event) => { event.preventDefault(); navigate("/release-decisions"); }}><span className="nav-glyph">✓</span><span>{t("nav.releaseDecisions")}</span></a>
           <a className={execution ? "active" : ""} href="/executions" onClick={(event) => { event.preventDefault(); navigate("/executions"); }}><span className="nav-glyph">◇</span><span>{t("nav.executions")}</span><span className="nav-count">API</span></a></>}
           <a className={inEffectWitness ? "active" : ""} href="/effectwitness/workbench" onClick={(event) => { event.preventDefault(); navigate("/effectwitness/workbench"); }}><span className="nav-glyph">↗</span><span>{labLabel}</span><span className="nav-count">{recorded ? "READ ONLY" : "LOCAL"}</span></a>
           {!offline && <a href="/effectwitness/cross-domain" onClick={e=>{e.preventDefault();navigate("/effectwitness/cross-domain");}}><span className="nav-glyph">↗</span><span>{locale === "zh-CN" ? "跨域真实 Lab" : "Cross-domain live Lab"}</span><span className="nav-count">LOCAL</span></a>}
         </nav>
-        <div className="rail-note"><span className="section-label">{t("nav.currentSurface")}</span><p>{recorded ? (locale === "zh-CN" ? "只读 Git 证据；不连接 Gateway、不发起模型请求或实验。" : "Read-only Git evidence; no Gateway, model request or experiment.") : lab ? (locale === "zh-CN" ? "独立本机 Gateway；仅允许虚构订单与配置变更。" : "Independent local Gateway; simulated orders and config changes only.") : t("nav.currentSurfaceNote")}</p><span className="schema-chip">{recorded ? "RPF-47 · RECORDED" : lab ? "Lab v1 · Witness v2" : "v2 evidence · v1 evals · v1 gates"}</span></div>
+        <div className="rail-note"><span className="section-label">{t("nav.currentSurface")}</span><p>{recorded ? (locale === "zh-CN" ? "只读 Git 证据；不连接 Gateway、不发起模型请求或实验。" : "Read-only Git evidence; no Gateway, model request or experiment.") : lab ? (locale === "zh-CN" ? "独立本机 Gateway；仅允许虚构订单与配置变更。" : "Independent local Gateway; simulated orders and config changes only.") : t("nav.currentSurfaceNote")}</p><span className="schema-chip">{recorded ? "RPF-47 · RECORDED" : lab ? version ?? "Lab v1 · Witness v2" : "v2 evidence · v1 evals · v1 gates"}</span></div>
         <div className="rail-footer"><span>{recorded ? "RECORDED EVIDENCE" : lab ? "CONTROLLED SIMULATION" : t("nav.stabilization")}</span><span className="footer-dot" aria-hidden="true" /><span>{recorded ? "NO PROVIDER · NO WRITE" : lab ? "NO PRODUCTION ACCESS" : DATA_SOURCE_MODE === "api" ? t("common.canonicalReadModel") : t("common.fixtureMode")}</span></div>
       </aside>
       <main className="app-main">
         <header className="topbar">
           <div className="topbar-context"><span className="topbar-kicker">{recorded ? "RECORDED REVIEW" : lab ? "LOCAL LAB" : t("nav.top.controlPlane")}</span><span className="topbar-divider" aria-hidden="true">/</span><span>{topContext}</span></div>
-          <div className="topbar-meta"><span className="live-indicator"><i aria-hidden="true" /> {dataSourceLabel}</span><span className="topbar-revision">{recorded ? "RPF-47" : lab ? "RPF-45 / RPF-46" : "RPF-19"}</span><LocaleSwitcher /></div>
+          <div className="topbar-meta"><span className="live-indicator"><i aria-hidden="true" /> {dataSourceLabel}</span><span className="topbar-revision">{recorded ? "RPF-47" : lab ? version ?? "RPF-45 / RPF-46" : "RPF-19"}</span><LocaleSwitcher /></div>
         </header>
         <div className="page-content">{children}</div>
       </main>

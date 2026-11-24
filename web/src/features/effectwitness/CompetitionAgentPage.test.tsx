@@ -6,7 +6,7 @@ afterEach(() => vi.unstubAllGlobals());
 
 describe("reference Agent admission", () => {
   const fresh: AgentCapability = {
-    mode: agentMode, remaining: 1, blocked: false, provider_reservations: 0,
+    instance: "1".repeat(32), owner: "test", readonly: false, version: "v2", mode: agentMode, remaining: 1, blocked: false, provider_reservations: 0,
     latest: null, profile: "effectwitness-reference/1", tools: ["refund_order", "apply_config"],
   };
   it("allows only an empty offline Agent owner", () => {

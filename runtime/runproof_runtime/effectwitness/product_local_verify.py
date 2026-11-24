@@ -4,7 +4,7 @@ import hashlib
 import json
 from pathlib import Path
 
-from .product_local_contracts import (BOUNDARY, LIMITS, MODE, SCHEMA, SESSION, SUCCESS, canonical,
+from .product_local_contracts import (BOUNDARY, LIMITS, MODE, SCHEMA, REQUEST, SESSION, SUCCESS, canonical,
                                       decide, digest, fault_flags, feedback, frozen, outcome,
                                       source_identity, strict)
 
@@ -60,6 +60,9 @@ def verify(raw, expected_sha256=None):
                             "candidates": candidates, "rounds": rounds, "selection": selection,
                             "events": [{"seq": i, "kind": kind, "domain": domain}
                                        for i, (kind, domain) in enumerate(sequence, 1)]}}
+    if not REQUEST.fullmatch(data["request_id"]) or not SESSION.fullmatch(data["owner_id"]):
+        raise ValueError("OWNER_REQUEST_BINDING")
+    expected["session"].update(owner_id=data["owner_id"], request_id=data["request_id"])
     if canonical(envelope) != canonical(expected) or selection["decision"] != "SELECT_OPS":
         raise ValueError("WITNESS_LINK_MISMATCH")
     return {"status": "VERIFIED_ANCHORED" if expected_sha256 is not None else "CONTENT_CHECKED_LOCAL",

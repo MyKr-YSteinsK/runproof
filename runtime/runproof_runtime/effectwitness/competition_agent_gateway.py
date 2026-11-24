@@ -11,6 +11,7 @@ from .product_local_contracts import SESSION
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--nonce", required=True)
+    parser.add_argument("--readonly", action="store_true")
     args = parser.parse_args()
     if not SESSION.fullmatch(args.nonce):
         parser.error("Expected a fresh hexadecimal nonce.")
@@ -26,13 +27,17 @@ def main():
         def lookup(self, *args):
             return self.product.lookup(*args)
 
+        def investigate(self, record):
+            return self.product.investigate(record)
+
         def create(self, body):
             return self.product.create(body)
 
     bound = BoundAgent()
     with server_for(bound, product_token) as server:
-        owner.mkdir(parents=True, exist_ok=False)
-        with AgentProduct(owner).open() as product:
+        if not args.readonly:
+            AgentProduct.initialize(owner)
+        with AgentProduct(owner).open(readonly=args.readonly) as product:
             bound.product = product
             server.serve_forever()
 

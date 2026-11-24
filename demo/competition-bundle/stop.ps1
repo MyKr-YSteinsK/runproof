@@ -2,7 +2,13 @@
 [CmdletBinding()]
 param([Parameter(Mandatory)][ValidatePattern('^[a-f0-9]{32}$')][string]$Nonce)
 $ErrorActionPreference = 'Stop'
-$path = Join-Path $PSScriptRoot '.local/launch/processes.json'
+$local = if (Test-Path -LiteralPath (Join-Path $PSScriptRoot 'build-bundle.mjs')) {
+    Join-Path $PSScriptRoot '../../.local/rpf-115'
+} else { Join-Path $PSScriptRoot '.local' }
+$launch = Join-Path $local "launch/$Nonce"
+$paths = @(Get-ChildItem -LiteralPath $launch -Directory | ForEach-Object { Join-Path $_.FullName 'processes.json' })
+if (!$paths.Count) { throw 'No process receipt for this owner.' }
+foreach ($path in $paths) {
 for ($item = Get-Item -LiteralPath $path -Force; $item; ) {
     if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) { throw 'Linked receipt path.' }
     $parent = Split-Path -Parent $item.FullName
@@ -27,4 +33,5 @@ try {
         if (!$process.WaitForExit(5000)) { throw 'Process exit not confirmed.' }
     }
 } finally { $claim.Dispose() }
+}
 Write-Output 'Demo processes stopped. Local ledger and process receipt retained.'

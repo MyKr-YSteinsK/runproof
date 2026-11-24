@@ -1,6 +1,7 @@
 #Requires -Version 7.2
 [CmdletBinding()]
-param([Parameter(Mandatory)][string]$PythonExe, [Parameter(Mandatory)][string]$NodeExe)
+param([Parameter(Mandatory)][string]$PythonExe, [Parameter(Mandatory)][string]$NodeExe,
+      [ValidatePattern('^[a-f0-9]{32}$')][string]$Reopen)
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
 $local = Join-Path $root '.local'
@@ -36,15 +37,30 @@ function Start-ServiceProcess([string]$Exe, [string[]]$Arguments) {
     $info.Environment['TMP'] = $run
     $info.Environment['TEMP'] = $run
     $info.Environment['RPF100_GATEWAY_TOKEN'] = $token
+    if ($checkout) {
+        $info.Environment['VITE_CONTROL_PLANE_DATA_SOURCE'] = 'fixture'
+    }
     foreach ($argument in $Arguments) { $info.ArgumentList.Add($argument) }
     [Diagnostics.Process]::Start($info)
 }
 
 Confirm-Path $root
 $manifestPath = Join-Path $root 'bundle-manifest.json'
-Confirm-Path $manifestPath
-$manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
-$agent = $manifest.schema -eq 'runproof-competition-complete/v1'
+$checkout = !(Test-Path -LiteralPath $manifestPath) -and (Test-Path -LiteralPath (Join-Path $root 'build-bundle.mjs'))
+if ($checkout) {
+    $root = (Get-Item -LiteralPath (Join-Path $root '../..')).FullName
+    $local = Join-Path $root '.local/rpf-115'
+    $agent = $true
+    $vite = Join-Path $root 'node_modules/vite/bin/vite.js'
+    Confirm-Path $vite
+    foreach ($name in '.env','.env.local','.env.development','.env.development.local') {
+        if (Test-Path -LiteralPath (Join-Path $root $name)) { throw 'Use a checkout without Vite environment files.' }
+    }
+} else {
+    Confirm-Path $manifestPath
+    $manifest = Get-Content -Raw -LiteralPath $manifestPath | ConvertFrom-Json
+    $agent = $manifest.schema -eq 'runproof-competition-complete/v1'
+}
 $gatewayModule = if ($agent) { 'competition_agent_gateway' } else { 'rpf112_competition_gateway' }
 $page = if ($agent) { 'agent' } else { 'live-local' }
 $PythonExe = Get-Binary $PythonExe 'python.exe'
@@ -54,19 +70,28 @@ if ($LASTEXITCODE) { throw 'CPython 3.11+ with SQLite required.' }
 & $NodeExe -e 'if (+process.versions.node.split(".")[0] < 22) process.exit(1)'
 if ($LASTEXITCODE) { throw 'Node 22+ required.' }
 if (Get-NetTCPConnection -State Listen -LocalPort 4187,8780 -ErrorAction SilentlyContinue) { throw 'Demo port occupied.' }
-if (Get-Item -LiteralPath $local -Force -ErrorAction SilentlyContinue) { throw 'This extraction already has local state.' }
-$nonce = [guid]::NewGuid().ToString('N')
-$null = New-Item -ItemType Directory -Path $local
-$run = Join-Path $local 'launch'
+if ($Reopen -and !$agent) { throw 'Read-only investigation requires the reference Agent.' }
+$nonce = if ($Reopen) { $Reopen } else { [guid]::NewGuid().ToString('N') }
+if (!$agent -and (Test-Path -LiteralPath $local)) { throw 'This extraction already has local state.' }
+if (!(Test-Path -LiteralPath $local)) { $null = New-Item -ItemType Directory -Path $local -Force }
+Confirm-Path $local
+$launch = Join-Path $local "launch/$nonce"
+if (!(Test-Path -LiteralPath $launch)) { $null = New-Item -ItemType Directory -Path $launch -Force }
+Confirm-Path $launch
+$run = Join-Path $launch ([guid]::NewGuid().ToString('N'))
 $null = New-Item -ItemType Directory -Path $run
+$gatewayArgs = @('-E','-B','-m',("runtime.runproof_runtime.effectwitness." + $gatewayModule),'--nonce',$nonce)
+if ($Reopen) { $gatewayArgs += '--readonly' }
+$webArgs = if ($checkout) { @(Join-Path $PSScriptRoot 'checkout-server.mjs') }
+           else { @(Join-Path $root 'competition-server.cjs') }
 $token = [Convert]::ToHexString([Security.Cryptography.RandomNumberGenerator]::GetBytes(32)).ToLowerInvariant()
 $claim = [IO.File]::Open((Join-Path $run 'processes.json'), 'CreateNew', 'Write', 'None')
 $processes = @()
 $records = @()
 try {
     foreach ($service in @(
-        @{ exe = $PythonExe; args = @('-E','-B','-m',("runtime.runproof_runtime.effectwitness." + $gatewayModule),'--nonce',$nonce) },
-        @{ exe = $NodeExe; args = @((Join-Path $root 'competition-server.cjs')) }
+        @{ exe = $PythonExe; args = $gatewayArgs },
+        @{ exe = $NodeExe; args = @($webArgs) }
     )) {
         $process = Start-ServiceProcess $service.exe $service.args
         $processes += $process
@@ -79,7 +104,7 @@ try {
         $claim.Flush($true)
     } finally { $claim.Dispose() }
 }
-$deadline = [DateTime]::UtcNow.AddSeconds(20)
+$deadline = [DateTime]::UtcNow.AddSeconds(50)
 do {
     foreach ($process in $processes) {
         if ($process.HasExited) { throw "Service exited. Run stop.ps1 -Nonce $nonce." }

@@ -32,8 +32,8 @@ export const productApi = {
     method: "POST", headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ mode, request_id: id }),
   })).json(),
-  witness: async (id: string) => {
-    const response = await requestLocalProduct("/witness/" + encodeURIComponent(id));
+  witness: async (id: string, kind: "witness" | "investigation" = "witness") => {
+    const response = await requestLocalProduct("/" + kind + "/" + encodeURIComponent(id));
     const length = Number(response.headers.get("Content-Length"));
     if (!Number.isInteger(length) || length < 1 || length > 65536) throw new Error("WITNESS_SIZE");
     const bytes = await response.arrayBuffer();

@@ -3,7 +3,7 @@ import { productApi, requestLocalProduct } from "./productLocalApi";
 export const agentMode = "OFFLINE_REFERENCE_AGENT";
 export type AgentCapability = {
   mode: string; remaining: number; blocked: boolean; provider_reservations: number;
-  latest: string | null; profile: string; tools: string[];
+  instance: string | null; owner: string; readonly: boolean; version: string; latest: string | null; profile: string; tools: string[];
 };
 type Intent = { candidate_id: string; tool: string; action_id: string; input_feedback_sha256: string | null };
 type EventData = {
@@ -17,7 +17,7 @@ type Candidate = {
 };
 type Snapshot = { order?: Record<string, unknown>; config?: Record<string, unknown>; receipts: unknown[] };
 export type AgentSession = {
-  session_id: string; mode: string; profile: string; status: string; provider_reservations: number;
+  owner_id?: string; request_id?: string; session_id: string; mode: string; profile: string; status: string; provider_reservations: number;
   candidates: Candidate[]; source: Record<string, string>; events: AgentEvent[];
   rounds: { domain: string; before: Snapshot; after: Snapshot; tool_status: string; fault: Record<string, boolean>;
     outcome: { contract_outcome: string }; feedback: { sha256: string } }[];
@@ -30,13 +30,14 @@ export const agentApi = {
   capability: () => requestAgentJson<AgentCapability>("/capability"),
   session: (id: string) => requestAgentJson<AgentSession>("/session/" + encodeURIComponent(id)),
   request: (id: string) => requestAgentJson<AgentSession>("/request/" + encodeURIComponent(id)),
-  start: (id: string) => requestAgentJson<AgentSession>("/session", {
+  start: (id: string, owner?: string) => requestAgentJson<AgentSession>("/session", {
     method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ mode: agentMode, request_id: id }),
+    body: JSON.stringify({ mode: agentMode, request_id: id, owner_id: owner }),
   }),
   witness: productApi.witness,
+  investigation: (id: string) => productApi.witness(id, "investigation"),
 };
 export function mayStart(cap: AgentCapability | null, pending: boolean) {
-  return cap?.mode === agentMode && cap.provider_reservations === 0 && cap.remaining === 1
+  return !!cap?.instance && !cap.readonly && cap.mode === agentMode && cap.provider_reservations === 0 && cap.remaining === 1
     && cap.blocked === false && cap.latest === null && !pending;
 }

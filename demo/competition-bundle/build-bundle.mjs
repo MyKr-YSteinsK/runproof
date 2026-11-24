@@ -48,7 +48,8 @@ if (fs.realpathSync.native(repo) !== repo || git("rev-parse", "--show-toplevel")
 const source = git("rev-parse", "HEAD");
 if (!/^[a-f0-9]{40}$/.test(source)) throw Error("SOURCE_REQUIRED");
 const webConfig = ["index.html", "package.json", "package-lock.json", "vite.config.ts", "tsconfig.json"];
-const inputs = ["web", ...webConfig, ...runtime];
+const inputs = ["web", ...webConfig, ...runtime, "demo/competition-bundle",
+  "runtime/runproof_runtime/models.py", "runtime/runproof_runtime/effectwitness/competition_agent*.py"];
 if (git("status", "--porcelain", "--untracked-files=all", "--", ...inputs)) throw Error("BUILD_SOURCE_DIRTY");
 if (git("check-ignore", "--", path.relative(repo, owner).split(path.sep).join("/")) === "") throw Error("OUTPUT_NOT_IGNORED");
 checkedDirectory(path.join(repo, ".local"));

@@ -6,7 +6,7 @@ from pathlib import Path
 
 from .competition_agent import INVARIANTS, LIMITS, MODE, PROFILE, attestation_matches, tool_intent
 from .competition_agent_session import SCHEMA, append, observation, readback, sources
-from .product_local_contracts import SESSION, SUCCESS, canonical, digest, frozen, strict
+from .product_local_contracts import REQUEST, SESSION, SUCCESS, canonical, digest, frozen, strict
 from .product_local_verify import MAX_WITNESS
 
 
@@ -15,6 +15,9 @@ def verify(raw, anchor=None):
     if len(raw) > MAX_WITNESS or (anchor is not None and actual != anchor):
         raise ValueError("WITNESS_DIGEST")
     envelope = strict(raw)
+    if envelope.get("schema") == "runproof-agent-investigation/v1":
+        from .competition_agent_investigation import verify_report
+        return verify_report(envelope, actual, anchor)
     session = envelope["session"]
     ident = session["session_id"]
     if not SESSION.fullmatch(ident) or len(session["rounds"]) != 2:
@@ -22,7 +25,11 @@ def verify(raw, anchor=None):
     expected = {"session_id": ident, "mode": MODE, "profile": PROFILE, "status": "COMPLETED",
                 "source": sources(), "limits": LIMITS, "provider_reservations": 0,
                 "candidates": frozen(ident), "rounds": [], "events": [], "invariants": list(INVARIANTS)}
-    append(expected, "CONTRACTS_FROZEN", "controller", {"source_sha256": digest(expected["source"])})
+    if not REQUEST.fullmatch(session["request_id"]) or not SESSION.fullmatch(session["owner_id"]):
+        raise ValueError("OWNER_REQUEST_BINDING")
+    expected.update(owner_id=session["owner_id"], request_id=session["request_id"])
+    append(expected, "CONTRACTS_FROZEN", "controller", {"source_sha256": digest(expected["source"]),
+           "owner_id": expected["owner_id"], "request_id": expected["request_id"]})
     trusted = None
     for step, (contract, row) in enumerate(zip(expected["candidates"], session["rounds"], strict=True), 1):
         domain = contract["candidate"]
@@ -48,7 +55,7 @@ def verify(raw, anchor=None):
         append(expected, "AGENT_OBSERVATION", "agent", observed)
         append(expected, "AGENT_INTENT", "agent", {"intent": proposed})
         append(expected, "GATE_DECISION", "controller", {"verdict": "APPROVED", "step": step})
-        append(expected, "WRITE_INTENT", "controller", {"action_id": proposed["action_id"], "contract_sha256": contract["sha256"]})
+        append(expected, "WRITE_INTENT", "controller", {"action_id": proposed["action_id"], "contract_sha256": contract["sha256"], "before": before})
         append(expected, "UNKNOWN_OBSERVED" if step == 1 else "OPS_EFFECT", "tool",
                {"action_id": proposed["action_id"], "status": independent["tool_status"]})
         append(expected, "AUTHORITY_READBACK", "authority", {"domain": domain, "after_sha256": digest(after)})
@@ -70,7 +77,7 @@ def main():
     try:
         with args.witness.open("rb") as handle:
             result = verify(handle.read(MAX_WITNESS + 1), args.expected_sha256)
-    except (ValueError, KeyError, TypeError, AttributeError, OSError, RecursionError):
+    except (ValueError, IndexError, KeyError, TypeError, AttributeError, OSError, RecursionError):
         print(json.dumps({"status": "REJECTED"}))
         return 3
     print(json.dumps(result))

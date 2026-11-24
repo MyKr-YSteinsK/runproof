@@ -9,6 +9,8 @@ from .product_local_session import ROOT, Product, safe_path
 
 
 class CompetitionProduct(Product):
+    family = "competition-product"
+
     def capability(self):
         result = super().capability()
         result["remaining"] = int(result["latest"] is None and result["remaining"] > 0)
@@ -23,7 +25,7 @@ def competition_owner(nonce):
 
 def claim_owner(nonce):
     owner = competition_owner(nonce)
-    owner.mkdir(parents=True, exist_ok=False)
+    CompetitionProduct.initialize(owner)
     with (owner / "rpf112-owner.json").open("xb") as handle:
         handle.write(canonical({"nonce": nonce, "source": source_identity(), "max_sessions": 1}))
         handle.flush()

@@ -117,7 +117,7 @@ function createServer(site, token) {
     const transfer = Object.hasOwn(req.headersDistinct, "transfer-encoding");
     if (route.startsWith(prefix + "/") || route === prefix) {
       const suffix = route.slice(prefix.length);
-      const read = /^(?:\/capability|\/(?:session|witness)\/[a-f0-9]{32}|\/request\/[A-Za-z0-9_-]{8,80})$/.test(suffix);
+      const read = /^(?:\/capability|\/(?:session|witness|investigation)\/[a-f0-9]{32}|\/request\/[A-Za-z0-9_-]{8,80})$/.test(suffix);
       if (query !== undefined || (!read && suffix !== "/session")) return error(res, 404, "NOT_FOUND");
       if (!(get && read) && !(post && suffix === "/session")) return error(res, 405, "METHOD_REJECTED");
       if (post && requestOrigin !== origin) return error(res, 403, "ORIGIN_REJECTED");
@@ -131,7 +131,7 @@ function createServer(site, token) {
         const { response, bytes } = await gateway(route, req.method, token, body);
         const headers = { "Content-Type": "application/json" };
         const hash = single(response, "x-witness-sha256");
-        if (suffix.startsWith("/witness/") && response.statusCode === 200 && /^[a-f0-9]{64}$/.test(hash || "")) {
+        if ((/^\/(?:witness|investigation)\//).test(suffix) && response.statusCode === 200 && /^[a-f0-9]{64}$/.test(hash || "")) {
           headers["X-Witness-SHA256"] = hash;
           headers["Content-Disposition"] = 'attachment; filename="rpf100-witness.json"';
         }
