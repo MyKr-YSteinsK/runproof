@@ -11,6 +11,15 @@
 | Java Control Plane | Java 17、Maven、`control-plane/pom.xml` | Java 17.0.12、Maven 3.9.16。离线测试与打包通过。完整多服务运行沿用历史验收 |
 | 本机业务环境 | Golden Demo 参照 Docker、PostgreSQL 与 lifecycle；竞赛入口使用本机 Node、CPython SQLite、PowerShell 7.2+ | 本轮审阅与静态复核。新的受控业务会话需要独立目标与资源范围 |
 
+## 本地 Reference Agent
+
+首次在仓库根运行 `npm ci`。设置 `$py` 和 `$node` 为实际 CPython 与 Node 可执行文件的绝对路径。PowerShell 7.2+ 下，日常启动命令为 `.\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node`。启动器输出 URL 和 owner nonce。复用前一次运行时，加 `-Reopen $nonce`；停机用 `.\demo\competition-bundle\stop.ps1 -Nonce $nonce`。解包后在 `app/` 运行同名脚本。入口仅监听 127.0.0.1 的 4187 和 8780。启动器按可执行文件、PID 和创建时间核对进程归属。
+
+1. 新 owner 页面先查询 capability，用户勾选并启动后产生 request 和 session。记录两者及 owner nonce。第二轮意图里的 `input_feedback_sha256` 可回查第一轮独立效果验证。
+2. 若浏览器超时，刷新原地址，或停止后按原 nonce 只读打开 `/effectwitness/agent?session=<id>&event=<seq>`。已知 request 也能从同源的 `/effectwitness-product-api/request/<id>` 读回。已有 owner 无法初始化或记录不匹配时保留目录调查。
+3. 页面调查按原 environment 和 operation 重开目标 SQLite，展示收据与证据缺口。中断可能保留原 `RUNNING`；调查报告将后续动作列为人工处理。完成时下载 Witness，其余状态下载调查报告。用 `& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor` 验证，独立锚从先前保存的可信渠道取得。历史 Witness 使用记录创建时的 verifier。
+4. 本轮中断回归为 `& $py -B -m unittest -v ci.test_rpf115_recovery`，通过受控子进程检查点验证每域上限。对应的源码、模式、样本来源与验收见 [RPF-115](../../spikes/rpf-115/RESULT.md)。
+
 ## 快速校验
 
 按修改选取，在仓库根运行。`python` 表示已核对的解释器。在当前 Windows 终端可用 `& $runproofPython` 调用其确切路径。

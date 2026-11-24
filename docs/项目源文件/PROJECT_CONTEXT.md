@@ -1,6 +1,6 @@
 # RunProof 项目上下文
 
-**版本** 2026-11-23 接管，审查基线 `b076d2c4206683ba96eb8ffc6ae2cd290074af0c`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
+**版本** 2026-11-24 RPF-115，本轮审查基线 `df81b1b8b6e8807dfde598446ed5d05cab9fe3b3`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
 
 ## 目标与已确认范围
 
@@ -10,6 +10,10 @@ RunProof 让 Agent 工程师可以重现、解释并验证工具失败和业务�
 - 测试场景定义可恢复起点、任务、预期与禁止结果、不变量和故障。Run 绑定 Agent、Scenario、Environment、Verifier 版本与 Evaluation 身份。以独立规则和业务读回验证结果。把 Agent 故障、环境中断、证据不足区分呈现；防止无覆盖时误发 `ELIGIBLE`。
 - 保留并解释 `UNKNOWN_OUTCOME` 与 `RECONCILE_REQUIRED`。有副作用的操作先只读对账，明确授权后才考虑后续动作。Agent、Controller、Authority、Verifier、审批和发布资格各有责任。轨迹只保存可观察事件，遵守敏感数据脱敏与可验证历史不静默重写。
 - 原 v1 的真实 Provider 首选 DeepSeek，业务写只在 Controlled Simulation。现有界面支持 Desktop Web 双语、深链、时间线、State Diff 和证据分层。Counterfactual Replay、完整 durable resume、通用 SDK、多 Agent 与生产接入有各自决策条件。
+
+## 当前可演示闭环
+
+仓库与完整工程包提供同一离线 Reference Agent 的新建和只读重开入口。真实 SQLite 订单收据经独立读取后成为第二轮工具意图的输入。子进程中断时用原 nonce、request 或 session 追溯已经消耗的写入，取回提交前观察、读回及缺口；自动续跑仍待独立决定。日常回归覆盖 transport、两种本地产品、Agent、工程包协议与 Web。已知覆盖缺口继续约束 Canonical Gate。[运行手册](RUNBOOK.md) · [本轮实测](../../spikes/rpf-115/RESULT.md)
 
 ## 竞赛历史的适用范围
 
@@ -26,4 +30,4 @@ EffectWitness 提出 Proof-Guided Exploration、Execution/Effect/Experiment 三�
 
 ## 新阶段候选
 
-用户确认作品集价值与实际使用并重，授权本轮治理接管、小范围重构和整理。建议用 `config-center` 的安全配置变更做下一条垂直切片。正式产品目标、真实 Provider、联动写入、旧实现退役及 CI 迁移留待用户确认。[升级评审](UPGRADE_REVIEW.md) · [作品组合](PORTFOLIO.md)
+用户确认作品集价值与实际使用并重，授权本轮治理接管、小范围重构和整理。2026-11-24 起优先完善 RunProof 自身，跨项目接入暂缓。正式产品目标、真实 Provider、联动写入、旧实现退役及 CI 迁移留待用户确认。[升级评审](UPGRADE_REVIEW.md) · [作品组合](PORTFOLIO.md)

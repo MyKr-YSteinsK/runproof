@@ -1,6 +1,10 @@
 # CURRENT_STATE — RunProof / EffectWitness
 
-> 2026-11-23 接管快照。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
+> 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
+
+## 2026-11-24 · RPF-115 rev-1
+
+本轮以 `df81b1b8b6e8807dfde598446ed5d05cab9fe3b3` 为基线。Reference Agent 具备一次性 owner 初始化、绑定 request 的持久预约、提交前观察和两域独立调查。常规运行与子进程中断实测使用隔离 SQLite 和零 Provider。仓库及完整包的版本、收据、恢复及验证证据见 [RPF-115](../../spikes/rpf-115/RESULT.md)。产品 CI 已接入离线 Python、Node、Web 及文档检查；Canonical 的 required coverage 继续独立计量。优先推进项目自身，外部联动暂缓。
 
 ## 当前能力与证据
 

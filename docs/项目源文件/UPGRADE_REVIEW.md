@@ -2,6 +2,15 @@
 
 **状态 `FROZEN_PROPOSAL / PENDING_USER_REVIEW`。** 2026-11-23 基于 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c` 审查。已确认的是作品集与实际使用并重。本轮已落地的维护变更见 [CURRENT_STATE](../project/CURRENT_STATE.md)。下文的产品定位、技术选型、联动和退役顺序均为候选。
 
+## 2026-11-24 已执行范围与后续顺序
+
+RPF-115 授权了持久状态保护、只读重开、本地 Agent 调查页、首屏按需加载、产品回归及工程包准入。对应证据见 [RESULT](../../spikes/rpf-115/RESULT.md)。跨仓联动暂缓。下列改造保留为候选：
+
+1. 先用相同受控状态为两种离线策略建立成对回归，分别统计正确操作、重复效果、停止和证据不足。基线与候选均保留 operation 身份和每域收据。是否增加模型预算另行决定。
+2. 按 Canonical Router 的 required 缺口逐项分类。可用隔离 fixture 重建的情形先通过等价输入、故障时点和门禁结果比对，再提交覆盖迁移方案。旧 spike 的 reader 依赖与被引用样本逐项确认后讨论退役。
+3. `runtime/runproof_runtime/cli.py` 直接依赖 `evaluation.py`。先借 `runtime/tests/test_evaluation.py` 固定 CLI 输出、成员和聚合契约，再拆执行编排。统计估计与质量判定单独用 `test_statistical.py` 的边界样本对照。Java 的 `ControlPlaneController` 与 `DurableExecutionController` 分别承担读模型和持久任务入口；先固定 HTTP 与事务合同再切分，待出现真实跨进程需求后评审存储迁移。
+4. Web 当前将历史 corpus 留在按需加载的 canonical 页面。下一次优化用历史深链的网络清单确定应拆的页面组，分别核对 fixture 与 API 模式；离线主路径已经有同条件实测基线。
+
 ## 1. 产品目标
 
 推荐把 RunProof 的第一句话收敛为 **一个能在受控配置环境中调查、执行并验证变更的 Agent**。使用者是需要判断「工具超时后究竟改没改，能不能继续」的后端维护者、Agent 开发者和评测工程师。实际价值是给危险的歧义提供可查的决策依据。作品价值来自四种能当面展示的工程行为：
