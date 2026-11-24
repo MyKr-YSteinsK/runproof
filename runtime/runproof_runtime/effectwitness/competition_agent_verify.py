@@ -3,6 +3,7 @@ import argparse
 from hashlib import sha256
 import json
 from pathlib import Path
+import re
 
 from .competition_agent import INVARIANTS, LIMITS, MODE, PROFILE, attestation_matches, tool_intent
 from .competition_agent_session import SCHEMA, append, observation, readback, sources
@@ -10,14 +11,36 @@ from .product_local_contracts import REQUEST, SESSION, SUCCESS, canonical, diges
 from .product_local_verify import MAX_WITNESS
 
 
+def verify_snapshot(snapshot, domain, operation=None):
+    key = "order" if domain == "order" else "config"
+    if (type(snapshot) is not dict or set(snapshot) != {key, "receipts"}
+            or type(snapshot["receipts"]) is not list):
+        raise ValueError("AUTHORITY_SCHEMA")
+    for entry in (snapshot[key], *snapshot["receipts"]):
+        if type(entry) is not dict:
+            raise ValueError("AUTHORITY_SCHEMA")
+        for field in ("paid_minor", "refunded_minor", "amount_minor", "revision",
+                      "committed_revision", "effect_count"):
+            if field in entry and type(entry[field]) is not int:
+                raise ValueError("AUTHORITY_TYPE")
+    if operation is not None and any(receipt.get("operation_id") != operation for receipt in snapshot["receipts"]):
+        raise ValueError("AUTHORITY_OPERATION")
+
+
 def verify(raw, anchor=None):
     actual = sha256(raw).hexdigest()
     if len(raw) > MAX_WITNESS or (anchor is not None and actual != anchor):
         raise ValueError("WITNESS_DIGEST")
     envelope = strict(raw)
-    if envelope.get("schema") == "runproof-agent-investigation/v1":
-        from .competition_agent_investigation import verify_report
-        return verify_report(envelope, actual, anchor)
+    schema = envelope.get("schema")
+    if schema != SCHEMA:
+        from .competition_agent_investigation import SCHEMA as investigation_schema, verify_report
+
+        if schema == "runproof-agent-investigation/v1":
+            raise ValueError("INVESTIGATION_LEGACY_SCHEMA")
+        if schema == investigation_schema:
+            return verify_report(envelope, actual, anchor)
+        raise ValueError("WITNESS_SCHEMA")
     session = envelope["session"]
     ident = session["session_id"]
     if not SESSION.fullmatch(ident) or len(session["rounds"]) != 2:
@@ -34,15 +57,8 @@ def verify(raw, anchor=None):
     for step, (contract, row) in enumerate(zip(expected["candidates"], session["rounds"], strict=True), 1):
         domain = contract["candidate"]
         before, after = row["before"], row["after"]
-        key = "order" if domain == "order" else "config"
         for snapshot in (before, after):
-            if set(snapshot) != {key, "receipts"}:
-                raise ValueError("AUTHORITY_SCHEMA")
-            for entry in (snapshot[key], *snapshot["receipts"]):
-                for field in ("paid_minor", "refunded_minor", "amount_minor", "revision",
-                              "committed_revision", "effect_count"):
-                    if field in entry and type(entry[field]) is not int:
-                        raise ValueError("AUTHORITY_TYPE")
+            verify_snapshot(snapshot, domain)
         independent = readback(contract, before, after, expected)
         if independent["outcome"]["contract_outcome"] != SUCCESS:
             raise ValueError("EFFECT_UNCONFIRMED")
@@ -77,8 +93,11 @@ def main():
     try:
         with args.witness.open("rb") as handle:
             result = verify(handle.read(MAX_WITNESS + 1), args.expected_sha256)
-    except (ValueError, IndexError, KeyError, TypeError, AttributeError, OSError, RecursionError):
-        print(json.dumps({"status": "REJECTED"}))
+    except (ValueError, IndexError, KeyError, TypeError, AttributeError, OSError, RecursionError) as exc:
+        reason = str(exc) if isinstance(exc, ValueError) else ""
+        if not re.fullmatch(r"[A-Z][A-Z_0-9]{2,63}", reason):
+            reason = "INVALID_ARTIFACT"
+        print(json.dumps({"status": "REJECTED", "reason": reason}))
         return 3
     print(json.dumps(result))
     return 0

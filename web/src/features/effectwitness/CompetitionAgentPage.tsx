@@ -1,7 +1,10 @@
 import { useEffect, useRef, useState } from "react";
 import { AppShell } from "../../components/AppShell";
 import { useI18n } from "../../i18n";
-import { agentApi, agentMode, mayStart, type AgentCapability, type AgentEvent, type AgentSession } from "./competitionAgentApi";
+import {
+  agentApi, agentMode, investigationSchema, mayStart,
+  type AgentCapability, type AgentEvent, type AgentInvestigation, type AgentSession,
+} from "./competitionAgentApi";
 import "./competition-agent.css";
 
 const pendingKey = "runproof-competition-agent-pending";
@@ -41,6 +44,47 @@ const keyEvents = new Set(["AGENT_INTENT", "GATE_DECISION", "UNKNOWN_OBSERVED", 
 const eventValue = (event: AgentEvent) => event.data.intent?.tool ?? event.data.verdict
   ?? event.data.domain ?? event.data.status ?? event.data.reason;
 
+const faultLabels = [
+  ["planned", "计划注入", "Planned"],
+  ["triggered", "已触发", "Triggered"],
+  ["observed", "已观察", "Observed"],
+  ["agent_exposed", "Agent 收到原始故障", "Agent saw the raw fault"],
+] as const;
+
+export function InvestigationEvidence({ report, label }: {
+  report: AgentInvestigation; label: (cn: string, en: string) => string;
+}) {
+  const currentSchema = report.schema === investigationSchema;
+  const completion = report.summary.task_completion === "REQUIRES_SUCCESS_WITNESS"
+    ? label("已记录完成，使用 Witness 复核", "Completion recorded. Verify the Witness.")
+    : label("任务完成尚未证实", "Task completion unconfirmed");
+  return <section aria-labelledby="ca-investigation">
+    <h3 id="ca-investigation">{label("本次独立只读调查", "Independent read-only investigation")}</h3>
+    {report.summary.domains.map(domain => <div key={domain.domain}>
+      <p><strong>{domain.domain}</strong> · <code>{domain.effect}</code></p>
+      {currentSchema && <dl aria-label={label("故障证据", "Fault evidence")}>
+        {faultLabels.map(([key, cn, en]) => {
+          const value = domain.fault?.[key];
+          return <div key={key}><dt>{label(cn, en)}</dt>
+            <dd>{value === true ? label("是", "Yes") : value === false ? label("否", "No") : label("未知", "Unknown")}</dd>
+          </div>;
+        })}
+      </dl>}
+      {domain.gaps.includes("FAULT_EVENT_NOT_PERSISTED") && <p>{label(
+        "缺少持久化故障事件。业务收据可单独核对。",
+        "The fault event was not persisted. The business receipt can be checked separately.",
+      )}</p>}
+      {domain.gaps.length > 0 && <p><code>{domain.gaps.join(" · ")}</code></p>}
+    </div>)}
+    <p>{report.summary.next}</p>
+    <p>{completion} · {report.issuer === "NOT_ESTABLISHED"
+      ? label("签发者未确立", "Issuer not established") : report.issuer}</p>
+    <p>{currentSchema
+      ? label("网关响应摘要一致。下载后用 CLI 复核内容。", "Gateway response digest matched. Use the CLI to check the exported content.")
+      : label("此诊断版本需用原版校验工具。", "Use the original verifier for this investigation format.")}</p>
+  </section>;
+}
+
 export function CompetitionAgentPage({ search }: { search: string }) {
   const zh = useI18n().locale === "zh-CN";
   const l = (cn: string, en: string) => zh ? cn : en;
@@ -57,7 +101,7 @@ export function CompetitionAgentPage({ search }: { search: string }) {
   const [refresh, setRefresh] = useState(0);
   const generation = useRef(0);
   const submitting = useRef(false);
-  const [report, setReport] = useState<{ next: string; domains: {domain: string; effect: string; gaps: string[]}[] } | null>(null);
+  const [report, setReport] = useState<AgentInvestigation | null>(null);
   useEffect(() => {
     const epoch = ++generation.current;
     const current = () => generation.current === epoch;
@@ -79,9 +123,9 @@ export function CompetitionAgentPage({ search }: { search: string }) {
         setSession(data); setCap(value); setNotice("");
         if (data) {
           const file = await agentApi.investigation(data.session_id);
-          const result = JSON.parse(new TextDecoder().decode(file.bytes));
+          const result: AgentInvestigation = JSON.parse(new TextDecoder().decode(file.bytes));
           if (result.session.session_id !== data.session_id || result.session.owner_id !== data.owner_id) throw Error("SESSION_IDENTITY");
-          if (current()) setReport(result.summary);
+          if (current()) setReport(result);
         }
       } catch (error) {
         if (current()) { setCap(null); setNotice(error instanceof Error && error.message === "GATEWAY_404" ? "IDENTITY_NOT_FOUND" : "READBACK_UNAVAILABLE"); }
@@ -196,9 +240,7 @@ export function CompetitionAgentPage({ search }: { search: string }) {
               <details><summary>{l("故障四态与收据详情", "Fault flags and receipt details")}</summary><pre>{JSON.stringify({ fault: round.fault, receipts: round.after.receipts, feedback: round.feedback }, null, 2)}</pre></details>
             </article>;
           })}
-          {report && <section><h3>{l("本次独立只读调查", "Independent read-only investigation")}</h3>
-            {report.domains.map(d => <p key={d.domain}>{d.domain} · {d.effect} {d.gaps.join(" · ")}</p>)}
-            <p>{report.next}</p></section>}
+          {report && <InvestigationEvidence report={report} label={l} />}
           <h3>{session.status === "COMPLETED" ? "Witness" : l("诊断报告", "Investigation report")}</h3>
           <button type="button" disabled={!cap} onClick={download}>{session.status === "COMPLETED" ? l("下载 Agent Witness", "Download Agent Witness") : l("下载调查报告", "Download investigation")}</button>
           {anchor && <p role="status">SHA-256 <code>{anchor}</code></p>}

@@ -20,6 +20,8 @@
 
     .\start.ps1 -PythonExe <绝对路径> -NodeExe <绝对路径> -Reopen <nonce>
 
-中断时下载调查报告，用同一个 verify-witness.ps1 复核。报告列出已落盘的写前观察、当前 SQLite 收据和仍然缺失的证据。只读打开保留原始运行状态。旧版 Witness 使用其源码版本的 verifier。
+中断时下载调查报告，用同一个 verify-witness.ps1 复核。调查报告 v2 分四项记录故障。若已登记写入意图、故障事件尚未落盘，触发与观察均显示未知。退款收据仍可单独核验。只读打开保留原始运行状态。
+
+复核成功时，`CONTENT_CHECKED_LOCAL` 表示报告通过内容检查，`VERIFIED_ANCHORED` 还表示其摘要与提供的独立锚一致。任务完成由成功 Witness 核验。签发者为 `NOT_ESTABLISHED`。旧诊断与 Witness 请使用生成它们的工程包或匹配的源码版本。
 
 默认运行使用本机受控 SQLite 与离线参考 Agent，每域一次业务写入，Provider 预约为 0。可在界面查看 RunProof 已审阅的平台样本。工程源目录包含 Java Control Plane、DeepSeek Provider 和 JiuwenSwarm MCP 接入，重建步骤见 ARCHITECTURE.md。

@@ -1,6 +1,7 @@
 import { productApi, requestLocalProduct } from "./productLocalApi";
 
 export const agentMode = "OFFLINE_REFERENCE_AGENT";
+export const investigationSchema = "runproof-agent-investigation/v2";
 export type AgentCapability = {
   mode: string; remaining: number; blocked: boolean; provider_reservations: number;
   instance: string | null; owner: string; readonly: boolean; version: string; latest: string | null; profile: string; tools: string[];
@@ -21,6 +22,21 @@ export type AgentSession = {
   candidates: Candidate[]; source: Record<string, string>; events: AgentEvent[];
   rounds: { domain: string; before: Snapshot; after: Snapshot; tool_status: string; fault: Record<string, boolean>;
     outcome: { contract_outcome: string }; feedback: { sha256: string } }[];
+};
+export type AgentInvestigation = {
+  schema: string;
+  issuer: string;
+  session: AgentSession;
+  summary: {
+    next: string;
+    task_completion: string;
+    domains: {
+      domain: string;
+      effect: string;
+      gaps: string[];
+      fault: Partial<Record<"planned" | "triggered" | "observed" | "agent_exposed", boolean | null>>;
+    }[];
+  };
 };
 async function requestAgentJson<T>(route: string, init?: RequestInit): Promise<T> {
   const response = await requestLocalProduct(route, init);
