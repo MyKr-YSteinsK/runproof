@@ -1,6 +1,6 @@
 # RunProof 项目上下文
 
-**版本** 2026-11-25 RPF-118，审查基线 `3bca8f66889992c2b1a128b8a83c43f8c88386af`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
+**版本** 2026-11-25 RPF-119，审查基线 `1ec69addfb7fca5038c4c50b5a41032d100e979e`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
 
 ## 目标与已确认范围
 
@@ -18,6 +18,8 @@ RunProof 让 Agent 工程师可以重现、解释并验证工具失败和业务�
 RPF-117 用同一组本地场景检验两种确定性策略。完整反馈才可获准进入第二步。坏反馈的错误提议及宿主拦截分别计量，未到达第二步的记录进入宿主覆盖，不进入 Agent 第二步判断分母。评测用只读复核关联实际策略选择、原报告和 SQLite 收据。[复跑与边界](../../spikes/rpf-117/RESULT.md)
 
 RPF-118 的仓库 CLI 允许预编写的模型格式回复经过同一 Controller 和 Authority。回复、确定性解析和业务效果分别可查。只读复核使用保存的回复和原台账。两步都报告 Agent 判断，缺失或异常回复不计入决策质量。实测限合成回复与合成 SQLite 目标，真实 Provider 请求为零。[模拟回复对照与真实试验候选](../../spikes/rpf-118/RESULT.md)
+
+RPF-119 rev-2 持久预约并单独记录 DeepSeek 请求阶段，在只读复核时重解析安全投影。实际试验资格和证据由本轮报告说明。一次性预算只覆盖本轮六组合成 SQLite 场景。[RPF-119 结果](../../spikes/rpf-119/RESULT.md)
 
 ## 竞赛历史的适用范围
 

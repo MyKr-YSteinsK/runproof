@@ -36,6 +36,8 @@ In the altered-feedback case, the reference policy stops and the sequence contro
 
 Use `--fixture-model` to compare the reference policy with authored Chat Completions replies. Verification reads the saved replies and SQLite records without sending a request or executing a tool. The report tracks both decisions, business receipts and host safety. The results cover synthetic replies with zero Provider calls. [Run commands and results](spikes/rpf-118/RESULT.md)
 
+The RPF-119 repository CLI adds a bounded DeepSeek experiment for the same six synthetic scenarios, with a durable reservation before each POST and a separate offline verifier. The report distinguishes loopback tests, real requests, observed usage and invoice evidence. [RPF-119 results](spikes/rpf-119/RESULT.md)
+
 ## What it is
 
 RunProof connects a Candidate Agent Version to a stateful evaluation, the observed trajectory and environment state, deterministic evidence, failure investigation, regression history, statistical reliability, and a decision-only Quality Gate.
