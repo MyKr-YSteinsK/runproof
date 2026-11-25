@@ -1,6 +1,6 @@
 # RunProof 项目上下文
 
-**版本** 2026-11-25 RPF-119，审查基线 `1ec69addfb7fca5038c4c50b5a41032d100e979e`，仓库 `MyKr-YSteinsK/runproof`。此文件用于 GPT Project 上传。活跃合同、接受决定和当前事实分别在仓库 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md)、[DECISIONS](../project/DECISIONS.md) 与 [CURRENT_STATE](../project/CURRENT_STATE.md)。执行从根 [AGENTS.md](../../AGENTS.md) 开始。
+**快照基线** 2026-11-25，`MyKr-YSteinsK/runproof` 的 `main@2c242e2838d4b67f9347d000c205c0946685f865`（RPF-120 rev-1 交付）。GPT Project 按 [同步入口](00-START_HERE.md) 使用同提交的版本。恢复时从 [CURRENT_STATE](../project/CURRENT_STATE.md) 读实现、证据和未解决事项，从 [PROJECT_BRIEF](../project/PROJECT_BRIEF.md) 与 [DECISIONS](../project/DECISIONS.md) 核对稳定合同和已接受决定。实际执行以项目根 [AGENTS.md](../../AGENTS.md) 为入口。
 
 ## 目标与已确认范围
 
@@ -19,7 +19,15 @@ RPF-117 用同一组本地场景检验两种确定性策略。完整反馈才可
 
 RPF-118 的仓库 CLI 允许预编写的模型格式回复经过同一 Controller 和 Authority。回复、确定性解析和业务效果分别可查。只读复核使用保存的回复和原台账。两步都报告 Agent 判断，缺失或异常回复不计入决策质量。实测限合成回复与合成 SQLite 目标，真实 Provider 请求为零。[模拟回复对照与真实试验候选](../../spikes/rpf-118/RESULT.md)
 
-RPF-119 rev-2 已完成一次性 DeepSeek 评测。六组合成 SQLite 会话共发送 11 次真实请求，正常场景完成退款和配置变更，五组在配置变更前停手。只读复核重解析保存的回复投影，并核对已落盘的工具意图、预算和业务收据。实际峰值估算 CNY 0.0232572，供应商账单未知。[RPF-119 结果](../../spikes/rpf-119/RESULT.md)
+RPF-119 rev-2 已完成一次性 DeepSeek 评测。六组合成 SQLite 会话共发送 11 次真实请求，正常场景完成退款和配置变更，五组在配置变更前停手。只读复核重解析保存的回复投影，并核对已落盘的工具意图、预算和业务收据。实际峰值估算 CNY 0.0232572，供应商账单未知。一次性调用授权已消费。[RPF-119 结果](../../spikes/rpf-119/RESULT.md)
+
+## RPF-120 覆盖对账
+
+只读工具从同一 Canonical 运行的归档逐项复算 1,232 个必需方法，三阶段缺口为 539 → 534 → 516。`VALID` 表示输入身份、方法集合和覆盖变更可以对账，发行覆盖结论为 `BLOCKED_BY_REQUIRED_COVERAGE`。
+
+Windows x64 的新 NTFS 隔离根通过原 `FactoryContractTests` 30 项，含 junction 拒绝，Provider 0。30 项本机证据独立保存，Canonical 仍有 35 项 `WINDOWS_NATIVE` 缺口，含这 30 项。未来接入需评审同一 run、attempt 和 checkout 下冻结矩阵、源码、精确方法集、Windows 进程回执及 owner/junction 证据的绑定。[RPF-120 结果](../../spikes/rpf-120/RESULT.md) · [只读命令](RUNBOOK.md#归档覆盖对账)
+
+快照基线上的产品 CI 通过，Canonical 仓库合同通过，Canonical Gate 受必需覆盖缺口阻塞。后续按待交付提交查询两条工作流及实际 checkout。[基线产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45572620998) · [基线 Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45572620882)
 
 ## 竞赛历史的适用范围
 
@@ -29,11 +37,11 @@ EffectWitness 提出 Proof-Guided Exploration、Execution/Effect/Experiment 三�
 
 | 入口 | 现有能力 | 当前证据边界 |
 | --- | --- | --- |
-| Golden Demo | Python Runtime、Java/Spring、PostgreSQL、React Web 的既有平台和 reviewed corpus，可调查旧运行和 Release Decision | 历史多服务运行。本轮静态复核；最近核实的 Canonical Release Gate 覆盖检查失败 |
+| Golden Demo | Python Runtime、Java/Spring、PostgreSQL、React Web 的既有平台和 reviewed corpus，可调查旧运行和 Release Decision | RPF-116 复核 reviewed artifact 和 Demo profile。完整多服务运行沿用历史证据 |
 | EffectWitness Workbench | 记录模式展示历史订单与独立运维样本。RPF-95 固定 JiuwenSwarm 版本实测只读 MCP 工具调用 | 记录型，完整依赖环境及真实 LLM 未验收 |
 | EffectWitness Reference Agent | RPF-114/rev-2 单次独立解包会话。Controller 审核意图，订单响应丢失后读回收据，验证反馈后进入配置域，两域各写一个 SQLite 事务 | 确定性策略，Provider 0。Witness 来源绑定可复核，Issuer 未建立。真实 MCP、生产、门户提交未运行 |
 | 历史 live 与 UNKNOWN 研究 | RPF-74 存在副作用结果未知后继续 Provider 预约的反例。RPF-110 真实尝试到达 HTTP 响应，解析进入 UNCERTAIN | 旧费用和实际发送量未知。RPF-110/rev-3 修复只验证离线，RPF-96 仍有本机未交付原型 |
 
-## 新阶段候选
+## 当前优先级与候选
 
-用户确认作品集价值与实际使用并重，授权本轮治理接管、小范围重构和整理。2026-11-24 起优先完善 RunProof 自身，跨项目接入暂缓。正式产品目标、真实 Provider、联动写入、旧实现退役及 CI 迁移留待用户确认。[升级评审](UPGRADE_REVIEW.md) · [作品组合](PORTFOLIO.md)
+用户确认作品集价值与实际使用并重。当前优先完善 RunProof 自身的工具副作用调查和可信验证。config-center 联动仍是待评审候选，RunProof 端现有证据限于固定版本的源码审阅。重大产品或研究方向、架构迁移、新的真实 Provider 调用、外部联动执行、历史实现退役及 Canonical 覆盖准入变更，按各自权限提请用户决定。[升级评审](UPGRADE_REVIEW.md#4-config-center-集成候选) · [作品组合](PORTFOLIO.md)
