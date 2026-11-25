@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-25 · RPF-121 rev-1
+
+确定性策略评测的 `explain` 从同次只读复核导出单场景双列 HTML。坏反馈下，参考策略主动停手，顺序型对照的配置提议被 `FEEDBACK_INPUT_BINDING` 拒绝。两者订单与配置收据均为 1/0。正常反馈下两种策略均完成，收据为 1/1，各自成功 Witness 已核对。缺失诊断和跨会话替换均被拒绝。对账与导出独立于发行覆盖，Provider 0。[验收与复跑](../../spikes/rpf-121/RESULT.md)
+
 ## 2026-11-25 · RPF-120 rev-1
 
 只读对账核对同次 Actions 文件的 1,232 个必需方法，按原始 Router、RPF-87、RPF-89 复算缺口 539 → 534 → 516。Windows x64 的独立 NTFS 隔离根通过原 `FactoryContractTests` 30 项，含一处 junction 拒绝测试。Provider 预约、发送和 token 均为 0。本机复验证据独立保留，Canonical 的 Windows 路由仍有 35 项缺口。[对账与原生复验证据](../../spikes/rpf-120/RESULT.md)

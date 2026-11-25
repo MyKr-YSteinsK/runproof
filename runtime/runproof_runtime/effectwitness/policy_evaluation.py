@@ -16,6 +16,7 @@ from .competition_agent import AgentPolicy, LIMITS, MODE, tool_intent
 from .competition_agent_investigation import SCHEMA as DIAGNOSTIC_SCHEMA
 from .competition_agent_session import SCHEMA as WITNESS_SCHEMA, AgentProduct, sources
 from .competition_agent_verify import verify
+from .policy_evidence_report import render_report
 from .product_local_contracts import SESSION, SUCCESS, canonical, digest, frozen, strict
 from .product_local_ports import OrderPort
 from .product_local_verify import MAX_WITNESS
@@ -351,7 +352,13 @@ def _summary(manifest, rows):
 
 
 def _rooted(path, fixture_model=None):
-    names = ("rpf-118" if fixture_model else "rpf-117",) if fixture_model is not None else ("rpf-117", "rpf-118")
+    if fixture_model:
+        return _scoped(path, "rpf-118")
+    names = ("rpf-117", "rpf-121")
+    return _scoped(path, *names, "rpf-118") if fixture_model is None else _scoped(path, *names)
+
+
+def _scoped(path, *names):
     roots = [storage.ROOT.parent / name for name in names]
     path = Path(os.path.abspath(path))
     if not any(path != root and path.is_relative_to(root) for root in roots):
@@ -430,6 +437,10 @@ def run_suite(output, case=None, *, fixture_model=False):
 
 
 def verify_suite(output):
+    return _verify_suite(output)[0]
+
+
+def _verify_suite(output, explain_case=None):
     output = _rooted(output)
     manifest = strict(_read(output / "suite.json"))
     fixture_model = manifest.get("schema") == MODEL_SCHEMA
@@ -439,11 +450,17 @@ def verify_suite(output):
             or not SESSION.fullmatch(manifest["run_id"])
             or canonical(manifest) != canonical(_manifest(manifest["run_id"], cases, fixture_model))):
         raise ValueError("SUITE_OR_SOURCE_MISMATCH")
+    if explain_case is not None:
+        if fixture_model:
+            raise ValueError("EXPLANATION_REQUIRES_POLICY_COMPARISON")
+        if explain_case not in cases:
+            raise ValueError("EXPLANATION_CASE_NOT_IN_RUN")
     cells = _plain(output / "cases")
     expected = list(_cell_names(manifest))
     if {path.name for path in cells.iterdir()} != {name for _, _, name in expected}:
         raise ValueError("CASE_SET_MISMATCH")
     rows = []
+    evidence = []
     nonces = set()
     sessions = set()
     attempts = set()
@@ -475,10 +492,23 @@ def verify_suite(output):
         if _read(cell / "result.json") != canonical(row):
             raise ValueError("CASE_METRICS_MISMATCH")
         rows.append(row)
+        if case == explain_case:
+            evidence.append((row, strict(diagnostic)))
     summary = _summary(manifest, rows)
     if _read(output / "comparison.json") != canonical(summary):
         raise ValueError("AGGREGATE_MISMATCH")
-    return summary
+    return summary, manifest["run_id"], evidence
+
+
+def explain_case(output, case, html):
+    if case not in SCENARIOS:
+        raise ValueError("SCENARIO_UNKNOWN")
+    html = _scoped(html, "rpf-121")
+    if html.suffix.lower() != ".html" or html.is_relative_to(Path(os.path.abspath(output))):
+        raise ValueError("EXPLANATION_OUTPUT_PATH")
+    _, run_id, evidence = _verify_suite(output, case)
+    _write(html, render_report(run_id, case, evidence).encode("utf-8"))
+    return [row for row, _ in evidence]
 
 
 def _print(summary):
@@ -509,24 +539,35 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     commands = parser.add_subparsers(dest="command", required=True)
     run = commands.add_parser("run", help="Execute a fresh suite or one scenario for both policies")
-    run.add_argument("output", type=Path, help="Fresh directory below .local/rpf-117/ or .local/rpf-118/")
+    run.add_argument("output", type=Path, help="Fresh directory below .local/rpf-117/, .local/rpf-118/ or .local/rpf-121/")
     run.add_argument("--case", choices=SCENARIOS)
     run.add_argument("--fixture-model", action="store_true", help="Compare Reference with saved-response verification")
     check = commands.add_parser("verify", help="Recompute the comparison with read-only SQLite and artifact checks")
     check.add_argument("output", type=Path)
+    explain = commands.add_parser("explain", help="Verify and export the two policies in one scenario to HTML")
+    explain.add_argument("output", type=Path, help="Existing policy comparison directory")
+    explain.add_argument("--case", choices=SCENARIOS, required=True)
+    explain.add_argument("--html", type=Path, required=True, help="New HTML file below .local/rpf-121/")
     args = parser.parse_args()
     try:
-        result = (run_suite(args.output, args.case, fixture_model=args.fixture_model)
-                  if args.command == "run" else verify_suite(args.output))
+        if args.command == "explain":
+            rows = explain_case(args.output, args.case, args.html)
+        else:
+            result = (run_suite(args.output, args.case, fixture_model=args.fixture_model)
+                      if args.command == "run" else verify_suite(args.output))
+            rows = result["cases"]
     except (OSError, sqlite3.Error, ValueError, KeyError, TypeError, IndexError, RecursionError, AttributeError) as exc:
         print(f"COMPARISON_UNAVAILABLE {exc}", file=sys.stderr)
         return 3
-    _print(result)
-    if args.command == "verify":
+    if args.command == "explain":
+        print(args.html)
+    else:
+        _print(result)
+    if args.command != "run":
         print("CONTENT_CHECKED_LOCAL · ISSUER NOT_ESTABLISHED")
     else:
         print(args.output / "comparison.json")
-    if any(not row["valid"] or row["host_safety"] == "FAIL" for row in result["cases"]):
+    if any(not row["valid"] or row["host_safety"] == "FAIL" for row in rows):
         return 2
     return 0
 

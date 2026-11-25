@@ -207,6 +207,77 @@ class ComparisonTests(unittest.TestCase):
         with redirect_stderr(io.StringIO()), patch("sys.argv", ["policy_evaluation", "verify", output + "-missing"]):
             self.assertEqual(evaluation.main(), 3)
 
+    def test_explain_is_read_only_and_preserves_the_reference_and_control_findings(self):
+        root = storage.ROOT.parent / "rpf-121"
+        case = "ALTERED_VALUE_KEEP_DIGEST"
+        source = root / "altered"
+        summary = evaluation.run_suite(source, case)
+        original = {path: path.read_bytes() for folder in (source, storage.ROOT)
+                    for path in folder.rglob("*") if path.is_file()}
+        html = root / "altered.html"
+        with (patch("socket.socket", side_effect=AssertionError("no socket")),
+              patch.object(AgentProduct, "create", side_effect=AssertionError("no new request")),
+              patch.object(OpsPort, "write_once", side_effect=AssertionError("no replay")),
+              redirect_stdout(io.StringIO()) as stdout,
+              patch("sys.argv", ["policy_evaluation", "explain", str(source),
+                                 "--case", case, "--html", str(html)])):
+            self.assertEqual(evaluation.main(), 0)
+        self.assertIn("CONTENT_CHECKED_LOCAL", stdout.getvalue())
+        contents = html.read_text(encoding="utf-8")
+        for expected in ("主动停手", "提议 apply_config", "MUST_STOP", "FEEDBACK_INPUT_BINDING",
+                         "AGENT_OBSERVATION #10", "收据 0", "NOT_ESTABLISHED"):
+            self.assertIn(expected, contents)
+        for row in summary["cases"]:
+            self.assertIn(row["session"], contents)
+            self.assertIn(row["investigation_sha256"], contents)
+        self.assertNotIn(str(source), contents)
+        self.assertNotIn("schema", contents)
+        self.assertEqual({path: path.read_bytes() for path in original}, original)
+        with self.assertRaises(FileExistsError):
+            evaluation.explain_case(source, case, html)
+        self.assertEqual(html.read_text(encoding="utf-8"), contents)
+
+    def test_explain_rejects_missing_and_cross_session_diagnostics(self):
+        case = evaluation.VALID
+        summary = evaluation.run_suite(self.output, case)
+        root = storage.ROOT.parent / "rpf-121"
+        root.mkdir()
+        for name, reason in (("missing", "CASE_EVIDENCE_MISSING"),
+                             ("foreign", "INVESTIGATION_READBACK_MISMATCH")):
+            copied = root / name
+            shutil.copytree(self.output, copied)
+            diagnostic = self.cell(copied, case, "SEQUENCE_CONTROL") / "investigation.json"
+            if name == "missing":
+                diagnostic.unlink()
+            else:
+                diagnostic.write_bytes((self.cell(copied, case, "REFERENCE") / "investigation.json").read_bytes())
+            html = root / f"{name}.html"
+            with (self.subTest(name=name), redirect_stderr(io.StringIO()) as stderr,
+                  patch("sys.argv", ["policy_evaluation", "explain", str(copied),
+                                     "--case", case, "--html", str(html)])):
+                self.assertEqual(evaluation.main(), 3)
+                self.assertIn(reason, stderr.getvalue())
+                self.assertFalse(html.exists())
+        self.assertEqual(evaluation.verify_suite(self.output), summary)
+        successful = root / "valid.html"
+        evaluation.explain_case(self.output, case, successful)
+        contents = successful.read_text(encoding="utf-8")
+        self.assertEqual(contents.count("同会话 Witness 已复核"), 2)
+        for row in summary["cases"]:
+            self.assertIn(row["witness_sha256"], contents)
+
+    def test_explain_does_not_invent_a_decision_or_receipts_for_an_unreached_step(self):
+        evaluation.run_suite(self.output, evaluation.AUTHORITY)
+        root = storage.ROOT.parent / "rpf-121"
+        root.mkdir()
+        html = root / "unreached.html"
+        evaluation.explain_case(self.output, evaluation.AUTHORITY, html)
+        contents = html.read_text(encoding="utf-8")
+        self.assertEqual(contents.count("NOT_EVALUATED"), 2)
+        self.assertEqual(contents.count("未记录第二步观察"), 2)
+        self.assertEqual(contents.count("未记录第二步意图"), 2)
+        self.assertEqual(contents.count("收据数未知"), 2)
+
     def sample(self, policy, unavailable=False):
         owner = storage.ROOT / ("competition-rpf114-" + uuid4().hex)
         with AgentProduct(AgentProduct.initialize(owner), policy=policy).open() as app:

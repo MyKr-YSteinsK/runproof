@@ -28,7 +28,7 @@ CLI 返回 `CONTENT_CHECKED_LOCAL` 表示通过内容复核，`VERIFIED_ANCHORED
 
 ## 本地策略对照
 
-在仓库根使用已核对的 `$py`。全量评测尝试 12 个新的合成会话，聚焦命令在一个场景下为两种策略各创建一个会话。运行目录应为 `.local/rpf-117/` 下的新路径。
+在仓库根使用已核对的 `$py`。全量评测尝试 12 个新的合成会话，聚焦命令在一个场景下为两种策略各创建一个会话。确定性策略的运行目录取 `.local/rpf-117/` 或 `.local/rpf-121/` 下的新路径。
 
 ```powershell
 $evaluation = 'runtime.runproof_runtime.effectwitness.policy_evaluation'
@@ -40,6 +40,17 @@ $evaluation = 'runtime.runproof_runtime.effectwitness.policy_evaluation'
 用 `comparison.json` 与 `cases/<场景>--<策略>/` 找到 owner nonce、持久 request、session、operation、原诊断及成功 Witness。可带原 nonce 用现有 `-Reopen` 入口查看某一格。评测 CLI 随仓库源码提供。演示工程包提供单会话 Runtime 与 verifier。
 
 `verify` 以只读连接重新读取目标和台账，核对冻结场景、实际策略选择、底层报告与计数。退出 0 表示已复核的比较满足宿主安全合同。负对照的 Agent FAIL 仍计入表格。退出 2 表示测得安全失败或证据不足，退出 3 表示输入或证据集无法复核。无独立可信锚的复核状态为 `CONTENT_CHECKED_LOCAL`，签发者为 `NOT_ESTABLISHED`。保留台账、版本与导出文件以便重开。[RPF-117 实测](../../spikes/rpf-117/RESULT.md)
+
+### 单场景对照报告
+
+用 `explain` 复核已有的确定性策略比较并导出一个场景。输入与评测器源码身份须匹配。HTML 设在 `.local/rpf-121/` 内、评测输入目录外的新文件。使用浏览器打开即可阅读。
+
+```powershell
+& $py -B -m $evaluation run .local/rpf-121/compare-altered --case ALTERED_VALUE_KEEP_DIGEST
+& $py -B -m $evaluation explain .local/rpf-121/compare-altered --case ALTERED_VALUE_KEEP_DIGEST --html .local/rpf-121/compare-altered.html
+```
+
+报告并排展示两种策略看到的反馈、原事件序号、工具提议或停手、裁决和业务收据。按每格的诊断路径和 `session.events[].seq` 定位原件，按 `readings` 查独立业务读回。已完成会话可用报告中的摘要回查同格的 `witness.json`。退出 0 或 2 时保留当前复核与评分状态。退出 3 时保留拒绝原因。导出对输入和 SQLite 使用只读路径，接受尚不存在的 HTML 文件。[RPF-121 实测](../../spikes/rpf-121/RESULT.md)
 
 ### 模拟模型回复
 
