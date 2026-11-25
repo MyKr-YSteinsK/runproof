@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-25 · RPF-120 rev-1
+
+只读对账核对同次 Actions 文件的 1,232 个必需方法，按原始 Router、RPF-87、RPF-89 复算缺口 539 → 534 → 516。Windows x64 的独立 NTFS 隔离根通过原 `FactoryContractTests` 30 项，含一处 junction 拒绝测试。Provider 预约、发送和 token 均为 0。本机复验证据独立保留，Canonical 的 Windows 路由仍有 35 项缺口。[对账与原生复验证据](../../spikes/rpf-120/RESULT.md)
+
 ## 2026-11-25 · RPF-119 rev-2
 
 已完成六组真实 DeepSeek 和六组 Reference 对照。两条路径首步均为 6/6、第二步为 5/5、宿主安全为 6/6，各有一个完整双域任务。DeepSeek 发出 11 次请求，均返回 HTTP 200，自动重试和未知消耗均为 0。API 报告输入 11,151、输出 433 token，峰值估算 CNY 0.0232572，账单 `UNKNOWN`。原账本及业务收据只读复核通过，正式试验的 165 个文件逐项一致。一次性授权已消费。[验收与试验状态](../../spikes/rpf-119/RESULT.md)
@@ -34,7 +38,7 @@
 ## 安全、CI 与本地现场
 
 - **RPF-74 原生 UNKNOWN 缺口仍有反证。** Config `UNKNOWN_OUTCOME` WAL seq199 后仍 `provider RESERVE` seq205/233，Order seq427 后仍 seq433/461。RPF-80/81/95/96 与后续受限路径的实验范围各自独立。旧现场送出额度 `UNVERIFIED`。[维护归档](../history/MAINTENANCE_ARCHIVE.md)
-- **产品 CI 与发行基线。** 产品 CI 覆盖 Provider 0 请求与预算回归。RPF-119 继续试验的基线 `a5de9c0d42eff0254fad34b7efe9d08a9bf1c52f` 通过产品 CI 与 Canonical 仓库合同检查。两步 required coverage 分别缺 534 和 516，发行受阻。按交付 SHA 查询对应运行。[继续试验基线产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45533596465) · [继续试验基线 Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45533596647)
+- **产品 CI 与发行基线。** 产品 CI 覆盖 Provider 0 请求与预算回归，以及 RPF-120 的只读对账。RPF-120 的审查基线 `d959030c74744fc3de1bbaff93703a80b9ab25aa` 通过产品 CI 与 Canonical 仓库合同检查。两步 required coverage 分别缺 534 和 516，发行受阻。按交付 SHA 查询对应运行。[审查基线产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45548688568) · [审查基线 Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45548688606)
 - **CI 基线（2026-11-24）。** RPF-116 的审查基线 `93f2151cdeadec8e106603ad54b882f5b383f82b` 上，产品 CI 通过。Canonical 的仓库合同检查通过，两步 required coverage 仍缺 534 和 516，发行受阻。较早的记录见 [接管前 Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42839529972) 与 [RPF-98](https://github.com/MyKr-YSteinsK/runproof/actions/runs/42497172434)。[基线产品 CI](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45387631184) · [基线 Canonical Gate](https://github.com/MyKr-YSteinsK/runproof/actions/runs/45387780159)
 - **本机存在未交付研究工作。** `RPF-74/rev-4` 与 `RPF-96` 相关原型在接管时未跟踪，未纳入接管提交。RPF-96 仍以 `LOCAL_REPORTED_NOT_REMOTE_VERIFIED` 记录。旧 Python Install Manager 意外安装事件的 owner 外影响未核实。普通开发使用已核实解释器。[运行与恢复](../项目源文件/RUNBOOK.md)
 - **2026-11-23 接管时的聚焦验证。** Web 77 项、TypeScript 和生产构建通过，构建有大 chunk 提示。Python Control Plane client、HTTP transport 和 durable worker 共 8 项，reviewed artifacts 与 Golden Demo profile 静态检查通过。Maven 离线测试 16 项和 Java 打包通过。

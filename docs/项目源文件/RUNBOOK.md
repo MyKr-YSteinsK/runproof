@@ -101,3 +101,7 @@ mvn -q -B test package -f control-plane/pom.xml
 普通授权交付沿用 `main` 及 scoped commit/push。检查 GitHub 身份和目标远端，核对推送可能触发的工作流，推送后读回 SHA、关键文件和运行状态。Canonical Gate 是发行证据，失败时保留状态与 required coverage。旧手动 Provider 或 conformance workflow 有独立授权和预算，任何一轮的旧配置不自动续用。
 
 Runtime Router 按 `ci/runtime-contract-test-matrix.json` 检验 `runtime/tests/test_*.py` 的清单及 LF SHA-256，coverage handoff 也绑定整个 matrix。`SOURCE_DRIFT` 表示输入身份校验失败，可能在 Router 生成账本前终止。接管新增的 HTTP transport 负控在 `ci/test_control_plane_client_transport.py` 聚焦执行，已有封存测试与覆盖条件仍可独立核验。
+
+### 归档覆盖对账
+
+从同一 Canonical run 与 attempt 取 RPF-85、RPF-87、RPF-89 JSON，可加对应 RPF-90 观察。回查 Actions 的 ZIP 摘要和 checkout，使用 `python -B -m ci.rpf120_reconcile --handoff $handoff --rpf87 $rpf87 --rpf89 $rpf89 --rpf90 $router`。退出 0 表示证据对账成功，发行覆盖结论见 JSON 的 `coverage_gate`。退出 2 保留具体的证据冲突。原 Windows 测试从新 NTFS 隔离根运行，保留 junction 及原进程证据，清单不遍历链接。[正式原件、命令和实测](../../spikes/rpf-120/RESULT.md)
