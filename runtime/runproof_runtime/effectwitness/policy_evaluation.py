@@ -242,10 +242,13 @@ def _assess_steps(result, record, exchanges):
 
 def _create(selection, transport=None):
     owner = AgentProduct.initialize(_owner(selection))
-    case = selection["scenario"]
     request = _request(selection)
     policy = (model.FixtureModelPolicy(owner, selection, request, transport)
               if selection["policy"] == model.MODE else POLICIES[selection["policy"]]())
+    _execute(owner, selection["scenario"], request, policy)
+
+
+def _execute(owner, case, request, policy):
     app = AgentProduct(owner, policy=policy, feedback_view=lambda verified: feedback_view(case, verified))
     args = {"mode": MODE, "request_id": request}
     with app.open():
@@ -266,12 +269,10 @@ def _create(selection, transport=None):
             app.create(args)
 
 
-def _read_sample(selection, manifest):
-    request = _request(selection)
-    owner = _owner(selection)
+def _read_execution(owner, request, source):
     with AgentProduct(owner).open(readonly=True) as app:
         record, witness = app.lookup("request", request)
-        if record is None or record["request_id"] != request or record["source"] != manifest["runtime_source"]:
+        if record is None or record["request_id"] != request or record["source"] != source:
             raise ValueError("CASE_REQUEST_OR_SOURCE_MISMATCH")
         report = app.investigate(record)
 
@@ -283,6 +284,13 @@ def _read_sample(selection, manifest):
         verify(witness)
         if strict(witness)["session"] != record:
             raise ValueError("WITNESS_SESSION_MISMATCH")
+    return record, report, diagnostic, witness
+
+
+def _read_sample(selection, manifest):
+    request = _request(selection)
+    owner = _owner(selection)
+    record, report, diagnostic, witness = _read_execution(owner, request, manifest["runtime_source"])
     exchanges = []
     if selection["policy"] == model.MODE:
         exchanges = model.verify_exchanges(owner, selection, record)

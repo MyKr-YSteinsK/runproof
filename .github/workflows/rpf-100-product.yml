@@ -12,6 +12,7 @@ on:
       - 'spikes/rpf-116/**'
       - 'spikes/rpf-117/**'
       - 'spikes/rpf-118/**'
+      - 'spikes/rpf-119/**'
       - 'spikes/rpf-4[3467]/*.json'
       - 'docs/**'
       - 'README*.md'
@@ -44,7 +45,7 @@ jobs:
           runtime.tests.test_durable_worker ci.test_rpf100_product ci.test_rpf112_competition
           ci.test_rpf114_competition_agent ci.test_rpf113_competition_bundle ci.test_rpf114_competition_bundle
           ci.test_rpf115_recovery ci.test_rpf116_investigation ci.test_policy_evaluation
-          ci.test_fixture_model_evaluation
+          ci.test_fixture_model_evaluation ci.test_rpf119_live
       - run: node --test ci/test_rpf113_competition_server.mjs
       - run: npm ci
       - run: npm test
