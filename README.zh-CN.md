@@ -36,7 +36,7 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 
 用 `--fixture-model` 对照参考策略和预编写的 Chat Completions 回复。复核只读保存的回复和 SQLite 记录，全程无需发送请求或执行工具。报告给出两步决策、业务收据和宿主安全结果。实测覆盖合成回复，Provider 调用为零。[运行命令与实测](spikes/rpf-118/RESULT.md)
 
-RPF-119 为同样六组虚构业务场景增加了有界 DeepSeek 试验入口。每次 POST 前先持久预约，离线 verifier 单独复核。验收报告分别记录回环测试、真实请求、已观察用量和账单证据。[RPF-119 实测](spikes/rpf-119/RESULT.md)
+RPF-119 用 11 次真实 DeepSeek 请求完成六组虚构业务场景的评测。正常场景完成退款和配置变更，其余五组均在配置变更前停手。离线复核通过，依据是保存的回复、预算账本和 SQLite 收据。[RPF-119 实测](spikes/rpf-119/RESULT.md)
 
 ## 它是什么
 

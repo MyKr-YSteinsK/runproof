@@ -54,15 +54,12 @@ $evaluation = 'runtime.runproof_runtime.effectwitness.policy_evaluation'
 
 ### RPF-119 的真实模型与离线复核
 
-RPF-119 使用获批的固定 manifest、当日前置验收及独占任务预约。正式路径仅认 `.local/rpf-119/experiment/`。准备后运行时使用前置验收给出的 manifest SHA-256。执行进程退出后按原账本只读复核，保留预约、接收和结束记录。凭据从已配置的 `DEEPSEEK_API_KEY` 读取，实际账户币种用已核实的 `DEEPSEEK_BILLING_CURRENCY` 声明。预检只检查本地条件。
+RPF-119 的一次性授权已消费。正式证据位于 `.local/rpf-119/experiment/`，原启动命令与 manifest 摘要保存在 `.local/rpf-119/live-launch-rev2.json`。继续调查使用 `verify`，保留原 grant、claim 和账本。验证器无需凭据或账户币种。
 
 ```powershell
 $live = 'runtime.runproof_runtime.effectwitness.rpf119_live'
-& $py -B -m $live preflight
-& $py -B -m $live run --manifest-sha256 $approvedManifestSha
 & $py -B -m $live verify
 & $py -B -m $live verify --local-stub .local/rpf-119/stub-acceptance/experiment
-& $py -B -m unittest -v ci.test_rpf119_live
 ```
 
 在 `provider-journal/` 查持久预约、可能发送、POST 写出、响应头及结束证据。按 `cases/<场景>--<策略>/result.json` 找 request、session、owner nonce 和 SQLite 诊断。单会话 Witness 使用本地业务合同，真实消耗以外层比较和 Provider ledger 为准。复核只读取原件及脱敏投影。试验状态与已观察的成本见验收报告。[RPF-119 结果](../../spikes/rpf-119/RESULT.md)
