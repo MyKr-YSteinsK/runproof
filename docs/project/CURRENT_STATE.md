@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-26 · RPF-123 rev-1
+
+R72r2 专用运行器候选的三个原方法在新 Windows NTFS 隔离根全部通过。独立只读复核确认未授权 SQLite 预约被拒绝、会话仅预约和结算一次，以及响应丢失后合成退款仅有一条收据。Provider 0。本机结果供评审同类扩样，三项在 Canonical 仍为 `UNAVAILABLE`。[复验与边界](../../spikes/rpf-123/RESULT.md)
+
 ## 2026-11-26 · RPF-122 rev-1
 
 基线与说明候选分别从干净 Windows 检出复跑 Reference Agent 与两组策略对照。修订中英 README 的无锚 Witness 校验和单场景报告入口。订单响应丢失后，独立读回确认原 operation 只有一条退款收据，同一 nonce 只读重开未增加请求或收据。坏反馈组区分主动停手与 Controller 拦截，正常组各自完成双域操作。Provider 0。本机验收 A01–A04 通过，托管 CI 状态按提交独立记录。[实测与命令](../../spikes/rpf-122/RESULT.md)
