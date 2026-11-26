@@ -12,15 +12,24 @@ On Windows, install PowerShell 7.2+, Node 22+ and CPython 3.11+ with SQLite. In 
 .\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node
 ```
 
-Open the printed URL and save the nonce. Confirm the run once. Follow the order intent, lost local tool return, independent SQLite receipt and the verified feedback consumed by the configuration step. The offline rule policy uses synthetic business state and zero Provider calls. Download the Witness or investigation report. To investigate after stopping, reopen the same owner in read-only mode.
+Open the printed URL and save the nonce. Confirm one run. In **Action timeline**, inspect the `refund_order` intent, `UNKNOWN_OUTCOME`, and the order Authority readback. Select the refund intent and open **Inspect selected event bindings** for its `action_id`. Match it to the single receipt's `operation_id` under **Order refund → Fault flags and receipt details**. That receipt confirms the refund committed despite the suppressed tool response. Compare the verified feedback's digest with the input feedback SHA-256 for `apply_config`. The Controller approves that change as a separate operation. Both actions use synthetic business state and zero Provider calls.
+
+Download the successful Witness or the investigation report for an interrupted run. Set `$file` to the downloaded JSON's absolute path. In the same checkout, verify its content.
+
+```powershell
+& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file
+```
+
+`CONTENT_CHECKED_LOCAL` records content verification. The external issuer remains `NOT_ESTABLISHED`. Add `--expected-sha256 $anchor` only when `$anchor` contains a digest obtained from an independent trusted channel. In investigation v2, unknown trigger or observation means the durable fault evidence is missing. Check the SQLite receipt separately. Use the original source version for older artifacts.
+
+Set `$nonce` to the nonce printed at launch. Stop the services and reopen the same owner in read-only mode.
 
 ```powershell
 .\demo\competition-bundle\stop.ps1 -Nonce $nonce
 .\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node -Reopen $nonce
-& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor
 ```
 
-The optional anchor must come from an independent trusted channel. Without it the CLI checks internal content. In investigation v2, an unknown trigger or observation means the durable fault evidence is missing. The SQLite receipt is checked separately. Use the original source version to verify older artifacts and the same stop command when finished. [Engineering package](demo/competition-bundle/README-COMPLETE.zh-CN.md)
+At the printed URL, check the same session and receipt. Append `?session=<id>&event=<seq>` to jump to a recorded event. Use the same stop command when finished. [Engineering package](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
 ### Compare local decision policies
 
@@ -33,6 +42,8 @@ From the repository root, run the six-scenario suite or select one case. Each sc
 ```
 
 In the altered-feedback case, the reference policy stops and the sequence control proposes a configuration change that the Controller rejects. The default comparison uses deterministic policies and zero Provider calls. [Runbook](docs/项目源文件/RUNBOOK.md) · [Observed comparison](spikes/rpf-117/RESULT.md)
+
+Use `run → verify → explain` for one scenario and open the HTML in a browser. Its two columns show feedback, intent, Controller decision, and independent receipts. The original investigation path and event sequence lead back to each policy's evidence. [Single-scenario commands](docs/项目源文件/RUNBOOK.md#单场景对照报告) · [Evidence example](spikes/rpf-121/RESULT.md)
 
 Use `--fixture-model` to compare the reference policy with authored Chat Completions replies. Verification reads the saved replies and SQLite records without sending a request or executing a tool. The report tracks both decisions, business receipts and host safety. The results cover synthetic replies with zero Provider calls. [Run commands and results](spikes/rpf-118/RESULT.md)
 
@@ -94,7 +105,7 @@ The RPF-114 offline reference Agent demonstrated a local refund followed by a co
 
 The optional Windows local profile opens `/effectwitness/live-local` for a new fictional SQLite session. A deterministic rule policy selects the configuration round from independently verified order feedback, with zero Provider reservations. [Local product guide](docs/EFFECTWITNESS_LOCAL_PRODUCT.md)
 
-The recorded EffectWitness workbench is available on `main` at `/effectwitness/workbench`. The Node.js-only static package walks through order/refund research and a separate historical operations Witness. Its recorded mode requires no Provider credentials or business backend. See the [delivery guide](docs/EFFECTWITNESS_DELIVERY.md) for build, package and offline evidence verification.
+The historical EffectWitness workbench is available on `main` at `/effectwitness/workbench`. The Node.js-only static package walks through order/refund research and a separate historical operations Witness. Its recorded mode requires no Provider credentials or business backend. See the [delivery guide](docs/EFFECTWITNESS_DELIVERY.md) for build, package and offline evidence verification.
 
 ## Evidence-backed boundary
 

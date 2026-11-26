@@ -12,15 +12,24 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 .\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node
 ```
 
-打开启动器给出的地址，保留 nonce。勾选确认并运行一次。沿时间线查看退款意图、被抑制的本地工具返回、独立 SQLite 收据，以及第二步配置变更所依赖的反馈。规则策略只操作虚构业务状态，Provider 调用为零。可下载 Witness 或调查报告。停机后使用原 nonce 只读重开。
+打开启动器给出的地址，保留 nonce。勾选确认并运行一次。在**行动时间线**查看 `refund_order` 意图、`UNKNOWN_OUTCOME` 和订单的 Authority 独立读回。选择退款意图，在**查看所选事件的绑定**中找到 `action_id`，再到**订单退款 → 故障四态与收据详情**核对唯一一条收据的 `operation_id`。这条收据确认退款在工具响应被抑制前已提交。再核对已验证反馈的摘要与 `apply_config` 的输入反馈 SHA-256。配置变更是 Controller 单独批准的业务动作。两步都只操作虚构业务状态，Provider 调用为零。
+
+完成后下载成功 Witness。若运行中断，下载调查报告。将 `$file` 设为下载所得 JSON 的绝对路径，在同一检出中复核内容。
+
+```powershell
+& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file
+```
+
+`CONTENT_CHECKED_LOCAL` 表示内容复核通过，外部签发者为 `NOT_ESTABLISHED`。只有从独立可信渠道获得摘要后，才将其赋给 `$anchor` 并添加 `--expected-sha256 $anchor`。调查报告 v2 中，触发或观察为未知表示缺少持久化故障证据。SQLite 收据可单独核验。旧文件请用匹配的原源码版本复核。
+
+将 `$nonce` 设为启动器输出的 nonce。停机后用同一 nonce 只读重开。
 
 ```powershell
 .\demo\competition-bundle\stop.ps1 -Nonce $nonce
 .\demo\competition-bundle\start.ps1 -PythonExe $py -NodeExe $node -Reopen $nonce
-& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor
 ```
 
-可选的 `$anchor` 应来自独立可信渠道。省略该参数时 CLI 只复核内容。调查报告 v2 中，触发或观察为未知表示缺少持久化故障证据。SQLite 收据可单独核验。旧文件请用匹配的原源码版本复核。调查结束后使用相同的停止命令。[工程包说明](demo/competition-bundle/README-COMPLETE.zh-CN.md)
+打开启动器给出的地址，核对同一会话及原收据。可追加 `?session=<id>&event=<seq>` 直达已记录的事件。调查结束后使用相同的停止命令。[工程包说明](demo/competition-bundle/README-COMPLETE.zh-CN.md)
 
 ### 比较本地决策策略
 
@@ -33,6 +42,8 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 ```
 
 反馈内容被改动时，参考策略停手，顺序型对照仍提出配置变更，随后由 Controller 拒绝。默认对照使用确定性策略，Provider 调用为零。[运行手册](docs/项目源文件/RUNBOOK.md) · [实测对照](spikes/rpf-117/RESULT.md)
+
+对单个场景执行 `run → verify → explain`，在浏览器打开 HTML。两列分别展示反馈、意图、Controller 裁决和独立收据。按原诊断路径和事件序号可回查两种策略各自的证据。[单场景命令](docs/项目源文件/RUNBOOK.md#单场景对照报告) · [证据示例](spikes/rpf-121/RESULT.md)
 
 用 `--fixture-model` 对照参考策略和预编写的 Chat Completions 回复。复核只读保存的回复和 SQLite 记录，全程无需发送请求或执行工具。报告给出两步决策、业务收据和宿主安全结果。实测覆盖合成回复，Provider 调用为零。[运行命令与实测](spikes/rpf-118/RESULT.md)
 
@@ -94,7 +105,7 @@ RPF-114 离线参考 Agent 在本地演示了先退款、后变更配置。Contr
 
 可选的 Windows 本地配置通过 `/effectwitness/live-local` 创建虚构 SQLite 会话。确定性策略根据独立核验的订单反馈选择配置实验，Provider 预约为零。[本地产品指南](docs/EFFECTWITNESS_LOCAL_PRODUCT.zh-CN.md)
 
-`main` 的 `/effectwitness/workbench` 提供记录型工作台。静态包仅需 Node.js，分别展示订单退款研究与独立的历史运维 Witness。记录模式无需 Provider 凭据或业务后端。构建、打包与离线证据复核见[交付指南](docs/EFFECTWITNESS_DELIVERY.zh-CN.md)。
+`main` 的 `/effectwitness/workbench` 提供历史记录工作台。静态包仅需 Node.js，分别展示订单退款研究与独立的历史运维 Witness。记录模式无需 Provider 凭据或业务后端。构建、打包与离线证据复核见[交付指南](docs/EFFECTWITNESS_DELIVERY.zh-CN.md)。
 
 ## 有证据支持的边界
 

@@ -17,7 +17,7 @@
 
 1. 新 owner 页面先查询 capability，用户勾选并启动后产生 request 和 session。记录两者及 owner nonce。第二轮意图里的 `input_feedback_sha256` 可回查第一轮独立效果验证。
 2. 若浏览器超时，刷新原地址，或停止后按原 nonce 只读打开 `/effectwitness/agent?session=<id>&event=<seq>`。已知 request 也能从同源的 `/effectwitness-product-api/request/<id>` 读回。已有 owner 无法初始化或记录不匹配时保留目录调查。
-3. 页面调查按原 environment 和 operation 重开目标 SQLite，展示收据与证据缺口。中断可能保留原 `RUNNING`；调查报告将后续动作列为人工处理。完成时下载 Witness，其余状态下载调查报告。用 `& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file --expected-sha256 $anchor` 验证，独立锚从先前保存的可信渠道取得。历史 Witness 使用记录创建时的 verifier。
+3. 页面调查按原 environment 和 operation 重开目标 SQLite，展示收据与证据缺口。中断可能保留原 `RUNNING`，调查报告将后续动作列为人工处理。完成时下载 Witness，其余状态下载调查报告。将 `$file` 设为下载所得 JSON 的绝对路径，用 `& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file` 复核内容。有独立可信摘要时才添加 `--expected-sha256 $anchor`。历史 Witness 使用记录创建时的 verifier。
 4. 持久预约及中断回归运行 `& $py -B -m unittest -v ci.test_rpf115_recovery ci.test_rpf116_investigation`。RPF-116 的检查点包含进入 `ResponseLost` 分支以后、写入 `UNKNOWN_OBSERVED` 以前的位置。[运行证据与复现](../../spikes/rpf-116/RESULT.md)
 
 ### 调查报告 v2
@@ -47,10 +47,11 @@ $evaluation = 'runtime.runproof_runtime.effectwitness.policy_evaluation'
 
 ```powershell
 & $py -B -m $evaluation run .local/rpf-121/compare-altered --case ALTERED_VALUE_KEEP_DIGEST
+& $py -B -m $evaluation verify .local/rpf-121/compare-altered
 & $py -B -m $evaluation explain .local/rpf-121/compare-altered --case ALTERED_VALUE_KEEP_DIGEST --html .local/rpf-121/compare-altered.html
 ```
 
-报告并排展示两种策略看到的反馈、原事件序号、工具提议或停手、裁决和业务收据。按每格的诊断路径和 `session.events[].seq` 定位原件，按 `readings` 查独立业务读回。已完成会话可用报告中的摘要回查同格的 `witness.json`。退出 0 或 2 时保留当前复核与评分状态。退出 3 时保留拒绝原因。导出对输入和 SQLite 使用只读路径，接受尚不存在的 HTML 文件。[RPF-121 实测](../../spikes/rpf-121/RESULT.md)
+复跑正常反馈时，另取新目录和 HTML 文件名，场景换为 `VALID_FEEDBACK`。报告并排展示两种策略看到的反馈、原事件序号、工具提议或停手、裁决和业务收据。按每格的诊断路径和 `session.events[].seq` 定位原件，按 `readings` 查独立业务读回。已完成会话可用报告中的摘要回查同格的 `witness.json`。退出 0 或 2 时保留当前复核与评分状态。退出 3 时保留拒绝原因。导出对输入和 SQLite 使用只读路径，接受尚不存在的 HTML 文件。[RPF-121 实测](../../spikes/rpf-121/RESULT.md)
 
 ### 模拟模型回复
 
