@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-26 · RPF-122 rev-1
+
+基线与说明候选分别从干净 Windows 检出复跑 Reference Agent 与两组策略对照。修订中英 README 的无锚 Witness 校验和单场景报告入口。订单响应丢失后，独立读回确认原 operation 只有一条退款收据，同一 nonce 只读重开未增加请求或收据。坏反馈组区分主动停手与 Controller 拦截，正常组各自完成双域操作。Provider 0。本机验收 A01–A04 通过，托管 CI 状态按提交独立记录。[实测与命令](../../spikes/rpf-122/RESULT.md)
+
 ## 2026-11-25 · RPF-121 rev-1
 
 确定性策略评测的 `explain` 从同次只读复核导出单场景双列 HTML。坏反馈下，参考策略主动停手，顺序型对照的配置提议被 `FEEDBACK_INPUT_BINDING` 拒绝。两者订单与配置收据均为 1/0。正常反馈下两种策略均完成，收据为 1/1，各自成功 Witness 已核对。缺失诊断和跨会话替换均被拒绝。对账与导出独立于发行覆盖，Provider 0。[验收与复跑](../../spikes/rpf-121/RESULT.md)
