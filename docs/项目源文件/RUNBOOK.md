@@ -76,6 +76,23 @@ $live = 'runtime.runproof_runtime.effectwitness.rpf119_live'
 
 在 `provider-journal/` 查持久预约、可能发送、POST 写出、响应头及结束证据。按 `cases/<场景>--<策略>/result.json` 找 request、session、owner nonce 和 SQLite 诊断。单会话 Witness 使用本地业务合同，真实消耗以外层比较和 Provider ledger 为准。复核只读取原件及脱敏投影。试验状态与已观察的成本见验收报告。[RPF-119 结果](../../spikes/rpf-119/RESULT.md)
 
+## R72r2 三项隔离复验
+
+在 Windows 的本地 NTFS 检出中使用 CPython 3.12+ 和 Git。设置 `$py`、`$git` 为已核对的可执行文件绝对路径。从仓库根执行，`$source` 是本地已有的完整 Git 提交 SHA，`$run` 是 `.local/rpf-124/` 下尚不存在的一级目录。两条命令分别执行原测试和事后只读复核。
+
+```powershell
+$source = (& $git rev-parse HEAD).Trim()
+$run = '.local/rpf-124/recheck-001'
+& $py -I -S -B -X utf8 ci/rpf124_r72r2.py run --git $git --source $source --output $run
+& $py -I -S -B -X utf8 ci/rpf124_r72r2.py verify --git $git --output $run
+```
+
+`run` 从 Git 对象创建新的 `source/` 检出树。预检核对 76 个 Git blob、冻结测试与覆盖矩阵的摘要、三项方法和源依赖。每项在新的 CPython 进程中执行一次，写入 `source/.local/rpf-72-rev-2/tests/` 下各自的新 owner。第三项使用一个合成退款 SQLite。`run.json` 记录版本与解释器，`method1.log` 至 `method3.log` 和对应 JSON 保留原输出、进程退出与文件摘要，`complete.json` 记录完成时的三份进程回执摘要。Git 读取和测试可全部在本地完成，输入仅用指定提交的冻结文件和仓库清单。
+
+`verify` 接受保留同次源码、进程回执和业务文件的目录，在退出 0 时报告 `CONTENT_CHECKED_LOCAL`。它回放原生 WAL，并使用 `mode=ro` 和 `PRAGMA query_only=ON` 读回原退款库。复核前后核对文件摘要、长度与修改时间。对同一证据重复执行时业务结论一致。退出 2 时查看 JSON 的 `reason` 以及保留的日志。`OUTPUT_EXISTS` 要求新目录，`FROZEN_*` 表示输入身份不符，`PROCESS_RUN_BINDING`、`LOG_DIGEST_MISMATCH` 或 `EVIDENCE_*` 表示对应记录或材料无法复核。保留失败现场可供调查，复核操作仅从现有材料读回。
+
+Python 审计记录覆盖本次原方法涉及的接口，Windows 文件系统和 SQLite 读回另有实测。复核报告的外部签发者为 `NOT_ESTABLISHED`。Canonical 覆盖按相应 Actions run、attempt 和 checkout 独立核对。[工具](../../ci/rpf124_r72r2.py) · [Windows 实测](../../spikes/rpf-124/RESULT.md)
+
 ## 快速校验
 
 按修改选取，在仓库根运行。`python` 表示已核对的解释器。在当前 Windows 终端可用 `& $runproofPython` 调用其确切路径。

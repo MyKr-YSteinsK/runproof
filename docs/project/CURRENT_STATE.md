@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-27 · RPF-124 rev-1
+
+R72r2 隔离复验已提供仓库入口。干净 Windows NTFS 检出通过三个冻结原方法，两次独立只读复核得到相同结论，三份 WAL 和一个退款 SQLite 保持原摘要与修改时间。源码漂移、复用输出目录和修改 WAL 的负控均拒绝。Provider 0。本机复验供查证，Canonical 覆盖继续按托管证据计量。[命令和实测](../../spikes/rpf-124/RESULT.md)
+
 ## 2026-11-26 · RPF-123 rev-1
 
 R72r2 专用运行器候选的三个原方法在新 Windows NTFS 隔离根全部通过。独立只读复核确认未授权 SQLite 预约被拒绝、会话仅预约和结算一次，以及响应丢失后合成退款仅有一条收据。Provider 0。本机结果供评审同类扩样，三项在 Canonical 仍为 `UNAVAILABLE`。[复验与边界](../../spikes/rpf-123/RESULT.md)
