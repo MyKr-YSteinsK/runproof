@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { AppShell } from "../../components/AppShell";
 import { useI18n } from "../../i18n";
 import {
-  agentApi, agentMode, investigationSchema, mayStart,
+  agentApi, agentExportKind, agentMode, investigationSchema, mayStart,
+  readAgentInvestigation, readAgentSession, readAgentWitness,
   type AgentCapability, type AgentEvent, type AgentInvestigation, type AgentSession,
 } from "./competitionAgentApi";
 import "./competition-agent.css";
@@ -51,6 +52,28 @@ const faultLabels = [
   ["agent_exposed", "Agent 收到原始故障", "Agent saw the raw fault"],
 ] as const;
 
+type InvestigationRead = { state: "loading" } | { state: "ready"; report: AgentInvestigation }
+  | { state: "unavailable"; reason: string };
+type ExportRead = { state: "loading" } | { state: "ready"; hash: string }
+  | { state: "unavailable"; reason: string };
+
+function reasonCode(error: unknown, fallback: string) {
+  return error instanceof Error && /^[A-Z][A-Z_0-9]{2,63}$/.test(error.message) ? error.message : fallback;
+}
+
+export async function publishInvestigation(
+  session: AgentSession, current: () => boolean, publish: (read: InvestigationRead) => void,
+) {
+  let read: InvestigationRead;
+  try {
+    const { report } = await readAgentInvestigation(session);
+    read = { state: "ready", report };
+  } catch (error) {
+    read = { state: "unavailable", reason: reasonCode(error, "INVESTIGATION_UNAVAILABLE") };
+  }
+  if (current()) publish(read);
+}
+
 export function InvestigationEvidence({ report, label }: {
   report: AgentInvestigation; label: (cn: string, en: string) => string;
 }) {
@@ -96,39 +119,31 @@ export function CompetitionAgentPage({ search }: { search: string }) {
   const [confirmation, setConfirmation] = useState(false);
   const [busy, setBusy] = useState(false);
   const [pending, setPending] = useState(false);
-  const [anchor, setAnchor] = useState("");
+  const [investigation, setInvestigation] = useState<InvestigationRead | null>(null);
+  const [exportRead, setExportRead] = useState<ExportRead | null>(null);
   const [selected, setSelected] = useState(() => Number(params.get("event")) || 0);
   const [refresh, setRefresh] = useState(0);
   const generation = useRef(0);
   const submitting = useRef(false);
-  const [report, setReport] = useState<AgentInvestigation | null>(null);
-  useEffect(() => {
+  // Invalidate pending results when navigation commits, before the new session can be acted on.
+  useLayoutEffect(() => {
     const epoch = ++generation.current;
     const current = () => generation.current === epoch;
-    setCap(null); setSession(null); setAnchor(""); setReport(null); setConfirmation(false);
+    setCap(null); setSession(null); setNotice(""); setInvestigation(null); setExportRead(null); setConfirmation(false);
     setSelected(Number(new URLSearchParams(window.location.search).get("event")) || 0);
     async function read() {
       try {
-        const value = await agentApi.capability();
-        if (value.mode !== agentMode || value.provider_reservations !== 0) throw Error("MODE_UNAVAILABLE");
-        const key = value.instance && pendingRequest(value.instance);
-        const id = requested || value.latest;
-        const data = id ? await agentApi.session(id) : key ? await agentApi.request(key) : null;
-        if (data && (data.mode !== agentMode || (id && data.session_id !== id)
-            || (value.instance && data.owner_id !== value.instance)
-            || (!id && key && data.request_id !== key))) throw Error("SESSION_IDENTITY");
+        const { capability: value, session: data, pendingId: key } = await readAgentSession(requested, pendingRequest);
         if (!current()) return;
         if (key && value.instance && data?.request_id === key) pendingRequest(value.instance, null);
         setPending(!!(value.instance && pendingRequest(value.instance)));
-        setSession(data); setCap(value); setNotice("");
+        setSession(data); setCap(value);
         if (data) {
-          const file = await agentApi.investigation(data.session_id);
-          const result: AgentInvestigation = JSON.parse(new TextDecoder().decode(file.bytes));
-          if (result.session.session_id !== data.session_id || result.session.owner_id !== data.owner_id) throw Error("SESSION_IDENTITY");
-          if (current()) setReport(result);
+          setInvestigation({ state: "loading" });
+          void publishInvestigation(data, current, setInvestigation);
         }
       } catch (error) {
-        if (current()) { setCap(null); setNotice(error instanceof Error && error.message === "GATEWAY_404" ? "IDENTITY_NOT_FOUND" : "READBACK_UNAVAILABLE"); }
+        if (current()) setNotice(reasonCode(error, "READBACK_UNAVAILABLE"));
       }
     }
     void read();
@@ -140,6 +155,17 @@ export function CompetitionAgentPage({ search }: { search: string }) {
       '.ca-events button[aria-current="step"]')?.focus({ preventScroll: true });
   }, [session?.session_id, selected]);
   const startAllowed = mayStart(cap, pending) && !busy && !notice && !session && !requested;
+  const exportKind = session && agentExportKind(session, investigation?.state === "ready");
+  const sessionNotice = notice === "IDENTITY_NOT_FOUND"
+    ? l("找不到所选会话。请核对会话地址。", "Session not found. Check the session address.")
+    : notice === "RECONCILE_REQUIRED"
+      ? l("请求结果待核对。请刷新只读结果。", "Request outcome unconfirmed. Refresh read-only results.")
+      : l("暂无法核对会话。请刷新只读结果。", "Session readback unavailable. Refresh read-only results.");
+  function refreshReadback() {
+    generation.current++;
+    setCap(null);
+    setRefresh(x => x + 1);
+  }
   function bookmark(id: string, event?: number) {
     const next = new URLSearchParams({ session: id });
     if (event) next.set("event", String(event));
@@ -161,27 +187,34 @@ export function CompetitionAgentPage({ search }: { search: string }) {
       if (data.mode !== agentMode || data.request_id !== id || data.owner_id !== cap.instance) throw Error("SESSION_IDENTITY");
       pendingRequest(cap.instance, null);
       bookmark(data.session_id);
-      setRefresh(x => x + 1);
+      refreshReadback();
     } catch {
       if (epoch === generation.current) {setCap(null); setNotice("RECONCILE_REQUIRED");}
     } finally { submitting.current = false; setBusy(false); setConfirmation(false); }
   }
   async function download() {
-    if (!session || !cap) return;
+    if (!session || !cap || !exportKind || exportRead?.state === "loading") return;
     const epoch = generation.current;
+    setExportRead({ state: "loading" });
+    if (exportKind === "investigation") setInvestigation({ state: "loading" });
     try {
-      const file = await (session.status === "COMPLETED" ? agentApi.witness : agentApi.investigation)(session.session_id);
-      const result = JSON.parse(new TextDecoder().decode(file.bytes));
+      const currentReport = exportKind === "investigation" ? await readAgentInvestigation(session) : null;
+      const file = currentReport ?? await readAgentWitness(session);
       if (epoch !== generation.current) return;
-      if (result.session.session_id !== session.session_id || result.session.owner_id !== session.owner_id) throw Error("SESSION_IDENTITY");
+      if (currentReport) setInvestigation({ state: "ready", report: currentReport.report });
       const url = URL.createObjectURL(new Blob([file.bytes], { type: "application/json" }));
       const link = document.createElement("a");
       link.href = url;
-      link.download = session.session_id + (session.status === "COMPLETED" ? "-witness.json" : "-investigation.json");
+      link.download = session.session_id + "-" + exportKind + ".json";
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
-      setAnchor(file.hash);
-    } catch { if (epoch === generation.current) setNotice("EXPORT_UNAVAILABLE"); }
+      setExportRead({ state: "ready", hash: file.hash });
+    } catch (error) {
+      if (epoch !== generation.current) return;
+      const reason = reasonCode(error, "EXPORT_UNAVAILABLE");
+      if (exportKind === "investigation") setInvestigation({ state: "unavailable", reason });
+      setExportRead({ state: "unavailable", reason });
+    }
   }
 
   const focus = session?.events.find(item => item.seq === selected);
@@ -197,11 +230,13 @@ export function CompetitionAgentPage({ search }: { search: string }) {
     <section className="ca-panel" aria-labelledby="ca-start">
       <h2 id="ca-start">{l("受控双域实验", "Controlled dual-domain experiment")}</h2>
       <p>{l("场景：订单退款 → 只读对账 → 配置变更", "Scenario: refund → read-only reconciliation → configuration change")} · {l("工具白名单", "Tool allowlist")} <code>refund_order, apply_config</code></p>
-      <p role="status">{notice || session?.status || (cap ? agentMode : l("正在查询 Gateway", "Checking Gateway"))} · {l("剩余额度", "Remaining sessions")} {cap?.remaining ?? "—"}</p>
+      <p role="status">{notice ? <>{sessionNotice} <code>{notice}</code></>
+        : session?.status || (cap ? agentMode : l("正在查询 Gateway", "Checking Gateway"))}
+        {" · "}{l("剩余额度", "Remaining sessions")} {cap?.remaining ?? "—"}</p>
       <label><input type="checkbox" checked={confirmation} disabled={!startAllowed} onChange={e => setConfirmation(e.target.checked)} /> {l("确认执行一次本地实验", "Confirm one local experiment")}</label>
       <div className="ca-actions">
         <button type="button" disabled={!startAllowed || !confirmation} onClick={start}>{l("运行受控 Agent 实验", "Run controlled Agent experiment")}</button>
-        <button type="button" disabled={busy} onClick={() => { setCap(null); setRefresh(x => x + 1); }}>{l("刷新只读结果", "Refresh read-only results")}</button>
+        <button type="button" disabled={busy} onClick={refreshReadback}>{l("刷新只读结果", "Refresh read-only results")}</button>
       </div>
       <div className="ca-contracts">
         {[
@@ -236,14 +271,27 @@ export function CompetitionAgentPage({ search }: { search: string }) {
               <h3>{round.domain === "order" ? l("订单退款", "Order refund") : l("运维配置", "Configuration")}</h3>
               <p>{round.tool_status} · {round.outcome.contract_outcome}</p>
               <dl>{keys.map(key => <div key={key}><dt>{key}</dt><dd>{String(a?.[key])} → {String(b?.[key])}</dd></div>)}</dl>
-              <p>{l("独立读回收据", "Independent readback receipts")} <strong>{round.after.receipts.length}</strong></p>
+              <p>{l("执行时记录的读回收据", "Readback receipts recorded during execution")} <strong>{round.after.receipts.length}</strong></p>
               <details><summary>{l("故障四态与收据详情", "Fault flags and receipt details")}</summary><pre>{JSON.stringify({ fault: round.fault, receipts: round.after.receipts, feedback: round.feedback }, null, 2)}</pre></details>
             </article>;
           })}
-          {report && <InvestigationEvidence report={report} label={l} />}
+          {investigation?.state === "loading" && <p role="status">{l("正在读取本次调查证据。", "Loading investigation evidence.")}</p>}
+          {investigation?.state === "unavailable" && <p role="status">{l(
+            "调查证据暂不可用。可刷新只读结果。",
+            "Investigation evidence unavailable. You can refresh read-only results.",
+          )} <code>{investigation.reason}</code></p>}
+          {investigation?.state === "ready" && <InvestigationEvidence report={investigation.report} label={l} />}
           <h3>{session.status === "COMPLETED" ? "Witness" : l("诊断报告", "Investigation report")}</h3>
-          <button type="button" disabled={!cap} onClick={download}>{session.status === "COMPLETED" ? l("下载 Agent Witness", "Download Agent Witness") : l("下载调查报告", "Download investigation")}</button>
-          {anchor && <p role="status">SHA-256 <code>{anchor}</code></p>}
+          {session.status === "COMPLETED" && investigation?.state !== "ready" && <p>{l(
+            "已记录完成。下载 Witness 后可用 CLI 复核。",
+            "Completion recorded. Download the Witness to check it with the CLI.",
+          )}</p>}
+          <button type="button" disabled={!cap || !exportKind || exportRead?.state === "loading"} onClick={download}>{session.status === "COMPLETED" ? l("下载 Agent Witness", "Download Agent Witness") : l("下载调查报告", "Download investigation")}</button>
+          {exportRead?.state === "ready" && <p role="status">SHA-256 <code>{exportRead.hash}</code></p>}
+          {exportRead?.state === "unavailable" && <p role="status">{l(
+            "导出失败。可刷新只读结果后再试。",
+            "Export unavailable. Refresh read-only results and try again.",
+          )} <code>{exportRead.reason}</code></p>}
           <details><summary>{l("源码身份", "Source identity")}</summary><pre>{JSON.stringify(session.source, null, 2)}</pre></details>
         </div>
       </div>

@@ -2,6 +2,8 @@ import { productApi, requestLocalProduct } from "./productLocalApi";
 
 export const agentMode = "OFFLINE_REFERENCE_AGENT";
 export const investigationSchema = "runproof-agent-investigation/v2";
+const legacyInvestigationSchema = "runproof-agent-investigation/v1";
+const witnessSchema = "runproof-competition-agent-witness/v2";
 export type AgentCapability = {
   mode: string; remaining: number; blocked: boolean; provider_reservations: number;
   instance: string | null; owner: string; readonly: boolean; version: string; latest: string | null; profile: string; tools: string[];
@@ -30,6 +32,7 @@ export type AgentInvestigation = {
   summary: {
     next: string;
     task_completion: string;
+    recorded_status?: string;
     domains: {
       domain: string;
       effect: string;
@@ -56,4 +59,71 @@ export const agentApi = {
 export function mayStart(cap: AgentCapability | null, pending: boolean) {
   return !!cap?.instance && !cap.readonly && cap.mode === agentMode && cap.provider_reservations === 0 && cap.remaining === 1
     && cap.blocked === false && cap.latest === null && !pending;
+}
+
+export async function readAgentSession(requested: string | null, pendingForOwner: (owner: string) => string | null) {
+  const capability = await agentApi.capability();
+  if (capability.mode !== agentMode || capability.provider_reservations !== 0) throw Error("MODE_UNAVAILABLE");
+  const pendingId = capability.instance ? pendingForOwner(capability.instance) : null;
+  const sessionId = requested || capability.latest;
+  if (!sessionId && !pendingId) return { capability, session: null, pendingId };
+
+  let session: AgentSession;
+  try {
+    session = sessionId ? await agentApi.session(sessionId) : await agentApi.request(pendingId!);
+  } catch (error) {
+    if (error instanceof Error && error.message === "GATEWAY_404") throw Error("IDENTITY_NOT_FOUND");
+    throw error;
+  }
+  if (!session?.session_id || !session.request_id || !capability.instance || session.owner_id !== capability.instance
+      || session.mode !== agentMode || session.provider_reservations !== 0
+      || (sessionId ? session.session_id !== sessionId : session.request_id !== pendingId)) {
+    throw Error("SESSION_IDENTITY");
+  }
+  return { capability, session, pendingId };
+}
+
+function boundEvidence<T extends { session: AgentSession }>(bytes: ArrayBuffer, session: AgentSession): T {
+  let evidence: T;
+  try {
+    evidence = JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes));
+  } catch {
+    throw Error("EVIDENCE_FORMAT");
+  }
+  const record = evidence?.session;
+  if (!record || !session.owner_id || !session.request_id || record.session_id !== session.session_id
+      || record.owner_id !== session.owner_id || record.request_id !== session.request_id
+      || record.mode !== agentMode || record.provider_reservations !== 0 || record.status !== session.status) {
+    throw Error("EVIDENCE_IDENTITY");
+  }
+  return evidence;
+}
+
+export async function readAgentInvestigation(session: AgentSession) {
+  const file = await agentApi.investigation(session.session_id);
+  const report = boundEvidence<AgentInvestigation>(file.bytes, session);
+  const summary = report.summary;
+  const completion = session.status === "COMPLETED" ? "REQUIRES_SUCCESS_WITNESS" : "NOT_ESTABLISHED";
+  if ((report.schema !== investigationSchema && report.schema !== legacyInvestigationSchema)
+      || report.issuer !== "NOT_ESTABLISHED" || typeof summary?.next !== "string"
+      || summary.task_completion !== completion || !Array.isArray(summary.domains)
+      || (report.schema === investigationSchema && summary.recorded_status !== session.status)
+      || !summary.domains.every(domain => typeof domain?.domain === "string" && typeof domain.effect === "string"
+        && Array.isArray(domain.gaps) && domain.gaps.every(gap => typeof gap === "string"))) {
+    throw Error("INVESTIGATION_FORMAT");
+  }
+  return { ...file, report };
+}
+
+export async function readAgentWitness(session: AgentSession) {
+  if (session.status !== "COMPLETED") throw Error("WITNESS_NOT_AVAILABLE");
+  const file = await agentApi.witness(session.session_id);
+  const witness = boundEvidence<{ schema: string; session: AgentSession }>(file.bytes, session);
+  if (witness.schema !== witnessSchema) throw Error("WITNESS_FORMAT");
+  return file;
+}
+
+export function agentExportKind(session: AgentSession, investigationReady: boolean) {
+  if (session.status === "COMPLETED") return "witness";
+  return investigationReady ? "investigation" : null;
 }

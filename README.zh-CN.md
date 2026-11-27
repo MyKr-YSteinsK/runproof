@@ -14,7 +14,9 @@ Windows 需要 PowerShell 7.2+、Node 22+、带 SQLite 的 CPython 3.11+。首�
 
 打开启动器给出的地址，保留 nonce。勾选确认并运行一次。在**行动时间线**查看 `refund_order` 意图、`UNKNOWN_OUTCOME` 和订单的 Authority 独立读回。选择退款意图，在**查看所选事件的绑定**中找到 `action_id`，再到**订单退款 → 故障四态与收据详情**核对唯一一条收据的 `operation_id`。这条收据确认退款在工具响应被抑制前已提交。再核对已验证反馈的摘要与 `apply_config` 的输入反馈 SHA-256。配置变更是 Controller 单独批准的业务动作。两步都只操作虚构业务状态，Provider 调用为零。
 
-完成后下载成功 Witness。若运行中断，下载调查报告。将 `$file` 设为下载所得 JSON 的绝对路径，在同一检出中复核内容。
+调查证据暂不可用时，已确认的会话、时间线和执行时记录的读回收据仍可查看。点击**刷新只读结果**可重新读取调查报告。记录为 `COMPLETED` 的会话仍可单独下载 Witness。若运行中断，等调查报告可用后再下载。
+
+将 `$file` 设为下载所得 JSON 的绝对路径，在同一检出中复核内容。
 
 ```powershell
 & $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file

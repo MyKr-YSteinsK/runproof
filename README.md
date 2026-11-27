@@ -14,7 +14,9 @@ On Windows, install PowerShell 7.2+, Node 22+ and CPython 3.11+ with SQLite. In 
 
 Open the printed URL and save the nonce. Confirm one run. In **Action timeline**, inspect the `refund_order` intent, `UNKNOWN_OUTCOME`, and the order Authority readback. Select the refund intent and open **Inspect selected event bindings** for its `action_id`. Match it to the single receipt's `operation_id` under **Order refund → Fault flags and receipt details**. That receipt confirms the refund committed despite the suppressed tool response. Compare the verified feedback's digest with the input feedback SHA-256 for `apply_config`. The Controller approves that change as a separate operation. Both actions use synthetic business state and zero Provider calls.
 
-Download the successful Witness or the investigation report for an interrupted run. Set `$file` to the downloaded JSON's absolute path. In the same checkout, verify its content.
+If investigation evidence is temporarily unavailable, the confirmed session, timeline, and receipts recorded during execution stay visible. Use **Refresh read-only results** to read the investigation again. A session recorded as `COMPLETED` can still download its Witness separately. For an interrupted run, download the investigation report once it is available.
+
+Set `$file` to the downloaded JSON's absolute path. In the same checkout, verify its content.
 
 ```powershell
 & $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file

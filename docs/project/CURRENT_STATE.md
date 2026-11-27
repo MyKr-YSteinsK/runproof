@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-27 · RPF-125 rev-1
+
+Reference Agent 已将会话绑定、调查读回和导出各自显示。Windows 同一 owner 的调查 GET 返回 404/503 时，已确认会话和时间线仍可查，匹配的 Witness 可下载并由原 CLI 复核。调查恢复、错配和迟到响应均已验证。只读重开新增 POST 与业务写入均为 0，Provider 0。[故障对照与回归](../../spikes/rpf-125/RESULT.md)
+
 ## 2026-11-27 · RPF-124 rev-1
 
 R72r2 隔离复验已提供仓库入口。干净 Windows NTFS 检出通过三个冻结原方法，两次独立只读复核得到相同结论，三份 WAL 和一个退款 SQLite 保持原摘要与修改时间。源码漂移、复用输出目录和修改 WAL 的负控均拒绝。Provider 0。本机复验供查证，Canonical 覆盖继续按托管证据计量。[命令和实测](../../spikes/rpf-124/RESULT.md)
