@@ -20,6 +20,21 @@
 3. 页面调查按原 environment 和 operation 重开目标 SQLite，展示收据与证据缺口。中断可能保留原 `RUNNING`，调查报告将后续动作列为人工处理。完成时下载 Witness，其余状态下载调查报告。将 `$file` 设为下载所得 JSON 的绝对路径，用 `& $py -B -m runtime.runproof_runtime.effectwitness.competition_agent_verify $file` 复核内容。有独立可信摘要时才添加 `--expected-sha256 $anchor`。历史 Witness 使用记录创建时的 verifier。
 4. 持久预约及中断回归运行 `& $py -B -m unittest -v ci.test_rpf115_recovery ci.test_rpf116_investigation`。RPF-116 的检查点包含进入 `ResponseLost` 分支以后、写入 `UNKNOWN_OBSERVED` 以前的位置。[运行证据与复现](../../spikes/rpf-116/RESULT.md)
 
+### RPF-126 离线验收命令
+
+实跑基于 `bc8f72438677dee69b905a3ffbfe27894bc17d06`。源码启动、同 nonce 只读重开和停机使用上节命令。验收时依赖已有 npm 缓存，运行 `npm ci --offline --no-audit --no-fund --logs-dir (Join-Path $proof 'npm-logs')`，`$proof` 为新的验收根。已有 ZIP 可以用独立 verifier 检查后再按包内入口运行。以下 `$zip` 为包路径，`$freshExtraction` 为尚不存在的解包位置，`$packageWitness` 为包内会话下载的 JSON。
+
+```powershell
+# 在验收源码的仓库根核对 ZIP 和成员
+& $py -I -B ci/test_rpf114_competition_bundle.py $zip $freshExtraction
+# 在新解包的 app/ 中使用包内脚本
+.\start.ps1 -PythonExe $py -NodeExe $node
+.\verify-witness.ps1 -PythonExe $py -Witness $packageWitness
+.\stop.ps1 -Nonce $packageNonce
+```
+
+已验收包的源码、摘要和实跑回执见 [RPF-126](../../spikes/rpf-126/RESULT.md)。当前在阶段验收，使用 [接手索引](HANDOFF_INDEX.md) 和已有回执复核即可。需要重建时按 RPF-126 A03 的 `--complete` 命令使用新构建 nonce。
+
 ### 调查报告 v2
 
 报告 `runproof-agent-investigation/v2` 保留原执行读回及新连接读取的当前事实。故障的 `planned` 和 `agent_exposed` 是布尔值。已记录 `UNKNOWN_OBSERVED` 时，`triggered` 与 `observed` 为 `true`。订单写入意图已落盘但该事件缺失时，两项为 JSON `null`，页面显示未知，报告标明 `FAULT_EVENT_NOT_PERSISTED`。订单在写入意图前停止或场景未计划故障时，两项为 `false`。收据用于单独核对业务效果。

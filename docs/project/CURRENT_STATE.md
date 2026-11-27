@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-27 · RPF-127 rev-1
+
+当前停在阶段验收。原位保全 RPF-114 的三份封存交付物及 RPF-126 当前候选和验收证据。初赛实际提交对象、版本和时间未核实。仅将一棵与 RPF-126 ZIP 逐成员一致的构建暂存树移入本机待清理区，共 320 文件、5,181,298 字节，已在备用路径实测恢复并复核原件。Provider 0。Project 可按同一个 Git 提交的清单手动装载。复赛和后续路线仍待用户确认。[RPF-127 验收](../../spikes/rpf-127/RESULT.md) · [接手索引](../项目源文件/HANDOFF_INDEX.md)
+
 ## 2026-11-27 · RPF-126 rev-1
 
 离线交付候选固定为 `bc8f72438677dee69b905a3ffbfe27894bc17d06`。干净 Windows 检出完成一次正常双域会话，原 nonce 只读重开经调查 GET 503 后恢复，新增 POST 和业务写入均为 0。同源码完整工程包独立解包、启动并验真，错误摘要被拒。Provider 0。实测无产品阻塞，当前结果留待阶段验收。[实测和公开索引](../../spikes/rpf-126/RESULT.md)
@@ -70,6 +74,6 @@ R72r2 专用运行器候选的三个原方法在新 Windows NTFS 隔离根全部
 
 ## 维护入口
 
-1. 按 [GPT Project 接管入口](../项目源文件/00-START_HERE.md) 恢复背景，按 [Runbook](../项目源文件/RUNBOOK.md) 选择所需检查。普通维护采用 main-first，风险按实际副作用分层。
+1. 按 [接手索引](../项目源文件/HANDOFF_INDEX.md) 查看当前候选、运行证据和未核实事项。使用 [GPT Project 接管入口](../项目源文件/00-START_HERE.md) 装载同版本文件，按 [Runbook](../项目源文件/RUNBOOK.md) 选择经授权的检查。普通维护采用 main-first，风险按实际副作用分层。
 2. 2026-10-29 RPF-79 迁移包已退出工作树常用路径。完整字节在固定 Git 基线和本地待清理区可取；R-01～R-10、D-COMP 及 MUST/SHOULD/NON-GOAL 的批准身份保留。[归档与取回](../history/MAINTENANCE_ARCHIVE.md)
 3. [升级评审](../项目源文件/UPGRADE_REVIEW.md) 记录产品、代码、CI、迁移和 `config-center` 联动候选。用户确认取舍后方可启动重大重构。仓库的既有 `Stabilization` 状态及各历史验收按对应证据理解。

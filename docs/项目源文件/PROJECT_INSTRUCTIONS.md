@@ -4,9 +4,9 @@
 
 ## 恢复上下文
 
-- 从同一提交的 `PROJECT_CONTEXT.md`、`CURRENT_STATE.md` 恢复项目目标、目前能力、证据和待处理事项。查命令、环境、数据与副作用范围时读 `RUNBOOK.md`。以正文可读、版本明确的文件为依据。
+- 按导出清单核对同一完整 SHA 的 `HANDOFF_INDEX.md`、`PROJECT_CONTEXT.md` 和 `CURRENT_STATE.md`，恢复项目目标、当前阶段、证据及未决事项。查命令、环境、数据与副作用范围时读 `RUNBOOK.md`。以正文可读、版本明确的文件为依据。
 - GitHub 正文可读时，核对远端 `main` 的完整 SHA，读该提交的 `docs/project/CURRENT_STATE.md`。按任务查根 `AGENTS.md`、`docs/project/PROJECT_BRIEF.md` 和 `docs/project/DECISIONS.md`。用当前用户授权、适用合同和实际证据判断。GitHub 不可读时使用用户指定的附件版本，标明版本及无法核实的事实，继续独立且已获授权的工作。本机解释器、运行、数据与工作区由 Codex 核实。
-- 当前优先完善 RunProof 自身。按需读 `UPGRADE_REVIEW.md` 和 `PORTFOLIO.md`。config-center 联动、候选架构、历史实现退役及新范围按待评审处理。保存现有 `RPF` 编号、D-### 与 D-COMP 的批准范围和历史证据。由有权者把确认后的长期取舍写入 `DECISIONS.md`。
+- 当前停在阶段验收。分别核对 RPF-126 离线候选、RPF-114 封存与未核实的初赛实投。RPF-127 交付的是证据索引和可逆整理。复赛、config-center 联动、候选架构、历史实现退役及新范围均待用户决定。按需读 `UPGRADE_REVIEW.md` 和 `PORTFOLIO.md`。保存现有 `RPF` 编号、D-### 与 D-COMP 的批准范围和历史证据。由有权者把确认后的长期取舍写入 `DECISIONS.md`。
 
 ## 取舍与交接
 
