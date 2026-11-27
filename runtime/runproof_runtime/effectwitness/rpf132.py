@@ -63,6 +63,7 @@ def spec(mode, variant, commit, run_id, cells, admission):
 
 
 def prepare(folder, mode, variant, commit, admission=None):
+    require(not ledger.spent_marker(folder).exists(), "CLAIM_SPENT")
     cells = [{"case": n, "name": n, "session_id": uuid4().hex} for n in "CAB"]
     manifest = spec(mode, variant, commit, uuid4().hex, cells, admission)
     _plain(folder).mkdir(parents=True, exist_ok=False)
@@ -155,12 +156,14 @@ def review(folder, *, sealed):
 def execute(folder, m, assets):
     require(load(folder) == m, "MANIFEST_BINDING")
     ledger.check_grant(folder, m)
-    require(not (folder / "claim.json").exists(), "CLAIM_SPENT")
+    require(not ledger.spent_marker(folder).exists() and not (folder / "claim.json").exists(), "CLAIM_SPENT")
     sdk.environment()
     if m["mode"] == "LIVE":
         require(folder == owner() / "formal" and clean_head() == m["source_commit"], "FORMAL_OWNER_OR_SOURCE")
         require(os.environ.get("DEEPSEEK_BILLING_CURRENCY") == "CNY", "CURRENCY_REQUIRED")
         require(admission(owner(), m["admission"]["suite"], sealed=True) == m["admission"], "OFFLINE_ADMISSION")
+        require(not any(os.environ.get(n) for n in ("SSLKEYLOGFILE", "SSL_CERT_FILE", "SSL_CERT_DIR")),
+                "DEFAULT_TLS_REQUIRED")
         send = api._configured_sender()
     else:
         send = fixture(m["variant"])
@@ -227,7 +230,7 @@ def admission(own, name, *, sealed):
     folder = suite_path(own, name)
     blocked = folder / "no-grant"
     zero = load(blocked)
-    require(zero["mode"] == "OFFLINE" and zero["variant"] == "no-grant"
+    require(zero["mode"] == "OFFLINE" and zero["variant"] == "no-grant" and not ledger.spent_marker(blocked).exists()
             and {p.name for p in blocked.iterdir()} == {"manifest.json"}, "NO_GRANT")
     stages = {"nominal": (4, 0, None), "wrong-action": (4, 0, None), "wrong-model": (1, 0, "MODEL_IDENTITY"),
               "exhausted": (1, 0, "BUDGET_EXHAUSTED"), "wrong-receipt": (2, 0, "TOOL_RECEIPT_MISMATCH"),
@@ -275,8 +278,8 @@ def main():
         m = load(args.folder)
         own = owner()
         expected = own / "formal" if m["mode"] == "LIVE" else suite_path(own, args.folder.parent.name) / m["variant"]
-        require(_plain(args.folder) == expected and files.read(expected / "claim.json") == ledger.grant(m),
-                "WORKER_OWNER_OR_CLAIM")
+        require(_plain(args.folder) == expected, "WORKER_OWNER")
+        ledger.check_claim(expected, m)
         sdk.environment()
         trial.worker(args.folder, m)
         return

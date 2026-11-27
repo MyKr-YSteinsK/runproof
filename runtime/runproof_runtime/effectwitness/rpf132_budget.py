@@ -17,15 +17,25 @@ def check_grant(folder, manifest):
     require(files.read(folder / "grant.json") == grant(manifest), "GRANT_MISMATCH")
 
 
+def spent_marker(folder):
+    return folder.parent / (folder.name + "-claimed.json")
+
+
+def check_claim(folder, manifest):
+    require(files.read(spent_marker(folder)) == files.read(folder / "claim.json") == grant(manifest), "CLAIM_MISMATCH")
+
+
 def claim(folder, manifest):
     check_grant(folder, manifest)
+    # The repository owner retains the spent marker even if the run is later archived.
+    files.write(spent_marker(folder), grant(manifest))
     files.write(folder / "claim.json", grant(manifest))
 
 
 def interrupted(folder, manifest):
     """Inventory an unsealed prefix. No prefix can authorize another sender or establish business success."""
     check_grant(folder, manifest)
-    require(files.read(folder / "claim.json") == grant(manifest), "CLAIM_MISMATCH")
+    check_claim(folder, manifest)
     rows = frames.entries(folder / "ledger.jsonl", manifest["run_id"])
     require(rows and rows[0]["kind"] == "CLAIMED" and rows[0]["data"] == grant(manifest), "CLAIM_EVIDENCE")
     holds = {}
@@ -56,7 +66,7 @@ def interrupted(folder, manifest):
 class Budget:
     def __init__(self, folder, manifest, *, readonly, sender=None, meter=None):
         check_grant(folder, manifest)
-        require(files.read(folder / "claim.json") == grant(manifest), "CLAIM_MISMATCH")
+        check_claim(folder, manifest)
         require(readonly == (sender is None), "TRANSPORT_MODE")
         require(readonly == (meter is None), "METER_MODE")
         self.meter = meter
@@ -103,7 +113,7 @@ class Budget:
             return self.stop(binding, "BUDGET_EXHAUSTED")
         if self.sender:
             check_grant(self.folder, self.manifest)
-            require(files.read(self.folder / "claim.json") == grant(self.manifest), "CLAIM_MISMATCH")
+            check_claim(self.folder, self.manifest)
         if self.sender is not None:
             try:
                 size = self.meter(ticket["request"])

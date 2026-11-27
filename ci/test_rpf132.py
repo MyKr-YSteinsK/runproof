@@ -16,7 +16,8 @@ class TrialTests(unittest.TestCase):
         root.mkdir(parents=True, exist_ok=True)
         tmp = TemporaryDirectory(dir=root)
         self.addCleanup(tmp.cleanup)
-        self.folder = Path(tmp.name)
+        self.folder = Path(tmp.name) / "trial"
+        self.folder.mkdir()
         self.cell = {"case": "A", "name": "A", "session_id": "a" * 32}
         self.m = {"run_id": "1" * 32, "source_commit": "2" * 40, "limits": deepcopy(protocol.LIMITS),
                   "admission": None, "mode": "OFFLINE"}
@@ -39,7 +40,12 @@ class TrialTests(unittest.TestCase):
         self.open()
         with self.assertRaises(FileExistsError):
             ledger.claim(self.folder, self.m)
-        self.assertFalse((self.folder / "result.json").exists())
+        self.folder.rename(self.folder.with_name("archived"))
+        self.folder.mkdir()
+        files.write(self.folder / "grant.json", ledger.grant(self.m))
+        with self.assertRaises(FileExistsError):
+            ledger.claim(self.folder, self.m)
+        self.assertFalse((self.folder / "claim.json").exists())
 
     def test_ceiling_includes_schema_wrapping_and_currency(self):
         ticket = protocol.reservation(self.m, self.cell, 1, self.view, None)
