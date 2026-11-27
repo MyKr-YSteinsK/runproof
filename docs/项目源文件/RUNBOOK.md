@@ -108,6 +108,34 @@ $run = '.local/rpf-124/recheck-001'
 
 Python 审计记录覆盖本次原方法涉及的接口，Windows 文件系统和 SQLite 读回另有实测。复核报告的外部签发者为 `NOT_ESTABLISHED`。Canonical 覆盖按相应 Actions run、attempt 和 checkout 独立核对。[工具](../../ci/rpf124_r72r2.py) · [Windows 实测](../../spikes/rpf-124/RESULT.md)
 
+## 超时实验
+
+RPF-128 / RPF-129 是独立的本地入口。每格新建订单和配置 SQLite，Tool 都显示 `TIMEOUT / UNKNOWN_OUTCOME`。Reference 路径使用已核实的 CPython，每次 `run` 选 `.local/rpf-128-129/` 内尚不存在的目录。`verify` 读取原事件及数据库，`demo` 在核验后生成可用浏览器直接打开的 HTML。HTML 目标须在证据目录外且尚不存在。
+
+```powershell
+$module = 'runtime.runproof_runtime.effectwitness.timeout_experiment'
+$out = '.local/rpf-128-129'
+& $py -B -m $module run "$out/reference-01"
+& $py -B -m $module verify "$out/reference-01"
+& $py -B -m $module demo "$out/reference-01" --html "$out/reference-demo.html"
+```
+
+可选的 openJiuwen 路径使用 Windows x64、CPython 3.12 和 [带哈希的依赖锁](../../spikes/rpf-129/requirements-win-py312.lock)。设置 `$uv` 与 `$py` 为已核实的可执行文件。准备环境下载锁定 wheel。实验使用真实 ReAct、进程内固定回复和本地提议记录工具。
+
+```powershell
+$env:UV_CACHE_DIR = Join-Path (Get-Location) "$out/uv-cache"
+$sdkEnv = "$out/sdk"
+& $uv --no-config --no-python-downloads venv --python $py $sdkEnv
+$sdkPy = "$sdkEnv/Scripts/python.exe"
+& $uv --no-config --no-python-downloads pip sync --python $sdkPy --default-index https://pypi.org/simple --only-binary ':all:' --require-hashes spikes/rpf-129/requirements-win-py312.lock
+& $uv --no-config pip check --python $sdkPy
+& $sdkPy -B -m $module run "$out/openjiuwen-01" --engine openjiuwen
+& $py -B -m $module verify "$out/openjiuwen-01"
+& $py -B -m $module demo "$out/openjiuwen-01" --html "$out/openjiuwen-demo.html"
+```
+
+`manifest.json` 绑定源码、运行和会话，`cells/*/events.jsonl` 保存决策时证据和裁决，`report.json` 单独列出事后只读收据。退出 0 为实跑或只读复核成功，退出 3 会说明拒绝原因。缺少闭合证明的零收据保留未知，出现 `OUTPUT_EXISTS` 时保留原目录并为新实验选新位置。[Windows 实测与证据索引](../../spikes/rpf-129/RESULT.md)
+
 ## 快速校验
 
 按修改选取，在仓库根运行。`python` 表示已核对的解释器。在当前 Windows 终端可用 `& $runproofPython` 调用其确切路径。
