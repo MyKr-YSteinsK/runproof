@@ -47,6 +47,7 @@ jobs:
           ci.test_rpf114_competition_agent ci.test_rpf113_competition_bundle ci.test_rpf114_competition_bundle
           ci.test_rpf115_recovery ci.test_rpf116_investigation ci.test_policy_evaluation
           ci.test_fixture_model_evaluation ci.test_rpf119_live ci.test_rpf120_reconcile ci.test_rpf124_r72r2
+          ci.test_timeout_experiment
       - run: node --test ci/test_rpf113_competition_server.mjs
       - run: npm ci
       - run: npm test
