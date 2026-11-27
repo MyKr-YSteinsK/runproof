@@ -2,6 +2,10 @@
 
 > 2026-11-23 接管历史基线。核对基线为 `main@b076d2c4206683ba96eb8ffc6ae2cd290074af0c`。此 SHA 是整理前本地与远端共同基线；当前版本以所在 Git 提交为准。产品合同见 [PROJECT_BRIEF](PROJECT_BRIEF.md)，长期决定见 [DECISIONS](DECISIONS.md)。
 
+## 2026-11-27 · RPF-126 rev-1
+
+离线交付候选固定为 `bc8f72438677dee69b905a3ffbfe27894bc17d06`。干净 Windows 检出完成一次正常双域会话，原 nonce 只读重开经调查 GET 503 后恢复，新增 POST 和业务写入均为 0。同源码完整工程包独立解包、启动并验真，错误摘要被拒。Provider 0。实测无产品阻塞，当前结果留待阶段验收。[实测和公开索引](../../spikes/rpf-126/RESULT.md)
+
 ## 2026-11-27 · RPF-125 rev-1
 
 Reference Agent 已将会话绑定、调查读回和导出各自显示。Windows 同一 owner 的调查 GET 返回 404/503 时，已确认会话和时间线仍可查，匹配的 Witness 可下载并由原 CLI 复核。调查恢复、错配和迟到响应均已验证。只读重开新增 POST 与业务写入均为 0，Provider 0。[故障对照与回归](../../spikes/rpf-125/RESULT.md)
